@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,23 +17,26 @@ namespace POS_Server.Controllers
     public class InventoryItemLocationController : ApiController
     {
         // GET api/<controller> get all InventoryItemLocation
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get( int inventoryId)
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int inventoryId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        inventoryId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from c in entity.inventoryItemLocation.Where(c => c.inventoryId == inventoryId)
@@ -67,33 +74,31 @@ namespace POS_Server.Controllers
                         sequence++;
                         List[i].sequence = sequence;
                     }
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                     
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            //else
-                return NotFound();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemToDestroy")]
-        public IHttpActionResult GetItemToDestroy( int branchId)
+        public string GetItemToDestroy(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from c in entity.inventoryItemLocation.Where(c => c.amountDestroyed > 0 && c.isDestroyed == false && c.Inventory.branchId == branchId && c.Inventory.inventoryType =="n" && c.Inventory.isActive == 1)
@@ -129,33 +134,31 @@ namespace POS_Server.Controllers
                                     inventoryNum = c.Inventory.num,
                                 })
                        .ToList().OrderBy(x => x.location).ToList();
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                     
+                    return TokenManager.GenerateToken(List);
                 }
             }
-                return NotFound();
         }
-
-         [HttpGet]
+         [HttpPost]
         [Route("GetShortageItem")]
-        public IHttpActionResult GetShortageItem( int branchId)
+        public string GetShortageItem(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {         
                     var List = (from c in entity.inventoryItemLocation
@@ -192,39 +195,23 @@ namespace POS_Server.Controllers
                                     inventoryNum = c.Inventory.num,
                                 })
                        .ToList().OrderBy(x => x.location).ToList();
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                     
+                    return TokenManager.GenerateToken(List);
                 }
             }
-                return NotFound();
         }
-
-
-
         // GET api/<controller>  Get medal By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
-        public IHttpActionResult GetByID()
+        public string GetByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             int cId = 0;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("Id"))
-            {
-                cId = Convert.ToInt32(headers.GetValues("Id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -248,43 +235,46 @@ namespace POS_Server.Controllers
                    
                    })
                    .FirstOrDefault();
-
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
+                     
+                    return TokenManager.GenerateToken(list);
                 }
             }
-            else
-                return NotFound();
         }
-
-
         // add or update 
         [HttpPost]
         [Route("Save")]
-        public IHttpActionResult Save(string newObject,int inventoryId)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            
-            if (valid)
+            else
             {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-              List<InventoryItemLocationModel> Object = JsonConvert.DeserializeObject<List<InventoryItemLocationModel>>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string message = "";
+                string newObject = "";
+                int inventoryId = 0;
+                List<InventoryItemLocationModel> Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        newObject = c.Value.Replace("\\", string.Empty);
+                        newObject = newObject.Trim('"');
+                        Object = JsonConvert.DeserializeObject<List<InventoryItemLocationModel>>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        //break;
+                    }
+                    else if (c.Type == "inventoryId")
+                    {
+                        inventoryId = int.Parse(c.Value);
+                    }
+                }
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     List<inventoryItemLocation> items = entity.inventoryItemLocation.Where(x => x.inventoryId == inventoryId).ToList();
- 
                     if (items == null || items.Count == 0)// add first time
                     {
                         foreach (InventoryItemLocationModel il in Object)
@@ -313,15 +303,16 @@ namespace POS_Server.Controllers
                             tmp.updateDate = DateTime.Now;
                             tmp.updateUserId = il.createUserId;
                             entity.inventoryItemLocation.Add(tmp);
+                            message = tmp.id.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
-                       
+
                     }
                     else // edit saved inventory details
                     {
                         foreach (InventoryItemLocationModel il in Object)
                         {
                             inventoryItemLocation invItem = entity.inventoryItemLocation.Find(il.id);
-
                             invItem.amount = il.amount;
                             invItem.isDestroyed = il.isDestroyed;
                             invItem.isFalls = il.isFalls;
@@ -330,38 +321,44 @@ namespace POS_Server.Controllers
                             invItem.notes = il.notes;
                             invItem.updateDate = DateTime.Now;
                             invItem.updateUserId = il.updateUserId;
+                            message = invItem.id.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
+                }
+                message = "0";
+                return TokenManager.GenerateToken(message);
 
-                    entity.SaveChanges();
-                    return Ok("true");
-                }                      
             }
-            return Ok("false");
         }
         [HttpPost]
         [Route("distroyItem")]
-        public string distroyItem(string newObject)
+        public string distroyItem(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-                inventoryItemLocation Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-              
                 try
                 {
+                    string newObject = "";
+                    inventoryItemLocation Object = null;
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                    foreach (Claim c in claims)
+                    {
+                        if (c.Type == "itemObject")
+                        {
+                            newObject = c.Value.Replace("\\", string.Empty);
+                            newObject = newObject.Trim('"');
+                            Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                            break;
+                        }
+                    }
+
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var unitEntity = entity.Set<pos>();
@@ -372,41 +369,45 @@ namespace POS_Server.Controllers
                         tmpItem.updateDate = DateTime.Now;
                         tmpItem.updateUserId = Object.updateUserId;
                         tmpItem.cause = Object.cause;
-                        message = "Pos Is Updated Successfully";
-                      
                         entity.SaveChanges();
+                        message = tmpItem.id.ToString();
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            return message;
         }
         [HttpPost]
         [Route("fallItem")]
-        public string fallItem(string newObject)
+        public string fallItem(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-                inventoryItemLocation Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-              
                 try
                 {
+                    string newObject = "";
+                    inventoryItemLocation Object = null;
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                    foreach (Claim c in claims)
+                    {
+                        if (c.Type == "itemObject")
+                        {
+                            newObject = c.Value.Replace("\\", string.Empty);
+                            newObject = newObject.Trim('"');
+                            Object = JsonConvert.DeserializeObject<inventoryItemLocation>(newObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                            break;
+                        }
+                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var unitEntity = entity.Set<pos>();
@@ -417,34 +418,50 @@ namespace POS_Server.Controllers
                         tmpItem.updateDate = DateTime.Now;
                         tmpItem.updateUserId = Object.updateUserId;
                         tmpItem.fallCause = Object.fallCause;
-                        message = "Pos Is Updated Successfully";
+                        message = tmpItem.id.ToString();
                       
                         entity.SaveChanges();
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "0";
+                        return TokenManager.GenerateToken(message);
                 }
             }
-            return message;
+          return TokenManager.GenerateToken(message);
         }
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int id, int userId, Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int id = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        id = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
 
                 if (final)
                 {
@@ -455,13 +472,14 @@ namespace POS_Server.Controllers
 
                             inventoryItemLocation Deleterow = entity.inventoryItemLocation.Find(id);
                             entity.inventoryItemLocation.Remove(Deleterow);
-                            entity.SaveChanges();
-                            return Ok("OK");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -475,21 +493,17 @@ namespace POS_Server.Controllers
                            Obj.isActive = 0;
                             Obj.updateUserId = userId;
                             Obj.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-                            return Ok("Ok");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
-
-
-
             }
-            else
-                return NotFound();
         }
     }
 }

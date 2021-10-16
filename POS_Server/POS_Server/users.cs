@@ -78,6 +78,9 @@ namespace POS_Server
             this.itemsUnits1 = new HashSet<itemsUnits>();
             this.itemTransferOffer = new HashSet<itemTransferOffer>();
             this.itemTransferOffer1 = new HashSet<itemTransferOffer>();
+            this.itemUnitUser = new HashSet<itemUnitUser>();
+            this.itemUnitUser1 = new HashSet<itemUnitUser>();
+            this.itemUnitUser2 = new HashSet<itemUnitUser>();
             this.locations = new HashSet<locations>();
             this.locations1 = new HashSet<locations>();
             this.medalAgent = new HashSet<medalAgent>();
@@ -102,6 +105,8 @@ namespace POS_Server
             this.posUsers = new HashSet<posUsers>();
             this.posUsers1 = new HashSet<posUsers>();
             this.posUsers2 = new HashSet<posUsers>();
+            this.printers = new HashSet<printers>();
+            this.printers1 = new HashSet<printers>();
             this.properties = new HashSet<properties>();
             this.properties1 = new HashSet<properties>();
             this.propertiesItems = new HashSet<propertiesItems>();
@@ -118,11 +123,6 @@ namespace POS_Server
             this.userSetValues1 = new HashSet<userSetValues>();
             this.userSetValues2 = new HashSet<userSetValues>();
             this.usersLogs = new HashSet<usersLogs>();
-            this.printers = new HashSet<printers>();
-            this.printers1 = new HashSet<printers>();
-            this.itemUnitUser = new HashSet<itemUnitUser>();
-            this.itemUnitUser1 = new HashSet<itemUnitUser>();
-            this.itemUnitUser2 = new HashSet<itemUnitUser>();
         }
     
         public int userId { get; set; }
@@ -273,6 +273,12 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemTransferOffer> itemTransferOffer1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemUnitUser> itemUnitUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemUnitUser> itemUnitUser1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<itemUnitUser> itemUnitUser2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<locations> locations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<locations> locations1 { get; set; }
@@ -321,6 +327,10 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<posUsers> posUsers2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<printers> printers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<printers> printers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<properties> properties { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<properties> properties1 { get; set; }
@@ -352,15 +362,5 @@ namespace POS_Server
         public virtual ICollection<userSetValues> userSetValues2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<usersLogs> usersLogs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<printers> printers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<printers> printers1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemUnitUser> itemUnitUser { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemUnitUser> itemUnitUser1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<itemUnitUser> itemUnitUser2 { get; set; }
     }
 }

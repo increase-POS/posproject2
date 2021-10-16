@@ -17,8 +17,8 @@ namespace POS_Server
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public itemsTransfer()
         {
-            this.itemTransferOffer = new HashSet<itemTransferOffer>();
             this.invoiceOrder = new HashSet<invoiceOrder>();
+            this.itemTransferOffer = new HashSet<itemTransferOffer>();
         }
     
         public int itemsTransId { get; set; }
@@ -38,14 +38,14 @@ namespace POS_Server
         public Nullable<int> offerId { get; set; }
     
         public virtual inventoryItemLocation inventoryItemLocation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<invoiceOrder> invoiceOrder { get; set; }
         public virtual invoices invoices { get; set; }
         public virtual itemsUnits itemsUnits { get; set; }
         public virtual locations locations { get; set; }
         public virtual locations locations1 { get; set; }
+        public virtual offers offers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemTransferOffer> itemTransferOffer { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<invoiceOrder> invoiceOrder { get; set; }
-        public virtual offers offers { get; set; }
     }
 }

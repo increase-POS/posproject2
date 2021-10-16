@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -16,17 +17,15 @@ namespace POS_Server.Controllers
     public class BanksController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public ResponseVM Get(string token)
+        public string Get(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -66,23 +65,21 @@ namespace POS_Server.Controllers
                             banksList[i].canDelete = canDelete;
                         }
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(banksList) };
+                    return TokenManager.GenerateToken(banksList);
 
                 }
             }
         }
 
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetBankByID")]
-        public ResponseVM GetBankByID(string token)
+        public string GetBankByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -114,7 +111,7 @@ namespace POS_Server.Controllers
                        b.updateUserId
                    })
                    .FirstOrDefault();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(bank) };
+                    return TokenManager.GenerateToken(bank);
 
                 }
             }
@@ -123,15 +120,13 @@ namespace POS_Server.Controllers
         // add or update bank
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token)
+        public string Save(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -189,29 +184,27 @@ namespace POS_Server.Controllers
                             message = tmpBank.bankId.ToString();
 
                         }
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                        return TokenManager.GenerateToken(message);
                     }
                 }
 
                 catch
                 {
                     message = "0";
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
             }
         }
 
         [HttpPost]
         [Route("Delete")]
-        public ResponseVM Delete(string token)
+        public string Delete(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -244,12 +237,12 @@ namespace POS_Server.Controllers
                             banks bankDelete = entity.banks.Find(bankId);
                             entity.banks.Remove(bankDelete);
                             message = entity.SaveChanges().ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                     }
                 }
                 else
@@ -264,12 +257,12 @@ namespace POS_Server.Controllers
                             bankObj.updateUserId = userId;
                             bankObj.updateDate = DateTime.Now;
                             message = entity.SaveChanges().ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                     }
                 }
             }

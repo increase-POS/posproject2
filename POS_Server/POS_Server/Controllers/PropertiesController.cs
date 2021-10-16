@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,23 +17,17 @@ namespace POS_Server.Controllers
     public class PropertiesController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -73,31 +71,31 @@ namespace POS_Server.Controllers
                         }
                     }
 
-                    if (propertiesList == null)
-                        return NotFound();
-                    else
-                        return Ok(propertiesList);
+                            return TokenManager.GenerateToken(propertiesList);
                 }
             }
-            return NotFound();
-        }
+         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetPropertyValues")]
-        public IHttpActionResult GetPropertyValues(int propertyId)
+        public string GetPropertyValues(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int propertyId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        propertyId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var propertiesList =( from PI in entity.propertiesItems.Where(x => x.propertyId == propertyId)
@@ -114,31 +112,23 @@ namespace POS_Server.Controllers
                                         })
                                         .ToList();
 
-                    if (propertiesList == null)
-                        return NotFound();
-                    else
-                        return Ok(propertiesList);
+                  
+                            return TokenManager.GenerateToken(propertiesList);
                 }
             }
-            return NotFound();
-        }
+         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAllPropertiesValues")]
-        public IHttpActionResult GetAllPropertiesValues()
+        public string GetAllPropertiesValues(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -172,32 +162,31 @@ namespace POS_Server.Controllers
                         }
                     }
 
-                    if (propertiesList == null)
-                        return NotFound();
-                    else
-                        return Ok(propertiesList);
+                            return TokenManager.GenerateToken(propertiesList);
                 }
             }
-            return NotFound();
-        }
+         }
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetPropertyByID")]
-        public IHttpActionResult GetPropertyByID(int propertyId)
+        public string GetPropertyByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int propertyId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        propertyId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var property = entity.properties
@@ -211,39 +200,39 @@ namespace POS_Server.Controllers
                        p.updateUserId,
                    })
                    .FirstOrDefault();
-
-                    if (property == null)
-                        return NotFound();
-                    else
-                        return Ok(property);
+                            return TokenManager.GenerateToken(property);
                 }
             }
-            else
-                return NotFound();
+            
         }
 
         // add or update property
         [HttpPost]
         [Route("Save")]
-        public string Save(string propertyObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                propertyObject = propertyObject.Replace("\\", string.Empty);
-                propertyObject = propertyObject.Trim('"');
-                properties propertiesObject = JsonConvert.DeserializeObject<properties>(propertyObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string propertiesObjects = "";
+                properties propertiesObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        propertiesObjects = c.Value.Replace("\\", string.Empty);
+                        propertiesObjects = propertiesObjects.Trim('"');
+                        propertiesObject = JsonConvert.DeserializeObject<properties>(propertiesObjects, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
                 if (propertiesObject.updateUserId == 0 || propertiesObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -258,6 +247,7 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        properties tmpProperty = new properties();
                         var propEntity = entity.Set<properties>();
                         if (propertiesObject.propertyId == 0)
                         {
@@ -265,46 +255,64 @@ namespace POS_Server.Controllers
                             propertiesObject.updateDate = DateTime.Now;
                             propertiesObject.updateUserId = propertiesObject.createUserId;
 
-                            propEntity.Add(propertiesObject);
-                            message = "Property Is Added Successfully";
+                            tmpProperty = propEntity.Add(propertiesObject);
+                            entity.SaveChanges();
+                            message = tmpProperty.propertyId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                         else
                         {
-                            var tmpProperty = entity.properties.Where(p => p.propertyId == propertiesObject.propertyId).FirstOrDefault();
+                            tmpProperty = entity.properties.Where(p => p.propertyId == propertiesObject.propertyId).FirstOrDefault();
                             tmpProperty.name = propertiesObject.name;
                             tmpProperty.isActive = propertiesObject.isActive;
                             tmpProperty.updateDate = DateTime.Now;
                             tmpProperty.updateUserId = propertiesObject.updateUserId;
-
-                            message = "Property Is Updated Successfully";
+                            entity.SaveChanges();
+                            message = tmpProperty.propertyId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
-                        entity.SaveChanges();
                     }
                 }
 
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            return message;
         }
 
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int propertyId, int userId, Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int propertyId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        propertyId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -313,13 +321,14 @@ namespace POS_Server.Controllers
                         {
                             properties PropertDelete = entity.properties.Find(propertyId);
                             entity.properties.Remove(PropertDelete);
-                            entity.SaveChanges();
-                            return Ok("Property is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -330,13 +339,12 @@ namespace POS_Server.Controllers
                         PropertDelete.isActive = 0;
                         PropertDelete.updateDate = DateTime.Now;
                         PropertDelete.updateUserId = userId;
-                        entity.SaveChanges();
-                        return Ok("Property is Deleted Successfully");
+                        message = entity.SaveChanges().ToString();
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }
-            else
-                return NotFound();
+           
         }
     }
 }

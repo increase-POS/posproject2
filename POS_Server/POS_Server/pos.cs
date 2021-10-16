@@ -22,10 +22,10 @@ namespace POS_Server
             this.error = new HashSet<error>();
             this.Inventory = new HashSet<Inventory>();
             this.invoices = new HashSet<invoices>();
+            this.notificationUser = new HashSet<notificationUser>();
+            this.posSetting = new HashSet<posSetting>();
             this.posUsers = new HashSet<posUsers>();
             this.usersLogs = new HashSet<usersLogs>();
-            this.posSetting = new HashSet<posSetting>();
-            this.notificationUser = new HashSet<notificationUser>();
         }
     
         public int posId { get; set; }
@@ -52,15 +52,15 @@ namespace POS_Server
         public virtual ICollection<Inventory> Inventory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<invoices> invoices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<notificationUser> notificationUser { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<posSetting> posSetting { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<posUsers> posUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<usersLogs> usersLogs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<posSetting> posSetting { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<notificationUser> notificationUser { get; set; }
     }
 }

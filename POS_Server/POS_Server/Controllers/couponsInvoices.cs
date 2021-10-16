@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,22 +17,26 @@ namespace POS_Server.Controllers
     public class couponsInvoicesController : ApiController
     {
         // GET api/<controller> get all couponsInvoices
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get(int invoiceId)
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int invoiceId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                  var couponsInvoicesList = (from c in entity.couponsInvoices
@@ -48,32 +56,30 @@ namespace POS_Server.Controllers
                          discountType = c.discountType,
                          couponCode = x.code,
                      }).ToList();
-                   
-
-                    if (couponsInvoicesList == null)
-                        return NotFound();
-                    else
-                        return Ok(couponsInvoicesList);
+                            return TokenManager.GenerateToken(couponsInvoicesList);
                 }
             }
-            return NotFound();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetOriginal")]
-        public IHttpActionResult GetOriginal(int invoiceId)
+        public string GetOriginal(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int invoiceId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                  var couponsInvoicesList = (from c in entity.couponsInvoices
@@ -95,40 +101,32 @@ namespace POS_Server.Controllers
                          couponCode = x.code,
                      }).ToList();
                    
-
-                    if (couponsInvoicesList == null)
-                        return NotFound();
-                    else
-                        return Ok(couponsInvoicesList);
+                            return TokenManager.GenerateToken(couponsInvoicesList);
                 }
             }
-            return NotFound();
         }
-
-
-
         // GET api/<controller>  Get couponsInvoices By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
-        public IHttpActionResult GetByID()
+        public string GetByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int id = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("id"))
-            {
-                id = Convert.ToInt32(headers.GetValues("id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+token = TokenManager.readToken(HttpContext.Current.Request);
 
-            if (valid)
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int id = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        id = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var couponsInvoices = entity.couponsInvoices
@@ -143,37 +141,46 @@ namespace POS_Server.Controllers
                      ,c.updateUserId
                    })
                    .FirstOrDefault();
-
-                    if (couponsInvoices == null)
-                        return NotFound();
-                    else
-                        return Ok(couponsInvoices);
+                            return TokenManager.GenerateToken(couponsInvoices);
                 }
             }
-            else
-                return NotFound();
         }
-
         // add or update couponsInvoices
         [HttpPost]
         [Route("Save")]
-        public int Save(string couponsInvoicesObject, int invoiceId,string invType)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                couponsInvoicesObject = couponsInvoicesObject.Replace("\\", string.Empty);
-                couponsInvoicesObject = couponsInvoicesObject.Trim('"');
-                List<couponsInvoices> Object = JsonConvert.DeserializeObject<List<couponsInvoices>>(couponsInvoicesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string couponsInvoicesObject = "";
+                int invoiceId = 0;
+                string invType = "";
+                List<couponsInvoices> Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        couponsInvoicesObject = c.Value.Replace("\\", string.Empty);
+                        couponsInvoicesObject = couponsInvoicesObject.Trim('"');
+                        Object = JsonConvert.DeserializeObject<List<couponsInvoices>>(couponsInvoicesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        //break;
+                    }
+                    else if (c.Type == "invoiceId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "invType")
+                    {
+                        invType =  c.Value;
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     if (invType == "sd" || invType == "qd")
@@ -273,47 +280,16 @@ namespace POS_Server.Controllers
                         {
                             entity.SaveChanges();
                         }
-                        catch { return 0; }
+                        catch
+                        {
+                            message = "0";
+                            return TokenManager.GenerateToken(message);
+                        }
                     }
                 }
+                message = "1";
+                return TokenManager.GenerateToken(message);
             }
-            return 1;
-        }
-
-        [HttpPost]
-        [Route("Delete")]
-        public IHttpActionResult Delete()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int couponId = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("cId"))
-            {
-                couponId = Convert.ToInt32(headers.GetValues("cId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
-               try
-                {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        return NotFound();
-                    }
-                }
-               catch
-               {
-                    return NotFound() ;
-               }
-            }
-            else
-               return NotFound();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace POS_Server.Controllers
     public class MembershipsController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
         public IHttpActionResult Get()
         {
@@ -117,7 +117,7 @@ canDelete
         }
 
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
         public IHttpActionResult GetByID(int membershipId)
         {

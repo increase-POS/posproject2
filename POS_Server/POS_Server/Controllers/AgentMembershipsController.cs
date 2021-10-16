@@ -18,7 +18,7 @@ namespace POS_Server.Controllers
     public class AgentMembershipsController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
         public IHttpActionResult Get()
         {
@@ -93,7 +93,7 @@ isActive
         }
 
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
         public IHttpActionResult GetByID(int agentMembershipsId)
         {

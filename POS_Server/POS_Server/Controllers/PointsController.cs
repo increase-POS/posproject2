@@ -13,7 +13,7 @@ namespace POS_Server.Controllers
     public class PointsController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
         public IHttpActionResult Get()
         {
@@ -123,7 +123,7 @@ isActive
         }
 
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
         public IHttpActionResult GetByID(int pointId)
         {

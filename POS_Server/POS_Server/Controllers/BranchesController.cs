@@ -10,24 +10,23 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/Branches")]
     public class BranchesController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public ResponseVM Get(string token)
+        public string Get(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -83,20 +82,18 @@ namespace POS_Server.Controllers
                             branchesList[i].canDelete = canDelete;
                         }
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
-        public ResponseVM GetAll(string token)
+        public string GetAll(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -122,21 +119,19 @@ namespace POS_Server.Controllers
                        type = b.type
                    })
                    .ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetActive")]
-        public ResponseVM GetActive(string token)
+        public string GetActive(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -175,7 +170,7 @@ namespace POS_Server.Controllers
                            b.type
                        })
                        .ToList();
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
 
 
                     }
@@ -203,22 +198,20 @@ namespace POS_Server.Controllers
                             type = b.type
                         })
                             .ToList();
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
                     }
                 }
             }
         }
         // GET api/branch/5
-        [HttpGet]
+        [HttpPost]
         [Route("GetBranchByID")]
-        public ResponseVM GetBranchByID(string token)
+        public string GetBranchByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -238,22 +231,20 @@ namespace POS_Server.Controllers
                    .Where(b => b.branchId == branchId)
                    .Select(b => new { b.branchId, b.address, b.createDate, b.createUserId, b.email, b.mobile, b.name, b.code, b.notes, b.parentId, b.phone, b.updateDate, b.updateUserId })
                    .FirstOrDefault();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branch) };
+                    return TokenManager.GenerateToken(branch);
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetBranchTreeByID")]
-        public ResponseVM GetBranchTreeByID(string token)
+        public string GetBranchTreeByID(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
 
             List<branches> treebranch = new List<branches>();
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -317,25 +308,23 @@ namespace POS_Server.Controllers
                         treebranch.Add(tempbranch);
 
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(treebranch) };
+                    return TokenManager.GenerateToken(treebranch);
 
                 }
             }
         }
         // get Get All branches or stores by type Without Main branch which has id=1  ;
         #region
-        [HttpGet]
+        [HttpPost]
         [Route("GetAllWithoutMain")]
-        public ResponseVM GetAllWithoutMain(string token)
+        public string GetAllWithoutMain(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -389,22 +378,20 @@ namespace POS_Server.Controllers
                             branchesList[i].canDelete = canDelete;
                         }
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
                 }
             }
         }
         #endregion
-        [HttpGet]
+        [HttpPost]
         [Route("GetBalance")]
-        public ResponseVM GetBalance(string token)
+        public string GetBalance(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -430,20 +417,18 @@ namespace POS_Server.Controllers
                                             name = g.Select(t => t.Jbb.name).FirstOrDefault(),
                                             balance = g.Sum(x => x.p.balance)
                                         }).ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetJoindBrByBranchId")]
-        public ResponseVM GetJoindBrByBranchId(string token)
+        public string GetJoindBrByBranchId(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -483,22 +468,20 @@ namespace POS_Server.Controllers
 
                                         })
                         .ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(branchesList) };
+                    return TokenManager.GenerateToken(branchesList);
 
                 }
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("BranchesByBranchandUser")]
-        public ResponseVM BranchesByBranchandUser(string token)
+        public string BranchesByBranchandUser(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -542,22 +525,20 @@ namespace POS_Server.Controllers
                     type = X.FirstOrDefault().type,
 
                 }).ToList();
-                return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(List) };
+                    return TokenManager.GenerateToken(List);
             }
         }
 
 
         //
-        [HttpGet]
+        [HttpPost]
         [Route("GetByBranchStor")]
-        public ResponseVM GetByBranchStor(string token)
+        public string GetByBranchStor(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -571,23 +552,21 @@ namespace POS_Server.Controllers
                     }
                 }
                 var List = BranchesByBranch(mainBranchId);
-                return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(List) };
+                    return TokenManager.GenerateToken(List);
             }
         }
 
 
         //
         //
-        [HttpGet]
+        [HttpPost]
         [Route("GetByBranchUser")]
-        public ResponseVM GetByBranchUser(string token)
+        public string GetByBranchUser(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -601,7 +580,7 @@ namespace POS_Server.Controllers
                     }
                 }
                 var List = BranchesByUser(userId);
-                return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(List) };
+                    return TokenManager.GenerateToken(List);
 
             }
         }
@@ -724,15 +703,13 @@ namespace POS_Server.Controllers
         // add or update branch
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token)
+        public string Save(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -784,7 +761,7 @@ namespace POS_Server.Controllers
                             if (branchesCount >= branchMaxCount)
                             {
                                 message = "-1";
-                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                             }
                             else
                             {
@@ -796,7 +773,7 @@ namespace POS_Server.Controllers
                                 entity.SaveChanges();
                                 message = newObject.branchId.ToString();
                             }
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
 
                         }
                         else
@@ -816,28 +793,26 @@ namespace POS_Server.Controllers
                             tmpBranch.isActive = newObject.isActive;
                             entity.SaveChanges();
                             message = newObject.branchId.ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                         }
                     }
                 }
                 catch
                 {
                     message = "0";
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
             }
         }
         [HttpPost]
         [Route("Delete")]
-        public ResponseVM Delete(string token)
+        public string Delete(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -873,11 +848,11 @@ namespace POS_Server.Controllers
                             message = entity.SaveChanges().ToString();
                         }
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                     }
                    
                 }
@@ -891,11 +866,11 @@ namespace POS_Server.Controllers
                             entity.branches.Remove(tmpBranch);
                             message = entity.SaveChanges().ToString();
                         }
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                     }
 
                 }

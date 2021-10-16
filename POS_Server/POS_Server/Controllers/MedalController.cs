@@ -13,7 +13,7 @@ namespace POS_Server.Controllers
     public class MedalController : ApiController
     {
         // GET api/<controller> get all medals
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
         public IHttpActionResult Get()
         {
@@ -96,7 +96,7 @@ namespace POS_Server.Controllers
 
 
         // GET api/<controller>  Get medal By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetmedalByID")]
         public IHttpActionResult GetmedalByID()
         {
@@ -152,7 +152,7 @@ namespace POS_Server.Controllers
 
     
         // GET api/<controller>  Get medal By is active
-        [HttpGet]
+        [HttpPost]
         [Route("GetByisActive")]
         public IHttpActionResult GetByisActive(byte isActive)
         {

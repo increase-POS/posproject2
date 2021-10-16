@@ -1,33 +1,41 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/InvoiceStatus")]
     public class InvoiceStatusController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get(int invoiceId)
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int invoiceId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invoiceStatus = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId)
@@ -45,40 +53,40 @@ namespace POS_Server.Controllers
                        isActive = c.isActive,
                    })
                    .ToList();
-
-                    if (invoiceStatus == null)
-                        return NotFound();
-                    else
-                        return Ok(invoiceStatus);
+                    return TokenManager.GenerateToken(invoiceStatus);
                 }
             }
-            //else
-            return NotFound();
         }
         [HttpPost]
         [Route("Save")]
-        public bool Save(string statusObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                statusObject = statusObject.Replace("\\", string.Empty);
-                statusObject = statusObject.Trim('"');
-                invoiceStatus Object = JsonConvert.DeserializeObject<invoiceStatus>(statusObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string statusObject = "";
+                invoiceStatus Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        statusObject = c.Value.Replace("\\", string.Empty);
+                        statusObject = statusObject.Trim('"');
+                        Object = JsonConvert.DeserializeObject<invoiceStatus>(statusObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        break;
+                    }
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        invoiceStatus tmpStatus = new invoiceStatus();
                         var statusEntity = entity.Set<invoiceStatus>();
                         if (Object.invStatusId == 0)
                         {
@@ -86,12 +94,14 @@ namespace POS_Server.Controllers
                             Object.createDate = DateTime.Now;
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
-                            statusEntity.Add(Object);
+                            tmpStatus = statusEntity.Add(Object);
+                            entity.SaveChanges();
+                            message = tmpStatus.invStatusId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                         else
                         {
-                            var tmpStatus = entity.invoiceStatus.Where(p => p.invStatusId == Object.invStatusId).FirstOrDefault();
-
+                            tmpStatus = entity.invoiceStatus.Where(p => p.invStatusId == Object.invStatusId).FirstOrDefault();
                             tmpStatus.notes = Object.notes;
                             tmpStatus.status = Object.status;
                             tmpStatus.createDate = Object.createDate;
@@ -99,20 +109,18 @@ namespace POS_Server.Controllers
                             tmpStatus.updateUserId = Object.updateUserId;
                             tmpStatus.isActive = Object.isActive;
                             tmpStatus.updateDate = DateTime.Now;// server current date;
-
+                            entity.SaveChanges();
+                            message = tmpStatus.invStatusId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
-                        entity.SaveChanges();
                     }
-                    return true;
                 }
                 catch
                 {
-                    return false;
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            else
-                return false;
         }
-        
     }
 }

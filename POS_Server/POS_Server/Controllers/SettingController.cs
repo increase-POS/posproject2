@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using POS_Server.Models.VM;
 using System.Security.Claims;
+using System.Web;
 using Newtonsoft.Json.Converters;
 
 namespace POS_Server.Controllers
@@ -16,19 +17,20 @@ namespace POS_Server.Controllers
     public class SettingController : ApiController
     {
         // GET api/<controller> get all setting
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public ResponseVM Get()
+       public string Get(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -69,19 +71,19 @@ namespace POS_Server.Controllers
                            })
                                        .ToList();
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
+                        return TokenManager.GenerateToken(list);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
-            //        var re = Request;
-            //        var headers = re.Headers;
+            //       
+            //        
             //        string token = "";
 
             //        if (headers.Contains("APIKey"))
@@ -120,18 +122,19 @@ namespace POS_Server.Controllers
 
 
         // GET api/<controller>  Get medal By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
-        public ResponseVM GetByID(string token)
+      public string   GetByID(string token)
         {
 
             // public ResponseVM GetPurinv(string token)int printerId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -158,13 +161,13 @@ namespace POS_Server.Controllers
 
                    })
                            .FirstOrDefault();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(item) };
+                    return TokenManager.GenerateToken(item);
                 }
             }
 
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //int cId = 0;
             //if (headers.Contains("APIKey"))
@@ -206,17 +209,18 @@ namespace POS_Server.Controllers
 
 
         // GET api/<controller> get all setting
-        [HttpGet]
+        [HttpPost]
         [Route("GetByNotes")]
-        public ResponseVM GetByNotes(string token)
+      public string   GetByNotes(string token)
         {
             // public ResponseVM GetPurinv(string token)string notes
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -240,13 +244,13 @@ namespace POS_Server.Controllers
                         notes = c.notes,
                     }).ToList();
 
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list) };
+                    return TokenManager.GenerateToken(list);
                 }
             }
 
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
             //if (headers.Contains("APIKey"))
@@ -284,17 +288,18 @@ namespace POS_Server.Controllers
         // add or update medal 
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token)
+      public string   Save(string token)
         {
 
             //string Object string newObject
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -351,23 +356,23 @@ namespace POS_Server.Controllers
 
                              
                             }
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                        return TokenManager.GenerateToken(message);
 
                     }
                     catch
                     {
                         message = "0";
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                      return TokenManager.GenerateToken(message);
                     }
 
 
                 }
 
-                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+              return TokenManager.GenerateToken(message);
 
             }
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //string message = "";
             //if (headers.Contains("APIKey"))
@@ -426,17 +431,18 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("Delete")]
-        public ResponseVM Delete(string token)
+      public string   Delete(string token)
         {
             // public ResponseVM Delete(string token)
             //int Id, int userId
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -469,11 +475,11 @@ namespace POS_Server.Controllers
 
                       //  return Ok("medal is Deleted Successfully");
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
 
@@ -481,7 +487,7 @@ namespace POS_Server.Controllers
 
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{

@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using POS_Server.Models.VM;
 using System.Security.Claims;
+using System.Web;
 
 
 using Newtonsoft.Json.Converters;
@@ -18,20 +19,21 @@ namespace POS_Server.Controllers
     public class PaperSizeController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
-        public ResponseVM GetAll()
+      public string   GetAll(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId    DateTime? date=new DateTime?();
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -43,7 +45,7 @@ namespace POS_Server.Controllers
                     using (incposdbEntities entity = new incposdbEntities())
                     {
 
-                        var List = (from S in entity.paperSize
+                        var list = (from S in entity.paperSize
                                     select new
                                     {
                                         S.sizeId,
@@ -53,22 +55,22 @@ namespace POS_Server.Controllers
 
                                     }).ToList();
 
-
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(List) };
+                        return TokenManager.GenerateToken(list);
+                     
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
 
-            //        var re = Request;
-            //        var headers = re.Headers;
+            //       
+            //        
             //        string token = "";
 
 
@@ -106,12 +108,12 @@ namespace POS_Server.Controllers
         }
 
         // GET api/<controller>
-        //[HttpGet]
+        //[HttpPost]
         //[Route("GetByID")]
         //public IHttpActionResult GetByID(int sizeId)
         //{
-        //    var re = Request;
-        //    var headers = re.Headers;
+        //   
+        //    
         //    string token = "";
         //    if (headers.Contains("APIKey"))
         //    {
@@ -148,15 +150,16 @@ namespace POS_Server.Controllers
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token)
+      public string   Save(string token)
         {
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -207,22 +210,22 @@ namespace POS_Server.Controllers
 
 
                         }
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                        return TokenManager.GenerateToken(message);
                     }
                     catch
                     {
                         message = "0";
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                      return TokenManager.GenerateToken(message);
                     }
                   
                 }
 
-                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+              return TokenManager.GenerateToken(message);
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //string message = "";
             //if (headers.Contains("APIKey"))
@@ -277,45 +280,45 @@ namespace POS_Server.Controllers
             //return message;
         }
 
-        [HttpPost]
-        [Route("Delete")]
-        public string Delete(int sizeId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int message = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
+        //[HttpPost]
+        //[Route("Delete")]
+        //public string Delete(int sizeId)
+        //{
+           
+            
+        //    string token = "";
+        //    int message = 0;
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
 
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
+        //    if (valid)
+        //    {
 
-                try
-                {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        paperSize objectDelete = entity.paperSize.Find(sizeId);
+        //        try
+        //        {
+        //            using (incposdbEntities entity = new incposdbEntities())
+        //            {
+        //                paperSize objectDelete = entity.paperSize.Find(sizeId);
 
-                        entity.paperSize.Remove(objectDelete);
-                        message = entity.SaveChanges();
+        //                entity.paperSize.Remove(objectDelete);
+        //                message = entity.SaveChanges();
 
-                        return message.ToString();
-                    }
-                }
-                catch
-                {
-                    return "-1";
-                }
+        //                return message.ToString();
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            return "-1";
+        //        }
 
-            }
-            else
-                return "-3";
-        }
+        //    }
+        //    else
+        //        return "-3";
+        //}
 
 
 

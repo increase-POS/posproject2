@@ -481,10 +481,10 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:POS_Server.Controllers.CashTransferController.GetbySourcId(System.String,System.Int32)">
+        <member name="M:POS_Server.Controllers.CashTransferController.GetbySourcId(System.String)">
             
         </member>
-        <member name="M:POS_Server.Controllers.CashTransferController.payByAmount(System.Int32,System.Decimal,System.String,System.String)">
+        <member name="M:POS_Server.Controllers.CashTransferController.payByAmount(System.String)">
             <summary>
             /////////////
             </summary>
@@ -494,9 +494,9 @@
             <param name="cashTransfer"></param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:POS_Server.Controllers.CashTransferController.payUserByAmount(System.Int32,System.Decimal,System.String,System.String)" -->
-        <!-- Badly formed XML comment ignored for member "M:POS_Server.Controllers.CashTransferController.payShippingCompanyByAmount(System.Int32,System.Decimal,System.String,System.String)" -->
-        <member name="M:POS_Server.Controllers.CashTransferController.payListOfInvoices(System.Int32,System.String,System.String,System.String)">
+        <!-- Badly formed XML comment ignored for member "M:POS_Server.Controllers.CashTransferController.payUserByAmount(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:POS_Server.Controllers.CashTransferController.payShippingCompanyByAmount(System.String)" -->
+        <member name="M:POS_Server.Controllers.CashTransferController.payListOfInvoices(System.String)">
             <summary>
             //////////////
             </summary>
@@ -506,7 +506,7 @@
             <param name="cashTransfer"></param>
             <returns></returns>
         </member>
-        <member name="M:POS_Server.Controllers.CashTransferController.payUserListOfInvoices(System.Int32,System.String,System.String,System.String)">
+        <member name="M:POS_Server.Controllers.CashTransferController.payUserListOfInvoices(System.String)">
             <summary>
             //////////////
             </summary>
@@ -516,7 +516,7 @@
             <param name="cashTransfer"></param>
             <returns></returns>
         </member>
-        <member name="M:POS_Server.Controllers.CashTransferController.payShippingCompanyListOfInvoices(System.Int32,System.String,System.String,System.String)">
+        <member name="M:POS_Server.Controllers.CashTransferController.payShippingCompanyListOfInvoices(System.String)">
             <summary>
             //////////////
             </summary>

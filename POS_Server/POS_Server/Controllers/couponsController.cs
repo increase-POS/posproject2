@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,22 +17,17 @@ namespace POS_Server.Controllers
     public class couponsController : ApiController
     {
         // GET api/<controller> get all coupons
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -74,31 +73,21 @@ namespace POS_Server.Controllers
                         }
                     }
 
-                    if (couponsList == null)
-                        return NotFound();
-                    else
-                        return Ok(couponsList);
+                  
+                    return TokenManager.GenerateToken(couponsList);
                 }
             }
-            //else
-                return NotFound();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetEffictive")]
-        public IHttpActionResult GetEffictive()
+        public string GetEffictive(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -125,43 +114,32 @@ namespace POS_Server.Controllers
                        barcode = c.barcode,
                    })
                    .ToList();
-
-                   
-
-                    if (couponsList == null)
-                        return NotFound();
-                    else
-                        return Ok(couponsList);
+                     
+                    return TokenManager.GenerateToken(couponsList);
                 }
             }
-            //else
-                return NotFound();
         }
-
-
-
         // GET api/<controller>  Get Coupon By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetCouponByID")]
-        public IHttpActionResult GetcouponByID()
+        public string GetcouponByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("cId"))
+            else
             {
-                cId = Convert.ToInt32(headers.GetValues("cId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
+                int cId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        cId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
@@ -187,39 +165,33 @@ namespace POS_Server.Controllers
                        c.barcode,
                    })
                    .FirstOrDefault();
-
-                    if (coupon == null)
-                        return NotFound();
-                    else
-                        return Ok(coupon);
+                     
+                    return TokenManager.GenerateToken(coupon);
                 }
             }
-            else
-                return NotFound();
         }
-
         // GET api/<controller>  Get Coupon By Code 
-        [HttpGet]
+        [HttpPost]
         [Route("GetCouponByCode")]
-        public IHttpActionResult GetCouponByCode()
+        public string GetCouponByCode(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            string code = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+          
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("code"))
+            else
             {
-                code = headers.GetValues("code").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
+                string code = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        code =  c.Value;
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
@@ -245,39 +217,32 @@ namespace POS_Server.Controllers
                        c.barcode,
                    })
                    .FirstOrDefault();
-
-                    if (coupon == null)
-                        return NotFound();
-                    else
-                        return Ok(coupon);
+ 
+                    return TokenManager.GenerateToken(coupon);
                 }
             }
-            else
-                return NotFound();
         }
-
         // GET api/<controller>  Get Coupon By Barcode
-        [HttpGet]
+        [HttpPost]
         [Route("GetCouponByBarcode")]
-        public IHttpActionResult GetcouponByBarcode()
+        public string GetcouponByBarcode(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            string barcode = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("barcode"))
+            else
             {
-                barcode = headers.GetValues("barcode").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
+                string barcode = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        barcode = c.Value;
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
@@ -304,35 +269,31 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (coupon == null)
-                        return NotFound();
-                    else
-                        return Ok(coupon);
+                    return TokenManager.GenerateToken(coupon);
                 }
             }
-            else
-                return NotFound();
         }
-
         // GET api/<controller>  Get Coupon By code
-        [HttpGet]
+        [HttpPost]
         [Route("IsExistcode")]
-        public IHttpActionResult IsExistcode(string code)
+        public string IsExistcode(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-           
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-           
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                string code = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        code = c.Value;
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
@@ -346,37 +307,32 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (coupon == null)
-                        return NotFound();
-                    else
-                        return Ok(coupon);
+                    return TokenManager.GenerateToken(coupon);
                 }
             }
-            else
-                return NotFound();
         }
         // GET api/<controller>  Get Coupon By is active
-        [HttpGet]
+        [HttpPost]
         [Route("GetByisActive")]
-        public IHttpActionResult GetByisActive()
+        public string GetByisActive(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int isActive = 0;
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+           
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("isActive"))
+            else
             {
-                isActive = Convert.ToInt32(headers.GetValues("isActive").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
+                int isActive = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        isActive =int.Parse( c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
@@ -402,42 +358,42 @@ namespace POS_Server.Controllers
                    })
                    .ToList();
 
-                    if (coupon == null)
-                        return NotFound();
-                    else
-                        return Ok(coupon);
+                    return TokenManager.GenerateToken(coupon);
                 }
             }
-            else
-                return NotFound();
         }
-
-
         // add or update coupon 
         [HttpPost]
         [Route("Save")]
-        public bool Save(string couponObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            
-            if (valid)
+            else
             {
-                couponObject = couponObject.Replace("\\", string.Empty);
-                couponObject = couponObject.Trim('"');
-                coupons Object = JsonConvert.DeserializeObject<coupons>(couponObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
+                string couponObject = "";
+                coupons Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        couponObject = c.Value.Replace("\\", string.Empty);
+                        couponObject = couponObject.Trim('"');
+                        Object = JsonConvert.DeserializeObject<coupons>(couponObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
+                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        coupons tmpcoupon = new coupons();
                         var couponEntity = entity.Set<coupons>();
                         if (Object.cId == 0)
                         {
@@ -446,13 +402,15 @@ namespace POS_Server.Controllers
                             Object.updateDate = DateTime.Now;
                             Object.updateUserId = Object.createUserId;
                             couponEntity.Add(Object);
-                          //  message = "coupon Is Added Successfully";
-                        }
+                            tmpcoupon = couponEntity.Add(Object);
+                            entity.SaveChanges();
+                            message = tmpcoupon.cId.ToString();
+                            return TokenManager.GenerateToken(message);
+                        }   
                         else
                         {
 
-                            var tmpcoupon = entity.coupons.Where(p => p.cId == Object.cId).FirstOrDefault();
-
+                            tmpcoupon = entity.coupons.Where(p => p.cId == Object.cId).FirstOrDefault();
                             tmpcoupon.name = Object.name;
                             tmpcoupon.code = Object.code;
                             tmpcoupon.isActive = Object.isActive;
@@ -470,40 +428,51 @@ namespace POS_Server.Controllers
                            
                             tmpcoupon.updateUserId = Object.updateUserId;
                             tmpcoupon.barcode = Object.barcode;
-
-
-                            //message = "coupon Is Updated Successfully";
+                            entity.SaveChanges();
+                            message = tmpcoupon.cId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
-                        entity.SaveChanges();
                     }
-                    return true;
                 }
 
                 catch
                 {
-                    return false;
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
-            }
-            else
-                return false;
+            } 
         }
-
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int couponId, int userId, Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int couponId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        couponId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -513,14 +482,14 @@ namespace POS_Server.Controllers
                             coupons couponObj = entity.coupons.Find(couponId);
 
                             entity.coupons.Remove(couponObj);
-                            entity.SaveChanges();
-
-                            return Ok("Coup is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -534,19 +503,17 @@ namespace POS_Server.Controllers
                             coupObj.isActive = 0;
                             coupObj.updateUserId = userId;
                             coupObj.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-
-                            return Ok("Offer is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }
-            else
-                return NotFound();
-        }
+           }
     }
 }

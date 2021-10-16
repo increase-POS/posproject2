@@ -10,6 +10,7 @@ using System.Web.Http;
 using POS_Server.Classes;
 using POS_Server.Models.VM;
 using System.Security.Claims;
+using System.Web;
 
 
 
@@ -183,12 +184,12 @@ namespace POS_Server.Controllers
         }
 
         // item quantity in location GetItemQtyInBranches()
-        //        [HttpGet]
+        //        [HttpPost]
         //        [Route("GetItemQtyInBranches")]
         //        public IHttpActionResult GetItemQtyInBranches(int itemId, int UnitId, string BranchType)
         //        {
-        //            var re = Request;
-        //            var headers = re.Headers;
+        //           
+        //            
         //            string token = "";
         //            int iuId = 0;
         //            int subUnit = 0;
@@ -340,17 +341,18 @@ namespace POS_Server.Controllers
 
         // for report 
         //  فواتير المشتريات بكل انواعها بكل فرع
-        [HttpGet]
+        [HttpPost]
         [Route("GetPurinv")]
-        public ResponseVM GetPurinv(string token)
+      public string   GetPurinv(string token)
         {
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+
+
+          
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -463,16 +465,16 @@ namespace POS_Server.Controllers
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
-                //return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                //return TokenManager.GenerateToken("0");
             }
 
 
@@ -480,8 +482,8 @@ namespace POS_Server.Controllers
 
 
 
-            //            var re = Request;
-            //            var headers = re.Headers;
+            //           
+            //            
             //            string token = "";
             //            if (headers.Contains("APIKey"))
             //            {
@@ -610,19 +612,20 @@ namespace POS_Server.Controllers
 
         // العناصر في الفواتير
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetPuritem")]
-        public ResponseVM GetPuritem(string token)
+      public string   GetPuritem(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -756,20 +759,20 @@ namespace POS_Server.Controllers
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
-                //return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                //return TokenManager.GenerateToken("0");
 
 
-                //            var re = Request;
-                //            var headers = re.Headers;
+                //           
+                //            
                 //            string token = "";
                 //            if (headers.Contains("APIKey"))
                 //            {
@@ -941,19 +944,20 @@ namespace POS_Server.Controllers
             }
         }
         //عدد العناصر في كل فاتورة
-        [HttpGet]
+        [HttpPost]
         [Route("GetPuritemcount")]
-        public ResponseVM GetPuritemcount(string token)
+      public string   GetPuritemcount(string token)
         {
 
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -1062,19 +1066,19 @@ namespace POS_Server.Controllers
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -1182,12 +1186,12 @@ namespace POS_Server.Controllers
         // عدد العناصر في كل فاتورة
 
 
-        //        [HttpGet]
+        //        [HttpPost]
         //        [Route("GetPurinvwithCount")]
         //        public IHttpActionResult GetPurinvwithCount()
         //        {
-        //            var re = Request;
-        //            var headers = re.Headers;
+        //           
+        //            
         //            string token = "";
         //            if (headers.Contains("APIKey"))
         //            {
@@ -1355,12 +1359,12 @@ namespace POS_Server.Controllers
 
         // item quantity in location GetItemQtyInBranches()
         // عدد الفواتير في كل فرع
-        //[HttpGet]
+        //[HttpPost]
         //[Route("GetinvInBranch")]
         //public IHttpActionResult GetinvInBranch()
         //{
-        //    var re = Request;
-        //    var headers = re.Headers;
+        //   
+        //    
         //    string token = "";
         //    if (headers.Contains("APIKey"))
         //    {
@@ -1442,12 +1446,12 @@ namespace POS_Server.Controllers
 
         //  الفواتير بكل نقطة عددPOs
         // 
-        //        [HttpGet]
+        //        [HttpPost]
         //        [Route("GetPoswithInvCount")]
         //        public IHttpActionResult GetPoswithInvCount()
         //        {
-        //            var re = Request;
-        //            var headers = re.Headers;
+        //           
+        //            
         //            string token = "";
         //            if (headers.Contains("APIKey"))
         //            {
@@ -1571,12 +1575,12 @@ namespace POS_Server.Controllers
 
         // الفواتير في كل نقطة
 
-        //        [HttpGet]
+        //        [HttpPost]
         //        [Route("GetPoswithInv")]
         //        public IHttpActionResult GetPoswithInv()
         //        {
-        //            var re = Request;
-        //            var headers = re.Headers;
+        //           
+        //            
         //            string token = "";
         //            if (headers.Contains("APIKey"))
         //            {
@@ -1701,12 +1705,12 @@ namespace POS_Server.Controllers
 
 
         // عدد فواتير المشتريات ومرتجع المشتريات ومسودات كل فرع
-        //        [HttpGet]
+        //        [HttpPost]
         //        [Route("GetinvCountByBranch")]
         //        public IHttpActionResult GetinvCountByBranch()
         //        {
-        //            var re = Request;
-        //            var headers = re.Headers;
+        //           
+        //            
         //            string token = "";
         //            if (headers.Contains("APIKey"))
         //            {
@@ -1790,12 +1794,12 @@ namespace POS_Server.Controllers
 
         /*
         //  فواتير المشتريات ومرتجع المشتريات ومسودات كل فرع
-        [HttpGet]
+        [HttpPost]
         [Route("GetinvTypeByBranch")]
         public IHttpActionResult GetinvTypeByBranch()
         {
-            var re = Request;
-            var headers = re.Headers;
+           
+            
             string token = "";
             if (headers.Contains("APIKey"))
             {
@@ -1878,12 +1882,12 @@ else
         // المبيعات
         #region sales
         //  فواتير المبيعات بكل انواعها بكل فرع
-        //[HttpGet]
+        //[HttpPost]
         //[Route("GetSaleinv")]
         //public IHttpActionResult GetSaleinv()
         //{
-        //    var re = Request;
-        //    var headers = re.Headers;
+        //   
+        //    
         //    string token = "";
         //    if (headers.Contains("APIKey"))
         //    {
@@ -1980,20 +1984,21 @@ else
 
 
         // فواتير المبيعات مع العناصر
-        [HttpGet]
+        [HttpPost]
         [Route("GetSaleitem")]
-        public ResponseVM GetSaleitem(string token)
+      public string   GetSaleitem(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -2130,20 +2135,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -2279,20 +2284,21 @@ else
         }
 
         //عدد العناصر في كل فاتورة
-        [HttpGet]
+        [HttpPost]
         [Route("GetSaleitemcount")]
-        public ResponseVM GetSaleitemcount(string token)
+      public string   GetSaleitemcount(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -2415,20 +2421,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -2551,20 +2557,21 @@ else
 
         // عدد العناصر في فواتير الطلبات
 
-        [HttpGet]
+        [HttpPost]
         [Route("Getorderitemcount")]
-        public ResponseVM Getorderitemcount(string token)
+      public string   Getorderitemcount(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -2687,19 +2694,19 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -2821,19 +2828,20 @@ else
 
         // عدد العناصر في فواتير الطلبات
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetPurorderitemcount")]
-        public ResponseVM GetPurorderitemcount(string token)
+      public string   GetPurorderitemcount(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -2956,20 +2964,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -3094,20 +3102,21 @@ else
         // عدد العناصر في فواتير عرض السعر
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetQtitemcount")]
-        public ResponseVM GetQtitemcount(string token)
+      public string   GetQtitemcount(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -3230,20 +3239,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -3374,19 +3383,20 @@ else
 
         //GetSalecoupon
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetSalecoupon")]
-        public ResponseVM GetSalecoupon(string token)
+      public string   GetSalecoupon(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -3518,21 +3528,21 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -3664,20 +3674,21 @@ else
 
 
         // فواتير المبيعات مع العناصر
-        [HttpGet]
+        [HttpPost]
         [Route("GetSaleOffer")]
-        public ResponseVM GetSaleOffer(string token)
+      public string   GetSaleOffer(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -3868,20 +3879,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
-            //            var re = Request;
-            //            var headers = re.Headers;
+            //           
+            //            
             //            string token = "";
             //            if (headers.Contains("APIKey"))
             //            {
@@ -4077,20 +4088,21 @@ else
         #region storage
 
         // عرض الاصناف واماكن تخزينها
-        [HttpGet]
+        [HttpPost]
         [Route("GetStorage")]
-        public ResponseVM GetStorage(string token)
+      public string   GetStorage(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -4229,20 +4241,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -4384,12 +4396,12 @@ else
         // 
         // العناصر في الفواتير
 
-        //[HttpGet]
+        //[HttpPost]
         //[Route("GetInItems")]
         //public IHttpActionResult GetInItems()
         //{
-        //    var re = Request;
-        //    var headers = re.Headers;
+        //   
+        //    
         //    string token = "";
         //    if (headers.Contains("APIKey"))
         //    {
@@ -4523,19 +4535,20 @@ else
         //}
 
         // حركة الاصناف الخارجية -مع العملاء والموردين
-        [HttpGet]
+        [HttpPost]
         [Route("GetExternalMov")]
-        public ResponseVM GetExternalMov(string token)
+      public string   GetExternalMov(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -4686,20 +4699,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -4850,19 +4863,20 @@ else
         }
 
         // حركة الاصناف الداخلية -بين الفروع والمخازن
-        [HttpGet]
+        [HttpPost]
         [Route("GetInternalMov")]
-        public ResponseVM GetInternalMov(string token)
+      public string   GetInternalMov(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -5056,20 +5070,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -5266,19 +5280,20 @@ else
         // الجرد
         #region
         // عناصر الجرد
-        [HttpGet]
+        [HttpPost]
         [Route("GetInventory")]
-        public ResponseVM GetInventory(string token)
+      public string   GetInventory(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -5376,21 +5391,21 @@ else
 
 
 
-
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list2) };
+                        return TokenManager.GenerateToken(list2);
+                     
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
             //if (headers.Contains("APIKey"))
@@ -5483,19 +5498,20 @@ else
             //return NotFound();
         }
         //
-        [HttpGet]
+        [HttpPost]
         [Route("GetInventoryItems")]
-        public ResponseVM GetInventoryItems(string token)
+      public string   GetInventoryItems(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -5633,20 +5649,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(list2) };
+                         return TokenManager.GenerateToken(list2);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
             //if (headers.Contains("APIKey"))
@@ -5779,19 +5795,20 @@ else
 
 
         // العناصر التالفة
-        [HttpGet]
+        [HttpPost]
         [Route("GetDesItems")]
-        public ResponseVM GetDesItems(string token)
+      public string   GetDesItems(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -5909,20 +5926,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -6036,19 +6053,20 @@ else
         }
 
         // العناصر الناقصة
-        [HttpGet]
+        [HttpPost]
         [Route("GetFallsItems")]
-        public ResponseVM GetFallsItems(string token)
+      public string   GetFallsItems(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -6170,20 +6188,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -6305,19 +6323,20 @@ else
         // المحاسبة
         #region
         //المدفوعات
-        [HttpGet]
+        [HttpPost]
         [Route("GetPayments")]
-        public ResponseVM GetPayments()
+      public string   GetPayments(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -6436,20 +6455,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -6572,19 +6591,20 @@ else
         }
 
         //bank all
-        [HttpGet]
+        [HttpPost]
         [Route("GetBankTrans")]
-        public ResponseVM GetBankTrans()
+      public string   GetBankTrans(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -6705,20 +6725,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -6839,19 +6859,20 @@ else
             //    return NotFound();
         }
         // المقبوضات
-        [HttpGet]
+        [HttpPost]
         [Route("GetReceipt")]
-        public ResponseVM GetReceipt()
+      public string   GetReceipt(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -6954,20 +6975,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -7073,19 +7094,20 @@ else
 
 
         // pos
-        [HttpGet]
+        [HttpPost]
         [Route("GetPosTrans")]
-        public ResponseVM GetPosTrans()
+      public string   GetPosTrans(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -7241,20 +7263,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
-            //    var re = Request;
-            //    var headers = re.Headers;
+            //   
+            //    
             //    string token = "";
 
             //    if (headers.Contains("APIKey"))
@@ -7411,19 +7433,20 @@ else
         }
 
         //كشف حساب
-        [HttpGet]
+        [HttpPost]
         [Route("GetStatement")]
-        public ResponseVM GetStatement()
+      public string   GetStatement(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -7559,20 +7582,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -7828,19 +7851,20 @@ else
 
 
         // يومية الصندوق
-        [HttpGet]
+        [HttpPost]
         [Route("GetBalance")]
-        public ResponseVM GetBalance(string token)
+      public string   GetBalance(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -7896,20 +7920,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -7976,19 +8000,20 @@ else
 
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("Getdailyinvoice")]
-        public ResponseVM Getdailyinvoice(string token)//,DateTime? date
+      public string   Getdailyinvoice(string token)//,DateTime? date
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId(int mainBranchId, int userId, DateTime? date
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -8122,20 +8147,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -8269,19 +8294,20 @@ else
         }
 
         // يومية فواتير المشتريات العامة في قسم التقارير
-        [HttpGet]
+        [HttpPost]
         [Route("GetPurdailyinvoice")]
-        public ResponseVM GetPurdailyinvoice(string token)//,DateTime? date
+      public string   GetPurdailyinvoice(string token)//,DateTime? date
         {
             // public ResponseVM GetPurinv(string token)(int mainBranchId, int userId, DateTime? date)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -8416,20 +8442,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -8564,20 +8590,21 @@ else
         }
 
         //  يومية الفواتير الخاصة بمستخدم
-        [HttpGet]
+        [HttpPost]
         [Route("GetUserdailyinvoice")]
-        public ResponseVM GetUserdailyinvoice(string token)
+      public string   GetUserdailyinvoice(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -8697,20 +8724,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{
@@ -8829,20 +8856,21 @@ else
         }
 
         // يومية الصندوق
-        [HttpGet]
+        [HttpPost]
         [Route("GetDailyStatement")]
-        public ResponseVM GetDailyStatement(string token)
+      public string   GetDailyStatement(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -8976,20 +9004,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -9133,20 +9161,21 @@ else
 
 
         // يومية الصندوق الخاصة بالمستخدم
-        [HttpGet]
+        [HttpPost]
         [Route("GetUserDailyStatement")]
-        public ResponseVM GetUserDailyStatement(string token)
+      public string   GetUserDailyStatement(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -9284,20 +9313,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cachlist) };
+                        return TokenManager.GenerateToken(cachlist);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
 
 
@@ -9438,20 +9467,21 @@ else
         }
 
         // الارباح
-        // فواتير المبيعات مع العناصر
-        [HttpGet]
+    
+        [HttpPost]
         [Route("GetProfit")]
-        public ResponseVM GetProfit(string token)
+      public string   GetProfit(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -9611,20 +9641,20 @@ else
 
 
 
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(invListm) };
+                         return TokenManager.GenerateToken(invListm);
 
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{

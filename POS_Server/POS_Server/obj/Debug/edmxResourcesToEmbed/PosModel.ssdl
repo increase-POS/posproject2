@@ -139,6 +139,7 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+    <Property Name="image" Type="ntext" />
   </EntityType>
   <EntityType Name="cashTransfer">
     <Key>
@@ -219,6 +220,7 @@
     <Property Name="currency" Type="nvarchar" MaxLength="50" />
     <Property Name="name" Type="nvarchar" MaxLength="100" />
     <Property Name="isDefault" Type="tinyint" Nullable="false" />
+    <Property Name="currencyId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="coupons">
     <Key>
@@ -371,6 +373,16 @@
     <Property Name="isFalls" Type="bit" Nullable="false" />
     <Property Name="fallCause" Type="ntext" />
   </EntityType>
+  <EntityType Name="invoiceOrder">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="invoiceId" Type="int" />
+    <Property Name="orderId" Type="int" />
+    <Property Name="quantity" Type="int" />
+    <Property Name="itemsTransferId" Type="int" />
+  </EntityType>
   <EntityType Name="invoices">
     <Key>
       <PropertyRef Name="invoiceId" />
@@ -519,6 +531,7 @@
     <Property Name="itemUnitId" Type="int" />
     <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="inventoryItemLocId" Type="int" />
+    <Property Name="offerId" Type="int" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -555,6 +568,20 @@
     <Property Name="updateDate" Type="datetime2" Precision="7" />
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
+  </EntityType>
+  <EntityType Name="itemUnitUser">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="itemUnitId" Type="int" />
+    <Property Name="userId" Type="int" />
+    <Property Name="notes" Type="ntext" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
+    <Property Name="isActive" Type="tinyint" />
   </EntityType>
   <EntityType Name="locations">
     <Key>
@@ -946,16 +973,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="sysEmails">
     <Key>
@@ -1861,6 +1878,42 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_invoiceOrder_invoices">
+    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+    <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="invoiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceOrder_invoices1">
+    <End Role="invoices" Type="Self.invoices" Multiplicity="0..1" />
+    <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="invoices">
+        <PropertyRef Name="invoiceId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="orderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_invoiceOrder_itemsTransfer">
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="0..1" />
+    <End Role="invoiceOrder" Type="Self.invoiceOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsTransfer">
+        <PropertyRef Name="itemsTransId" />
+      </Principal>
+      <Dependent Role="invoiceOrder">
+        <PropertyRef Name="itemsTransferId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_invoices_agents">
     <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
     <End Role="invoices" Type="Self.invoices" Multiplicity="*" />
@@ -2401,6 +2454,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_itemsTransfer_offers">
+    <End Role="offers" Type="Self.offers" Multiplicity="0..1" />
+    <End Role="itemsTransfer" Type="Self.itemsTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="offers">
+        <PropertyRef Name="offerId" />
+      </Principal>
+      <Dependent Role="itemsTransfer">
+        <PropertyRef Name="offerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_itemsUnits_items">
     <End Role="items" Type="Self.items" Multiplicity="0..1" />
     <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="*" />
@@ -2505,6 +2570,54 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
         <PropertyRef Name="userId" />
       </Principal>
       <Dependent Role="itemTransferOffer">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_itemsUnits">
+    <End Role="itemsUnits" Type="Self.itemsUnits" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="itemsUnits">
+        <PropertyRef Name="itemUnitId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="itemUnitId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_itemUnitUser_users2">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="itemUnitUser" Type="Self.itemUnitUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="itemUnitUser">
         <PropertyRef Name="updateUserId" />
       </Dependent>
     </ReferentialConstraint>
@@ -3348,6 +3461,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <EntitySet Name="groups" EntityType="Self.groups" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="inventoryItemLocation" EntityType="Self.inventoryItemLocation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="invoiceOrder" EntityType="Self.invoiceOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoices" EntityType="Self.invoices" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="invoiceStatus" EntityType="Self.invoiceStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
@@ -3358,6 +3472,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <EntitySet Name="itemsTransfer" EntityType="Self.itemsTransfer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemsUnits" EntityType="Self.itemsUnits" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="itemTransferOffer" EntityType="Self.itemTransferOffer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="itemUnitUser" EntityType="Self.itemUnitUser" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="locations" EntityType="Self.locations" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="medalAgent" EntityType="Self.medalAgent" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="medals" EntityType="Self.medals" Schema="dbo" store:Type="Tables" />
@@ -3383,7 +3498,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
@@ -3678,6 +3792,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       <End Role="users" EntitySet="users" />
       <End Role="inventoryItemLocation" EntitySet="inventoryItemLocation" />
     </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_invoices" Association="Self.FK_invoiceOrder_invoices">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_invoices1" Association="Self.FK_invoiceOrder_invoices1">
+      <End Role="invoices" EntitySet="invoices" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
+    <AssociationSet Name="FK_invoiceOrder_itemsTransfer" Association="Self.FK_invoiceOrder_itemsTransfer">
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+      <End Role="invoiceOrder" EntitySet="invoiceOrder" />
+    </AssociationSet>
     <AssociationSet Name="FK_invoices_agents" Association="Self.FK_invoices_agents">
       <End Role="agents" EntitySet="agents" />
       <End Role="invoices" EntitySet="invoices" />
@@ -3858,6 +3984,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       <End Role="locations" EntitySet="locations" />
       <End Role="itemsTransfer" EntitySet="itemsTransfer" />
     </AssociationSet>
+    <AssociationSet Name="FK_itemsTransfer_offers" Association="Self.FK_itemsTransfer_offers">
+      <End Role="offers" EntitySet="offers" />
+      <End Role="itemsTransfer" EntitySet="itemsTransfer" />
+    </AssociationSet>
     <AssociationSet Name="FK_itemsUnits_items" Association="Self.FK_itemsUnits_items">
       <End Role="items" EntitySet="items" />
       <End Role="itemsUnits" EntitySet="itemsUnits" />
@@ -3893,6 +4023,22 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <AssociationSet Name="FK_itemTransferOffer_users1" Association="Self.FK_itemTransferOffer_users1">
       <End Role="users" EntitySet="users" />
       <End Role="itemTransferOffer" EntitySet="itemTransferOffer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_itemsUnits" Association="Self.FK_itemUnitUser_itemsUnits">
+      <End Role="itemsUnits" EntitySet="itemsUnits" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_users" Association="Self.FK_itemUnitUser_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_users1" Association="Self.FK_itemUnitUser_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_itemUnitUser_users2" Association="Self.FK_itemUnitUser_users2">
+      <End Role="users" EntitySet="users" />
+      <End Role="itemUnitUser" EntitySet="itemUnitUser" />
     </AssociationSet>
     <AssociationSet Name="FK_locations_branches1" Association="Self.FK_locations_branches1">
       <End Role="branches" EntitySet="branches" />

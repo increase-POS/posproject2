@@ -1,34 +1,51 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/notificationUser")]
     public class notificationUserController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("GetByUserId")]
-        public IHttpActionResult GetByUserId(int userId, string type, int posId)
+        public string GetByUserId(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int userId = 0;
+                string type = "";
+                int posId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                    else if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from S in entity.notificationUser where (S.userId == userId  || S.posId == posId) && S.notification.msgType.Contains(type)
@@ -51,38 +68,79 @@ namespace POS_Server.Controllers
 
                                 }).ToList();
 
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            //else
-            return NotFound();
         }
+        [HttpPost]
+        [Route("GetNotUserCount")]
+        public string GetNotUserCount(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int userId = 0;
+                string type = "";
+                int posId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                    else if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var notificationCount = entity.notificationUser
+                        .Where(x => (x.userId == userId || x.posId == posId) && x.isRead == false && x.notification.msgType.Contains(type))
+                        .ToList().Count;
+                    return TokenManager.GenerateToken(notificationCount);
 
+                }
+            }
+        }
         // add or update notification 
         [HttpPost]
         [Route("Save")]
-        public IHttpActionResult Save(string obj)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
 
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                obj = obj.Replace("\\", string.Empty);
-                obj = obj.Trim('"');
-                notificationUser Object = JsonConvert.DeserializeObject<notificationUser>(obj, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
+                
+                string obj = "";
+                notificationUser Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        obj = c.Value.Replace("\\", string.Empty);
+                        obj = obj.Trim('"');
+                        Object = JsonConvert.DeserializeObject<notificationUser>(obj, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
@@ -94,37 +152,51 @@ namespace POS_Server.Controllers
                         
                       notificationUser not = notEntity.Add(Object);
                       entity.SaveChanges();
-                        return Ok(not.notUserId);
+                        message = not.notUserId.ToString();
+                        return TokenManager.GenerateToken(message);
                     }
                     
                 }
                 catch
                 {
-                    return Ok(false);
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            else
-                return NotFound();
         }
         [HttpPost]
         [Route("setAsRead")]
-        public IHttpActionResult setAsRead(int notUserId, int posId, string type)
+        public string setAsRead(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {              
                 try
                 {
+                    int notUserId = 0;
+                    int posId = 0;
+                    string type = "";
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                    foreach (Claim c in claims)
+                    {
+                        if (c.Type == "notUserId")
+                        {
+                            notUserId = int.Parse(c.Value);
+                        }
+                        else if (c.Type == "posId")
+                        {
+                            posId = int.Parse(c.Value);
+                        }
+                        else if (c.Type == "type")
+                        {
+                            type =  c.Value;
+                        }
+                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                        // var notEntity = entity.Set<notificationUser>();
@@ -159,44 +231,18 @@ namespace POS_Server.Controllers
                             notEntity.updateDate = DateTime.Now;
                             entity.SaveChanges();
                         }
-                        
-                        return Ok(true);
+
+                        message = "1";
+                        return TokenManager.GenerateToken(message);
                     }
                     
                 }
                 catch
                 {
-                    return Ok(false);
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            else
-                return NotFound();
-        }
-        [HttpGet]
-        [Route("GetNotUserCount")]
-        public IHttpActionResult GetNotUserCount(int userId,string type, int posId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var notificationCount = entity.notificationUser
-                        .Where(x => (x.userId == userId || x.posId == posId) && x.isRead == false && x.notification.msgType.Contains(type))
-                        .ToList().Count;
-                    return Ok(notificationCount);
-                }
-            }
-            return NotFound();
         }
     }
 }

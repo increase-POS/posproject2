@@ -1,33 +1,32 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/Offers")]
     public class OffersController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -65,33 +64,31 @@ namespace POS_Server.Controllers
                             offersList[i].canDelete = canDelete;
                         }
                     }
-                    if (offersList == null)
-                        return NotFound();
-                    else
-                        return Ok(offersList);
+                    return TokenManager.GenerateToken(offersList);
                 }
             }
-            //else
-            return NotFound();
         }
-
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetOfferByID")]
-        public IHttpActionResult GetOfferByID(int offerId)
+        public string GetOfferByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int offerId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        offerId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var offer = entity.offers
@@ -113,39 +110,38 @@ namespace POS_Server.Controllers
                        L.notes,
                    })
                    .FirstOrDefault();
-
-                    if (offer == null)
-                        return NotFound();
-                    else
-                        return Ok(offer);
+                    return TokenManager.GenerateToken(offer);
                 }
             }
-            else
-                return NotFound();
         }
-
         // add or update offer
         [HttpPost]
         [Route("Save")]
-        public string Save(string offerObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                offerObject = offerObject.Replace("\\", string.Empty);
-                offerObject = offerObject.Trim('"');
-                offers newObject = JsonConvert.DeserializeObject<offers>(offerObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                if (newObject.updateUserId == 0 || newObject.updateUserId == null)
+                string offerObject = "";
+                offers newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        offerObject = c.Value.Replace("\\", string.Empty);
+                        offerObject = offerObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<offers>(offerObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
+                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
                     newObject.updateUserId = id;
@@ -159,15 +155,18 @@ namespace POS_Server.Controllers
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        offers oldObject = new offers();
                         var offerEntity = entity.Set<offers>();
                         if (newObject.offerId == 0)
                         {
-                            offerEntity.Add(newObject);
-                            message = "Offer Is Added Successfully";
+                            oldObject = offerEntity.Add(newObject);
+                            entity.SaveChanges();
+                            message = oldObject.offerId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                         else
                         {
-                            var oldObject = entity.offers.Where(p => p.offerId == newObject.offerId).FirstOrDefault();
+                            oldObject = entity.offers.Where(p => p.offerId == newObject.offerId).FirstOrDefault();
                             oldObject.name = newObject.name;
                             oldObject.code = newObject.code;
                             oldObject.discountType = newObject.discountType;
@@ -177,35 +176,50 @@ namespace POS_Server.Controllers
                             oldObject.updateDate = newObject.updateDate;
                             oldObject.updateUserId = newObject.updateUserId;
                             oldObject.notes = newObject.notes;
-
-                            message = "Offer Is Updated Successfully";
+                            entity.SaveChanges();
+                            message = oldObject.offerId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
-                        entity.SaveChanges();
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "0";
                 }
             }
-            return message;
+            return TokenManager.GenerateToken(message);
         }
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int offerId, int userId, Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int offerId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        offerId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -215,14 +229,14 @@ namespace POS_Server.Controllers
                             offers offerObj = entity.offers.Find(offerId);
 
                             entity.offers.Remove(offerObj);
-                            entity.SaveChanges();
-
-                            return Ok("Offer is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -236,19 +250,17 @@ namespace POS_Server.Controllers
                             offerObj.isActive = 0;
                             offerObj.updateUserId = userId;
                             offerObj.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-
-                            return Ok("Offer is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }
-            else
-                return NotFound();
         }
     }
 }

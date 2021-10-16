@@ -17,12 +17,12 @@ namespace POS_Server
         public int errorId { get; set; }
         public string num { get; set; }
         public string msg { get; set; }
+        public string stackTrace { get; set; }
+        public string targetSite { get; set; }
         public Nullable<int> posId { get; set; }
         public Nullable<int> branchId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<int> createUserId { get; set; }
-        public string stackTrace { get; set; }
-        public string targetSite { get; set; }
     
         public virtual branches branches { get; set; }
         public virtual pos pos { get; set; }

@@ -18,7 +18,7 @@ namespace POS_Server.Controllers
             HttpContext.Current.Session["userId"] = userId;
             return Ok();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetSession")]
         public IHttpActionResult GetSession(string key)
         {  

@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -18,17 +19,15 @@ namespace POS_Server.Controllers
     public class CardController : ApiController
     {
         // GET api/<controller> get all cards
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public ResponseVM Get(string token)
+        public string Get(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -66,21 +65,19 @@ namespace POS_Server.Controllers
                             carditem.canDelete = canDelete;
                         }
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cardsList) };
+                    return TokenManager.GenerateToken(cardsList);
                 }
             }
         }
         // GET api/<controller>  Get card By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetcardByID")]
-        public ResponseVM GetByID(string token)
+        public string GetByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -108,21 +105,19 @@ namespace POS_Server.Controllers
                        c.isActive,
                    })
                    .FirstOrDefault();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(card) };
+                    return TokenManager.GenerateToken(card);
                 }
             }
         }
         // GET api/<controller>  Get card By is active
-        [HttpGet]
+        [HttpPost]
         [Route("GetByisActive")]
-        public ResponseVM GetByisActive(string token)
+        public string GetByisActive(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -150,22 +145,20 @@ namespace POS_Server.Controllers
                        c.isActive,
                    })
                    .ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(card) };
+                    return TokenManager.GenerateToken(card);
                 }
             }
         }
         // add or update card 
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token)
+        public string Save(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -217,27 +210,25 @@ namespace POS_Server.Controllers
                         }
 
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
 
                 catch
                 {
                     message = "0";
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
             }
         }
         [HttpPost]
         [Route("Delete")]
-        public ResponseVM Delete(string token)
+        public string Delete(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -269,12 +260,13 @@ namespace POS_Server.Controllers
                             cards cardObj = entity.cards.Find(cardId);
                             entity.cards.Remove(cardObj);
                             message = entity.SaveChanges().ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -289,17 +281,18 @@ namespace POS_Server.Controllers
                             cardObj.updateUserId = userId;
                             cardObj.updateDate = DateTime.Now;
                             message = entity.SaveChanges().ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {
@@ -319,15 +312,13 @@ namespace POS_Server.Controllers
         }
         [HttpPost]
         [Route("UpdateImage")]
-        public ResponseVM UpdateImage(string token)
+        public string UpdateImage(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -355,12 +346,12 @@ namespace POS_Server.Controllers
                         entity.SaveChanges();
                     }
                     message = card.cardId.ToString();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
                 catch
                 {
                     message = "0";
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
             }
         }

@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,23 +17,17 @@ namespace POS_Server.Controllers
     public class LocationsController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -70,34 +68,33 @@ namespace POS_Server.Controllers
                             locationsList[i].canDelete = canDelete;
                         }
                     }
-
-                    if (locationsList == null)
-                        return NotFound();
-                    else
-                        return Ok(locationsList);
+                    return TokenManager.GenerateToken(locationsList);
                 }
             }
-            //else
-            return NotFound();
+           
         }
 
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetLocationByID")]
-        public IHttpActionResult GetLocationByID(int locationId)
+        public string GetLocationByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int locationId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        locationId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var location = entity.locations
@@ -120,38 +117,156 @@ namespace POS_Server.Controllers
 
                    })
                    .FirstOrDefault();
-
-                    if (location == null)
-                        return NotFound();
-                    else
-                        return Ok(location);
+                    return TokenManager.GenerateToken(location);
                 }
             }
-            else
-                return NotFound();
         }
+        // GET api/<controller>
+        [HttpPost]
+        [Route("GetLocsByBranchID")]
+        public string GetLocsByBranchID(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            Boolean canDelete = false;
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var locationsList = (from L in entity.locations
+                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
+                                         join b in entity.branches on L.branchId equals b.branchId into bj
+                                         from v in lj.DefaultIfEmpty()
+                                         from bbj in bj.DefaultIfEmpty()
+                                         where L.branchId == branchId
+                                         select new LocationModel()
+                                         {
+                                             locationId = L.locationId,
+                                             x = L.x,
+                                             y = L.y,
+                                             z = L.z,
+                                             createDate = L.createDate,
+                                             updateDate = L.updateDate,
+                                             createUserId = L.createUserId,
+                                             updateUserId = L.updateUserId,
+                                             isActive = L.isActive,
+                                             isFreeZone = L.isFreeZone,
+                                             branchId = L.branchId,
+                                             sectionId = L.sectionId,
+                                             sectionName = v.name,
+                                             note = L.note,
 
+                                         }).ToList();
+
+                    if (locationsList.Count > 0)
+                    {
+                        for (int i = 0; i < locationsList.Count; i++)
+                        {
+                            if (locationsList[i].isActive == 1)
+                            {
+                                int locationId = (int)locationsList[i].locationId;
+                                var itemsLocationL = entity.itemsLocations.Where(x => x.locationId == locationId).Select(b => new { b.itemsLocId }).FirstOrDefault();
+                                var itemsTransferL = entity.itemsTransfer.Where(x => x.locationIdNew == locationId || x.locationIdOld == locationId).Select(x => new { x.itemsTransId }).FirstOrDefault();
+
+                                if ((itemsLocationL is null) && (itemsTransferL is null))
+                                    canDelete = true;
+                            }
+                            locationsList[i].canDelete = canDelete;
+                        }
+                    }
+                    return TokenManager.GenerateToken(locationsList);
+                }
+            }
+         }
+        [HttpPost]
+        [Route("GetLocsBySectionId")]
+        public string GetLocsBySectionId(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int sectionId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        sectionId = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var locationsList = (from L in entity.locations
+                                         where L.sectionId == sectionId
+                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
+                                         from v in lj.DefaultIfEmpty()
+
+                                         select new LocationModel()
+                                         {
+                                             locationId = L.locationId,
+                                             x = L.x,
+                                             y = L.y,
+                                             z = L.z,
+                                             createDate = L.createDate,
+                                             updateDate = L.updateDate,
+                                             createUserId = L.createUserId,
+                                             updateUserId = L.updateUserId,
+                                             isActive = L.isActive,
+                                             isFreeZone = L.isFreeZone,
+                                             branchId = L.branchId,
+                                             sectionId = L.sectionId,
+                                             sectionName = v.name,
+                                             note = L.note,
+
+                                         }).ToList();
+                    
+                    return TokenManager.GenerateToken(locationsList);
+                }
+            } 
+        }
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string locationObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                locationObject = locationObject.Replace("\\", string.Empty);
-                locationObject = locationObject.Trim('"');
-                locations newObject = JsonConvert.DeserializeObject<locations>(locationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string locationObject = "";
+                locations newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        locationObject = c.Value.Replace("\\", string.Empty);
+                        locationObject = locationObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<locations>(locationObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -198,7 +313,6 @@ namespace POS_Server.Controllers
 
                             message = tmpLocation.locationId.ToString();
                         }
-                      //  entity.SaveChanges();
                     }
                 }
                 catch
@@ -206,25 +320,41 @@ namespace POS_Server.Controllers
                     message = "-1";
                 }
             }
-            return message;
+
+            return TokenManager.GenerateToken(message);
         }
 
         [HttpPost]
         [Route("Delete")]
-        public bool Delete(int locationId, int userId,Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int locationId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        locationId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -234,14 +364,14 @@ namespace POS_Server.Controllers
                             locations locationDelete = entity.locations.Find(locationId);
 
                             entity.locations.Remove(locationDelete);
-                            entity.SaveChanges();
-
-                            return true;
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return false;
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -255,47 +385,48 @@ namespace POS_Server.Controllers
                             locationDelete.isActive = 0;
                             locationDelete.updateUserId = userId;
                             locationDelete.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-
-                            return true;
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return false;
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
-            }
-            else
-                return false;
+            } 
         }
 
         #region
         [HttpPost]
         [Route("UpdateLocBySecId")]
-
-        public int UpdateLocationBySecId(string newloclist)
+        public string UpdateLocationBySecId(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             int sectionId = 0;
-            var re = Request;
-            var headers = re.Headers;
             int res = 0;
-            string token = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("sectionId"))
-            {
-                sectionId = Convert.ToInt32(headers.GetValues("sectionId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            newloclist = newloclist.Replace("\\", string.Empty);
-            newloclist = newloclist.Trim('"');
-            List<locations> newlocObj = JsonConvert.DeserializeObject<List<locations>>(newloclist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (valid)
-            {
+            else
+                {
+                string newloclist = "";
+                List<locations> newlocObj = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        newloclist = c.Value.Replace("\\", string.Empty);
+                        newloclist = newloclist.Trim('"');
+                        newlocObj = JsonConvert.DeserializeObject<List<locations>>(newloclist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        break;
+                    }
+                }
+
+
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var oldloc = entity.locations.Where(p => p.sectionId == sectionId);
@@ -322,15 +453,11 @@ namespace POS_Server.Controllers
                         entity.locations.AddRange(newlocObj);
                     }
                     res = entity.SaveChanges();
-
-                    return res;
+                    return TokenManager.GenerateToken(res);
                 }
 
             }
-            else
-            {
-                return -1;
-            }
+          
 
         }
         #endregion
@@ -339,23 +466,39 @@ namespace POS_Server.Controllers
         // add or update List of locations
         [HttpPost]
         [Route("AddLocationsToSection")]
-        public int AddLocationsToSection(string locationsObject, int sectionId,int userId)
+        public string AddLocationsToSection(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                locationsObject = locationsObject.Replace("\\", string.Empty);
-                locationsObject = locationsObject.Trim('"');
-                List<locations> Object = JsonConvert.DeserializeObject<List<locations>>(locationsObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                int sectionId = 0;
+                int userId = 0;
+                string locationsObject = "";
+                List<locations> Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        locationsObject = c.Value.Replace("\\", string.Empty);
+                        locationsObject = locationsObject.Trim('"');
+                        Object = JsonConvert.DeserializeObject<List<locations>>(locationsObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        //break;
+                    }
+                    else if (c.Type == "sectionId")
+                    {
+                        sectionId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var oldList = entity.locations.Where(x => x.sectionId == sectionId).Select(x => new { x.locationId }).ToList();
@@ -420,137 +563,19 @@ namespace POS_Server.Controllers
                         {
                             entity.SaveChanges();
                         }
-                        catch { return 0; }
+                        catch {
+                            message = "0";
+                            return TokenManager.GenerateToken(message);
+                        }
                     }
                     entity.SaveChanges();
                 }
             }
-            return 1;
+            message = "1";
+            return TokenManager.GenerateToken(message);
         }
 
-        // GET api/<controller>
-        [HttpGet]
-        [Route("GetLocsByBranchID")]
-        public IHttpActionResult GetLocsByBranchID(int branchId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var locationsList = (from L in entity.locations
-                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
-                                         join b in entity.branches on L.branchId equals b.branchId into bj
-                                         from v in lj.DefaultIfEmpty()
-                                         from bbj in bj.DefaultIfEmpty()
-                                         where L.branchId == branchId
-                                         select new LocationModel()
-                                         {
-                                             locationId = L.locationId,
-                                             x = L.x,
-                                             y = L.y,
-                                             z = L.z,
-                                             createDate = L.createDate,
-                                             updateDate = L.updateDate,
-                                             createUserId = L.createUserId,
-                                             updateUserId = L.updateUserId,
-                                             isActive = L.isActive,
-                                             isFreeZone = L.isFreeZone,
-                                             branchId = L.branchId,
-                                             sectionId = L.sectionId,
-                                             sectionName = v.name,
-                                             note = L.note,
-
-                                         }).ToList();
-
-                    if (locationsList.Count > 0)
-                    {
-                        for (int i = 0; i < locationsList.Count; i++)
-                        {
-                            if (locationsList[i].isActive == 1)
-                            {
-                                int locationId = (int)locationsList[i].locationId;
-                                var itemsLocationL = entity.itemsLocations.Where(x => x.locationId == locationId).Select(b => new { b.itemsLocId }).FirstOrDefault();
-                                var itemsTransferL = entity.itemsTransfer.Where(x => x.locationIdNew == locationId || x.locationIdOld == locationId).Select(x => new { x.itemsTransId }).FirstOrDefault();
-
-                                if ((itemsLocationL is null) && (itemsTransferL is null))
-                                    canDelete = true;
-                            }
-                            locationsList[i].canDelete = canDelete;
-                        }
-                    }
-
-                    if (locationsList == null)
-                        return NotFound();
-                    else
-                        return Ok(locationsList);
-                }
-            }
-            //else
-            return NotFound();
-        }
-        [HttpGet]
-        [Route("GetLocsBySectionId")]
-        public IHttpActionResult GetLocsBySectionId(int sectionId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var locationsList = (from L in entity.locations where L.sectionId == sectionId
-                                         join s in entity.sections on L.sectionId equals s.sectionId into lj
-                                         from v in lj.DefaultIfEmpty()
-
-                                         select new LocationModel()
-                                         {
-                                             locationId = L.locationId,
-                                             x = L.x,
-                                             y = L.y,
-                                             z = L.z,
-                                             createDate = L.createDate,
-                                             updateDate = L.updateDate,
-                                             createUserId = L.createUserId,
-                                             updateUserId = L.updateUserId,
-                                             isActive = L.isActive,
-                                             isFreeZone = L.isFreeZone,
-                                             branchId = L.branchId,
-                                             sectionId = L.sectionId,
-                                             sectionName = v.name,
-                                             note = L.note,
-
-                                         }).ToList();
-
-                    if (locationsList == null)
-                        return NotFound();
-                    else
-                        return Ok(locationsList);
-                }
-            }
-            //else
-            return NotFound();
-        }
+       
 
     }
 }

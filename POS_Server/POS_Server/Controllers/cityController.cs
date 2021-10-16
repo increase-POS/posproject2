@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Web.Http;
 using POS_Server.Models.VM;
 using System.Security.Claims;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -15,21 +16,22 @@ namespace POS_Server.Controllers
     public class cityController : ApiController
     {
       
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public ResponseVM Get()
+       public string Get(string token)
         {
 
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId    DateTime? date=new DateTime?();
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+           
+            
+            
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -41,7 +43,7 @@ namespace POS_Server.Controllers
                     using (incposdbEntities entity = new incposdbEntities())
                     {
 
-                        var cityList = entity.cities
+                        var list = entity.cities
 
                    .Select(c => new
                    {
@@ -52,22 +54,20 @@ namespace POS_Server.Controllers
                    .ToList();
 
 
-
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(cityList) };
-
+                        return TokenManager.GenerateToken(list);
                     }
 
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return TokenManager.GenerateToken("0");
                 }
 
             }
 
 
             //var re = Request;
-            //var headers = re.Headers;
+            //
             //string token = "";
             //if (headers.Contains("APIKey"))
             //{

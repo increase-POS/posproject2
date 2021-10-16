@@ -9,6 +9,11 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Data.Entity.Migrations;
+using POS_Server.Models.VM;
+using System.Security.Claims;
+using Newtonsoft.Json.Converters;
+using System.Web;
+
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/Categories")]
@@ -17,25 +22,27 @@ namespace POS_Server.Controllers
         // GET api/category
         List<int> categoriesId = new List<int>();
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAllCategories")]
-        public IHttpActionResult GetAllCategories(int userId)
+        public string GetAllCategories(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var categoriesList = (from p in entity.categories 
@@ -74,57 +81,41 @@ namespace POS_Server.Controllers
                             categoriesList[i].canDelete = canDelete;
                         }
                     }
-                    if (categoriesList == null)
-                        return NotFound();
-                    else
-                        return Ok(categoriesList);
+                    
+                    return TokenManager.GenerateToken(categoriesList);
 
                 }
             }
-            else
-                return NotFound();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetSubCategories")]
-        public IHttpActionResult GetSubCategories(int categoryId, int userId)
+        public string GetSubCategories(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int categoryId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        categoryId = int.Parse(c.Value);
+                    } else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     if (categoryId != 0)
                     {
-                       // var categoriesList = entity.categories
-                       //.Where(c => c.parentId == categoryId && c.isActive == 1)
-                       //.Select(p => new {
-                       //    p.categoryId,
-                       //    p.name,
-                       //    p.categoryCode,
-                       //    p.createDate,
-                       //    p.createUserId,
-                       //    p.details,
-                       //    p.image,
-                       //    p.notes,
-                       //    p.parentId,
-                       //    p.taxes,
-                       //    p.updateDate,
-                       //    p.updateUserId,
-                       //    p.isActive,
-                       //})
-                       //.ToList();
                         var categoriesList = (from p in entity.categories.Where(x => x.parentId == categoryId && x.isActive == 1)
                                  join cu in entity.categoryuser on p.categoryId equals cu.categoryId
                                  where cu.userId == userId
@@ -145,30 +136,10 @@ namespace POS_Server.Controllers
                                      sequence = cu.sequence,
                                  }).ToList().OrderBy(x => x.sequence).ToList();
 
-                        if (categoriesList == null)
-                            return NotFound();
-                        else
-                            return Ok(categoriesList);
+                    return TokenManager.GenerateToken(categoriesList);
                     }
                     else
                     {
-                       // var categoriesList = entity.categories
-                       //.Where(c => c.parentId == 0 && c.isActive == 1)
-                       //.Select(p => new {
-                       //    p.categoryId,
-                       //    p.name,
-                       //    p.categoryCode,
-                       //    p.createDate,
-                       //    p.createUserId,
-                       //    p.details,
-                       //    p.image,
-                       //    p.notes,
-                       //    p.parentId,
-                       //    p.taxes,
-                       //    p.updateDate,
-                       //    p.updateUserId,
-                       //})
-                       //.ToList();
                         var categoriesList = (from p in entity.categories.Where(x => x.parentId == 0 && x.isActive == 1)
                                               join cu in entity.categoryuser on p.categoryId equals cu.categoryId
                                               where cu.userId == userId
@@ -190,33 +161,33 @@ namespace POS_Server.Controllers
                                                   sequence = cu.sequence,
                                               }).ToList().OrderBy(x => x.sequence).ToList();
 
-                        if (categoriesList == null)
-                            return NotFound();
-                        else
-                            return Ok(categoriesList);
+                      
+                    return TokenManager.GenerateToken(categoriesList);
                     }
                 }
             }
-            else
-                return NotFound();
         }
         // GET api/category/5
-        [HttpGet]
+        [HttpPost]
         [Route("GetCategoryByID")]
-        public IHttpActionResult GetCategoryByID(int categoryId)
+        public string GetCategoryByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int categoryId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        categoryId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
 
@@ -237,39 +208,199 @@ namespace POS_Server.Controllers
                        p.updateUserId,
                    })
                    .FirstOrDefault();
-
-                    if (category == null)
-                        return NotFound();
-                    else
-                        return Ok(category);
-
+                    return TokenManager.GenerateToken(category);
                 }
             }
+        }
+        [HttpPost]
+        [Route("GetCategoryTreeByID")]
+        public string GetCategoryTreeByID(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            List<categories> treecat = new List<categories>();
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
             else
-                return NotFound();
+            {
+                int categoryID = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        categoryID = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    int parentid = categoryID; // if want to show the last category 
+                    while (parentid > 0)
+                    {
+                        categories tempcate = new categories();
+                        var category = entity.categories.Where(c => c.categoryId == parentid)
+                            .Select(p => new {
+                                p.categoryId,
+                                p.name,
+                                p.categoryCode,
+                                p.createDate,
+                                p.createUserId,
+                                p.details,
+                                p.image,
+                                p.notes,
+                                p.parentId,
+                                p.taxes,
+                                p.updateDate,
+                                p.updateUserId,
+                            }).FirstOrDefault();
+
+
+                        tempcate.categoryId = category.categoryId;
+
+                        tempcate.name = category.name;
+                        tempcate.categoryCode = category.categoryCode;
+                        tempcate.createDate = category.createDate;
+                        tempcate.createUserId = category.createUserId;
+                        tempcate.details = category.details;
+                        tempcate.image = category.image;
+                        tempcate.notes = category.notes;
+                        tempcate.parentId = category.parentId;
+                        tempcate.taxes = category.taxes;
+                        tempcate.updateDate = category.updateDate;
+                        tempcate.updateUserId = category.updateUserId;
+                         
+
+                        parentid = (int)tempcate.parentId;
+
+                        treecat.Add(tempcate);
+
+                    }
+                    return TokenManager.GenerateToken(treecat);
+
+                }
+
+
+            }
         }
 
+        [HttpPost]
+        [Route("GetSubCategoriesSeq")]
+        public string GetSubCategoriesSeq(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int categoryId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        categoryId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    if (categoryId != 0)
+                    {
+                        var categoriesList = (from C in entity.categories
+                                              join S in entity.categoryuser on C.categoryId equals S.categoryId into jS
+                                              from jSS in jS.DefaultIfEmpty()
+                                              select new
+                                              {
+                                                  C.categoryId,
+                                                  C.name,
+                                                  C.categoryCode,
+                                                  C.createDate,
+                                                  C.createUserId,
+                                                  C.details,
+                                                  C.image,
+                                                  C.notes,
+                                                  C.parentId,
+                                                  C.taxes,
+                                                  C.updateDate,
+                                                  C.updateUserId,
+                                                  C.isActive,
+                                                  jSS.sequence,
+                                                  jSS.userId,
+                                              }
+
+
+                      ).Where(c => c.parentId == categoryId && c.isActive == 1 && c.userId == userId).OrderBy(c => c.sequence)
+
+                       .ToList();
+                      
+                    return TokenManager.GenerateToken(categoriesList);
+                    }
+                    else
+                    {
+                        var categoriesList = (from C in entity.categories
+                                              join S in entity.categoryuser on C.categoryId equals S.categoryId into jS
+                                              from jSS in jS.DefaultIfEmpty()
+                                              select new
+                                              {
+                                                  C.categoryId,
+                                                  C.name,
+                                                  C.categoryCode,
+                                                  C.createDate,
+                                                  C.createUserId,
+                                                  C.details,
+                                                  C.image,
+                                                  C.notes,
+                                                  C.parentId,
+                                                  C.taxes,
+                                                  C.updateDate,
+                                                  C.updateUserId,
+                                                  C.isActive,
+                                                  jSS.sequence,
+                                                  jSS.userId,
+                                              }
+
+
+                      ).Where(c => c.parentId == 0 && c.isActive == 1 && c.userId == userId)
+                       .ToList();
+                      
+                    return TokenManager.GenerateToken(categoriesList);
+                    }
+                }
+            }
+        }
         // add or update category
         [HttpPost]
         [Route("Save")]
-        public int Save(string categoryObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                categoryObject = categoryObject.Replace("\\", string.Empty);
-                categoryObject = categoryObject.Trim('"');
-
-                categories newObject = JsonConvert.DeserializeObject<categories>(categoryObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string categoryObject = "";
+                categories newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        categoryObject = c.Value.Replace("\\", string.Empty);
+                        categoryObject = categoryObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<categories>(categoryObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -398,46 +529,50 @@ namespace POS_Server.Controllers
 
                                 }
                                 entity.SaveChanges();
-
                             }
-
-
-
-
-                        //
-
                         }
-
-                        
-
-
                     }
-                    return tmpCategory.categoryId;
+                    message =  tmpCategory.categoryId.ToString();
+                    return TokenManager.GenerateToken(message);
                 }
                 catch
                 {
-                    return 0;
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            return 0;
         }
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int categoryId, int userId, Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "0";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int categoryId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        categoryId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -453,16 +588,18 @@ namespace POS_Server.Controllers
                                 var tmpCategory = entity.categories.Where(p => p.categoryId == categoryId).First();
                                 entity.categories.Remove(tmpCategory);
 
-                                entity.SaveChanges();
-                                return Ok("Category is Deleted Successfully");
+                                message = entity.SaveChanges().ToString();
+                                return TokenManager.GenerateToken(message);
                             }
                             else
-                                return Ok("Can't Delete This Category");
+                                message = "0";
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -539,114 +676,67 @@ namespace POS_Server.Controllers
 
 
 
-                            return Ok("OK");
-                       
+                            message = "1";
+                            return TokenManager.GenerateToken(message);
+
                         }
                     }
                     catch
                     {
-
-                        //Exception ex
-                        //  ErrorDTO.TrackError(ex);
-                        // return Ok(ex.ToString());
-                      return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
 
                 }
             }
-            return NotFound();
-          
         }
 
-        [HttpGet]
-        [Route("GetCategoryTreeByID")]
-        public IHttpActionResult GetCategoryTreeByID(int categoryID)
+
+        [Route("UpdateImage")]
+        public string UpdateImage(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            List<categories> treecat = new List<categories>();
-
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    /*
-                    var category1 = entity.categories.Where(c => c.categoryId == categoryID)
-                    .Select(p => new {
-                        //  p.name,
-                        p.parentId,
-
-                    }).FirstOrDefault();
-                    int parentid = (int)category1.parentId;
-                    */
-                    int parentid = categoryID; // if want to show the last category 
-                    while (parentid > 0)
-                    {
-                        categories tempcate = new categories();
-                        var category = entity.categories.Where(c => c.categoryId == parentid)
-                            .Select(p => new {
-                                p.categoryId,
-                                p.name,
-                                p.categoryCode,
-                                p.createDate,
-                                p.createUserId,
-                                p.details,
-                                p.image,
-                                p.notes,
-                                p.parentId,
-                                p.taxes,
-                                p.updateDate,
-                                p.updateUserId,
-                            }).FirstOrDefault();
-
-
-                        tempcate.categoryId = category.categoryId;
-
-                        tempcate.name = category.name;
-                        tempcate.categoryCode = category.categoryCode;
-                        tempcate.createDate = category.createDate;
-                        tempcate.createUserId = category.createUserId;
-                        tempcate.details = category.details;
-                        tempcate.image = category.image;
-                        tempcate.notes = category.notes;
-                        tempcate.parentId = category.parentId;
-                        tempcate.taxes = category.taxes;
-                        tempcate.updateDate = category.updateDate;
-                        tempcate.updateUserId = category.updateUserId;
-
-                        //if (tempcate.parentId == null)
-                        //{
-                        //    Nullable<int> tmpid = null;
-                        //    parentid = 0;
-
-                        //}
-
-                        parentid = (int)tempcate.parentId;
-
-                        treecat.Add(tempcate);
-
-                    }
-                    if (treecat == null)
-                        return NotFound();
-                    else
-                        //treecat.Reverse();
-                        return Ok(treecat);
-
-                }
-
-
+                return TokenManager.GenerateToken("-7");
             }
             else
-                return NotFound();
-        }
+            {
+                string categoryObject = "";
+                categories catObj = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        categoryObject = c.Value.Replace("\\", string.Empty);
+                        categoryObject = categoryObject.Trim('"');
+                        catObj = JsonConvert.DeserializeObject<categories>(categoryObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+                try
+                {
+                    categories category;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var agentEntity = entity.Set<agents>();
+                        category = entity.categories.Where(p => p.categoryId == catObj.categoryId).First();
+                        category.image = catObj.image;
+                        entity.SaveChanges();
+                    }
+                    message =  category.categoryId.ToString();
+                    return TokenManager.GenerateToken(message);
+                }
 
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+            }
+        }
         [Route("PostCategoryImage")]
         public IHttpActionResult PostCategoryImage()
         {
@@ -717,8 +807,7 @@ namespace POS_Server.Controllers
                 return Ok(res);
             }
         }
-
-        [HttpGet]
+        [HttpPost]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {
@@ -730,159 +819,14 @@ namespace POS_Server.Controllers
             localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\category"), imageName);
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+            if (System.IO.File.Exists(localFilePath))
+                response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
             response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
             response.Content.Headers.ContentDisposition.FileName = imageName;
 
             return response;
         }
         [HttpPost]
-        [Route("UpdateImage")]
-        public int UpdateImage(string categoryObject)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            categoryObject = categoryObject.Replace("\\", string.Empty);
-            categoryObject = categoryObject.Trim('"');
-
-            categories catObj = JsonConvert.DeserializeObject<categories>(categoryObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            if (catObj.updateUserId == 0 || catObj.updateUserId == null)
-            {
-                Nullable<int> id = null;
-                catObj.updateUserId = id;
-            }
-            if (catObj.createUserId == 0 || catObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                catObj.createUserId = id;
-            }
-            if (valid)
-            {
-                try
-                {
-                    categories category;
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var agentEntity = entity.Set<agents>();
-                        category = entity.categories.Where(p => p.categoryId == catObj.categoryId).First();
-                        category.image = catObj.image;
-                        entity.SaveChanges();
-                    }
-                    return category.categoryId;
-                }
-
-                catch
-                {
-                    return 0;
-                }
-            }
-            else
-                return 0;
-        }
-
-
-        [HttpGet]
-        [Route("GetSubCategoriesSeq")]
-        public IHttpActionResult GetSubCategoriesSeq(int categoryId, int userId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    if (categoryId != 0)
-                    {
-                        var categoriesList = (from C in entity.categories
-                                              join S in entity.categoryuser on C.categoryId equals S.categoryId into jS
-                                              from jSS in jS.DefaultIfEmpty()
-                                              select new
-                                              {
-                                                  C.categoryId,
-                                                  C.name,
-                                                  C.categoryCode,
-                                                  C.createDate,
-                                                  C.createUserId,
-                                                  C.details,
-                                                  C.image,
-                                                  C.notes,
-                                                  C.parentId,
-                                                  C.taxes,
-                                                  C.updateDate,
-                                                  C.updateUserId,
-                                                  C.isActive,
-                                                  jSS.sequence,
-                                                  jSS.userId,
-                                              }
-
-
-                      ).Where(c => c.parentId == categoryId && c.isActive == 1 && c.userId == userId).OrderBy(c => c.sequence)
-
-                       .ToList();
-                        if (categoriesList == null)
-                            return NotFound();
-                        else
-                            return Ok(categoriesList);
-                    }
-                    else
-                    {
-                        var categoriesList = (from C in entity.categories
-                                              join S in entity.categoryuser on C.categoryId equals S.categoryId into jS
-                                              from jSS in jS.DefaultIfEmpty()
-                                              select new
-                                              {
-                                                  C.categoryId,
-                                                  C.name,
-                                                  C.categoryCode,
-                                                  C.createDate,
-                                                  C.createUserId,
-                                                  C.details,
-                                                  C.image,
-                                                  C.notes,
-                                                  C.parentId,
-                                                  C.taxes,
-                                                  C.updateDate,
-                                                  C.updateUserId,
-                                                  C.isActive,
-                                                  jSS.sequence,
-                                                  jSS.userId,
-                                              }
-
-
-                      ).Where(c => c.parentId == 0 && c.isActive == 1 && c.userId == userId)
-                       .ToList();
-                        if (categoriesList == null)
-                            return NotFound();
-                        else
-                            return Ok(categoriesList);
-                    }
-                }
-            }
-            else
-                return NotFound();
-        }
-    
-
-  
-
         public IEnumerable<categories> Recursive(List<categories> categoriesList, int toplevelid)
         {
             List<categories> inner = new List<categories>();
@@ -896,10 +840,6 @@ namespace POS_Server.Controllers
 
             return inner;
         }
-
-    
-
-      
 
         }
 }

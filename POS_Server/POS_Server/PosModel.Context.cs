@@ -47,6 +47,7 @@ namespace POS_Server
         public virtual DbSet<groups> groups { get; set; }
         public virtual DbSet<Inventory> Inventory { get; set; }
         public virtual DbSet<inventoryItemLocation> inventoryItemLocation { get; set; }
+        public virtual DbSet<invoiceOrder> invoiceOrder { get; set; }
         public virtual DbSet<invoices> invoices { get; set; }
         public virtual DbSet<invoiceStatus> invoiceStatus { get; set; }
         public virtual DbSet<items> items { get; set; }
@@ -57,6 +58,7 @@ namespace POS_Server
         public virtual DbSet<itemsTransfer> itemsTransfer { get; set; }
         public virtual DbSet<itemsUnits> itemsUnits { get; set; }
         public virtual DbSet<itemTransferOffer> itemTransferOffer { get; set; }
+        public virtual DbSet<itemUnitUser> itemUnitUser { get; set; }
         public virtual DbSet<locations> locations { get; set; }
         public virtual DbSet<medalAgent> medalAgent { get; set; }
         public virtual DbSet<medals> medals { get; set; }
@@ -66,9 +68,12 @@ namespace POS_Server
         public virtual DbSet<objects> objects { get; set; }
         public virtual DbSet<offers> offers { get; set; }
         public virtual DbSet<packages> packages { get; set; }
+        public virtual DbSet<paperSize> paperSize { get; set; }
         public virtual DbSet<Points> Points { get; set; }
         public virtual DbSet<pos> pos { get; set; }
+        public virtual DbSet<posSetting> posSetting { get; set; }
         public virtual DbSet<posUsers> posUsers { get; set; }
+        public virtual DbSet<printers> printers { get; set; }
         public virtual DbSet<properties> properties { get; set; }
         public virtual DbSet<propertiesItems> propertiesItems { get; set; }
         public virtual DbSet<sections> sections { get; set; }
@@ -84,12 +89,6 @@ namespace POS_Server
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<paperSize> paperSize { get; set; }
-        public virtual DbSet<posSetting> posSetting { get; set; }
-        public virtual DbSet<printers> printers { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<ProgramDetails> ProgramDetails { get; set; }
-        public virtual DbSet<invoiceOrder> invoiceOrder { get; set; }
-        public virtual DbSet<itemUnitUser> itemUnitUser { get; set; }
     }
 }

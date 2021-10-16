@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -12,22 +16,26 @@ namespace POS_Server.Controllers
     public class serialsController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get(int itemId)
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int itemId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        itemId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var serialsList = entity.serials
@@ -44,42 +52,41 @@ namespace POS_Server.Controllers
                         S.updateDate,
                     })
                     .ToList();
-
-                    if (serialsList == null)
-                        return NotFound();
-                    else
-                        return Ok(serialsList);
+                    return TokenManager.GenerateToken(serialsList);
                 }
             }
-            //else
-            return NotFound();
         }
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string serialObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                serialObject = serialObject.Replace("\\", string.Empty);
-                serialObject = serialObject.Trim('"');
-                serials newObject = JsonConvert.DeserializeObject<serials>(serialObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-
+                string serialObject = "";
+                serials newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        serialObject = c.Value.Replace("\\", string.Empty);
+                        serialObject = serialObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<serials>(serialObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
+                        serials tmpSerial = new serials();
                         var serialEntity = entity.Set<serials>();
                         if (newObject.serialId == 0)
                         {
@@ -87,48 +94,63 @@ namespace POS_Server.Controllers
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            serialEntity.Add(newObject);
-                            message = "Serial Is Added Successfully";
+                            tmpSerial = serialEntity.Add(newObject);
+                            entity.SaveChanges();
+                            message = tmpSerial.serialId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                         else
                         {
-                            var tmpSerial = entity.serials.Where(p => p.serialId == newObject.serialId).FirstOrDefault();
+                            tmpSerial = entity.serials.Where(p => p.serialId == newObject.serialId).FirstOrDefault();
                             tmpSerial.itemId = newObject.itemId;
                             tmpSerial.serialNum = newObject.serialNum;
                             tmpSerial.isActive = newObject.isActive;
                             tmpSerial.updateDate = DateTime.Now;
                             tmpSerial.updateUserId = newObject.createUserId;
-
-                            message = "Serial Is Updated Successfully";
+                            entity.SaveChanges();
+                            message = tmpSerial.serialId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
-                        entity.SaveChanges();
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "0";
                 }
             }
             return message;
         }
-
-
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int serialId,  int userId, Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int serialId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        serialId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -138,13 +160,14 @@ namespace POS_Server.Controllers
                             serials serialObj = entity.serials.Find(serialId);
 
                             entity.serials.Remove(serialObj);
-
-                            return Ok("Serial is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -156,19 +179,17 @@ namespace POS_Server.Controllers
                             serials serialObj = entity.serials.Find(serialId);
 
                             serialObj.isActive = 0;
-                            entity.SaveChanges();
-
-                            return Ok("Serial is Deleted Successfully");
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return NotFound();
-                    }
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                        }
                 }
             }
-            else
-                return NotFound();
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -17,17 +18,15 @@ namespace POS_Server.Controllers
     public class PosController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public ResponseVM Get(string token)
+        public string Get(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -71,23 +70,20 @@ namespace POS_Server.Controllers
                             posList[i].canDelete = canDelete;
                         }
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(posList) };
+                    return TokenManager.GenerateToken(posList);
                 }
             }
           
         }
-
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetPosByID")]
-        public ResponseVM GetPosByID(string token)
+        public string GetPosByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -122,23 +118,20 @@ namespace POS_Server.Controllers
                                     note = p.note,
                                     branchCode = x.code,
                                 }).FirstOrDefault();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(pos) };
+                    return TokenManager.GenerateToken(pos);
                 }
             }
          }
-
         // add or update pos
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token )
+        public string Save(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -179,7 +172,7 @@ namespace POS_Server.Controllers
                             if (posCount >= posMaxCount)
                             {
                                 message = "-1";
-                                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                                return TokenManager.GenerateToken(message);
                             }
                             else
                             {
@@ -187,11 +180,11 @@ namespace POS_Server.Controllers
                                 newObject.updateDate = DateTime.Now;
                                 newObject.updateUserId = newObject.createUserId;
 
-                               tmpPos = unitEntity.Add(newObject);
+                                tmpPos = unitEntity.Add(newObject);
                                 entity.SaveChanges();
                                 message = tmpPos.posId.ToString();
                             }
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                         else
                         {
@@ -207,29 +200,26 @@ namespace POS_Server.Controllers
                             tmpPos.balanceAll = newObject.balanceAll;
                             entity.SaveChanges();
                             message = tmpPos.posId.ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                 }
                 catch
                 {
                     message = "0";
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return TokenManager.GenerateToken(message);
                 }
             }
         }
-
         [HttpPost]
         [Route("Delete")]
-        public ResponseVM Delete(string token )
+        public string Delete(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -262,12 +252,13 @@ namespace POS_Server.Controllers
 
                             entity.pos.Remove(posDelete);
                             message = entity.SaveChanges().ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                        message = "0";
+                    return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -280,7 +271,7 @@ namespace POS_Server.Controllers
                         posDelete.updateUserId = userId;
                         posDelete.updateDate = DateTime.Now;
                         message = entity.SaveChanges().ToString();
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }

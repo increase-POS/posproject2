@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -12,22 +16,26 @@ namespace POS_Server.Controllers
     public class servicesCostsController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get(int itemId)
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int itemId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        itemId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var servicesList = entity.servicesCosts
@@ -44,38 +52,39 @@ namespace POS_Server.Controllers
                         S.createUserId
                     })
                     .ToList();
-
-                    if (servicesList == null)
-                        return NotFound();
-                    else
-                        return Ok(servicesList);
+                     
+                    return TokenManager.GenerateToken(servicesList);
                 }
             }
-            //else
-            return NotFound();
         }
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string serviceObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                serviceObject = serviceObject.Replace("\\", string.Empty);
-                serviceObject = serviceObject.Trim('"');
-                servicesCosts newObject = JsonConvert.DeserializeObject<servicesCosts>(serviceObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string serviceObject = "";
+                servicesCosts newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        serviceObject = c.Value.Replace("\\", string.Empty);
+                        serviceObject = serviceObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<servicesCosts>(serviceObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
 
+ 
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -87,8 +96,10 @@ namespace POS_Server.Controllers
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
 
-                            serviceEntity.Add(newObject);
-                            message = "Service Is Added Successfully";
+                            newObject = serviceEntity.Add(newObject);
+                            entity.SaveChanges();
+                            message = newObject.costId.ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                         else
                         {
@@ -98,54 +109,57 @@ namespace POS_Server.Controllers
                             tmpSerial.updateDate = DateTime.Now;
                             tmpSerial.updateUserId = newObject.updateUserId;
 
-                            message = "Service Is Updated Successfully";
+                            entity.SaveChanges();
+                            message = tmpSerial.costId.ToString();
+                            return TokenManager.GenerateToken(message);
+
                         }
-                        entity.SaveChanges();
                     }
                 }
                 catch
                 {
-                    message = "an error ocurred";
+                    message = "0";
+                    return message;
                 }
             }
-            return message;
         }
-
-
         [HttpPost]
         [Route("Delete")]
-        public IHttpActionResult Delete(int costId)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
                 try
                 {
+                    int costId = 0;
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                    foreach (Claim c in claims)
+                    {
+                        if (c.Type == "itemId")
+                        {
+                            costId = int.Parse(c.Value);
+                        }
+                    }
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         servicesCosts serviceObj = entity.servicesCosts.Find(costId);
-
                         entity.servicesCosts.Remove(serviceObj);
-                        entity.SaveChanges();
-                        return Ok("Service is Deleted Successfully");
+                        message = entity.SaveChanges().ToString();
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 catch
                 {
-                    return NotFound();
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
             }
-            else
-                return NotFound();
         }
     }
 }

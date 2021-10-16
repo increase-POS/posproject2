@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -15,25 +19,55 @@ namespace POS_Server.Controllers
 
         // add or update notification 
         [HttpPost]
-        [Route("Save")]
-        public IHttpActionResult Save(string obj, int branchId, string objectName, string prefix, int userId, int posId)
+        [Route("Save")] 
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+                string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-           
-            if (valid)
+            else
             {
-                obj = obj.Replace("\\", string.Empty);
-                obj = obj.Trim('"');
-                notification Object = JsonConvert.DeserializeObject<notification>(obj, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string obj = "";
+                int branchId = 0;
+                string objectName = "";
+                string prefix = "";
+                int userId = 0;
+                int posId = 0;
+                notification Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        obj = c.Value.Replace("\\", string.Empty);
+                        obj = obj.Trim('"');
+                        Object = JsonConvert.DeserializeObject<notification>(obj, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        //break;
+                    }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "objectName")
+                    {
+                        objectName = c.Value;
+                    }
+                    else if (c.Type == "prefix")
+                    {
+                        prefix = c.Value;
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                }
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -143,14 +177,16 @@ namespace POS_Server.Controllers
                         }
                         entity.SaveChanges();
                     }
+                    message = "1";
+                    return TokenManager.GenerateToken(message);
                 }
                 catch
                 {
-
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
                 }
-                return Ok();
+               
             }
-            return NotFound();
         }
 
         public void addNotifications(string objectName, string notificationObj, int branchId, string itemName)
@@ -255,11 +291,7 @@ namespace POS_Server.Controllers
                     notUserEntity.Add(notUser);
                     entity.SaveChanges();
                 }
-            //}
-            //catch
-            //{
-
-            //}
+           
         }
        
     }

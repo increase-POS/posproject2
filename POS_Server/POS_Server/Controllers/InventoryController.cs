@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,81 +17,115 @@ namespace POS_Server.Controllers
     public class InventoryController : ApiController
     {
         // GET api/<controller> get all Inventory
-        [HttpGet]
-        [Route("Get")]
-        public IHttpActionResult Get(string type)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            bool canDelete = false;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+        //[HttpPost]
+        //[Route("Get")]
+        //public string Get(string token string type)
+        //{
+        //    bool canDelete = false;
+        //    if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+        //    {
+        //        return TokenManager.GenerateToken("-7");
+        //    }
+        //    else
+        //    {
+        //        using (incposdbEntities entity = new incposdbEntities())
+        //        {
+        //            var List = entity.Inventory
+        //          .Where(c => c.inventoryType == type)
+        //           .Select(c => new InventoryModel {
+        //               inventoryId = c.inventoryId,
+        //               num = c.num,
+        //               notes = c.notes,
+        //               createDate = c.createDate,
+        //               updateDate = c.updateDate,
+        //               createUserId = c.createUserId,
+        //               updateUserId = c.updateUserId,
+        //               isActive = c.isActive,
+        //               inventoryType = c.inventoryType,
 
-            if (valid) // APIKey is valid
+        //           })
+        //           .ToList();
+        //            if (List.Count > 0)
+        //            {
+        //                for (int i = 0; i < List.Count; i++)
+        //                {
+        //                    canDelete = false;
+        //                    if (List[i].isActive == 1)
+        //                    {
+        //                        int inventoryId = (int)List[i].inventoryId;
+        //                        var operationsL = entity.inventoryItemLocation.Where(x => x.inventoryId == inventoryId).Select(b => new { b.id }).FirstOrDefault();
+
+        //                        if (operationsL is null)
+        //                            canDelete = true;
+        //                    }
+        //                    List[i].canDelete = canDelete;
+        //                }
+        //            }
+                     
+        //            return TokenManager.GenerateToken(List);
+        //        }
+        //    }
+        //}
+        [HttpPost]
+        [Route("GetByID")]
+        public string GetByID(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int cId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        cId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.Inventory
-                  .Where(c => c.inventoryType == type)
-                   .Select(c => new InventoryModel {
-                       inventoryId=  c.inventoryId,                  
-                       num=c.num,
-                       notes =c.notes,
-                       createDate = c.createDate,
-                       updateDate = c.updateDate,
-                       createUserId = c.createUserId,
-                       updateUserId = c.updateUserId,
-                       isActive = c.isActive,
-                       inventoryType = c.inventoryType,
-                       
+                    var list = entity.Inventory
+                   .Where(c => c.inventoryId == cId)
+                   .Select(c => new {
+                       c.inventoryId,
+                       c.num,
+                       c.notes,
+                       c.createDate,
+                       c.updateDate,
+                       c.createUserId,
+                       c.updateUserId,
+                       c.isActive,
                    })
-                   .ToList();
-                    if (List.Count > 0)
-                    {
-                        for (int i = 0; i < List.Count; i++)
-                        {
-                            canDelete = false;
-                            if (List[i].isActive == 1)
-                            {
-                                int inventoryId = (int)List[i].inventoryId;
-                                var operationsL = entity.inventoryItemLocation.Where(x => x.inventoryId == inventoryId).Select(b => new { b.id }).FirstOrDefault();
-
-                                if (operationsL is null)
-                                    canDelete = true;
-                            }
-                            List[i].canDelete = canDelete;
-                        }
-                    }
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                   .FirstOrDefault();
+ 
+                    return TokenManager.GenerateToken(list);
                 }
             }
-            return NotFound();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetLastNumOfInv")]
-        public IHttpActionResult GetLastNumOfInv(string invCode)
+        public string GetLastNumOfInv(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                string invCode = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invCode")
+                    {
+                        invCode = c.Value;
+                    }
+                }
                 List<string> numberList;
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
@@ -103,29 +141,36 @@ namespace POS_Server.Controllers
                     numberList.Sort();
                     lastNum = int.Parse(numberList[numberList.Count - 1]);
                 }
-                return Ok(lastNum);
+                return TokenManager.GenerateToken(lastNum);
             }
-            return NotFound();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetByCreator")]
-        public IHttpActionResult GetByCreator(string inventoryType, int userId)
+        public string GetByCreator(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                string inventoryType = "";
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "inventoryType")
+                    {
+                        inventoryType = c.Value;
+                    } else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = entity.Inventory 
+                    var List = entity.Inventory
                   .Where(c => c.inventoryType.Contains(inventoryType) && c.createUserId == userId && c.isActive == 1)
                    .Select(c => new InventoryModel
                    {
@@ -141,31 +186,36 @@ namespace POS_Server.Controllers
 
                    })
                    .ToList();
-                   
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                     
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            return NotFound();
         }
-         [HttpGet]
+        [HttpPost]
         [Route("getByBranch")]
-        public IHttpActionResult getByBranch(string inventoryType, int branchId)
+        public string getByBranch(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                string inventoryType = "";
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "inventoryType")
+                    {
+                        inventoryType = c.Value;
+                    }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = entity.Inventory
@@ -184,249 +234,33 @@ namespace POS_Server.Controllers
 
                    })
                    .FirstOrDefault();
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+ 
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            return NotFound();
         }
-
-
         // GET api/<controller>  Get medal By ID 
-        [HttpGet]
-        [Route("GetByID")]
-        public IHttpActionResult GetByID()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("Id"))
-            {
-                cId = Convert.ToInt32(headers.GetValues("Id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
 
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var list = entity.Inventory
-                   .Where(c => c.inventoryId == cId)
-                   .Select(c => new {
-                       c.inventoryId,
-                       c.num,
-                       c.notes,
-                       c.createDate,
-                       c.updateDate,
-                       c.createUserId,
-                       c.updateUserId,
-                     c.isActive,
-                   })
-                   .FirstOrDefault();
-
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
-                }
-            }
-            else
-                return NotFound();
-        }
-
-
-        // add or update 
         [HttpPost]
-        [Route("Save")]
-        public String Save(string newObject)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            string message ="";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            
-            if (valid)
-            {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-               Inventory Object = JsonConvert.DeserializeObject<Inventory>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
-                {
-
-                    if (Object.updateUserId == 0 || Object.updateUserId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.updateUserId = id;
-                    }
-                    if (Object.createUserId == 0 || Object.createUserId == null)
-                    {
-                        Nullable<int> id = null;
-                        Object.createUserId = id;
-                    }
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var sEntity = entity.Set<Inventory>();
-                        if (Object.inventoryId == 0 || Object.inventoryId == null)
-                        {
-                            Object.createDate = DateTime.Now;
-                            Object.updateDate = DateTime.Now;
-                            Object.updateUserId = Object.createUserId;
-                            Object.isActive = 1;
-
-                            entity.Inventory.Add(Object);
-                            entity.SaveChanges();
-                            message = Object.inventoryId.ToString();
-                        }
-                        else
-                        {
-                            var tmps = entity.Inventory.Where(p => p.inventoryId == Object.inventoryId).FirstOrDefault();
-                            tmps.inventoryId = Object.inventoryId;
-                            tmps.num = Object.num;
-                            tmps.notes = Object.notes;
-                            tmps.inventoryType = Object.inventoryType;
-                            tmps.isActive = Object.isActive;
-                            tmps.createDate = Object.createDate;
-                            tmps.updateDate = DateTime.Now;// server current date
-                            tmps.updateUserId = Object.updateUserId;
-                            entity.SaveChanges();
-                            message = tmps.inventoryId.ToString();
-                        }
-                    }
-                    return message; ;
-                }
-                catch
-                {
-                    return "-1";
-                }
-            }
-            else
-                return "-1";
-        }
-        //[HttpPost]
-        //[Route("delete")]
-        //public IHttpActionResult delete(int inventoryId)
-        //{
-        //    var re = Request;
-        //    var headers = re.Headers;
-        //    string token = "";
-        //    if (headers.Contains("APIKey"))
-        //    {
-        //        token = headers.GetValues("APIKey").First();
-        //    }
-        //    Validation validation = new Validation();
-        //    bool valid = validation.CheckApiKey(token);
-
-        //    if (valid)
-        //    {
-        //        try
-        //        {
-        //            using (incposdbEntities entity = new incposdbEntities())
-        //            {
-        //                var inv = entity.Inventory.Find(inventoryId);
-        //                inv.isActive = 0;
-        //                entity.SaveChanges();
-        //                return Ok(1);
-        //            }
-        //        }
-        //        catch
-        //        {
-        //            return Ok(0);
-        //        }
-        //    }
-        //    return NotFound();
-        //}
-        [HttpPost]
-        [Route("Delete")]
-        public IHttpActionResult Delete(int inventoryId, int userId, bool final)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
-
-                if (final)
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-
-                            Inventory Deleterow = entity.Inventory.Find(inventoryId);
-                            entity.Inventory.Remove(Deleterow);
-                            entity.SaveChanges();
-                            return Ok("1");
-                        }
-                    }
-                    catch
-                    {
-                        return Ok(0);
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-
-                            Inventory Obj = entity.Inventory.Find(inventoryId);
-                           Obj.isActive = 0;
-                            Obj.updateUserId = userId;
-                            Obj.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-                            return Ok("1");
-                        }
-                    }
-                    catch
-                    {
-                        return Ok(0);
-                    }
-                }
-            }
-            else
-                return NotFound();
-        }
-
-        [HttpGet]
         [Route("shortageIsManipulated")]
-        public IHttpActionResult shortageIsManipulated(int inventoryId)
+        public string shortageIsManipulated(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int inventoryId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        inventoryId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from c in entity.inventoryItemLocation
@@ -436,14 +270,200 @@ namespace POS_Server.Controllers
                                     id = c.id,
                                 })
                        .ToList();
- 
+                    bool result = false;
                     if (List.Count == 0)
-                        return Ok(true);
+                        result = true;
                     else
-                        return Ok(false);
+                        result = false;
+                    return TokenManager.GenerateToken(result);
                 }
             }
-            return NotFound();
         }
+    // add or update 
+    [HttpPost]
+    [Route("Save")]
+    public string Save(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+        string message = "";
+        if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+        {
+            return TokenManager.GenerateToken("-7");
+        }
+        else
+        {
+            string newObject = "";
+            Inventory Object = null;
+            IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "itemObject")
+                {
+                    newObject = c.Value.Replace("\\", string.Empty);
+                    newObject = newObject.Trim('"');
+                    Object = JsonConvert.DeserializeObject<Inventory>(newObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
+                }
+            }
+            try
+            {
+
+                if (Object.updateUserId == 0 || Object.updateUserId == null)
+                {
+                    Nullable<int> id = null;
+                    Object.updateUserId = id;
+                }
+                if (Object.createUserId == 0 || Object.createUserId == null)
+                {
+                    Nullable<int> id = null;
+                    Object.createUserId = id;
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var sEntity = entity.Set<Inventory>();
+                    if (Object.inventoryId == 0 || Object.inventoryId == null)
+                    {
+                        Object.createDate = DateTime.Now;
+                        Object.updateDate = DateTime.Now;
+                        Object.updateUserId = Object.createUserId;
+                        Object.isActive = 1;
+
+                        entity.Inventory.Add(Object);
+                        entity.SaveChanges();
+                        message = Object.inventoryId.ToString();
+                    }
+                    else
+                    {
+                        var tmps = entity.Inventory.Where(p => p.inventoryId == Object.inventoryId).FirstOrDefault();
+                        tmps.inventoryId = Object.inventoryId;
+                        tmps.num = Object.num;
+                        tmps.notes = Object.notes;
+                        tmps.inventoryType = Object.inventoryType;
+                        tmps.isActive = Object.isActive;
+                        tmps.createDate = Object.createDate;
+                        tmps.updateDate = DateTime.Now;// server current date
+                        tmps.updateUserId = Object.updateUserId;
+                        entity.SaveChanges();
+                        message = tmps.inventoryId.ToString();
+                    }
+                }
+
+                return TokenManager.GenerateToken(message);
+            }
+            catch
+            {
+                message = "0";
+                return TokenManager.GenerateToken(message);
+            }
+        }
+    }
+    //[HttpPost]
+    //[Route("delete")]
+    //public string delete(int inventoryId)
+    //{
+    //    var re = Request;
+    //    var headers = re.Headers;
+    //    string token = "";
+    //    if (headers.Contains("APIKey"))
+    //    {
+    //        token = headers.GetValues("APIKey").First();
+    //    }
+    //    Validation validation = new Validation();
+    //    bool valid = validation.CheckApiKey(token);
+
+    //    if (valid)
+    //    {
+    //        try
+    //        {
+    //            using (incposdbEntities entity = new incposdbEntities())
+    //            {
+    //                var inv = entity.Inventory.Find(inventoryId);
+    //                inv.isActive = 0;
+    //                entity.SaveChanges();
+    //                return Ok(1);
+    //            }
+    //        }
+    //        catch
+    //        {
+    //            return Ok(0);
+    //        }
+    //    }
+    //    return NotFound();
+    //}
+
+    [HttpPost]
+    [Route("Delete")]
+    public string Delete(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+        string message = "";
+        if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+        {
+            return TokenManager.GenerateToken("-7");
+        }
+        else
+        {
+            int inventoryId = 0;
+            int userId = 0;
+            Boolean final = false;
+            IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "itemId")
+                {
+                    inventoryId = int.Parse(c.Value);
+                }
+                else if (c.Type == "userId")
+                {
+                    userId = int.Parse(c.Value);
+                }
+                else if (c.Type == "final")
+                {
+                    final = bool.Parse(c.Value);
+                }
+            }
+
+            if (final)
+            {
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        Inventory Deleterow = entity.Inventory.Find(inventoryId);
+                        entity.Inventory.Remove(Deleterow);
+                        message = entity.SaveChanges().ToString();
+                        return TokenManager.GenerateToken(message);
+                    }
+                }
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+            }
+            else
+            {
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        Inventory Obj = entity.Inventory.Find(inventoryId);
+                        Obj.isActive = 0;
+                        Obj.updateUserId = userId;
+                        Obj.updateDate = DateTime.Now;
+                        message = entity.SaveChanges().ToString();
+                        return TokenManager.GenerateToken(message);
+                    }
+                }
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+            }
+        }
+    }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,47 +17,33 @@ namespace POS_Server.Controllers
     public class StorageCostController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            bool canDelete = false;
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            Boolean canDelete = false;
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var List = (from S in  entity.storageCost                                         
-                                         select new StorageCostModel()
-                                         {
-                                        storageCostId=S.storageCostId,
-                                           name=S.name,
-                                           cost=S.cost,
-                                           note=S.note,
-                                           isActive=S.isActive,
-
-                                            createDate = S.createDate,
-                                            updateDate = S.updateDate,
-                                            createUserId = S.createUserId,
-                                            updateUserId=S.updateUserId,
-                                            
-
-                                         }).ToList();
-                    /*
-
-         
-
-                    */
+                    var List = (from S in entity.storageCost
+                                select new StorageCostModel()
+                                {
+                                    storageCostId = S.storageCostId,
+                                    name = S.name,
+                                    cost = S.cost,
+                                    note = S.note,
+                                    isActive = S.isActive,
+                                    createDate = S.createDate,
+                                    updateDate = S.updateDate,
+                                    createUserId = S.createUserId,
+                                    updateUserId = S.updateUserId,
+                                }).ToList();
 
                     if (List.Count > 0)
                     {
@@ -62,94 +52,94 @@ namespace POS_Server.Controllers
                             if (List[i].isActive == 1)
                             {
                                 int storageCostId = (int)List[i].storageCostId;
-                                var itemsI= entity.itemsUnits.Where(x => x.storageCostId == storageCostId).Select(b => new { b.itemUnitId }).FirstOrDefault();
-                               
-                                if ((itemsI is null)  )
+                                var itemsI = entity.itemsUnits.Where(x => x.storageCostId == storageCostId).Select(b => new { b.itemUnitId }).FirstOrDefault();
+
+                                if ((itemsI is null))
                                     canDelete = true;
                             }
                             List[i].canDelete = canDelete;
                         }
                     }
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            //else
-            return NotFound();
+
         }
 
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
-        public IHttpActionResult GetByID(int storageCostId)
+        public string GetByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int storageCostId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        storageCostId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var row = entity.storageCost
                    .Where(u => u.storageCostId == storageCostId)
                    .Select(S => new
                    {
-                           S.storageCostId,
-                           S.name,
+                       S.storageCostId,
+                       S.name,
                        S.cost,
-                     S.note,
-                    S.isActive,
+                       S.note,
+                       S.isActive,
                        S.createDate,
-                           S.updateDate,
-                           S.createUserId,
-                           S.updateUserId,
-                        
-                          
+                       S.updateDate,
+                       S.createUserId,
+                       S.updateUserId,
+
+
 
                    })
                    .FirstOrDefault();
-
-                    if (row == null)
-                        return NotFound();
-                    else
-                        return Ok(row);
+                    return TokenManager.GenerateToken(row);
                 }
             }
-            else
-                return NotFound();
+
         }
 
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string Object)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                Object = Object.Replace("\\", string.Empty);
-                Object = Object.Trim('"');
-                storageCost newObject = JsonConvert.DeserializeObject<storageCost>(Object, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string storageCostObject = "";
+                storageCost newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        storageCostObject = c.Value.Replace("\\", string.Empty);
+                        storageCostObject = storageCostObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<storageCost>(storageCostObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -160,7 +150,7 @@ namespace POS_Server.Controllers
                     Nullable<int> id = null;
                     newObject.createUserId = id;
                 }
-               
+
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -171,8 +161,8 @@ namespace POS_Server.Controllers
                             newObject.createDate = DateTime.Now;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
-                         
-                      
+
+
                             locationEntity.Add(newObject);
                             entity.SaveChanges();
                             message = newObject.storageCostId.ToString();
@@ -184,16 +174,14 @@ namespace POS_Server.Controllers
                             tmpObject.updateDate = DateTime.Now;
                             tmpObject.updateUserId = newObject.updateUserId;
 
-                            tmpObject.name  =newObject.name;
+                            tmpObject.name = newObject.name;
                             tmpObject.cost = newObject.cost;
                             tmpObject.note = newObject.note;
-                                         
-                            tmpObject.isActive=newObject.isActive;
-                            entity.SaveChanges();
 
+                            tmpObject.isActive = newObject.isActive;
+                            entity.SaveChanges();
                             message = tmpObject.storageCostId.ToString();
                         }
-                      //  entity.SaveChanges();
                     }
                 }
                 catch
@@ -201,26 +189,40 @@ namespace POS_Server.Controllers
                     message = "-1";
                 }
             }
-            return message;
+            return TokenManager.GenerateToken(message);
         }
 
         [HttpPost]
         [Route("Delete")]
-        public string Delete(int storageCostId, int userId,bool final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int message = 0;
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int storageCostId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        storageCostId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -230,14 +232,15 @@ namespace POS_Server.Controllers
                             storageCost objectDelete = entity.storageCost.Find(storageCostId);
 
                             entity.storageCost.Remove(objectDelete);
-                        message=    entity.SaveChanges();
-                          
-                            return message.ToString();
+                            message = entity.SaveChanges().ToString();
+
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return "-1";
+                        message = "-1";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -251,22 +254,19 @@ namespace POS_Server.Controllers
                             objectDelete.isActive = 0;
                             objectDelete.updateUserId = userId;
                             objectDelete.updateDate = DateTime.Now;
-                            message= entity.SaveChanges();
+                            message = entity.SaveChanges().ToString();
 
-                            return message.ToString(); ;
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return "-2";
+                        message = "-2";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }
-            else
-                return "-3";
         }
-
-
 
     }
 }

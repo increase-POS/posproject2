@@ -25,9 +25,9 @@ namespace POS_Server
         public Nullable<int> posId { get; set; }
     
         public virtual notification notification { get; set; }
+        public virtual pos pos { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
         public virtual users users2 { get; set; }
-        public virtual pos pos { get; set; }
     }
 }

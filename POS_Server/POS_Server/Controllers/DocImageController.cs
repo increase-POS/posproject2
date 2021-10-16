@@ -13,7 +13,7 @@ namespace POS_Server.Controllers
     [RoutePrefix("api/DocImage")]
     public class DocImageController : ApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
         public IHttpActionResult Get(string tableName , int tableId)
         {
@@ -56,7 +56,7 @@ namespace POS_Server.Controllers
             //else
             return NotFound();
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetCount")]
         public IHttpActionResult GetCount(string tableName , int tableId)
         {
@@ -165,7 +165,7 @@ namespace POS_Server.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetImage")]
         public HttpResponseMessage GetImage( string imageName)
         {

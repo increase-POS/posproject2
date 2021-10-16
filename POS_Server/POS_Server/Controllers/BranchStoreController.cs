@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,22 +17,17 @@ namespace POS_Server.Controllers
     public class BranchStoreController : ApiController
     {
         // GET api/<controller> get all Objects
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             bool canDelete = false;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -83,35 +82,33 @@ namespace POS_Server.Controllers
                                     stype = JSBB.type,
 
                                 }).ToList();
+                    return TokenManager.GenerateToken(List);
 
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
                 }
             }
-            //else
-                return NotFound();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetByBranchId")]
-        public IHttpActionResult GetByBranchId(int branchId)
+        public string GetByBranchId(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             bool canDelete = false;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var List = (from S in entity.branchStore
@@ -168,41 +165,32 @@ namespace POS_Server.Controllers
                                     stype = JSBB.type,
 
                                 }).ToList();
-
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            //else
-            return NotFound();
         }
 
-
         // GET api/<controller>  Get medal By ID 
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
-        public IHttpActionResult GetByID()
+        public string GetByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int cId = 0;
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            if (headers.Contains("Id"))
+            else
             {
-                cId = Convert.ToInt32(headers.GetValues("Id").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
+                int cId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        cId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var list = entity.branchStore
@@ -220,38 +208,39 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (list == null)
-                        return NotFound();
-                    else
-                        return Ok(list);
+                    return TokenManager.GenerateToken(list);
                 }
             }
-            else
-                return NotFound();
         }
 
 
         // add or update 
         [HttpPost]
         [Route("Save")]
-        public String Save(string newObject)
+        public String Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message ="";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            
-            if (valid)
+            else
             {
-                newObject = newObject.Replace("\\", string.Empty);
-                newObject = newObject.Trim('"');
-                branchStore Object = JsonConvert.DeserializeObject<branchStore>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string Objects = "";
+                branchStore Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        Objects = c.Value.Replace("\\", string.Empty);
+                        Objects = Objects.Trim('"');
+                        Object = JsonConvert.DeserializeObject<branchStore>(Objects, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
                 try
                 {
                     if (Object.branchId == 0 || Object.branchId == null)
@@ -309,103 +298,56 @@ namespace POS_Server.Controllers
                        
                        
                     }
-                    return message; ;
+                    return TokenManager.GenerateToken(message);
                 }
 
                 catch
                 {
-                    return "-1";
+                    message =  "-1";
+                    return TokenManager.GenerateToken(message);
+
                 }
             }
-            else
-                return "-1";
         }
-
-        [HttpPost]
-        [Route("Delete")]
-        public IHttpActionResult Delete(int Id, int userId, bool final)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
-
-                if (final)
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-
-                            branchStore Deleterow = entity.branchStore.Find(Id);
-                            entity.branchStore.Remove(Deleterow);
-                            entity.SaveChanges();
-                            return Ok("OK");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-
-                            branchStore Obj = entity.branchStore.Find(Id);
-                            Obj.isActive = 0;
-                            Obj.updateUserId = userId;
-                            Obj.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-                            return Ok("Ok");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
-                }
-
-
-
-            }
-            else
-                return NotFound();
-        }
-
         //
         [HttpPost]
         [Route("UpdateStoresById")]
-        public bool UpdateStoresById(string newList, int branchId,int userId)
+        public string UpdateStoresById(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            newList = newList.Replace("\\", string.Empty);
-            newList = newList.Trim('"');
-
-            List<branchStore> newListObj = JsonConvert.DeserializeObject<List<branchStore>>(newList, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-
-            if (valid)
+            else
             {
+
+                string branchStoreObject = "";
+                List<branchStore> newListObj = null;
+                int branchId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "newList")
+                    {
+                        branchStoreObject = branchStoreObject.Replace("\\", string.Empty);
+                        branchStoreObject = branchStoreObject.Trim('"');
+                        newListObj = JsonConvert.DeserializeObject<List<branchStore>>(branchStoreObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                    else
+                  if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
+
                 // delete old invoice items
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -456,16 +398,91 @@ namespace POS_Server.Controllers
 
                     catch
                     {
-                        return false;
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
 
             }
 
-            return true;
+            message = "1";
+            return TokenManager.GenerateToken(message);
         }
 
         //
+        [HttpPost]
+        [Route("Delete")]
+        public string Delete(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int Id = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        Id = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
+                if (final)
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
 
+                            branchStore Deleterow = entity.branchStore.Find(Id);
+                            entity.branchStore.Remove(Deleterow);
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
+                    }
+                    catch
+                    {
+                        return TokenManager.GenerateToken("0");
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+
+                            branchStore Obj = entity.branchStore.Find(Id);
+                            Obj.isActive = 0;
+                            Obj.updateUserId = userId;
+                            Obj.updateDate = DateTime.Now;
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
+                    }
+                    catch
+                    {
+                        return TokenManager.GenerateToken("0");
+                    }
+                }
+
+
+
+            }
+        }
     }
 }

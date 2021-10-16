@@ -15,6 +15,7 @@ using POS_Server.Classes;
 using POS_Server.Models.VM;
 using System.Security.Claims;
 using Newtonsoft.Json.Converters;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -25,16 +26,14 @@ namespace POS_Server.Controllers
 
         List<int> categoriesId = new List<int>();
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAllItems")]
-        public ResponseVM GetAllItems()
+        public string GetAllItems(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -214,20 +213,18 @@ namespace POS_Server.Controllers
                             
                         }
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                    return  TokenManager.GenerateToken(itemsList);
                 }
             }  
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemsWichHasUnits")]
-        public ResponseVM GetItemsWichHasUnits()
+        public string GetItemsWichHasUnits(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -257,20 +254,18 @@ namespace POS_Server.Controllers
 
                                      }).Where(x => x.isActive == 1).Distinct()
                                 .ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                    return  TokenManager.GenerateToken(itemsList) ;
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemsInCategory")]
-        public ResponseVM GetItemsInCategory(string token)
+        public string GetItemsInCategory(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -309,21 +304,19 @@ namespace POS_Server.Controllers
                    })
                    .ToList();
 
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                    return  TokenManager.GenerateToken(itemsList) ;
                 }
             }
         }
         // get item in category and all of her sub gategories
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemsInCategoryAndSub")]
-        public ResponseVM GetItemsInCategoryAndSub(string token)
+        public string GetItemsInCategoryAndSub(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -440,21 +433,19 @@ namespace POS_Server.Controllers
 
 
                     }
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(items) };
+                    return  TokenManager.GenerateToken(items) ;
                 }
             }
         }
         // GET api/agent/5
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemsByType")]
-        public ResponseVM GetItemsByType(string token)
+        public string GetItemsByType(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -481,20 +472,18 @@ namespace POS_Server.Controllers
                        I.isActive,
                    })
                    .ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(items) };
+                    return TokenManager.GenerateToken(items) ;
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemByID")]
-        public ResponseVM GetItemByID(string token)
+        public string GetItemByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -533,40 +522,36 @@ namespace POS_Server.Controllers
                        I.updateUserId
                    })
                    .FirstOrDefault();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(item) };
+                    return  TokenManager.GenerateToken(item) ;
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemsCodes")]
-        public ResponseVM GetItemsCodes(string token)
+        public string GetItemsCodes(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var itemsList = entity.items.Select(I => I.code).ToList();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                    return  TokenManager.GenerateToken(itemsList);
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetSaleOrPurItems")]
-        public ResponseVM GetSaleOrPurItems(string token)
+        public string GetSaleOrPurItems(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -803,7 +788,7 @@ namespace POS_Server.Controllers
                                 }
                                 iunlist.desPrice = iunlist.priceTax - totaldis;
                             }
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                            return TokenManager.GenerateToken(itemsList) ;
                         }
                         #endregion
                         #region items for sale
@@ -996,7 +981,7 @@ namespace POS_Server.Controllers
                                 }
                                 iunlist.desPrice = iunlist.priceTax - totaldis;
                             }
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                            return  TokenManager.GenerateToken(itemsList) ;
                         }
                         #endregion
                         #region items for purchase
@@ -1042,16 +1027,16 @@ namespace POS_Server.Controllers
                                     itemL.isNew = 1;
                                 }
                             }
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                            return TokenManager.GenerateToken(itemsList) ;
                         }
                         #endregion
                     }
                 }
                 catch
                 {
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                    return  TokenManager.GenerateToken("0") ;
                 }
-                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                return TokenManager.GenerateToken("0") ;
             }
         }
         private int getItemUnitAmount(int itemUnitId, int branchId)
@@ -1091,9 +1076,9 @@ namespace POS_Server.Controllers
             }
         }
        
-        [HttpGet]
+        [HttpPost]
         [Route("GetItemByBarcode")]
-        public ResponseVM GetItemByBarcode(string barcode)
+        public string GetItemByBarcode(string barcode)
         {
             int itemId = 0;
             using (incposdbEntities entity = new incposdbEntities())
@@ -1124,15 +1109,13 @@ namespace POS_Server.Controllers
         // add or update item
         [HttpPost]
         [Route("Save")]
-        public ResponseVM Save(string token)
-        {            
-            string message = "";            
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+        public string Save(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);            
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -1228,28 +1211,26 @@ namespace POS_Server.Controllers
                                 // return Ok(itemModel.itemId);
                             }
                         }
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                        return TokenManager.GenerateToken(message) ;
                     }
                     catch
                     {
                         message = "0";
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                        return TokenManager.GenerateToken(message) ;
                     }
                 }
-                return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                return  TokenManager.GenerateToken(message) ;
             }
         }
         [HttpPost]
         [Route("UpdateImage")]
-        public ResponseVM UpdateImage(string token)
+        public string UpdateImage(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -1277,26 +1258,24 @@ namespace POS_Server.Controllers
                         entity.SaveChanges();
                     }
                     message = item.itemId.ToString();
-                    return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                    return  TokenManager.GenerateToken(message) ;
                 }
                 catch
                 {
                     message = "0";
-                    return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken(message) };
+                    return  TokenManager.GenerateToken(message) ;
                 }
             }
         }
         [HttpPost]
         [Route("Delete")]
-        public ResponseVM Delete(string token)
+        public string Delete(string token)
         {
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -1346,11 +1325,11 @@ namespace POS_Server.Controllers
                          message=   entity.SaveChanges().ToString();
                         
                         }
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
+                        return  TokenManager.GenerateToken(message) ;
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                        return TokenManager.GenerateToken("0");
                     }
                 }
                 else
@@ -1365,29 +1344,26 @@ namespace POS_Server.Controllers
                             tmpItem.updateUserId = userId;
 
                          message =   entity.SaveChanges().ToString();
-                            return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(message) };
-
+                            return  TokenManager.GenerateToken(message) ;
                         }
                       
                     }
                     catch
                     {
-                        return new ResponseVM { Status = "Fail", Message = TokenManager.GenerateToken("0") };
+                        return TokenManager.GenerateToken("0") ;
                     }
 
                 }
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("GetSubItems")]
-        public ResponseVM GetSubItems(string token)
+        public string GetSubItems(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -1428,7 +1404,7 @@ namespace POS_Server.Controllers
                            I.updateUserId
                        })
                        .ToList();
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                        return  TokenManager.GenerateToken(itemsList) ;
                     }
                     else
                     {
@@ -1456,7 +1432,7 @@ namespace POS_Server.Controllers
                            I.updateUserId
                        })
                        .ToList();
-                        return new ResponseVM { Status = "Success", Message = TokenManager.GenerateToken(itemsList) };
+                        return TokenManager.GenerateToken(itemsList) ;
                     }
                 }
             }
@@ -1528,7 +1504,7 @@ namespace POS_Server.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {
@@ -1552,7 +1528,7 @@ namespace POS_Server.Controllers
         int newdays = -15;
 
         #region
-        [HttpGet]
+        [HttpPost]
         [Route("GetAllSaleItems")]
         public IHttpActionResult GetAllSaleItems()
         {
@@ -1773,7 +1749,7 @@ namespace POS_Server.Controllers
         #endregion
         // get all items where defaultPurchase is 1 and set isNew=1 if new item
         #region
-        [HttpGet]
+        [HttpPost]
         [Route("GetAllPurItems")]
         public IHttpActionResult GetAllPurItems()
         {
@@ -1875,7 +1851,7 @@ namespace POS_Server.Controllers
         // get all items where defaultSale is 1 and set isNew=1 if new item  and set isOffer=1 if Has Active Offer 
         //by category and its sub categories
         #region
-        [HttpGet]
+        [HttpPost]
         [Route("GetSaleItemsByCategory")]
         public IHttpActionResult GetSaleItemsByCategory(int categoryId)
         {
@@ -2116,11 +2092,10 @@ namespace POS_Server.Controllers
         }
         #endregion
 
-
         // get all items where defaultPurchase is 1 and set isNew=1 if new item
         //by category and its sub categories
         #region
-        [HttpGet]
+        [HttpPost]
         [Route("GetPurItemsByCategory")]
         public IHttpActionResult GetPurItemsByCategory(int categoryId)
         {

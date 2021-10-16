@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -14,22 +18,17 @@ namespace POS_Server.Controllers
     {
         List<int> unitsIds = new List<int>();
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -72,46 +71,36 @@ namespace POS_Server.Controllers
                             unitsList[i].canDelete = canDelete;
                         }
                     }
-                    if (unitsList == null)
-                        return NotFound();
-                    else
-                        return Ok(unitsList);
+                    return TokenManager.GenerateToken(unitsList);
                 }
             }
-            //else
-            return NotFound();
-        }
+         }
 
-        //private IEnumerable<units> Traverse(IEnumerable<itemsUnits> units)
-        //{
-        //    using (incposdbEntities entity = new incposdbEntities())
-        //    {
-        //        foreach (var category in units)
-        //        {
-        //            var subCategories = entity.itemsUnits.Where(x => x.subUnitId == category.unitId).ToList();
-        //            category.Children = subCategories;
-        //            category.Children = Traverse(category.Children).ToList();
-        //        }
-        //    }
-        //    return categories;
-        //}
-        [HttpGet]
+        
+        [HttpPost]
         [Route("getSmallUnits")]
-        public IHttpActionResult getSmallUnits(int itemId, int unitId)
+        public string getSmallUnits(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int itemId = 0;
+                int unitId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        itemId = int.Parse(c.Value);
+                    } else if (c.Type == "unitId")
+                    {
+                        unitId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     // get all sub categories of categoryId
@@ -145,20 +134,234 @@ namespace POS_Server.Controllers
                                      isActive = u.isActive,
 
                                  }).Where(p => !unitsIds.Contains((int)p.unitId)).ToList();
-
-                    if (units == null)
-                        return NotFound();
-                    else
-                        return Ok(units);
+                    return TokenManager.GenerateToken(units);
                 }
-
+            }
+        }
+         
+        [HttpPost]
+        [Route("GetActive")]
+        public string GetActive(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
-                return NotFound();
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var unitsList = entity.units
+                        .Where(u => u.isActive == 1)
+                        .Select(u => new {
+                            u.createDate,
+                            u.createUserId,
+                            u.isSmallest,
+                            u.name,
+                            u.parentid,
+                            u.smallestId,
+                            u.unitId,
+                            u.updateDate,
+                            u.updateUserId,
+                            u.notes,
+                        })
+                    .ToList();
+                    return TokenManager.GenerateToken(unitsList);
+                }
             }
-
         }
+
+        // GET api/<controller>
+        [HttpPost]
+        [Route("GetUnitByID")]
+        public string GetUnitByID(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int unitId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        unitId = int.Parse(c.Value);
+                    }
+                   
+                }
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var unit = entity.units
+                   .Where(u => u.unitId == unitId)
+                   .Select(u => new {
+                       u.createDate,
+                       u.createUserId,
+                       u.isSmallest,
+                       u.name,
+                       u.parentid,
+                       u.smallestId,
+                       u.unitId,
+                       u.updateDate,
+                       u.updateUserId,
+                       u.notes,
+                   })
+                   .FirstOrDefault();
+                    return TokenManager.GenerateToken(unit);
+                }
+            }
+         }
+
+        // add or update unit
+        [HttpPost]
+        [Route("Save")]
+        public string Save(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                string unitObject = "";
+                units Object = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        unitObject = c.Value.Replace("\\", string.Empty);
+                        unitObject = unitObject.Trim('"');
+                        Object = JsonConvert.DeserializeObject<units>(unitObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        units tmpUnit = new units();
+                        var unitEntity = entity.Set<units>();
+                        if (Object.unitId == 0)
+                        {
+                            Object.createDate = DateTime.Now;
+                            Object.updateDate = DateTime.Now;
+                            Object.updateUserId = Object.createUserId;
+
+                            unitEntity.Add(Object);
+                            tmpUnit = unitEntity.Add(Object);
+                            entity.SaveChanges();
+                            message = tmpUnit.unitId.ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
+                        else
+                        {
+                            tmpUnit = entity.units.Where(p => p.unitId == Object.unitId).FirstOrDefault();
+                            tmpUnit.name = Object.name;
+                            tmpUnit.notes = Object.notes;
+                            tmpUnit.isSmallest = Object.isSmallest;
+                            tmpUnit.smallestId = Object.smallestId;
+                            tmpUnit.updateDate = DateTime.Now;
+                            tmpUnit.updateUserId = Object.updateUserId;
+                            tmpUnit.parentid = Object.parentid;
+                            tmpUnit.isActive = Object.isActive;
+                            entity.SaveChanges();
+                            message = tmpUnit.unitId.ToString();
+                            return TokenManager.GenerateToken(message);
+
+                        }
+                    }
+                }
+
+                catch
+                {
+                    message = "0";
+                }
+                return TokenManager.GenerateToken(message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Delete")]
+        public string Delete(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int unitId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        unitId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
+                if (final)
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+
+                            units unitDelete = entity.units.Find(unitId);
+                            entity.units.Remove(unitDelete);
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
+                    }
+                    catch
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            units unitDelete = entity.units.Find(unitId);
+                            unitDelete.isActive = 0;
+                            unitDelete.updateDate = DateTime.Now;
+                            unitDelete.updateUserId = userId;
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
+                    }
+                    catch
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
+                }
+            }
+         }
+
 
         public IEnumerable<itemsUnits> Recursive(List<itemsUnits> unitsList, int smallLevelid)
         {
@@ -178,265 +381,18 @@ namespace POS_Server.Controllers
 
             return inner;
         }
-
-        [HttpGet]
-        [Route("Search")]
-        public IHttpActionResult Search(string searchWords)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var unitsList = (from u in entity.units
-                                     join b in entity.units
-                                      on new { UnitModel = u.smallestId } equals new { UnitModel = (int?)b.unitId } into lj
-                                     from x in lj.DefaultIfEmpty()
-                                     select new UnitModel()
-                                     {
-                                         unitId = u.unitId,
-                                         name = u.name,
-                                         isSmallest = u.isSmallest,
-                                         smallestUnit = x.name,
-                                         parentid = u.parentid,
-                                         smallestId = u.smallestId,
-                                         createDate = u.createDate,
-                                         createUserId = u.createUserId,
-                                         updateDate = u.updateDate,
-                                         updateUserId = u.updateUserId,
-                                         isActive = u.isActive,
-                                         notes = u.notes,
-                                     }).Where(f => (f.name.Contains(searchWords) || f.smallestUnit.Contains(searchWords))).ToList();
-                    if (unitsList == null)
-                        return NotFound();
-                    else
-                        return Ok(unitsList);
-                }
-            }
-            //else
-            return NotFound();
-        }
-
-        [HttpGet]
-        [Route("GetActive")]
-        public IHttpActionResult GetActive()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var unitsList = entity.units
-                        .Where(u => u.isActive == 1)
-                        .Select(u => new {
-                            u.createDate,
-                            u.createUserId,
-                            u.isSmallest,
-                            u.name,
-                            u.parentid,
-                            u.smallestId,
-                            u.unitId,
-                            u.updateDate,
-                            u.updateUserId,
-                            u.notes,
-                        })
-                    .ToList();
-
-                    if (unitsList == null)
-                        return NotFound();
-                    else
-                        return Ok(unitsList);
-                }
-            }
-            //else
-            return NotFound();
-        }
-
-        // GET api/<controller>
-        [HttpGet]
-        [Route("GetUnitByID")]
-        public IHttpActionResult GetUnitByID()
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int unitId = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            if (headers.Contains("unitId"))
-            {
-                unitId = Convert.ToInt32(headers.GetValues("unitId").First());
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                using (incposdbEntities entity = new incposdbEntities())
-                {
-                    var unit = entity.units
-                   .Where(u => u.unitId == unitId)
-                   .Select(u => new {
-                       u.createDate,
-                       u.createUserId,
-                       u.isSmallest,
-                       u.name,
-                       u.parentid,
-                       u.smallestId,
-                       u.unitId,
-                       u.updateDate,
-                       u.updateUserId,
-                       u.notes,
-                   })
-                   .FirstOrDefault();
-
-                    if (unit == null)
-                        return NotFound();
-                    else
-                        return Ok(unit);
-                }
-            }
-            else
-                return NotFound();
-        }
-
-        // add or update unit
-        [HttpPost]
-        [Route("Save")]
-        public string Save(string unitObject)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            string message = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
-            {
-                unitObject = unitObject.Replace("\\", string.Empty);
-                unitObject = unitObject.Trim('"');
-                units Object = JsonConvert.DeserializeObject<units>(unitObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                try
-                {
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var unitEntity = entity.Set<units>();
-                        if (Object.unitId == 0)
-                        {
-                            Object.createDate = DateTime.Now;
-                            Object.updateDate = DateTime.Now;
-                            Object.updateUserId = Object.createUserId;
-
-                            unitEntity.Add(Object);
-                            message = "Unit Is Added Successfully";
-                        }
-                        else
-                        {
-                            var tmpUnit = entity.units.Where(p => p.unitId == Object.unitId).FirstOrDefault();
-                            tmpUnit.name = Object.name;
-                            tmpUnit.notes = Object.notes;
-                            tmpUnit.isSmallest = Object.isSmallest;
-                            tmpUnit.smallestId = Object.smallestId;
-                            tmpUnit.updateDate = DateTime.Now;
-                            tmpUnit.updateUserId = Object.updateUserId;
-                            tmpUnit.parentid = Object.parentid;
-                            tmpUnit.isActive = Object.isActive;
-                            message = "Unit Is Updated Successfully";
-                        }
-                        entity.SaveChanges();
-                    }
-                }
-
-                catch
-                {
-                    message = "an error ocurred";
-                }
-            }
-            return message;
-        }
-
-        [HttpPost]
-        [Route("Delete")]
-        public IHttpActionResult Delete(int unitId, int userId, Boolean final)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
-                if (final)
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-
-                            units unitDelete = entity.units.Find(unitId);
-                            entity.units.Remove(unitDelete);
-                            entity.SaveChanges();
-                            return Ok("Unit is Deleted Successfully");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            units unitDelete = entity.units.Find(unitId);
-                            unitDelete.isActive = 0;
-                            unitDelete.updateDate = DateTime.Now;
-                            unitDelete.updateUserId = userId;
-                            entity.SaveChanges();
-                            return Ok("Unit is Deleted Successfully");
-                        }
-                    }
-                    catch
-                    {
-                        return NotFound();
-                    }
-                }
-            }
-            else
-                return NotFound();
-        }
+        //private IEnumerable<units> Traverse(IEnumerable<itemsUnits> units)
+        //{
+        //    using (incposdbEntities entity = new incposdbEntities())
+        //    {
+        //        foreach (var category in units)
+        //        {
+        //            var subCategories = entity.itemsUnits.Where(x => x.subUnitId == category.unitId).ToList();
+        //            category.Children = subCategories;
+        //            category.Children = Traverse(category.Children).ToList();
+        //        }
+        //    }
+        //    return categories;
+        //}
     }
 }

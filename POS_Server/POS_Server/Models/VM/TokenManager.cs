@@ -8,6 +8,8 @@ using System.IO;
 using System.IO.Compression;
 //using System.IO.Compression;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -53,7 +55,7 @@ namespace POS_Server.Models.VM
         {
             try
             {
-                token = token.Replace("Bearer ", string.Empty);
+                token = DeCompressThenDecrypt(token);
                 var symmetricKey = Convert.FromBase64String(Secret);
                 var validationParameters = new TokenValidationParameters()
                 {
@@ -228,7 +230,7 @@ namespace POS_Server.Models.VM
             text = HttpUtility.UrlDecode(text);
             var bytes = Encoding.UTF8.GetBytes(text);
             text = Encoding.UTF8.GetString(bytes);
-            //string reversedStr = ReverseString(text);           
+           // string reversedStr = ReverseString(text);           
            // var bytes = Encoding.Unicode.GetBytes(text);
             //var bytes1 = DeCompress(bytes);
           
@@ -236,7 +238,55 @@ namespace POS_Server.Models.VM
            // return str;
             return (Decrypt(text));
         }
+         public static string readToken(HttpRequest Request)
+        {  
+            var filePath = "";
+            int fileNum = 0;
+            string fileName = "";
+            foreach (string file in Request.Files)
+            {
+                //var postedFile = Request.Files[file];
+                //string fileName = "tmp.txt";
 
+                //if (postedFile != null && postedFile.ContentLength > 0)
+                //{
+                //    //  check if file exist
+                //    var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
+                //    var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
+                //    if (files.Length > 0)
+                //    {
+                //        File.Delete(files[0]);
+                //    }
+
+                //    //Userimage myfolder name where i want to save my image
+                //    filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
+                //    postedFile.SaveAs(filePath);
+
+                //}
+                var postedFile = Request.Files[file];
+               
+                while (true)
+                {
+                    fileName = "tmp" + fileNum.ToString() + ".txt";
+                    var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
+                    if (files.Length > 0)
+                    {
+                        fileNum++;
+                    }
+                    else
+                    {
+                        filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
+                        postedFile.SaveAs(filePath);
+                        break;
+                    }
+                }
+               
+            }
+          
+           string text = File.ReadAllText(filePath);
+            File.Delete(filePath);
+            return text;
+        }
 
     }
 }

@@ -1,35 +1,33 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
     [RoutePrefix("api/errorcontroller")]
-    public class ErrorController : ApiController
+    public class ErrorController : ApiController 
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
-        public IHttpActionResult GetAll()
+        public string GetAll(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-
-
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -37,50 +35,41 @@ namespace POS_Server.Controllers
                                 select new ErrorModel()
                                 {
                                     errorId = S.errorId,
-
                                     num = S.num,
                                     msg = S.msg,
-                                   stackTrace = S.stackTrace,
+                                    stackTrace = S.stackTrace,
                                     targetSite = S.targetSite,
                                     posId = S.posId,
                                     branchId = S.branchId,
                                     createDate = S.createDate,
                                     createUserId = S.createUserId,
 
-
-
                                 }).ToList();
-
-
-
-
-                    if (List == null)
-                        return NotFound();
-                    else
-                        return Ok(List);
+                    return TokenManager.GenerateToken(List);
                 }
             }
-            //else
-            return NotFound();
         }
-
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetByID")]
-        public IHttpActionResult GetByID(int errorId)
+        public string GetByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int errorId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        errorId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var row = entity.error
@@ -102,38 +91,37 @@ namespace POS_Server.Controllers
                    })
                    .FirstOrDefault();
 
-                    if (row == null)
-                        return NotFound();
-                    else
-                        return Ok(row);
+                    return TokenManager.GenerateToken(row);
                 }
             }
-            else
-                return NotFound();
         }
-
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string Object)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                Object = Object.Replace("\\", string.Empty);
-                Object = Object.Trim('"');
-                error newObject = JsonConvert.DeserializeObject<error>(Object, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            
+                string Object = "";
+                error newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<error>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
                 if (newObject.createUserId == 0 || newObject.createUserId == null)
                 {
                     Nullable<int> id = null;
@@ -157,12 +145,10 @@ namespace POS_Server.Controllers
                         if (newObject.errorId == 0)
                         {
                             newObject.createDate = DateTime.Now;
-             
-                 
-
                             locationEntity.Add(newObject);
                             entity.SaveChanges();
                             message = newObject.errorId.ToString();
+                    return TokenManager.GenerateToken(message);
                         }
                         else
                         {
@@ -183,60 +169,60 @@ namespace POS_Server.Controllers
                             entity.SaveChanges();
 
                             message = tmpObject.errorId.ToString();
+                    return TokenManager.GenerateToken(message);
                         }
-                        //  entity.SaveChanges();
+                    }
+                }
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+            }
+        }
+        [HttpPost]
+        [Route("Delete")]
+        public string Delete(string token)
+        {
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                try
+                {
+                    int errorId = 0;
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                    foreach (Claim c in claims)
+                    {
+                        if (c.Type == "itemId")
+                        {
+                            errorId = int.Parse(c.Value);
+                        }
+                    }
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        error objectDelete = entity.error.Find(errorId);
+
+                        entity.error.Remove(objectDelete);
+                        message = entity.SaveChanges().ToString();
+
+                        return TokenManager.GenerateToken(message);
+
                     }
                 }
                 catch
                 {
                     message = "-1";
+                    return TokenManager.GenerateToken(message);
+
                 }
+
+
             }
-            return message;
         }
-
-        [HttpPost]
-        [Route("Delete")]
-        public string Delete(int errorId)
-        {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            int message = 0;
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
-            {
-               
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
-                        {
-                            error objectDelete = entity.error.Find(errorId);
-
-                            entity.error.Remove(objectDelete);
-                            message = entity.SaveChanges();
-
-                            return message.ToString();
-                        }
-                    }
-                    catch
-                    {
-                        return "-1";
-                    }
-              
-                
-            }
-            else
-                return "-3";
-        }
-
-
-
     }
 }

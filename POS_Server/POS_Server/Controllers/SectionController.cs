@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using POS_Server.Models;
+using POS_Server.Models.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web;
 
 namespace POS_Server.Controllers
 {
@@ -13,23 +17,17 @@ namespace POS_Server.Controllers
     public class SectionController : ApiController
     {
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("Get")]
-        public IHttpActionResult Get()
+        public string Get(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -68,35 +66,32 @@ namespace POS_Server.Controllers
                             sectionList[i].canDelete = canDelete;
                         }
                     }
-
-                    if (sectionList == null)
-                        return NotFound();
-                    else
-                        return Ok(sectionList);
+                     
+                    return TokenManager.GenerateToken(sectionList);
                 }
             }
-            //else
-            return NotFound();
         }
-
-        [HttpGet]
+        [HttpPost]
         [Route("getBranchSections")]
-        public IHttpActionResult getBranchSections(int branchId)
+        public string getBranchSections(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid) // APIKey is valid
+            else
             {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var sectionList =(from L in entity.sections where L.branchId == branchId && L.isFreeZone != 1
@@ -136,33 +131,31 @@ namespace POS_Server.Controllers
                         }
                     }
 
-                    if (sectionList == null)
-                        return NotFound();
-                    else
-                        return Ok(sectionList);
+                    return TokenManager.GenerateToken(sectionList);
                 }
             }
-            //else
-            return NotFound();
         }
-
         // GET api/<controller>
-        [HttpGet]
+        [HttpPost]
         [Route("GetSectionByID")]
-        public IHttpActionResult GetSectionByID(int sectionId)
+        public string GetSectionByID(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
+                int sectionId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        sectionId = int.Parse(c.Value);
+                    }
+                }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var location = entity.sections
@@ -183,38 +176,36 @@ namespace POS_Server.Controllers
 
                    })
                    .FirstOrDefault();
-
-                    if (location == null)
-                        return NotFound();
-                    else
-                        return Ok(location);
+                    return TokenManager.GenerateToken(location);
                 }
             }
-            else
-                return NotFound();
-        }
-
+         }
         // add or update location
         [HttpPost]
         [Route("Save")]
-        public string Save(string sectionObject)
+        public string Save(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
+token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (headers.Contains("APIKey"))
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-
-            if (valid)
+            else
             {
-                sectionObject = sectionObject.Replace("\\", string.Empty);
-                sectionObject = sectionObject.Trim('"');
-                sections newObject = JsonConvert.DeserializeObject<sections>(sectionObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                string sectionObject = "";
+                sections newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemObject")
+                    {
+                        sectionObject = c.Value.Replace("\\", string.Empty);
+                        sectionObject = sectionObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<sections>(sectionObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
                 if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                 {
                     Nullable<int> id = null;
@@ -268,23 +259,37 @@ namespace POS_Server.Controllers
             }
             return message;
         }
-
         [HttpPost]
         [Route("Delete")]
-        public bool Delete(int sectionId, int userId,Boolean final)
+        public string Delete(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
+token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                token = headers.GetValues("APIKey").First();
+                return TokenManager.GenerateToken("-7");
             }
-
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
-            if (valid)
+            else
             {
+                int sectionId = 0;
+                int userId = 0;
+                Boolean final = false;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        sectionId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "final")
+                    {
+                        final = bool.Parse(c.Value);
+                    }
+                }
                 if (final)
                 {
                     try
@@ -292,16 +297,15 @@ namespace POS_Server.Controllers
                         using (incposdbEntities entity = new incposdbEntities())
                         {
                             sections sectionDelete = entity.sections.Find(sectionId);
-
                             entity.sections.Remove(sectionDelete);
-                            entity.SaveChanges();
-
-                            return true;
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return false;
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 else
@@ -315,19 +319,17 @@ namespace POS_Server.Controllers
                             sectionDelete.isActive = 0;
                             sectionDelete.updateUserId = userId;
                             sectionDelete.updateDate = DateTime.Now;
-                            entity.SaveChanges();
-
-                            return true;
+                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                     catch
                     {
-                        return false;
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
                     }
                 }
             }
-            else
-                return false;
         }
     }
 }
