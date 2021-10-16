@@ -79,7 +79,7 @@ namespace POS.Classes
             parameters.Add("userId", userId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemUnitUser/GetByUserId");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemUnitUser/GetByUserId",parameters);
 
             foreach (Claim c in claims)
             {

@@ -234,7 +234,7 @@ namespace POS.Classes
             }
             return count;
         }
-        public async Task<List<Invoice>> getBranchInvoices(string invType, int branchCreatorId, int branchId = 0)
+        public async Task<List<Invoice>> getBranchInvoices(string invType, int branchCreatorId, int branchId=0 )
         {
             List<Invoice> items = new List<Invoice>();
             Dictionary<string, string> parameters = new Dictionary<string, string>();

@@ -1202,7 +1202,7 @@ namespace POS.View.reports
                 ShippingCompanies toShipCompanies = new ShippingCompanies();
                 string emailto = "";
                 bool toemailexist = false;
-                email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "accounting");
                 switch (selectedTab)
                 {
                     case 0:

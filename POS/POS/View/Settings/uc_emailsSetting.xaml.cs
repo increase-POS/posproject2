@@ -644,14 +644,16 @@ namespace POS.View.Settings
         {
             #region fill deposit to combo
             var list = new[] {
-            new { Text = MainWindow.resourcemanager.GetString("trMedia")     , Value = "md" },
-            new { Text = MainWindow.resourcemanager.GetString("trHR")   , Value = "hr" },
-            new { Text = MainWindow.resourcemanager.GetString("trManager")       , Value = "mg" },
-            new { Text = MainWindow.resourcemanager.GetString("trMarket")     , Value = "mk" },
-            new { Text = MainWindow.resourcemanager.GetString("trSupport")     , Value = "sp" },
-            new { Text = MainWindow.resourcemanager.GetString("trInfo")  , Value = "if" },
-            new { Text = MainWindow.resourcemanager.GetString("trSales")  , Value = "Sales" },
-            new { Text = MainWindow.resourcemanager.GetString("trPurchases")  , Value = "Purchase" }
+         //   new { Text = MainWindow.resourcemanager.GetString("trMedia")     , Value = "md" },
+          //  new { Text = MainWindow.resourcemanager.GetString("trHR")   , Value = "hr" },
+          //  new { Text = MainWindow.resourcemanager.GetString("trManager")       , Value = "mg" },
+            //new { Text = MainWindow.resourcemanager.GetString("trMarket")     , Value = "mk" },
+            //new { Text = MainWindow.resourcemanager.GetString("trSupport")     , Value = "sp" },
+            //new { Text = MainWindow.resourcemanager.GetString("trInfo")  , Value = "if" },
+  new { Text = MainWindow.resourcemanager.GetString("trAccounting")  , Value = "accounting" },
+            new { Text = MainWindow.resourcemanager.GetString("trSales")  , Value = "sales" },
+            new { Text = MainWindow.resourcemanager.GetString("trPurchases")  , Value = "purchase" },
+              
              };
             cb_side.DisplayMemberPath = "Text";
             cb_side.SelectedValuePath = "Value";

@@ -1963,7 +1963,7 @@ namespace POS.View.purchases
         {
             SysEmails email = new SysEmails();
             EmailClass mailtosend = new EmailClass();
-            email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+            email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "purchase");
             Agent toAgent = new Agent();
             toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
             //  int? itemcount = invoiceItems.Count();

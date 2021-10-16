@@ -675,7 +675,7 @@ namespace POS.Classes
             parameters.Add("ammount", ammount.ToString());
             parameters.Add("payType", payType.ToString());
             var myContent = JsonConvert.SerializeObject(cashTr);
-            parameters.Add("cashTr", myContent);
+            parameters.Add("cashTransfer", myContent);
 
 
 
@@ -728,7 +728,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(invoicelst);
             parameters.Add("invoices", myContent);
             var myContent2 = JsonConvert.SerializeObject(cashTr);
-            parameters.Add("cashtransfer", myContent2);
+            parameters.Add("cashTransfer", myContent2);
 
 
 
@@ -785,7 +785,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(invoicelst);
             parameters.Add("invoices", myContent);
             var myContent2 = JsonConvert.SerializeObject(cashTr);
-            parameters.Add("cashtransfer", myContent2);
+            parameters.Add("cashTransfer", myContent2);
 
 
 
@@ -840,7 +840,7 @@ namespace POS.Classes
             var myContent = JsonConvert.SerializeObject(invoicelst);
             parameters.Add("invoices", myContent);
             var myContent2 = JsonConvert.SerializeObject(cashTr);
-            parameters.Add("cashtransfer", myContent2);
+            parameters.Add("cashTransfer", myContent2);
 
 
 
@@ -909,7 +909,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    message = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                   message = int.Parse(c.Value); ;
                     break;
                 }
             }
@@ -967,7 +967,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    message = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    message = int.Parse(c.Value); ;
                     break;
                 }
             }
@@ -1012,7 +1012,7 @@ namespace POS.Classes
             
           
             var myContent = JsonConvert.SerializeObject(cashTransfer);
-            parameters.Add("cashtransfer", myContent);
+            parameters.Add("cashTransfer", myContent);
 
             string method = "Cashtransfer/payOrderInvoice";
            return await APIResult.post(method, parameters);
@@ -1065,7 +1065,7 @@ namespace POS.Classes
             {
                 if (c.Type == "scopes")
                 {
-                    message = JsonConvert.DeserializeObject<int>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    message =int.Parse(c.Value);
                     break;
                 }
             }

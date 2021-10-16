@@ -344,7 +344,7 @@ namespace POS.Classes
 
             List<GroupObject> list = new List<GroupObject>();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("userId", groupId.ToString());
+            parameters.Add("userId", userId.ToString());
             //#################
             IEnumerable<Claim> claims = await APIResult.getList("GroupObject/GetUserpermission", parameters);
 

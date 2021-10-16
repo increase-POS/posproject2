@@ -2620,4 +2620,13 @@
   <data name="trNoNetworkConnection" xml:space="preserve">
     <value>لا يوجد اتصال بالشبكة</value>
   </data>
+  <data name="trAdministrativePullHint" xml:space="preserve">
+    <value>سحوبات إدارية...</value>
+  </data>
+  <data name="trGeneralExpensesHint" xml:space="preserve">
+    <value>مصروفات إدارية...</value>
+  </data>
+  <data name="trSalaryHint" xml:space="preserve">
+    <value>راتب...</value>
+  </data>
 </root>

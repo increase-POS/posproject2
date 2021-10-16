@@ -3396,7 +3396,7 @@ namespace POS.View
                     invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                     SysEmails email = new SysEmails();
                     EmailClass mailtosend = new EmailClass();
-                    email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "mg");
+                    email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "sales");
                     Agent toAgent = new Agent();
                     toAgent = customers.Where(x => x.agentId == prInvoice.agentId).FirstOrDefault();
                     if (toAgent == null)

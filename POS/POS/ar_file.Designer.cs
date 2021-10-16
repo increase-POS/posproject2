@@ -277,6 +277,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to سحوبات إدارية....
+        /// </summary>
+        internal static string trAdministrativePullHint {
+            get {
+                return ResourceManager.GetString("trAdministrativePullHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنوان....
         /// </summary>
         internal static string trAdressHint {
@@ -3247,6 +3256,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مصروفات إدارية....
+        /// </summary>
+        internal static string trGeneralExpensesHint {
+            get {
+                return ResourceManager.GetString("trGeneralExpensesHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن أن يكون المبلغ أكبر من المبلغ المسستحق للدفع.
         /// </summary>
         internal static string trGreaterAmmount {
@@ -5674,6 +5692,15 @@ namespace POS {
         internal static string trSalary {
             get {
                 return ResourceManager.GetString("trSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to راتب....
+        /// </summary>
+        internal static string trSalaryHint {
+            get {
+                return ResourceManager.GetString("trSalaryHint", resourceCulture);
             }
         }
         
