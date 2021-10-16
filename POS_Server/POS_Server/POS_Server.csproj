@@ -543,6 +543,9 @@
     <Compile Include="subscriptionFees.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="sysEmails.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>

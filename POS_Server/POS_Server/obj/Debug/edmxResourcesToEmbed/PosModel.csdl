@@ -1221,6 +1221,16 @@
     <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
     <NavigationProperty Name="memberships" Relationship="Self.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
   <EntityType Name="sysEmails">
     <Key>
       <PropertyRef Name="emailId" />
@@ -3892,6 +3902,7 @@
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" />
     <EntitySet Name="units" EntityType="Self.units" />
     <EntitySet Name="users" EntityType="Self.users" />
