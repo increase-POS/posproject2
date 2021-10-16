@@ -158,19 +158,6 @@
                     <materialDesign:PackIcon Foreground="White" Kind="Keyboard"  FlowDirection="LeftToRight"
                                          Width="30" Height="30"/>
                 </Button>
-                <!--<materialDesign:Badged VerticalAlignment="Center" Margin="7.5,10,7.5,10"  Grid.Column="4" DockPanel.Dock="Right" 
-                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Badge="+9">
-                    <Button Grid.Column="6" x:Name="BTN_message"
-                    Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
-                    Padding="0" >
-                        <materialDesign:PackIcon Foreground="White" Kind="Message"  FlowDirection="LeftToRight"
-                                         Width="25" Height="25"/>
-                    </Button>
-                </materialDesign:Badged>-->
-
-
-
-
                 <materialDesign:Badged     Height="auto" Grid.Column="6"  Name="md_notificationCount" Margin="10,10,10,10"
                                            VerticalAlignment="Center"   
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  >
@@ -198,14 +185,7 @@
 
 
 
-
-                <!--<Button Grid.Column="6" x:Name="BTN_dropDownProfile"
-                Margin="5,10,5,10" ToolTip="" 
-                    Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
-                    Padding="0" >
-                <materialDesign:PackIcon Foreground="White" Kind="MenuDown" 
-                                         Width="25" Height="25"/>
-            </Button>-->
+ 
                 <StackPanel  Margin="0,25,0,0"   Grid.Column="7" VerticalAlignment="Center">
                     <Menu Background="Black"  Padding="0" VerticalAlignment="Center">
                         <MenuItem Padding="0,0,0,25" >
@@ -702,7 +682,7 @@
             </Grid>
             <Grid  Grid.Row="2" Grid.Column="0"   Grid.ColumnSpan="2"
               Background="#178DD2"  />
-            <Border x:Name="bdrMain" Grid.RowSpan="5" Grid.ColumnSpan="5" Visibility="Collapsed" VerticalAlignment="Top"   Margin="0,70,90,70" HorizontalAlignment="Right" >
+            <Border x:Name="bdrMain" Grid.RowSpan="5" Grid.ColumnSpan="5" Visibility="Visible" VerticalAlignment="Top"   Margin="0,70,90,70" HorizontalAlignment="Right" >
                 <Grid>
                     <Border x:Name="bdr_shadow" Background="White" CornerRadius="10"  Height="450" Width="250">
                         <Border.Effect>
