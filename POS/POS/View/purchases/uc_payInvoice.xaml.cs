@@ -266,7 +266,7 @@ namespace POS.View
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 SectionData.defaultDatePickerStyle(dp_invoiceDate);
                 #endregion
-                tb_barcode.Focus();
+               
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -323,6 +323,7 @@ namespace POS.View
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -1691,16 +1692,16 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
                 if (!_IsFocused)
                 {
-                   Control c = CheckActiveControl();
+                    Control c = CheckActiveControl();
                     if (c == null)
                         tb_barcode.Focus();
                     _IsFocused = true;
                 }
-                
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                   
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds > 150)
                 {

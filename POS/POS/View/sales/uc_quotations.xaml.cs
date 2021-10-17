@@ -88,7 +88,7 @@ namespace POS.View.sales
         Pos pos;
         List<ItemTransfer> invoiceItems;
         ItemLocation itemLocationModel = new ItemLocation();
-
+        public List<Control> controls;
         private static DispatcherTimer timer;
 
         #region//to handle barcode characters
@@ -99,6 +99,7 @@ namespace POS.View.sales
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
         static private object _Sender;
+        bool _IsFocused = false;
         #endregion
 
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -208,6 +209,9 @@ namespace POS.View.sales
                 await fillCouponsList();
                 pos = await posModel.getById(MainWindow.posID.Value);
                 branch = await branchModel.getBranchById((int)pos.branchId);
+                //List all the UIElement in the VisualTree
+                controls = new List<Control>();
+                FindControl(this.grid_main, controls);
                 #region Style Date
                 //SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
@@ -221,21 +225,42 @@ namespace POS.View.sales
                     tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
                     sp_tax.Visibility = Visibility.Visible;
                 }
-
-                tb_barcode.Focus();
-
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public void FindControl(DependencyObject root, List<Control> controls)
+        {
+            controls.Clear();
+            var queue = new Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                var control = current as Control;
+                if (control != null && control.IsTabStop)
+                {
+                    controls.Add(control);
+                }
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child != null)
+                    {
+                        queue.Enqueue(child);
+                    }
+                }
             }
         }
         #region timer to refresh notifications
@@ -902,6 +927,13 @@ namespace POS.View.sales
         {
             try
             {
+                if (!_IsFocused)
+                {
+                    Control c = CheckActiveControl();
+                    if (c == null)
+                        tb_barcode.Focus();
+                    _IsFocused = true;
+                }
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
@@ -963,6 +995,7 @@ namespace POS.View.sales
                 }
                 _Sender = null;
                 _BarcodeStr = "";
+                _IsFocused = true;
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
                 {
                     switch (e.Key)
@@ -990,6 +1023,18 @@ namespace POS.View.sales
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        public Control CheckActiveControl()
+        {
+            for (int i = 0; i < controls.Count; i++)
+            {
+                Control c = controls[i];
+                if (c.IsFocused)
+                {
+                    return c;
+                }
+            }
+            return null;
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
         {
