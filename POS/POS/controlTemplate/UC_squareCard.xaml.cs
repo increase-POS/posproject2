@@ -69,8 +69,16 @@ namespace POS.controlTemplate
             //buttonImage.Width = grid_main.Width * 0.85;
             buttonImage.Width = grid_main.ActualWidth * 0.85;
             buttonImage.BorderThickness = new Thickness(0);
-            SectionData.getImg("Category",  categoryCardView.category.image, buttonImage);
-
+            if (categoryCardView.category.image == null)
+                SectionData.clearImg(buttonImage);
+            else
+            {
+                bool isModified = SectionData.chkImgChng(categoryCardView.category.image, (DateTime)categoryCardView.category.updateDate, Global.TMPFolder);
+                if (isModified)
+                    SectionData.getImg("Category", categoryCardView.category.image, buttonImage);
+                else
+                    SectionData.getLocalImg("Category", categoryCardView.category.image, buttonImage);
+            }
             Grid grid_image = new Grid();
             if (buttonImage.Height != 0)
             grid_image.Height = buttonImage.Height - 2;

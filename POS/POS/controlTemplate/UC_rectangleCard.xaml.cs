@@ -146,6 +146,7 @@ namespace POS.controlTemplate
             }
             #endregion
             #region Image
+            Item item = new Item();
             Button buttonImage = new Button();
             buttonImage.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
             //buttonImage.Height = (gridContainer.Height) - 7.5;
@@ -156,7 +157,11 @@ namespace POS.controlTemplate
             buttonImage.Padding = new Thickness(0);
             buttonImage.FlowDirection = FlowDirection.LeftToRight;
             MaterialDesignThemes.Wpf.ButtonAssist.SetCornerRadius(buttonImage, (new CornerRadius(10)));
-            SectionData.getImg("Item", cardViewitem.item.image, buttonImage);
+            bool isModified = SectionData.chkImgChng(cardViewitem.item.image, (DateTime)cardViewitem.item.updateDate, Global.TMPItemsFolder);
+            if (isModified)
+                SectionData.getImg("Item", cardViewitem.item.image, buttonImage);
+            else
+                SectionData.getLocalImg("Item", cardViewitem.item.image, buttonImage);
             Grid grid_image = new Grid();
             grid_image.Height = buttonImage.Height - 2;
             grid_image.Width = buttonImage.Width - 1;

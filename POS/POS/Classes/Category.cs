@@ -144,11 +144,16 @@ namespace POS.Classes
                     // configure trmporery path
                     string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
                     string tmpPath = Path.Combine(dir, Global.TMPFolder);
-                    tmpPath = Path.Combine(tmpPath, imageName + extension);
-                    if (System.IO.File.Exists(tmpPath))
+                    string[] files = System.IO.Directory.GetFiles(tmpPath, imageName + ".*");
+                    foreach (string f in files)
                     {
-                        System.IO.File.Delete(tmpPath);
+                        System.IO.File.Delete(f);
                     }
+                    tmpPath = Path.Combine(tmpPath, imageName + extension);
+                    //if (System.IO.File.Exists(tmpPath))
+                    //{
+                    //    System.IO.File.Delete(tmpPath);
+                    //}
                     // resize image
                     ImageProcess imageP = new ImageProcess(150, imagePath);
                     imageP.ScaleImage(tmpPath);
@@ -188,10 +193,10 @@ namespace POS.Classes
                     }
                     stream.Dispose();
                     //delete tmp image
-                    if (System.IO.File.Exists(tmpPath))
-                    {
-                        System.IO.File.Delete(tmpPath);
-                    }
+                    //if (System.IO.File.Exists(tmpPath))
+                    //{
+                    //    System.IO.File.Delete(tmpPath);
+                    //}
                 }
                 catch
                 { return false; }
@@ -214,7 +219,6 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Categories/GetImage?imageName=" + imageName);
-                request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -224,6 +228,28 @@ namespace POS.Classes
                     jsonString = await response.Content.ReadAsStreamAsync();
                     img = Bitmap.FromStream(jsonString);
                     byteImg = await response.Content.ReadAsByteArrayAsync();
+
+                    // configure trmporery path
+                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string tmpPath = Path.Combine(dir, Global.TMPFolder);
+                    if (!Directory.Exists(tmpPath))
+                        Directory.CreateDirectory(tmpPath);
+                    string fileName = System.IO.Path.GetFileNameWithoutExtension(imageName);
+                    string[] files = System.IO.Directory.GetFiles(tmpPath, fileName+".*");
+                    foreach (string f in files)
+                    {
+                        System.IO.File.Delete(f);
+                    }
+                    tmpPath = Path.Combine(tmpPath, imageName);
+                    
+                    //if (System.IO.File.Exists(tmpPath))
+                    //{
+                    //    System.IO.File.Delete(tmpPath);
+                    //}
+                    using (FileStream fs = new FileStream(tmpPath, FileMode.Create, FileAccess.ReadWrite))
+                    {
+                        fs.Write(byteImg, 0, byteImg.Length);
+                    }
                 }
                 return byteImg;
             }

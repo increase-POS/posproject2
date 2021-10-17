@@ -595,8 +595,116 @@ namespace POS.Classes
                 clearImg(button);
             }
         }
+        public static async void getLocalImg(string type, string imageUri, Button button)
+        {
+            try
+            {
 
+                if (type.Equals("Category"))
+                {
+                    Category category = new Category();
+                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPFolder); 
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
+                else if (type.Equals("Item"))
+                {
+                    Item item = new Item();
+                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPItemsFolder);
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
+                else if (type.Equals("User"))
+                {
+                    User user = new User();
+                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPUsersFolder); 
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
+                else if (type.Equals("Agent"))
+                {
+                    Agent agent = new Agent();
+                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPAgentsFolder);
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    button.Background = new ImageBrush(bitmapImage);
+                }
 
+                //}
+            }
+            catch
+            {
+                clearImg(button);
+            }
+        }
+        public static bool chkImgChng(string imageName, DateTime updateDate, string TMPFolder)
+        {
+            string dir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = System.IO.Path.Combine(dir, Global.TMPFolder);
+            tmpPath = System.IO.Path.Combine(tmpPath, imageName);
+            DateTime mofdifyDate;
+            if (!System.IO.File.Exists(tmpPath))
+            {
+                return true;
+            }
+            else
+            {
+                mofdifyDate = System.IO.File.GetLastWriteTime(tmpPath);
+                if (mofdifyDate < updateDate)
+                    return true;
+            }
+            return false;
+        }
+        public static async Task<byte[]> readLocalImage(string imageName, string TMPFolder)
+        {
+            byte[] data = null;
+            string dir =System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string tmpPath = System.IO.Path.Combine(dir, TMPFolder);
+            if (!System.IO.Directory.Exists(tmpPath))
+                System.IO.Directory.CreateDirectory(tmpPath);
+            tmpPath = System.IO.Path.Combine(tmpPath, imageName);
+            if (System.IO.File.Exists(tmpPath))
+            {
+                // Load file meta data with FileInfo
+                System.IO.FileInfo fileInfo = new System.IO.FileInfo(tmpPath);
+                // The byte[] to save the data in
+                data = new byte[fileInfo.Length];
+                using (var stream = new System.IO.FileStream(tmpPath, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                {
+                    stream.Read(data, 0, data.Length);
+                }
+                // Delete the temporary file
+               // fileInfo.Delete();
+            }
+            return data;
+        }
         public static void clearImg(Button img)
         {
             Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
