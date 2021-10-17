@@ -670,7 +670,7 @@ namespace POS_Server.Controllers
                 return Ok(res);
             }
         }
-        [HttpPost]
+        [HttpGet]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {

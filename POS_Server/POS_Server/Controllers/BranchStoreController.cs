@@ -333,7 +333,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     if (c.Type == "newList")
                     {
-                        branchStoreObject = branchStoreObject.Replace("\\", string.Empty);
+                        branchStoreObject = c.Value.Replace("\\", string.Empty);
                         branchStoreObject = branchStoreObject.Trim('"');
                         newListObj = JsonConvert.DeserializeObject<List<branchStore>>(branchStoreObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
                         //break;
@@ -347,7 +347,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         userId = int.Parse(c.Value);
                     }
                 }
+                if (newListObj != null)
+                {
 
+               
                 // delete old invoice items
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -393,8 +396,9 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     }
                     try
                     {
-                        entity.SaveChanges();
-                    }
+                      message=  entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
 
                     catch
                     {
@@ -402,10 +406,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         return TokenManager.GenerateToken(message);
                     }
                 }
-
+                }
             }
 
-            message = "1";
+           // message = "1";
             return TokenManager.GenerateToken(message);
         }
 

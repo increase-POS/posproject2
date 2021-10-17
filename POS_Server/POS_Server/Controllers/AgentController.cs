@@ -419,7 +419,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {

@@ -22,7 +22,7 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public string Get(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -95,7 +95,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetBranchesByUserId")]
         public string GetBranchesByUserId(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
                 return TokenManager.GenerateToken("-7");
@@ -176,7 +176,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetByID")]
         public string GetByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
                 return TokenManager.GenerateToken("-7");
@@ -211,12 +211,12 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 }
             }
         }
-        // add or update location
+        // add or update location//BranchesUsers/UpdateBranchByUserId"
         [HttpPost]
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -306,7 +306,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("UpdateBranchByUserId")]
         public string UpdateBranchByUserId(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -323,10 +323,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     if (c.Type == "newList")
                     {
-                        branchesUsersObject = branchesUsersObject.Replace("\\", string.Empty);
+                        branchesUsersObject = c.Value.Replace("\\", string.Empty);
                         branchesUsersObject = branchesUsersObject.Trim('"');
                         newListObj = JsonConvert.DeserializeObject<List<branchesUsers>>(branchesUsersObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                        break;
+                   
                     }
                     else if (c.Type == "userId")
                     {
@@ -338,17 +338,23 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         updateUserId = int.Parse(c.Value);
                     }
                 }
+                List<branchesUsers> items = null;
                 // delete old invoice items
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    List<branchesUsers> items = entity.branchesUsers.Where(x => x.userId == userId).ToList();
-                    entity.branchesUsers.RemoveRange(items);
-                    try { entity.SaveChanges(); }
-                    catch (Exception ex)
+                    items = entity.branchesUsers.Where(x => x.userId == userId).ToList();
+                    if (items != null)
                     {
-                        message = "0";
-                        return TokenManager.GenerateToken(message);
+                        entity.branchesUsers.RemoveRange(items);
+                        try
+                        { entity.SaveChanges(); }
+                        catch (Exception ex)
+                        {
+                            message = "-2";
+                            return TokenManager.GenerateToken(message);
+                        }
                     }
+
                 }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
@@ -381,11 +387,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         newListObj[i].updateUserId = updateUserId;
                         newListObj[i].userId = userId;
                         branchEntity.Add(newListObj[i]);
-
+                        entity.SaveChanges();
                     }
                     try
                     {
-                        entity.SaveChanges();
+                        entity.SaveChanges().ToString();
                         message = "1";
                         return TokenManager.GenerateToken(message);
                     }
@@ -396,13 +402,13 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     }
                 }
             }
-          
+
         }
         [HttpPost]
         [Route("Delete")]
         public string Delete(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
