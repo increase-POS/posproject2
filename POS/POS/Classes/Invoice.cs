@@ -274,7 +274,7 @@ namespace POS.Classes
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("invType", invType);
             parameters.Add("userId", userId.ToString());
-            IEnumerable<Claim> claims = await APIResult.getList("Invoices/getUnHandeldOrders", parameters);
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/getInvoicesToReturn", parameters);
             foreach (Claim c in claims)
             {
                 if (c.Type == "scopes")
@@ -332,7 +332,7 @@ namespace POS.Classes
             parameters.Add("status", status);
             parameters.Add("userId", userId.ToString());
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("Invoices/GetCountUnHandeledOrders", parameters);
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/getDeliverOrdersCount", parameters);
 
             foreach (Claim c in claims)
             {

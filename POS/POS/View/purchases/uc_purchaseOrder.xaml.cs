@@ -268,7 +268,7 @@ namespace POS.View.purchases
                 await RefrishVendors();
                 await fillBarcodeList();
                 refreshDraftNotification();
-                branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
+               // branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                 tb_barcode.Focus();
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -621,9 +621,9 @@ namespace POS.View.purchases
         private async Task addInvoice(string invType)
         {           
             if (invType == "po")
-                invoice.invNumber = await invoice.generateInvNumber(invType, branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber(invType, MainWindow.loginBranch.code, MainWindow.branchID.Value);
             else if (invType == "pod" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("pod", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("pod", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             invoice.branchCreatorId = MainWindow.branchID.Value;
             invoice.posId = MainWindow.posID.Value;

@@ -561,7 +561,8 @@ namespace POS.View
         }
         async Task fillBarcodeList()
         {
-            barcodesList = await itemUnitModel.Getall();
+          // barcodesList = await itemUnitModel.Getall();
+           barcodesList = await itemUnitModel.GetUnitsForSales(MainWindow.branchID.Value);
         }
         async Task fillCouponsList()
         {

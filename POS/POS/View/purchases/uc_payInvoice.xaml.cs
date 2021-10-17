@@ -77,7 +77,7 @@ namespace POS.View
         //IEnumerable<Branch> branches;
 
         Agent agentModel = new Agent();
-        IEnumerable<Agent> vendors;
+        List<Agent> vendors;
 
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
@@ -262,7 +262,6 @@ namespace POS.View
                 await RefrishVendors();
                 await fillBarcodeList();
                 setNotifications();
-                branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 SectionData.defaultDatePickerStyle(dp_invoiceDate);
@@ -572,7 +571,12 @@ namespace POS.View
        
         async Task RefrishVendors()
         {
-            vendors = await agentModel.GetAgentsActive("v");
+            var vendors = await agentModel.GetAgentsActive("v");
+            var agent = new Agent();
+            agent.agentId = 0;
+            agent.name = "---";
+            vendors.Insert(0,agent);
+            //vendors.ToList().AddRange(vendorsL.ToArray());
             cb_vendor.ItemsSource = vendors;
             cb_vendor.DisplayMemberPath = "name";
             cb_vendor.SelectedValuePath = "agentId";
@@ -747,10 +751,10 @@ namespace POS.View
                 invoice.totalNet = decimal.Parse(tb_total.Text);
                 invoice.paid = 0;
                 invoice.deserved = invoice.totalNet;
-                if (cb_vendor.SelectedIndex != -1)
+                if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex !=0)
                     invoice.agentId = (int)cb_vendor.SelectedValue;
 
-                if (cb_branch.SelectedIndex != -1)
+                if (cb_branch.SelectedIndex != -1 && cb_branch.SelectedIndex != 0)
                     invoice.branchId = (int)cb_branch.SelectedValue;
                 else
                     invoice.branchId = MainWindow.branchID.Value;
@@ -768,7 +772,7 @@ namespace POS.View
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
                 if (invType == "pw" || invType == "p")
-                    invoice.invNumber = await invoice.generateInvNumber("pi", branchModel.code, MainWindow.branchID.Value);
+                    invoice.invNumber = await invoice.generateInvNumber("pi", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
                 // save invoice in DB
                 int invoiceId = await invoiceModel.saveInvoice(invoice);
@@ -836,8 +840,8 @@ namespace POS.View
         {
             //bool isValid = true;
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-            if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
-                exp_vendor.IsExpanded = true;
+            //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+            //    exp_vendor.IsExpanded = true;
             if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
                 exp_vendor.IsExpanded = true;
             if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
@@ -864,7 +868,7 @@ namespace POS.View
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if ( cb_vendor.SelectedIndex != -1 && !tb_invoiceNumber.Equals("") && billDetails.Count > 0
+                        if ( !tb_invoiceNumber.Equals("") && billDetails.Count > 0
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                         {                          
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
@@ -878,7 +882,7 @@ namespace POS.View
                                     createUserId = MainWindow.userID.Value,
                                     updateUserId = MainWindow.userID.Value,
                                 };
-                                await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice",branchModel.name);
+                                await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice",MainWindow.loginBranch.name);
                                 #endregion
                                 await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce
                             }
@@ -920,7 +924,9 @@ namespace POS.View
                                 else
                                 {
                                     await addInvoice("pw", "pi");
-                                    #region notification Object
+                                #region notification Object
+                                if ((int)cb_branch.SelectedIndex != -1 && (int)cb_branch.SelectedIndex != 0)
+                                {
                                     Notification not = new Notification()
                                     {
                                         title = "trPurchaseInvoiceAlertTilte",
@@ -929,7 +935,8 @@ namespace POS.View
                                         createUserId = MainWindow.userID.Value,
                                         updateUserId = MainWindow.userID.Value,
                                     };
-                                    await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", branchModel.name);
+                                    await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", MainWindow.loginBranch.name);
+                                }
                                     #endregion
                                 }
                                 clearInvoice();

@@ -330,7 +330,8 @@ namespace POS.View.sales
         }
         async Task fillBarcodeList()
         {
-            barcodesList = await itemUnitModel.Getall();
+           // barcodesList = await itemUnitModel.Getall();
+            barcodesList = await itemUnitModel.GetUnitsForSales(MainWindow.branchID.Value);
         }
         async Task fillCouponsList()
         {
@@ -901,7 +902,6 @@ namespace POS.View.sales
         {
             try
             {
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);

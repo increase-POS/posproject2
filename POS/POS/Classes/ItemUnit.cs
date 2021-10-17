@@ -357,11 +357,6 @@ namespace POS.Classes
         public async Task<List<ItemUnit>> Getall()
         {
             List<ItemUnit> list = new List<ItemUnit>();
-            //  Dictionary<string, string> parameters = new Dictionary<string, string>();
-            //parameters.Add("mainBranchId", mainBranchId.ToString());
-            //parameters.Add("userId", userId.ToString());
-            //parameters.Add("date", date.ToString());
-            //#################
             IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetallItemsUnits");
 
             foreach (Claim c in claims)
@@ -411,55 +406,71 @@ namespace POS.Classes
             //    return items;
             //}
         }
-        //***************************************
+        public async Task<List<ItemUnit>> GetUnitsForSales(int branchId)
+        {
+            List<ItemUnit> list = new List<ItemUnit>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("branchId", branchId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetUnitsForSales",parameters);
 
-        //public async Task<List<ItemUnit>> GetbyOfferId(int offerId)
-        //{
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemUnit>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+        }
+            //***************************************
 
-
-        //    List<ItemUnit> items = null;
-        //    // ... Use HttpClient.
-        //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-        //    using (var client = new HttpClient())
-        //    {
-        //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        //        client.BaseAddress = new Uri(Global.APIUri);
-        //        client.DefaultRequestHeaders.Clear();
-        //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-        //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-        //        HttpRequestMessage request = new HttpRequestMessage();
-        //        request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/GetbyOfferId");
-        //        request.Headers.Add("APIKey", Global.APIKey);
-        //        request.Headers.Add("offerId", offerId.ToString());
-        //        request.Method = HttpMethod.Get;
-        //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //        HttpResponseMessage response = await client.SendAsync(request);
-
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            var jsonString = await response.Content.ReadAsStringAsync();
-        //            jsonString = jsonString.Replace("\\", string.Empty);
-        //            jsonString = jsonString.Trim('"');
-        //            // fix date format
-        //            JsonSerializerSettings settings = new JsonSerializerSettings
-        //            {
-        //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-        //                DateParseHandling = DateParseHandling.None
-        //            };
-        //            items = JsonConvert.DeserializeObject<List<ItemUnit>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-        //            return items;
-        //        }
-        //        else //web api sent error response 
-        //        {
-        //            items = new List<ItemUnit>();
-        //        }
-        //        return items;
-        //    }
-        //}
+            //public async Task<List<ItemUnit>> GetbyOfferId(int offerId)
+            //{
 
 
-        //*******************************
-        public async Task<List<ItemUnit>> getSmallItemUnits(int itemId, int itemUnitId)
+            //    List<ItemUnit> items = null;
+            //    // ... Use HttpClient.
+            //    ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //    using (var client = new HttpClient())
+            //    {
+            //        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //        client.BaseAddress = new Uri(Global.APIUri);
+            //        client.DefaultRequestHeaders.Clear();
+            //        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //        HttpRequestMessage request = new HttpRequestMessage();
+            //        request.RequestUri = new Uri(Global.APIUri + "ItemsUnits/GetbyOfferId");
+            //        request.Headers.Add("APIKey", Global.APIKey);
+            //        request.Headers.Add("offerId", offerId.ToString());
+            //        request.Method = HttpMethod.Get;
+            //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //        HttpResponseMessage response = await client.SendAsync(request);
+
+            //        if (response.IsSuccessStatusCode)
+            //        {
+            //            var jsonString = await response.Content.ReadAsStringAsync();
+            //            jsonString = jsonString.Replace("\\", string.Empty);
+            //            jsonString = jsonString.Trim('"');
+            //            // fix date format
+            //            JsonSerializerSettings settings = new JsonSerializerSettings
+            //            {
+            //                Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //                DateParseHandling = DateParseHandling.None
+            //            };
+            //            items = JsonConvert.DeserializeObject<List<ItemUnit>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //            return items;
+            //        }
+            //        else //web api sent error response 
+            //        {
+            //            items = new List<ItemUnit>();
+            //        }
+            //        return items;
+            //    }
+            //}
+
+
+            //*******************************
+            public async Task<List<ItemUnit>> getSmallItemUnits(int itemId, int itemUnitId)
         {
 
             List<ItemUnit> list = new List<ItemUnit>();
