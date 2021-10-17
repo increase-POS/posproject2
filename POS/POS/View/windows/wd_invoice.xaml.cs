@@ -224,6 +224,40 @@ namespace POS.View.windows
             }
         }
 
+        private void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucInvoice);
+                //for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                //    if (vis is DataGridRow)
+                //    {
+                //        BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+                //        int index = dg_billDetails.SelectedIndex;
+                //        // calculate new sum
+                //        _Sum -= row.Total;
+                //        _Tax -= row.Tax;
 
+                //        // remove item from bill
+                //        billDetails.RemoveAt(index);
+
+                //        ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
+                //        data.Remove(row);
+
+                //        // calculate new total
+                //        refreshTotalValue();
+                //    }
+             
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucInvoice);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucInvoice);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

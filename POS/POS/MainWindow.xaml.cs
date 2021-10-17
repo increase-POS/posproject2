@@ -454,8 +454,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             //bdrMain.Margin = new Thickness(0, 70, position.X, 0);
             #endregion
             #region notifications location
-            
-                
+            /*
             Point positionBtnMinimize = BTN_Minimize.PointToScreen(new Point(0d, 0d)),
             positionBtnUserImage = btn_userImage.PointToScreen(new Point(0d, 0d)),
             controlPositionBtnMinimize = this.PointToScreen(new Point(0d, 0d)),
@@ -468,12 +467,23 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             else 
             position =   positionBtnUserImage.X - positionBtnMinimize.X;
             var thickness = bdrMain.Margin;
-            if(lang.Equals("en"))
-            bdrMain.Margin = new Thickness(0, 70, thickness.Left + position - 5 , 0);
-            else
-              bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 10, 0);
 
+            bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 5 -35, 0);
+
+            //if(lang.Equals("en"))
+            //bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 5 , 0);
+            //else
+            //  bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 10, 0);
+            */
             #endregion
+            #region notifications location
+            //Point position = BTN_notifications.PointToScreen(new Point(0d, 0d)),
+            //controlPosition = this.PointToScreen(new Point(0d, 0d));
+            //position.X -= controlPosition.X;
+            //Canvas.SetTop(bdrMain, position.X);
+            ////bdrMain.Margin = new Thickness(0, 70, position.X, 0);
+            #endregion
+
         }
         void SelectAllText(object sender, RoutedEventArgs e)
         {
@@ -1144,17 +1154,23 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
             {
-                e.Cancel = true;
-                this.Visibility = Visibility.Hidden;
+                if (sender != null)
+                    SectionData.StartAwait(grid_mainWindow);
+                await close();
+                Application.Current.Shutdown();
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                if (sender != null)
+                    SectionData.EndAwait(grid_mainWindow);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
