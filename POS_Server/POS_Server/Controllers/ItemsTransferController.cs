@@ -36,7 +36,7 @@ namespace POS_Server.Controllers
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
-                    if (c.Type == "invoiceId")
+                    if (c.Type == "itemId")
                     {
                         invoiceId = int.Parse(c.Value);
                     }
