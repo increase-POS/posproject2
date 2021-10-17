@@ -480,42 +480,49 @@ namespace POS.Classes
             }
             return "";
         }
-        public async Task<string> updateImage(SetValues setValues)
+        public async Task<int> updateImage(SetValues setValues)
         {
-            string message = "";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "setValues/UpdateImage";
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            var myContent = JsonConvert.SerializeObject(setValues);
+            parameters.Add("Object", myContent);
+            return await APIResult.post(method, parameters);
 
-            string myContent = JsonConvert.SerializeObject(setValues);
+            //string message = "";
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            //string myContent = JsonConvert.SerializeObject(setValues);
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                request.RequestUri = new Uri(Global.APIUri + "setValues/UpdateImage?SetValuesObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //    HttpRequestMessage request = new HttpRequestMessage();
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "setValues/UpdateImage?SetValuesObject=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
         public async Task<byte[]> downloadImage(string imageName)

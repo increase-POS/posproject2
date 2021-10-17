@@ -442,32 +442,33 @@ namespace POS.View.reports
 
         private void BuildReport()
         {
-            //List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            //string addpath = "";
-            //bool isArabic = ReportCls.checkLang();
-            //if (isArabic)
-            //{
-            //    addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-            //}
-            //else
-            //{
-            //    //english
-            //    addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-            //}
+            string addpath = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Accounts\Fund\Ar\ArFund.rdlc";
+            }
+            else
+            {
+                //english
+                addpath = @"\Reports\StatisticReport\Accounts\Fund\En\Fund.rdlc";
+            }
 
-            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            //ReportCls.checkLang();
-            ////  getpuritemcount
-            //clsReports.PurOrderStsReport(itemTrasferInvoicesQuery, rep, reppath, paramarr);
+            ReportCls.checkLang();
+            //  getpuritemcount
+            paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
+          
+            clsReports.FundStsReport(balancesQuery, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
 
-            //clsReports.setReportLanguage(paramarr);
-            //clsReports.Header(paramarr);
+            rep.SetParameters(paramarr);
 
-            //rep.SetParameters(paramarr);
-
-            //rep.Refresh();
+            rep.Refresh();
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)

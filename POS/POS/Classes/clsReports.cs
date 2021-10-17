@@ -472,6 +472,25 @@ Parameters!trValueDiscount.Value)
             itemTransferInvTypeConv(paramarr);
 
         }
+        public static void ProfitReport(IEnumerable<ItemUnitInvoiceProfit> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            foreach (var r in tempquery)
+            {
+
+                r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+                r.invoiceProfit = decimal.Parse(SectionData.DecTostring(r.invoiceProfit));
+                r.itemProfit = decimal.Parse(SectionData.DecTostring(r.itemProfit));
+
+            }
+            rep.DataSources.Add(new ReportDataSource("DataSetProfit", tempquery));
+            paramarr.Add(new ReportParameter("title", MainWindow.resourcemanagerreport.GetString("trProfits")));
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
+            itemTransferInvTypeConv(paramarr);
+
+        }
         public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
@@ -683,6 +702,25 @@ Parameters!trValueDiscount.Value)
             }
             rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
         }
+
+
+        public static void FundStsReport(IEnumerable<BalanceSTS> query, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            foreach (var r in query)
+            {
+               
+                r.balance = decimal.Parse(SectionData.DecTostring(r.balance));
+            }
+            rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
+            paramarr.Add(new ReportParameter("title", MainWindow.resourcemanagerreport.GetString("trBalance")));
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
+
+           
+        }
+
 
         public static void cashTransferStsRecipient(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {

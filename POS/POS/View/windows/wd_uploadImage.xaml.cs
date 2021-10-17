@@ -201,13 +201,13 @@ namespace POS.View.windows
                     docImgModel.note = tb_notes.Text;
                     docImgModel.createUserId = MainWindow.userID;
 
-                    string res = await docImgModel.saveDocImage(docImgModel);
-                    if (!res.Equals("0"))
+                   int res = await docImgModel.saveDocImage(docImgModel);
+                    if (!res.Equals(0))
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    int docImageId = int.Parse(res);
+                    int docImageId = res;
 
                     // await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);
                     await docImgModel.uploadOrginalImage(openFileDialog.FileName, tableName, docImageId);
@@ -236,9 +236,9 @@ namespace POS.View.windows
 
                 if (docImgModel.id != 0)
                 {
-                    Boolean res = await docImgModel.delete(docId);
+                    int res = await docImgModel.delete(docId);
 
-                    if (res)
+                    if (res>0)
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -522,13 +522,13 @@ namespace POS.View.windows
                     docImgModel.note = tb_notes.Text;
                     docImgModel.updateUserId = MainWindow.userID;
 
-                    string res = await docImgModel.saveDocImage(docImgModel);
-                    if (!res.Equals("0"))
+                   int res = await docImgModel.saveDocImage(docImgModel);
+                    if (!res.Equals(0))
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                     else
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                    int docImageId = int.Parse(res);
+                    int docImageId = res;
 
                     if (openFileDialog.FileName != "")
                         //    await docImgModel.uploadImage(openFileDialog.FileName, tableName, docImageId);

@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Security.Claims;
 
 namespace POS.Classes
 {
@@ -29,38 +30,45 @@ namespace POS.Classes
         public Nullable<int> tableId { get; set; }
 
         //***********************************************
-        public async Task<string> saveDocImage(DocImage docImage)
+        public async Task<int> saveDocImage(DocImage docImage)
         {
-            string message = "";
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            // 
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "DocImage/saveImageDoc";
+
             var myContent = JsonConvert.SerializeObject(docImage);
+            parameters.Add("Object", myContent);
+            return await APIResult.post(method, parameters);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
-                request.RequestUri = new Uri(Global.APIUri + "DocImage/saveImageDoc?docImageObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //string message = "";
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //// 
+            //var myContent = JsonConvert.SerializeObject(docImage);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+            //    request.RequestUri = new Uri(Global.APIUri + "DocImage/saveImageDoc?docImageObject=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
         public async Task<Boolean> uploadImage(string imagePath, string tableName, int docImageId)
         {
@@ -201,113 +209,156 @@ namespace POS.Classes
         }
 
         // update image field in DB
-        public async Task<string> updateImage(DocImage docImage)
+        public async Task<int> updateImage(DocImage docImage)
         {
-            string message = "";
 
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "DocImage/UpdateImage";
 
-            string myContent = JsonConvert.SerializeObject(docImage);
+            var myContent = JsonConvert.SerializeObject(docImage);
+            parameters.Add("Object", myContent);
+            return await APIResult.post(method, parameters);
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //string message = "";
 
-                HttpRequestMessage request = new HttpRequestMessage();
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-                // encoding parameter to get special characters
-                myContent = HttpUtility.UrlEncode(myContent);
+            //string myContent = JsonConvert.SerializeObject(docImage);
 
-                request.RequestUri = new Uri(Global.APIUri + "DocImage/UpdateImage?docImageObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
 
-                if (response.IsSuccessStatusCode)
-                {
-                    message = await response.Content.ReadAsStringAsync();
-                    message = JsonConvert.DeserializeObject<string>(message);
-                }
-                return message;
-            }
+            //    HttpRequestMessage request = new HttpRequestMessage();
+
+            //    // encoding parameter to get special characters
+            //    myContent = HttpUtility.UrlEncode(myContent);
+
+            //    request.RequestUri = new Uri(Global.APIUri + "DocImage/UpdateImage?docImageObject=" + myContent);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        message = await response.Content.ReadAsStringAsync();
+            //        message = JsonConvert.DeserializeObject<string>(message);
+            //    }
+            //    return message;
+            //}
         }
 
         // get list of document images
         public async Task<List<DocImage>> GetDocImages(string tableName, int tableId)
         {
-            List<DocImage> docImages = null;
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "DocImage/Get?tableName=" + tableName + "&tableId=" + tableId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            List<DocImage> list = new List<DocImage>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("tableName", tableName.ToString());
+            parameters.Add("tableId", tableId.ToString());
+           
 
-                if (response.IsSuccessStatusCode)
+            //#################  
+            IEnumerable<Claim> claims = await APIResult.getList("DocImage/Get", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString = jsonString.Replace("\\", string.Empty);
-                    jsonString = jsonString.Trim('"');
-                    // fix date format
-                    JsonSerializerSettings settings = new JsonSerializerSettings
-                    {
-                        Converters = new List<JsonConverter> { new BadDateFixingConverter() },
-                        DateParseHandling = DateParseHandling.None
-                    };
-                    docImages = JsonConvert.DeserializeObject<List<DocImage>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                    return docImages;
+                    list.Add(JsonConvert.DeserializeObject<DocImage>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
                 }
-                else //web api sent error response 
-                {
-                    docImages = new List<DocImage>();
-                }
-                return docImages;
             }
+            return list;
+
+            //List<DocImage> docImages = null;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "DocImage/Get?tableName=" + tableName + "&tableId=" + tableId);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var jsonString = await response.Content.ReadAsStringAsync();
+            //        jsonString = jsonString.Replace("\\", string.Empty);
+            //        jsonString = jsonString.Trim('"');
+            //        // fix date format
+            //        JsonSerializerSettings settings = new JsonSerializerSettings
+            //        {
+            //            Converters = new List<JsonConverter> { new BadDateFixingConverter() },
+            //            DateParseHandling = DateParseHandling.None
+            //        };
+            //        docImages = JsonConvert.DeserializeObject<List<DocImage>>(jsonString, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+            //        return docImages;
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        docImages = new List<DocImage>();
+            //    }
+            //    return docImages;
+            //}
         }
         public async Task<int> GetDocCount(string tableName, int tableId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "DocImage/GetCount?tableName=" + tableName + "&tableId=" + tableId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
+            int count = 0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("tableName", tableName.ToString());
+            parameters.Add("tableId", tableId.ToString());
 
-                if (response.IsSuccessStatusCode)
+
+            //#################  
+            IEnumerable<Claim> claims = await APIResult.getList("DocImage/GetCount", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
                 {
-                    var count = await response.Content.ReadAsStringAsync();
-                    return int.Parse(count);
-                }
-                else //web api sent error response 
-                {
-                    return 0;
+                    count=int.Parse(c.Value);
                 }
             }
+            return count;
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "DocImage/GetCount?tableName=" + tableName + "&tableId=" + tableId);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Get;
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    HttpResponseMessage response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        var count = await response.Content.ReadAsStringAsync();
+            //        return int.Parse(count);
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        return 0;
+            //    }
+            //}
         }
         // download image from the server
         public async Task<byte[]> downloadImage(string imageName)
@@ -327,6 +378,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "DocImage/GetImage?imageName=" + imageName);
+
                 request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -344,32 +396,39 @@ namespace POS.Classes
 
         //**********************************************
         // call api method to delete doc image
-        public async Task<Boolean> delete(int docId)
+        public async Task<int> delete(int docId)
         {
-            // ... Use HttpClient.
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
-            using (var client = new HttpClient())
-            {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "DocImage/Delete?docId=" + docId);
-                request.Headers.Add("APIKey", Global.APIKey);
-                request.Method = HttpMethod.Post;
-                //set content type
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                var response = await client.SendAsync(request);
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("docId", docId.ToString());
+          
+            string method = "DocImage/Delete";
+            return await APIResult.post(method, parameters);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
-                }
-                return false;
-            }
+            //// ... Use HttpClient.
+            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            //using (var client = new HttpClient())
+            //{
+            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            //    client.BaseAddress = new Uri(Global.APIUri);
+            //    client.DefaultRequestHeaders.Clear();
+            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+            //    HttpRequestMessage request = new HttpRequestMessage();
+            //    request.RequestUri = new Uri(Global.APIUri + "DocImage/Delete?docId=" + docId);
+            //    request.Headers.Add("APIKey", Global.APIKey);
+            //    request.Method = HttpMethod.Post;
+            //    //set content type
+            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //    var response = await client.SendAsync(request);
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        return true;
+            //    }
+            //    return false;
+            //}
         }
     }
 }

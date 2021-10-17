@@ -57,7 +57,7 @@ namespace POS.View.reports
         public uc_accountProfits()
         {
             try
-            { 
+            {
                 InitializeComponent();
             }
             catch (Exception ex)
@@ -75,19 +75,19 @@ namespace POS.View.reports
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_main.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_main.FlowDirection = FlowDirection.RightToLeft;
-            }
-            translate();
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
                 #endregion
 
-                Btn_invoice_Click(btn_invoice , null);
+                Btn_invoice_Click(btn_invoice, null);
 
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
@@ -145,17 +145,17 @@ namespace POS.View.reports
                 await RefreshItemUnitInvoiceProfit();
 
             searchText = txt_search.Text.ToLower();
-          
+
             profitsTemp = profits.Where(p =>
             (dp_startDate.SelectedDate != null ? p.updateDate >= dp_startDate.SelectedDate : true)
             &&
             //end date
-            (dp_endDate.SelectedDate   != null ? p.updateDate <= dp_endDate.SelectedDate   : true)
+            (dp_endDate.SelectedDate != null ? p.updateDate <= dp_endDate.SelectedDate : true)
             );
 
             if (selectedTab == 0)
                 profitsTemp = profitsTemp.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
-               
+
             else
                 profitsTemp = profitsTemp.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
 
@@ -239,7 +239,7 @@ namespace POS.View.reports
             txt_count.Text = profitsQuery.Count().ToString();
 
             decimal total = 0;
-            if(selectedTab == 0)
+            if (selectedTab == 0)
                 total = profitsQuery.Select(b => b.invoiceProfit).Sum();
             else
                 total = profitsQuery.Select(b => b.itemProfit).Sum();
@@ -254,9 +254,9 @@ namespace POS.View.reports
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranchHint"));
                 cb_branches.SelectedValuePath = "branchCreatorId";
                 cb_branches.DisplayMemberPath = "branchCreatorName";
-                cb_branches.ItemsSource = profits.GroupBy(g=>g.branchCreatorId).Select(i => new { i.FirstOrDefault(). branchCreatorName, i.FirstOrDefault().branchCreatorId });
+                cb_branches.ItemsSource = profits.GroupBy(g => g.branchCreatorId).Select(i => new { i.FirstOrDefault().branchCreatorName, i.FirstOrDefault().branchCreatorId });
             }
-            else if(selectedTab == 1)
+            else if (selectedTab == 1)
             {
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trItemHint"));
                 cb_branches.SelectedValuePath = "ITitemId";
@@ -267,21 +267,27 @@ namespace POS.View.reports
 
         private void fillCombo2(int bID)
         {
-            if(selectedTab == 0)
+            if (selectedTab == 0)
             {
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trPosHint"));
                 cb_pos.SelectedValuePath = "posId";
                 cb_pos.DisplayMemberPath = "posName";
-                cb_pos.ItemsSource = profits.Where(b => b.branchCreatorId == bID).GroupBy(g => g.posId).Select(i => new {
-                                                                                  i.FirstOrDefault().posId , i.FirstOrDefault().posName });
+                cb_pos.ItemsSource = profits.Where(b => b.branchCreatorId == bID).GroupBy(g => g.posId).Select(i => new
+                {
+                    i.FirstOrDefault().posId,
+                    i.FirstOrDefault().posName
+                });
             }
-            else if(selectedTab == 1)
+            else if (selectedTab == 1)
             {
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trUnitHint"));
                 cb_pos.SelectedValuePath = "ITunitId";
                 cb_pos.DisplayMemberPath = "ITunitName";
-                cb_pos.ItemsSource = profits.Where(b => b.ITitemId == bID).GroupBy(g => g.ITunitId).Select(i => new {
-                                                                                  i.FirstOrDefault().ITunitId, i.FirstOrDefault().ITunitName});
+                cb_pos.ItemsSource = profits.Where(b => b.ITitemId == bID).GroupBy(g => g.ITunitId).Select(i => new
+                {
+                    i.FirstOrDefault().ITunitId,
+                    i.FirstOrDefault().ITunitName
+                });
             }
 
         }
@@ -387,7 +393,7 @@ namespace POS.View.reports
                 cb_branches.SelectedIndex = -1;
                 cb_branches.IsEnabled = false;
                 chk_allPos.IsChecked = true;
-                
+
                 //await Search();
 
                 if (sender != null)
@@ -534,7 +540,7 @@ namespace POS.View.reports
             List<decimal> profit = new List<decimal>();
 
             var temp = profitsQuery;
-            
+
             int count = 0;
             if (selectedTab == 0)
             {
@@ -715,7 +721,7 @@ namespace POS.View.reports
             if (names.Count() < 6) x = names.Count();
             for (int i = 0; i < x; i++)
             {
-                
+
                 drawPoints(names[i], ids[i], rowChartData, 'n', otherIds);
             }
             //others
@@ -1004,33 +1010,53 @@ namespace POS.View.reports
             }
         }
 
-      
+
         private void BuildReport()
         {
-            //List<ReportParameter> paramarr = new List<ReportParameter>();
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            //string addpath;
-            //bool isArabic = ReportCls.checkLang();
-            //if (isArabic)
-            //{
-            //    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc";
-            //    //Reports\StatisticReport\Sale\Daily\Ar
-            //}
-            //else
-            //    addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc";
-            //string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Profit\Ar\Profit.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Profit\Ar\ProfitItem.rdlc";
+                }
 
-            //ReportCls.checkLang();
+                //Reports\StatisticReport\Sale\Daily\Ar
+            }
+            else
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Profit\En\Profit.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Profit\En\ProfitItem.rdlc";
+                }
+            }
 
-            //clsReports.SaledailyReport(profitsQuery, rep, reppath, paramarr);
-            //clsReports.setReportLanguage(paramarr);
-            //clsReports.Header(paramarr);
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            //rep.SetParameters(paramarr);
+            ReportCls.checkLang();
+            // IEnumerable<ItemUnitInvoiceProfit>
+            clsReports.ProfitReport(profitsQuery, rep, reppath, paramarr);
+            paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
 
-            //rep.Refresh();
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
         }
 
-        
+
     }
 }
