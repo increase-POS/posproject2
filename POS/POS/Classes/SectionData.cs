@@ -708,7 +708,10 @@ namespace POS.Classes
 
             branchModel = branches.Where(s => s.branchId == currentBranchId).FirstOrDefault<Branch>();
             branches.Remove(branchModel);
-
+            var br = new Branch();
+            br.branchId = 0;
+            br.name = "---";
+            branches.Insert(0, br);
             combo.ItemsSource = branches.Where(b => b.type != type && b.branchId != 1);
             combo.SelectedValuePath = "branchId";
             combo.DisplayMemberPath = "name";

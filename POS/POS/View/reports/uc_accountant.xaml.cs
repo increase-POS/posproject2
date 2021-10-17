@@ -68,6 +68,11 @@ namespace POS.View.reports
             txt_posHint.Text = MainWindow.resourcemanager.GetString("trFromToPosHint");
             txt_statementInfo.Text = MainWindow.resourcemanager.GetString("trAccountStatement");
             txt_statementHint.Text = MainWindow.resourcemanager.GetString("trVendorCustomerUserHint");
+            ///////////////
+            txt_fundInfo.Text = MainWindow.resourcemanager.GetString("trCashBalance");
+            txt_fundHint.Text = MainWindow.resourcemanager.GetString("trBranchPosHint");
+            txt_profitInfo.Text = MainWindow.resourcemanager.GetString("trProfits");
+            txt_profitHint.Text = MainWindow.resourcemanager.GetString("trInvoiceItemHint");
         }
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)

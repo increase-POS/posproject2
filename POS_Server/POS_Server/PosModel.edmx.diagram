@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="97be82c6ab19445c8511504c66d283c4" Name="Diagram1">
+      <Diagram DiagramId="4be8a2c7a0054d619b4dc58a1e6b19db" Name="Diagram1">
         <EntityTypeShape EntityType="incposdbModel.agentMemberships" Width="1.5" PointX="7.5" PointY="104.875" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.agents" Width="1.5" PointX="6" PointY="95.75" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.banks" Width="1.5" PointX="18.25" PointY="84.25" IsExpanded="true" />
@@ -64,12 +64,13 @@
         <EntityTypeShape EntityType="incposdbModel.shippingCompanies" Width="1.5" PointX="14" PointY="88" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.storageCost" Width="1.5" PointX="8.25" PointY="126.75" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.subscriptionFees" Width="1.5" PointX="5.25" PointY="124.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.sysEmails" Width="1.5" PointX="8.25" PointY="86.125" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.units" Width="1.5" PointX="3" PointY="145.875" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.users" Width="1.5" PointX="0.75" PointY="86.25" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.userSetValues" Width="1.5" PointX="10" PointY="106.625" IsExpanded="true" />
         <EntityTypeShape EntityType="incposdbModel.usersLogs" Width="1.5" PointX="13.5" PointY="93.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="incposdbModel.ProgramDetails" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="incposdbModel.ProgramDetails" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <AssociationConnector Association="incposdbModel.FK_agentMemberships_agents" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_agentMemberships_cashTransfer" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_agentMemberships_memberships2" ManuallyRouted="false" />

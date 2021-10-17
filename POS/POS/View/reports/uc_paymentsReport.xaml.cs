@@ -32,22 +32,35 @@ namespace POS.View.reports
         List<CashTransferSts> payments;
 
         IEnumerable<VendorCombo> vendorCombo;
-        IEnumerable<VendorCombo> customerCombo;
-        IEnumerable<VendorCombo> userCombo;
-        IEnumerable<VendorCombo> salaryCombo;
-        IEnumerable<ShippingCombo> ShippingCombo;
 
         IEnumerable<PaymentsTypeCombo> payCombo;
 
         IEnumerable<AccountantCombo> accCombo;
-        IEnumerable<AccountantCombo> accCustomerCombo;
-        IEnumerable<AccountantCombo> accUserCombo;
-        IEnumerable<AccountantCombo> accSalaryCombo;
-        IEnumerable<AccountantCombo> accGeneralExpensesCombo;
-        IEnumerable<AccountantCombo> accAdministrativePullCombo;
-        IEnumerable<AccountantCombo> accShippingCombo;
 
         int selectedTab = 0;
+
+        private static uc_paymentsReport _instance;
+
+        public uc_paymentsReport()
+        {
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        public static uc_paymentsReport Instance
+        {
+            get
+            {
+                if (_instance == null) _instance = new uc_paymentsReport();
+                return _instance;
+            }
+        }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -100,13 +113,6 @@ namespace POS.View.reports
             cb.ItemsSource = list;
         }
 
-        private void fillShippingCombo(IEnumerable<ShippingCombo> list, ComboBox cb)
-        {
-            cb.SelectedValuePath = "ShippingId";
-            cb.DisplayMemberPath = "ShippingName";
-            cb.ItemsSource = list;
-        }
-
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
            , DatePicker startDate, DatePicker endDate)
         {
@@ -141,28 +147,6 @@ namespace POS.View.reports
                        && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
             }
             return result.ToList();
-        }
-
-        public uc_paymentsReport()
-        {
-            try
-            {
-                InitializeComponent();
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private static uc_paymentsReport _instance;
-        public static uc_paymentsReport Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new uc_paymentsReport();
-                return _instance;
-            }
         }
 
         /*Vendor*/
@@ -702,7 +686,7 @@ namespace POS.View.reports
                 cb_vendors.SelectedItem = null;
                 chk_allVendors.Visibility = Visibility.Visible;
 
-                var iulist = payments.GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId, ShippingName = g.FirstOrDefault().shippingCompanyName }).ToList();
+                var iulist = payments.Where(g => g.shippingCompanyId != null).GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId, ShippingName = g.FirstOrDefault().shippingCompanyName }).ToList();
                 cb_vendors.SelectedValuePath = "ShippingId";
                 cb_vendors.DisplayMemberPath = "ShippingName";
                 cb_vendors.ItemsSource = iulist;
@@ -739,18 +723,9 @@ namespace POS.View.reports
             temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side || x.side == side);
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
-            fillPieChart();
+            //charts
             fillColumnChart();
-            fillRowChart();
-        }
-
-        private void fillEventsBySelectedTab()
-        {
-            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
-            dgPayments.ItemsSource = temp;
-            txt_count.Text = temp.Count().ToString();
             fillPieChart();
-            fillColumnChart();
             fillRowChart();
         }
 
@@ -762,32 +737,7 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v"); ;
-            //if (selectedTab == 1)
-            //{
-            //    temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c"); ;
-            //}
-            //else if (selectedTab == 2)
-            //{
-            //    temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
-            //}
-            //else if (selectedTab == 3)
-            //{
-            //    temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
-            //}
-            //else if (selectedTab == 4)
-            //{
-            //    temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
-            //}
-            //else if (selectedTab == 5)
-            //{
-            //    temp = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
-            //}
-            //else if (selectedTab == 6)
-            //{
-            //    temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
-            //}
-
+            
             var result = temp
                 .GroupBy(s => new { s.processType })
                 .Select(s => new CashTransferSts
@@ -797,6 +747,20 @@ namespace POS.View.reports
                 });
             resultList = result.Select(m => m.processTypeCount).ToList();
             titles = result.Select(m => m.processType).ToList();
+            for(int t = 0; t < titles.Count; t++)
+            {
+                string s = "";
+                switch (titles[t])
+                {
+                    case "cash":    s = MainWindow.resourcemanager.GetString("trCash");  break;
+                    case "doc":     s = MainWindow.resourcemanager.GetString("trDocument"); break;
+                    case "cheque":  s = MainWindow.resourcemanager.GetString("trCheque"); break;
+                    case "balance": s = MainWindow.resourcemanager.GetString("trCredit"); break;
+                    case "card":    s = MainWindow.resourcemanager.GetString("trCreditCard"); break;
+                    case "inv":     s = MainWindow.resourcemanager.GetString("trInv"); break;
+                }
+                titles[t] = s;
+            }
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < resultList.Count(); i++)
             {
@@ -824,57 +788,115 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v"); ;
-            //if (selectedTab == 1)
-            //{
-            //    temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c"); ;
-            //}
-            //else if (selectedTab == 2)
-            //{
-            //    temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
-            //}
-            //else if (selectedTab == 3)
-            //{
-            //    temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
-            //}
-            //else if (selectedTab == 4)
-            //{
-            //    temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
-            //}
-            //else if (selectedTab == 5)
-            //{
-            //    temp = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
-            //}
-            //else if (selectedTab == 6)
-            //{
-            //    temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
-            //}
-            var res = temp.GroupBy(x => new { x.agentId, x.processType }).Select(x => new CashTransferSts
+            #region group data by selected tab
+            if ((selectedTab == 0) || (selectedTab == 1))
             {
-                processType = x.FirstOrDefault().processType,
-                agentId = x.FirstOrDefault().agentId,
-                agentName = x.FirstOrDefault().agentName,
-                cash = x.Sum(g => g.cash),
+                var res = temp.Where(x => x.agentId != null).GroupBy(x => new { x.agentId, x.processType }).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    agentId = x.FirstOrDefault().agentId,
+                    agentName = x.FirstOrDefault().agentName,
+                    cash = x.Sum(g => g.cash),
 
-            });
-            resultList = res.GroupBy(x => x.agentId).Select(x => new CashTransferSts
-            {
-                processType = x.FirstOrDefault().processType,
-                cashTotal = x.Where(g => g.processType == "cash").Sum(g => (decimal)g.cash),
-                cardTotal = x.Where(g => g.processType == "card").Sum(g => (decimal)g.cash),
-                chequeTotal = x.Where(g => g.processType == "cheque").Sum(g => (decimal)g.cash),
-                docTotal = x.Where(g => g.processType == "doc").Sum(g => (decimal)g.cash),
-                balanceTotal = x.Where(g => g.processType == "balance").Sum(g => (decimal)g.cash),
-                agentName = x.FirstOrDefault().agentName,
-                agentId = x.FirstOrDefault().agentId,
+                });
+                resultList = res.GroupBy(x => x.agentId).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    cashTotal = x.Where(g => g.processType == "cash").Sum(g => (decimal)g.cash),
+                    cardTotal = x.Where(g => g.processType == "card").Sum(g => (decimal)g.cash),
+                    chequeTotal = x.Where(g => g.processType == "cheque").Sum(g => (decimal)g.cash),
+                    docTotal = x.Where(g => g.processType == "doc").Sum(g => (decimal)g.cash),
+                    balanceTotal = x.Where(g => g.processType == "balance").Sum(g => (decimal)g.cash),
+                    invoiceTotal = x.Where(g => g.processType == "inv").Sum(g => (decimal)g.cash),
+                    agentName = x.FirstOrDefault().agentName,
+                    agentId = x.FirstOrDefault().agentId,
+                }
+                ).ToList();
+
+                var tempName = res.GroupBy(s => new { s.agentId }).Select(s => new
+                {
+                    agentName = s.FirstOrDefault().agentName,
+                });
+                names.AddRange(tempName.Select(nn => nn.agentName));
             }
-            ).ToList();
-
-            var tempName = res.GroupBy(s => new { s.agentId }).Select(s => new
+            if ((selectedTab == 2) || (selectedTab == 3))
             {
-                itemName = s.FirstOrDefault().agentName,
-            });
-            names.AddRange(tempName.Select(nn => nn.itemName));
+                var res = temp.GroupBy(x => new { x.userId, x.processType }).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    userId = x.FirstOrDefault().userId,
+                    usersName = x.FirstOrDefault().userAcc,
+                    cash = x.Sum(g => g.cash),
+
+                });
+                resultList = res.GroupBy(x => x.userId).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    cashTotal = x.Where(g => g.processType == "cash").Sum(g => (decimal)g.cash),
+                    cardTotal = x.Where(g => g.processType == "card").Sum(g => (decimal)g.cash),
+                    chequeTotal = x.Where(g => g.processType == "cheque").Sum(g => (decimal)g.cash),
+                    docTotal = x.Where(g => g.processType == "doc").Sum(g => (decimal)g.cash),
+                    balanceTotal = x.Where(g => g.processType == "balance").Sum(g => (decimal)g.cash),
+                    invoiceTotal = x.Where(g => g.processType == "inv").Sum(g => (decimal)g.cash),
+                    usersName = x.FirstOrDefault().usersName,
+                    userId = x.FirstOrDefault().userId,
+                }
+                ).ToList();
+
+                var tempName = res.GroupBy(s => new { s.userId }).Select(s => new
+                {
+                    userName = s.FirstOrDefault().usersName,
+                });
+                names.AddRange(tempName.Select(nn => nn.userName));
+            }
+            if ((selectedTab == 4) || (selectedTab == 5))
+            {
+                var res = temp;
+                resultList = res.GroupBy(x => x.userId).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    cashTotal = x.Where(g => g.processType == "cash").Sum(g => (decimal)g.cash),
+                    cardTotal = x.Where(g => g.processType == "card").Sum(g => (decimal)g.cash),
+                    chequeTotal = x.Where(g => g.processType == "cheque").Sum(g => (decimal)g.cash),
+                    docTotal = x.Where(g => g.processType == "doc").Sum(g => (decimal)g.cash),
+                    balanceTotal = x.Where(g => g.processType == "balance").Sum(g => (decimal)g.cash),
+                    invoiceTotal = x.Where(g => g.processType == "inv").Sum(g => (decimal)g.cash),
+                    usersName = x.FirstOrDefault().usersName,
+                    userId = x.FirstOrDefault().userId,
+                }
+                ).ToList();
+            }
+            if (selectedTab == 6)
+            {
+                var res = temp.Where(x => x.shippingCompanyId != null).GroupBy(x => new { x.shippingCompanyId, x.processType }).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    shippingCompanyId = x.FirstOrDefault().shippingCompanyId,
+                    shippingCompanyName = x.FirstOrDefault().shippingCompanyName,
+                    cash = x.Sum(g => g.cash),
+
+                });
+                resultList = res.GroupBy(x => x.shippingCompanyId).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    cashTotal = x.Where(g => g.processType == "cash").Sum(g => (decimal)g.cash),
+                    cardTotal = x.Where(g => g.processType == "card").Sum(g => (decimal)g.cash),
+                    chequeTotal = x.Where(g => g.processType == "cheque").Sum(g => (decimal)g.cash),
+                    docTotal = x.Where(g => g.processType == "doc").Sum(g => (decimal)g.cash),
+                    balanceTotal = x.Where(g => g.processType == "balance").Sum(g => (decimal)g.cash),
+                    invoiceTotal = x.Where(g => g.processType == "inv").Sum(g => (decimal)g.cash),
+                    shippingCompanyName = x.FirstOrDefault().shippingCompanyName,
+                    shippingCompanyId = x.FirstOrDefault().shippingCompanyId,
+                }
+                ).ToList();
+
+                var tempName = res.GroupBy(s => new { s.shippingCompanyId }).Select(s => new
+                {
+                    shippingCompanyName = s.FirstOrDefault().shippingCompanyName,
+                });
+                names.AddRange(tempName.Select(nn => nn.shippingCompanyName));
+            }
+            #endregion
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -883,6 +905,7 @@ namespace POS.View.reports
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
             List<decimal> balance = new List<decimal>();
+            List<decimal> invoice = new List<decimal>();
 
             int xCount = 6;
             if (resultList.Count() <= 6)
@@ -894,12 +917,13 @@ namespace POS.View.reports
                 doc.Add(resultList.ToList().Skip(i).FirstOrDefault().docTotal);
                 cheque.Add(resultList.ToList().Skip(i).FirstOrDefault().chequeTotal);
                 balance.Add(resultList.ToList().Skip(i).FirstOrDefault().balanceTotal);
+                invoice.Add(resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal);
 
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
             if (resultList.Count() > 6)
             {
-                decimal cashSum = 0, cardSum = 0, docSum = 0, chequeSum = 0, balanceSum = 0;
+                decimal cashSum = 0, cardSum = 0, docSum = 0, chequeSum = 0, balanceSum = 0 ,invoiceSum = 0;
                 for (int i = resultList.Count - xCount+1; i < resultList.Count; i++)
                 {
                     cashSum    = cashSum    + resultList.ToList().Skip(i).FirstOrDefault().cashTotal;
@@ -907,49 +931,61 @@ namespace POS.View.reports
                     docSum     = docSum     + resultList.ToList().Skip(i).FirstOrDefault().docTotal;
                     chequeSum  = chequeSum  + resultList.ToList().Skip(i).FirstOrDefault().chequeTotal;
                     balanceSum = balanceSum + resultList.ToList().Skip(i).FirstOrDefault().balanceTotal;
+                    invoiceSum = invoiceSum + resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal;
                 }
-                cash.Add(cashSum);
-                card.Add(cardSum);
-                doc.Add(docSum);
-                cheque.Add(chequeSum);
-                balance.Add(balanceSum);
+                if (!((cashSum == 0) && (cardSum == 0) && (docSum == 0) && (chequeSum == 0) && (chequeSum == 0) && (balanceSum == 0) && (invoiceSum == 0)))
+                {
+                    cash.Add(cashSum);
+                    card.Add(cardSum);
+                    doc.Add(docSum);
+                    cheque.Add(chequeSum);
+                    balance.Add(balanceSum);
+                    invoice.Add(invoiceSum);
 
-                axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
             }
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = cash.AsChartValues(),
                 DataLabels = true,
-                Title = "Cash"
+                Title = MainWindow.resourcemanager.GetString("trCash")
             });
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = card.AsChartValues(),
                 DataLabels = true,
-                Title = "Card"
+                Title = MainWindow.resourcemanager.GetString("trCreditCard")
             });
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = doc.AsChartValues(),
                 DataLabels = true,
-                Title = "Document"
+                Title = MainWindow.resourcemanager.GetString("trDocument")
             });
             columnChartData.Add(
          new StackedColumnSeries
          {
              Values = cheque.AsChartValues(),
              DataLabels = true,
-             Title = "Cheque"
+             Title = MainWindow.resourcemanager.GetString("trCheque")
          });
             columnChartData.Add(
          new StackedColumnSeries
          {
              Values = balance.AsChartValues(),
              DataLabels = true,
-             Title = "Balance"
+             Title = MainWindow.resourcemanager.GetString("trCredit")
+         });
+            columnChartData.Add(
+         new StackedColumnSeries
+         {
+             Values = invoice.AsChartValues(),
+             DataLabels = true,
+             Title = MainWindow.resourcemanager.GetString("trInv")
          });
 
             DataContext = this;
@@ -975,82 +1011,35 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v"); ;
-            //if (selectedTab == 1)
-            //{
-            //    temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c"); ;
-            //    if (dp_customerStartDate.SelectedDate != null && dp_customerEndDate.SelectedDate != null)
-            //    {
-            //        startYear = dp_customerStartDate.SelectedDate.Value.Year;
-            //        endYear = dp_customerEndDate.SelectedDate.Value.Year;
-            //        startMonth = dp_customerStartDate.SelectedDate.Value.Month;
-            //        endMonth = dp_customerEndDate.SelectedDate.Value.Month;
-            //    }
-            //}
-            //else if (selectedTab == 2)
-            //{
-            //    temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
-            //    if (dp_userStartDate.SelectedDate != null && dp_userEndDate.SelectedDate != null)
-            //    {
-            //        startYear = dp_customerEndDate.SelectedDate.Value.Year;
-            //        endYear = dp_userEndDate.SelectedDate.Value.Year;
-            //        startMonth = dp_customerEndDate.SelectedDate.Value.Month;
-            //        endMonth = dp_userEndDate.SelectedDate.Value.Month;
-            //    }
-            //}
-            //else if (selectedTab == 3)
-            //{
-            //    temp = fillList(payments, cb_salary, cb_salaryPayType, cb_salaryAccountant, dp_salaryStartDate, dp_salaryEndDate).Where(x => x.side == "s");
-            //    if (dp_salaryStartDate.SelectedDate != null && dp_salaryEndDate.SelectedDate != null)
-            //    {
-            //        startYear = dp_salaryStartDate.SelectedDate.Value.Year;
-            //        endYear = dp_salaryEndDate.SelectedDate.Value.Year;
-            //        startMonth = dp_salaryStartDate.SelectedDate.Value.Month;
-            //        endMonth = dp_salaryEndDate.SelectedDate.Value.Month;
-            //    }
-            //}
-            //else if (selectedTab == 4)
-            //{
-            //    temp = fillList(payments, cb_generalExpenses, cb_generalExpensesPayType, cb_generalExpensesAccountant, dp_generalExpensesStartDate, dp_generalExpensesEndDate).Where(x => x.side == "e");
-            //    if (dp_generalExpensesStartDate.SelectedDate != null && dp_generalExpensesEndDate.SelectedDate != null)
-            //    {
-            //        startYear = dp_generalExpensesStartDate.SelectedDate.Value.Year;
-            //        endYear = dp_generalExpensesEndDate.SelectedDate.Value.Year;
-            //        startMonth = dp_generalExpensesStartDate.SelectedDate.Value.Month;
-            //        endMonth = dp_generalExpensesEndDate.SelectedDate.Value.Month;
-            //    }
-            //}
-            //else if (selectedTab == 5)
-            //{
-            //    temp = fillList(payments, cb_administrativePull, cb_administrativePullPayType, cb_administrativePullAccountant, dp_administrativePullStartDate, dp_administrativePullEndDate).Where(x => x.side == "m");
-            //    if (dp_administrativePullStartDate.SelectedDate != null && dp_administrativePullEndDate.SelectedDate != null)
-            //    {
-            //        startYear = dp_administrativePullStartDate.SelectedDate.Value.Year;
-            //        endYear = dp_administrativePullEndDate.SelectedDate.Value.Year;
-            //        startMonth = dp_administrativePullStartDate.SelectedDate.Value.Month;
-            //        endMonth = dp_administrativePullEndDate.SelectedDate.Value.Month;
-            //    }
-            //}
-            //else if (selectedTab == 6)
-            //{
-            //    temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
-            //    if (dp_shippingStartDate.SelectedDate != null && dp_shippingEndDate.SelectedDate != null)
-            //    {
-            //        startYear = dp_shippingStartDate.SelectedDate.Value.Year;
-            //        endYear = dp_shippingEndDate.SelectedDate.Value.Year;
-            //        startMonth = dp_shippingStartDate.SelectedDate.Value.Month;
-            //        endMonth = dp_shippingEndDate.SelectedDate.Value.Month;
-            //    }
-            //}
-
-
             SeriesCollection rowChartData = new SeriesCollection();
-            var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
+            if ((selectedTab == 0) || (selectedTab == 1))
             {
-                itemName = s.FirstOrDefault().updateDate,
-            });
-            names.AddRange(tempName.Select(nn => nn.itemName.ToString()));
-
+                var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
+                {
+                    Name = s.FirstOrDefault().updateDate,
+                });
+                names.AddRange(tempName.Select(nn => nn.Name.ToString()));
+            }
+            if ((selectedTab == 2) || (selectedTab == 3))
+            {
+                var tempName = temp.GroupBy(s => new { s.userId }).Select(s => new
+                {
+                    Name = s.FirstOrDefault().updateDate,
+                });
+                names.AddRange(tempName.Select(nn => nn.Name.ToString()));
+            }
+            if ((selectedTab == 4) || (selectedTab == 5))
+            {
+                var tempName = temp;
+            }
+            if (selectedTab == 6)
+            {
+                var tempName = temp.GroupBy(s => new { s.shippingCompanyId }).Select(s => new
+                {
+                    Name = s.FirstOrDefault().updateDate,
+                });
+                names.AddRange(tempName.Select(nn => nn.Name.ToString()));
+            }
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> cash = new List<decimal>();
@@ -1058,6 +1047,7 @@ namespace POS.View.reports
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
             List<decimal> balance = new List<decimal>();
+            List<decimal> invoice = new List<decimal>();
 
             if (endYear - startYear <= 1)
             {
@@ -1072,11 +1062,14 @@ namespace POS.View.reports
                         var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "doc").Count();
                         var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "cheque").Count();
                         var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "balance").Count();
+                        var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "inv").Count();
+
                         cash.Add(drawCash);
                         card.Add(drawCard);
                         doc.Add(drawDoc);
                         cheque.Add(drawCheque);
                         balance.Add(drawBalance);
+                        invoice.Add(drawInvoice);
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
 
                         if (year == endYear && month == endMonth)
@@ -1102,11 +1095,14 @@ namespace POS.View.reports
                     var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "doc").Count();
                     var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cheque").Count();
                     var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "balance").Count();
+                    var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "inv").Count();
+
                     cash.Add(drawCash);
                     card.Add(drawCard);
                     doc.Add(drawDoc);
                     cheque.Add(drawCheque);
                     balance.Add(drawBalance);
+                    invoice.Add(drawInvoice);
                     MyAxis.Labels.Add(year.ToString());
                 }
             }
@@ -1114,38 +1110,46 @@ namespace POS.View.reports
           new LineSeries
           {
               Values = cash.AsChartValues(),
-              Title = "Cash"
-          }); ;
+              Title = MainWindow.resourcemanager.GetString("trCash")
+        }); ;
             rowChartData.Add(
          new LineSeries
          {
              Values = card.AsChartValues(),
-             Title = "Card"
+             Title = MainWindow.resourcemanager.GetString("trCreditCard")
          });
             rowChartData.Add(
         new LineSeries
         {
             Values = doc.AsChartValues(),
-            Title = "Document"
+            Title = MainWindow.resourcemanager.GetString("trDocument")
 
         });
             rowChartData.Add(
             new LineSeries
             {
                 Values = cheque.AsChartValues(),
-                Title = "Cheque"
+                Title = MainWindow.resourcemanager.GetString("trCheque")
 
             });
             rowChartData.Add(
             new LineSeries
             {
                 Values = balance.AsChartValues(),
-                Title = "Balance"
+                Title = MainWindow.resourcemanager.GetString("trCredit")
+
+            });
+            rowChartData.Add(
+            new LineSeries
+            {
+                Values = invoice.AsChartValues(),
+                Title = MainWindow.resourcemanager.GetString("trInv")
 
             });
             DataContext = this;
             rowChart.Series = rowChartData;
         }
+
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
@@ -1163,7 +1167,7 @@ namespace POS.View.reports
                     chk_allVendorsPaymentType.IsChecked = false;
                     dp_vendorEndDate.SelectedDate = null;
                     dp_vendorStartDate.SelectedDate = null;
-                    fillEventsBySelectedTab();
+                    fillEvents("v");
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

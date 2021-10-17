@@ -7,7 +7,7 @@
              mc:Ignorable="d"  Tag="dailySalesStatistic"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
+             d:DesignHeight="450" d:DesignWidth="1024" Loaded="UserControl_Loaded">
     <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
@@ -227,7 +227,7 @@
                                         <CheckBox DockPanel.Dock="Right" Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Grid.Row="1"  Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allBranches_Checked" Unchecked="Chk_allBranches_Unchecked"></CheckBox>
 
                                     </DockPanel>
-                                    <DockPanel Grid.Row="2"  LastChildFill="False">
+                                    <DockPanel Grid.Row="1" Grid.Column="2"  LastChildFill="False">
 
                                     <ComboBox MinWidth="150" Name="cb_pos" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"

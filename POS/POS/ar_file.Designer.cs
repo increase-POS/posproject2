@@ -646,6 +646,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفرع, نقطة البيع,....
+        /// </summary>
+        internal static string trBranchPosHint {
+            get {
+                return ResourceManager.GetString("trBranchPosHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفروع/المخازن.
         /// </summary>
         internal static string trBranchs_Stores {
@@ -759,6 +768,24 @@ namespace POS {
         internal static string trCash {
             get {
                 return ResourceManager.GetString("trCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الرصيد النقدي.
+        /// </summary>
+        internal static string trCashBalance {
+            get {
+                return ResourceManager.GetString("trCashBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to زبون نقدي.
+        /// </summary>
+        internal static string trCashCustomer {
+            get {
+                return ResourceManager.GetString("trCashCustomer", resourceCulture);
             }
         }
         
@@ -3531,6 +3558,15 @@ namespace POS {
         internal static string trInvoiceHint {
             get {
                 return ResourceManager.GetString("trInvoiceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة, عنصر,....
+        /// </summary>
+        internal static string trInvoiceItemHint {
+            get {
+                return ResourceManager.GetString("trInvoiceItemHint", resourceCulture);
             }
         }
         

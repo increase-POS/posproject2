@@ -646,6 +646,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Branch, POS,....
+        /// </summary>
+        internal static string trBranchPosHint {
+            get {
+                return ResourceManager.GetString("trBranchPosHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Branchs/Stores.
         /// </summary>
         internal static string trBranchs_Stores {
@@ -768,6 +777,24 @@ namespace POS {
         internal static string trCash {
             get {
                 return ResourceManager.GetString("trCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Balance.
+        /// </summary>
+        internal static string trCashBalance {
+            get {
+                return ResourceManager.GetString("trCashBalance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Customer.
+        /// </summary>
+        internal static string trCashCustomer {
+            get {
+                return ResourceManager.GetString("trCashCustomer", resourceCulture);
             }
         }
         
@@ -3558,6 +3585,15 @@ namespace POS {
         internal static string trInvoiceHint {
             get {
                 return ResourceManager.GetString("trInvoiceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice, Item,....
+        /// </summary>
+        internal static string trInvoiceItemHint {
+            get {
+                return ResourceManager.GetString("trInvoiceItemHint", resourceCulture);
             }
         }
         

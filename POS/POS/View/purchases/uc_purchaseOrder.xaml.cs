@@ -88,8 +88,10 @@ namespace POS.View.purchases
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
+        public List<Control> controls;
         #region //to handle barcode characters
         static private int _SelectedVendor = -1;
+        bool _IsFocused = false;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -268,7 +270,10 @@ namespace POS.View.purchases
                 await RefrishVendors();
                 await fillBarcodeList();
                 refreshDraftNotification();
-                branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
+                //List all the UIElement in the VisualTree
+                controls = new List<Control>();
+                FindControl(this.grid_main, controls);
+                // branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
                 tb_barcode.Focus();
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
@@ -621,9 +626,9 @@ namespace POS.View.purchases
         private async Task addInvoice(string invType)
         {           
             if (invType == "po")
-                invoice.invNumber = await invoice.generateInvNumber(invType, branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber(invType, MainWindow.loginBranch.code, MainWindow.branchID.Value);
             else if (invType == "pod" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("pod", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("pod", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             invoice.branchCreatorId = MainWindow.branchID.Value;
             invoice.posId = MainWindow.posID.Value;
@@ -1116,6 +1121,13 @@ namespace POS.View.purchases
         {
             try
             {
+                if (!_IsFocused)
+                {
+                    Control c = CheckActiveControl();
+                    if (c == null)
+                        tb_barcode.Focus();
+                    _IsFocused = true;
+                }
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
@@ -1190,10 +1202,11 @@ namespace POS.View.purchases
                     }
                     tb_barcode.Text = _BarcodeStr;
                     _BarcodeStr = "";
-
+                    _IsFocused = false;
                     e.Handled = true;
                 }
                 _Sender = null;
+               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1202,6 +1215,41 @@ namespace POS.View.purchases
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public Control CheckActiveControl()
+        {
+            for (int i = 0; i < controls.Count; i++)
+            {
+                Control c = controls[i];
+                if (c.IsFocused)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+        public void FindControl(DependencyObject root, List<Control> controls)
+        {
+            controls.Clear();
+            var queue = new Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                var control = current as Control;
+                if (control != null && control.IsTabStop)
+                {
+                    controls.Add(control);
+                }
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child != null)
+                    {
+                        queue.Enqueue(child);
+                    }
+                }
             }
         }
         private async Task dealWithBarcode(string barcode)

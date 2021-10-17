@@ -168,8 +168,7 @@ namespace POS.Classes
         public decimal docTotal { get; set; }
         public decimal chequeTotal { get; set; }
         public decimal balanceTotal { get; set; }
-
-
+        public decimal invoiceTotal { get; set; }
 
         public string createUserName { get; set; }
         public string updateUserName { get; set; }//
@@ -2493,7 +2492,13 @@ namespace POS.Classes
             private int? userId;
 
             public int? VendorId { get => vendorId; set => vendorId = value; }
-            public string VendorName { get => vendorName; set => vendorName = value; }
+            //public string VendorName { get => vendorName; set => vendorName = value; }
+            public string VendorName
+            {
+                get => vendorName == null ? vendorName = MainWindow.resourcemanager.GetString("trCashCustomer")
+                    : vendorName;
+                set => vendorName = value;
+            }
             public string Side { get => side; set => side = value; }
             public string UserAcc { get => userAcc; set => userAcc = value; }
             public int? UserId { get => userId; set => userId = value; }

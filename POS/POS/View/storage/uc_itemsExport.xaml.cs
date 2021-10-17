@@ -80,7 +80,7 @@ namespace POS.View.storage
         List<User> users;
         ShippingCompanies companyModel = new ShippingCompanies();
         List<ShippingCompanies> companies;
-
+        public List<Control> controls;
         static private string _ProcessType = "imd"; //draft import
 
         static private int _SequenceNum = 0;
@@ -91,6 +91,7 @@ namespace POS.View.storage
         static private string _BarcodeStr = "";
         static private string _SelectedProcess = "";
         static private int _SelectedBranch = -1;
+        bool _IsFocused = false;
         static private int _SelectedCompany = -1;
         static private int _SelectedUser = -1;
         static private decimal _DeliveryCost = 0;
@@ -211,6 +212,10 @@ namespace POS.View.storage
                 await RefrishItems();
                 //await fillShippingCompanies();
                 //await fillUsers();
+                await fillBarcodeList();
+                //List all the UIElement in the VisualTree
+                controls = new List<Control>();
+                FindControl(this.grid_main, controls);
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -255,12 +260,36 @@ namespace POS.View.storage
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public void FindControl(DependencyObject root, List<Control> controls)
+        {
+            controls.Clear();
+            var queue = new Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                var control = current as Control;
+                if (control != null && control.IsTabStop)
+                {
+                    controls.Add(control);
+                }
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child != null)
+                    {
+                        queue.Enqueue(child);
+                    }
+                }
             }
         }
         #region timer to refresh notifications
@@ -391,6 +420,13 @@ namespace POS.View.storage
         {
             try
             {
+                if (!_IsFocused)
+                {
+                    Control c = CheckActiveControl();
+                    if (c == null)
+                        tb_barcode.Focus();
+                    _IsFocused = true;
+                }
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
@@ -454,6 +490,18 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        public Control CheckActiveControl()
+        {
+            for (int i = 0; i < controls.Count; i++)
+            {
+                Control c = controls[i];
+                if (c.IsFocused)
+                {
+                    return c;
+                }
+            }
+            return null;
         }
         private async Task dealWithBarcode(string barcode)
         {
