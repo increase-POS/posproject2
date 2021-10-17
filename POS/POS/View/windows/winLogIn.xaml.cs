@@ -117,10 +117,7 @@ namespace POS.View.windows
 
                 }
 
-                if (txtUserName.Text.Equals(""))
-                    Keyboard.Focus(txtUserName);
-                else if (txtPassword.Password.Equals(""))
-                    Keyboard.Focus(txtPassword);
+               
 
                 translate();
 
@@ -132,6 +129,11 @@ namespace POS.View.windows
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+
+                if (txtUserName.Text.Equals(""))
+                    Keyboard.Focus(txtUserName);
+                else if (txtPassword.Password.Equals(""))
+                    Keyboard.Focus(txtPassword);
             }
             catch (Exception ex)
             {

@@ -152,7 +152,7 @@ namespace POS.Classes
             parameters.Add("newList", newListParameter);
             parameters.Add("branchId", branchId.ToString());
             parameters.Add("userId", userId.ToString());
-           return await APIResult.post(method, parameters);
+            return await APIResult.post(method, parameters);
         }
         public async Task<int> save(BranchStore item)
         {

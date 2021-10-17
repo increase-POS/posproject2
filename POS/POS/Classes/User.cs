@@ -116,10 +116,9 @@ namespace POS.Classes
         {
             User user = new User();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("userId", userId.ToString());
+            parameters.Add("itemId", userId.ToString());
             //#################
             IEnumerable<Claim> claims = await APIResult.getList("Users/GetUserByID", parameters);
-
             foreach (Claim c in claims)
             {
                 if (c.Type == "scopes")
