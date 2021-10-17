@@ -2647,4 +2647,16 @@ Please add Email in setting</value>
   <data name="trSalaryHint" xml:space="preserve">
     <value>Salary...</value>
   </data>
+  <data name="trBranchPosHint" xml:space="preserve">
+    <value>Branch, POS,...</value>
+  </data>
+  <data name="trCashBalance" xml:space="preserve">
+    <value>Cash Balance</value>
+  </data>
+  <data name="trInvoiceItemHint" xml:space="preserve">
+    <value>Invoice, Item,...</value>
+  </data>
+  <data name="trCashCustomer" xml:space="preserve">
+    <value>Cash Customer</value>
+  </data>
 </root>

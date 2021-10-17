@@ -2629,4 +2629,16 @@
   <data name="trSalaryHint" xml:space="preserve">
     <value>راتب...</value>
   </data>
+  <data name="trBranchPosHint" xml:space="preserve">
+    <value>الفرع, نقطة البيع,...</value>
+  </data>
+  <data name="trCashBalance" xml:space="preserve">
+    <value>الرصيد النقدي</value>
+  </data>
+  <data name="trInvoiceItemHint" xml:space="preserve">
+    <value>فاتورة, عنصر,...</value>
+  </data>
+  <data name="trCashCustomer" xml:space="preserve">
+    <value>زبون نقدي</value>
+  </data>
 </root>

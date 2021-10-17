@@ -662,16 +662,16 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="col_tansNum" Width="*" Header="Transfer Number" Binding="{Binding transNum}"/>
-                        <DataGridTextColumn x:Name="col_processType" Width="*" Header="Payment Type" Binding="{Binding processType ,Converter={StaticResource processTypeConverter}}"/>
+                        <DataGridTextColumn x:Name="col_tansNum"       Width="*" Header="Transfer Number" Binding="{Binding transNum}"/>
+                        <DataGridTextColumn x:Name="col_processType"   Width="*" Header="Payment Type" Binding="{Binding processType ,Converter={StaticResource processTypeConverter}}"/>
                         <DataGridTextColumn x:Name="col_updateUserAcc" Width="*" Header="Accountant" Binding="{Binding updateUserAcc}"/>
-                        <DataGridTextColumn x:Name="col_agentName" Width="*" Header="Recipient" Binding="{Binding agentName}"/>
-                        <DataGridTextColumn x:Name="col_customer" Width="*" Header="Recipient" Binding="{Binding agentName}"/>
-                        <DataGridTextColumn x:Name="col_user" Width="*" Header="Recipient" Binding="{Binding userAcc}"/>
-                        <DataGridTextColumn x:Name="col_shipping" Width="*" Header="Company" Binding="{Binding shippingCompanyName}"/>
-                        <DataGridTextColumn x:Name="col_company" Width="*" Header="Company" Binding="{Binding agentCompany}"/>
-                        <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash , Converter={StaticResource accuracyConverter}}"/>
+                        <DataGridTextColumn x:Name="col_agentName"     Width="*" Header="Recipient" Binding="{Binding agentName}"/>
+                        <DataGridTextColumn x:Name="col_customer"      Width="*" Header="Recipient" Binding="{Binding Path=. ,Converter={StaticResource agentNameConverter}}"/>
+                        <DataGridTextColumn x:Name="col_user"          Width="*" Header="Recipient" Binding="{Binding userAcc}"/>
+                        <DataGridTextColumn x:Name="col_shipping"      Width="*" Header="Company" Binding="{Binding shippingCompanyName}"/>
+                        <DataGridTextColumn x:Name="col_company"       Width="*" Header="Company" Binding="{Binding agentCompany}"/>
+                        <DataGridTextColumn x:Name="col_updateDate"    Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
+                        <DataGridTextColumn x:Name="col_cash"          Width="*" Header="Amount" Binding="{Binding cash , Converter={StaticResource accuracyConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
