@@ -119,7 +119,7 @@ namespace POS.View.windows
 
                 if (txtUserName.Text.Equals(""))
                     Keyboard.Focus(txtUserName);
-                else
+                else if (txtPassword.Password.Equals(""))
                     Keyboard.Focus(txtPassword);
 
                 translate();
