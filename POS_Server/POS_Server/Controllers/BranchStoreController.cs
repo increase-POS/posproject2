@@ -16,6 +16,7 @@ namespace POS_Server.Controllers
     [RoutePrefix("api/BranchStore")]
     public class BranchStoreController : ApiController
     {
+
         // GET api/<controller> get all Objects
         [HttpPost]
         [Route("Get")]
@@ -314,7 +315,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("UpdateStoresById")]
         public string UpdateStoresById(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -335,14 +336,13 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         branchStoreObject = branchStoreObject.Replace("\\", string.Empty);
                         branchStoreObject = branchStoreObject.Trim('"');
                         newListObj = JsonConvert.DeserializeObject<List<branchStore>>(branchStoreObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                        break;
+                        //break;
                     }
                     else if (c.Type == "branchId")
                     {
                         branchId = int.Parse(c.Value);
                     }
-                    else
-                  if (c.Type == "userId")
+                    else   if (c.Type == "userId")
                     {
                         userId = int.Parse(c.Value);
                     }

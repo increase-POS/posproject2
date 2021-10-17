@@ -6388,7 +6388,7 @@ else
                                                                 //*cashTransId = C.cashTransId,
                                                                 //*transType = C.transType,
                                                                 //*posId = C.posId,
-                                                                //*userId = C.userId,
+                                                                userId = C.userId,
                                                                 agentId = C.agentId,
                                                                 //*invId = C.invId,
                                                                 transNum = C.transNum,

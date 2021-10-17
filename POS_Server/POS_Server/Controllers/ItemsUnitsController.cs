@@ -10,7 +10,7 @@ using POS_Server.Models.VM;
 using System.Security.Claims;
 using System.Web;
 using Newtonsoft.Json.Converters;
-
+using System.Data.Entity.SqlServer;
 
 namespace POS_Server.Controllers
 {
@@ -18,6 +18,7 @@ namespace POS_Server.Controllers
     public class ItemsUnitsController : ApiController
     {
         List<int> itemUnitsIds = new List<int>();
+        private Classes.Calculate Calc = new Classes.Calculate();
         [HttpPost]
         [Route("Get")]
         public string Get(string token)
@@ -981,7 +982,118 @@ namespace POS_Server.Controllers
         }
 
 
+        [HttpPost]
+        [Route("GetUnitsForSales")]
+        public string GetUnitsForSales(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int branchId = 0;
+            IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "branchId")
+                    branchId = int.Parse(c.Value);
+            }
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var itemUnitsList = (from  u in entity.itemsUnits where u.isActive == 1
+                                         join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
+                                         join l in entity.locations on il.locationId equals l.locationId
+                                         join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
+                                         where u.itemId ==(from ux in entity.itemsUnits where u.itemId == ux.itemId
+                                                           where ux.isActive == 1
+                                                           join il in entity.itemsLocations on ux.itemUnitId equals il.itemUnitId
+                                                           join l in entity.locations on il.locationId equals l.locationId
+                                                           join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
+                                                           where il.quantity>0
+                                                           select ux.itemId).FirstOrDefault()
+                                         select new ItemUnitModel()
+                                         {
+                                             itemId = u.itemId,
+                                             barcode = u.barcode,
+                                             mainUnit = u.units.name,
+                                             itemUnitId = u.itemUnitId,
+                                             price = u.price ,
+                                             taxes = u.items.taxes,
+                                         }).ToList();
 
+
+                        var itemsofferslist = (from off in entity.offers
+
+                                               join itof in entity.itemsOffers on off.offerId equals itof.offerId // itemsOffers and offers 
+
+                                               //  join iu in entity.itemsUnits on itof.iuId  equals  iu.itemUnitId //itemsUnits and itemsOffers
+                                               join iu in entity.itemsUnits on itof.iuId equals iu.itemUnitId
+                                               //from un in entity.units
+                                               select new ItemSalePurModel()
+                                               {
+                                                   itemId = iu.itemId,
+                                                   itemUnitId = itof.iuId,
+                                                   offerName = off.name,
+                                                   offerId = off.offerId,
+                                                   discountValue = off.discountValue,
+                                                   isNew = 0,
+                                                   isOffer = 1,
+                                                   isActiveOffer = off.isActive,
+                                                   startDate = off.startDate,
+                                                   endDate = off.endDate,
+                                                   unitId = iu.unitId,
+
+                                                   price = iu.price,
+                                                   discountType = off.discountType,
+                                                   desPrice = iu.price,
+                                                   defaultSale = iu.defaultSale,
+
+                                               }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1).Distinct().ToList();
+
+
+                        foreach (var iunlist in itemUnitsList)
+                        {
+                            // end is new
+                            decimal? totaldis = 0;
+                    iunlist.price = (decimal) iunlist.price + Calc.percentValue(iunlist.price, iunlist.taxes);
+                            foreach (var itofflist in itemsofferslist)
+                            {
+
+
+                                if (iunlist.itemUnitId == itofflist.itemUnitId)
+                                {
+                                    // get unit name of item that has the offer
+                                    using (incposdbEntities entitydb = new incposdbEntities())
+                                    { // put it in item
+                                        var un = entitydb.units
+                                         .Where(a => a.unitId == itofflist.unitId)
+                                            .Select(u => new
+                                            {
+                                                u.name
+                                           ,
+                                                u.unitId
+                                            }).FirstOrDefault();
+                                        iunlist.unitName = un.name;
+                                    }
+                                    iunlist.price = itofflist.price;
+                                    iunlist.price = iunlist.price + (iunlist.price * iunlist.taxes / 100); 
+                                }
+                            }
+                        }
+                        return TokenManager.GenerateToken(itemUnitsList);
+                    }
+            }
+            catch
+            {
+                return TokenManager.GenerateToken("0");
+            }
+             }
+
+        }
 
 
         [HttpPost]

@@ -1016,7 +1016,7 @@ namespace POS_Server.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {
@@ -1037,56 +1037,115 @@ namespace POS_Server.Controllers
         // update database record
         [HttpPost]
         [Route("UpdateImage")]
-        public int UpdateImage(string SetValuesObject)
+        public string UpdateImage(string token)
         {
-            var re = Request;
-            var headers = re.Headers;
-            string token = "";
-            if (headers.Contains("APIKey"))
-            {
-                token = headers.GetValues("APIKey").First();
-            }
-            Validation validation = new Validation();
-            bool valid = validation.CheckApiKey(token);
+            //SetValuesObject
+            string message = "";
 
-            SetValuesObject = SetValuesObject.Replace("\\", string.Empty);
-            SetValuesObject = SetValuesObject.Trim('"');
 
-            setValues setvalObj = JsonConvert.DeserializeObject<setValues>(SetValuesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            /*
-            if (userObj.updateUserId == 0 || userObj.updateUserId == null)
-            {
-                Nullable<int> id = null;
-                userObj.updateUserId = id;
-            }
-            if (userObj.createUserId == 0 || userObj.createUserId == null)
-            {
-                Nullable<int> id = null;
-                userObj.createUserId = id;
-            }
-            */
-            if (valid)
-            {
-                try
-                {
-                    setValues Setvalue;
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-                        var Entity = entity.Set<setValues>();
-                        Setvalue = entity.setValues.Where(p => p.valId == setvalObj.valId).First();
-                        Setvalue.value = setvalObj.value;
-                        entity.SaveChanges();
-                    }
-                    return Setvalue.valId;
-                }
 
-                catch
-                {
-                    return 0;
-                }
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
             }
             else
-                return 0;
+            {
+                string Object = "";
+                setValues newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Object")
+                    {
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<setValues>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                      
+                    }
+                }
+                if (newObject != null)
+                {
+
+                    try
+                    {
+                        setValues Setvalue;
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            var Entity = entity.Set<setValues>();
+                            Setvalue = entity.setValues.Where(p => p.valId == newObject.valId).First();
+                            Setvalue.value = newObject.value;
+                            entity.SaveChanges();
+                        }
+                       // return Setvalue.valId;
+                        return TokenManager.GenerateToken(Setvalue.valId.ToString());
+                    }
+
+
+                    catch
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
+
+
+
+                }
+                else
+                {
+                    return TokenManager.GenerateToken(message);
+                }
+
+            }
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //SetValuesObject = SetValuesObject.Replace("\\", string.Empty);
+            //SetValuesObject = SetValuesObject.Trim('"');
+
+            //setValues setvalObj = JsonConvert.DeserializeObject<setValues>(SetValuesObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+            ///*
+            //if (userObj.updateUserId == 0 || userObj.updateUserId == null)
+            //{
+            //    Nullable<int> id = null;
+            //    userObj.updateUserId = id;
+            //}
+            //if (userObj.createUserId == 0 || userObj.createUserId == null)
+            //{
+            //    Nullable<int> id = null;
+            //    userObj.createUserId = id;
+            //}
+            //*/
+            //if (valid)
+            //{
+            //    try
+            //    {
+            //        setValues Setvalue;
+            //        using (incposdbEntities entity = new incposdbEntities())
+            //        {
+            //            var Entity = entity.Set<setValues>();
+            //            Setvalue = entity.setValues.Where(p => p.valId == setvalObj.valId).First();
+            //            Setvalue.value = setvalObj.value;
+            //            entity.SaveChanges();
+            //        }
+            //        return Setvalue.valId;
+            //    }
+
+            //    catch
+            //    {
+            //        return 0;
+            //    }
+            //}
+            //else
+            //    return 0;
         }
 
         #endregion 

@@ -25,7 +25,7 @@ namespace POS_Server.Controllers
         [Route("GetActive")]
         public string GetActive(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
@@ -72,7 +72,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("Getloginuser")]
         public string Getloginuser(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             List<UserModel> usersList = new List<UserModel>();
             UserModel user = new UserModel();
 
@@ -144,7 +144,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     {
                         user = emptyuser;
                         // rong user
-                        return TokenManager.GenerateToken(user) ;
+                        return TokenManager.GenerateToken(user);
                     }
                     else
                     {
@@ -152,14 +152,14 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         if (user.password.Equals(password))
                         {
                             // correct username and pasword
-                            return  TokenManager.GenerateToken(user) ;
+                            return TokenManager.GenerateToken(user);
                         }
                         else
                         {
                             // rong pass return just username
                             user = emptyuser;
                             user.username = userName;
-                            return  TokenManager.GenerateToken(user) ;
+                            return TokenManager.GenerateToken(user);
 
                         }
                     }
@@ -171,7 +171,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("Get")]
         public string Get(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -232,16 +232,12 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         // GET api/<controller>
         [HttpPost]
         [Route("GetUserByID")]
-        public String GetUserByID(string token)
+        public string GetUserByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-            var re = Request;
-            var headers = re.Headers;
-            var jwt = headers.GetValues("Authorization").First();
-            if (TokenManager.GetPrincipal(jwt) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
-                // return new ResponseVM { Status = "Fail", Message = "invalid authorization" };
-                return TokenManager.GenerateToken("");
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -249,7 +245,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
-                    if (c.Type == "userId")
+                    if (c.Type == "itemId")
                     {
                         userId = int.Parse(c.Value);
                     }
@@ -283,7 +279,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        u.balanceType,
                    })
                    .FirstOrDefault();
-                    return  TokenManager.GenerateToken(user);
+                    return TokenManager.GenerateToken(user);
                 }
             }
         }
@@ -349,7 +345,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetSalesMan")]
         public string GetSalesMan(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
                 return TokenManager.GenerateToken("-7");
@@ -364,7 +360,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     if (c.Type == "branchId")
                     {
                         branchId = int.Parse(c.Value);
-                    } else if (c.Type == "deliveryPermission")
+                    }
+                    else if (c.Type == "deliveryPermission")
                     {
                         deliveryPermission = c.Value;
                     }
@@ -411,7 +408,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -456,8 +453,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             int usersCount = entity.users.Count();
                             if (usersCount >= userMaxCount)
                             {
-                                 message = "-1";
-                    return TokenManager.GenerateToken(message);
+                                message = "-1";
+                                return TokenManager.GenerateToken(message);
                             }
                             else
                             {
@@ -488,7 +485,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                                 }
                                 entity.SaveChanges().ToString();
                                 message = userObj.userId.ToString();
-                    return TokenManager.GenerateToken(message);
+                                return TokenManager.GenerateToken(message);
 
                             }
                         }
@@ -513,9 +510,9 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             userObj.balance = newObject.balance;
                             userObj.balanceType = newObject.balanceType;
                             userObj.isOnline = newObject.isOnline;
-                           entity.SaveChanges().ToString();
+                            entity.SaveChanges().ToString();
                             message = userObj.userId.ToString();
-                    return TokenManager.GenerateToken(message);
+                            return TokenManager.GenerateToken(message);
 
                         }
                     }
@@ -531,7 +528,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("Delete")]
         public string Delete(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             if (TokenManager.GetPrincipal(token) == null)//invalid authorization
             {
@@ -569,13 +566,13 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             users usersDelete = entity.users.Find(delUserId);
                             entity.users.Remove(usersDelete);
                             message = entity.SaveChanges().ToString();
-                    return TokenManager.GenerateToken(message);
+                            return TokenManager.GenerateToken(message);
 
                         }
                     }
                     catch
                     {
-                    return TokenManager.GenerateToken("0");
+                        return TokenManager.GenerateToken("0");
                     }
                 }
                 else
@@ -590,18 +587,18 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             userDelete.updateDate = DateTime.Now;
                             userDelete.updateUserId = userId;
                             message = entity.SaveChanges().ToString();
-                    return TokenManager.GenerateToken(message);
+                            return TokenManager.GenerateToken(message);
 
                         }
                     }
                     catch
                     {
-                    return TokenManager.GenerateToken("0");
+                        return TokenManager.GenerateToken("0");
                     }
                 }
 
             }
-           
+
         }
         [Route("PostUserImage")]
         public IHttpActionResult PostUserImage()
@@ -695,7 +692,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("UpdateImage")]
         public string UpdateImage(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             var re = Request;
             var headers = re.Headers;
