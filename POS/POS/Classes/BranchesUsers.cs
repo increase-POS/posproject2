@@ -137,7 +137,7 @@ namespace POS.Classes
                 if (c.Type == "scopes")
                 {
                     items.Add( JsonConvert.DeserializeObject<BranchesUsers>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
-                    break;
+                   
                 }
             }
             return items;
