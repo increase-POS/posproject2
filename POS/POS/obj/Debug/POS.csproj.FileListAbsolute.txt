@@ -3021,4 +3021,3 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache

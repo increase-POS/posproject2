@@ -303,7 +303,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 accuracy = "1";
             }
         }
-
         async void loading_getUserPersonalInfo()
         {
             #region user personal info
@@ -338,7 +337,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             #endregion
         }
-
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try

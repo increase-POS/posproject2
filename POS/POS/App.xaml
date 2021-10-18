@@ -33,7 +33,7 @@
             <converters:TaxVisibilityConverter x:Key="TaxVisibilityConverter"/>
             <converters:agentTypeConverter x:Key="agentTypeConverter"/>
             <converters:agentNameConverter x:Key="agentNameConverter"/>
-            <converters:agentCompanyConverter x:Key="agentCompanyConverter"/>
+            <converters:agentNameConverter x:Key="agentCompanyConverter"/>
             <converters:sectionFreeZoneStorageReportConverter x:Key="sectionFreeZoneStorageReportConverter"/>
             <converters:locationFreeZoneStorageReportConverter x:Key="locationFreeZoneStorageReportConverter"/>
             <converters:invoiceTypeNumberConverter x:Key="invoiceTypeNumberConverter"/>

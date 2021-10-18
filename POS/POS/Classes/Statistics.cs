@@ -3349,5 +3349,9 @@ namespace POS.Classes
 
         }
 
+        internal IEnumerable<PaymentsTypeCombo> getPaymentsTypeComboBySide(List<CashTransferSts> payments, string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

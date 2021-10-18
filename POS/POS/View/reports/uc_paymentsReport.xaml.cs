@@ -1487,5 +1487,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        
+        
     }
 }
