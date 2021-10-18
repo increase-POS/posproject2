@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS.View.reports"
              mc:Ignorable="d" 
-            Tag="fundAccountStatistic"
+            Tag="accountFund"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" d:DesignWidth="800" Loaded="UserControl_Loaded">
@@ -45,7 +45,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_branch" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
-                            <Button x:Name="btn_branch"  Background="Transparent" Tag="Total Balance"
+                            <Button x:Name="btn_branch"  Background="Transparent" Tag="branch"
                                     materialDesign:RippleAssist.Feedback="Transparent" BorderBrush="Transparent" Height="auto">
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">

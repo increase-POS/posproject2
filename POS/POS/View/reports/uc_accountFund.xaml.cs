@@ -618,7 +618,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+      
         private async void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
             try
@@ -638,7 +638,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        
 
-       
     }
 }

@@ -82,6 +82,8 @@ namespace POS.View.reports
                 uc_paymentsReport uc = new uc_paymentsReport();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -96,6 +98,8 @@ namespace POS.View.reports
                 uc_recipientReport uc = new uc_recipientReport();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -110,6 +114,8 @@ namespace POS.View.reports
                 uc_banksReport uc = new uc_banksReport();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -124,6 +130,8 @@ namespace POS.View.reports
                 uc_posReports uc = new uc_posReports();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -138,6 +146,8 @@ namespace POS.View.reports
                 uc_accountStatement uc = new uc_accountStatement();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -152,6 +162,8 @@ namespace POS.View.reports
                 uc_accountFund uc = new uc_accountFund();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -166,6 +178,8 @@ namespace POS.View.reports
                 uc_accountProfits uc = new uc_accountProfits();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {

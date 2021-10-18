@@ -1239,16 +1239,20 @@ namespace POS.Classes
                 firstTitle = MainWindow.resourcemanager.GetString("trPOS");
             else if (firstTitle == "dailySalesStatistic")
                 firstTitle = MainWindow.resourcemanager.GetString("trDailySales");
-            
-           //////////////////////////////////////////////////////////////////////////////
+            else if (firstTitle == "accountProfits")
+                firstTitle = MainWindow.resourcemanager.GetString("trProfits");
+            else if (firstTitle == "accountFund")
+                firstTitle = MainWindow.resourcemanager.GetString("trCashBalance");
+
+            //////////////////////////////////////////////////////////////////////////////
 
             if (secondTitle == "branch")
                 secondTitle = MainWindow.resourcemanager.GetString("trBranches");
             else if (secondTitle == "pos")
                 secondTitle = MainWindow.resourcemanager.GetString("trPOS");
-            else if (secondTitle == "vendors")
+            else if (secondTitle == "vendors"|| secondTitle == "vendor")
                 secondTitle = MainWindow.resourcemanager.GetString("trVendors");
-            else if (secondTitle == "customers")
+            else if (secondTitle == "customers" || secondTitle == "customer")
                 secondTitle = MainWindow.resourcemanager.GetString("trCustomers");
             else if (secondTitle == "users" || secondTitle == "user")
                 secondTitle = MainWindow.resourcemanager.GetString("trUsers");

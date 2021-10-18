@@ -88,6 +88,7 @@ namespace POS.View.reports
                 #endregion
 
                 Btn_invoice_Click(btn_invoice, null);
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
@@ -320,6 +321,7 @@ namespace POS.View.reports
 
                 chk_allBranches.IsChecked = true;
                 //chk_allPos.IsChecked = true;
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -358,6 +360,7 @@ namespace POS.View.reports
             path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             await Search();
+            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);

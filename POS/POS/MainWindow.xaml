@@ -134,6 +134,8 @@
                                Margin="2.5,1" x:Name="txt_firstLevelTrack"/>
                         <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
                                Margin="2.5,1" x:Name="txt_secondLevelTrack"/>
+                        <TextBlock FontSize="14" FontWeight="Regular" Foreground="White" 
+                               Margin="2.5,1" x:Name="txt_thirdLevelTrack"/>
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="5">

@@ -377,7 +377,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_vendor);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_vendor);
                 path_vendor.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Visible;
@@ -433,7 +433,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
                 path_customer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Visible;
@@ -488,7 +488,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_user);
                 path_user.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Visible;
@@ -543,7 +543,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_salary);
                 path_salary.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Visible;
@@ -597,7 +597,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_generalExpenses);
                 path_generalExpenses.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Collapsed;
@@ -648,7 +648,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_administrativePull);
                 path_administrativePull.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Collapsed;
@@ -700,7 +700,7 @@ namespace POS.View.reports
                 txt_search.Text = "";
 
                 paint();
-                //ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_shipping);
                 path_shipping.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 cb_vendors.Visibility = Visibility.Visible;

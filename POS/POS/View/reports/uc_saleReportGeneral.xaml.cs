@@ -33,6 +33,8 @@ namespace POS.View.reports
                 uc_saleReport uc = new uc_saleReport();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -47,6 +49,8 @@ namespace POS.View.reports
                 uc_saleItems uc = new uc_saleItems();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -66,6 +70,8 @@ namespace POS.View.reports
                 uc_salePromotion uc = new uc_salePromotion();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -80,6 +86,8 @@ namespace POS.View.reports
                 uc_saleOrders uc = new uc_saleOrders();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -94,6 +102,8 @@ namespace POS.View.reports
                 uc_saleQuotation uc = new uc_saleQuotation();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -108,6 +118,8 @@ namespace POS.View.reports
                 us_dailySalesStatistic uc = new us_dailySalesStatistic();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {

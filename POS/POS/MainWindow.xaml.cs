@@ -941,29 +941,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             fn_pathOpenCollapsed();
             p.Visibility = Visibility.Visible;
         }
-        private void BTN_Home_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-
-                colorTextRefreash(txt_home);
-                FN_pathVisible(path_openHome);
-                fn_ColorIconRefreash(path_iconHome);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(uc_home.Instance);
-                if (isHome)
-                {
-                    uc_home.Instance.timerAnimation();
-                    isHome = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this );
-            }
-
-        }
-
+       
 
        
 
@@ -1025,13 +1003,16 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
 
         }
-        
+
         public void initializationMainTrack(string tag, int level)
         {
             if (level == 0)
             {
                 txt_secondLevelTrack.Visibility = Visibility.Collapsed;
+                txt_thirdLevelTrack.Visibility = Visibility.Collapsed;
                 #region  mainWindow
+                if (tag == "home")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trHome");
                 if (tag == "catalog")
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trCatalog");
                 else if (tag == "storage")
@@ -1053,6 +1034,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             else if (level == 1)
             {
                 txt_secondLevelTrack.Visibility = Visibility.Visible;
+                txt_thirdLevelTrack.Visibility = Visibility.Collapsed;
                 #region  storage
                 if (tag == "locations")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trLocation");
@@ -1178,6 +1160,65 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trUsers");
                 #endregion
             }
+            else if (level == 2)
+            {
+                txt_thirdLevelTrack.Visibility = Visibility.Visible;
+
+                #region  report
+
+                if (tag == "invoice")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
+                else if (tag == "order")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
+                else if (tag == "item")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trItems");
+                
+
+                #region  storageReports
+                if (tag == "stock")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trStock");
+                else if (tag == "external")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trExternal");
+                else if (tag == "internal")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trInternal");
+                else if (tag == "stocktaking")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trStocktaking");
+                else if (tag == "destroied")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trDestructives");
+
+                #endregion
+
+                #region  salesReports
+                if (tag == "promotion")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trPromotion");
+                else if (tag == "quotation")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trQuotations");
+                else if (tag == "dailySales")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trDailySales");
+
+                #endregion
+
+                #region  accountsReports
+                if (tag == "payments")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trPayments");
+                else if (tag == "recipient")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trRecipientTooltip");
+                else if (tag == "bank")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trBank");
+                else if (tag == "pos")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trPOS");
+                else if (tag == "statement")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trAccountStatement");
+                else if (tag == "fund")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trCashBalance");
+             else if (tag == "profit")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trProfits");
+
+        #endregion
+
+        #endregion
+    }
+
         }
         //void initializationMainTrackChildren(string text)
         //{
@@ -1189,6 +1230,31 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         //    titleText.Margin = new Thickness(2.5, 1, 2.5, 1);
         //    sp_mainTrack.Children.Add(titleText);
         //}
+        private void BTN_Home_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                colorTextRefreash(txt_home);
+                FN_pathVisible(path_openHome);
+                fn_ColorIconRefreash(path_iconHome);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_home.Instance);
+                if (isHome)
+                {
+                    uc_home.Instance.timerAnimation();
+                    isHome = false;
+                }
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+
         private void BTN_catalog_Click(object sender, RoutedEventArgs e)
         {
             try

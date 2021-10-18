@@ -46,7 +46,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_invoice" Click="Btn_invoice_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="invoice" x:Name="btn_invoice" Click="Btn_invoice_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -110,7 +110,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_item" Click="Btn_item_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="item" x:Name="btn_item" Click="Btn_item_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -153,7 +153,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_order" Click="Btn_order_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="order" x:Name="btn_order" Click="Btn_order_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"

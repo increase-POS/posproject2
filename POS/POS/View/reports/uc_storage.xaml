@@ -52,7 +52,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_stock" Click="Btn_stock_Click"
+                                <Button Background="Transparent" BorderThickness="0"  Tag="stock" x:Name="btn_stock" Click="Btn_stock_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -97,7 +97,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_external" Click="Btn_external_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="external" x:Name="btn_external" Click="Btn_external_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -145,7 +145,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_internal" Click="Btn_internal_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="internal" x:Name="btn_internal" Click="Btn_internal_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -184,7 +184,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_stocktaking" Click="Btn_stocktaking_Click"
+                                <Button Background="Transparent" BorderThickness="0"  Tag="stocktaking" x:Name="btn_stocktaking" Click="Btn_stocktaking_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -222,7 +222,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_destroied" Click="Btn_destroied_Click"
+                                <Button Background="Transparent" BorderThickness="0"  Tag="destroied" x:Name="btn_destroied" Click="Btn_destroied_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"

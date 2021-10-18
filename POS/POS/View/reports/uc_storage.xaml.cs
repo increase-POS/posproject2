@@ -46,8 +46,11 @@ namespace POS.View.reports
                 {
                 uc_stock uc = new uc_stock();
                 main.Children.Add(uc);
-            }
-            sc_main.Visibility = Visibility.Collapsed;
+                    Button button = sender as Button;
+                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+
+                }
+                sc_main.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -62,8 +65,10 @@ namespace POS.View.reports
                     {
                 uc_external uc = new uc_external();
                 main.Children.Add(uc);
-            }
-            sc_main.Visibility = Visibility.Collapsed;
+                    Button button = sender as Button;
+                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                }
+                sc_main.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {
@@ -78,7 +83,9 @@ namespace POS.View.reports
                         {
                 uc_internal uc = new uc_internal();
                 main.Children.Add(uc);
-            }
+                    Button button = sender as Button;
+                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                }
             sc_main.Visibility = Visibility.Collapsed;
                     }
                     catch (Exception ex)
@@ -94,7 +101,9 @@ namespace POS.View.reports
                             {
                 uc_stocktaking uc = new uc_stocktaking();
                 main.Children.Add(uc);
-            }
+                    Button button = sender as Button;
+                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                }
             sc_main.Visibility = Visibility.Collapsed;
                         }
                         catch (Exception ex)
@@ -110,7 +119,9 @@ namespace POS.View.reports
                                 {
                 uc_destroied uc = new uc_destroied();
                 main.Children.Add(uc);
-            }
+                    Button button = sender as Button;
+                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                }
             sc_main.Visibility = Visibility.Collapsed;
                             }
                             catch (Exception ex)

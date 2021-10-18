@@ -52,7 +52,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_payments" Click="Btn_payments_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="payments" x:Name="btn_payments" Click="Btn_payments_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -94,7 +94,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_recipient" Click="Btn_recipient_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="recipient" x:Name="btn_recipient" Click="Btn_recipient_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -129,7 +129,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_bank" Click="Btn_bank_Click"
+                                <Button Background="Transparent" BorderThickness="0"  Tag="bank"  x:Name="btn_bank" Click="Btn_bank_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -181,7 +181,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_pos" Click="Btn_pos_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="pos"  x:Name="btn_pos" Click="Btn_pos_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -216,7 +216,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_statement" Click="Btn_statement_Click"
+                                <Button Background="Transparent" BorderThickness="0" Tag="statement"  x:Name="btn_statement" Click="Btn_statement_Click"
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -277,7 +277,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_fund" 
+                                <Button Background="Transparent" BorderThickness="0" Tag="fund"  x:Name="btn_fund" 
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Btn_fund_Click">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -332,7 +332,7 @@
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">
-                                <Button Background="Transparent" BorderThickness="0" x:Name="btn_profit" 
+                                <Button Background="Transparent" BorderThickness="0" Tag="profit"  x:Name="btn_profit" 
                                  Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Btn_profit_Click">
                                     <Path       VerticalAlignment="Center" HorizontalAlignment="Center"

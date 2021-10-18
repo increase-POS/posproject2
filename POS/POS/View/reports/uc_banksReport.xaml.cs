@@ -66,7 +66,9 @@ namespace POS.View.reports
                 fillBanksCombo(cb_paymentsBank);
                 fillUserCombo(userPaymentsCombo, cb_paymentsUser);
                 fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_payments.Tag.ToString());
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

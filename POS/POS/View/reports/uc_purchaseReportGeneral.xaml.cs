@@ -34,6 +34,8 @@ namespace POS.View.reports
                 uc_purchaseReport uc = new uc_purchaseReport();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -48,6 +50,8 @@ namespace POS.View.reports
                 uc_purchaseItem uc = new uc_purchaseItem();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
@@ -62,6 +66,8 @@ namespace POS.View.reports
                 uc_purchaseOrders uc = new uc_purchaseOrders();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
             }
             catch (Exception ex)
             {
