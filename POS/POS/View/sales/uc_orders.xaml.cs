@@ -186,6 +186,8 @@ namespace POS.View.sales
         {
             try
             {
+                //Window parentWin = Window.GetWindow(this);
+                MainWindow.mainWindow.Closing += ParentWin_Closing;
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
@@ -249,7 +251,10 @@ namespace POS.View.sales
                     md_ordersWait.Visibility = Visibility.Collapsed;
 
                 #endregion
-
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Collapsed;
+                btn_pdf.Visibility = Visibility.Collapsed; 
+                #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_barcode.Focus();
@@ -260,6 +265,10 @@ namespace POS.View.sales
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            UserControl_Unloaded(this, null);
         }
         public void FindControl(DependencyObject root, List<Control> controls)
         {
@@ -820,6 +829,20 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
+            }
+            if (_InvoiceType.Equals("or"))
+            {
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Visible;
+                btn_pdf.Visibility = Visibility.Visible;
+                #endregion
+            }
+            else
+            {
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Collapsed;
+                btn_pdf.Visibility = Visibility.Collapsed;
+                #endregion
             }
         }
         private async Task addInvoice(string invType)

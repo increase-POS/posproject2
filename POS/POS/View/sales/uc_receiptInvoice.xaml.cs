@@ -274,6 +274,8 @@ namespace POS.View
         {
             try
             {
+                //Window parentWin = Window.GetWindow(this);
+                MainWindow.mainWindow.Closing += ParentWin_Closing;
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
@@ -363,17 +365,23 @@ namespace POS.View
                 else
                     md_quotations.Visibility = Visibility.Collapsed;
 
-                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
-                {
-                    btn_emailMessage.Visibility = Visibility.Visible;
-                    bdr_emailMessage.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn_emailMessage.Visibility = Visibility.Collapsed;
-                    bdr_emailMessage.Visibility = Visibility.Collapsed;
-                }
+                //if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                //{
+                //    btn_emailMessage.Visibility = Visibility.Visible;
+                //    bdr_emailMessage.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    btn_emailMessage.Visibility = Visibility.Collapsed;
+                //    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                //}
 
+                #endregion
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Collapsed;
+                btn_pdf.Visibility = Visibility.Collapsed;
+                btn_emailMessage.Visibility = Visibility.Collapsed;
+                bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
                 #region tb_total textChange
                 var dp = DependencyPropertyDescriptor.FromProperty(
@@ -398,6 +406,10 @@ namespace POS.View
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            UserControl_Unloaded(this, null);
         }
         public void FindControl(DependencyObject root, List<Control> controls)
         {
@@ -712,7 +724,31 @@ namespace POS.View
             }
         }
         #endregion
+        private async void Btn_addCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_updateVendor w = new wd_updateVendor();
+                    //// pass agent id to update windows
+                    w.agent.agentId = 0;
+                    w.type = "c";
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    await RefrishCustomers();
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -725,6 +761,7 @@ namespace POS.View
                     wd_updateVendor w = new wd_updateVendor();
                     //// pass agent id to update windows
                     w.agent.agentId = (int)cb_customer.SelectedValue;
+                    w.type = "c";
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
                 }
@@ -1987,6 +2024,32 @@ namespace POS.View
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
                     break;
+            }
+            if (_InvoiceType.Equals("s"))
+            {
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Visible;
+                btn_pdf.Visibility = Visibility.Visible;
+                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_emailMessage.Visibility = Visibility.Visible;
+                    bdr_emailMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
+                    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                }
+                #endregion
+            }
+            else
+            {
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Collapsed;
+                btn_pdf.Visibility = Visibility.Collapsed;
+                btn_emailMessage.Visibility = Visibility.Collapsed;
+                bdr_emailMessage.Visibility = Visibility.Collapsed;
+                #endregion
             }
             btn_next.Visibility = Visibility.Visible;
             btn_previous.Visibility = Visibility.Visible;
@@ -4282,5 +4345,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+      
     }
 }

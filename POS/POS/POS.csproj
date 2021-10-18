@@ -266,6 +266,7 @@
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
     <Compile Include="converters\accuracyConverter.cs" />
+    <Compile Include="converters\agentNameConverter.cs" />
     <Compile Include="converters\agentTypeConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />

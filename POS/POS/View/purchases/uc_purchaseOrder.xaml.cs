@@ -245,6 +245,8 @@ namespace POS.View.purchases
         {
             try
             {
+                //Window parentWin = Window.GetWindow(this);
+                MainWindow.mainWindow.Closing += ParentWin_Closing;
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
@@ -283,16 +285,16 @@ namespace POS.View.purchases
                 #region Permision
                  
 
-                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
-                {
-                    btn_emailMessage.Visibility = Visibility.Visible;
-                    bdr_emailMessage.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn_emailMessage.Visibility = Visibility.Collapsed;
-                    bdr_emailMessage.Visibility = Visibility.Collapsed;
-                }
+                //if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                //{
+                //    btn_emailMessage.Visibility = Visibility.Visible;
+                //    bdr_emailMessage.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    btn_emailMessage.Visibility = Visibility.Collapsed;
+                //    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                //}
 
 
                 if (MainWindow.groupObject.HasPermissionAction(initializeShortagePermission, MainWindow.groupObjects, "one"))
@@ -307,7 +309,12 @@ namespace POS.View.purchases
                 }
 
                 #endregion
-
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Collapsed;
+                btn_pdf.Visibility = Visibility.Collapsed;
+                btn_emailMessage.Visibility = Visibility.Collapsed;
+                bdr_emailMessage.Visibility = Visibility.Collapsed;
+                #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -317,6 +324,10 @@ namespace POS.View.purchases
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            UserControl_Unloaded(this, null);
         }
 
         #region bill
@@ -941,6 +952,32 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
+            }
+            if (_InvoiceType.Equals("po"))
+            {
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Visible;
+                btn_pdf.Visibility = Visibility.Visible;
+                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_emailMessage.Visibility = Visibility.Visible;
+                    bdr_emailMessage.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_emailMessage.Visibility = Visibility.Collapsed;
+                    bdr_emailMessage.Visibility = Visibility.Collapsed;
+                }
+                #endregion
+            }
+            else
+            {
+                #region print - pdf - send email
+                btn_printInvoice.Visibility = Visibility.Collapsed;
+                btn_pdf.Visibility = Visibility.Collapsed;
+                btn_emailMessage.Visibility = Visibility.Collapsed;
+                bdr_emailMessage.Visibility = Visibility.Collapsed;
+                #endregion
             }
             btn_next.Visibility = Visibility.Visible;
             btn_previous.Visibility = Visibility.Visible;

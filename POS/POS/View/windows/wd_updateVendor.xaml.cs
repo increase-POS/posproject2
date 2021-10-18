@@ -51,8 +51,8 @@ namespace POS.View.windows
         public Agent agent = new Agent();
         IEnumerable<Agent> agentsQuery;
         IEnumerable<Agent> agents;
-
-        OpenFileDialog openFileDialog = new OpenFileDialog();
+        public string type = "";
+       OpenFileDialog openFileDialog = new OpenFileDialog();
 
         string imgFileName = "pic/no-image-icon-125x125.png";
 
@@ -62,7 +62,11 @@ namespace POS.View.windows
 
         private void translate()
         {
+            if (type == "v")
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
+            else if(type == "c")
+                txt_vendor.Text = MainWindow.resourcemanager.GetString("trCustomer");
+
 
             //       MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_search, MainWindow.resourcemanager.GetString("trPamentMethodHint"));
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
@@ -93,6 +97,10 @@ namespace POS.View.windows
             tt_address.Content = MainWindow.resourcemanager.GetString("trAddress");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_upperLimit, MainWindow.resourcemanager.GetString("trUpperLimitHint"));
+            txt_isCredit.Text = MainWindow.resourcemanager.GetString("trCredit");
+
         }
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
@@ -127,6 +135,8 @@ namespace POS.View.windows
         {//load
             try
             {
+                if (type == "c")
+                    dkp_isCredit.Visibility = Visibility.Visible;
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -140,8 +150,8 @@ namespace POS.View.windows
 
                 translate();
                 #endregion
-
-                agent = await agentModel.getAgentById(agent.agentId);
+                if (agent.agentId != 0)
+                    agent = await agentModel.getAgentById(agent.agentId);
                 if (agent != null)
                 {
                     this.DataContext = agent;
@@ -156,7 +166,6 @@ namespace POS.View.windows
 
                     await getImg();
                 }
-
                 Keyboard.Focus(tb_name);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -206,7 +215,18 @@ namespace POS.View.windows
             catch { }
         }
 
-
+        private void Tgl_isOpenUpperLimit_Checked(object sender, RoutedEventArgs e)
+        {
+            tb_upperLimit.IsEnabled = true;
+        }
+        private void Tgl_isOpenUpperLimit_Unchecked(object sender, RoutedEventArgs e)
+        {
+            tb_upperLimit.IsEnabled = false;
+        }
+        private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            e.Handled = e.Key == Key.Space;
+        }
         #region Validate
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -393,8 +413,8 @@ namespace POS.View.windows
         #endregion
         async Task<IEnumerable<Agent>> RefreshVendorsList()
         {
-            agents = await agentModel.Get("v");
-            return agents;
+                agents = await agentModel.Get(type);
+                return agents;
 
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
@@ -423,7 +443,7 @@ namespace POS.View.windows
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                SectionData.StartAwait(grid_main);
                 //chk empty name
                 SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
                 //chk empty mobile
@@ -450,8 +470,29 @@ namespace POS.View.windows
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorEmailToolTip"), animation: ToasterAnimation.FadeIn);
                     else
                     {
-                        SectionData.genRandomCode("v");
-                        //tb_code.Text = SectionData.code;
+                        //SectionData.genRandomCode(type);
+                        if (agent.agentId == 0)
+                        {
+                            tb_code.Text = await agentModel.generateCodeNumber(type);
+                            agent.type = type;
+                            agent.accType = "";
+                            agent.balance = 0;
+                            agent.isActive = 1;
+                           
+                        }
+                        if (type == "c")
+                        {
+                            agent.isLimited = (bool)tgl_hasCredit.IsChecked;
+                            decimal maxDeserveValue = 0;
+                            if (!tb_upperLimit.Text.Equals(""))
+                                maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+                            agent.maxDeserve = maxDeserveValue;
+                        }
+                        else
+                        {
+                            agent.maxDeserve = 0;
+                            agent.isLimited = false;
+                        }
                         agent.name = tb_name.Text;
                         agent.code = tb_code.Text;
                         agent.company = tb_company.Text;
@@ -460,15 +501,11 @@ namespace POS.View.windows
                         agent.phone = phoneStr;
                         agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                         agent.image = "";
-                        //agent.type = "v";
-                        //agent.accType = "";
-                        //agent.balance = 0;
+                        
                         agent.createUserId = MainWindow.userID;
                         agent.updateUserId = MainWindow.userID;
                         agent.notes = tb_notes.Text;
-                        //agent.isActive = 1;
                         agent.fax = faxStr;
-                        //agent.maxDeserve = maxDeserveValue;
 
                         int s = await agentModel.save(agent);
 
