@@ -94,37 +94,29 @@ namespace POS.View
                     grid_main.FlowDirection = FlowDirection.RightToLeft; }
                 translate();
                 #endregion
-                await SectionData.fillBranchesWithAll(cb_branch);
-                cb_branch.SelectedValue = MainWindow.branchID;
-                if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
-                    cb_branch.IsEnabled = true;
-                else cb_branch.IsEnabled = false;
+                refrishIUList(MainWindow.itemUnitsUsers);
+
+               
 
                 SkipBestSeller = 0;
                 SkipIUStorage = 0;
                 firstLoad = true;
 
-                refrishIUList(MainWindow.itemUnitsUsers);
 
 
                 CalculateNumberDaysInMonth calculate = new CalculateNumberDaysInMonth();
                 NumberDaysInMonth = calculate.getdays(DateTime.Now);
 
-                await refreshViewTask();
+                //await refreshViewTask();
 
+                starTimerAfter10();
+                starTimerAfter30();
 
-                //thread 30
-                threadtimer = new DispatcherTimer();
-                threadtimer.Interval = TimeSpan.FromSeconds(secondTimer30);
-                threadtimer.Tick += timer_Thread30;
-                threadtimer.Start();
-                ////////////////////
-                /// //thread 10
-                threadtimer = new DispatcherTimer();
-                threadtimer.Interval = TimeSpan.FromSeconds(secondTimer10);
-                threadtimer.Tick += timer_Thread10;
-                threadtimer.Start();
-                ////////////////////
+                await SectionData.fillBranchesWithAll(cb_branch);
+                cb_branch.SelectedValue = MainWindow.branchID;
+                if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
+                    cb_branch.IsEnabled = true;
+                else cb_branch.IsEnabled = false;
 
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
@@ -136,6 +128,26 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
 
+        }
+        async void starTimerAfter10()
+        {
+            await Task.Delay(10000);
+            // thread 10
+            threadtimer = new DispatcherTimer();
+            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer10);
+            threadtimer.Tick += timer_Thread10;
+            threadtimer.Start();
+            ////////////////////
+        }
+        async void starTimerAfter30()
+        {
+            await Task.Delay(30000);
+            //thread 30
+            threadtimer = new DispatcherTimer();
+            threadtimer.Interval = TimeSpan.FromSeconds(secondTimer30);
+            threadtimer.Tick += timer_Thread30;
+            threadtimer.Start();
+            ////////////////////
         }
         private void translate()
         {
@@ -211,51 +223,44 @@ namespace POS.View
         {
             try
             {
-                await AllSalPur();
-            await CountMonthlySalPur();
-            await DailySalPur();
-            await AgentCount();
-            await UserOnline();
-            await BranchOnline();
-            #region BestSeller
-            await BestSeller();
-            //    if (!firstLoad)
-            //    {
-            //        if (listBestSeller.Count < 4 || Skip == 2)
-            //            Skip = 0;
-            //        else if (listBestSeller.Count < 7 && Skip < 1)
-            //            Skip++;
-            //        else if (listBestSeller.Count < 10 && Skip < 2)
-            //            Skip++;
-            //}
-            paginationBestSeller(listBestSeller, SkipBestSeller);
-            //firstLoad = false;
-            #endregion
-            #region IUStorage
-            await IUStorage();
-            paginationIUStorage(listIUStorage, SkipIUStorage);
-            #endregion
-            await UserOnlinePic();
-            await AmountMonthlySalPur();
+                AllSalPur();
+                AgentCount();
+                UserOnline();
+                BranchOnline();
+                IUStorageRefresh();
+                BestSellerRefresh();
+                UserOnlinePic();
+                await CountMonthlySalPur();
+                DailySalPur();
+                await AmountMonthlySalPur();
 
-
-
-
-
-
-            this.DataContext = new Dash();
-            this.DataContext = dash;
+                this.DataContext = new Dash();
+                this.DataContext = dash;
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        async void IUStorageRefresh()
+        {
+            #region IUStorage
+            await IUStorage();
+            paginationIUStorage(listIUStorage, SkipIUStorage);
+            #endregion
+        }
+        async void BestSellerRefresh()
+        {
+            #region BestSeller
+            await BestSeller();
+            paginationBestSeller(listBestSeller, SkipBestSeller);
+            #endregion
+        }
         void refreshView()
         {
             try
             {
-                AllSalPur();
+            AllSalPur();
             CountMonthlySalPur();
             DailySalPur();
             AgentCount();

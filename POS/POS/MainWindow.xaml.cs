@@ -201,6 +201,143 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             #endregion
         }
+        async void loading_getUserPath()
+        {
+            #region get user path
+            try
+            {
+                UserSetValues uSetValueModel = new UserSetValues();
+                List<UserSetValues> lst = await uSetValueModel.GetAll();
+
+                SetValues setValueModel = new SetValues();
+
+                List<SetValues> setVLst = await setValueModel.GetBySetName("user_path");
+                if (setVLst.Count > 0)
+                {
+                    int firstId = setVLst[0].valId;
+                    int secondId = setVLst[1].valId;
+                    firstPath = lst.Where(u => u.valId == firstId && u.userId == userID).FirstOrDefault().note;
+                    secondPath = lst.Where(u => u.valId == secondId && u.userId == userID).FirstOrDefault().note;
+                }
+                else
+                {
+                    firstPath = "";
+                    secondPath = "";
+                }
+            }
+            catch
+            {
+                firstPath = "";
+                secondPath = "";
+            }
+            #endregion
+        }
+
+        async void loading_getTax()
+        {
+            //get tax
+            try
+            {
+                tax = decimal.Parse(await getDefaultTax());
+            }
+            catch
+            {
+                tax = 0;
+            }
+        }
+
+
+        async void loading_getDateForm()
+        {
+            //get dateform
+            try
+            {
+                dateFormat = await getDefaultDateForm();
+            }
+            catch
+            {
+                dateFormat = "ShortDatePattern";
+            }
+        }
+
+        async void loading_getRegionAndCurrency()
+        {
+            //get region and currency
+            try
+            {
+                CountryCode c = await getDefaultRegion();
+                Region = c;
+                Currency = c.currency;
+                CurrencyId = c.currencyId;
+                txt_cashSympol.Text = MainWindow.Currency;
+
+            }
+            catch
+            {
+
+            }
+        }
+
+        async void loading_getStorageCost()
+        {
+            //get storage cost
+            try
+            {
+                StorageCost = decimal.Parse(await getDefaultStorageCost());
+            }
+            catch
+            {
+                StorageCost = 0;
+            }
+        }
+
+        async void loading_getAccurac()
+        {
+            //get accuracy
+            try
+            {
+                accuracy = await getDefaultAccuracy();
+            }
+            catch
+            {
+                accuracy = "1";
+            }
+        }
+
+        async void loading_getUserPersonalInfo()
+        {
+            #region user personal info
+            txt_userName.Text = userLogin.name;
+            txt_userJob.Text = userLogin.job;
+            try
+            {
+                if (!string.IsNullOrEmpty(userLogin.image))
+                {
+                    byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+
+                    img_userLogin.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg();
+                }
+            }
+            catch
+            {
+                clearImg();
+            }
+            #endregion
+        }
 
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -246,73 +383,24 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 #endregion
                 translate();
 
+                loading_getUserPath();
+                loading_getTax();
+                loading_getDateForm();
+                loading_getRegionAndCurrency();
+                loading_getStorageCost();
+                loading_getAccurac();
+               
 
-
-
-                #region get user path
-                try
-                {
-                    UserSetValues uSetValueModel = new UserSetValues();
-                    List<UserSetValues> lst = await uSetValueModel.GetAll();
-
-                    SetValues setValueModel = new SetValues();
-
-                    List<SetValues> setVLst = await setValueModel.GetBySetName("user_path");
-                    if (setVLst.Count > 0)
-                    {
-                        int firstId = setVLst[0].valId;
-                        int secondId = setVLst[1].valId;
-                        firstPath = lst.Where(u => u.valId == firstId && u.userId == userID).FirstOrDefault().note;
-                        secondPath = lst.Where(u => u.valId == secondId && u.userId == userID).FirstOrDefault().note;
-                    }
-                    else
-                    {
-                        firstPath = "";
-                        secondPath = "";
-                    }
-                }
-                catch
-                {
-                    firstPath = "";
-                    secondPath = "";
-                }
-                #endregion
 
                 #region get default System info
 
-                //get tax
-                try { tax = decimal.Parse(await getDefaultTax()); } catch { tax = 0; }
-                //get dateform
-                try { dateFormat = await getDefaultDateForm(); }    catch { dateFormat = "ShortDatePattern"; }
-
-                //get region and currency
-                try
-                {
-                    CountryCode c = await getDefaultRegion();
-                    Region = c;
-                    Currency = c.currency;
-                    CurrencyId = c.currencyId;
-                    txt_cashSympol.Text = MainWindow.Currency;
-
-                }
-                catch
-                {
-                    //CountryCode countryModel = new CountryCode();
-                    //Region = await countryModel.getCountryById(1);
-                    //Currency = Region.currency;
-                }
-                
-                //get storage cost
-                try { StorageCost = decimal.Parse(await getDefaultStorageCost()); } catch { StorageCost = 0; }
-
-                //get accuracy
-                try { accuracy = await getDefaultAccuracy(); } catch { accuracy = "1"; }
-                
                 List<SettingCls> settingsCls = await setModel.GetAll();
                 List<SetValues> settingsValues = await valueModel.GetAll();
 
                 SettingCls set = new SettingCls();
                 SetValues setV = new SetValues();
+
+
                 //get company name
                 List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
 
@@ -375,39 +463,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 #endregion
 
 
-                #region user personal info
-                txt_userName.Text = userLogin.name;
-                txt_userJob.Text = userLogin.job;
-
-                try
-                {
-                    if (!string.IsNullOrEmpty(userLogin.image))
-                    {
-                        byte[] imageBuffer = await userModel.downloadImage(userLogin.image); // read this as BLOB from your DB
-
-                        var bitmapImage = new BitmapImage();
-
-                        using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
-                        {
-                            bitmapImage.BeginInit();
-                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                            bitmapImage.StreamSource = memoryStream;
-                            bitmapImage.EndInit();
-                        }
-
-                        img_userLogin.Fill = new ImageBrush(bitmapImage);
-                    }
-                    else
-                    {
-                        clearImg();
-                    }
-                }
-                catch
-                {
-                    clearImg();
-                }
-                #endregion
-
+                loading_getUserPersonalInfo();
                 #region 
 
                 groupObjects = await groupObject.GetUserpermission(userLogin.userId);
