@@ -1,6 +1,8 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -232,31 +234,37 @@ namespace POS.View.windows
             }
         }
 
-        private void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
+        private async void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucInvoice);
-                //for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
-                //    if (vis is DataGridRow)
-                //    {
-                //        BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
-                //        int index = dg_billDetails.SelectedIndex;
-                //        // calculate new sum
-                //        _Sum -= row.Total;
-                //        _Tax -= row.Tax;
+                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                    if (vis is DataGridRow)
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            Invoice row = (Invoice)dg_Invoice.SelectedItems[0];
+                            int res = await invoice.deleteInvoice(row.invoiceId);
+                            if (res > 0)
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                                await refreshInvoices();
+                                Txb_search_TextChanged(null,null);
+                            }
+                            else
+                                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
 
-                //        // remove item from bill
-                //        billDetails.RemoveAt(index);
-
-                //        ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
-                //        data.Remove(row);
-
-                //        // calculate new total
-                //        refreshTotalValue();
-                //    }
-             
                 if (sender != null)
                     SectionData.EndAwait(grid_ucInvoice);
             }

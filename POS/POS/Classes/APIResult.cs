@@ -100,8 +100,12 @@ namespace POS.Classes
                         return claims;
                     }
                 }
+                else
+                {
+                    fs.Dispose();
+                    File.Delete(tmpPath);
+                }
             }
-
             return null;
         }
        

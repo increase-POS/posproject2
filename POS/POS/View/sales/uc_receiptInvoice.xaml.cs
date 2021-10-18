@@ -1182,8 +1182,8 @@ namespace POS.View
                                 cashTrasnfer.createUserId = MainWindow.userID;
                                 await cashTrasnfer.Save(cashTrasnfer); //add cash transfer  
                                 invoice.paid = invoice.totalNet;
-                                invoice.totalNet = 0;
-                                invoice.saveInvoice(invoice);
+                                invoice.deserved = 0;
+                               await invoice.saveInvoice(invoice);
                                 break;
                             case 1:// balance: update customer balance
                                 if (cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
