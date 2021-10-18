@@ -32,7 +32,8 @@
             <converters:notificationsContentConverter x:Key="notificationsContentConverter"/>
             <converters:TaxVisibilityConverter x:Key="TaxVisibilityConverter"/>
             <converters:agentTypeConverter x:Key="agentTypeConverter"/>
-            <converters:agentTypeConverter x:Key="agentNameConverter"/>
+            <converters:agentNameConverter x:Key="agentNameConverter"/>
+            <converters:agentCompanyConverter x:Key="agentCompanyConverter"/>
             <converters:sectionFreeZoneStorageReportConverter x:Key="sectionFreeZoneStorageReportConverter"/>
             <converters:locationFreeZoneStorageReportConverter x:Key="locationFreeZoneStorageReportConverter"/>
             <converters:invoiceTypeNumberConverter x:Key="invoiceTypeNumberConverter"/>
