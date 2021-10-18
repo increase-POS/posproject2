@@ -1248,6 +1248,8 @@ namespace POS.Classes
                 secondTitle = MainWindow.resourcemanager.GetString("trPOS");
             else if (secondTitle == "vendors")
                 secondTitle = MainWindow.resourcemanager.GetString("trVendors");
+            else if (secondTitle == "customers")
+                secondTitle = MainWindow.resourcemanager.GetString("trCustomers");
             else if (secondTitle == "users" || secondTitle == "user")
                 secondTitle = MainWindow.resourcemanager.GetString("trUsers");
             else if (secondTitle == "items" || secondTitle == "item")

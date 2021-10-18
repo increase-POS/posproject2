@@ -149,11 +149,19 @@ namespace POS.View.windows
             //txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
-            dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch");
-            dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trUser");
-            dg_Invoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trItemsCount");
-            dg_Invoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
+            //dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            //dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch");
+            //dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trUser");
+            //dg_Invoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trQTR");
+            //dg_Invoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            col_num.Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_user.Header = MainWindow.resourcemanager.GetString("trUser");
+            col_count.Header = MainWindow.resourcemanager.GetString("trQTR");
+            col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_type.Header = MainWindow.resourcemanager.GetString("trType");
+
             txt_countTitle.Text = MainWindow.resourcemanager.GetString("trCount") + ":";
 
             btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");

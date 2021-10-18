@@ -5401,6 +5401,15 @@ namespace POS {
         /// <summary>
         ///   Looks up a localized string similar to الكمية.
         /// </summary>
+        internal static string trQTR {
+            get {
+                return ResourceManager.GetString("trQTR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الكمية.
+        /// </summary>
         internal static string trQuantity {
             get {
                 return ResourceManager.GetString("trQuantity", resourceCulture);
@@ -7096,6 +7105,15 @@ namespace POS {
         internal static string trUnits {
             get {
                 return ResourceManager.GetString("trUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to غير معروف.
+        /// </summary>
+        internal static string trUnKnown {
+            get {
+                return ResourceManager.GetString("trUnKnown", resourceCulture);
             }
         }
         

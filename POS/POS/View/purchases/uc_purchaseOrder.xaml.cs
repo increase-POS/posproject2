@@ -132,7 +132,8 @@ namespace POS.View.purchases
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
+            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
+            dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQTR");
 
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
             //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");

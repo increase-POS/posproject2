@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,6 +71,20 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 payments = await statisticModel.GetPayments();
 
                 Btn_vendor_Click(btn_vendor , null);
@@ -82,6 +98,11 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void translate()
+        {
+           
         }
 
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)
@@ -366,7 +387,7 @@ namespace POS.View.reports
                 vendorCombo = statisticModel.getVendorCombo(payments, "v");
                 fillVendorCombo(vendorCombo, cb_vendors);
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "v");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "v");
@@ -422,7 +443,7 @@ namespace POS.View.reports
                 vendorCombo = statisticModel.getVendorCombo(payments, "c");
                 fillVendorCombo(vendorCombo, cb_vendors);
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "c");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "c");
@@ -477,7 +498,7 @@ namespace POS.View.reports
                 vendorCombo = statisticModel.getUserAcc(payments, "u");
                 fillSalaryCombo(vendorCombo, cb_vendors);
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "u");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "u");
@@ -532,7 +553,7 @@ namespace POS.View.reports
                 vendorCombo = statisticModel.getUserAcc(payments, "s");
                 fillSalaryCombo(vendorCombo, cb_vendors);
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "s");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "s");
@@ -583,7 +604,7 @@ namespace POS.View.reports
                 cb_vendors.SelectedItem = null;
                 chk_allVendors.Visibility = Visibility.Collapsed;
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "e");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "e");
@@ -634,7 +655,7 @@ namespace POS.View.reports
                 cb_vendors.SelectedItem = null;
                 chk_allVendors.Visibility = Visibility.Collapsed;
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "m");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "m");
@@ -691,7 +712,7 @@ namespace POS.View.reports
                 cb_vendors.DisplayMemberPath = "ShippingName";
                 cb_vendors.ItemsSource = iulist;
 
-                payCombo = statisticModel.getPaymentsTypeCombo(payments);
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments , "sh");
                 fillPaymentsTypeCombo(cb_vendorPayType);
 
                 accCombo = statisticModel.getAccounantCombo(payments, "sh");
@@ -720,7 +741,7 @@ namespace POS.View.reports
 
         private void fillEvents(string side)
         {
-            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side || x.side == side);
+            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side);
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             //charts
@@ -1012,6 +1033,7 @@ namespace POS.View.reports
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
             SeriesCollection rowChartData = new SeriesCollection();
+            //agent
             if ((selectedTab == 0) || (selectedTab == 1))
             {
                 var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
@@ -1020,7 +1042,8 @@ namespace POS.View.reports
                 });
                 names.AddRange(tempName.Select(nn => nn.Name.ToString()));
             }
-            if ((selectedTab == 2) || (selectedTab == 3))
+            //user & salary
+            else if ((selectedTab == 2) || (selectedTab == 3))
             {
                 var tempName = temp.GroupBy(s => new { s.userId }).Select(s => new
                 {
@@ -1028,11 +1051,13 @@ namespace POS.View.reports
                 });
                 names.AddRange(tempName.Select(nn => nn.Name.ToString()));
             }
-            if ((selectedTab == 4) || (selectedTab == 5))
+            //general & administrative
+            else if ((selectedTab == 4) || (selectedTab == 5))
             {
                 var tempName = temp;
             }
-            if (selectedTab == 6)
+            //shipping
+            else if (selectedTab == 6)
             {
                 var tempName = temp.GroupBy(s => new { s.shippingCompanyId }).Select(s => new
                 {
@@ -1057,12 +1082,12 @@ namespace POS.View.reports
                     {
                         var firstOfThisMonth = new DateTime(year, month, 1);
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "cash").Count();
-                        var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "card").Count();
-                        var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "doc").Count();
-                        var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "cheque").Count();
-                        var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "balance").Count();
-                        var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "inv").Count();
+                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "cash").Select(c => c.cash.Value).Sum();
+                        var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "card").Select(c => c.cash.Value).Sum();
+                        var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "doc").Select(c => c.cash.Value).Sum();
+                        var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "cheque").Select(c => c.cash.Value).Sum();
+                        var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "balance").Select(c => c.cash.Value).Sum();
+                        var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "inv").Select(c => c.cash.Value).Sum();
 
                         cash.Add(drawCash);
                         card.Add(drawCard);
@@ -1090,12 +1115,12 @@ namespace POS.View.reports
                 {
                     var firstOfThisYear = new DateTime(year, 1, 1);
                     var firstOfNextMYear = firstOfThisYear.AddYears(1);
-                    var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Count();
-                    var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Count();
-                    var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "doc").Count();
-                    var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cheque").Count();
-                    var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "balance").Count();
-                    var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "inv").Count();
+                    var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Select(c => c.cash.Value).Sum();
+                    var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Select(c => c.cash.Value).Sum();
+                    var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "doc").Select(c => c.cash.Value).Sum();
+                    var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cheque").Select(c => c.cash.Value).Sum();
+                    var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "balance").Select(c => c.cash.Value).Sum();
+                    var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "inv").Select(c => c.cash.Value).Sum();
 
                     cash.Add(drawCash);
                     card.Add(drawCard);

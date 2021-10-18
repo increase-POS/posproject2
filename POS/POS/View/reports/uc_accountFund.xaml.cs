@@ -161,9 +161,9 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
-            col_branchCode.Header = MainWindow.resourcemanager.GetString("trCode");
+            //col_branchCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_branchName.Header = MainWindow.resourcemanager.GetString("trBranch");
-            col_posCode.Header = MainWindow.resourcemanager.GetString("trCode");
+            //col_posCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_posName.Header = MainWindow.resourcemanager.GetString("trPOS");
             col_posBalance.Header = MainWindow.resourcemanager.GetString("trBalance");
 
