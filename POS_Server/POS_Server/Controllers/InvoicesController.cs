@@ -2372,6 +2372,13 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                                         branchName = x.name,
                                         branchCreatorName = b.branches1.name,
                                         createrUserName = u.name + " " + u.lastname,
+                                        totalNet = b.totalNet,
+                                        total = b.total,
+                                        discountType = b.discountType,
+                                        discountValue = b.discountValue,
+                                        manualDiscountType = b.manualDiscountType,
+                                        manualDiscountValue = b.manualDiscountValue,
+                                        updateUserId = b.updateUserId,
                                     })
                 .ToList();
                 if (invoicesList != null)
