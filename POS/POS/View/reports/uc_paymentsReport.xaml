@@ -552,7 +552,7 @@
                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                 materialDesign:HintAssist.Hint="Start date..."  
-                                                     SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
+                                                SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
                                     </DockPanel>
 
                                     <DockPanel Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" LastChildFill="True">

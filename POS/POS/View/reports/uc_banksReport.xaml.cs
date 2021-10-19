@@ -33,17 +33,33 @@ namespace POS.View.reports
         List<CashTransferSts> recipient;
         List<CashTransferSts> BankChart;
 
-        IEnumerable<Bank> bankCombo;
-        Bank bankModel = new Bank();
-
         IEnumerable<VendorCombo> userPaymentsCombo;
         IEnumerable<AccountantCombo> accPaymentsCombo;
 
-        IEnumerable<VendorCombo> userRecipientCombo;
-        IEnumerable<AccountantCombo> accRecipientCombo;
+        int selectedTab = 0;
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public uc_banksReport()
         {
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private static uc_banksReport _instance;
+        public static uc_banksReport Instance
+        {
+            get
+            {
+                if (_instance == null) _instance = new uc_banksReport();
+                return _instance;
+            }
+        }
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
             try
             {
                 if (sender != null)
@@ -51,23 +67,9 @@ namespace POS.View.reports
 
                 payments = await statisticModel.GetPayments();// Deposite
                 recipient = await statisticModel.GetReceipt();// Pull
-                BankChart = await statisticModel.GetBankTrans();
+                //BankChart = await statisticModel.GetBankTrans();
 
-                bankCombo = await bankModel.Get();
-
-                userPaymentsCombo = statisticModel.getUserAcc(payments, "bn");
-                accPaymentsCombo = statisticModel.getAccounantCombo(payments, "bn");
-
-                userRecipientCombo = statisticModel.getUserAcc(recipient, "bn");
-                accRecipientCombo = statisticModel.getAccounantCombo(recipient, "bn");
-
-                fillPyamentsEvents();
-                hideAllColumn();
-                fillBanksCombo(cb_paymentsBank);
-                fillUserCombo(userPaymentsCombo, cb_paymentsUser);
-                fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
-
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_payments.Tag.ToString());
+                Btn_vendor_Click(btn_payments , null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -80,11 +82,12 @@ namespace POS.View.reports
             }
         }
 
-        private void fillBanksCombo(ComboBox cb)
+        private void fillBanksCombo(List<CashTransferSts> lst)
         {
-            cb.SelectedValuePath = "bankId";
-            cb.DisplayMemberPath = "name";
-            cb.ItemsSource = bankCombo;
+            var iulist = lst.Where(g => g.bankId != null).GroupBy(g => g.bankId).Select(g => new { BankId = g.FirstOrDefault().bankId, BankName = g.FirstOrDefault().bankName }).ToList();
+            cb_paymentsBank.SelectedValuePath = "BankId";
+            cb_paymentsBank.DisplayMemberPath = "BankName";
+            cb_paymentsBank.ItemsSource = iulist;
         }
 
         private void fillUserCombo(IEnumerable<VendorCombo> list, ComboBox cb)
@@ -117,42 +120,17 @@ namespace POS.View.reports
 
             return result.ToList();
         }
-        public uc_banksReport()
-        {
-            try
-            {
-                InitializeComponent();
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-        private static uc_banksReport _instance;
-        public static uc_banksReport Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new uc_banksReport();
-                return _instance;
-            }
-        }
+       
         /*********************************************************************/
 
-        int selectedTab = 0;
 
         public void paint()
         {
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-
+            //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
             bdr_payments.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_recipient.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
             path_payments.Fill = Brushes.White;
             path_recipient.Fill = Brushes.White;
-
-            grid_payments.Visibility = Visibility.Hidden;
-            grid_recipient.Visibility = Visibility.Hidden;
         }
 
         private void isEnabledButtons()
@@ -163,135 +141,125 @@ namespace POS.View.reports
 
         private void hideAllColumn()
         {
-            grid_payments.Visibility = Visibility.Hidden;
-            grid_recipient.Visibility = Visibility.Hidden;
-
             col_tansNum.Visibility = Visibility.Hidden;
             col_Type.Visibility = Visibility.Hidden;
             col_updateUserAcc.Visibility = Visibility.Hidden;
-
-
             col_user.Visibility = Visibility.Hidden;
-
-
-
             col_updateDate.Visibility = Visibility.Hidden;
             col_cash.Visibility = Visibility.Hidden;
 
-            if (selectedTab == 0)
-            {
-                grid_payments.Visibility = Visibility.Visible;
-
-                col_tansNum.Visibility = Visibility.Visible;
-                col_Type.Visibility = Visibility.Visible;
-                col_updateUserAcc.Visibility = Visibility.Visible;
-
-                col_user.Visibility = Visibility.Visible;
-                col_updateDate.Visibility = Visibility.Visible;
-                col_cash.Visibility = Visibility.Visible;
-            }
-            else if (selectedTab == 1)
-            {
-                grid_recipient.Visibility = Visibility.Visible;
-
-                col_tansNum.Visibility = Visibility.Visible;
-                col_Type.Visibility = Visibility.Visible;
-                col_updateUserAcc.Visibility = Visibility.Visible;
-
-                col_user.Visibility = Visibility.Visible;
-                col_updateDate.Visibility = Visibility.Visible;
-                col_cash.Visibility = Visibility.Visible;
-            }
-
-
         }
 
-        private void Btn_vendor_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        private async void Btn_vendor_Click(object sender, RoutedEventArgs e)
+        {//payments
+         //try
+         //{
+         //    if (sender != null)
+         //        SectionData.StartAwait(grid_main);
 
-                selectedTab = 0;
-                paint();
-                bdr_payments.Background = Brushes.White;
-                path_payments.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                grid_payments.Visibility = Visibility.Visible;
-                isEnabledButtons();
-                btn_payments.IsEnabled = false;
-                btn_payments.Opacity = 1;
-                fillPyamentsEvents();
-                hideAllColumn();
-                fillBanksCombo(cb_paymentsBank);
-                fillUserCombo(userPaymentsCombo, cb_paymentsUser);
-                fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+                hideAllColumn();
+                selectedTab = 0;
+                //view columns
+                col_tansNum.Visibility = Visibility.Visible;
+                col_Type.Visibility = Visibility.Visible;
+                col_updateUserAcc.Visibility = Visibility.Visible;
+                col_user.Visibility = Visibility.Visible;
+                col_updateDate.Visibility = Visibility.Visible;
+                col_cash.Visibility = Visibility.Visible;
+
+                txt_search.Text = "";
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_payments);
+                path_payments.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                fillBanksCombo(payments);
+
+                userPaymentsCombo = statisticModel.getUserAcc(payments, "bn");
+                fillUserCombo(userPaymentsCombo, cb_paymentsUser);
+
+                accPaymentsCombo = statisticModel.getAccounantCombo(payments, "bn");
+                fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+
+                fillEvents(payments);
+
+               chk_allPaymentsBanks.IsChecked = true;
+               chk_allPyamentsUser.IsChecked = true;
+               chk_allpaymentsAccountant.IsChecked = true;
+
+            //if (sender != null)
+            //    SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
-        private void Btn_customer_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        private async void Btn_customer_Click(object sender, RoutedEventArgs e)
+        {//received
+         //try
+         //{
+         //    if (sender != null)
+         //        SectionData.StartAwait(grid_main);
+               SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 selectedTab = 1;
-                paint();
-                bdr_recipient.Background = Brushes.White;
-                path_recipient.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                grid_recipient.Visibility = Visibility.Visible;
-                isEnabledButtons();
-                btn_recipient.IsEnabled = false;
-                btn_recipient.Opacity = 1;
-                fillRecipientsEvents();
                 hideAllColumn();
+                txt_search.Text = "";
 
-                fillBanksCombo(cb_recipientBank);
-                fillUserCombo(userRecipientCombo, cb_recipientUser);
-                fillAccCombo(accRecipientCombo, cb_recipientAccountant);
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+                //view columns
+                col_tansNum.Visibility = Visibility.Visible;
+                col_Type.Visibility = Visibility.Visible;
+                col_updateUserAcc.Visibility = Visibility.Visible;
+                col_user.Visibility = Visibility.Visible;
+                col_updateDate.Visibility = Visibility.Visible;
+                col_cash.Visibility = Visibility.Visible;
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_recipient);
+                path_recipient.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                fillBanksCombo(recipient);
+
+                userPaymentsCombo = statisticModel.getUserAcc(payments, "bn");
+                fillUserCombo(userPaymentsCombo, cb_paymentsUser);
+
+                accPaymentsCombo = statisticModel.getAccounantCombo(payments, "bn");
+                fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
+
+                fillEvents(recipient);
+
+                chk_allPaymentsBanks.IsChecked = true;
+                chk_allPyamentsUser.IsChecked = true;
+                chk_allpaymentsAccountant.IsChecked = true;
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         /*Fill Events*/
         /*********************************************************************************/
         IEnumerable<CashTransferSts> temp = null;
-        private void fillPyamentsEvents()
+
+        private void fillEvents(List<CashTransferSts> lst)
         {
-            temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+            temp = fillList(lst, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
             dgPayments.ItemsSource = temp;
             fillPieChart();
             fillColumnChart();
             fillRowChart();
         }
-
-        private void fillRecipientsEvents()
-        {
-            temp = fillList(recipient, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
-            dgPayments.ItemsSource = temp;
-            fillPieChart();
-            fillColumnChart();
-            fillRowChart();
-        }
-
+       
         /*Charts*/
         /*********************************************************************************/
 
@@ -300,10 +268,10 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            var temp = fillList(BankChart, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
             if (selectedTab == 1)
             {
-                temp = fillList(BankChart, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn");
+                temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
             }
 
             var result = temp
@@ -315,6 +283,16 @@ namespace POS.View.reports
                 });
             resultList = result.Select(m => m.processTypeCount).ToList();
             titles = result.Select(m => m.transType).ToList();
+            for (int t = 0; t < titles.Count; t++)
+            {
+                string s = "";
+                switch (titles[t])
+                {
+                    case "p": s = MainWindow.resourcemanager.GetString("trPull"); break;
+                    case "d": s = MainWindow.resourcemanager.GetString("trDeposit"); break;
+                }
+                titles[t] = s;
+            }
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < resultList.Count(); i++)
             {
@@ -341,10 +319,10 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList(BankChart, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
             if (selectedTab == 1)
             {
-                temp = fillList(BankChart, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn");
+                temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
             }
             var res = temp.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
             {
@@ -353,6 +331,8 @@ namespace POS.View.reports
                 bankId = x.FirstOrDefault().bankId,
                 pullCount = x.Where(g => g.transType == "d").Count(),
                 depositCount = x.Where(g => g.transType == "p").Count(),
+                pullSum = x.Where(g => g.transType == "p").Select(g => g.cash.Value).Sum(),
+                depositSum = x.Where(g => g.transType == "d").Select(g => g.cash.Value).Sum()
             });
             resultList = res.GroupBy(x => x.bankId).Select(x => new CashTransferSts
             {
@@ -361,6 +341,8 @@ namespace POS.View.reports
                 depositCount = x.Sum(g => g.depositCount),
                 bankId = x.FirstOrDefault().bankId,
                 transType = x.FirstOrDefault().transType,
+                pullSum = x.FirstOrDefault().pullSum,
+                depositSum = x.FirstOrDefault().depositSum
             }
             ).ToList();
 
@@ -372,32 +354,49 @@ namespace POS.View.reports
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
-            List<int> deposite = new List<int>();
-            List<int> pull = new List<int>();
+            List<decimal> deposite = new List<decimal>();
+            List<decimal> pull = new List<decimal>();
 
-
-
-            for (int i = 0; i < resultList.Count(); i++)
+            int xCount = 6;
+            if (resultList.Count() <= 6)
+                xCount = resultList.Count();
+            for (int i = 0; i < xCount; i++)
             {
-                deposite.Add(resultList.ToList().Skip(i).FirstOrDefault().depositCount);
-                pull.Add(resultList.ToList().Skip(i).FirstOrDefault().pullCount);
+                deposite.Add(resultList.ToList().Skip(i).FirstOrDefault().depositSum);
+                pull.Add(resultList.ToList().Skip(i).FirstOrDefault().pullSum);
 
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
+            if (resultList.Count() > 6)
+            {
+                decimal pullSum = 0, depositSum = 0 ;
+                for (int i = resultList.Count - xCount + 1; i < resultList.Count; i++)
+                {
+                    pullSum = pullSum + resultList.ToList().Skip(i).FirstOrDefault().pullSum;
+                    depositSum = depositSum + resultList.ToList().Skip(i).FirstOrDefault().depositSum;
+          
+                }
+                if (!((pullSum == 0) && (depositSum == 0)))
+                {
+                    deposite.Add(depositSum);
+                    pull.Add(pullSum);
 
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = deposite.AsChartValues(),
                 DataLabels = true,
-                Title = "Deposite"
+                Title = MainWindow.resourcemanager.GetString("trDeposit")
             });
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = pull.AsChartValues(),
                 DataLabels = true,
-                Title = "Pull"
+                Title = MainWindow.resourcemanager.GetString("trPull")
             });
 
             DataContext = this;
@@ -422,21 +421,14 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList(BankChart, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
             if (selectedTab == 1)
             {
-                temp = fillList(BankChart, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn");
-                if (dp_recipientStartDate.SelectedDate != null && dp_recipientEndDate.SelectedDate != null)
-                {
-                    startYear = dp_recipientStartDate.SelectedDate.Value.Year;
-                    endYear = dp_recipientEndDate.SelectedDate.Value.Year;
-                    startMonth = dp_recipientStartDate.SelectedDate.Value.Month;
-                    endMonth = dp_recipientEndDate.SelectedDate.Value.Month;
-                }
+                temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
             }
 
             SeriesCollection rowChartData = new SeriesCollection();
-            var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
+            var tempName = temp.GroupBy(s => new { s.bankId }).Select(s => new
             {
                 itemName = s.FirstOrDefault().updateDate,
             });
@@ -491,36 +483,17 @@ namespace POS.View.reports
           new LineSeries
           {
               Values = cash.AsChartValues(),
-              Title = "Deposite",
+              Title = MainWindow.resourcemanager.GetString("trDeposit")
           }); ;
             rowChartData.Add(
          new LineSeries
          {
              Values = card.AsChartValues(),
-             Title = "Pull",
+             Title = MainWindow.resourcemanager.GetString("trPull")
          });
 
             DataContext = this;
             rowChart.Series = rowChartData;
-        }
-
-        private void Cb_banks_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillPyamentsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
         }
 
         private void Chk_allBanks_Checked(object sender, RoutedEventArgs e)
@@ -532,6 +505,7 @@ namespace POS.View.reports
 
                 cb_paymentsBank.IsEnabled = false;
                 cb_paymentsBank.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -551,6 +525,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_paymentsBank.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -569,7 +544,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillPyamentsEvents();
+                fillEvents(payments);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -590,6 +566,7 @@ namespace POS.View.reports
 
                 cb_paymentsUser.IsEnabled = false;
                 cb_paymentsUser.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -609,62 +586,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_paymentsUser.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
 
-        private void Dp_paymentsStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillPyamentsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_paymentsEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillPyamentsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Cb_paymentsAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillPyamentsEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -685,6 +607,7 @@ namespace POS.View.reports
 
                 cb_paymentsAccountant.IsEnabled = false;
                 cb_paymentsAccountant.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -704,6 +627,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_paymentsAccountant.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -715,16 +639,15 @@ namespace POS.View.reports
             }
         }
 
-        /****************************************************************/
-
-        private void Cb_recipientBank_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillRecipientsEvents();
+                fillByType();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -736,14 +659,15 @@ namespace POS.View.reports
             }
         }
 
-        private void Chk_allRecipientBanks_Checked(object sender, RoutedEventArgs e)
+        private void Dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                cb_recipientBank.IsEnabled = false;
-                cb_recipientBank.SelectedItem = null;
+
+                fillByType();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -755,208 +679,33 @@ namespace POS.View.reports
             }
         }
 
-        private void Chk_allRecipientBanks_Unchecked(object sender, RoutedEventArgs e)
+        private void fillByType()
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                cb_recipientBank.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Cb_recipientUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillRecipientsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allRecipientUsers_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                cb_recipientUser.IsEnabled = false;
-                cb_recipientUser.SelectedItem = null;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allRecipientUsers_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                cb_recipientUser.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Cb_recipientAccountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillRecipientsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allRecipientAccountant_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                cb_recipientAccountant.IsEnabled = false;
-                cb_recipientAccountant.SelectedItem = null;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allRecipientAccountant_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                cb_recipientAccountant.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_recipientEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-
-                fillRecipientsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_recipientStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillRecipientsEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            if (selectedTab == 0)
+                fillEvents(payments);
+            else if (selectedTab == 1)
+                fillEvents(recipient);
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        {//refresh
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                txt_search.Text = "";
-                if (selectedTab == 0)
-                {
+              
+                    txt_search.Text = "";
+
                     cb_paymentsBank.SelectedItem = null;
                     cb_paymentsUser.SelectedItem = null;
                     cb_paymentsAccountant.SelectedItem = null;
+                    chk_allpaymentsAccountant.IsChecked = false;
                     chk_allPaymentsBanks.IsChecked = false;
                     chk_allPyamentsUser.IsChecked = false;
-                    chk_allpaymentsAccountant.IsChecked = false;
                     dp_paymentsStartDate.SelectedDate = null;
                     dp_paymentsEndDate.SelectedDate = null;
-                    fillPyamentsEvents();
-                }
-                else if (selectedTab == 1)
-                {
-                    cb_recipientBank.SelectedItem = null;
-                    cb_recipientUser.SelectedItem = null;
-                    cb_recipientAccountant.SelectedItem = null;
-                    chk_allRecipientBanks.IsChecked = false;
-                    chk_allRecipientUsers.IsChecked = false;
-                    chk_allRecipientAccountant.IsChecked = false;
-                    dp_recipientStartDate.SelectedDate = null;
-                    dp_recipientEndDate.SelectedDate = null;
-                    fillRecipientsEvents();
-                }
+
+                    fillByType();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -970,31 +719,24 @@ namespace POS.View.reports
         }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (selectedTab == 0)
-                {
-                    var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+
+                    IEnumerable<CashTransferSts> temp ;
+                    if(selectedTab == 0)
+                        temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                    else
+                        temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+
                     dgPayments.ItemsSource = temp.Where(obj => (
                     obj.transNum.Contains(txt_search.Text) ||
                     obj.bankName.Contains(txt_search.Text) ||
                     obj.updateUserAcc.Contains(txt_search.Text) ||
                     obj.userAcc.Contains(txt_search.Text)
                     ));
-                }
-                else if (selectedTab == 1)
-                {
-                    var temp = fillList(recipient, cb_recipientBank, cb_recipientUser, cb_recipientAccountant, dp_recipientStartDate, dp_recipientEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
-                    dgPayments.ItemsSource = temp.Where(obj => (
-                    obj.transNum.Contains(txt_search.Text) ||
-                    obj.bankName.Contains(txt_search.Text) ||
-                    obj.updateUserAcc.Contains(txt_search.Text) ||
-                    obj.userAcc.Contains(txt_search.Text)
-                    ));
-                }
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1283,5 +1025,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+       
     }
 }

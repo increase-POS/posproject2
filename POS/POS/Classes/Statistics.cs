@@ -127,7 +127,9 @@ namespace POS.Classes
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreator { get; set; }
         public int depositCount { get; set; }
+        public decimal depositSum { get; set; }
         public int pullCount { get; set; }
+        public decimal pullSum { get; set; }
 
 
         public Nullable<int> posId { get; set; }//

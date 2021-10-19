@@ -41,7 +41,7 @@
                         Background="#4E4E4E">
 
                     <!--Grid Tab Control-->
-                    <Grid >
+                    <Grid  x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -174,9 +174,11 @@
                                 </Path>
                             </Button>
                         </Border>
-                        
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
+                      
                     </Grid>
                 </Border>
 
@@ -212,7 +214,7 @@
                                               Height="40"
                                               Margin="10,10,10,5"
                                               Padding="10,0,5,0"
-                                              SelectionChanged="Cb_banks_SelectionChanged"/>
+                                              SelectionChanged="Cb_SelectionChanged"/>
 
                                     <CheckBox x:Name="chk_allPaymentsBanks"
                                               Background="{StaticResource MainColorBlue}"
@@ -236,7 +238,7 @@
                                               Height="40"
                                               Margin="10,5,10,5"
                                               Padding="10,0,5,0"
-                                              SelectionChanged="Cb_paymentsUser_SelectionChanged"/>
+                                              SelectionChanged="Cb_SelectionChanged"/>
 
                                     <CheckBox x:Name="chk_allPyamentsUser"
                                               Background="{StaticResource MainColorBlue}"
@@ -261,7 +263,7 @@
                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                 materialDesign:HintAssist.Hint="End Date..."
-                                                     SelectedDateChanged="Dp_paymentsEndDate_SelectedDateChanged"></DatePicker>
+                                                     SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
 
                                         <DatePicker SelectedDateFormat="Short"
                                                 Name="dp_paymentsStartDate"
@@ -275,7 +277,7 @@
                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                 materialDesign:HintAssist.Hint="Start date..."  
-                                                     SelectedDateChanged="Dp_paymentsStartDate_SelectedDateChanged"></DatePicker>
+                                                     SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
                                     </DockPanel>
 
                                     <DockPanel Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" LastChildFill="True">
@@ -305,10 +307,10 @@
                                               Height="40"
                                               Margin="10,5,10,5"
                                               Padding="10,0,5,0"
-                                              SelectionChanged="Cb_paymentsAccountant_SelectionChanged"/>
+                                              SelectionChanged="Cb_SelectionChanged"/>
                                     </DockPanel>
                                 </Grid>
-                                <Grid Grid.Row="1" x:Name="grid_recipient" Margin="10,0,10,10" Visibility="Hidden">
+                                <!--<Grid Grid.Row="1" x:Name="grid_recipient" Margin="10,0,10,10" Visibility="Hidden">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
                                         <RowDefinition Height="auto"></RowDefinition>
@@ -427,7 +429,7 @@
                                               Padding="10,0,5,0"
                                               SelectionChanged="Cb_recipientAccountant_SelectionChanged"/>
                                     </DockPanel>
-                                </Grid>
+                                </Grid>-->
 
                             </Grid>
 
@@ -507,13 +509,11 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_tansNum" Width="*" Header="Transfer Number" Binding="{Binding transNum}"/>
-                        <!--<DataGridTextColumn x:Name="col_Type" Width="*" Header="Type" Binding="{Binding transType}"/>-->
                         <DataGridTextColumn x:Name="col_Type" Width="*" Header="Type" Binding="{Binding transType,Converter={StaticResource transTypeConverter }}"/>
                         <DataGridTextColumn x:Name="col_Bank" Width="*" Header="Bank" Binding="{Binding bankName}"/>
                         <DataGridTextColumn x:Name="col_updateUserAcc" Width="*" Header="Accountant" Binding="{Binding updateUserAcc}"/>
                         <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding userAcc}"/>
                         <DataGridTextColumn x:Name="col_updateDate" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter}}"/>
-                        <!--<DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash}"/>-->
                         <DataGridTextColumn x:Name="col_cash" Width="*" Header="Amount" Binding="{Binding cash,Converter={StaticResource accuracyConverter}}"/>
                     </DataGrid.Columns>
                 </DataGrid>

@@ -170,8 +170,6 @@ namespace POS.View.reports
             return result.ToList();
         }
 
-        /*Vendor*/
-        /*********************************************************************************/
         private void fillBySide()
         {
             if (selectedTab == 0)
@@ -1177,12 +1175,13 @@ namespace POS.View.reports
 
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        {//refresh
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                txt_search.Text = "";
+
+                    txt_search.Text = "";
                
                     cb_vendors.SelectedItem = null;
                     cb_vendorPayType.SelectedItem = null;
@@ -1192,7 +1191,8 @@ namespace POS.View.reports
                     chk_allVendorsPaymentType.IsChecked = false;
                     dp_vendorEndDate.SelectedDate = null;
                     dp_vendorStartDate.SelectedDate = null;
-                    fillEvents("v");
+
+                    fillBySide();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
