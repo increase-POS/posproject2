@@ -500,6 +500,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PosModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="posSerials.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="posSetting.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>

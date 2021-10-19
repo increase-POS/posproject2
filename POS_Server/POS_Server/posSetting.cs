@@ -21,10 +21,19 @@ namespace POS_Server
         public Nullable<int> saleInvPapersizeId { get; set; }
         public string posSerial { get; set; }
         public Nullable<int> docPapersizeId { get; set; }
+        public string posDeviceCode { get; set; }
+        public Nullable<int> posSerialId { get; set; }
+        public Nullable<System.DateTime> createDate { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<int> createUserId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
     
         public virtual paperSize paperSize { get; set; }
         public virtual pos pos { get; set; }
         public virtual printers printers { get; set; }
         public virtual printers printers1 { get; set; }
+        public virtual posSerials posSerials { get; set; }
+        public virtual users users { get; set; }
+        public virtual users users1 { get; set; }
     }
 }

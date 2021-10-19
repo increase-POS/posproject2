@@ -923,62 +923,51 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken("0");
                 }
             }
+        }
 
+             [HttpPost]
+        [Route("GetActiveItemsUnits")]
+        public string GetActiveItemsUnits(string token)
+        {
+            //  public string Getall(string token)
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                try
+                {
 
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var itemUnitsList = (from IU in entity.itemsUnits
 
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
+                                             join u in entity.units on IU.unitId equals u.unitId
 
-            //if (valid) // APIKey is valid
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var itemUnitsList = (from IU in entity.itemsUnits
+                                             select new ItemUnitModel()
+                                             {
+                                                 itemUnitId = IU.itemUnitId,
+                                                 unitId = IU.unitId,
+                                                 itemId = IU.itemId,
+                                                 mainUnit = u.name,
+                                                 defaultPurchase = IU.defaultPurchase,
+                                                 defaultSale = IU.defaultSale,
+                                                 price = IU.price,
+                                                 unitValue = IU.unitValue,
+                                                 barcode = IU.barcode,
+                                                 unitName = u.name,
 
-            //                             join u in entity.units on IU.unitId equals u.unitId
-
-            //                             join i in entity.items on IU.itemId equals i.itemId
-            //                             orderby i.name
-            //                             select new ItemUnitModel()
-            //                             {
-            //                                 itemUnitId = IU.itemUnitId,
-            //                                 unitId = IU.unitId,
-            //                                 itemId = IU.itemId,
-            //                                 mainUnit = u.name,
-            //                                 createDate = IU.createDate,
-            //                                 createUserId = IU.createUserId,
-            //                                 defaultPurchase = IU.defaultPurchase,
-            //                                 defaultSale = IU.defaultSale,
-            //                                 price = IU.price,
-            //                                 subUnitId = IU.subUnitId,
-
-            //                                 unitValue = IU.unitValue,
-            //                                 barcode = IU.barcode,
-            //                                 updateDate = IU.updateDate,
-            //                                 updateUserId = IU.updateUserId,
-            //                                 itemName = i.name,
-            //                                 itemCode = i.code,
-            //                                 unitName = u.name,
-            //                                 storageCostId = IU.storageCostId,
-
-            //                             })
-            //                             .ToList();
-
-            //        if (itemUnitsList == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(itemUnitsList);
-            //    }
-            //}
-            ////else
-            //return NotFound();
+                                             }).ToList();
+                        return TokenManager.GenerateToken(itemUnitsList);
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }
         }
 
 
