@@ -406,6 +406,20 @@ namespace POS.Classes
             //    return items;
             //}
         }
+        public async Task<List<ItemUnit>> GetActiveItemsUnits()
+        {
+            List<ItemUnit> list = new List<ItemUnit>();
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetActiveItemsUnits");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemUnit>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;   
+        }
         public async Task<List<ItemUnit>> GetUnitsForSales(int branchId)
         {
             List<ItemUnit> list = new List<ItemUnit>();

@@ -189,6 +189,8 @@ namespace POS.View.windows
                 defaultSale = 0;
             }
             items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase,branchId);
+            MainWindow.InvoiceGlobalItemsList = items.ToList();
+            MainWindow.InvoiceGlobalItemUnitsList = await itemUnitModel.Getall();
             return items;
         }
 

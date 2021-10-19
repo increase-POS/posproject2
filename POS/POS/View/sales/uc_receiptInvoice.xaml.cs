@@ -786,7 +786,8 @@ namespace POS.View
                 this.DataContext = item;
 
                 // get item units
-                itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                //itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 // search for default unit for purchase
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
@@ -2541,7 +2542,8 @@ namespace POS.View
             if (index == -1)//item doesn't exist in bill
             {
                 // get item units
-                itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
+                // itemUnits = await itemUnitModel.GetItemUnits(itemId);
 
 
 
@@ -2965,7 +2967,8 @@ namespace POS.View
         }
         private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
         {
-            var itemUnits = await itemUnitModel.GetItemUnits(itemId);
+           // var itemUnits = await itemUnitModel.GetItemUnits(itemId);
+           var itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
             int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
             var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
             foreach (ItemUnit u in itemUnits)

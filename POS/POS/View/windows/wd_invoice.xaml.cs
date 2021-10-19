@@ -120,7 +120,15 @@ namespace POS.View.windows
                 List<string> invTypeL = invoiceType.Split(',').ToList();
                 var inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
                 if(inCommen)
-                    dg_Invoice.Columns[4].Visibility = Visibility.Collapsed; //make total column unvisible
+                    dg_Invoice.Columns[5].Visibility = Visibility.Collapsed; //make total column unvisible
+                #endregion
+                #region hide delete column in grid if invoice type not in invTypeArray
+                invTypeArray = new string[] { "or", "q", "po" };
+                var orderTypes = invTypeArray.ToList();
+               invTypeL = invoiceType.Split(',').ToList();
+                inCommen = invTypeL.Any(s => orderTypes.Contains(s));
+                if (inCommen)
+                    dg_Invoice.Columns[0].Visibility = Visibility.Visible; //make total column unvisible
                 #endregion
                 #region display branch & user columns in grid if invoice is sales order
                 invTypeArray = new string[] { "or" };
@@ -129,8 +137,8 @@ namespace POS.View.windows
                 inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
                 if (inCommen)
                 {
-                    dg_Invoice.Columns[1].Visibility = Visibility.Visible; //make branch column visible
-                    dg_Invoice.Columns[2].Visibility = Visibility.Visible; //make user column visible
+                    dg_Invoice.Columns[2].Visibility = Visibility.Visible; //make branch column visible
+                    dg_Invoice.Columns[3].Visibility = Visibility.Visible; //make user column visible
                 }
                 #endregion
                 await refreshInvoices();
@@ -253,7 +261,11 @@ namespace POS.View.windows
                         if (w.isOk)
                         {
                             Invoice row = (Invoice)dg_Invoice.SelectedItems[0];
-                            int res = await invoice.deleteInvoice(row.invoiceId);
+                            int res = 0;
+                            if (row.invType == "or")
+                                res = await invoice.deleteOrder(row.invoiceId);
+                            else
+                                res = await invoice.deleteInvoice(row.invoiceId);
                             if (res > 0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
