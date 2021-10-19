@@ -22,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Resources;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using static POS.MainWindow;
 
 namespace POS.View
 {
@@ -219,10 +220,43 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        List<loadingThread> loadingList;
+        async void loading_getDailySalPur()
+        {
+            try
+            {
+                await CountMonthlySalPur();
+            await DailySalPur();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getDailySalPur"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
         async Task refreshViewTask()
         {
             try
             {
+                #region loading
+                loadingList = new List<loadingThread>();
+                bool isDone = true;
+                loadingList.Add(new loadingThread { name = "AllSalPur", value = false });
+                loadingList.Add(new loadingThread { name = "AgentCount", value = false });
+                loadingList.Add(new loadingThread { name = "UserOnline", value = false });
+                loadingList.Add(new loadingThread { name = "BranchOnline", value = false });
+                loadingList.Add(new loadingThread { name = "IUStorageRefresh", value = false });
+                loadingList.Add(new loadingThread { name = "BestSellerRefresh", value = false });
+                loadingList.Add(new loadingThread { name = "UserOnlinePic", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getDailySalPur", value = false });
+                loadingList.Add(new loadingThread { name = "AmountMonthlySalPur", value = false });
+
                 AllSalPur();
                 AgentCount();
                 UserOnline();
@@ -230,9 +264,34 @@ namespace POS.View
                 IUStorageRefresh();
                 BestSellerRefresh();
                 UserOnlinePic();
-                await CountMonthlySalPur();
-                DailySalPur();
-                await AmountMonthlySalPur();
+                loading_getDailySalPur();
+                AmountMonthlySalPur();
+
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        //string s = "";
+                        //foreach (var item in loadingList)
+                        //{
+                        //    s += item.name + " - " + item.value + "\n";
+                        //}
+                        //MessageBox.Show(s);
+                        await Task.Delay(0500);
+                        //MessageBox.Show("do");
+                    }
+                }
+                while (!isDone);
+                #endregion
 
                 this.DataContext = new Dash();
                 this.DataContext = dash;
@@ -242,19 +301,46 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         async void IUStorageRefresh()
         {
-            #region IUStorage
-            await IUStorage();
-            paginationIUStorage(listIUStorage, SkipIUStorage);
-            #endregion
+            try
+            {
+                #region IUStorage
+                await IUStorage();
+                paginationIUStorage(listIUStorage, SkipIUStorage);
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("IUStorageRefresh"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async void BestSellerRefresh()
         {
-            #region BestSeller
-            await BestSeller();
-            paginationBestSeller(listBestSeller, SkipBestSeller);
-            #endregion
+            try
+            {
+                #region BestSeller
+                await BestSeller();
+                paginationBestSeller(listBestSeller, SkipBestSeller);
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("BestSellerRefresh"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         void refreshView()
         {
@@ -311,6 +397,14 @@ namespace POS.View
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("AllSalPur"))
+                {
+                    item.value = true;
+                    break;
+                }
             }
         }
         async Task CountMonthlySalPur()
@@ -396,6 +490,14 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("AgentCount"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async Task UserOnline()
         {
@@ -427,6 +529,14 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("UserOnline"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async Task UserOnlinePic()
         {
@@ -455,6 +565,14 @@ namespace POS.View
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("UserOnlinePic"))
+                {
+                    item.value = true;
+                    break;
+                }
             }
         }
         void InitializeUserOnlinePic(List<userOnlineInfo> users)
@@ -575,6 +693,14 @@ namespace POS.View
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("BranchOnline"))
+                {
+                    item.value = true;
+                    break;
+                }
             }
         }
         void userOnlineListWindow(object sender, RoutedEventArgs e)
@@ -1016,7 +1142,14 @@ namespace POS.View
             {
                 SectionData.ExceptionMessage(ex, this);
             }
-
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("AmountMonthlySalPur"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         void InitializePieChart(PieChart pieChart, int partial = 0, int all = 0)
         {

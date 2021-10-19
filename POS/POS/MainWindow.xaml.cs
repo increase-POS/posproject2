@@ -106,8 +106,8 @@ namespace POS
 
         static public PosSetting posSetting = new PosSetting();
 
-       public static List<Item> InvoiceGlobalItemsList = new List<Item>();
-       public static List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
+        static public List<Item> InvoiceGlobalItemsList = new List<Item>();
+        static public List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
 
         public static async Task Getprintparameter()
         {
@@ -210,13 +210,13 @@ namespace POS
             public string name { get; set; }
             public bool value { get; set; }
         }
-        List<loadingThread> loadingList = new List<loadingThread>();
- 
+        List<loadingThread> loadingList;
+        //loadingThread[] loadingList = new loadingThread[25];
         async void loading_getUserPath()
         {
             #region get user path
-            try
-            {
+                try
+                {
                 UserSetValues uSetValueModel = new UserSetValues();
                 List<UserSetValues> lst = await uSetValueModel.GetAll();
 
@@ -242,6 +242,14 @@ namespace POS
                 secondPath = "";
             }
             #endregion
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getUserPath"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async void loading_getTax()
         {
@@ -254,6 +262,14 @@ namespace POS
             {
                 tax = 0;
             }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getTax"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async void loading_getDateForm()
         {
@@ -265,6 +281,14 @@ namespace POS
             catch
             {
                 dateFormat = "ShortDatePattern";
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getDateForm"))
+                {
+                    item.value = true;
+                    break;
+                }
             }
         }
         async void loading_getRegionAndCurrency()
@@ -283,6 +307,14 @@ namespace POS
             {
 
             }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getRegionAndCurrency"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async void loading_getStorageCost()
         {
@@ -295,6 +327,14 @@ namespace POS
             {
                 StorageCost = 0;
             }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getStorageCost"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async void loading_getAccurac()
         {
@@ -306,6 +346,14 @@ namespace POS
             catch
             {
                 accuracy = "1";
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getAccurac"))
+                {
+                    item.value = true;
+                    break;
+                }
             }
         }
         async void loading_getUserPersonalInfo()
@@ -340,95 +388,189 @@ namespace POS
             {
                 clearImg();
             }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getUserPersonalInfo"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
             #endregion
         }
-        #region get default System info
-
+        async void loading_getItemUnitsUsers()
+        {
+            try
+            {
+                itemUnitsUsers = await itemUnitsUser.GetByUserId(userLogin.userId);
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getItemUnitsUsers"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_getGroupObjects()
+        {
+            try
+            {
+                groupObjects = await groupObject.GetUserpermission(userLogin.userId);
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getGroupObjects"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
         async void loading_getDefaultSystemInfo()
         {
-
-            List<SettingCls> settingsCls = await setModel.GetAll();
+            try
+            {
+                List<SettingCls> settingsCls = await setModel.GetAll();
             List<SetValues> settingsValues = await valueModel.GetAll();
             SettingCls set = new SettingCls();
             SetValues setV = new SetValues();
-            //get company name
             List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
-            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-            nameId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-            if (setV != null)
-                companyName = setV.value;
-            //get company address
-            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-            addressId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-            if (setV != null)
-                Address = setV.value;
-            //get company email
-            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-            emailId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-            if (setV != null)
-                Email = setV.value;
-            //get company mobile
-            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-            mobileId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-            if (setV != null)
+            #region get company name
+            Thread t1 = new Thread(() =>
             {
-                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                Mobile = setV.value;
-            }
-            //get company phone
-            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-            phoneId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-            if (setV != null)
-            {
-                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                Phone = setV.value;
-            }
-            //get company fax
-            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-            faxId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-            if (setV != null)
-            {
-                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                Fax = setV.value;
-            }
-            //get company logo
-            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
-            logoId = set.settingId;
-            setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
-            if (setV != null)
-            {
-                logoImage = setV.value;
-                await setV.getImg(logoImage);
-            }
-        }
-        void ssssssssss()
-        {
-            bool isDone = false;
-            try
-            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    //get company name
+                    set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+                    nameId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+                    if (setV != null)
+                        companyName = setV.value;
 
+                });
+            });
+            t1.Start();
+            #endregion
 
+            #region  get company address
+            Thread t2 = new Thread(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    //get company address
+                    set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+                    addressId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+                    if (setV != null)
+                        Address = setV.value;
+                });
+            });
+            t2.Start();
+            #endregion
 
-                isDone = true;
+            #region  get company email
+            Thread t3 = new Thread(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    //get company email
+                    set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+                    emailId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+                    if (setV != null)
+                        Email = setV.value;
+                });
+            });
+            t3.Start();
+            #endregion
 
+            #region  get company mobile
+            Thread t4 = new Thread(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    //get company mobile
+                    set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+                    mobileId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+                    if (setV != null)
+                    {
+                        charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                        Mobile = setV.value;
+                    }
+                });
+            });
+            t4.Start();
+            #endregion
+
+            #region  get company phone
+            Thread t5 = new Thread(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    //get company phone
+                    set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+                    phoneId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+                    if (setV != null)
+                    {
+                        charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                        Phone = setV.value;
+                    }
+                });
+            });
+            t5.Start();
+            #endregion
+
+            #region  get company fax
+            Thread t6 = new Thread(() =>
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    //get company fax
+                    set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+                    faxId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+                    if (setV != null)
+                    {
+                        charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                        Fax = setV.value;
+                    }
+                });
+            });
+            t6.Start();
+            #endregion
+
+            #region   get company logo
+                    //get company logo
+                    set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+                    logoId = set.settingId;
+                    setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+                    if (setV != null)
+                    {
+                        logoImage = setV.value;
+                        await setV.getImg(logoImage);
+                    }
+                #endregion
             }
             catch (Exception)
+            { }
+            foreach (var item in loadingList)
             {
-                isDone = false;
-
+                if (item.name.Equals("loading_getDefaultSystemInfo"))
+                {
+                    item.value = true;
+                    break;
+                }
             }
-            var item = loadingList.Where(x => x.name.Equals("")).FirstOrDefault();
-            item.value = true;
-           // loadingList.save
-        }
-        #endregion
 
+        }
         #endregion
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -436,8 +578,8 @@ namespace POS
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
+                
 
-                loadingList = new List<loadingThread>();
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
@@ -474,16 +616,55 @@ namespace POS
                 #endregion
                 translate();
                 #region loading
+                loadingList = new List<loadingThread>();
+                bool isDone = true;
+                loadingList.Add(new loadingThread { name = "loading_getUserPath", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getTax", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getDateForm", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getRegionAndCurrency", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getStorageCost", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getAccurac", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getUserPersonalInfo", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getDefaultSystemInfo", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getItemUnitsUsers", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getGroupObjects", value = false });
+
+
                 loading_getUserPath();
                 loading_getTax();
                 loading_getDateForm();
                 loading_getRegionAndCurrency();
                 loading_getStorageCost();
                 loading_getAccurac();
-                itemUnitsUsers = await itemUnitsUser.GetByUserId(userLogin.userId);
+                loading_getItemUnitsUsers();
                 loading_getUserPersonalInfo();
                 loading_getDefaultSystemInfo();
-                groupObjects = await groupObject.GetUserpermission(userLogin.userId);
+                loading_getGroupObjects();
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        //MessageBox.Show("not done");
+                        //string s = "";
+                        //foreach (var item in loadingList)
+                        //{
+                        //    s += item.name + " - " + item.value + "\n";
+                        //}
+                        //MessageBox.Show(s);
+                        await Task.Delay(0500);
+                        //MessageBox.Show("do");
+                    }
+                }
+                while (!isDone);
                 #endregion
 
                 #region notifications 
