@@ -2547,6 +2547,16 @@ namespace POS.Classes
             return iulist;
 
         }
+
+        public List<PaymentsTypeCombo> getPaymentsTypeComboBySide(List<CashTransferSts> ITInvoice , string side)
+        {
+            List<PaymentsTypeCombo> iulist = new List<PaymentsTypeCombo>();
+
+            iulist = ITInvoice.Where(g => g.processType != null && g.side == side).GroupBy(g => g.processType).Select(g => new PaymentsTypeCombo { PaymentsTypeName = g.FirstOrDefault().processType }).ToList();
+            return iulist;
+
+        }
+
         public class AccountantCombo
         {
             private string accountant;
@@ -3349,9 +3359,5 @@ namespace POS.Classes
 
         }
 
-        internal IEnumerable<PaymentsTypeCombo> getPaymentsTypeComboBySide(List<CashTransferSts> payments, string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

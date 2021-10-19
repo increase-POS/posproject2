@@ -300,6 +300,8 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranchHint"));
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trPosHint"));
                 hideAllColumns();
                 selectedTab = 0;
 
@@ -336,41 +338,44 @@ namespace POS.View.reports
 
         private async void Btn_item_Click(object sender, RoutedEventArgs e)
         {//items
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            hideAllColumns();
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
-            selectedTab = 1;
+                hideAllColumns();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trItemHint"));
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trUnitHint"));
 
-            chk_allBranches.IsChecked = true;
-            chk_allPos.IsChecked = true;
+                selectedTab = 1;
 
-            col_itemName.Visibility = Visibility.Visible;
-            col_unitName.Visibility = Visibility.Visible;
-            col_quantity.Visibility = Visibility.Visible;
-            col_itemProfit.Visibility = Visibility.Visible;
+                chk_allBranches.IsChecked = true;
+                chk_allPos.IsChecked = true;
 
-            txt_search.Text = "";
-            path_invoice.Fill = Brushes.White;
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-            ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_item);
-            path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                col_itemName.Visibility = Visibility.Visible;
+                col_unitName.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_itemProfit.Visibility = Visibility.Visible;
 
-            await Search();
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                txt_search.Text = "";
+                path_invoice.Fill = Brushes.White;
+                bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_item);
+                path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //    catch (Exception ex)
-            //    {
-            //        if (sender != null)
-            //            SectionData.EndAwait(grid_main);
-            //        SectionData.ExceptionMessage(ex, this);
-            //}
+                await Search();
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void hideAllColumns()
