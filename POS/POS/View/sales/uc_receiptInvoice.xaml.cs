@@ -30,6 +30,7 @@ using System.Windows.Threading;
 using System.Threading;
 using System.Windows.Resources;
 using System.ComponentModel;
+using static POS.MainWindow;
 
 namespace POS.View
 {
@@ -271,6 +272,138 @@ namespace POS.View
                 setNotifications();
             }
         }
+        #region loading
+        List<loadingThread> loadingList;
+        async void loading_RefrishItems()
+        {
+            try
+            {
+                await RefrishItems();
+               
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_RefrishItems"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_RefrishCustomers()
+        {
+            try
+            {
+                await RefrishCustomers();
+                
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_RefrishCustomers"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBarcodeList()
+        {
+            try
+            {
+                await fillBarcodeList();
+               
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_fillBarcodeList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillCouponsList()
+        {
+            try
+            {
+                await fillCouponsList();
+               
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_fillCouponsList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillShippingCompanies()
+        {
+            try
+            {
+                await fillShippingCompanies();
+              
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_fillShippingCompanies"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillUsers()
+        {
+            try
+            {
+                await fillUsers();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_fillUsers"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillCardCombo()
+        {
+            try
+            {
+                #region fill card combo
+                cards = await cardModel.GetAll();
+                InitializeCardsPic(cards);
+                #endregion
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_fillCardCombo"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        #endregion
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -301,26 +434,57 @@ namespace POS.View
                 translate();
 
                 catigoriesAndItemsView.ucReceiptInvoice = this;
-                pos = await posModel.getById(MainWindow.posID.Value);
+                //pos = await posModel.getById(MainWindow.posID.Value);
+                pos = MainWindow.posLogIn;
                 configurProcessType();
                 configureDiscountType();
                 setNotifications();
                 setTimer();
-                await RefrishItems();
-                await RefrishCustomers();
-                await fillBarcodeList();
-                await fillCouponsList();
-                await fillShippingCompanies();
-                await fillUsers();
-                #region fill card combo
-                cards = await cardModel.GetAll();
-                //cb_card.ItemsSource = cards;
-                //cb_card.DisplayMemberPath = "name";
-                //cb_card.SelectedValuePath = "cardId";
-                //cb_card.SelectedIndex = -1;
-                InitializeCardsPic(cards);
 
+
+                #region loading
+                loadingList = new List<loadingThread>();
+                bool isDone = true;
+                loadingList.Add(new loadingThread { name = "loading_RefrishItems", value = false });
+                loadingList.Add(new loadingThread { name = "loading_RefrishCustomers", value = false });
+                loadingList.Add(new loadingThread { name = "loading_fillBarcodeList", value = false });
+                loadingList.Add(new loadingThread { name = "loading_fillCouponsList", value = false });
+                loadingList.Add(new loadingThread { name = "loading_fillShippingCompanies", value = false });
+                loadingList.Add(new loadingThread { name = "loading_fillUsers", value = false });
+                loadingList.Add(new loadingThread { name = "loading_fillCardCombo", value = false });
+                loading_RefrishItems();
+                loading_RefrishCustomers();
+                loading_fillBarcodeList();
+                loading_fillCouponsList();
+                loading_fillShippingCompanies();
+                loading_fillUsers();
+                loading_fillCardCombo();
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        //string s = "";
+                        //foreach (var item in loadingList)
+                        //{
+                        //    s += item.name + " - " + item.value + "\n";
+                        //}
+                        //MessageBox.Show(s);
+                        await Task.Delay(0500);
+                        //MessageBox.Show("do");
+                    }
+                }
+                while (!isDone);
                 #endregion
+
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
