@@ -25,10 +25,12 @@ namespace POS
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
 
-            winLogIn logIn = new winLogIn();
-            logIn.Show();
+                winLogIn logIn = new winLogIn();
+                logIn.Show();
 
-        }
+                //wd_setupFirstPos logIn = new wd_setupFirstPos();
+                //logIn.Show();
+            }
 		 catch (Exception ex)
             {
 				SectionData.ExceptionMessage(ex,this);
