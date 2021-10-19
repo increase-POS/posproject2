@@ -106,8 +106,8 @@ namespace POS
 
         static public PosSetting posSetting = new PosSetting();
 
-        List<Item> InvoiceGlobalItemsList = new List<Item>();
-        List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
+       public static List<Item> InvoiceGlobalItemsList = new List<Item>();
+       public static List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
 
         public static async Task Getprintparameter()
         {
@@ -425,7 +425,7 @@ namespace POS
             }
             var item = loadingList.Where(x => x.name.Equals("")).FirstOrDefault();
             item.value = true;
-            loadingList.save
+           // loadingList.save
         }
         #endregion
 
