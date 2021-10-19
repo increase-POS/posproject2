@@ -30,7 +30,7 @@
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="1" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_serverUri" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <!--<TextBox x:Name="tb_serverUri" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
                           Grid.Row="1" Grid.Column="1"      
                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="http://192.168.1.1"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -40,7 +40,7 @@
                                      Height="40" Margin="5" 
                                      TextChanged="Tb_validateEmptyTextChange" 
                                      LostFocus="Tb_validateEmptyLostFocus">
-            </TextBox>
+            </TextBox>-->
         <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorServerUri"
                                   HorizontalAlignment="Right" Grid.Column="1"    Grid.Row="1"  Visibility="Collapsed" 
                                   VerticalAlignment="Center" Width="15"  Height="15"
@@ -57,7 +57,7 @@
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="2" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_activationkey" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <!--<TextBox x:Name="tb_activationkey" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
                           Grid.Row="2" Grid.Column="1"      
                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Bgerbeg34t33WSDWC"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -67,7 +67,7 @@
                                      Height="40" Margin="5" 
                                      TextChanged="Tb_validateEmptyTextChange" 
                                      LostFocus="Tb_validateEmptyLostFocus">
-        </TextBox>
+        </TextBox>-->
         <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_erroractivationkey"
                                   HorizontalAlignment="Right" Grid.Column="1"   Grid.Row="2"  Visibility="Collapsed" 
                                   VerticalAlignment="Center" Width="15"  Height="15"
