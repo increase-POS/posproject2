@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -778,6 +778,14 @@
           <Property Name="note" Type="ntext" />
           <Property Name="balanceAll" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
+        <EntityType Name="posSerials">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="posSerial" Type="nvarchar" MaxLength="300" />
+          <Property Name="notes" Type="nvarchar" MaxLength="300" />
+        </EntityType>
         <EntityType Name="posSetting">
           <Key>
             <PropertyRef Name="posSettingId" />
@@ -789,6 +797,12 @@
           <Property Name="saleInvPapersizeId" Type="int" />
           <Property Name="posSerial" Type="nvarchar" MaxLength="1000" />
           <Property Name="docPapersizeId" Type="int" />
+          <Property Name="posDeviceCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="posSerialId" Type="int" />
+          <Property Name="createDate" Type="datetime2" Precision="7" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="createUserId" Type="int" />
+          <Property Name="updateUserId" Type="int" />
         </EntityType>
         <EntityType Name="posUsers">
           <Key>
@@ -3045,6 +3059,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_posSetting_posSerials">
+          <End Role="posSerials" Type="Self.posSerials" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="posSerials">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="posSerialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_posSetting_printers">
           <End Role="printers" Type="Self.printers" Multiplicity="0..1" />
           <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
@@ -3066,6 +3092,30 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Principal>
             <Dependent Role="posSetting">
               <PropertyRef Name="reportPrinterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3500,6 +3550,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySet Name="paperSize" EntityType="Self.paperSize" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="pos" EntityType="Self.pos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="posSerials" EntityType="Self.posSerials" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="posSetting" EntityType="Self.posSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="posUsers" EntityType="Self.posUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="printers" EntityType="Self.printers" Schema="dbo" store:Type="Tables" />
@@ -4192,12 +4243,24 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="pos" EntitySet="pos" />
             <End Role="posSetting" EntitySet="posSetting" />
           </AssociationSet>
+          <AssociationSet Name="FK_posSetting_posSerials" Association="Self.FK_posSetting_posSerials">
+            <End Role="posSerials" EntitySet="posSerials" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
           <AssociationSet Name="FK_posSetting_printers" Association="Self.FK_posSetting_printers">
             <End Role="printers" EntitySet="printers" />
             <End Role="posSetting" EntitySet="posSetting" />
           </AssociationSet>
           <AssociationSet Name="FK_posSetting_printers1" Association="Self.FK_posSetting_printers1">
             <End Role="printers" EntitySet="printers" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_users" Association="Self.FK_posSetting_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_users1" Association="Self.FK_posSetting_users1">
+            <End Role="users" EntitySet="users" />
             <End Role="posSetting" EntitySet="posSetting" />
           </AssociationSet>
           <AssociationSet Name="FK_posUsers_pos" Association="Self.FK_posUsers_pos">
@@ -4329,8 +4392,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -5361,6 +5423,15 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="pos" Relationship="Self.FK_posSetting_pos" FromRole="posSetting" ToRole="pos" />
           <NavigationProperty Name="printers" Relationship="Self.FK_posSetting_printers" FromRole="posSetting" ToRole="printers" />
           <NavigationProperty Name="printers1" Relationship="Self.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
+          <Property Name="posDeviceCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="posSerialId" Type="Int32" />
+          <Property Name="createDate" Type="DateTime" Precision="7" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="createUserId" Type="Int32" />
+          <Property Name="updateUserId" Type="Int32" />
+          <NavigationProperty Name="posSerials" Relationship="incposdbModel.FK_posSetting_posSerials" FromRole="posSetting" ToRole="posSerials" />
+          <NavigationProperty Name="users" Relationship="incposdbModel.FK_posSetting_users" FromRole="posSetting" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_posSetting_users1" FromRole="posSetting" ToRole="users" />
         </EntityType>
         <EntityType Name="posUsers">
           <Key>
@@ -5745,6 +5816,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_users" FromRole="users" ToRole="posSetting" />
+          <NavigationProperty Name="posSetting1" Relationship="incposdbModel.FK_posSetting_users1" FromRole="users" ToRole="posSetting" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -9035,7 +9108,65 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="users" EntitySet="users" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
+          <EntitySet Name="posSerials" EntityType="incposdbModel.posSerials" />
+          <AssociationSet Name="FK_posSetting_posSerials" Association="incposdbModel.FK_posSetting_posSerials">
+            <End Role="posSerials" EntitySet="posSerials" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_users" Association="incposdbModel.FK_posSetting_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_users1" Association="incposdbModel.FK_posSetting_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="posSerials">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="posSerial" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
+        </EntityType>
+        <Association Name="FK_posSetting_posSerials">
+          <End Type="incposdbModel.posSerials" Role="posSerials" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="posSerials">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="posSerialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_users">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_users1">
+          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="updateUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9864,6 +9995,12 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="posSetting">
             <EntityTypeMapping TypeName="incposdbModel.posSetting">
               <MappingFragment StoreEntitySet="posSetting">
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="posSerialId" ColumnName="posSerialId" />
+                <ScalarProperty Name="posDeviceCode" ColumnName="posDeviceCode" />
                 <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="saleInvPrinterId" ColumnName="saleInvPrinterId" />
@@ -10168,6 +10305,15 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="versionIncId" ColumnName="versionIncId" />
                 <ScalarProperty Name="versionName" ColumnName="versionName" />
                 <ScalarProperty Name="storeCount" ColumnName="storeCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="posSerials">
+            <EntityTypeMapping TypeName="incposdbModel.posSerials">
+              <MappingFragment StoreEntitySet="posSerials">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="posSerial" ColumnName="posSerial" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

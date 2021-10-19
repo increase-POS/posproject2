@@ -1027,6 +1027,15 @@
     <NavigationProperty Name="pos" Relationship="Self.FK_posSetting_pos" FromRole="posSetting" ToRole="pos" />
     <NavigationProperty Name="printers" Relationship="Self.FK_posSetting_printers" FromRole="posSetting" ToRole="printers" />
     <NavigationProperty Name="printers1" Relationship="Self.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
+    <Property Name="posDeviceCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="posSerialId" Type="Int32" />
+    <Property Name="createDate" Type="DateTime" Precision="7" />
+    <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="createUserId" Type="Int32" />
+    <Property Name="updateUserId" Type="Int32" />
+    <NavigationProperty Name="posSerials" Relationship="incposdbModel.FK_posSetting_posSerials" FromRole="posSetting" ToRole="posSerials" />
+    <NavigationProperty Name="users" Relationship="incposdbModel.FK_posSetting_users" FromRole="posSetting" ToRole="users" />
+    <NavigationProperty Name="users1" Relationship="incposdbModel.FK_posSetting_users1" FromRole="posSetting" ToRole="users" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -1411,6 +1420,8 @@
     <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
+    <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_users" FromRole="users" ToRole="posSetting" />
+    <NavigationProperty Name="posSetting1" Relationship="incposdbModel.FK_posSetting_users1" FromRole="users" ToRole="posSetting" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -4701,5 +4712,63 @@
       <End Role="users" EntitySet="users" />
       <End Role="usersLogs" EntitySet="usersLogs" />
     </AssociationSet>
+    <EntitySet Name="posSerials" EntityType="incposdbModel.posSerials" />
+    <AssociationSet Name="FK_posSetting_posSerials" Association="incposdbModel.FK_posSetting_posSerials">
+      <End Role="posSerials" EntitySet="posSerials" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_users" Association="incposdbModel.FK_posSetting_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_users1" Association="incposdbModel.FK_posSetting_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="posSerials">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="posSerial" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
+  </EntityType>
+  <Association Name="FK_posSetting_posSerials">
+    <End Type="incposdbModel.posSerials" Role="posSerials" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="posSerials">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="posSerialId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_users">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_users1">
+    <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
+    <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="updateUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

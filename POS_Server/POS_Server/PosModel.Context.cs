@@ -91,5 +91,6 @@ namespace POS_Server
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
         public virtual DbSet<ProgramDetails> ProgramDetails { get; set; }
+        public virtual DbSet<posSerials> posSerials { get; set; }
     }
 }

@@ -823,6 +823,12 @@
     <EntitySetMapping Name="posSetting">
       <EntityTypeMapping TypeName="incposdbModel.posSetting">
         <MappingFragment StoreEntitySet="posSetting">
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="posSerialId" ColumnName="posSerialId" />
+          <ScalarProperty Name="posDeviceCode" ColumnName="posDeviceCode" />
           <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="saleInvPrinterId" ColumnName="saleInvPrinterId" />
@@ -1127,6 +1133,15 @@
           <ScalarProperty Name="versionIncId" ColumnName="versionIncId" />
           <ScalarProperty Name="versionName" ColumnName="versionName" />
           <ScalarProperty Name="storeCount" ColumnName="storeCount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="posSerials">
+      <EntityTypeMapping TypeName="incposdbModel.posSerials">
+        <MappingFragment StoreEntitySet="posSerials">
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="posSerial" ColumnName="posSerial" />
+          <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

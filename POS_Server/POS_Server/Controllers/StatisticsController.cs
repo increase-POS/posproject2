@@ -6386,7 +6386,7 @@ else
                                                             select new CashTransferModel()
                                                             {
                                                                 //*cashTransId = C.cashTransId,
-                                                                //*transType = C.transType,
+                                                                transType = C.transType,
                                                                 //*posId = C.posId,
                                                                 userId = C.userId,
                                                                 agentId = C.agentId,
@@ -6399,15 +6399,15 @@ else
                                                                 //*createUserId = C.createUserId,
                                                                 //*notes = C.notes,
                                                                 //*posIdCreator = C.posIdCreator,
-                                                                //*isConfirm = C.isConfirm,
+                                                                isConfirm = C.isConfirm,
                                                                 //*cashTransIdSource = C.cashTransIdSource,
                                                                 side = C.side,
 
                                                                 //*docName = C.docName,
                                                                 //*docNum = C.docNum,
                                                                 //*docImage = C.docImage,
-                                                                //*bankId = C.bankId,
-                                                                //*bankName = jbb.name,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
                                                                 agentName = jaa.name,
 
                                                                 //*usersName = juu.name,// side =u
@@ -6938,15 +6938,15 @@ else
                                                                 //*createUserId = C.createUserId,
                                                                 //*notes = C.notes,
                                                                 //*posIdCreator = C.posIdCreator,
-                                                                //*isConfirm = C.isConfirm,
+                                                                isConfirm = C.isConfirm,
                                                                 //*cashTransIdSource = C.cashTransIdSource,
                                                                 side = C.side,
 
                                                                 //*docName = C.docName,
                                                                 //*docNum = C.docNum,
                                                                 //*docImage = C.docImage,
-                                                                //*bankId = C.bankId,
-                                                                //*bankName = jbb.name,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
                                                                 agentName = jaa.name,
 
                                                                 usersName = juu.name,// side =u

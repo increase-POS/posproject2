@@ -773,6 +773,14 @@
     <Property Name="note" Type="ntext" />
     <Property Name="balanceAll" Type="decimal" Precision="20" Scale="3" />
   </EntityType>
+  <EntityType Name="posSerials">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="posSerial" Type="nvarchar" MaxLength="300" />
+    <Property Name="notes" Type="nvarchar" MaxLength="300" />
+  </EntityType>
   <EntityType Name="posSetting">
     <Key>
       <PropertyRef Name="posSettingId" />
@@ -784,6 +792,12 @@
     <Property Name="saleInvPapersizeId" Type="int" />
     <Property Name="posSerial" Type="nvarchar" MaxLength="1000" />
     <Property Name="docPapersizeId" Type="int" />
+    <Property Name="posDeviceCode" Type="nvarchar" MaxLength="500" />
+    <Property Name="posSerialId" Type="int" />
+    <Property Name="createDate" Type="datetime2" Precision="7" />
+    <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="createUserId" Type="int" />
+    <Property Name="updateUserId" Type="int" />
   </EntityType>
   <EntityType Name="posUsers">
     <Key>
@@ -3040,6 +3054,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_posSetting_posSerials">
+    <End Role="posSerials" Type="Self.posSerials" Multiplicity="0..1" />
+    <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="posSerials">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="posSerialId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_posSetting_printers">
     <End Role="printers" Type="Self.printers" Multiplicity="0..1" />
     <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
@@ -3061,6 +3087,30 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       </Principal>
       <Dependent Role="posSetting">
         <PropertyRef Name="reportPrinterId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_users">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="createUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_posSetting_users1">
+    <End Role="users" Type="Self.users" Multiplicity="0..1" />
+    <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="posSetting">
+        <PropertyRef Name="updateUserId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -3495,6 +3545,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     <EntitySet Name="paperSize" EntityType="Self.paperSize" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="pos" EntityType="Self.pos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="posSerials" EntityType="Self.posSerials" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="posSetting" EntityType="Self.posSetting" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="posUsers" EntityType="Self.posUsers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="printers" EntityType="Self.printers" Schema="dbo" store:Type="Tables" />
@@ -4187,12 +4238,24 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
       <End Role="pos" EntitySet="pos" />
       <End Role="posSetting" EntitySet="posSetting" />
     </AssociationSet>
+    <AssociationSet Name="FK_posSetting_posSerials" Association="Self.FK_posSetting_posSerials">
+      <End Role="posSerials" EntitySet="posSerials" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
     <AssociationSet Name="FK_posSetting_printers" Association="Self.FK_posSetting_printers">
       <End Role="printers" EntitySet="printers" />
       <End Role="posSetting" EntitySet="posSetting" />
     </AssociationSet>
     <AssociationSet Name="FK_posSetting_printers1" Association="Self.FK_posSetting_printers1">
       <End Role="printers" EntitySet="printers" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_users" Association="Self.FK_posSetting_users">
+      <End Role="users" EntitySet="users" />
+      <End Role="posSetting" EntitySet="posSetting" />
+    </AssociationSet>
+    <AssociationSet Name="FK_posSetting_users1" Association="Self.FK_posSetting_users1">
+      <End Role="users" EntitySet="users" />
       <End Role="posSetting" EntitySet="posSetting" />
     </AssociationSet>
     <AssociationSet Name="FK_posUsers_pos" Association="Self.FK_posUsers_pos">
