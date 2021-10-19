@@ -46,6 +46,8 @@ namespace POS.Classes
                 {
                     payload.Add(parameters.Keys.ToList()[i], parameters.Values.ToList()[i]);
                 }
+            // add userLogInID to parameters
+            payload.Add("userLogInID", MainWindow.userLogInID);
 
             var token = new JwtSecurityToken(header, payload);
             var handler = new JwtSecurityTokenHandler();
@@ -97,6 +99,8 @@ namespace POS.Classes
                         string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
                         if (validAuth != null && s[2].Value == "-7") // invalid authintication
                             return null;
+                        else if (validAuth != null && s[2].Value == "-8")
+                            MainWindow.go_out = true;
                         return claims;
                     }
                 }
@@ -155,6 +159,8 @@ namespace POS.Classes
             {
                 payload.Add(parameters.Keys.ToList()[i], parameters.Values.ToList()[i]);    
             }
+            // add userLogInID to parameters
+            payload.Add("userLogInID", MainWindow.userLogInID);
             //
             var token = new JwtSecurityToken(header, payload);
             var handler = new JwtSecurityTokenHandler();
@@ -188,23 +194,31 @@ namespace POS.Classes
                 form.Add(content, "fileToUpload");
                 
                 var response = await client.PostAsync(@method + "?token=" + "null", form);
-                var jsonString = await response.Content.ReadAsStringAsync();
-                var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
+                
                 fs.Dispose();
                 File.Delete(tmpPath);
-                if (Sresponse != "")
+                if (response.IsSuccessStatusCode)
                 {
-                    var decryptedToken = DeCompressThenDecrypt(Sresponse);
-                    var jwtToken = new JwtSecurityToken(decryptedToken);
-                    var s = jwtToken.Claims.ToArray();
-                    IEnumerable<Claim> claims = jwtToken.Claims;
-                    foreach (Claim c in claims)
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var Sresponse = JsonConvert.DeserializeObject<string>(jsonString);
+                    if (Sresponse != "")
                     {
-                        if (c.Type == "scopes")
+                        var decryptedToken = DeCompressThenDecrypt(Sresponse);
+                        var jwtToken = new JwtSecurityToken(decryptedToken);
+                        var s = jwtToken.Claims.ToArray();
+                        IEnumerable<Claim> claims = jwtToken.Claims;
+
+                        string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
+                        if (validAuth != null && s[2].Value == "-8")
+                            MainWindow.go_out = true;
+                        foreach (Claim c in claims)
                         {
-                            return int.Parse(c.Value);
+                            if (c.Type == "scopes")
+                            {
+                                return int.Parse(c.Value);
+                            }
                         }
-                    }                 
+                    }
                 }
             }
             return 0;

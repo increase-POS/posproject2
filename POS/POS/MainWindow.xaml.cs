@@ -103,7 +103,7 @@ namespace POS
         public static string salePaperSize;
         public static string rep_print_count;
         public static string docPapersize;
-
+        public static Boolean go_out = false;
         static public PosSetting posSetting = new PosSetting();
 
         static public List<Item> InvoiceGlobalItemsList = new List<Item>();
@@ -889,11 +889,12 @@ namespace POS
             try
             {
                 //  User thruser = new User();
-                UsersLogs thrlog = new UsersLogs();
+                //UsersLogs thrlog = new UsersLogs();
 
-                thrlog = await thrlog.GetByID((int)userLogInID);
-
-                if (thrlog.sOutDate != null)
+               //thrlog = await thrlog.GetByID((int)userLogInID);
+                // check go_out == true do logout()
+                //if (thrlog.sOutDate != null)
+                if(go_out)
                 {
                     BTN_logOut_Click(null, null);
                     threadtimer.Stop();
@@ -982,7 +983,7 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        async Task close()
+      async Task close()
         {
             //log out
             //update lognin record
