@@ -103,9 +103,11 @@ namespace POS
         public static string salePaperSize;
         public static string rep_print_count;
         public static string docPapersize;
-    
+
         static public PosSetting posSetting = new PosSetting();
-   
+
+        List<Item> InvoiceGlobalItemsList = new List<Item>();
+        List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
 
         public static async Task Getprintparameter()
         {
@@ -140,13 +142,13 @@ namespace POS
         public static async Task getPrintersNames()
         {
             posSetting = await posSetting.GetByposId((int)MainWindow.posID);
-            if (posSetting.repname is null || posSetting.repname=="")
+            if (posSetting.repname is null || posSetting.repname == "")
             {
                 rep_printer_name = "";
             }
             else
             {
-rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
+                rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
             }
             if (posSetting.salname is null || posSetting.repname == "")
             {
@@ -154,12 +156,12 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             else
             {
-    sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
+                sale_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.salname));
             }
 
             salePaperSize = posSetting.saleSizeValue;
             docPapersize = posSetting.docPapersize;
-            
+
         }
         public static async Task getprintSitting()
         {
@@ -178,15 +180,15 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 mainWindow = this;
                 windowFlowDirection();
-               
+
 
             }
             catch (Exception ex)
-            {  SectionData.ExceptionMessage(ex,this);}
+            { SectionData.ExceptionMessage(ex, this); }
 
         }
 
-         void windowFlowDirection()
+        void windowFlowDirection()
         {
             #region translate
             if (lang.Equals("en"))
@@ -201,6 +203,15 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             #endregion
         }
+
+        #region loading
+        public class loadingThread
+        {
+            public string name { get; set; }
+            public bool value { get; set; }
+        }
+        List<loadingThread> loadingList = new List<loadingThread>();
+ 
         async void loading_getUserPath()
         {
             #region get user path
@@ -232,7 +243,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             #endregion
         }
-
         async void loading_getTax()
         {
             //get tax
@@ -245,8 +255,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 tax = 0;
             }
         }
-
-
         async void loading_getDateForm()
         {
             //get dateform
@@ -259,7 +267,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 dateFormat = "ShortDatePattern";
             }
         }
-
         async void loading_getRegionAndCurrency()
         {
             //get region and currency
@@ -277,7 +284,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
             }
         }
-
         async void loading_getStorageCost()
         {
             //get storage cost
@@ -290,7 +296,6 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 StorageCost = 0;
             }
         }
-
         async void loading_getAccurac()
         {
             //get accuracy
@@ -337,24 +342,112 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             #endregion
         }
+        #region get default System info
+
+        async void loading_getDefaultSystemInfo()
+        {
+
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            SettingCls set = new SettingCls();
+            SetValues setV = new SetValues();
+            //get company name
+            List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
+            set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+            nameId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+            if (setV != null)
+                companyName = setV.value;
+            //get company address
+            set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+            addressId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+            if (setV != null)
+                Address = setV.value;
+            //get company email
+            set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+            emailId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+            if (setV != null)
+                Email = setV.value;
+            //get company mobile
+            set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+            mobileId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+            if (setV != null)
+            {
+                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                Mobile = setV.value;
+            }
+            //get company phone
+            set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+            phoneId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+            if (setV != null)
+            {
+                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                Phone = setV.value;
+            }
+            //get company fax
+            set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+            faxId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+            if (setV != null)
+            {
+                charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                Fax = setV.value;
+            }
+            //get company logo
+            set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+            logoId = set.settingId;
+            setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+            if (setV != null)
+            {
+                logoImage = setV.value;
+                await setV.getImg(logoImage);
+            }
+        }
+        void ssssssssss()
+        {
+            bool isDone = false;
+            try
+            {
+
+
+
+                isDone = true;
+
+            }
+            catch (Exception)
+            {
+                isDone = false;
+
+            }
+            var item = loadingList.Where(x => x.name.Equals("")).FirstOrDefault();
+            item.value = true;
+            loadingList.save
+        }
+        #endregion
+
+        #endregion
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
- 
 
+                loadingList = new List<loadingThread>();
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
                 TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
-                #pragma warning restore CS0436 // Type conflicts with imported type
-                #pragma warning disable CS0436 // Type conflicts with imported type
-                #pragma warning restore CS0436 // Type conflicts with imported type
-                #pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
                 TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
-                #pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
                 this.Height = SystemParameters.MaximizedPrimaryScreenHeight;
                 //this.Width = SystemParameters.MaximizedPrimaryScreenHeight;
                 timer = new DispatcherTimer();
@@ -380,92 +473,17 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 #endregion
                 translate();
-
+                #region loading
                 loading_getUserPath();
                 loading_getTax();
                 loading_getDateForm();
                 loading_getRegionAndCurrency();
                 loading_getStorageCost();
                 loading_getAccurac();
-               
-
-
-                #region get default System info
-
-                List<SettingCls> settingsCls = await setModel.GetAll();
-                List<SetValues> settingsValues = await valueModel.GetAll();
-
-                SettingCls set = new SettingCls();
-                SetValues setV = new SetValues();
-
-
-                //get company name
-                List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
-
-                set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-                nameId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-                if (setV != null)
-                    companyName = setV.value;
-                //get company address
-                set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-                addressId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-                if (setV != null)
-                    Address = setV.value;
-                //get company email
-                set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-                emailId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-                if (setV != null)
-                    Email = setV.value;
-                //get company mobile
-                set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-                mobileId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-                if (setV != null)
-                {
-                    charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                    Mobile = setV.value;
-                }
-                //get company phone
-                set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-                phoneId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-                if (setV != null)
-                {
-                    charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                    Phone = setV.value;
-                }
-                //get company fax
-                set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-                faxId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-                if (setV != null)
-                {
-                    charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                    Fax = setV.value;
-                }
-                //get company logo
-                set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
-                logoId = set.settingId;
-                setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
-                if (setV != null)
-                {
-                    logoImage = setV.value;
-                    await setV.getImg(logoImage);
-                }
-
-
                 itemUnitsUsers = await itemUnitsUser.GetByUserId(userLogin.userId);
-                #endregion
-
-
                 loading_getUserPersonalInfo();
-                #region 
-
+                loading_getDefaultSystemInfo();
                 groupObjects = await groupObject.GetUserpermission(userLogin.userId);
-
                 #endregion
 
                 #region notifications 
@@ -473,7 +491,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 setTimer();
                 #endregion
 
-                await  getprintSitting();
+                await getprintSitting();
 
                 permission();
                 //BTN_Home_Click(null, null);
@@ -494,7 +512,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public void SetNotificationsLocation()
@@ -547,7 +565,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     textBox.SelectAll();
         }
 
-       public static bool loadingDefaultPath(string first, string second)
+        public static bool loadingDefaultPath(string first, string second)
         {
             bool load = false;
             if (!string.IsNullOrEmpty(first) && !string.IsNullOrEmpty(second))
@@ -564,29 +582,29 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                 }
 
                 if (first == "home")
-                      loadingSecondLevel(second, uc_home.Instance);
+                    loadingSecondLevel(second, uc_home.Instance);
                 if (first == "catalog")
-                      loadingSecondLevel(second, UC_catalog.Instance);
+                    loadingSecondLevel(second, UC_catalog.Instance);
                 if (first == "storage")
-                      loadingSecondLevel(second, POS.View.uc_storage.Instance);
+                    loadingSecondLevel(second, POS.View.uc_storage.Instance);
                 if (first == "purchase")
-                     loadingSecondLevel(second, uc_purchases.Instance);
+                    loadingSecondLevel(second, uc_purchases.Instance);
                 if (first == "sales")
-                     loadingSecondLevel(second, uc_sales.Instance);
+                    loadingSecondLevel(second, uc_sales.Instance);
                 if (first == "accounts")
                     loadingSecondLevel(second, uc_accounts.Instance);
                 if (first == "reports")
-                     loadingSecondLevel(second, uc_reports.Instance);
+                    loadingSecondLevel(second, uc_reports.Instance);
                 if (first == "sectionData")
-                     loadingSecondLevel(second, UC_SectionData.Instance);
+                    loadingSecondLevel(second, UC_SectionData.Instance);
                 if (first == "settings")
-                     loadingSecondLevel(second, uc_settings.Instance);
+                    loadingSecondLevel(second, uc_settings.Instance);
 
             }
             return load;
         }
 
-        static void loadingSecondLevel(string second , UserControl userControl)
+        static void loadingSecondLevel(string second, UserControl userControl)
         {
             userControl.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
             var button = userControl.FindName("btn_" + second) as Button;
@@ -595,7 +613,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         void permission()
         {
             bool loadWindow = false;
-            loadWindow = loadingDefaultPath(firstPath,secondPath);
+            loadWindow = loadingDefaultPath(firstPath, secondPath);
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
@@ -631,7 +649,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
 
 
@@ -681,7 +699,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -691,8 +709,8 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 //  User thruser = new User();
                 UsersLogs thrlog = new UsersLogs();
-            
-               thrlog = await thrlog.GetByID((int)userLogInID);
+
+                thrlog = await thrlog.GetByID((int)userLogInID);
 
                 if (thrlog.sOutDate != null)
                 {
@@ -702,7 +720,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
 
 
@@ -724,7 +742,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         {
             try
             {
-                
+
                 txtTime.Text = DateTime.Now.ToShortTimeString();
                 txtDate.Text = DateTime.Now.ToShortDateString();
 
@@ -732,7 +750,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void TabTipAutomationOnTest(Exception exception)
@@ -780,7 +798,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         async Task close()
@@ -808,7 +826,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void BTN_Minimize_Click(object sender, RoutedEventArgs e)
@@ -819,7 +837,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         void colorTextRefreash(TextBlock txt)
@@ -883,11 +901,11 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
         }
 
         //فتح
-        private   void BTN_Menu_Click(object sender, RoutedEventArgs e)
+        private void BTN_Menu_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                 
+
                 if (!menuState)
                 {
                     Storyboard sb = this.FindResource("Storyboard1") as Storyboard;
@@ -919,7 +937,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         void fn_pathOpenCollapsed()
@@ -941,9 +959,9 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             fn_pathOpenCollapsed();
             p.Visibility = Visibility.Visible;
         }
-       
 
-       
+
+
 
         private void btn_Keyboard_Click(object sender, RoutedEventArgs e)
         {
@@ -952,17 +970,17 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
 
                 if (TabTip.Close())
                 {
-    #pragma warning disable CS0436 // Type conflicts with imported type
+#pragma warning disable CS0436 // Type conflicts with imported type
                     TabTip.OpenUndockedAndStartPoolingForClosedEvent();
-    #pragma warning restore CS0436 // Type conflicts with imported type
+#pragma warning restore CS0436 // Type conflicts with imported type
                 }
-        }
+            }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
-        }
+                SectionData.ExceptionMessage(ex, this);
+            }
 
-    }
+        }
 
         User userModel = new User();
         UsersLogs userLogsModel = new UsersLogs();
@@ -999,7 +1017,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
 
         }
@@ -1172,7 +1190,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
                 else if (tag == "item")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trItems");
-                
+
 
                 #region  storageReports
                 if (tag == "stock")
@@ -1211,13 +1229,13 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trAccountStatement");
                 else if (tag == "fund")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trCashBalance");
-             else if (tag == "profit")
+                else if (tag == "profit")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trProfits");
 
-        #endregion
+                #endregion
 
-        #endregion
-    }
+                #endregion
+            }
 
         }
         //void initializationMainTrackChildren(string text)
@@ -1270,7 +1288,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1314,10 +1332,10 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
-        SetValues v = new SetValues(); 
+        SetValues v = new SetValues();
 
         async Task<string> getDefaultStorageCost()
         {
@@ -1417,7 +1435,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
                         txt_firstNotiTitle.Text = resourcemanager.GetString(orderdNotifications.Select(obj => obj.title).FirstOrDefault());
 
                         txt_firstNotiContent.Text = GetUntilOrEmpty(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault(), ":")
-                          + " : " + 
+                          + " : " +
                           resourcemanager.GetString(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().Substring(orderdNotifications.Select(obj => obj.ncontent).FirstOrDefault().LastIndexOf(':') + 1));
 
                         txt_firstNotiDate.Text = orderdNotifications.Select(obj => obj.createDate).FirstOrDefault().ToString();
@@ -1468,7 +1486,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_showAll_Click(object sender, RoutedEventArgs e)
@@ -1489,7 +1507,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void TextBlock_MouseLeave(object sender, MouseEventArgs e)
@@ -1502,7 +1520,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -1513,7 +1531,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_info_Click(object sender, RoutedEventArgs e)
@@ -1527,7 +1545,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void Btn_userImage_Click(object sender, RoutedEventArgs e)
@@ -1570,7 +1588,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public void BTN_sales_Click(object sender, RoutedEventArgs e)
@@ -1588,7 +1606,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void BTN_accounts_Click(object sender, RoutedEventArgs e)
@@ -1606,7 +1624,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void BTN_reports_Click(object sender, RoutedEventArgs e)
@@ -1624,7 +1642,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         public void BTN_settings_Click(object sender, RoutedEventArgs e)
@@ -1642,7 +1660,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private void BTN_storage_Click(object sender, RoutedEventArgs e)
@@ -1660,7 +1678,7 @@ rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.r
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }

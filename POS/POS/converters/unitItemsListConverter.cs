@@ -36,48 +36,8 @@ namespace POS.converters
         //}
         public  object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            #region
-            /*
-            ICollection<SuggestedPeriod> personSepcilaization = (ICollection<SuggestedPeriod>)value;
-            if (personSepcilaization.Count > 0)
-            {
-                string result = "";
-                foreach (var item in personSepcilaization)
-                {
-                    result += item.PeriodDay + ",";
-                }
-                return result;
-            }
-            return "";
-            */
-            /*
-            string key = value as string;
-            Parent p1 = new Parent();
-            p1.Children.Add(new Child { Name = "Ahmad1" });
-            p1.Children.Add(new Child { Name = "Mohamad1" });
-            Parent p2 = new Parent();
-            p2.Children.Add(new Child { Name = "Ahmad2" });
-            p2.Children.Add(new Child { Name = "Mohamad2" });
-            p2.Children.Add(new Child { Name = "Mohamad3" });
-            p2.Children.Add(new Child { Name = "Mohamad4" });
-            switch (key)
-            {
-                case "1":
-                    return p1.Children;
-                case "2":
-                    return p2.Children;
-
-            }
-            return p1.Children;
-            */
-            #endregion
-            //BillDetails b = new BillDetails();
-            //b.itemUnit =  GetItemUnits(value.ToString()).Result;
-            //return b.itemUnit;
-
-            //return GetItemUnits(value.ToString()).Result;
-           return Task.Run(() => itemUnit.GetItemUnits(int.Parse(value.ToString()))).Result;
-
+            var result  = Task.Run(() => itemUnit.GetItemUnits(int.Parse(value.ToString()))).Result;
+            return  result;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
