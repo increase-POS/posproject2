@@ -37,13 +37,22 @@ namespace POS.View.setup
                 return _instance;
             }
         }
+
+        public string countryId { get; set; }
+        public string userName { get; set; }
+        public string userPassword { get; set; }
+        public string branchName { get; set; }
+        public string branchMobile { get; set; }
+        public string posName { get; set; }
+
+
+
+
+
         SetValues setVMobile = new SetValues();
-        public string serverUri { get; set; }
-        public string activationkey { get; set; }
         static CountryCode region = new CountryCode();
         static CountryCode countryModel = new CountryCode();
         CountryCode countrycodes = new CountryCode();
-
         IEnumerable<CountryCode> countrynum;
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -53,15 +62,15 @@ namespace POS.View.setup
             #region get default region
             await fillRegions();
             await fillCountries();
-            if (region != null)
-            {
-                //int index = cb_region.Items.IndexOf(region);
-                //test.Text = index.ToString();
-                cb_region.SelectedValue = region.countryId;
-                cb_region.Text = region.name;
-            }
+            //if (region != null)
+            //{
+            //    //int index = cb_region.Items.IndexOf(region);
+            //    //test.Text = index.ToString();
+            //    cb_region.SelectedValue = region.countryId;
+            //    cb_region.Text = region.name;
+            //}
             #endregion
-            serverUri = activationkey = "";
+            //serverUri = activationkey = "";
         }
         private async Task fillRegions()
         {
@@ -165,7 +174,6 @@ namespace POS.View.setup
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void P_showUserPassword_MouseEnter(object sender, MouseEventArgs e)
         {
             try
@@ -181,7 +189,6 @@ namespace POS.View.setup
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void P_showUserPassword_MouseLeave(object sender, MouseEventArgs e)
         {
             try
@@ -217,12 +224,10 @@ namespace POS.View.setup
             //doesn't allow spaces into textbox
             e.Handled = e.Key == Key.Space;
         }
-
         private void Cb_region_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-
             region.countryId  = (int)cb_region.SelectedValue;
             cb_areaMobile.SelectedValue = region.countryId;
             }

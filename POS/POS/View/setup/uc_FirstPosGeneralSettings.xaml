@@ -60,7 +60,7 @@
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="3" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_userName" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <TextBox x:Name="tb_userName" Text="" Padding="10,0,5,0"
                           Grid.Row="3" Grid.Column="1"      
                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="admin"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -95,7 +95,7 @@
                                  Height="40"     Margin="10,5,10,5"  
                                   Grid.Row="4" Grid.Column="1"       />
         <PasswordBox  x:Name="pb_userPassword" Padding="10,5,5,5"   
-                                          Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                                  Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="admin"    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="20" TabIndex="13"
@@ -138,7 +138,7 @@
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="5" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_branchName" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <TextBox x:Name="tb_branchName" Text="" Padding="10,0,5,0"
                           Grid.Row="5" Grid.Column="1"      
                      BorderThickness="0,0,0,2"
                  materialDesign:HintAssist.Hint="Branch Name"
@@ -160,9 +160,9 @@
             </Path.ToolTip>
         </Path>
         <!--#endregion-->
-        
-        <!--#region  Branch Phone-->
-        <TextBlock x:Name="txt_branchPhoneTitle" Text="Branch Phone:" FontSize="14"  
+
+        <!--#region  Branch Mobile-->
+        <TextBlock x:Name="txt_branchMobileTitle" Text="Branch Mobile:" FontSize="14"  
                    HorizontalAlignment="Left" Margin="5"
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="6" Grid.Column="0"
@@ -188,12 +188,12 @@
         <!--#endregion-->
 
         <!--#region  Pos Name-->
-        <TextBlock x:Name="txt_posNameTitle" Text="Pos Name:" FontSize="14"  
+        <TextBlock x:Name="txt_posNameTitle" Text="POS Name:" FontSize="14"  
                    HorizontalAlignment="Left" Margin="5"
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="7" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_posName" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <TextBox x:Name="tb_posName" Text="" Padding="10,0,5,0"
                           Grid.Row="7" Grid.Column="1"      
                      BorderThickness="0,0,0,2"
                  materialDesign:HintAssist.Hint="Pos Name"
