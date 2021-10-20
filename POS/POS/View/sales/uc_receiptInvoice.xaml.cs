@@ -1183,9 +1183,7 @@ namespace POS.View
                     createUserId = MainWindow.userID.Value,
                     updateUserId = MainWindow.userID.Value,
                 };
-                Branch branch = new Branch();
-                branch = await branch.getBranchById(MainWindow.branchID.Value);
-                await not.save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", branch.name, (int)invoice.shipUserId);
+                await not.save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", MainWindow.loginBranch.name, (int)invoice.shipUserId);
                 #endregion
                 await saveOrderStatus(invoice.invoiceId, "ex");
             }
@@ -1201,28 +1199,28 @@ namespace POS.View
         }
         private async Task addInvoice(string invType)
         {
-            branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
+            //branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
             if ((invoice.invType == "s" && (invType == "sb" || invType == "sbd")) || _InvoiceType == "or" || _InvoiceType == "q") // invoice is sale and will be bounce sale  or sale bounce draft  , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
                 if (invType == "sb")
-                    invoice.invNumber = await invoice.generateInvNumber("sb", branchModel.code, MainWindow.branchID.Value);
+                    invoice.invNumber = await invoice.generateInvNumber("sb", MainWindow.loginBranch.code, MainWindow.branchID.Value);
                 else if (invType == "sbd")
-                    invoice.invNumber = await invoice.generateInvNumber("sbd", branchModel.code, MainWindow.branchID.Value);
+                    invoice.invNumber = await invoice.generateInvNumber("sbd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
                 else if (_InvoiceType == "or" || _InvoiceType == "q")
-                    invoice.invNumber = await invoice.generateInvNumber("si", branchModel.code, MainWindow.branchID.Value);
+                    invoice.invNumber = await invoice.generateInvNumber("si", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
             // build invoice NUM 
             else if ((invoice.invNumber == null && invType == "s") || (invoice.invType == "sd" && invType == "s"))
             {
-                invoice.invNumber = await invoice.generateInvNumber("si", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("si", MainWindow.loginBranch.code, MainWindow.branchID.Value);
                 invoice.branchId = MainWindow.branchID.Value;
             }
             else if (invoice.invType == "sbd" && invType == "sb") // convert invoicce from draft bounce to bounce
-                invoice.invNumber = await invoice.generateInvNumber("sb", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("sb", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             else if (invType == "sd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("sd", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("sd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;

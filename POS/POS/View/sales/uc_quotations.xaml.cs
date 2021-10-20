@@ -210,7 +210,6 @@ namespace POS.View.sales
                 await fillBarcodeList();
                 await fillCouponsList();
                 pos = await posModel.getById(MainWindow.posID.Value);
-                branch = await branchModel.getBranchById((int)pos.branchId);
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
@@ -783,10 +782,10 @@ namespace POS.View.sales
             // build invoice NUM 
             if (invType == "q")
             {
-                invoice.invNumber = await invoice.generateInvNumber("qt", branch.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("qt", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
             else if (invType == "qd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("qtd", branch.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("qtd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             byte isApproved = 0;
             if (tgl_ActiveOffer.IsChecked == true)

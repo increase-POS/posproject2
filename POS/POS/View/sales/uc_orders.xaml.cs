@@ -228,7 +228,7 @@ namespace POS.View.sales
                 await fillUsers();
 
                 pos = await posModel.getById(MainWindow.posID.Value);
-                branch = await branchModel.getBranchById((int)pos.branchId);
+               // branch = await branchModel.getBranchById((int)pos.branchId);
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
@@ -857,10 +857,10 @@ namespace POS.View.sales
             }
             if (invType == "or" && (invoice.invType == "ord" || invoice.invoiceId == 0))
             {
-                invoice.invNumber = await invoice.generateInvNumber("or", branchModel.code,MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("or", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
             else if (invType == "ord" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("ord", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("ord", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             invoice.invType = invType;
             invoice.discountValue = _Discount;
             invoice.discountType = "1";

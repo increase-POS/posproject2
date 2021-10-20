@@ -762,16 +762,16 @@ namespace POS.View
             {
                 invoice.invoiceMainId = invoice.invoiceId;
                 invoice.invoiceId = 0;
-                invoice.invNumber = await invoice.generateInvNumber("pb",branchModel.code,MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("pb",MainWindow.loginBranch.code,MainWindow.branchID.Value);
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
             else if (invoice.invType == "po")
             {
-                invoice.invNumber = await invoice.generateInvNumber("pi", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("pi", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
             else if (invType == "pd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("pd", branchModel.code, MainWindow.branchID.Value);
+                invoice.invNumber = await invoice.generateInvNumber("pd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
