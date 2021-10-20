@@ -851,6 +851,8 @@ namespace POS.View.storage
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
             dg_billDetails.Items.Refresh();
+            DataGrid_CollectionChanged(dg_billDetails, null);
+
         }
         private void inputEditable()
         {

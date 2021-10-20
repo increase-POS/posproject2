@@ -1752,6 +1752,8 @@ namespace POS.View
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
             dg_billDetails.Items.Refresh();
+            DataGrid_CollectionChanged(dg_billDetails, null);
+
         }
 
         // read item from barcode

@@ -700,7 +700,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete the main Pos.
+        ///   Looks up a localized string similar to Cannot delete the main POS.
         /// </summary>
         internal static string trCannotDeleteTheMainPos {
             get {
@@ -2968,7 +2968,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to It is not possible to pull from the same pos.
+        ///   Looks up a localized string similar to It is not possible to pull from the same POS.
         /// </summary>
         internal static string trErrorSamePos {
             get {
@@ -3202,7 +3202,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pull Pos.
+        ///   Looks up a localized string similar to Pull POS.
         /// </summary>
         internal static string trFromPos {
             get {
@@ -3211,7 +3211,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From Pos....
+        ///   Looks up a localized string similar to From POS.
         /// </summary>
         internal static string trFromPosHint {
             get {
@@ -3220,7 +3220,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From pos , To pos , ....
+        ///   Looks up a localized string similar to From POS, To POS, ....
         /// </summary>
         internal static string trFromToPosHint {
             get {
@@ -5093,7 +5093,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pos count.
+        ///   Looks up a localized string similar to POScount.
         /// </summary>
         internal static string trPosCount {
             get {
@@ -5102,7 +5102,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pos ....
+        ///   Looks up a localized string similar to POS....
         /// </summary>
         internal static string trPosHint {
             get {
@@ -5129,7 +5129,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pos.
+        ///   Looks up a localized string similar to POS.
         /// </summary>
         internal static string trPosTooltip {
             get {
@@ -6866,7 +6866,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deposit Pos.
+        ///   Looks up a localized string similar to Deposit POS.
         /// </summary>
         internal static string trToPos {
             get {
@@ -6875,7 +6875,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To Pos....
+        ///   Looks up a localized string similar to To POS....
         /// </summary>
         internal static string trToPosHint {
             get {

@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using netoaster;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -281,10 +282,27 @@ namespace POS.Classes
         public static bool validateEmptyTextBox(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
             bool isValid = true;
-            if (tb.Text.Equals(""))
+            if (string.IsNullOrWhiteSpace(tb.Text))
             {
                 p_error.Visibility = Visibility.Visible;
                 tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+            }
+            else
+            {
+                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+            }
+            return isValid;
+        }
+        public static bool validateEmptyTextBox_setupFirstPos(TextBox tb, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+            if (string.IsNullOrWhiteSpace(tb.Text) )
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = wd_setupFirstPos.resourcemanager.GetString(tr);
                 tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
                 isValid = false;
             }

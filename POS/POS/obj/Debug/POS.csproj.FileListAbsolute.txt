@@ -3032,3 +3032,7 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\setup\uc_serverConfig.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\windows\wd_setupFirstPos.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_serverConfig.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_serverConfig.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_FirstPosGeneralSettings.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_FirstPosGeneralSettings.baml

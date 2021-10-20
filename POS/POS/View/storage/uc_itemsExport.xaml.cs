@@ -607,6 +607,8 @@ namespace POS.View.storage
             dg_billDetails.ItemsSource = null;
             dg_billDetails.ItemsSource = billDetails;
             dg_billDetails.Items.Refresh();
+            DataGrid_CollectionChanged(dg_billDetails, null);
+
         }
         #region bill
 
@@ -1650,6 +1652,7 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 refrishDataGridItems();
+
             }
             catch (Exception ex)
             {

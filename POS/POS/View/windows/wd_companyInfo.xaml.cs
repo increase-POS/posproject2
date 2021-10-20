@@ -49,7 +49,9 @@ namespace POS.View.windows
         int nameId = 0, addressId = 0, emailId = 0, mobileId = 0, phoneId = 0, faxId = 0, logoId = 0;
         SettingCls set = new SettingCls();
         SetValues setVName = new SetValues(); SetValues setVAddress = new SetValues(); SetValues setVEmail = new SetValues();
-        SetValues setVMobile = new SetValues(); SetValues setVPhone= new SetValues(); SetValues setVFax = new SetValues();
+        SetValues setVMobile = new SetValues();
+        SetValues setVPhone= new SetValues();
+        SetValues setVFax = new SetValues();
         SetValues setVLogo = new SetValues();
         SettingCls setModel = new SettingCls();
         SetValues valueModel = new SetValues();
@@ -348,9 +350,12 @@ namespace POS.View.windows
             cb_areaFax.SelectedValuePath = "countryId";
             cb_areaFax.DisplayMemberPath = "code";
 
-            cb_areaMobile.SelectedIndex = 8;
-            cb_areaPhone.SelectedIndex = 8;
-            cb_areaFax.SelectedIndex = 8;
+            //cb_areaMobile.SelectedIndex = 8;
+            //cb_areaPhone.SelectedIndex = 8;
+            //cb_areaFax.SelectedIndex = 8;
+            cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
+            cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
+            cb_areaFax.SelectedValue = MainWindow.Region.countryId;
         }
 
         async Task<IEnumerable<City>> RefreshCity()
@@ -440,7 +445,6 @@ namespace POS.View.windows
         {//decimal
             try
             {
-
                 var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
             if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
                 e.Handled = false;

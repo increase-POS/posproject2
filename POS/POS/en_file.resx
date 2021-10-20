@@ -1006,10 +1006,10 @@
     <value>User can not be empty</value>
   </data>
   <data name="trFromPos" xml:space="preserve">
-    <value>Pull Pos</value>
+    <value>Pull POS</value>
   </data>
   <data name="trFromPosHint" xml:space="preserve">
-    <value>From Pos...</value>
+    <value>From POS</value>
   </data>
   <data name="trImage" xml:space="preserve">
     <value>Image</value>
@@ -1024,10 +1024,10 @@
     <value>Recepient</value>
   </data>
   <data name="trToPos" xml:space="preserve">
-    <value>Deposit Pos</value>
+    <value>Deposit POS</value>
   </data>
   <data name="trToPosHint" xml:space="preserve">
-    <value>To Pos...</value>
+    <value>To POS...</value>
   </data>
   <data name="trTransaferDetails" xml:space="preserve">
     <value>Transafer Details</value>
@@ -1036,7 +1036,7 @@
     <value>Confirmed</value>
   </data>
   <data name="trPosTooltip" xml:space="preserve">
-    <value>Pos</value>
+    <value>POS</value>
   </data>
   <data name="trStateHint" xml:space="preserve">
     <value>State...</value>
@@ -1075,7 +1075,7 @@
     <value>Quantity can not be exceeded</value>
   </data>
   <data name="trErrorSamePos" xml:space="preserve">
-    <value>It is not possible to pull from the same pos</value>
+    <value>It is not possible to pull from the same POS</value>
   </data>
   <data name="trBankAccounts" xml:space="preserve">
     <value>Bank Accounts</value>
@@ -1795,7 +1795,7 @@
     <value>Cannot delete the main branch</value>
   </data>
   <data name="trCannotDeleteTheMainPos" xml:space="preserve">
-    <value>Cannot delete the main Pos</value>
+    <value>Cannot delete the main POS</value>
   </data>
   <data name="trCard" xml:space="preserve">
     <value>Cards</value>
@@ -2114,7 +2114,7 @@ Please add Email in setting</value>
     <value>Description</value>
   </data>
   <data name="trFromToPosHint" xml:space="preserve">
-    <value>From pos , To pos , ...</value>
+    <value>From POS, To POS, ...</value>
   </data>
   <data name="trOneDeposit" xml:space="preserve">
     <value>Deposit</value>
@@ -2576,7 +2576,7 @@ Please add Email in setting</value>
     <value>Orders count</value>
   </data>
   <data name="trPosCount" xml:space="preserve">
-    <value>Pos count</value>
+    <value>POScount</value>
   </data>
   <data name="trShippingCompaniesCount" xml:space="preserve">
     <value>Shipping companies count</value>
@@ -2630,7 +2630,7 @@ Please add Email in setting</value>
     <value>The Rest</value>
   </data>
   <data name="trPosHint" xml:space="preserve">
-    <value>Pos ...</value>
+    <value>POS...</value>
   </data>
   <data name="trProfits" xml:space="preserve">
     <value>Profits</value>

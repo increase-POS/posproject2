@@ -1,4 +1,6 @@
-﻿using System;
+﻿using POS.Classes;
+using POS.View.windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static POS.View.windows.wd_setupFirstPos;
 
 namespace POS.View.setup
 {
@@ -25,9 +28,76 @@ namespace POS.View.setup
             InitializeComponent();
         }
 
+        private static uc_serverConfig _instance ;
+        public static uc_serverConfig Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_serverConfig();
+                return _instance;
+            }
+        }
+        public string serverUri { get; set; }
+        public string activationkey { get; set; }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
+            //serverUri = activationkey = "";
         }
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+
+                TextBox textBox = sender as TextBox;
+                if (textBox.Name.Equals("tb_serverUri"))
+                {
+                    serverUri = tb_serverUri.Text;
+
+                }
+                else if (textBox.Name.Equals("tb_activationkey"))
+                {
+                    activationkey = tb_activationkey.Text;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void validateEmpty(string name, object sender)
+        {
+            if (name == "TextBox")
+            {
+                if ((sender as TextBox).Name == "tb_serverUri")
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_serverUri, p_errorServerUri, tt_errorServerUri, "trEmptyError");
+                else if ((sender as TextBox).Name == "tb_activationkey")
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_activationkey, p_errorActivationkey, tt_errorActivationkey, "trEmptyError");
+            }
+            else if (name == "ComboBox")
+            {
+                //if ((sender as ComboBox).Name == "cb_paymentProcessType")
+                //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                //else if ((sender as ComboBox).Name == "cb_card")
+                //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+            }
+        }
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+              
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+       
     }
 }
