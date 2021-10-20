@@ -168,23 +168,24 @@ namespace POS.View.purchases
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                if (billDetails.Count > 0 && _InvoiceType == "pd")
-                {
-                    #region Accept
-                    MainWindow.mainWindow.Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.contentText = "Do you want save pay invoice in drafts?";
-                    w.ShowDialog();
-                    MainWindow.mainWindow.Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        Btn_newDraft_Click(null, null);
-                    else
-                        clearInvoice();
-                }
-                else
-                    clearInvoice();
+                saveBeforeExit();
+                //if (billDetails.Count > 0 && _InvoiceType == "pod")
+                //{
+                //    #region Accept
+                //    MainWindow.mainWindow.Opacity = 0.2;
+                //    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                //    w.contentText = "Do you want save pay invoice in drafts?";
+                //    w.ShowDialog();
+                //    MainWindow.mainWindow.Opacity = 1;
+                //    #endregion
+                //    if (w.isOk)
+                //        Btn_newDraft_Click(null, null);
+                //    else
+                //        clearInvoice();
+                //}
+                //else
+                //    clearInvoice();
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -196,6 +197,49 @@ namespace POS.View.purchases
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async Task<bool> saveBeforeExit()
+        {
+            int invioceId = 0;
+            bool succssess = false;
+            if (billDetails.Count > 0 && _InvoiceType == "pod")
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trSaveOrderNotification");
+
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                {
+                    //Btn_newDraft_Click(null, null);
+                    bool valid = validateItemUnits();
+                    if (billDetails.Count > 0 && valid)
+                    {
+                      invioceId = await addInvoice(_InvoiceType);
+                        succssess = true;
+                    }
+                    //else if (billDetails.Count == 0)
+                    //{
+                    //    clearInvoice();
+                    //}
+                }
+                else
+                {
+                    clearInvoice();
+                    refreshDraftNotification();
+                    succssess = true;
+                }
+            }
+            else
+            {
+               clearInvoice();
+                refreshDraftNotification();
+                succssess = true;
+            }
+            return succssess;
+        }
         private async void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -203,6 +247,7 @@ namespace POS.View.purchases
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
+                saveBeforeExit();
                 wd_invoice w = new wd_invoice();
                 string invoiceType = "po";
                 int duration = 1;
@@ -276,8 +321,7 @@ namespace POS.View.purchases
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
-                // branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
-                tb_barcode.Focus();
+                // branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);              
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -318,6 +362,7 @@ namespace POS.View.purchases
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -542,7 +587,8 @@ namespace POS.View.purchases
                 this.DataContext = item;
 
                 // get item units
-                itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+               // itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 // search for default unit for purchase
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
@@ -635,7 +681,7 @@ namespace POS.View.purchases
         #endregion
         #region save invoice
 
-        private async Task addInvoice(string invType)
+        private async Task<int> addInvoice(string invType)
         {           
             if (invType == "po")
                 invoice.invNumber = await invoice.generateInvNumber(invType, MainWindow.loginBranch.code, MainWindow.branchID.Value);
@@ -660,7 +706,7 @@ namespace POS.View.purchases
             // save invoice in DB
             int invoiceId = await invoiceModel.saveInvoice(invoice);
             invoice.invoiceId = invoiceId;
-            if (invoiceId != 0)
+            if (invoiceId > 0)
             {
                 // add invoice details
                 invoiceItems = new List<ItemTransfer>();
@@ -685,6 +731,7 @@ namespace POS.View.purchases
 
             clearInvoice();
             refreshDraftNotification();
+            return invoiceId;
         }
         private bool validateInvoiceValues()
         {
@@ -802,9 +849,11 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+               bool res = await saveBeforeExit();
+                while (!res) { }
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
-
+                
                 // purchase drafts and purchase bounce drafts
                 string invoiceType = "pod";
                 int duration = 2;
@@ -1351,6 +1400,7 @@ namespace POS.View.purchases
                                 {
                                     // get item units
                                     itemUnits = await itemUnitModel.GetItemUnits(itemId);
+
                                     //get item from list
                                     item = items.ToList().Find(i => i.itemId == itemId);
 
@@ -1535,7 +1585,7 @@ namespace POS.View.purchases
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
                 {
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
                         t.Text = billDetails[index].Count.ToString();
                 }
                 else
@@ -1544,7 +1594,7 @@ namespace POS.View.purchases
                     long newCount = 0;
 
                     //"tb_amont"
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
                         newCount = int.Parse(t.Text);
                     else
                         newCount = row.Count;
@@ -2187,6 +2237,11 @@ namespace POS.View.purchases
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            _IsFocused = true;
         }
     }
 }

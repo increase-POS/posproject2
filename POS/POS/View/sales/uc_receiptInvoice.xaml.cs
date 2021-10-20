@@ -3022,7 +3022,7 @@ namespace POS.View
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
                 {
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
                         t.Text = billDetails[index].Count.ToString();
                     else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                         t.Text = billDetails[index].Price.ToString();
@@ -3035,7 +3035,7 @@ namespace POS.View
                     decimal newPrice = 0;
 
                     //"tb_amont"
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
                     {
                         newCount = int.Parse(t.Text);
                         if (row.type == "sn")
@@ -4514,6 +4514,9 @@ namespace POS.View
             }
         }
 
-      
+        private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+                _IsFocused = true;
+        }
     }
 }

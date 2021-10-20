@@ -581,7 +581,7 @@
                          IsReadOnly="False" CanUserAddRows="False"  
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
                         ColumnWidth="SizeToHeader"     CanUserSortColumns="False"
-                        VirtualizingStackPanel.IsVirtualizing="False"  
+                        VirtualizingStackPanel.IsVirtualizing="False"   PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
                         EnableRowVirtualization="True" EnableColumnVirtualization="True">
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>

@@ -836,7 +836,8 @@ namespace POS.View.sales
             if (item != null)
             {
                 // get item units
-                itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+               // itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 // search for default unit for purchase
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
@@ -951,7 +952,8 @@ namespace POS.View.sales
         {
             try
             {
-                if (!_IsFocused)
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (!_IsFocused )
                 {
                     Control c = CheckActiveControl();
                     if (c == null)
@@ -960,7 +962,7 @@ namespace POS.View.sales
                 }
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                
                 if (elapsed.TotalMilliseconds > 50)
                 {
                     _BarcodeStr = "";
@@ -1016,10 +1018,11 @@ namespace POS.View.sales
                     }
                     tb_barcode.Text = _BarcodeStr;
                     e.Handled = true;
+                    _IsFocused = false;
                 }
                 _Sender = null;
                 _BarcodeStr = "";
-                _IsFocused = true;
+                
                 if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
                 {
                     switch (e.Key)
@@ -2416,6 +2419,11 @@ namespace POS.View.sales
             {
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            _IsFocused = true;
         }
     }
 }

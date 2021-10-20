@@ -652,7 +652,8 @@ namespace POS.View
                 this.DataContext = item;
 
                 // get item units
-                itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                //itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
+                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 // search for default unit for purchase
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
@@ -1950,7 +1951,7 @@ namespace POS.View
                                 if (index == -1)//item doesn't exist in bill
                                 {
                                     // get item units
-                                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                   itemUnits = await itemUnitModel.GetItemUnits(itemId);
                                     //get item from list
                                     item = items.ToList().Find(i => i.itemId == itemId);
 
@@ -2139,7 +2140,7 @@ namespace POS.View
                     TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                     if (elapsed.TotalMilliseconds < 100)
                     {
-                        if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                        if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
                             t.Text = billDetails[index].Count.ToString();
                         else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                             t.Text = SectionData.DecTostring(billDetails[index].Price);
@@ -2153,7 +2154,7 @@ namespace POS.View
                         decimal newPrice = 0;
 
                     //"tb_amont"
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
+                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
                     {
                         if (!t.Text.Equals(""))
                             newCount = int.Parse(t.Text);
@@ -2998,5 +2999,9 @@ namespace POS.View
             }
         }
 
+        private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            _IsFocused = true;
+        }
     }
 }
