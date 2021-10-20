@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using POS_Server.Controllers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,11 +48,11 @@ namespace POS_Server.Models.VM
             var decryptedtToken = DeCompressThenDecrypt(token);
 
             var jwtToken = new JwtSecurityToken(decryptedtToken);
-            var s = jwtToken.Claims.ToArray();
+            //var s = jwtToken.Claims.ToArray();
             IEnumerable<Claim> claims = jwtToken.Claims;
             return claims;
         }
-        public static ClaimsPrincipal GetPrincipal(string token)
+        public static string GetPrincipal(string token)
         {
             try
             {
@@ -70,8 +71,26 @@ namespace POS_Server.Models.VM
 
                 SecurityToken securityToken;
                 var principal = handler.ValidateToken(token, validationParameters, out securityToken);
+                if (principal == null)
+                    return "-7"; // no authorization
 
-                return principal;
+                var jwtToken = new JwtSecurityToken(token);
+                //var s = jwtToken.Claims.ToArray();
+                IEnumerable<Claim> claims = jwtToken.Claims;
+
+                // check if any user logged in with same user account 
+                string userLogInID = claims.Where(x => x.Type == "userLogInID").Select(x => x.Value).FirstOrDefault();
+                int logInID = 0;
+                if (userLogInID != null && userLogInID != "")
+                    logInID = int.Parse(userLogInID);
+                if (logInID != 0)
+                {
+                    UsersLogsController uc = new UsersLogsController();
+                   bool isLoggedOut =  uc.checkLogByID(logInID);
+                    if (isLoggedOut == true)
+                        return "-8"; // log out
+                }
+                return "0"; // every thing is OK
             }
 
             catch (Exception ex)
@@ -245,24 +264,6 @@ namespace POS_Server.Models.VM
             string fileName = "";
             foreach (string file in Request.Files)
             {
-                //var postedFile = Request.Files[file];
-                //string fileName = "tmp.txt";
-
-                //if (postedFile != null && postedFile.ContentLength > 0)
-                //{
-                //    //  check if file exist
-                //    var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
-                //    var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
-                //    if (files.Length > 0)
-                //    {
-                //        File.Delete(files[0]);
-                //    }
-
-                //    //Userimage myfolder name where i want to save my image
-                //    filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\tmpFiles"), fileName);
-                //    postedFile.SaveAs(filePath);
-
-                //}
                 var postedFile = Request.Files[file];
                
                 while (true)

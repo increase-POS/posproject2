@@ -671,7 +671,25 @@ namespace POS_Server.Controllers
             //}
             //return message;
         }
-
+        public bool checkLogByID(int logId)
+        {
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var item = entity.usersLogs.Where(u => u.logId == logId).FirstOrDefault();
+                    if (item.sOutDate != null)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
         [HttpPost]
         [Route("Delete")]
        public string Delete(string token)
