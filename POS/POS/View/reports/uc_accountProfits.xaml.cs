@@ -598,10 +598,24 @@ namespace POS.View.reports
                 cS.Add(profit.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-            if (count > 6)
+            //if (count >= 6)
+            //{
+            //    cS.Add(profit.ToList().Skip(6).FirstOrDefault());
+            //    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+            //}
+            if (count >= 6)
             {
-                cS.Add(profit.ToList().Skip(6).FirstOrDefault());
-                axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                decimal profitSum = 0;
+                for (int i = 6; i < count; i++)
+                {
+                    profitSum = profitSum + profit.ToList().Skip(i).FirstOrDefault();
+                }
+                if (!((profitSum == 0)))
+                {
+                    cS.Add(profitSum);
+
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
             }
             columnChartData.Add(
             new StackedColumnSeries

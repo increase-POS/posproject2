@@ -152,10 +152,10 @@ namespace POS.View.reports
 
         private async void Btn_vendor_Click(object sender, RoutedEventArgs e)
         {//payments
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 hideAllColumn();
@@ -187,24 +187,24 @@ namespace POS.View.reports
                chk_allPyamentsUser.IsChecked = true;
                chk_allpaymentsAccountant.IsChecked = true;
 
-            //if (sender != null)
-            //    SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Btn_customer_Click(object sender, RoutedEventArgs e)
         {//received
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
-               SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 selectedTab = 1;
                 hideAllColumn();
@@ -236,15 +236,15 @@ namespace POS.View.reports
                 chk_allPyamentsUser.IsChecked = true;
                 chk_allpaymentsAccountant.IsChecked = true;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         /*Fill Events*/
@@ -255,7 +255,7 @@ namespace POS.View.reports
         {
             temp = fillList(lst, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
             dgPayments.ItemsSource = temp;
-            fillPieChart();
+            //fillPieChart();
             fillColumnChart();
             fillRowChart();
         }
@@ -265,53 +265,53 @@ namespace POS.View.reports
 
         private void fillPieChart()
         {
-            List<string> titles = new List<string>();
-            List<int> resultList = new List<int>();
-            titles.Clear();
-            var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            if (selectedTab == 1)
-            {
-                temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            }
+            //List<string> titles = new List<string>();
+            //List<int> resultList = new List<int>();
+            //titles.Clear();
+            //var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            //if (selectedTab == 1)
+            //{
+            //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            //}
 
-            var result = temp
-                .GroupBy(s => new { s.transType })
-                .Select(s => new CashTransferSts
-                {
-                    processTypeCount = s.Count(),
-                    processType = s.FirstOrDefault().transType,
-                });
-            resultList = result.Select(m => m.processTypeCount).ToList();
-            titles = result.Select(m => m.transType).ToList();
-            for (int t = 0; t < titles.Count; t++)
-            {
-                string s = "";
-                switch (titles[t])
-                {
-                    case "p": s = MainWindow.resourcemanager.GetString("trPull"); break;
-                    case "d": s = MainWindow.resourcemanager.GetString("trDeposit"); break;
-                }
-                titles[t] = s;
-            }
-            SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < resultList.Count(); i++)
-            {
-                List<int> final = new List<int>();
-                List<string> lable = new List<string>();
+            //var result = temp
+            //    .GroupBy(s => new { s.transType })
+            //    .Select(s => new CashTransferSts
+            //    {
+            //        processTypeCount = s.Count(),
+            //        processType = s.FirstOrDefault().transType,
+            //    });
+            //resultList = result.Select(m => m.processTypeCount).ToList();
+            //titles = result.Select(m => m.transType).ToList();
+            //for (int t = 0; t < titles.Count; t++)
+            //{
+            //    string s = "";
+            //    switch (titles[t])
+            //    {
+            //        case "p": s = MainWindow.resourcemanager.GetString("trPull"); break;
+            //        case "d": s = MainWindow.resourcemanager.GetString("trDeposit"); break;
+            //    }
+            //    titles[t] = s;
+            //}
+            //SeriesCollection piechartData = new SeriesCollection();
+            //for (int i = 0; i < resultList.Count(); i++)
+            //{
+            //    List<int> final = new List<int>();
+            //    List<string> lable = new List<string>();
 
-                final.Add(resultList.Skip(i).FirstOrDefault());
-                lable = titles;
-                piechartData.Add(
-                  new PieSeries
-                  {
-                      Values = final.AsChartValues(),
-                      Title = lable.Skip(i).FirstOrDefault(),
-                      DataLabels = true,
-                  }
-              );
+            //    final.Add(resultList.Skip(i).FirstOrDefault());
+            //    lable = titles;
+            //    piechartData.Add(
+            //      new PieSeries
+            //      {
+            //          Values = final.AsChartValues(),
+            //          Title = lable.Skip(i).FirstOrDefault(),
+            //          DataLabels = true,
+            //      }
+            //  );
 
-            }
-            chart1.Series = piechartData;
+            //}
+            //chart1.Series = piechartData;
         }
         private void fillColumnChart()
         {
