@@ -231,18 +231,27 @@ namespace POS.View.reports
                MainWindow.resourcemanager.GetString("tr_Balance")
             };
             int x = 6;
-            if (result.Count() < 6) x = result.Count();
+            if (names.Count() < 6) x = names.Count();
+
             for (int i = 0; i < x; i++)
             {
                 //cS.Add(x.ToList().Skip(i).FirstOrDefault());
                 cS.Add(balances.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-            if (result.Count() > 6)
+
+            if (names.Count() >= 6)
             {
-                cS.Add(balances.ToList().Skip(5).FirstOrDefault());
+                decimal balanceSum = 0;
+                for (int i = 6 ; i < names.Count(); i++)
+                    balanceSum = balanceSum + balances.ToList().Skip(i).FirstOrDefault();
+                //cS.Add(balances.ToList().Skip(5).FirstOrDefault());
+                if (balanceSum != 0)
+                    cS.Add(balanceSum);
+
                 axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
             }
+
             columnChartData.Add(
             new StackedColumnSeries
             {
