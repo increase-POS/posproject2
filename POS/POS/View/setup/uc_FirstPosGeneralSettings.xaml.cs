@@ -47,8 +47,6 @@ namespace POS.View.setup
 
 
 
-
-
         SetValues setVMobile = new SetValues();
         static CountryCode region = new CountryCode();
         static CountryCode countryModel = new CountryCode();
@@ -103,15 +101,27 @@ namespace POS.View.setup
                 validateEmpty(name, sender);
 
                 TextBox textBox = sender as TextBox;
-                //if (textBox.Name.Equals("tb_serverUri"))
-                //{
-                //    serverUri = tb_serverUri.Text;
+                if (textBox.Name.Equals("tb_userName"))
+                {
+                    userName = tb_userName.Text;
 
-                //}
-                //else if (textBox.Name.Equals("tb_activationkey"))
-                //{
-                //    activationkey = tb_activationkey.Text;
-                //}
+                }
+                else if (textBox.Name.Equals("tb_branchName"))
+                {
+                    branchName = tb_branchName.Text;
+                }
+                else if (textBox.Name.Equals("tb_posName"))
+                {
+                    posName = tb_posName.Text;
+                }
+                else if (textBox.Name.Equals("tb_mobile"))
+                {
+                    branchMobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
+
+                }
+              
+
+
             }
             catch (Exception ex)
             {
@@ -126,6 +136,12 @@ namespace POS.View.setup
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
 
+                PasswordBox password = sender as PasswordBox;
+                if (password.Name.Equals("pb_userPassword"))
+                {
+                    userPassword = pb_userPassword.Password;
+
+                }
             }
             catch (Exception ex)
             {
@@ -136,17 +152,26 @@ namespace POS.View.setup
         {
             if (name == "TextBox")
             {
-                //if ((sender as TextBox).Name == "tb_serverUri")
-                //    SectionData.validateEmptyTextBox_setupFirstPos(tb_serverUri, p_errorServerUri, tt_errorServerUri, "trEmptyError");
-                //else if ((sender as TextBox).Name == "tb_activationkey")
-                //    SectionData.validateEmptyTextBox_setupFirstPos(tb_activationkey, p_errorActivationkey, tt_errorActivationkey, "trEmptyError");
+                if ((sender as TextBox).Name == "tb_userName")
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyError");
+                else if ((sender as TextBox).Name == "tb_branchName")
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_branchName, p_errorBranchName, tt_errorBranchName, "trEmptyError");
+                else if ((sender as TextBox).Name == "tb_posName")
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_posName, p_errorPosName, tt_errorPosName, "trEmptyError");
+                else if ((sender as TextBox).Name == "tb_mobile" )
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyError");
+
             }
             else if (name == "ComboBox")
             {
-                //if ((sender as ComboBox).Name == "cb_paymentProcessType")
-                //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
-                //else if ((sender as ComboBox).Name == "cb_card")
-                //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                if ((sender as ComboBox).Name == "cb_region")
+                    SectionData.validateEmptyComboBox_setupFirstPos((ComboBox)sender, p_errorRegion, tt_errorRegion, "trEmptyError");
+            }
+            else if (name == "PasswordBox")
+            {
+                if ((sender as PasswordBox).Name == "pb_userPassword")
+                    SectionData.validateEmptyPassword_setupFirstPos((PasswordBox)sender, p_errorUserPassword, tt_errorUserPassword, "trEmptyError");
+                
             }
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
@@ -156,17 +181,7 @@ namespace POS.View.setup
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
 
-                ////save mobile
-                //if (!tb_mobile.Text.Equals(""))
-                //{
-                //    setVMobile.value = cb_areaMobile.Text + "-" + tb_mobile.Text;
-                //    setVMobile.isSystem = 1;
-                //    setVMobile.isDefault = 1;
-                //    setVMobile.settingId = mobileId;
-                //    int sMobile = await valueModel.Save(setVMobile);
-                //    if (!sMobile.Equals(0))
-                //        MainWindow.Mobile = cb_areaMobile.Text + tb_mobile.Text;
-                //}
+                
 
             }
             catch (Exception ex)
@@ -228,7 +243,8 @@ namespace POS.View.setup
         {
             try
             {
-            region.countryId  = (int)cb_region.SelectedValue;
+                region.countryId  = (int)cb_region.SelectedValue;
+                countryId = region.countryId.ToString();
             cb_areaMobile.SelectedValue = region.countryId;
             }
             catch (Exception ex)

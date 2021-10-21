@@ -471,6 +471,9 @@
     <Compile Include="View\Settings\us_emailGeneral.xaml.cs">
       <DependentUpon>us_emailGeneral.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\setup\uc_companyInfo.xaml.cs">
+      <DependentUpon>uc_companyInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\setup\uc_FirstPosGeneralSettings.xaml.cs">
       <DependentUpon>uc_FirstPosGeneralSettings.xaml</DependentUpon>
     </Compile>
@@ -948,6 +951,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Settings\us_emailGeneral.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\setup\uc_companyInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

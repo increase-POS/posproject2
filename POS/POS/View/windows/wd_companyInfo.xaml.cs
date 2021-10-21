@@ -68,7 +68,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -211,6 +210,7 @@ namespace POS.View.windows
         {
             e.Handled = e.Key == Key.Space;
         }
+
         private   void Cb_areaPhone_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -257,7 +257,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Cb_areaFax_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -671,8 +670,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
         private async Task getImg()
         {
             try

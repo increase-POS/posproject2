@@ -37,8 +37,12 @@
                       Grid.Row="2" Grid.Column="0"
                        VerticalAlignment="Center"  />
         <!--SelectionChanged="Cb_region_SelectionChanged"-->
-        <ComboBox Grid.Row="2" Grid.Column="1" x:Name="cb_region" Padding="10,5,5,5"   TextBlock.Foreground="#4E4E4E"
-                                    TextBlock.FontSize="12" Height="40" Margin="5" 
+        <ComboBox Grid.Row="2" Grid.Column="1" x:Name="cb_region" 
+                   materialDesign:HintAssist.Hint="Region"
+                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                  Padding="10,0,5,5"   TextBlock.Foreground="#4E4E4E"
+                                    TextBlock.FontSize="12"
+                  Height="40" Margin="5" 
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                   BorderThickness="0"  
                                   LostFocus="Tb_validateEmptyLostFocus"
@@ -62,7 +66,7 @@
                        VerticalAlignment="Center"  />
         <TextBox x:Name="tb_userName" Text="" Padding="10,0,5,0"
                           Grid.Row="3" Grid.Column="1"      
-                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="admin"
+                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="User Name"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="{StaticResource MainColorGrey}"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue" 
@@ -88,17 +92,17 @@
                       Grid.Row="4" Grid.Column="0"
                        VerticalAlignment="Center"  />
         <TextBox x:Name="tb_userPassword"   Padding="10,10,5,0"   
-                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Old Password..."    
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Password..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                  BorderBrush="AliceBlue" MaxLength="20" Visibility="Collapsed"
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 Height="40"     Margin="10,5,10,5"  
+                                 Height="40"     Margin="5"
                                   Grid.Row="4" Grid.Column="1"       />
         <PasswordBox  x:Name="pb_userPassword" Padding="10,5,5,5"   
                                   Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="admin"    
+                                 BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="User Password"    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                 BorderBrush="AliceBlue" MaxLength="20" TabIndex="13"
+                                 BorderBrush="AliceBlue" MaxLength="20"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                   Grid.Row="4" Grid.Column="1"   
                                  Height="40"   Margin="5" Grid.ColumnSpan="2" 
@@ -172,8 +176,8 @@
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <ComboBox Grid.Column="0" x:Name="cb_areaMobile" Padding="10,10,5,5"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E" TabIndex="3"  TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
-            <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" 
+            <ComboBox Grid.Column="0" x:Name="cb_areaMobile" Padding="10,10,5,5"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E"   TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
+            <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"    BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" 
                              PreviewKeyDown="tb_mobile_PreviewKeyDown"   
                              TextChanged="Tb_validateEmptyTextChange" 
                              LostFocus="Tb_validateEmptyLostFocus"/>

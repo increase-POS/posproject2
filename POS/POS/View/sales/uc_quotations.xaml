@@ -350,7 +350,7 @@
                                         Margin="5,1" ToolTip="clear" Click="Btn_clearCoupon_Click">
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center"  
-                         VerticalAlignment="Center" Width="20" Height="20"/>
+                         VerticalAlignment="Center" Width="30" Height="30"/>
                                         </Button>
                                     </Grid>
                                     <ListView Grid.Row="2" x:Name="lst_coupons"/>
@@ -487,14 +487,14 @@
                                 Margin="5,1" IsEnabled="True">
                                             <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
-                             VerticalAlignment="Center" Width="25" Height="25"/>
+                             VerticalAlignment="Center" Width="30" Height="30"/>
                                         </Button>
                                         <Button x:Name="btn_clearCustomer" Grid.Row="1" Grid.Column="2" Padding="0"
                                 Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clearCustomer_Click"
                                 Margin="5,1"   ToolTip="clear">
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                 HorizontalAlignment="Center" Grid.Column="0"  
-                                VerticalAlignment="Center" Width="25" Height="25"/>
+                                VerticalAlignment="Center" Width="30" Height="30"/>
                                         </Button>
 
                                     </Grid>

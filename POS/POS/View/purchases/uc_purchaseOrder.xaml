@@ -374,14 +374,14 @@
                                 Margin="5,1" IsEnabled="True">
                                             <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
-                             VerticalAlignment="Center" Width="25" Height="25"/>
+                             VerticalAlignment="Center" Width="30" Height="30"/>
                                         </Button>
                                         <Button x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0"
                                 Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
                                 Margin="5,1"   ToolTip="clear">
                                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                 HorizontalAlignment="Center" Grid.Column="0"  
-                                VerticalAlignment="Center" Width="25" Height="25"/>
+                                VerticalAlignment="Center" Width="30" Height="30"/>
                                         </Button>
 
                                     </Grid>

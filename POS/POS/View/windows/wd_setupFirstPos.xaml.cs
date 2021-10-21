@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using POS.View.setup;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,34 @@ namespace POS.View.windows
 
         public static ResourceManager resourcemanager;
         public bool isValid = false;
-        int pageIndex = 0;
+        static public int countryId;
+        int _pageIndex;
+        int pageIndex
+        {
+            get { return _pageIndex; }
+            set
+            {
+                _pageIndex = value;
+                OnPropertyChanged();
+            }
+        }
+        static public string imgFileName = "pic/no-image-icon-125x125.png";
+        static public ImageBrush brush = new ImageBrush();
+
+        protected void OnPropertyChanged()
+        {
+            txt_pageIndex.Text =(_pageIndex+1).ToString();
+
+            if (_pageIndex == 0)
+                btn_back.IsEnabled = false;
+            else
+                btn_back.IsEnabled = true;
+
+            if (_pageIndex == 2)
+                btn_next.Content = "Done";
+            else
+                btn_next.Content = "Next";
+        }
         public class keyValueString
         {
             public string key { get; set; }
@@ -42,26 +70,36 @@ namespace POS.View.windows
             //load
             try
             {
+                pageIndex = 0;
                 resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
 
-                if (sender != null)
-                    SectionData.StartAwait(grid_mainWindow);
+                
                 #region InitializeList
                 list.Add(new keyValueString { key = "serverUri", value = "" });
                 list.Add(new keyValueString { key = "activationkey", value = "" });
 
-                #endregion
+                list.Add(new keyValueString { key = "countryId", value = "" });
+                list.Add(new keyValueString { key = "userName", value = "" });
+                list.Add(new keyValueString { key = "userPassword", value = "" });
+                list.Add(new keyValueString { key = "branchName", value = "" });
+                list.Add(new keyValueString { key = "branchMobile", value = "" });
+                list.Add(new keyValueString { key = "posName", value = "" });
 
-                CallPage(0, btn_next.Tag.ToString());
+                list.Add(new keyValueString { key = "companyName", value = "" });
+                list.Add(new keyValueString { key = "address", value = "" });
+                list.Add(new keyValueString { key = "email", value = "" });
+                list.Add(new keyValueString { key = "mobile", value = "" });
+                list.Add(new keyValueString { key = "phone", value = "" });
+                list.Add(new keyValueString { key = "fax", value = "" });
 
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
+        #endregion
+
+        CallPage(0, btn_next.Tag.ToString());
+
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -78,11 +116,23 @@ namespace POS.View.windows
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_FirstPosGeneralSettings.Instance);
             }
+            else if (index == 2)
+            {
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_companyInfo.Instance);
+            }
         }
        
         private void Btn_cancel_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                Application.Current.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private void Btn_back_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +148,8 @@ namespace POS.View.windows
             // uc_serverConfig
             if (pageIndex == 0)
             {
-                foreach (var item in list)
+                var supsublist = list.Take(2);
+                foreach (var item in supsublist)
                 {
                     if (item.key.Equals("serverUri"))
                     {
@@ -125,25 +176,229 @@ namespace POS.View.windows
                             item.value = uc_serverConfig.Instance.activationkey;
                     }
                 }
-
+                // for watch list
+                string s = "";
+                foreach (var item in supsublist)
+                {
+                    s += item.key + " - " + item.value + "\n";
+                }
+                MessageBox.Show(s + "\n" + isValid);
             }
             else if (pageIndex == 1)
             {
+                var supsublist = list.Skip(2).Take(6);
+                foreach (var item in supsublist)
+                {
+                    if (item.key.Equals("countryId"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.countryId))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_FirstPosGeneralSettings.Instance.countryId;
+                            countryId = int.Parse(item.value);
+                        }
 
+                    }
+                    else if (item.key.Equals("userName"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.userName))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                            item.value = uc_FirstPosGeneralSettings.Instance.userName;
+
+                    }
+                    else if (item.key.Equals("userPassword"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.userPassword))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                            item.value = uc_FirstPosGeneralSettings.Instance.userPassword;
+
+                    }
+                    else if (item.key.Equals("branchName"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.branchName))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                            item.value = uc_FirstPosGeneralSettings.Instance.branchName;
+
+                    }
+                    else if (item.key.Equals("branchMobile"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.branchMobile))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                            item.value = uc_FirstPosGeneralSettings.Instance.branchMobile;
+
+                    }
+                    else if (item.key.Equals("posName"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.posName))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                            item.value = uc_FirstPosGeneralSettings.Instance.posName;
+
+                    }
+
+                }
+                // for watch list
+                string s = "";
+                foreach (var item in supsublist)
+                {
+                    s += item.key + " - " + item.value + "\n";
+                }
+                MessageBox.Show(s + "\n" + isValid);
             }
-
-            string s = "";
-            foreach (var item in list)
+            else if (pageIndex == 2)
             {
-                s+= item.key +" - " + item.value + "\n";
+                var supsublist = list.Skip(8).Take(6);
+                foreach (var item in supsublist)
+                {
+                    if (item.key.Equals("companyName"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_companyInfo.Instance.companyName))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_companyInfo.Instance.companyName;
+                        }
+                    }
+                   else if (item.key.Equals("address"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_companyInfo.Instance.address))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_companyInfo.Instance.address;
+                         }
+                    }
+                    else if (item.key.Equals("email"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_companyInfo.Instance.email))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_companyInfo.Instance.email;
+                         }
+                    }
+                    else if (item.key.Equals("mobile"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_companyInfo.Instance.mobile))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_companyInfo.Instance.mobile;
+                         }
+                    }
+                    else if (item.key.Equals("phone"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_companyInfo.Instance.phone))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_companyInfo.Instance.phone;
+                         }
+                    }
+                    else if (item.key.Equals("fax"))
+                    {
+                        if (string.IsNullOrWhiteSpace(uc_companyInfo.Instance.fax))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                        {
+                            item.value = uc_companyInfo.Instance.fax;
+                         }
+                    }
+                }
+
+
+                // for watch list
+                string s = "";
+                foreach (var item in supsublist)
+                {
+                    s += item.key + " - " + item.value + "\n";
+                }
+                MessageBox.Show(s + "\n" + isValid );
+                
             }
-            MessageBox.Show(s + "\n" + isValid);
+
+            
+
             if (isValid)
             {
-                pageIndex++;
-                CallPage(pageIndex, (sender as Button).Tag.ToString());
+                if (pageIndex == 0)
+                {
+                    //dina Work
+                    MessageBox.Show("Server Config is done");
+                }
+                if (pageIndex == 1)
+                {
+                    //dina Work
+                    MessageBox.Show("Setting Config is done");
+                }
+                if (pageIndex == 2)
+                {
+                    //dina Work
+                    MessageBox.Show("Setup Done");
+                    Btn_cancel_Click(btn_cancel, null);
+                }
+                if(pageIndex < 2)
+                {
+                    pageIndex++;
+                    CallPage(pageIndex, (sender as Button).Tag.ToString());
+                }
             }
-             
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
+
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {

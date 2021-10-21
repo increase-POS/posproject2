@@ -3036,3 +3036,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_serverConfig.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_serverConfig.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_FirstPosGeneralSettings.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_FirstPosGeneralSettings.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_companyInfo.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_companyInfo.baml

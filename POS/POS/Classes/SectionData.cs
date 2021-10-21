@@ -332,6 +332,26 @@ namespace POS.Classes
             }
             return isValid;
         }
+        
+        public static bool validateEmptyComboBox_setupFirstPos(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+
+            if (cb.SelectedIndex == -1)
+            {
+                p_error.Visibility = Visibility.Visible;
+                tt_error.Content = wd_setupFirstPos.resourcemanager.GetString(tr);
+                cb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+            }
+            else
+            {
+                cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+
+            }
+            return isValid;
+        }
         public static bool validateEmptyPassword(PasswordBox pb, Path p_error, ToolTip tt_error, string tr)
         {
             bool isValid = true;
@@ -349,6 +369,24 @@ namespace POS.Classes
             }
             return isValid;
         }
+        public static bool validateEmptyPassword_setupFirstPos(PasswordBox pb, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+
+            if (pb.Password.Equals(""))
+            {
+                SectionData.showPasswordValidate_setupFirstPos(pb, p_error, tt_error, "trEmptyPasswordToolTip");
+                p_error.Visibility = Visibility.Visible;
+                isValid = false;
+            }
+            else
+            {
+                SectionData.clearPasswordValidate(pb, p_error);
+                p_error.Visibility = Visibility.Collapsed;
+            }
+            return isValid;
+        }
+        
         public static bool validateEmail(TextBox tb, Path p_error, ToolTip tt_error)
         {
             bool isValid = true;
@@ -434,6 +472,13 @@ namespace POS.Classes
         {
             p_error.Visibility = Visibility.Visible;
             tt_error.Content = MainWindow.resourcemanager.GetString(tr);
+            tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+        }
+        
+            public static void showPasswordValidate_setupFirstPos(PasswordBox tb, Path p_error, ToolTip tt_error, string tr)
+        {
+            p_error.Visibility = Visibility.Visible;
+            tt_error.Content = wd_setupFirstPos.resourcemanager.GetString(tr);
             tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
         }
         public static void showComboBoxValidate(ComboBox cb, Path p_error, ToolTip tt_error, string tr)

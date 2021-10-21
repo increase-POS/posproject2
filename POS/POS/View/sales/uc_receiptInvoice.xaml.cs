@@ -2907,9 +2907,6 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
                 //billDetails
                 int count = 0;
                 foreach (var item in billDetails)
@@ -2937,14 +2934,10 @@ namespace POS.View
                     }
                     count++;
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                //if (ex.HResult != -2146233079)
                 SectionData.ExceptionMessage(ex, this);
             }
         }

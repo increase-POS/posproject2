@@ -32,9 +32,9 @@
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="2" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_serverUri" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <TextBox x:Name="tb_serverUri" Text="" Padding="10,0,5,0"
                           Grid.Row="2" Grid.Column="1"      
-                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="http://192.168.1.1"
+                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Server Uri"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="{StaticResource MainColorGrey}"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue" 
@@ -59,9 +59,9 @@
                            Foreground="{StaticResource MainColorGrey}" 
                       Grid.Row="3" Grid.Column="0"
                        VerticalAlignment="Center"  />
-        <TextBox x:Name="tb_activationkey" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0"
+        <TextBox x:Name="tb_activationkey" Text="" Padding="10,0,5,0"
                           Grid.Row="3" Grid.Column="1"      
-                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Bgerbeg34t33WSDWC"
+                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Activation key"
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="{StaticResource MainColorGrey}"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue" 
