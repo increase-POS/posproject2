@@ -199,15 +199,12 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
             List<decimal> balances = new List<decimal>();
-            //IEnumerable<int> x = null;
          
             var temp = balancesQuery;
             var result = temp.GroupBy(s => s.posId).Select(s => new
             {
                 posId = s.Key,
-                //countS = s.Count()
             });
-            //x = result.Select(m => m.countS);
            
             var tempName = temp.GroupBy(s => s.posName+"/"+s.branchName).Select(s => new
             {
@@ -223,7 +220,6 @@ namespace POS.View.reports
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
-            //List<int> cS = new List<int>();
             List<decimal> cS = new List<decimal>();
 
             List<string> titles = new List<string>()
@@ -231,7 +227,7 @@ namespace POS.View.reports
                MainWindow.resourcemanager.GetString("tr_Balance")
             };
             int x = 6;
-            if (names.Count() < 6) x = names.Count();
+            if (names.Count() <= 6) x = names.Count();
 
             for (int i = 0; i < x; i++)
             {
@@ -240,12 +236,12 @@ namespace POS.View.reports
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
-            if (names.Count() >= 6)
+            if (names.Count() > 6)
             {
                 decimal balanceSum = 0;
                 for (int i = 6 ; i < names.Count(); i++)
                     balanceSum = balanceSum + balances.ToList().Skip(i).FirstOrDefault();
-                //cS.Add(balances.ToList().Skip(5).FirstOrDefault());
+
                 if (balanceSum != 0)
                     cS.Add(balanceSum);
 
@@ -275,7 +271,6 @@ namespace POS.View.reports
             var temp = balancesQuery;
             var titleTemp = temp.GroupBy(m => m.branchName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
-            //var result = temp.GroupBy(s => s.branchId).Select(s => new { branchCreatorId = s.Key, count = s.Count() });
             var result = temp.GroupBy(s => s.branchId)
                         .Select(
                             g => new
@@ -284,17 +279,13 @@ namespace POS.View.reports
                                 balance = g.Sum(s => s.balance),
                                 count = g.Count()
                             });
-            //x = result.Select(m => m.count);
             balances = result.Select(m => decimal.Parse(SectionData.DecTostring(m.balance.Value)));
 
             SeriesCollection piechartData = new SeriesCollection();
-            //for (int i = 0; i < x.Count(); i++)
             for (int i = 0; i < balances.Count(); i++)
             {
-                //List<int> final = new List<int>();
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                //final.Add(x.ToList().Skip(i).FirstOrDefault());
                 final.Add(balances.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
                   new PieSeries

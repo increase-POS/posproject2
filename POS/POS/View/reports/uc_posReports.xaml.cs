@@ -73,16 +73,23 @@ namespace POS.View.reports
 
                 fromPos = statisticModel.getFromPosCombo(list);
                 toPos = statisticModel.getToPosCombo(list);
+                //accCombo = list.Where(g => g.transType == "p").GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+                accCombo = list.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
 
-            //accCombo = list.Where(g => g.transType == "p").GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
-            accCombo = list.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+               //accCombo = statisticModel.getAccounantCombo(list, "p");
 
-            //accCombo = statisticModel.getAccounantCombo(list, "p");
-
-            fillComboBranches();
+                chk_twoWay.IsChecked = false;
+                chk_twoWay.IsEnabled = false;
+                fillComboBranches();
                 fillComboFromPos();
                 fillComboToPos();
                 fillAccCombo();
+
+                chk_allFromBranch.IsChecked = true;
+                chk_allToBranch.IsChecked = true;
+                chk_allFromPos.IsChecked = true;
+                chk_allToPos.IsChecked = true;
+                chk_allAccountant.IsChecked = true;
 
                 fillEvents();
 
@@ -101,21 +108,59 @@ namespace POS.View.reports
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox fromBranch, ComboBox toBranch, ComboBox fromPos, ComboBox toPos, ComboBox Acc
        , DatePicker startDate, DatePicker endDate, CheckBox towWays)
         {
-            var selectedItem1 = fromBranch.SelectedItem as branchFromCombo;
-            var selectedItem2 = toBranch.SelectedItem as branchToCombo;
-            var selectedItem3 = fromPos.SelectedItem as posFromCombo;
-            var selectedItem4 = toPos.SelectedItem as posToCombo;
-            var selectedItem5 = Acc.SelectedItem as AccountantCombo;
+            //var selectedItem1 = fromBranch.SelectedItem as branchFromCombo;
+            //var selectedItem2 = toBranch.SelectedItem as branchToCombo;
+            //var selectedItem3 = fromPos.SelectedItem as posFromCombo;
+            //var selectedItem4 = toPos.SelectedItem as posToCombo;
+            //var selectedItem5 = Acc.SelectedItem as AccountantCombo;
 
-            var result = payments.Where(x => (
-              (fromBranch.SelectedItem != null ? x.frombranchId == selectedItem1.BranchFromId : true)
-             && (toBranch.SelectedItem != null ? x.tobranchId == selectedItem2.BranchToId : true)
-             && (fromPos.SelectedItem != null ? x.fromposId == selectedItem3.PosFromId : true)
-             && (toPos.SelectedItem != null ? x.toposId == selectedItem4.PosToId : true)
-             && (Acc.SelectedItem != null ? x.updateUserAcc == selectedItem5.Accountant : true)
-             && (towWays.IsChecked == false ? (x.transType == "d") : true)
-             && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
-             && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
+            //var result = payments.Where(x => (
+            //  (fromBranch.SelectedItem  != null ? x.frombranchId == selectedItem1.BranchFromId : true)
+            // && (toBranch.SelectedItem  != null ? x.tobranchId == selectedItem2.BranchToId : true)
+            // && (fromPos.SelectedItem   != null ? x.fromposId == selectedItem3.PosFromId : true)
+            // && (toPos.SelectedItem     != null ? x.toposId == selectedItem4.PosToId : true)
+            // && (Acc.SelectedItem       != null ? x.updateUserAcc == selectedItem5.Accountant : true)
+            // //&& (towWays.IsChecked      == false ? (x.transType == "d") : true)
+            // && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
+            // && (endDate.SelectedDate   != null ? x.updateDate <= endDate.SelectedDate : true)));
+
+            var result = payments
+          .Where(s =>
+          //start date
+          (dp_StartDate.SelectedDate    != null  ? s.updateDate  >= dp_StartDate.SelectedDate : true)
+          &&
+          //end date
+          //(dp_EndDate.SelectedDate      != null  ? s.updateDate  <= dp_EndDate.SelectedDate   : true)//??????????
+          //fromBranch
+          ( cb_formBranch.SelectedIndex != -1 ? s.frombranchId  == Convert.ToInt32(cb_formBranch.SelectedValue) : true)
+          &&
+          //toBranch
+          ( cb_toBranch.SelectedIndex != -1   ? s.tobranchId    == Convert.ToInt32(cb_toBranch.SelectedValue)   : true)
+          // &&
+          ////fromPos
+          //(cb_formPos.SelectedIndex != -1     ? s.fromposId     == Convert.ToInt32(cb_formPos.SelectedValue)    : true)
+          // &&
+          ////toPos
+          //(cb_toPos.SelectedIndex != -1       ? s.toposId       == Convert.ToInt32(cb_toPos.SelectedValue)      : true)
+           &&
+          //accountant
+          (cb_Accountant.SelectedIndex != -1 ? s.updateUserAcc == cb_Accountant.SelectedItem.ToString() : true)
+          &&
+          //twoWay
+          (
+          chk_twoWay.IsChecked == true ?
+              //(cb_formPos.SelectedIndex != -1 ? (s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue)) : true)
+              //(cb_toPos.SelectedIndex   != -1 ? s.posId == Convert.ToInt32(cb_toPos.SelectedIndex)  || s.pos2Id == Convert.ToInt32(cb_toPos.SelectedIndex)  : true)
+              //: true
+              
+              //fromPos
+              (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+               &&
+              //toPos
+              (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+         :true
+          )
+          );
 
             return result.ToList();
         }
@@ -150,6 +195,11 @@ namespace POS.View.reports
                 var temp = cb_toBranch.SelectedItem as branchToCombo;
                 cb_toPos.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
             }
+            //if (cb_formPos.SelectedItem != null)
+            //{
+            //    var temp = cb_formPos.SelectedItem as posToCombo;
+            //    cb_toPos.ItemsSource = toPos.Where(x => x.PosToId != temp.PosToId);
+            //}
         }
 
         private void fillAccCombo()
@@ -158,6 +208,7 @@ namespace POS.View.reports
             cb_Accountant.DisplayMemberPath = "Accountant";
             cb_Accountant.ItemsSource = accCombo;
         }
+
         IEnumerable<CashTransferSts> temp = null;
         private void fillEvents()
         {
@@ -275,7 +326,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                if(cb_formPos.SelectedItem != null)
+                    chk_twoWay.IsEnabled = true;
+
                 fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -296,6 +352,8 @@ namespace POS.View.reports
 
                 cb_formPos.IsEnabled = false;
                 cb_formPos.SelectedItem = null;
+                //if (cb_toPos.SelectedItem == null)
+                //    chk_twoWay.IsEnabled = false;
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
@@ -337,6 +395,8 @@ namespace POS.View.reports
 
                 cb_toPos.IsEnabled = false;
                 cb_toPos.SelectedItem = null;
+                if (cb_formPos.SelectedItem == null)
+                    chk_twoWay.IsEnabled = false;
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
@@ -375,8 +435,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillComboToPos();
+                //if (cb_formPos.SelectedItem != null)
+                //    cb_toPos.Items.Remove(cb_formPos.SelectedItem);
                 fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -394,7 +458,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                if (cb_toPos.SelectedItem != null)
+                    chk_twoWay.IsEnabled = true;
+
                 fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -469,8 +538,8 @@ namespace POS.View.reports
             //    if (sender != null)
             //        SectionData.StartAwait(grid_main);
 
-                //cb_Accountant.IsEnabled = false;
-                //cb_Accountant.SelectedItem = null;
+                cb_Accountant.IsEnabled = false;
+                cb_Accountant.SelectedItem = null;
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);

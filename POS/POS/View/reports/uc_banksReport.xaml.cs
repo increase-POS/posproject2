@@ -370,7 +370,7 @@ namespace POS.View.reports
             if (resultList.Count() > 6)
             {
                 decimal pullSum = 0, depositSum = 0 ;
-                for (int i = resultList.Count - xCount + 1; i < resultList.Count; i++)
+                for (int i = 6; i < resultList.Count; i++)
                 {
                     pullSum = pullSum + resultList.ToList().Skip(i).FirstOrDefault().pullSum;
                     depositSum = depositSum + resultList.ToList().Skip(i).FirstOrDefault().depositSum;

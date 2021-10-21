@@ -34,6 +34,23 @@ namespace POS.View.reports
     /// </summary>
     public partial class uc_accountStatement : UserControl
     {
+        Statistics statisticModel = new Statistics();
+
+        List<CashTransferSts> statement;
+
+        IEnumerable<VendorCombo> vendorCombo;
+        IEnumerable<VendorCombo> customerCombo;
+        IEnumerable<VendorCombo> userCombo;
+        IEnumerable<ShippingCombo> ShippingCombo;
+
+        //report
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+        public static string repTrRequires = "";
+
+        int selectedTab = 0;
+
         public uc_accountStatement()
         {
             try
@@ -45,22 +62,19 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        Statistics statisticModel = new Statistics();
 
-        List<CashTransferSts> statement;
-
-        IEnumerable<VendorCombo> vendorCombo;
-        IEnumerable<VendorCombo> customerCombo;
-        IEnumerable<VendorCombo> userCombo;
-        IEnumerable<ShippingCombo> ShippingCombo;
-
-        // report
-        ReportCls reportclass = new ReportCls();
-        LocalReport rep = new LocalReport();
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-        public static string repTrRequires = "";
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private static uc_recipientReport _instance;
+        public static uc_recipientReport Instance
         {
+            get
+            {
+                if (_instance == null) _instance = new uc_recipientReport();
+                return _instance;
+            }
+        }
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
             try
             {
                 if (sender != null)
@@ -82,20 +96,7 @@ namespace POS.View.reports
 
                 statement = await statisticModel.GetStatement();
 
-                vendorCombo = statisticModel.getVendorCombo(statement, "v").Where(x => x.VendorId != null);
-                customerCombo = statisticModel.getVendorCombo(statement, "c");
-                userCombo = statisticModel.getUserAcc(statement, "u");
-                ShippingCombo = statisticModel.getShippingCombo(statement);
-
-                fillVendorCombo(vendorCombo, cb_vendors);
-                fillDateCombo(cb_vendorsDate);
-
-                fillVendorsEvents();
-                hideAllColumn();
-
-
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_vendor.Tag.ToString());
-
+                Btn_vendor_Click(btn_vendor ,null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -120,18 +121,6 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trVendorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorsDate, MainWindow.resourcemanager.GetString("trDateHint"));
             chk_allVendors.Content = MainWindow.resourcemanager.GetString("trAll");
-
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customerDate, MainWindow.resourcemanager.GetString("trDateHint"));
-            chk_allCustomers.Content = MainWindow.resourcemanager.GetString("trAll");
-
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_users, MainWindow.resourcemanager.GetString("trUserHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_userDate, MainWindow.resourcemanager.GetString("trDateHint"));
-            chk_allUsers.Content = MainWindow.resourcemanager.GetString("trAll");
-
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_shipping, MainWindow.resourcemanager.GetString("trShippingCompanyHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_shippingDate, MainWindow.resourcemanager.GetString("trDateHint"));
-            chk_allShippings.Content = MainWindow.resourcemanager.GetString("trAll");
 
             dgPayments.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dgPayments.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
@@ -189,34 +178,25 @@ namespace POS.View.reports
 
 
             var result = payments.Where(x => (
-              (vendor.SelectedItem != null ? x.agentId == selectedItem1.VendorId : false)
+                      (vendor.SelectedItem != null ? x.agentId == selectedItem1.VendorId : false)
                    && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
 
             if (selectedTab == 2)
             {
                 result = payments.Where(x => (
-             (vendor.SelectedItem != null ? x.userId == selectedItem1.UserId : false)
+                         (vendor.SelectedItem != null ? x.userId == selectedItem1.UserId : false)
                       && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
             }
 
-            if (selectedTab == 6)
+            if (selectedTab == 3)
             {
                 result = payments.Where(x => (
-             (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem2.ShippingId : false)
+                                (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem2.ShippingId : false)
                              && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
             }
             return result.ToList();
         }
 
-        private static uc_recipientReport _instance;
-        public static uc_recipientReport Instance
-        {
-            get
-            {
-                if (_instance == null) _instance = new uc_recipientReport();
-                return _instance;
-            }
-        }
         /*Vendor*/
         /*********************************************************************************/
         private void Cb_vendors_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -226,7 +206,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                fillVendorsEvents();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -247,6 +229,7 @@ namespace POS.View.reports
 
                 cb_vendorsDate.SelectedItem = null;
                 cb_vendorsDate.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -260,12 +243,13 @@ namespace POS.View.reports
 
         private void Chk_allVendors_Unchecked(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_vendorsDate.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -276,196 +260,10 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
-        /*Customer*/
-        /*********************************************************************************/
-
-        private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillCustomersEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allCustomers_Checked(object sender, RoutedEventArgs e)
-        {
-
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                cb_customerDate.IsEnabled = false;
-                cb_customerDate.SelectedItem = null;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allCustomers_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                cb_customerDate.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        /*User*/
-        /*********************************************************************************/
-        private void Cb_users_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillUserEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allUsers_Checked(object sender, RoutedEventArgs e)
-        {
-
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                cb_userDate.SelectedItem = null;
-                cb_userDate.IsEnabled = false;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allUsers_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                cb_userDate.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        /*Shipping*/
-        /*********************************************************************************/
-        private void Cb_shipping_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillShippingEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allShippings_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                cb_shippingDate.IsEnabled = false;
-                cb_shippingDate.SelectedItem = null;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_allShippings_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                cb_shippingDate.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        /*********************************************************************/
-
-        int selectedTab = 0;
 
         public void paint()
         {
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+            //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
 
             bdr_customer.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_vendor.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -477,103 +275,44 @@ namespace POS.View.reports
             path_user.Fill = Brushes.White;
             path_shipping.Fill = Brushes.White;
 
-            grid_customer.Visibility = Visibility.Hidden;
-            grid_vendor.Visibility = Visibility.Hidden;
-            grid_user.Visibility = Visibility.Hidden;
-            grid_shipping.Visibility = Visibility.Hidden;
-        }
-
-        private void isEnabledButtons()
-        {
-            btn_customer.IsEnabled = true;
-            btn_vendor.IsEnabled = true;
-            btn_user.IsEnabled = true;
-            btn_shipping.IsEnabled = true;
         }
 
         private void hideAllColumn()
         {
-            grid_vendor.Visibility = Visibility.Hidden;
-            grid_customer.Visibility = Visibility.Hidden;
-            grid_shipping.Visibility = Visibility.Hidden;
-            grid_user.Visibility = Visibility.Hidden;
-
             col_date.Visibility = Visibility.Hidden;
-
             col_amount.Visibility = Visibility.Hidden;
-
             col_proccesType.Visibility = Visibility.Hidden;
-
-            if (selectedTab == 0)
-            {
-                grid_vendor.Visibility = Visibility.Visible;
-
-                col_date.Visibility = Visibility.Visible;
-
-
-                col_amount.Visibility = Visibility.Visible;
-
-                col_proccesType.Visibility = Visibility.Visible;
-            }
-            else if (selectedTab == 1)
-            {
-                grid_customer.Visibility = Visibility.Visible;
-
-                col_date.Visibility = Visibility.Visible;
-
-
-                col_amount.Visibility = Visibility.Visible;
-
-                col_proccesType.Visibility = Visibility.Visible;
-            }
-            else if (selectedTab == 2)
-            {
-                grid_user.Visibility = Visibility.Visible;
-
-                col_date.Visibility = Visibility.Visible;
-
-
-                col_amount.Visibility = Visibility.Visible;
-
-                col_proccesType.Visibility = Visibility.Visible;
-            }
-            else if (selectedTab == 6)
-            {
-                grid_shipping.Visibility = Visibility.Visible;
-
-                col_date.Visibility = Visibility.Visible;
-
-
-                col_amount.Visibility = Visibility.Visible;
-
-                col_proccesType.Visibility = Visibility.Visible;
-            }
-
         }
 
         private void Btn_vendor_Click(object sender, RoutedEventArgs e)
-        {
+        {//vendors
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                selectedTab = 0;
-                paint();
-                bdr_vendor.Background = Brushes.White;
-                path_vendor.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                grid_vendor.Visibility = Visibility.Visible;
-                isEnabledButtons();
-                btn_vendor.IsEnabled = false;
-                btn_vendor.Opacity = 1;
-                fillVendorsEvents();
-                hideAllColumn();
-
-                fillDateCombo(cb_vendorsDate);
-                fillVendorCombo(vendorCombo, cb_vendors);
-
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trVendorHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
+                cb_vendors.SelectedItem = null;
+                selectedTab = 0;
+                
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_vendor);
+                path_vendor.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                fillEvents();
+
+                hideAllColumn();
+                //show columns
+                col_date.Visibility = Visibility.Visible;
+                col_amount.Visibility = Visibility.Visible;
+                col_proccesType.Visibility = Visibility.Visible;
+
+                chk_allVendors.IsChecked = true;
+                fillDateCombo(cb_vendorsDate);
+                vendorCombo = statisticModel.getVendorCombo(statement, "v").Where(x => x.VendorId != null);
+                fillVendorCombo(vendorCombo, cb_vendors);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -587,28 +326,34 @@ namespace POS.View.reports
         }
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//customers
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                selectedTab = 1;
-                paint();
-                bdr_customer.Background = Brushes.White;
-                path_customer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                grid_customer.Visibility = Visibility.Visible;
-                isEnabledButtons();
-                btn_customer.IsEnabled = false;
-                btn_customer.Opacity = 1;
-                fillCustomersEvents();
-                hideAllColumn();
 
-                fillDateCombo(cb_customerDate);
-                fillVendorCombo(customerCombo, cb_customer);
-
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trCustomerHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
+                cb_vendors.SelectedItem = null;
+                selectedTab = 1;
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_customer);
+                path_customer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                fillEvents();
+
+                hideAllColumn();
+                //show columns
+                col_date.Visibility = Visibility.Visible;
+                col_amount.Visibility = Visibility.Visible;
+                col_proccesType.Visibility = Visibility.Visible;
+
+                chk_allVendors.IsChecked = true;
+                fillDateCombo(cb_vendorsDate);
+                customerCombo = statisticModel.getVendorCombo(statement, "c");
+                fillVendorCombo(customerCombo, cb_vendors);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -622,28 +367,34 @@ namespace POS.View.reports
         }
 
         private void Btn_user_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//users
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                selectedTab = 2;
-                paint();
-                bdr_user.Background = Brushes.White;
-                path_user.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                grid_user.Visibility = Visibility.Visible;
-                isEnabledButtons();
-                btn_user.IsEnabled = false;
-                btn_user.Opacity = 1;
-                fillUserEvents();
-                hideAllColumn();
 
-                fillDateCombo(cb_userDate);
-                fillSalaryCombo(userCombo, cb_users);
-
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trUserHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
+                cb_vendors.SelectedItem = null;
+                selectedTab = 2;
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_user);
+                path_user.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                fillEvents();
+
+                hideAllColumn();
+                //show columns
+                col_date.Visibility = Visibility.Visible;
+                col_amount.Visibility = Visibility.Visible;
+                col_proccesType.Visibility = Visibility.Visible;
+
+                chk_allVendors.IsChecked = true;
+                fillDateCombo(cb_vendorsDate);
+                userCombo = statisticModel.getUserAcc(statement, "u");
+                fillSalaryCombo(userCombo, cb_vendors);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -657,30 +408,34 @@ namespace POS.View.reports
         }
 
         private void Btn_shipping_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//shippings
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                cb_vendors.SelectedItem = null;
-                selectedTab = 6;
-                paint();
-                bdr_shipping.Background = Brushes.White;
-                path_shipping.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                grid_shipping.Visibility = Visibility.Visible;
-                isEnabledButtons();
-                btn_shipping.IsEnabled = false;
-                btn_shipping.Opacity = 1;
 
-                hideAllColumn();
-
-                fillDateCombo(cb_shippingDate);
-                fillShippingCombo(ShippingCombo, cb_shipping);
-                fillShippingEvents();
-
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trShippingCompanyHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
+                cb_vendors.SelectedItem = null;
+                selectedTab = 3;
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_shipping);
+                path_shipping.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                fillEvents();
+
+                hideAllColumn();
+                //show columns
+                col_date.Visibility = Visibility.Visible;
+                col_amount.Visibility = Visibility.Visible;
+                col_proccesType.Visibility = Visibility.Visible;
+
+                chk_allVendors.IsChecked = true;
+                fillDateCombo(cb_vendorsDate);
+                ShippingCombo = statisticModel.getShippingCombo(statement);
+                fillShippingCombo(ShippingCombo, cb_vendors);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -696,8 +451,7 @@ namespace POS.View.reports
         /*Fill Events*/
         /*********************************************************************************/
         IEnumerable<CashTransferSts> temp = null;
-
-        private void fillVendorsEvents()
+        private void fillEvents()
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
             dgPayments.ItemsSource = temp;
@@ -706,7 +460,6 @@ namespace POS.View.reports
             if (cashTotal > 0)
             {
                 txt_total.Text = SectionData.DecTostring(cashTotal);
-                //txt_for.Text = "Worthy";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
 
                 repTrRequires = "trWorthy";
@@ -718,7 +471,6 @@ namespace POS.View.reports
             {
                 cashTotal = -cashTotal;
                 txt_total.Text = cashTotal.ToString();
-                //txt_for.Text = "Required";
                 txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
 
                 repTrRequires = "trRequired";
@@ -737,117 +489,6 @@ namespace POS.View.reports
             fillPieChart();
         }
 
-        private void fillCustomersEvents()
-        {
-            temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
-            dgPayments.ItemsSource = temp;
-            txt_count.Text = temp.Count().ToString();
-            decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
-            if (cashTotal > 0)
-            {
-                txt_total.Text = SectionData.DecTostring(cashTotal);
-                //txt_for.Text = "Worthy";
-                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
-                repTrRequires = "trWorthy";
-                bdr_email.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                cashTotal = -cashTotal;
-                txt_total.Text = SectionData.DecTostring(cashTotal);
-                //txt_for.Text = "Required";
-                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
-                repTrRequires = "trRequired";
-                bdr_email.Visibility = Visibility.Visible;
-                if (cb_customer.SelectedItem != null)
-                {
-                    bdr_email.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    bdr_email.Visibility = Visibility.Collapsed;
-                }
-            }
-            fillRowChart();
-            fillColumnChart();
-            fillPieChart();
-        }
-
-        private void fillUserEvents()
-        {
-            temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
-            dgPayments.ItemsSource = temp;
-            txt_count.Text = temp.Count().ToString();
-            decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
-            if (cashTotal > 0)
-            {
-                txt_total.Text = SectionData.DecTostring(cashTotal);
-                //txt_for.Text = "Worthy";
-                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
-                repTrRequires = "trWorthy";
-                bdr_email.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                cashTotal = -cashTotal;
-                txt_total.Text = cashTotal.ToString();
-                //txt_for.Text = "Required";
-                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
-                repTrRequires = "trRequired";
-                bdr_email.Visibility = Visibility.Visible;
-                if (cb_users.SelectedItem != null)
-                {
-                    bdr_email.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    bdr_email.Visibility = Visibility.Collapsed;
-                }
-            }
-            fillRowChart();
-            fillColumnChart();
-            fillPieChart();
-
-
-        }
-
-        private void fillShippingEvents()
-        {
-            temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
-            dgPayments.ItemsSource = temp;
-            txt_count.Text = temp.Count().ToString();
-            decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
-            if (cashTotal > 0)
-            {
-                txt_total.Text = SectionData.DecTostring(cashTotal);
-                //txt_for.Text = "Worthy";
-                txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
-                repTrRequires = "trWorthy";
-                bdr_email.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                cashTotal = -cashTotal;
-                txt_total.Text = SectionData.DecTostring(cashTotal);
-                //txt_for.Text = "Required";
-                txt_for.Text = MainWindow.resourcemanager.GetString("trRequired");
-                repTrRequires = "trRequired";
-                bdr_email.Visibility = Visibility.Visible;
-                if (cb_shipping.SelectedItem != null)
-                {
-                    bdr_email.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    bdr_email.Visibility = Visibility.Collapsed;
-                }
-            }
-            fillRowChart();
-            fillColumnChart();
-            fillPieChart();
-        }
-
-
         /*Charts*/
         /*********************************************************************************/
         private void fillRowChart()
@@ -862,21 +503,8 @@ namespace POS.View.reports
             }
 
             var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-            if (selectedTab == 1)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
-            }
-            else if (selectedTab == 2)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
-            }
-            else if (selectedTab == 6)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
-            }
-
+           
             SeriesCollection rowChartData = new SeriesCollection();
-
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -890,14 +518,12 @@ namespace POS.View.reports
                 var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(x => x.cashTotal).LastOrDefault();
                 if (drawCash > 0)
                 {
-                    //names.Add("Worthy");
                     names.Add(MainWindow.resourcemanager.GetString("trWorthy"));
 
                     btn_emailMessage.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    //names.Add("Required");
                     names.Add(MainWindow.resourcemanager.GetString("trRequired"));
 
                     btn_emailMessage.Visibility = Visibility.Visible;
@@ -921,44 +547,28 @@ namespace POS.View.reports
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
             var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-            if (selectedTab == 1)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
-            }
-            else if (selectedTab == 2)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
-            }
-            else if (selectedTab == 6)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
-            }
-
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
-            List<int> cash = new List<int>();
-            List<int> card = new List<int>();
-            List<int> doc = new List<int>();
-            List<int> cheque = new List<int>();
-            List<int> balance = new List<int>();
-            List<int> inv = new List<int>();
+            List<decimal> cash = new List<decimal>();
+            List<decimal> card = new List<decimal>();
+            List<decimal> doc = new List<decimal>();
+            List<decimal> cheque = new List<decimal>();
+            List<decimal> balance = new List<decimal>();
+            List<decimal> inv = new List<decimal>();
 
-
-            cash.Add(temp.Where(x => x.processType == "cash").Count());
-            card.Add(temp.Where(x => x.processType == "card").Count());
-            doc.Add(temp.Where(x => x.processType == "doc").Count());
-            cheque.Add(temp.Where(x => x.processType == "cheque").Count());
-            balance.Add(temp.Where(x => x.processType == "balance").Count());
-            inv.Add(temp.Where(x => x.processType == "inv").Count());
-
+            cash.Add(temp.Where(x => x.processType == "cash").Select(x => x.cash.Value).Sum());
+            card.Add(temp.Where(x => x.processType == "card").Select(x => x.cash.Value).Sum());
+            doc.Add(temp.Where(x => x.processType == "doc").Select(x => x.cash.Value).Sum());
+            cheque.Add(temp.Where(x => x.processType == "cheque").Select(x => x.cash.Value).Sum());
+            balance.Add(temp.Where(x => x.processType == "balance").Select(x => x.cash.Value).Sum());
+            inv.Add(temp.Where(x => x.processType == "inv").Select(x => x.cash.Value).Sum());
 
             columnChartData.Add(
             new ColumnSeries
             {
                 Values = cash.AsChartValues(),
                 DataLabels = true,
-                //Title = "Cash"
                 Title = MainWindow.resourcemanager.GetString("trCash")
             });
             columnChartData.Add(
@@ -966,7 +576,6 @@ namespace POS.View.reports
            {
                Values = card.AsChartValues(),
                DataLabels = true,
-               //Title = "Card"
                Title = MainWindow.resourcemanager.GetString("tr_Card")
            });
             columnChartData.Add(
@@ -974,7 +583,6 @@ namespace POS.View.reports
            {
                Values = doc.AsChartValues(),
                DataLabels = true,
-               //Title = "Document"
                Title = MainWindow.resourcemanager.GetString("trDocument")
 
            });
@@ -983,7 +591,6 @@ namespace POS.View.reports
            {
                Values = cheque.AsChartValues(),
                DataLabels = true,
-               //Title = "Cheque"
                Title = MainWindow.resourcemanager.GetString("trCheque")
            });
             columnChartData.Add(
@@ -991,9 +598,15 @@ namespace POS.View.reports
            {
                Values = balance.AsChartValues(),
                DataLabels = true,
-               //Title = "Balance"
                Title = MainWindow.resourcemanager.GetString("tr_Balance")
            });
+           columnChartData.Add(
+           new ColumnSeries
+            {
+                Values = balance.AsChartValues(),
+                DataLabels = true,
+                Title = MainWindow.resourcemanager.GetString("tr_Invoice")
+            });
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
@@ -1005,19 +618,7 @@ namespace POS.View.reports
             List<int> resultList = new List<int>();
             titles.Clear();
             var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-            if (selectedTab == 1)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
-            }
-            else if (selectedTab == 2)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
-            }
-            else if (selectedTab == 6)
-            {
-                temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
-            }
-
+           
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "p").Count());
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "d").Count());
             resultList.Add(temp.Where(x => x.processType == "inv").Count());
@@ -1027,11 +628,8 @@ namespace POS.View.reports
                 List<int> final = new List<int>();
                 List<string> lable = new List<string>()
                 {
-                    //"Payment",
                     MainWindow.resourcemanager.GetString("trOnePayment"),
-                    //"Deposite",
                     MainWindow.resourcemanager.GetString("trOneDeposit"),
-                    //"Invoice"
                     MainWindow.resourcemanager.GetString("tr_Invoice")
                 };
                 final.Add(resultList.Skip(i).FirstOrDefault());
@@ -1049,41 +647,18 @@ namespace POS.View.reports
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
-
+        {//refresh
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 txt_search.Text = "";
-                if (selectedTab == 0)
-                {
-                    cb_vendors.SelectedItem = null;
-                    cb_vendorsDate.SelectedItem = null;
-                    chk_allVendors.IsChecked = false;
-                    fillVendorsEvents();
-                }
-                else if (selectedTab == 1)
-                {
-                    cb_customer.SelectedItem = null;
-                    cb_customerDate.SelectedItem = null;
-                    chk_allCustomers.IsChecked = false;
-                    fillCustomersEvents();
-                }
-                else if (selectedTab == 2)
-                {
-                    cb_users.SelectedItem = null;
-                    cb_userDate.SelectedItem = null;
-                    chk_allUsers.IsChecked = false;
-                    fillUserEvents();
-                }
-                else if (selectedTab == 3)
-                {
-                    cb_shipping.SelectedItem = null;
-                    cb_shippingDate.SelectedItem = null;
-                    chk_allShippings.IsChecked = false;
-                    fillShippingEvents();
-                }
+
+                cb_vendors.SelectedItem = null;
+                cb_vendorsDate.SelectedItem = null;
+                chk_allVendors.IsChecked = false;
+                fillEvents();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1103,48 +678,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (selectedTab == 0)
-                {
-                    temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+              
+                temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
 
-                    //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    //obj.Description.Contains(txt_search.Text) ||
-                    //obj.Description1.Contains(txt_search.Text));
-                    t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    obj.Description.Contains(txt_search.Text) ||
-                    obj.Description1.Contains(txt_search.Text)).ToList();
-
-                }
-                else if (selectedTab == 1)
-                {
-                    temp = statisticModel.getstate(fillList(statement, cb_customer, cb_customerDate));
-                    //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    //obj.Description.Contains(txt_search.Text) ||
-                    //obj.Description1.Contains(txt_search.Text));
-                    t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    obj.Description.Contains(txt_search.Text) ||
-                    obj.Description1.Contains(txt_search.Text));
-                }
-                else if (selectedTab == 2)
-                {
-                    temp = statisticModel.getstate(fillList(statement, cb_users, cb_userDate));
-                    //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    //obj.Description.Contains(txt_search.Text) ||
-                    //obj.Description1.Contains(txt_search.Text));
-                    t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    obj.Description.Contains(txt_search.Text) ||
-                    obj.Description1.Contains(txt_search.Text)).ToList();
-                }
-                else if (selectedTab == 3)
-                {
-                    temp = statisticModel.getstate(fillList(statement, cb_shipping, cb_shippingDate));
-                    //dgPayments.ItemsSource = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    //obj.Description.Contains(txt_search.Text) ||
-                    //obj.Description1.Contains(txt_search.Text));
-                    t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
-                    obj.Description.Contains(txt_search.Text) ||
-                    obj.Description1.Contains(txt_search.Text)).ToList();
-                }
+                t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
+                obj.Description.Contains(txt_search.Text) ||
+                obj.Description1.Contains(txt_search.Text)).ToList();
 
                 dgPayments.ItemsSource = t;
 
@@ -1162,7 +701,7 @@ namespace POS.View.reports
         }
 
         private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
-        {//email?????????????????????????????????????????????????????????????????????
+        {//email
             try
             {
                 if (sender != null)
@@ -1230,7 +769,7 @@ namespace POS.View.reports
                         break;
 
                     case 1:
-                        var objct1 = cb_customer.SelectedItem as VendorCombo;
+                        var objct1 = cb_vendors.SelectedItem as VendorCombo;
                         agentId = (int)objct1.VendorId;
                         toAgent = await toAgent.getAgentById(agentId);
                         emailto = toAgent.email;
@@ -1249,7 +788,7 @@ namespace POS.View.reports
                         }
                         break;
                     case 2:
-                        var objct2 = cb_users.SelectedItem as VendorCombo;
+                        var objct2 = cb_vendors.SelectedItem as VendorCombo;
                         int userId = (int)objct2.UserId;
                         toUser = await toUser.getUserById(userId);
                         emailto = toUser.email;
@@ -1267,8 +806,8 @@ namespace POS.View.reports
                             toemailexist = true;
                         }
                         break;
-                    case 6:
-                        var objct3 = cb_shipping.SelectedItem as ShippingCombo;
+                    case 3:
+                        var objct3 = cb_vendors.SelectedItem as ShippingCombo;
                         int shipId = (int)objct3.ShippingId;
 
                         toShipCompanies = await toShipCompanies.GetByID(shipId);

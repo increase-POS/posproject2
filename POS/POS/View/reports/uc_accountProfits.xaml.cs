@@ -592,18 +592,14 @@ namespace POS.View.reports
                MainWindow.resourcemanager.GetString("trProfits")
             };
             int x = 6;
-            if (count < 6) x = count;
+            if (count <= 6) x = count;
             for (int i = 0; i < x; i++)
             {
                 cS.Add(profit.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-            //if (count >= 6)
-            //{
-            //    cS.Add(profit.ToList().Skip(6).FirstOrDefault());
-            //    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
-            //}
-            if (count >= 6)
+           
+            if (count > 6)
             {
                 decimal profitSum = 0;
                 for (int i = 6; i < count; i++)

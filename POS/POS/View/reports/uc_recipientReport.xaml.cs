@@ -782,7 +782,7 @@ namespace POS.View.reports
             if (resultList.Count() > 6)
             {
                 decimal cashSum = 0, cardSum = 0, docSum = 0, chequeSum = 0, balanceSum = 0, invoiceSum = 0;
-                for (int i = resultList.Count - xCount + 1; i < resultList.Count; i++)
+                for (int i = 6; i < resultList.Count; i++)
                 {
                     cashSum = cashSum + resultList.ToList().Skip(i).FirstOrDefault().cashTotal;
                     cardSum = cardSum + resultList.ToList().Skip(i).FirstOrDefault().cardTotal;

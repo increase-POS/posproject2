@@ -305,7 +305,6 @@
                                               Grid.Row="1"
                                               DockPanel.Dock="Right"
                                               Grid.Column="4"
-                                              IsChecked="True"
                                               Content="All"
                                               Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
                                               Checked="Chk_allAccountant_Checked"
