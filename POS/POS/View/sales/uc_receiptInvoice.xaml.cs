@@ -509,16 +509,16 @@ namespace POS.View
                 else
                     btn_returnInvoice.Visibility = Visibility.Collapsed;
 
-                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
-                {
-                    md_payments.Visibility = Visibility.Visible;
-                    bdr_payments.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    md_payments.Visibility = Visibility.Collapsed;
-                    bdr_payments.Visibility = Visibility.Collapsed;
-                }
+                //if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+                //{
+                //    md_payments.Visibility = Visibility.Visible;
+                //    bdr_payments.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    md_payments.Visibility = Visibility.Collapsed;
+                //    bdr_payments.Visibility = Visibility.Collapsed;
+                //}
 
                 if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one"))
                     md_ordersWait.Visibility = Visibility.Visible;
@@ -633,13 +633,13 @@ namespace POS.View
         }
         #endregion
         #region notifications
-        private async void setNotifications()
+        private void setNotifications()
         {
             try
             {
-                await refreshDraftNotification();
-                await refreshOrdersWaitNotification();
-                await refreshQuotationNotification();
+                refreshDraftNotification();
+                refreshOrdersWaitNotification();
+                refreshQuotationNotification();
             }
             catch (Exception ex)
             {
@@ -736,19 +736,29 @@ namespace POS.View
         private async Task refreshPaymentsNotification(int invoiceId)
         {
             int paymentsCount = await cashTransfer.GetCashCount(invoice.invoiceId);
-            int previouseCount = 0;
-            if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
-
-            if (paymentsCount != previouseCount)
+            if (paymentsCount == 0)
             {
-                if (paymentsCount > 9)
+                bdr_payments.Visibility = Visibility.Collapsed;
+                btn_payments.Visibility = Visibility.Collapsed;
+            }
+            else if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+            {
+                bdr_payments.Visibility = Visibility.Visible;
+                btn_payments.Visibility = Visibility.Visible;
+                int previouseCount = 0;
+                if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
+
+                if (paymentsCount != previouseCount)
                 {
-                    paymentsCount = 9;
-                    md_payments.Badge = "+" + paymentsCount.ToString();
+                    if (paymentsCount > 9)
+                    {
+                        paymentsCount = 9;
+                        md_payments.Badge = "+" + paymentsCount.ToString();
+                    }
+                    else if (paymentsCount == 0) md_payments.Badge = "";
+                    else
+                        md_payments.Badge = paymentsCount.ToString();
                 }
-                else if (paymentsCount == 0) md_payments.Badge = "";
-                else
-                    md_payments.Badge = paymentsCount.ToString();
             }
 
         }

@@ -191,29 +191,30 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                if (billDetails.Count > 0 && _InvoiceType == "pd")
-                {
-                    #region Accept
-                    MainWindow.mainWindow.Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.contentText = "Do you want save pay invoice in drafts?";
-                    w.ShowDialog();
-                    MainWindow.mainWindow.Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        Btn_newDraft_Click(null, null);
-                    else
-                    {
-                        clearInvoice();
-                        _InvoiceType = "pd";
-                    }
-                }
-                else
-                {
-                    clearInvoice();
-                    _InvoiceType = "pd";
-                }
+                saveBeforeExit();
+                //if (billDetails.Count > 0 && _InvoiceType == "pd")
+                //{
+                //    #region Accept
+                //    MainWindow.mainWindow.Opacity = 0.2;
+                //    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                //    w.contentText = "Do you want save pay invoice in drafts?";
+                //    w.ShowDialog();
+                //    MainWindow.mainWindow.Opacity = 1;
+                //    #endregion
+                //    if (w.isOk)
+                //        Btn_newDraft_Click(null, null);
+                //    else
+                //    {
+                //        clearInvoice();
+                //        _InvoiceType = "pd";
+                //    }
+                //}
+                //else
+                //{
+                //    clearInvoice();
+                //    _InvoiceType = "pd";
+                //}
                 timer.Stop();
 
                 if (sender != null)
@@ -226,7 +227,25 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async Task saveBeforeExit()
+        {
+            if (billDetails.Count > 0 && _InvoiceType == "pd")
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.contentText = "Do you want save pay invoice in drafts?";
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                    await addInvoice(_InvoiceType, "pi");
+            }
+            clearInvoice();
+           
+        }
+            public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -290,16 +309,16 @@ namespace POS.View
                 else
                     btn_returnInvoice.Visibility = Visibility.Collapsed;
 
-                if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
-                {
-                    md_payments.Visibility = Visibility.Visible;
-                    bdr_payments.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    md_payments.Visibility = Visibility.Collapsed;
-                    bdr_payments.Visibility = Visibility.Collapsed;
-                }
+                //if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+                //{
+                //    md_payments.Visibility = Visibility.Visible;
+                //    bdr_payments.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    md_payments.Visibility = Visibility.Collapsed;
+                //    bdr_payments.Visibility = Visibility.Collapsed;
+                //}
 
                 //if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
                 //{
@@ -530,20 +549,30 @@ namespace POS.View
         private async void refreshPaymentsNotification(int invoiceId)
         {
             int paymentsCount = await cashTransfer.GetCashCount(invoice.invoiceId);
-            int previouseCount = 0;
-            if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
-
-            if (paymentsCount != previouseCount)
+            if (paymentsCount == 0)
             {
-                if (paymentsCount > 9)
-                {
-                    paymentsCount = 9;
-                    md_payments.Badge = "+" + paymentsCount.ToString();
-                }
-                else if (paymentsCount == 0) md_payments.Badge = "";
+                bdr_payments.Visibility = Visibility.Collapsed;
+                btn_payments.Visibility = Visibility.Collapsed;
+            }
+            else if(MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
+            {
+                bdr_payments.Visibility = Visibility.Visible;
+                btn_payments.Visibility = Visibility.Visible;
+                int previouseCount = 0;
+                if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
 
-                else
-                    md_payments.Badge = paymentsCount.ToString();
+                if (paymentsCount != previouseCount)
+                {
+                    if (paymentsCount > 9)
+                    {
+                        paymentsCount = 9;
+                        md_payments.Badge = "+" + paymentsCount.ToString();
+                    }
+                    else if (paymentsCount == 0) md_payments.Badge = "";
+
+                    else
+                        md_payments.Badge = paymentsCount.ToString();
+                }
             }
         }
         #endregion
@@ -1065,8 +1094,9 @@ namespace POS.View
                 {
                     await addInvoice(_InvoiceType, "pi");                 
                     clearInvoice();
-                    refreshDraftNotification();
-                    _InvoiceType = "pd";
+                        _InvoiceType = "pd";
+                        refreshDraftNotification();
+                    
                 }
                 else if (billDetails.Count == 0)
                 {
@@ -1210,6 +1240,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         setNotifications();
+                        refreshPaymentsNotification(_invoiceId);
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         if (invoice.invType == "p" || invoice.invType == "pw")
@@ -1350,6 +1381,7 @@ namespace POS.View
                             _invoiceId = invoice.invoiceId;
                             // notifications
                             setNotifications();
+                            refreshPaymentsNotification(_invoiceId);
                             refreshDocCount(invoice.invoiceId);
                             md_payments.Badge = "";
 
