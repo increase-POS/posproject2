@@ -7167,47 +7167,48 @@ else
                                         {
                                             cashTransId = C.cashTransId,
                                             transType = C.transType,
-                                            //  posId = C.posId,
+                                            posId = C.posId,
                                             userId = C.userId,
                                             agentId = C.agentId,
-                                            invId = C.invId,
+                                            //*invId = C.invId,
                                             transNum = C.transNum,
-                                            createDate = C.createDate,
+                                            //*createDate = C.createDate,
                                             updateDate = C.updateDate,
                                             cash = C.cash,
                                             updateUserId = C.updateUserId,
                                             createUserId = C.createUserId,
-                                            notes = C.notes,
+                                            //*notes = C.notes,
                                             posIdCreator = C.posIdCreator,
                                             isConfirm = C.isConfirm,
                                             cashTransIdSource = C.cashTransIdSource,
-                                            side = C.side,
+                                            cashopr= C.cashTransIdSource==null ? C.cashTransId: C.cashTransIdSource,
+                                            //*side = C.side,
 
-                                            docName = C.docName,
-                                            docNum = C.docNum,
-                                            docImage = C.docImage,
-                                            bankId = C.bankId,
-                                            bankName = jbb.name,
-                                            agentName = jaa.name,
+                                            //*docName = C.docName,
+                                            //*docNum = C.docNum,
+                                            //*docImage = C.docImage,
+                                            //*bankId = C.bankId,
+                                            //*bankName = jbb.name,
+                                            //*agentName = jaa.name,
 
                                             usersName = juu.name,// side =u
                                             userAcc = juu.username,// side =u
                                             posName = jpp.name,
                                             posCreatorName = jpcc.name,
-                                            processType = C.processType,
-                                            cardId = C.cardId,
-                                            bondId = C.bondId,
+                                            //*processType = C.processType,
+                                            //*cardId = C.cardId,
+                                            //*bondId = C.bondId,
                                             usersLName = juu.lastname,// side =u
                                             updateUserName = jucc.name,
                                             updateUserLName = jucc.lastname,
                                             updateUserAcc = jucc.username,
                                             createUserJob = jucc.job,
-                                            cardName = jcrd.name,
-                                            bondDeserveDate = jbbo.deserveDate,
-                                            bondIsRecieved = jbbo.isRecieved,
-                                            agentCompany = jaa.company,
-                                            shippingCompanyId = C.shippingCompanyId,
-                                            shippingCompanyName = C.shippingCompanies.name,
+                                            //*cardName = jcrd.name,
+                                            //*bondDeserveDate = jbbo.deserveDate,
+                                            //*bondIsRecieved = jbbo.isRecieved,
+                                            //*agentCompany = jaa.company,
+                                            //*shippingCompanyId = C.shippingCompanyId,
+                                            //*shippingCompanyName = C.shippingCompanies.name,
                                             /*
                                             pos2Id = C.transType == "d" ? C.cashTransfer2.posId :
                                              entity.cashTransfer.Where(x2 => C.cashTransId == (int)x2.cashTransIdSource).FirstOrDefault().posId
@@ -7262,9 +7263,10 @@ else
 
                                         }).ToList();
 
+                       var list = cachlist.GroupBy(g => g.cashopr).SelectMany(grouping => grouping.Take(1)).ToList();
 
 
-                        return TokenManager.GenerateToken(cachlist);
+                        return TokenManager.GenerateToken(list);
 
                     }
 
