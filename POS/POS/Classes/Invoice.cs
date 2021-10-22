@@ -214,6 +214,22 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<List<Invoice>> GetInvoicesForAdmin(string invType, int duration)
+        {
+            List<Invoice> items = new List<Invoice>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invType", invType);
+            parameters.Add("duration", duration.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/GetInvoicesForAdmin", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Invoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
         public async Task<int> GetCountByCreator(string invType, int createUserId, int duration)
         {
             int count = 0;

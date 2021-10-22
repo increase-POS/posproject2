@@ -184,6 +184,8 @@ namespace POS.View.windows
             }
             else if(condition == "return")
                 invoices = await invoice.getInvoicesToReturn(invoiceType, userId);
+            else if(condition == "admin")
+                invoices = await invoice.GetInvoicesForAdmin(invoiceType, duration);
             else
             {
                 if (userId != 0 && (invoiceStatus == "" || invoiceStatus == null))/// to display draft invoices

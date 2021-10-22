@@ -504,7 +504,7 @@ namespace POS.View
 
                 #region Permision
 
-                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+                if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                     btn_returnInvoice.Visibility = Visibility.Visible;
                 else
                     btn_returnInvoice.Visibility = Visibility.Collapsed;
@@ -1741,7 +1741,9 @@ namespace POS.View
                 // w.branchCreatorId = MainWindow.branchID.Value;
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = duration; // view drafts which updated during 1 last days 
-
+                if (SectionData.isAdminPermision())
+                    w.condition = "admin";
+              
                 w.title = MainWindow.resourcemanager.GetString("trInvoices");
 
                 if (w.ShowDialog() == true)
@@ -1764,7 +1766,10 @@ namespace POS.View
 
 
                         await fillInvoiceInputs(invoice);
-                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        if(w.condition == "admin")
+                            invoices = await invoice.GetInvoicesForAdmin(invoiceType, duration);
+                        else
+                            invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
                         navigateBtnActivate();
 
                         mainInvoiceItems = invoiceItems;
@@ -1966,7 +1971,10 @@ namespace POS.View
                     wd_invoice w = new wd_invoice();
                     w.title = MainWindow.resourcemanager.GetString("trReturn");
                     //w.branchCreatorId = MainWindow.branchID.Value;
-                    w.condition = "return";
+                    if (SectionData.isAdminPermision())
+                        w.condition = "admin";
+                    else
+                        w.condition = "return";
                     w.userId = MainWindow.userID.Value;
                     // sales invoices
                     string invoiceType = "s";
@@ -1981,7 +1989,10 @@ namespace POS.View
 
                             //this.DataContext = invoice;
                             await fillInvoiceInputs(invoice);
-                            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value);
+                            if (w.condition == "admin")
+                                invoices = await invoice.GetInvoicesForAdmin(invoiceType,0);
+                            else
+                                invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value);
                             navigateBtnActivate();
                             mainInvoiceItems = invoiceItems;
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
