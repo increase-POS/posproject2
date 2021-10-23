@@ -388,26 +388,33 @@ namespace POS.View.windows
                 if (pageIndex == 0)
                 {
                     //dina Work
-                    MessageBox.Show("Server Config is done");
+                    //MessageBox.Show("Server Config is done");
                 }
                 if (pageIndex == 1)
                 {
                     //dina Work
-                    MessageBox.Show("Setting Config is done");
+                    //MessageBox.Show("Setting Config is done");
                 }
                 if (pageIndex == 2)
                 {
                 //dina Work
-                string url = uc_serverConfig.Instance.serverUri;
-                string activationkey = uc_serverConfig.Instance.activationkey;
+                    string url = uc_serverConfig.Instance.serverUri;
+                    string activationkey = uc_serverConfig.Instance.activationkey;
 
-                string motherCode = setupConfiguration.GetMotherBoardID();
+                    string motherCode = setupConfiguration.GetMotherBoardID();
                     string hardCode = setupConfiguration.GetHDDSerialNo();
                     string deviceCode = motherCode + "-" + hardCode;
+                    Global.APIUri = url;
                     int res = await setupConfiguration.setConfiguration(activationkey,deviceCode);
+                if (res > 0)
+                {
+                    //Properties.Settings.Default.APIUri = url;
+                    // Properties.Settings.Default.runNum = 2;
                     MessageBox.Show("Setup Done");
-                    Btn_cancel_Click(btn_cancel, null);
+                    //Btn_cancel_Click(btn_cancel, null);
                 }
+
+            }
                 if(pageIndex < 2)
                 {
                     pageIndex++;
