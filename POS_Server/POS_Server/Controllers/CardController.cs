@@ -45,7 +45,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        createUserId = c.createUserId,
                        updateUserId = c.updateUserId,
                        isActive = c.isActive,
-                   })
+                       hasProcessNum=c.hasProcessNum,
+                       image=c.image,
+    
+
+    })
                    .ToList();
 
                     // can delet or not
@@ -103,6 +107,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        c.createUserId,
                        c.updateUserId,
                        c.isActive,
+                   c.hasProcessNum,
+                       image = c.image,
                    })
                    .FirstOrDefault();
                     return TokenManager.GenerateToken(card);
@@ -143,6 +149,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        c.createUserId,
                        c.updateUserId,
                        c.isActive,
+                  c.hasProcessNum,
+                        c.image,
                    })
                    .ToList();
                     return TokenManager.GenerateToken(card);
@@ -205,6 +213,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             tmpcard.isActive = Object.isActive;
                             tmpcard.updateDate = DateTime.Now;// server current date;
                             tmpcard.updateUserId = Object.updateUserId;
+                            tmpcard.hasProcessNum = Object.hasProcessNum;
+                            tmpcard.image = Object.image;
                             entity.SaveChanges();
                             message = tmpcard.cardId.ToString();
                         }

@@ -140,6 +140,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
     <Property Name="image" Type="ntext" />
+    <Property Name="hasProcessNum" Type="bit" />
   </EntityType>
   <EntityType Name="cashTransfer">
     <Key>

@@ -17,6 +17,12 @@ namespace POS_Server.Controllers
     [RoutePrefix("api/Pos")]
     public class PosController : ApiController
     {
+        [HttpGet]
+        [Route("checkUri")]
+        public string checkUri()
+        {
+            return "";
+        }
         // GET api/<controller>
         [HttpPost]
         [Route("Get")]

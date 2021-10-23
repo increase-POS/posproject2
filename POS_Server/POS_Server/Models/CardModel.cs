@@ -17,5 +17,6 @@ namespace POS_Server.Models
         public Boolean canDelete { get; set; }
         public Nullable<byte> isActive { get; set; }
         public string image { get; set; }
+        public Nullable<bool> hasProcessNum { get; set; }
     }
 }

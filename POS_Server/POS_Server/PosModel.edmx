@@ -145,6 +145,7 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
           <Property Name="image" Type="ntext" />
+          <Property Name="hasProcessNum" Type="bit" />
         </EntityType>
         <EntityType Name="cashTransfer">
           <Key>
@@ -4578,6 +4579,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="users" Relationship="Self.FK_cards_users" FromRole="cards" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_cards_users1" FromRole="cards" ToRole="users" />
           <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_cards" FromRole="cards" ToRole="cashTransfer" />
+          <Property Name="hasProcessNum" Type="Boolean" />
         </EntityType>
         <EntityType Name="cashTransfer">
           <Key>
@@ -9310,6 +9312,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="cards">
             <EntityTypeMapping TypeName="incposdbModel.cards">
               <MappingFragment StoreEntitySet="cards">
+                <ScalarProperty Name="hasProcessNum" ColumnName="hasProcessNum" />
                 <ScalarProperty Name="cardId" ColumnName="cardId" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="notes" ColumnName="notes" />
