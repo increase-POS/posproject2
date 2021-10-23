@@ -38,7 +38,7 @@
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      Foreground="{StaticResource MainColorGrey}"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                      BorderBrush="AliceBlue" 
-                                     MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40" Margin="5" 
                                      TextChanged="Tb_validateEmptyTextChange" 
                                      LostFocus="Tb_validateEmptyLostFocus">

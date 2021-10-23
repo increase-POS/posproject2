@@ -31,7 +31,7 @@ namespace POS.View.windows
 
         public static ResourceManager resourcemanager;
         public bool isValid = false;
-        static public int countryId;
+     
         int _pageIndex;
         int pageIndex
         {
@@ -42,6 +42,7 @@ namespace POS.View.windows
                 OnPropertyChanged();
             }
         }
+        static public int countryId;
         static public string imgFileName = "pic/no-image-icon-125x125.png";
         static public ImageBrush brush = new ImageBrush();
 
@@ -141,9 +142,8 @@ namespace POS.View.windows
         }
        
 
-        private void Btn_next_Click(object sender, RoutedEventArgs e)
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
-            
             isValid = true;
             // uc_serverConfig
             if (pageIndex == 0)
@@ -160,20 +160,31 @@ namespace POS.View.windows
                             break;
                         }
                         else
+                        {
                             item.value = uc_serverConfig.Instance.serverUri;
+                            bool validUrl = setupConfiguration.validateUrl(item.value);
+                            if (!validUrl)
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupFirstPos.resourcemanager.GetString("trErrorWrongUrl"), animation: ToasterAnimation.FadeIn);
+                                isValid = false;
+                                break;
+                            }
+                        }
                         
                     }
                     else if (item.key.Equals("activationkey"))
                     {
-                        
-                        if (string.IsNullOrWhiteSpace(uc_serverConfig.Instance.activationkey ))
+
+                        if (string.IsNullOrWhiteSpace(uc_serverConfig.Instance.activationkey))
                         {
                             item.value = "";
                             isValid = false;
                             break;
                         }
                         else
+                        {
                             item.value = uc_serverConfig.Instance.activationkey;
+                        }
                     }
                 }
                 // for watch list
@@ -372,8 +383,8 @@ namespace POS.View.windows
 
             
 
-            if (isValid)
-            {
+            //if (isValid)
+            //{
                 if (pageIndex == 0)
                 {
                     //dina Work
@@ -386,7 +397,14 @@ namespace POS.View.windows
                 }
                 if (pageIndex == 2)
                 {
-                    //dina Work
+                //dina Work
+                string url = uc_serverConfig.Instance.serverUri;
+                string activationkey = uc_serverConfig.Instance.activationkey;
+
+                string motherCode = setupConfiguration.GetMotherBoardID();
+                    string hardCode = setupConfiguration.GetHDDSerialNo();
+                    string deviceCode = motherCode + "-" + hardCode;
+                    int res = await setupConfiguration.setConfiguration(activationkey,deviceCode);
                     MessageBox.Show("Setup Done");
                     Btn_cancel_Click(btn_cancel, null);
                 }
@@ -395,9 +413,9 @@ namespace POS.View.windows
                     pageIndex++;
                     CallPage(pageIndex, (sender as Button).Tag.ToString());
                 }
-            }
-            else
-                Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
+            //}
+            //else
+            //    Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
 
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
