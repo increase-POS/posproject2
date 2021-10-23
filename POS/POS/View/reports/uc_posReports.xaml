@@ -280,7 +280,7 @@
                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                 materialDesign:HintAssist.Hint="End Date..."
-                                                     SelectedDateChanged="Dp_EndDate_SelectedDateChanged"></DatePicker>
+                                                SelectedDateChanged="Dp_EndDate_SelectedDateChanged"></DatePicker>
 
                                         <DatePicker SelectedDateFormat="Short"
                                                 Name="dp_StartDate"
@@ -294,7 +294,7 @@
                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                 materialDesign:HintAssist.Hint="Start date..."  
-                                                     SelectedDateChanged="Dp_StartDate_SelectedDateChanged"></DatePicker>
+                                                SelectedDateChanged="Dp_StartDate_SelectedDateChanged"></DatePicker>
                                     </DockPanel>
 
                                     <DockPanel Grid.Row="1" Grid.Column="6" Grid.ColumnSpan="2" LastChildFill="True">
@@ -406,7 +406,7 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_tansNum" Width="*" Header="Transfer Number" Binding="{Binding transNum}"/>
-                        <DataGridTextColumn x:Name="col_Type" Width="*" Header="Type" Binding="{Binding transType ,Converter={StaticResource transTypeConverter }}"/>
+                        <!--<DataGridTextColumn x:Name="col_Type" Width="*" Header="Type" Binding="{Binding transType ,Converter={StaticResource transTypeConverter }}"/>-->
                         <DataGridTextColumn x:Name="col_fromBranch" Width="*" Header="From Branch" Binding="{Binding frombranchName}"/>
                         <DataGridTextColumn x:Name="col_fromPos" Width="*" Header="From Pos" Binding="{Binding fromposName}"/>
                         <DataGridTextColumn x:Name="col_toBranch" Width="*" Header="To Branch" Binding="{Binding tobranchName}"/>
@@ -532,8 +532,8 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
                 <!--<RowDefinition Height="*"></RowDefinition>-->
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <!--<RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>-->
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"  Background="White" Margin="5,0,5,5" CornerRadius="7">
@@ -562,7 +562,7 @@
                 </Grid>
             </Border>
             <GridSplitter Grid.Row="3" Background="Transparent" HorizontalAlignment="Stretch" Height="5" />
-            <Border Grid.Row="4" Background="White" Margin="5,5,5,0" CornerRadius="7">
+            <Border Grid.Row="4" Background="White" Margin="5,5,5,0" CornerRadius="7" Visibility="Collapsed">
                 <lvc:CartesianChart Name="rowChart" Margin="0,0,0,10" LegendLocation="Bottom"  >
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis  x:Name="MyAxis">

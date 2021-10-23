@@ -50,21 +50,21 @@ namespace POS.View.reports
         }
         public uc_posReports()
         {
-            //try
-            //{
+            try
+            {
                 InitializeComponent();
-            //}
-            //catch (Exception ex)
-            //{
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 list = await statisticModel.GetPosTrans();
 
@@ -73,10 +73,7 @@ namespace POS.View.reports
 
                 fromPos = statisticModel.getFromPosCombo(list);
                 toPos = statisticModel.getToPosCombo(list);
-                //accCombo = list.Where(g => g.transType == "p").GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
                 accCombo = list.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
-
-               //accCombo = statisticModel.getAccounantCombo(list, "p");
 
                 chk_twoWay.IsChecked = false;
                 chk_twoWay.IsEnabled = false;
@@ -95,70 +92,49 @@ namespace POS.View.reports
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_payments.Tag.ToString());
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
-        private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox fromBranch, ComboBox toBranch, ComboBox fromPos, ComboBox toPos, ComboBox Acc
-       , DatePicker startDate, DatePicker endDate, CheckBox towWays)
+        private List<CashTransferSts> fillList()
         {
-            //var selectedItem1 = fromBranch.SelectedItem as branchFromCombo;
-            //var selectedItem2 = toBranch.SelectedItem as branchToCombo;
-            //var selectedItem3 = fromPos.SelectedItem as posFromCombo;
-            //var selectedItem4 = toPos.SelectedItem as posToCombo;
-            //var selectedItem5 = Acc.SelectedItem as AccountantCombo;
-
-            //var result = payments.Where(x => (
-            //  (fromBranch.SelectedItem  != null ? x.frombranchId == selectedItem1.BranchFromId : true)
-            // && (toBranch.SelectedItem  != null ? x.tobranchId == selectedItem2.BranchToId : true)
-            // && (fromPos.SelectedItem   != null ? x.fromposId == selectedItem3.PosFromId : true)
-            // && (toPos.SelectedItem     != null ? x.toposId == selectedItem4.PosToId : true)
-            // && (Acc.SelectedItem       != null ? x.updateUserAcc == selectedItem5.Accountant : true)
-            // //&& (towWays.IsChecked      == false ? (x.transType == "d") : true)
-            // && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
-            // && (endDate.SelectedDate   != null ? x.updateDate <= endDate.SelectedDate : true)));
-
-            var result = payments
+            var result = list
           .Where(s =>
           //start date
           (dp_StartDate.SelectedDate    != null  ? s.updateDate  >= dp_StartDate.SelectedDate : true)
           &&
           //end date
-          //(dp_EndDate.SelectedDate      != null  ? s.updateDate  <= dp_EndDate.SelectedDate   : true)//??????????
+          (dp_EndDate.SelectedDate      != null ? s.updateDate <= dp_EndDate.SelectedDate : true)
+          &&
           //fromBranch
           ( cb_formBranch.SelectedIndex != -1 ? s.frombranchId  == Convert.ToInt32(cb_formBranch.SelectedValue) : true)
           &&
           //toBranch
           ( cb_toBranch.SelectedIndex != -1   ? s.tobranchId    == Convert.ToInt32(cb_toBranch.SelectedValue)   : true)
-          // &&
-          ////fromPos
-          //(cb_formPos.SelectedIndex != -1     ? s.fromposId     == Convert.ToInt32(cb_formPos.SelectedValue)    : true)
-          // &&
-          ////toPos
-          //(cb_toPos.SelectedIndex != -1       ? s.toposId       == Convert.ToInt32(cb_toPos.SelectedValue)      : true)
-           &&
+          &&
           //accountant
-          (cb_Accountant.SelectedIndex != -1 ? s.updateUserAcc == cb_Accountant.SelectedItem.ToString() : true)
+          (cb_Accountant.SelectedIndex != -1 ? s.updateUserAcc == cb_Accountant.SelectedValue.ToString() : true)
           &&
           //twoWay
           (
           chk_twoWay.IsChecked == true ?
-              //(cb_formPos.SelectedIndex != -1 ? (s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue)) : true)
-              //(cb_toPos.SelectedIndex   != -1 ? s.posId == Convert.ToInt32(cb_toPos.SelectedIndex)  || s.pos2Id == Convert.ToInt32(cb_toPos.SelectedIndex)  : true)
-              //: true
-              
+              //fromPos
+              (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+              &&
+              //toPos
+              (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) || s.fromposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+         :
               //fromPos
               (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
-               &&
+              &&
               //toPos
               (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
-         :true
           )
           );
 
@@ -195,11 +171,6 @@ namespace POS.View.reports
                 var temp = cb_toBranch.SelectedItem as branchToCombo;
                 cb_toPos.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
             }
-            //if (cb_formPos.SelectedItem != null)
-            //{
-            //    var temp = cb_formPos.SelectedItem as posToCombo;
-            //    cb_toPos.ItemsSource = toPos.Where(x => x.PosToId != temp.PosToId);
-            //}
         }
 
         private void fillAccCombo()
@@ -212,12 +183,12 @@ namespace POS.View.reports
         IEnumerable<CashTransferSts> temp = null;
         private void fillEvents()
         {
-            temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            temp = fillList();
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
-            //fillColumnChart();
+            fillColumnChart();
             //fillPieChart();
-            fillRowChart();
+            //fillRowChart();
         }
 
         private void Cb_formBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -241,83 +212,83 @@ namespace POS.View.reports
 
         private void Chk_allFromBranch_Checked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_formBranch.IsEnabled = false;
                 cb_formBranch.SelectedItem = null;
 
-            //if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allFromBranch_Unchecked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_formBranch.IsEnabled = true;
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allToBranch_Checked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_toBranch.IsEnabled = false;
                 cb_toBranch.SelectedItem = null;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allToBranch_Unchecked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_toBranch.IsEnabled = true;
 
-            //if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Cb_formPos_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -345,88 +316,89 @@ namespace POS.View.reports
 
         private void Chk_allFromPos_Checked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_formPos.IsEnabled = false;
                 cb_formPos.SelectedItem = null;
-                //if (cb_toPos.SelectedItem == null)
-                //    chk_twoWay.IsEnabled = false;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (cb_toPos.SelectedItem == null)
+                    chk_twoWay.IsEnabled = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allFromPos_Unchecked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_formPos.IsEnabled = true;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allToPos_Checked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_toPos.IsEnabled = false;
                 cb_toPos.SelectedItem = null;
                 if (cb_formPos.SelectedItem == null)
                     chk_twoWay.IsEnabled = false;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allToPos_Unchecked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_toPos.IsEnabled = true;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Cb_toBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -437,8 +409,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 fillComboToPos();
-                //if (cb_formPos.SelectedItem != null)
-                //    cb_toPos.Items.Remove(cb_formPos.SelectedItem);
+               
                 fillEvents();
 
                 if (sender != null)
@@ -533,89 +504,90 @@ namespace POS.View.reports
 
         private void Chk_allAccountant_Checked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_Accountant.IsEnabled = false;
                 cb_Accountant.SelectedItem = null;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_allAccountant_Unchecked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_Accountant.IsEnabled = true;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_twoWay_Checked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 fillEvents();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Chk_twoWay_Unchecked(object sender, RoutedEventArgs e)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 fillEvents();
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
+
         private void fillPieChart()
         {
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            var temp = fillList();
 
             var result = temp
                 .GroupBy(s => new { s.transType })
@@ -652,23 +624,39 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            var temp = fillList();
 
-            var res = temp.GroupBy(x => new { x.posId, x.transType }).Select(x => new CashTransferSts
+            var res = temp.GroupBy(x => new { x.fromposId }).Select(x => new CashTransferSts
+            {
+                transType = "p",
+                posId = x.FirstOrDefault().fromposId,
+                posName = x.FirstOrDefault().fromposName + "/" + x.FirstOrDefault().frombranchName,
+                cash = x.Sum(g => g.cash)
+            });
+            var res1 = temp.GroupBy(x => new { x.toposId }).Select(x => new CashTransferSts
+            {
+                transType = "d",
+                posId = x.FirstOrDefault().toposId,
+                posName = x.FirstOrDefault().toposName + "/" + x.FirstOrDefault().tobranchName,
+                cash = x.Sum(g => g.cash)
+            });
+           
+            List<CashTransferSts> result = new List<CashTransferSts>();
+
+            result.AddRange(res.ToList());
+
+            if (chk_twoWay.IsChecked == true)
+                result.AddRange(res1.ToList());
+
+            var finalResult = result.GroupBy(x => new { x.posId }).Select(x => new CashTransferSts
             {
                 transType = x.FirstOrDefault().transType,
                 posId = x.FirstOrDefault().posId,
                 posName = x.FirstOrDefault().posName,
-                branchName = x.FirstOrDefault().branchName,
-                branchId = x.FirstOrDefault().branchId,
-                //depositCount = x.Where(g => g.transType == "d").Count(),
-                //pullCount = x.Where(g => g.transType == "p").Count()
-                depositSum = x.Where(g => g.transType == "d").Select(g => g.cash.Value).Sum(),
-                pullSum = x.Where(g => g.transType == "p").Select(g => g.cash.Value).Sum()
+                depositSum = x.Where(g => g.transType == "d").Sum(g => (decimal)g.cash),
+                pullSum    = x.Where(g => g.transType == "p").Sum(g => (decimal)g.cash)
             });
-
-
-            var tempName = temp.Select(s => new
+            var tempName = finalResult.Select(s => new
             {
                 itemName = s.posName,
             });
@@ -686,22 +674,18 @@ namespace POS.View.reports
 
             for (int i = 0; i < xCount; i++)
             {
-                cP.Add(res.ToList().Skip(i).FirstOrDefault().depositSum);
-                cPb.Add(res.ToList().Skip(i).FirstOrDefault().pullSum);
-                //cP.Add(res.ToList().Skip(i).FirstOrDefault().depositCount);
-                //cPb.Add(res.ToList().Skip(i).FirstOrDefault().depositCount);
+                cP.Add(finalResult.ToList().Skip(i).FirstOrDefault().depositSum);
+                cPb.Add(finalResult.ToList().Skip(i).FirstOrDefault().pullSum);
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             if (names.Count() > 6)
             {
                 decimal depositSum = 0, pullSum = 0;
-                for (int i = names.Count() - xCount + 1; i < res.Count(); i++)
+                for (int i = 6; i < names.Count(); i++)
                 {
-                    depositSum = depositSum + res.ToList().Skip(i).FirstOrDefault().depositSum;
-                    pullSum = pullSum + res.ToList().Skip(i).FirstOrDefault().pullSum;
-                    //depositSum = depositSum + res.ToList().Skip(i).FirstOrDefault().depositCount;
-                    //pullSum = pullSum + res.ToList().Skip(i).FirstOrDefault().depositCount;
+                    depositSum = depositSum + finalResult.ToList().Skip(i).FirstOrDefault().depositSum;
+                    pullSum = pullSum + finalResult.ToList().Skip(i).FirstOrDefault().pullSum;
                 }
                 if (!((depositSum == 0) && (pullSum == 0)))
                 {
@@ -749,19 +733,14 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay);
+            var temp = fillList();
 
             SeriesCollection rowChartData = new SeriesCollection();
-            var tempName = temp.GroupBy(s => new { s.agentId }).Select(s => new
-            {
-                itemName = s.FirstOrDefault().updateDate,
-            });
-            names.AddRange(tempName.Select(nn => nn.itemName.ToString()));
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
-            List<decimal> cash = new List<decimal>();
-            List<decimal> card = new List<decimal>();
+            List<decimal> pull = new List<decimal>();
+            List<decimal> deposit = new List<decimal>();
 
             if (endYear - startYear <= 1)
             {
@@ -771,10 +750,10 @@ namespace POS.View.reports
                     {
                         var firstOfThisMonth = new DateTime(year, month, 1);
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
-                        var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
-                        cash.Add((decimal)drawCash);
-                        card.Add((decimal)drawCard);
+                        var drawPull = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
+                        var drawDeposit= temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
+                        pull.Add((decimal)drawPull);
+                        deposit.Add((decimal)drawDeposit);
 
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
 
@@ -796,24 +775,24 @@ namespace POS.View.reports
                 {
                     var firstOfThisYear = new DateTime(year, 1, 1);
                     var firstOfNextMYear = firstOfThisYear.AddYears(1);
-                    var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Count();
-                    var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Count();
-                    cash.Add(drawCash);
-                    card.Add(drawCard);
+                    var drawPull = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.transType == "p").Sum(c => c.cash.Value);
+                    var drawDeposit= temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.transType == "d").Sum(c => c.cash.Value);
+                    pull.Add(drawPull);
+                    deposit.Add(drawDeposit);
                     MyAxis.Labels.Add(year.ToString());
                 }
             }
             rowChartData.Add(
           new LineSeries
           {
-              Values = cash.AsChartValues(),
-              Title = MainWindow.resourcemanager.GetString("trDeposit")
+              Values = pull.AsChartValues(),
+              Title = MainWindow.resourcemanager.GetString("trPull")
           }); 
             rowChartData.Add(
          new LineSeries
          {
-             Values = card.AsChartValues(),
-             Title = MainWindow.resourcemanager.GetString("trPull")
+             Values = deposit.AsChartValues(),
+             Title = MainWindow.resourcemanager.GetString("trDeposit")
          });
 
             DataContext = this;
@@ -856,13 +835,13 @@ namespace POS.View.reports
         }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                dgPayments.ItemsSource = fillList(list, cb_formBranch, cb_toBranch, cb_formPos, cb_toPos, cb_Accountant, dp_StartDate, dp_EndDate, chk_twoWay)
+                dgPayments.ItemsSource = fillList()
                                             .Where(obj => (
                                             obj.transNum.Contains(txt_search.Text) ||
                                             obj.frombranchName.Contains(txt_search.Text) ||
@@ -1012,6 +991,7 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
