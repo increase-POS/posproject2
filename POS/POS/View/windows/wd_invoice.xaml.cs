@@ -80,6 +80,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         private void Txb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
             try

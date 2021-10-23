@@ -2647,4 +2647,22 @@
   <data name="trQTR" xml:space="preserve">
     <value>الكمية</value>
   </data>
+  <data name="trAnotherPaymentMethods" xml:space="preserve">
+    <value>طرق دفع أخرى</value>
+  </data>
+  <data name="trErrorWrongUrl" xml:space="preserve">
+    <value>رابط خطأ</value>
+  </data>
+  <data name="trInputProcessNumber" xml:space="preserve">
+    <value>إدخال رقم العملية</value>
+  </data>
+  <data name="trMultiplePayment" xml:space="preserve">
+    <value>دفع متعدد</value>
+  </data>
+  <data name="trPayment1" xml:space="preserve">
+    <value>الدفع</value>
+  </data>
+  <data name="trPaymentMethods" xml:space="preserve">
+    <value>طرق الدفع</value>
+  </data>
 </root>

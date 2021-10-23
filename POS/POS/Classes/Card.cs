@@ -27,6 +27,7 @@ namespace POS.Classes
         public Nullable<int> updateUserId { get; set; }
         public Boolean canDelete { get; set; }
         public Nullable<byte> isActive { get; set; }
+        public Nullable<bool> hasProcessNum { get; set; }
         public string image { get; set; }
 
         public async Task<List<Card>> GetAll()

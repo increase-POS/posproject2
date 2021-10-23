@@ -67,6 +67,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         Item itemModel = new Item();
         Item item = new Item();
@@ -804,7 +805,8 @@ namespace POS.View
                 var typelist = new[] {
                 new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
                 new { Text = MainWindow.resourcemanager.GetString("trCredit") , Value = "balance" },
-                new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" },
+                new { Text = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods") , Value = "card" },
+                new { Text = MainWindow.resourcemanager.GetString("trMultiplePayment") , Value = "multiple" }, 
                  };
 
                 cb_paymentProcessType.ItemsSource = typelist;
@@ -1076,6 +1078,7 @@ namespace POS.View
             #endregion
             if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
             || (cb_paymentProcessType.SelectedIndex == 0)
+            || (cb_paymentProcessType.SelectedIndex == 3)
             || (cb_paymentProcessType.SelectedIndex == 2 && !tb_processNum.Text.Equals("") && _SelectedCard != -1)))
                 valid = true;
             else
@@ -1458,6 +1461,8 @@ namespace POS.View
                         (invoice.invType == "sd" || invoice.invType == "s"))
                         || (invoice.invType != "sd" && invoice.invType != "s"))
                 {
+                   
+
                     if (sender != null)
                         SectionData.StartAwait(grid_main);
                     //if (logInProcessing)
@@ -1469,50 +1474,70 @@ namespace POS.View
 
                     if (valid)
                     {
+                        if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                        {
+                            Window.GetWindow(this).Opacity = 0.2;
 
-                        if (_InvoiceType == "sbd") //sbd means sale bounse draft
-                        {
-                            await addInvoice("sb"); // sb means sale bounce
-                            await clearInvoice();
-                            await refreshDraftNotification();
-                        }
-                        else if (_InvoiceType == "or")
-                        {
-                            await saveOrder("s");
-                            await clearInvoice();
-                            await refreshOrdersWaitNotification();
-                        }
-                        else//s  sale invoice
-                        {
-                            await saveSaleInvoice("s");
-                            await clearInvoice();
-                            await refreshDraftNotification();
-                        }
+                            wd_multiplePayment w = new wd_multiplePayment();
+                            if (cb_customer.SelectedValue!= null)
+                            w.invoice.agentId = (int)cb_customer.SelectedValue;
+                            w.invoice.invType = _InvoiceType;
+                            w.invoice.totalNet = invoice.totalNet;
+                            w.cards = cards;
+                            w.ShowDialog();
 
-                        //thread  + purchases
-                        if (invoice.invType == "s")
-                        {
-
-                            if (MainWindow.print_on_save_sale == "1")
+                            Window.GetWindow(this).Opacity = 1;
+                            if (w.isOk == true)
                             {
-                                // printInvoice();
-                                Thread t1 = new Thread(() =>
+                                #region Save
+
+
+                                if (_InvoiceType == "sbd") //sbd means sale bounse draft
                                 {
-                                    printInvoice();
-                                });
-                                t1.Start();
-                            }
-                            if (MainWindow.email_on_save_sale == "1")
-                            {
-                                //sendsaleEmail();
-                                Thread t1 = new Thread(() =>
+                                    await addInvoice("sb"); // sb means sale bounce
+                                    await clearInvoice();
+                                    await refreshDraftNotification();
+                                }
+                                else if (_InvoiceType == "or")
                                 {
-                                    sendsaleEmail();
-                                });
-                                t1.Start();
+                                    await saveOrder("s");
+                                    await clearInvoice();
+                                    await refreshOrdersWaitNotification();
+                                }
+                                else//s  sale invoice
+                                {
+                                    await saveSaleInvoice("s");
+                                    await clearInvoice();
+                                    await refreshDraftNotification();
+                                }
+                                //thread  + purchases
+                                if (invoice.invType == "s")
+                                {
+
+                                    if (MainWindow.print_on_save_sale == "1")
+                                    {
+                                        // printInvoice();
+                                        Thread t1 = new Thread(() =>
+                                        {
+                                            printInvoice();
+                                        });
+                                        t1.Start();
+                                    }
+                                    if (MainWindow.email_on_save_sale == "1")
+                                    {
+                                        //sendsaleEmail();
+                                        Thread t1 = new Thread(() =>
+                                        {
+                                            sendsaleEmail();
+                                        });
+                                        t1.Start();
+                                    }
+                                }
+                                prinvoiceId = 0;
+
+                                #endregion
                             }
                         }
-                        prinvoiceId = 0;
                     }
                     //awaitSaveBtn(false);
                     //logInProcessing = true;
@@ -1850,6 +1875,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         public async Task fillInvoiceInputs(Invoice invoice)
         {
             configurProcessType();
@@ -3976,6 +4002,19 @@ namespace POS.View
                         gd_card.Visibility = Visibility.Visible;
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         break;
+                    case 3://multiple
+                        gd_theRest.Visibility = Visibility.Collapsed;
+                        tb_cashPaid.Text = txt_theRest.Text = "0";
+                        gd_card.Visibility = Visibility.Collapsed;
+                        tb_processNum.Clear();
+                        _SelectedCard = -1;
+                        txt_card.Text = "";
+                        dp_desrvedDate.IsEnabled = false;
+                        SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorCard);
+                        break;
+
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -3996,7 +4035,8 @@ namespace POS.View
             {
                     #region Button
                     Button button = new Button();
-                    button.DataContext = item.name;
+                    //button.DataContext = item.name;
+                    button.DataContext = item;
                     button.Tag = item.cardId;
                     button.Padding = new Thickness(0, 0, 0, 0);
                     button.Margin = new Thickness(2.5, 5, 2.5, 5);
@@ -4033,9 +4073,17 @@ namespace POS.View
         {
             var button = sender as Button;
             _SelectedCard = int.Parse(button.Tag.ToString());
-            txt_card.Text = button.DataContext.ToString();
+            //txt_card.Text = button.DataContext.ToString();
+            Card card = button.DataContext as Card;
+            txt_card.Text = card.name;
+            if (card.hasProcessNum.Value)
+                tb_processNum.Visibility = Visibility.Visible;
+            else
+                tb_processNum.Visibility = Visibility.Collapsed;
+
             //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
         }
+
         ImageBrush brush = new ImageBrush();
         async void userImageLoad(Ellipse ellipse, string image)
         {

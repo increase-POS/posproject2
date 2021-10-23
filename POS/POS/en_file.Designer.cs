@@ -358,6 +358,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to another payment methods.
+        /// </summary>
+        internal static string trAnotherPaymentMethods {
+            get {
+                return ResourceManager.GetString("trAnotherPaymentMethods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to approve the quotation?.
         /// </summary>
         internal static string trApproveQuotationNotification {
@@ -3004,6 +3013,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to wrong Url.
+        /// </summary>
+        internal static string trErrorWrongUrl {
+            get {
+                return ResourceManager.GetString("trErrorWrongUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The element  exceeded the upper limit of storage.
         /// </summary>
         internal static string trExceedMaxLimitAlertContent {
@@ -3459,6 +3477,15 @@ namespace POS {
         internal static string trInitializeShortage {
             get {
                 return ResourceManager.GetString("trInitializeShortage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input process number.
+        /// </summary>
+        internal static string trInputProcessNumber {
+            get {
+                return ResourceManager.GetString("trInputProcessNumber", resourceCulture);
             }
         }
         
@@ -4219,6 +4246,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Multiple payment.
+        /// </summary>
+        internal static string trMultiplePayment {
+            get {
+                return ResourceManager.GetString("trMultiplePayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The count must be more than zero.
         /// </summary>
         internal static string trMustBeMoreThanZero {
@@ -4720,6 +4756,24 @@ namespace POS {
         internal static string trPayment {
             get {
                 return ResourceManager.GetString("trPayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment1.
+        /// </summary>
+        internal static string trPayment1 {
+            get {
+                return ResourceManager.GetString("trPayment1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment Methods.
+        /// </summary>
+        internal static string trPaymentMethods {
+            get {
+                return ResourceManager.GetString("trPaymentMethods", resourceCulture);
             }
         }
         

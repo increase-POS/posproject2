@@ -3038,3 +3038,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_FirstPosGeneralSettings.g.
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_FirstPosGeneralSettings.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_companyInfo.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_companyInfo.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_multiplePayment.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_multiplePayment.baml

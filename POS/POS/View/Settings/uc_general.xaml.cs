@@ -65,36 +65,6 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        private void Btn_companyInfo_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_companyInfo w = new wd_companyInfo();
-                    w.isFirstTime = false;
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
-            }
-        }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -168,11 +138,11 @@ namespace POS.View.Settings
                 DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
                 var date = DateTime.Now;
                 var typelist = new[] {
-            new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
-            new { Text = date.ToString(dtfi.LongDatePattern) , Value = "LongDatePattern" },
-            new { Text =  date.ToString(dtfi.MonthDayPattern), Value = "MonthDayPattern" },
-            new { Text =  date.ToString(dtfi.YearMonthPattern), Value = "YearMonthPattern" },
-             };
+                    new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
+                    new { Text = date.ToString(dtfi.LongDatePattern) , Value = "LongDatePattern" },
+                    new { Text =  date.ToString(dtfi.MonthDayPattern), Value = "MonthDayPattern" },
+                    new { Text =  date.ToString(dtfi.YearMonthPattern), Value = "YearMonthPattern" },
+                     };
 
                 cb_dateForm.DisplayMemberPath = "Text";
                 cb_dateForm.SelectedValuePath = "Value";
@@ -199,6 +169,34 @@ namespace POS.View.Settings
                 }
                 #endregion
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Btn_companyInfo_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_companyInfo w = new wd_companyInfo();
+                    w.isFirstTime = false;
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

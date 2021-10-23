@@ -349,6 +349,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to طرق دفع أخرى.
+        /// </summary>
+        internal static string trAnotherPaymentMethods {
+            get {
+                return ResourceManager.GetString("trAnotherPaymentMethods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هل تريد تأكيد عرض السعر؟.
         /// </summary>
         internal static string trApproveQuotationNotification {
@@ -2977,6 +2986,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to رابط خطأ.
+        /// </summary>
+        internal static string trErrorWrongUrl {
+            get {
+                return ResourceManager.GetString("trErrorWrongUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العنصر تجاوز الحد الأعلى للتخزين.
         /// </summary>
         internal static string trExceedMaxLimitAlertContent {
@@ -3432,6 +3450,15 @@ namespace POS {
         internal static string trInitializeShortage {
             get {
                 return ResourceManager.GetString("trInitializeShortage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إدخال رقم العملية.
+        /// </summary>
+        internal static string trInputProcessNumber {
+            get {
+                return ResourceManager.GetString("trInputProcessNumber", resourceCulture);
             }
         }
         
@@ -4192,6 +4219,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to دفع متعدد.
+        /// </summary>
+        internal static string trMultiplePayment {
+            get {
+                return ResourceManager.GetString("trMultiplePayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العدد يجب أن يكون أكبر من الصفر.
         /// </summary>
         internal static string trMustBeMoreThanZero {
@@ -4675,6 +4711,24 @@ namespace POS {
         internal static string trPayment {
             get {
                 return ResourceManager.GetString("trPayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الدفع.
+        /// </summary>
+        internal static string trPayment1 {
+            get {
+                return ResourceManager.GetString("trPayment1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طرق الدفع.
+        /// </summary>
+        internal static string trPaymentMethods {
+            get {
+                return ResourceManager.GetString("trPaymentMethods", resourceCulture);
             }
         }
         

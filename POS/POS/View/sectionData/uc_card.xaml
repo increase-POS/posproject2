@@ -88,7 +88,7 @@
                     <ToggleButton DockPanel.Dock="Right"   x:Name="tgl_cardIsActive"  
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
                                       Margin="0" Height="13" Width="28"  TabIndex="15" Checked="Tgl_cardIsActive_Checked" Unchecked="Tgl_cardIsActive_Unchecked" />
-                    <TextBlock  DockPanel.Dock="Right"
+                    <TextBlock  DockPanel.Dock="Right" x:Name="txt_cardIsActive"
                                    Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
@@ -386,6 +386,8 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
 
                         </Grid.RowDefinitions>
@@ -407,6 +409,7 @@
                         <!--#endregion-->
 
                         <!--Card Name-->
+                        
                         <!--#region -->
                         <Button  Grid.Row="1" VerticalAlignment="Top" FlowDirection="LeftToRight"
                                  x:Name="img_card"
@@ -442,9 +445,40 @@
                         </Path>
                         <!--#endregion-->
 
+
+                        <!--isActive-->
+                        <StackPanel Orientation="Horizontal" Grid.Row="3"  Margin="5">
+                            <TextBlock  x:Name="txt_hasProcessNum"
+                                Margin="10,0,5,0" Text="Input Process Number" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                            <ToggleButton   x:Name="tgl_hasProcessNum"  IsChecked="{Binding hasProcessNum, Mode=OneWay}"
+                                      Checked="Tgl_hasProcessNum_Checked" 
+                                      Unchecked="Tgl_hasProcessNum_Unchecked"
+                                        VerticalAlignment="Center" Padding="10,15,5,5"  
+                                      Margin="0" Height="13" Width="28"  TabIndex="15" />
+                        </StackPanel>
+                        <!--#endregion-->
+                        
+                        <!--isActive-->
+                        <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="5">
+                            <TextBlock  x:Name="txt_isActive"
+                                Margin="10,0,5,0" Text="is Active" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                            <ToggleButton   x:Name="tgl_isActive"  IsChecked="{Binding isActive, Mode=OneWay}"
+                                      Checked="Tgl_isActive_Checked" 
+                                      Unchecked="Tgl_isActive_Unchecked"
+                                        VerticalAlignment="Center" Padding="10,15,5,5"  
+                                      Margin="0" Height="13" Width="28"  TabIndex="15" />
+                        </StackPanel>
+                        <!--#endregion-->
+
+
+
                         <!--Note-->
                         <!--#region -->
-                        <TextBox x:Name="tb_notes" Grid.Row="3" Text="{Binding notes, Mode=OneWay}" 
+                        <TextBox x:Name="tb_notes" Grid.Row="5" Text="{Binding notes, Mode=OneWay}" 
                                  Padding="10,0,5,5"   TabIndex="9" Margin="10,5,10,5"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
@@ -452,15 +486,7 @@
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Center"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 MinHeight="70"  Grid.ColumnSpan="2" >
-                            <!--<TextBox.ToolTip>
-                                <ToolTip x:Name="tt_notes" Content="Notes"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </TextBox.ToolTip>-->
-                        </TextBox>
+                                 MinHeight="70"  Grid.ColumnSpan="2"/>
                         <Path  Grid.Row="3" Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15" 

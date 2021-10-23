@@ -107,10 +107,13 @@ namespace POS.View.sectionData
 
         private void translate()
         {
-          
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            txt_card.Text = MainWindow.resourcemanager.GetString("trPaymentMethods");
+            txt_hasProcessNum.Text = MainWindow.resourcemanager.GetString("trInputProcessNumber");
+            txt_cardIsActive.Text = txt_isActive.Text = MainWindow.resourcemanager.GetString("trActive");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
                 txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trCardNameHint"));
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNoteHint"));
                 txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
                 txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
@@ -368,7 +371,6 @@ namespace POS.View.sectionData
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
             try
@@ -436,7 +438,6 @@ namespace POS.View.sectionData
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async Task activate()
         {//activate
            
@@ -514,7 +515,6 @@ namespace POS.View.sectionData
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void tb_phone_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;
@@ -984,6 +984,25 @@ namespace POS.View.sectionData
             }
         }
 
+        private void Tgl_hasProcessNum_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tgl_hasProcessNum_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }
