@@ -894,13 +894,13 @@
                                        HorizontalAlignment="Right">
                             <TextBlock  VerticalAlignment="Center"   Text="" x:Name="txt_invNumber"  Foreground="#4E4E4E" 
                                    FontWeight="SemiBold" FontSize="14"/>
-                            <Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   Margin="5,0" Height="auto"
+                            <!--<Button Grid.Column="5" BorderBrush="{x:Null}" Padding="0"   Margin="5,0" Height="auto"
                     Background="{x:Null}" Visibility="Collapsed" 
                                     x:Name="btn_deleteInvoice"  Click="Btn_deleteInvoice_Click" >
                                 <materialDesign:PackIcon Foreground="{StaticResource mediumRed}" Kind="ClearCircle"  
                                 HorizontalAlignment="Center" Grid.Column="0"  
                                 VerticalAlignment="Center" Width="25" Height="25"/>
-                            </Button>
+                            </Button>-->
                         </StackPanel>
                         
                         <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"

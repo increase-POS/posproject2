@@ -1627,7 +1627,7 @@ namespace POS.View
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
             gd_theRest.Visibility = Visibility.Collapsed;
-            btn_deleteInvoice.Visibility = Visibility.Collapsed;
+            //btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
@@ -2075,10 +2075,10 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                     dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = false;
+                    btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    //tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
@@ -2090,7 +2090,7 @@ namespace POS.View
                     btn_clearCoupon.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
-                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
                 case "sd": // sales draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
@@ -2098,10 +2098,10 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = false;
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = true;
+                    btn_clearCustomer.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
-                    //tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
                     bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
@@ -2110,7 +2110,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
-                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -2129,10 +2129,10 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = false;
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = false;
+                    btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
-                    //tb_discountCoupon.IsEnabled = true;
                     btn_save.IsEnabled = true;
                     bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
@@ -2141,7 +2141,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
-                    btn_deleteInvoice.Visibility = Visibility.Visible;
+                    //btn_deleteInvoice.Visibility = Visibility.Visible;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -2160,10 +2160,10 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
+                    btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    //tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = false;
                     bdr_paymentDetails.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
@@ -2173,7 +2173,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
-                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
                     break;
@@ -2183,10 +2183,10 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
+                    btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    //tb_discountCoupon.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = false;
@@ -2196,7 +2196,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
-                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -4414,45 +4414,45 @@ namespace POS.View
             await fillInvoiceInputs(invoice);
         }
 
-        private async void Btn_deleteInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                if (invoice.invoiceId != 0)
-                {
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                    {
-                        int res = await invoice.deleteOrder(invoice.invoiceId);
-                        if (res >0)
-                        {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+        //private async void Btn_deleteInvoice_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (sender != null)
+        //            SectionData.StartAwait(grid_main);
+        //        if (invoice.invoiceId != 0)
+        //        {
+        //            #region
+        //            Window.GetWindow(this).Opacity = 0.2;
+        //            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+        //            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+        //            w.ShowDialog();
+        //            Window.GetWindow(this).Opacity = 1;
+        //            #endregion
+        //            if (w.isOk)
+        //            {
+        //                int res = await invoice.deleteOrder(invoice.invoiceId);
+        //                if (res >0)
+        //                {
+        //                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
-                            await clearInvoice();
-                            await refreshDraftNotification();
-                        }
-                        else
-                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    }
-                }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //                    await clearInvoice();
+        //                    await refreshDraftNotification();
+        //                }
+        //                else
+        //                    Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+        //            }
+        //        }
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
 
         private void Exp_payment_Expanded(object sender, RoutedEventArgs e)
         {
