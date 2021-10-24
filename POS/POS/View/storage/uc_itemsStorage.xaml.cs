@@ -295,26 +295,7 @@ namespace POS.View.storage
                     {
                         Thread t1 = new Thread(() =>
                         {
-                            List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                            string addpath;
-                            bool isArabic = ReportCls.checkLang();
-                            if (isArabic)
-                            {
-                                addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-                            }
-                            else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                            ReportCls.checkLang();
-
-                            clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
-                            clsReports.setReportLanguage(paramarr);
-                            clsReports.Header(paramarr);
-
-                            rep.SetParameters(paramarr);
-
-                            rep.Refresh();
+                            BuildReport();
                             this.Dispatcher.Invoke(() =>
                             {
                                 saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -436,8 +417,8 @@ namespace POS.View.storage
                             newLocation.note = tb_notes.Text;
                             newLocation.updateUserId = MainWindow.userID.Value;
                             newLocation.createUserId = MainWindow.userID.Value;
-                           int res = await itemLocation.unlockItem(newLocation);
-                            if (res>0)
+                            int res = await itemLocation.unlockItem(newLocation);
+                            if (res > 0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
@@ -505,8 +486,8 @@ namespace POS.View.storage
                                 newLocation.updateUserId = MainWindow.userID.Value;
                                 newLocation.createUserId = MainWindow.userID.Value;
                                 //newLocation.storeCost 
-                                int  res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
-                                if (res>0)
+                                int res = await itemLocation.trasnferItem(itemLocation.itemsLocId, newLocation);
+                                if (res > 0)
                                 {
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
@@ -704,6 +685,57 @@ namespace POS.View.storage
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        string repTitle2 = "";
+        private void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (chk_locked.IsChecked == true)
+                {
+                    addpath = @"\Reports\Store\Ar\ArStorageResReport.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
+                }
+
+
+
+            }
+            else
+            {
+                if (chk_locked.IsChecked == true)
+                {
+                    addpath = @"\Reports\Store\EN\StorageResReport.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Store\EN\StorageReport.rdlc";
+                }
+
+            }
+            if (repTitle2 == "")
+            {
+                repTitle2 = "trStored";
+            }
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            clsReports.setReportLanguage(paramarr);
+
+            clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
+            paramarr.Add(new ReportParameter("Title2", MainWindow.resourcemanagerreport.GetString(repTitle2)));
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -716,27 +748,8 @@ namespace POS.View.storage
                     #region
                     if (itemLocationListQuery != null)
                     {
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                        ReportCls.checkLang();
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
-
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
-
+                        BuildReport();
                         saveFileDialog.Filter = "PDF|*.pdf;";
 
                         if (saveFileDialog.ShowDialog() == true)
@@ -772,25 +785,7 @@ namespace POS.View.storage
                     #region
                     if (itemLocationListQuery != null)
                     {
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                        ReportCls.checkLang();
-
-                        clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-                        rep.Refresh();
+                        BuildReport();
                         LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     }
                     #endregion
@@ -821,31 +816,15 @@ namespace POS.View.storage
                     if (itemLocationListQuery != null)
                     {
                         Window.GetWindow(this).Opacity = 0.2;
+
                         string pdfpath = "";
 
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
 
                         pdfpath = @"\Thumb\report\temp.pdf";
                         pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Store\Ar\ArStorageReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Store\EN\StorageReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                        ReportCls.checkLang();
-
-                        clsReports.itemLocation(itemLocationListQuery, rep, reppath, paramarr);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
+                        BuildReport();
 
                         LocalReportExtensions.ExportToPDF(rep, pdfpath);
                         wd_previewPdf w = new wd_previewPdf();
@@ -887,6 +866,9 @@ namespace POS.View.storage
                         chk_locked.IsChecked = false;
                         btn_locked.Visibility = Visibility.Collapsed;
                         dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
+                        repTitle2 = "trStored";
+
+
                     }
                     else if (cb.Name == "chk_freezone")
                     {
@@ -894,6 +876,8 @@ namespace POS.View.storage
                         chk_locked.IsChecked = false;
                         btn_locked.Visibility = Visibility.Collapsed;
                         dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
+                        repTitle2 = "trFreeZone";
+
                     }
                     else
                     {
@@ -901,6 +885,7 @@ namespace POS.View.storage
                         chk_freezone.IsChecked = false;
                         btn_locked.Visibility = Visibility.Visible;
                         dg_itemsStorage.Columns[6].Visibility = Visibility.Visible; //make order num column visible
+                        repTitle2 ="trReserved";
                     }
                 }
                 Tb_search_TextChanged(null, null);
