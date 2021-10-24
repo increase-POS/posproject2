@@ -33,7 +33,7 @@
                         Grid.Row="0" Margin="0,0,5,0"
                         BorderBrush="{x:Null}"
                         Background="#4E4E4E">
-                    <Grid >
+                    <Grid x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -114,8 +114,10 @@
                             </Button>
                         </Border>
 
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
                     </Grid>
                 </Border>
                 <Border CornerRadius="0,0,7,7" 
@@ -200,11 +202,9 @@
 
                                                 <CheckBox x:Name="chk_internalItemsTwoWay" 
                                                           Grid.Row="1" Grid.Column="4" Content="Two Ways"
+                                                          IsEnabled="False"
                                                           Checked="Chk_internalItemsTwoWay_Checked"
                                                           Unchecked="Chk_internalItemsTwoWay_Unchecked"></CheckBox>
-
-
-
 
                                                 <ComboBox Name="cb_internalItemsItems"
                                                           Grid.Row="2"
@@ -218,7 +218,6 @@
                                                           Height="40" 
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                       
                                                           ItemsSource="{Binding}"
                                                           SelectionChanged="cb_internalItemsItems_SelectionChanged" />
 
