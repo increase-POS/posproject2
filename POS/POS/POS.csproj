@@ -219,6 +219,7 @@
     <Compile Include="Classes\ItemUnit.cs" />
     <Compile Include="Classes\ItemUnitOffer.cs" />
     <Compile Include="Classes\ItemUnitUser.cs" />
+    <Compile Include="Classes\KeyValue.cs" />
     <Compile Include="Classes\LocalReportExtensions.cs" />
     <Compile Include="Classes\Location.cs" />
     <Compile Include="Classes\Md5Encription.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Classes\Serial.cs" />
     <Compile Include="Classes\Service.cs" />
     <Compile Include="Classes\SettingCls.cs" />
+    <Compile Include="Classes\setupConfiguration.cs" />
     <Compile Include="Classes\setValues.cs" />
     <Compile Include="Classes\PosSetting.cs" />
     <Compile Include="Classes\Printers.cs" />

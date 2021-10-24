@@ -115,6 +115,7 @@ FE:\GitHub\posproject2\POS\POS\View\windows\wd_itemsOfferList.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_itemsUnitList.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_locationAddRange.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_locationsList.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\windows\wd_multiplePayment.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_notifications.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_previewPdf.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_reportCopyCountSetting.xaml;;
@@ -136,5 +137,4 @@ FE:\GitHub\posproject2\POS\POS\View\windows\wd_usersList.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_usersOnline.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\winControlPanel.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\winLogIn.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\windows\wd_multiplePayment.xaml;;
 

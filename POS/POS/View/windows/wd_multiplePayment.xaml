@@ -9,10 +9,10 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0" 
-        Height="400" Width="600"   Background="Transparent"
+        Height="300" Width="600"   Background="Transparent"
         AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
-    <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_ucInvoice" >
+    <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_main" >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
@@ -109,8 +109,15 @@
                     <RowDefinition Height="45"/>
                 </Grid.RowDefinitions>
                 
-                <StackPanel   Margin="5" >
-                    <Grid  Margin="5" Grid.Row="1"  >
+                <Grid   Margin="5" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid  Margin="5" Grid.Row="0"  >
                         <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="2"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Payment Process Type..."  
@@ -128,39 +135,7 @@
                             </Path.ToolTip>
                         </Path>
                     </Grid>
-                    <Grid Grid.Row="6" x:Name="gd_theRest" Visibility="Collapsed">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBox Grid.Row="0" Grid.ColumnSpan="3" x:Name="tb_cashPaid" MaxLength="20" 
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                 Text="{Binding test, Mode=OneWay}" Margin="5"
-                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                  Padding="10,0,5,0" Height="40"
-                                             PreviewKeyDown="PreventSpaces" 
-                                 PreviewTextInput="DecimalValidationTextBox" 
-                                        BorderThickness="1" TextChanged="Tb_cashPaid_TextChanged"
-                                 materialDesign:HintAssist.Hint="Cash paid..."  
-                                 Foreground="#4E4E4E"  TextBlock.FontSize="12"
-                                 Background="#f8f8f8" BorderBrush="#f8f8f8" />
-                        <TextBlock Grid.Row="1" Grid.Column="0"   x:Name="txt_theRestTitle"  Margin="5" 
-                       Foreground="#4E4E4E" Text="The Rest:"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                        <TextBlock Grid.Row="1" Grid.Column="1"  x:Name="txt_theRest"  Margin="2.5" 
-                       Foreground="#4E4E4E" Text="0" FontWeight="Bold" 
-                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                        <TextBlock  Grid.Row="1" Grid.Column="2"   Foreground="#4E4E4E"  
-                                   VerticalAlignment="Center" HorizontalAlignment="Left" 
-                               Margin="5,0,0,0"   Text="{Binding Path=MainWindow.Currency,  Mode=OneWay}"
-                            x:Name="tb_moneyIcontheResst"  />
-                    </Grid>
-                    <Grid Grid.Row="6" x:Name="gd_card" Visibility="Collapsed">
+                    <Grid Grid.Row="1" x:Name="gd_card" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -169,15 +144,16 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <DockPanel x:Name="dkp_cards" Grid.ColumnSpan="2" LastChildFill="False" HorizontalAlignment="Center"/>
-                        <Grid Grid.Row="1" Grid.Column="0" >
+                        <DockPanel x:Name="dkp_cards" Grid.ColumnSpan="2"
+                               LastChildFill="False" HorizontalAlignment="Center"/>
+                        <Grid Grid.Row="1" Grid.Column="0" Height="50">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Row="1" Grid.Column="0"   x:Name="txt_cardTitle"  Margin="5" 
-                       Foreground="#4E4E4E" Text="Card:"
+                       Foreground="#4E4E4E" Text="Card:" 
                         HorizontalAlignment="Left" VerticalAlignment="Center" />
                             <TextBlock Grid.Row="1" Grid.Column="1"  
                        x:Name="txt_card"  Margin="2.5" 
@@ -199,9 +175,9 @@
                                  Text="{Binding test, Mode=OneWay}" Margin="5"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Grid.Column="2" Padding="10,0,5,0" Height="40"
-                                             PreviewKeyDown="PreventSpaces" 
+                                 PreviewKeyDown="PreventSpaces" 
                                  PreviewTextInput="Tb_EnglishDigit_PreviewTextInput" 
-                                        BorderThickness="1" TextChanged="Tb_textBox_TextChanged"
+                                 BorderThickness="1" TextChanged="Tb_textBox_TextChanged"
                                  materialDesign:HintAssist.Hint="Process Number..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8" />
@@ -214,8 +190,15 @@
                             </Path.ToolTip>
                         </Path>
                     </Grid>
-                    <Grid>
-                        <TextBox x:Name="tb_cash" MaxLength="20"  Grid.Row="9"
+                    <Line Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
+                          VerticalAlignment="Bottom"/>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="tb_cash" MaxLength="20"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Text="{Binding cash, Mode=OneWay}" 
@@ -225,7 +208,7 @@
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8"
                                  Grid.Column="0"   Height="40"  Margin="10,5,10,5"
-                                 TextChanged="Tb_validateEmptyTextChange" 
+                                 TextChanged="Tb_textBox_TextChanged" 
                                  LostFocus="Tb_validateEmptyLostFocus"
                                  PreviewKeyDown="PreventSpaces" 
                                  PreviewTextInput="Tb_cash_PreviewTextInput"/>
@@ -237,42 +220,63 @@
                                 <ToolTip x:Name="tt_errorCash" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
-                    </Grid>
-                  
+                        <Button Grid.Column="1" x:Name="btn_enter"  Padding="0"  
+                                        Background="{x:Null}" BorderBrush="{x:Null}" 
+                                        Margin="2.5,1" Click="Btn_enter_Click">
+                            <Path Fill="#4E4E4E"  Stretch="Fill" 
+                              Width="35" Height="30"
+                         VerticalAlignment="Center" 
+                              Data="M250,144.07c-4,0-8,0-12,0-3.61,0-5.66-1.45-5.63-5.32,0-8.34,0-16.68,0-25,0-3.3,1.74-5,4.93-5,8.49-.06,17-.27,25.47.18,1.69.09,4.56,2.77,4.64,4.37.47,8.65.29,17.34.2,26,0,3.23-1.89,4.79-5.14,4.76C258.32,144.05,254.16,144.07,250,144.07Zm.17-7.49,9.17-9.63-9.22-10.49-1,5.26-7.14.62v8.15l7.22.64Z"/>
 
-                </StackPanel>
+                        </Button>
+                        <Button Grid.Column="2" x:Name="btn_clearCoupon"  Padding="0"  
+                                        Background="{x:Null}" BorderBrush="{x:Null}" 
+                                        Margin="2.5,1" Click="Btn_clearSerial_Click">
+                            <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                              HorizontalAlignment="Center" Grid.Column="0"  
+                         VerticalAlignment="Center" Width="35" Height="35"/>
+                            <Button.ToolTip>
+                                <ToolTip x:Name="tt_clear" Content="Clear"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
+                            </Button.ToolTip>
+                        </Button>
+
+                    </Grid>
+                </Grid>
                 <Line Grid.Row="0"   Grid.Column="1"    Stretch="Fill" Stroke="#DFDFDF"  Y2="1"  Margin="1 5" />
                 <Grid Grid.Row="0" Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border Margin="5"  BorderThickness="1" BorderBrush="#DFDFDF" >
-                        <ListView  x:Name="lst_payments" >
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-                            <ListItem/>
-
-                        </ListView>
-
+                    <Border Margin="5 5 5 15"  BorderThickness="1" BorderBrush="#DFDFDF" >
+                        <ListView 
+                                  x:Name="lst_payments" SelectionChanged="Lst_payments_SelectionChanged" />
                     </Border>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5 5 15 5">
-                        <TextBlock   x:Name="tb_sum"  Margin="5" 
+                    <Grid Grid.Row="1"   HorizontalAlignment="Right"
+                          Margin="5 5 15 5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"  x:Name="txt_sum"  Margin="5" 
                        Foreground="#4E4E4E" Text="0"
                                   FontWeight="Bold"  />
-                        <TextBlock    x:Name="tb_moneySympol1"    Margin="5 5 0 5" Text="LSP"
+                        <TextBlock Grid.Column="1"    x:Name="tb_moneySympol1"    Margin="5 5 0 5" Text="LSP"
                        Foreground="#4E4E4E"    FontWeight="Bold"  />
-
-                        <Path  Stroke="#4E4E4E" StrokeThickness="1.5" Stretch="Fill" Width="25" Margin="0 10"
+                        <Path Grid.Column="2"  Stroke="#4E4E4E" StrokeThickness="1.5" Stretch="Fill" Width="25"  Height="12" Margin="-5.5 10"
                                FlowDirection="RightToLeft" RenderTransformOrigin="0.5,0.5">
                             <Path.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
                                     <SkewTransform/>
-                                    <RotateTransform Angle="-45"/>
+                                    <RotateTransform Angle="-90"/>
                                     <TranslateTransform/>
                                 </TransformGroup>
                             </Path.RenderTransform>
@@ -280,18 +284,14 @@
                                 <LineGeometry StartPoint="0,0" EndPoint="1,1" />
                             </Path.Data>
                         </Path>
-
-                        <TextBlock   x:Name="tb_total"  Margin="0 5 5 5" 
+                        <TextBlock Grid.Column="3"  x:Name="tb_total"  Margin="0 5 5 5" 
                        Foreground="#4E4E4E" Text="0"
                                   FontWeight="Bold"  />
-                        <TextBlock    x:Name="tb_moneySympol2"    Margin="5 5 0 5" Text="LSP"
+                        <TextBlock  Grid.Column="4"  x:Name="tb_moneySympol2"    Margin="5 5 0 5" Text="LSP"
                        Foreground="#4E4E4E"    FontWeight="Bold"  />
 
-                    </StackPanel>
+                    </Grid>
                 </Grid>
-
-
-
                 <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
                 <Button Content="Save" Grid.Row="5" Grid.ColumnSpan="5"

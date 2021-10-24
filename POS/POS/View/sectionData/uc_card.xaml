@@ -453,8 +453,6 @@
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
                             <ToggleButton   x:Name="tgl_hasProcessNum"  IsChecked="{Binding hasProcessNum, Mode=OneWay}"
-                                      Checked="Tgl_hasProcessNum_Checked" 
-                                      Unchecked="Tgl_hasProcessNum_Unchecked"
                                         VerticalAlignment="Center" Padding="10,15,5,5"  
                                       Margin="0" Height="13" Width="28"  TabIndex="15" />
                         </StackPanel>
@@ -467,8 +465,6 @@
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
                             <ToggleButton   x:Name="tgl_isActive"  IsChecked="{Binding isActive, Mode=OneWay}"
-                                      Checked="Tgl_isActive_Checked" 
-                                      Unchecked="Tgl_isActive_Unchecked"
                                         VerticalAlignment="Center" Padding="10,15,5,5"  
                                       Margin="0" Height="13" Width="28"  TabIndex="15" />
                         </StackPanel>

@@ -2668,4 +2668,10 @@
   <data name="trErrorWrongActivation" xml:space="preserve">
     <value>مفتاح التفعيل خاطئ</value>
   </data>
+  <data name="trAmountGreaterInvoiceValue" xml:space="preserve">
+    <value>لا يمكن دفع مبلغ اكبر من قيمة الفاتورة</value>
+  </data>
+  <data name="trAmountPaidEqualInvoiceValue" xml:space="preserve">
+    <value>يجب أن يكون المبلغ المدفوع يساوي قيمة الفاتورة</value>
+  </data>
 </root>

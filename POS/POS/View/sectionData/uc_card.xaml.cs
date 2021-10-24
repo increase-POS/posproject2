@@ -239,6 +239,15 @@ namespace POS.View.sectionData
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     card.cardId = 0;
+                    byte active;
+                    try
+                    {
+                        active = byte.Parse((tgl_isActive.IsChecked.Value ? 0 : 1).ToString());
+                    }
+                    catch
+                    {
+                        active = 0;
+                    }
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
 
@@ -255,10 +264,14 @@ namespace POS.View.sectionData
                         else
                         {
                             card.name = tb_name.Text;
+                            card.hasProcessNum = tgl_hasProcessNum.IsChecked;
+                            
+                                card.isActive = active;
+                            
                             card.notes = tb_notes.Text;
                             card.createUserId = MainWindow.userID;
                             card.updateUserId = MainWindow.userID;
-                            card.isActive = 1;
+                            //card.isActive = 1;
 
                             int s = await cardModel.save(card);
 
@@ -307,6 +320,16 @@ namespace POS.View.sectionData
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
+
+                    byte active;
+                    try
+                    {
+                        active = byte.Parse((tgl_isActive.IsChecked.Value ? 1 : 0).ToString());
+                    }
+                    catch
+                    {
+                        active = 0;
+                    }
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
 
@@ -324,10 +347,11 @@ namespace POS.View.sectionData
                         {
 
                             card.name = tb_name.Text;
+                            card.hasProcessNum = tgl_hasProcessNum.IsChecked;
                             card.notes = tb_notes.Text;
                             card.createUserId = MainWindow.userID;
                             card.updateUserId = MainWindow.userID;
-                            card.isActive = 1;
+                            card.isActive = active;
 
                             int s = await cardModel.save(card);
 
@@ -468,6 +492,10 @@ namespace POS.View.sectionData
                 {
                     card = dg_card.SelectedItem as Card;
                     this.DataContext = card;
+                    if(card.isActive == 1)
+                    tgl_isActive.IsChecked = true;
+                    else
+                    tgl_isActive.IsChecked = false;
                 }
 
                 if (card != null)
@@ -984,25 +1012,7 @@ namespace POS.View.sectionData
             }
         }
 
-        private void Tgl_hasProcessNum_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_hasProcessNum_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
     }
 
 }

@@ -2686,4 +2686,10 @@ Please add Email in setting</value>
   <data name="trErrorWrongActivation" xml:space="preserve">
     <value>Wrong activation key</value>
   </data>
+  <data name="trAmountGreaterInvoiceValue" xml:space="preserve">
+    <value>It is not possible to pay an amount greater than the   invoice value</value>
+  </data>
+  <data name="trAmountPaidEqualInvoiceValue" xml:space="preserve">
+    <value>amount paid must be equal to the invoice value</value>
+  </data>
 </root>

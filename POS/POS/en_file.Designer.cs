@@ -331,11 +331,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It is not possible to pay an amount greater than the   invoice value.
+        /// </summary>
+        internal static string trAmountGreaterInvoiceValue {
+            get {
+                return ResourceManager.GetString("trAmountGreaterInvoiceValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Amount....
         /// </summary>
         internal static string trAmountHint {
             get {
                 return ResourceManager.GetString("trAmountHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to amount paid must be equal to the invoice value.
+        /// </summary>
+        internal static string trAmountPaidEqualInvoiceValue {
+            get {
+                return ResourceManager.GetString("trAmountPaidEqualInvoiceValue", resourceCulture);
             }
         }
         

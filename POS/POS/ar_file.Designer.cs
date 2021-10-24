@@ -322,11 +322,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكن دفع مبلغ اكبر من قيمة الفاتورة.
+        /// </summary>
+        internal static string trAmountGreaterInvoiceValue {
+            get {
+                return ResourceManager.GetString("trAmountGreaterInvoiceValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الكمية....
         /// </summary>
         internal static string trAmountHint {
             get {
                 return ResourceManager.GetString("trAmountHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to يجب أن يكون المبلغ المدفوع يساوي قيمة الفاتورة.
+        /// </summary>
+        internal static string trAmountPaidEqualInvoiceValue {
+            get {
+                return ResourceManager.GetString("trAmountPaidEqualInvoiceValue", resourceCulture);
             }
         }
         
