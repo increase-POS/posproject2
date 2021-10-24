@@ -3843,13 +3843,12 @@ namespace POS.View
             try
             { //items
 
-              
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_items w = new wd_items();
                 w.CardType = "sales";
                 w.ShowDialog();
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
                 if (w.isActive)
                 {
                     for (int i = 0; i < w.selectedItems.Count; i++)
@@ -3860,10 +3859,10 @@ namespace POS.View
                     refreshTotalValue();
                     refrishBillDetails();
                 }
+
+                Window.GetWindow(this).Opacity = 1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                Window.GetWindow(this).Opacity = 1;
-              
             }
             catch (Exception ex)
             {

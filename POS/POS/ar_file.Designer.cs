@@ -70,6 +70,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رصيد.
         /// </summary>
         internal static string tr_Balance {
@@ -417,6 +426,15 @@ namespace POS {
         internal static string trAreaHint {
             get {
                 return ResourceManager.GetString("trAreaHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نسخ احتياطي.
+        /// </summary>
+        internal static string trBackup {
+            get {
+                return ResourceManager.GetString("trBackup", resourceCulture);
             }
         }
         
@@ -5764,6 +5782,15 @@ namespace POS {
         internal static string trReserved {
             get {
                 return ResourceManager.GetString("trReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to استعادة نسخة.
+        /// </summary>
+        internal static string trRestore {
+            get {
+                return ResourceManager.GetString("trRestore", resourceCulture);
             }
         }
         

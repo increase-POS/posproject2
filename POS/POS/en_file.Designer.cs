@@ -430,6 +430,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup.
+        /// </summary>
+        internal static string trBackup {
+            get {
+                return ResourceManager.GetString("trBackup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backup/Restore.
         /// </summary>
         internal static string trBackUp_Restore {
@@ -5800,6 +5809,15 @@ namespace POS {
         internal static string trReserved {
             get {
                 return ResourceManager.GetString("trReserved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        internal static string trRestore {
+            get {
+                return ResourceManager.GetString("trRestore", resourceCulture);
             }
         }
         

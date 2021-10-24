@@ -2692,4 +2692,10 @@ Please add Email in setting</value>
   <data name="trAmountPaidEqualInvoiceValue" xml:space="preserve">
     <value>amount paid must be equal to the invoice value</value>
   </data>
+  <data name="trBackup" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="trRestore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
 </root>

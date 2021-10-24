@@ -2674,4 +2674,13 @@
   <data name="trAmountPaidEqualInvoiceValue" xml:space="preserve">
     <value>يجب أن يكون المبلغ المدفوع يساوي قيمة الفاتورة</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trBackup" xml:space="preserve">
+    <value>نسخ احتياطي</value>
+  </data>
+  <data name="trRestore" xml:space="preserve">
+    <value>استعادة نسخة</value>
+  </data>
 </root>

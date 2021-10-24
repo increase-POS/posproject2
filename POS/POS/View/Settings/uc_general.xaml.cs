@@ -160,7 +160,7 @@ namespace POS.View.Settings
                 #endregion
 
                 fillAccuracy();
-
+                fillBackup();
                 #region get default accracy
                 await getDefaultAccuracy();
                 if (accuracy != null)
@@ -230,7 +230,17 @@ namespace POS.View.Settings
             cb_accuracy.SelectedValuePath = "Value";
             cb_accuracy.ItemsSource = list;
         }
-
+        private void fillBackup()
+        {
+            cb_backup.DisplayMemberPath = "Text";
+            cb_backup.SelectedValuePath = "Value";
+                var typelist = new[] {
+                 new { Text = MainWindow.resourcemanager.GetString("trBackup")       , Value = "backup" },
+                 new { Text = MainWindow.resourcemanager.GetString("trRestore")       , Value = "restore" },
+                };
+            cb_backup.ItemsSource = typelist;
+            cb_backup.SelectedIndex = 0;
+        }
         public static async Task<SetValues> getDefaultCost()
         {
             List<SettingCls> settingsCls = await setModel.GetAll();
@@ -340,8 +350,8 @@ namespace POS.View.Settings
             txt_smsHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             //txt_emails.Text = MainWindow.resourcemanager.GetString("trEmails");
             //txt_emailHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            txt_backUp.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
-            txt_backUpHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
+            txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
+            //txt_backupHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_dashBoard.Text = MainWindow.resourcemanager.GetString("trDashBoard");
             txt_dashHint.Text = MainWindow.resourcemanager.GetString("trDashHint");
 
@@ -780,6 +790,20 @@ namespace POS.View.Settings
             //}
 
             //MessageBox.Show(s);
+        }
+
+        private void Btn_saveBackup_Click(object sender, RoutedEventArgs e)
+        {
+             
+            if (cb_backup.SelectedValue.ToString() == "backup")
+            {
+                // insert your code Here Mr.Naji
+            }
+            else
+            {
+                // insert your code Here Mr.Naji
+
+            }
         }
 
         private async void Btn_saveAccuracy_Click(object sender, RoutedEventArgs e)

@@ -79,6 +79,7 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucItems);
+                grid_ucItems.Opacity = 1;
 
                 // for pagination onTop Always
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };

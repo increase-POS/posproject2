@@ -104,7 +104,6 @@ namespace POS.View.windows
             {
                 var typelist = new[] {
                  new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
-                new { Text = MainWindow.resourcemanager.GetString("trCredit") , Value = "balance" },
                 };
                 cb_paymentProcessType.ItemsSource = typelist;
             }
@@ -112,7 +111,6 @@ namespace POS.View.windows
             {
                 var typelist = new[] {
                 new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
-                new { Text = MainWindow.resourcemanager.GetString("trCredit") , Value = "balance" },
                 new { Text = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods") , Value = "card" },
                  };
 
