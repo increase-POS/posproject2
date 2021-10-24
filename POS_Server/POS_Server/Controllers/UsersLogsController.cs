@@ -800,6 +800,149 @@ namespace POS_Server.Controllers
             //    return "-3";
         }
 
+        //////////////////////
+        ///
+
+        public string Save(usersLogs newObject)
+        {
+            //public string Save(string token)
+            //string Object string newObject
+            string message = "";
+
+
+            if (newObject != null)
+            {
+
+
+                usersLogs tmpObject = null;
+
+
+                try
+                {
+                    if (newObject.posId == 0 || newObject.posId == null)
+                    {
+                        Nullable<int> id = null;
+                        newObject.posId = id;
+                    }
+                    if (newObject.userId == 0 || newObject.userId == null)
+                    {
+                        Nullable<int> id = null;
+                        newObject.userId = id;
+                    }
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var locationEntity = entity.Set<usersLogs>();
+                        if (newObject.logId == 0 || newObject.logId == null)
+                        {
+                            // signIn
+                            // sign out old
+                            using (incposdbEntities entity2 = new incposdbEntities())
+                            {
+                                List<usersLogs> ul = new List<usersLogs>();
+                                List<usersLogs> locationE = entity2.usersLogs.ToList();
+                                ul = locationE.Where(s => s.sOutDate == null &&
+                               ((DateTime.Now - (DateTime)s.sInDate).TotalHours >= 24) || (s.userId == newObject.userId && s.sOutDate == null)).ToList();
+                                if (ul != null)
+                                {
+                                    foreach (usersLogs row in ul)
+                                    {
+                                        row.sOutDate = DateTime.Now;
+                                        entity2.SaveChanges();
+                                    }
+                                }
+                            }
+                            newObject.sInDate = DateTime.Now;
+
+
+                            locationEntity.Add(newObject);
+                            entity.SaveChanges();
+                            message = newObject.logId.ToString();
+                            //sign out old user
+
+
+
+                        }
+
+
+
+                        else
+                        {//signOut
+                            tmpObject = entity.usersLogs.Where(p => p.logId == newObject.logId).FirstOrDefault();
+
+
+
+                            tmpObject.logId = newObject.logId;
+                            //  tmpObject.sInDate=newObject.sInDate;
+                            tmpObject.sOutDate = DateTime.Now;
+                            //    tmpObject.posId=newObject.posId;
+                            //  tmpObject.userId = newObject.userId;
+
+
+                            entity.SaveChanges();
+
+                            message = tmpObject.logId.ToString();
+                        }
+                        //  entity.SaveChanges();
+                    }
+
+                    return message;
+
+                }
+                catch
+                {
+                    message = "0";
+                    return message;
+                }
+
+
+            }
+            else
+            {
+                return "0";
+            }
+        }
+
+        public usersLogs GetByID(int logId)
+        {
+            usersLogs item = new usersLogs();
+
+            if (logId > 0)
+            {
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var itemlist = entity.usersLogs.Where(u => u.logId == logId).ToList();
+
+                        item = itemlist.Where(u => u.logId == logId)
+                               .Select(S => new usersLogs
+                               {
+                                   logId = S.logId,
+                                   sInDate = S.sInDate,
+                                   sOutDate = S.sOutDate,
+                                   posId = S.posId,
+                                   userId = S.userId,
+                               })
+                               .FirstOrDefault();
+                        return item;
+
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return item;
+
+                }
+            }
+            else
+            {
+                return item;
+            }
+
+
+
+        }
 
 
     }

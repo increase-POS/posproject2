@@ -526,5 +526,8 @@
             <param name="cashTransfer"></param>
             <returns></returns>
         </member>
+        <member name="M:POS_Server.Controllers.UsersLogsController.Save(POS_Server.usersLogs)">
+            
+        </member>
     </members>
 </doc>

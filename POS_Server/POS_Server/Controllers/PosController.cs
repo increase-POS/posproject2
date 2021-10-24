@@ -282,5 +282,155 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 }
             }
         }
+        [HttpPost]
+        [Route("setConfiguration")]
+        public string setConfiguration(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                string setObject = "";
+                string activationCode = "";
+                string deviceCode = "";
+                int countryId = 0;
+                string userName = "";
+                string password = "";
+                string branchName = "";
+                string branchMobile = "";
+                string posName = "";
+                List<setValuesModel> newObject = null;
+                
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "setValues")
+                    {
+                        setObject = c.Value.Replace("\\", string.Empty);
+                        setObject = setObject.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<List<setValuesModel>>(setObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    }
+                    else if (c.Type == "activationCode")
+                    {
+                        activationCode = c.Value;
+                    }
+                    else if (c.Type == "deviceCode")
+                    {
+                        deviceCode = c.Value;
+                    }
+                    else if(c.Type == "countryId")
+                    {
+                        countryId = int.Parse(c.Value); 
+                    }
+                    else if(c.Type == "userName")
+                    {
+                        userName = c.Value; 
+                    }
+                    else if(c.Type == "password")
+                    {
+                        password = c.Value; 
+                    }
+                    else if(c.Type == "branchMobile")
+                    {
+                        branchMobile = c.Value; 
+                    }
+                    else if(c.Type == "branchName")
+                    {
+                        branchName = c.Value; 
+                    }
+                    else if(c.Type == "posName")
+                    {
+                        posName = c.Value; 
+                    }
+                }
+          
+                //try
+                //{
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    pos tmpPos = new pos();
+                    var unitEntity = entity.Set<pos>();
+                    var validSerial = entity.posSerials.Where(x => x.posSerial == activationCode).FirstOrDefault();
+                    if (validSerial != null) // activation code is correct
+                    {
+                        var serialExist = entity.posSetting.Where(x => x.posSerialId == validSerial.id).FirstOrDefault();
+                        if (serialExist == null) // activation code is available
+                        {
+                            var pos = entity.pos.Find(1);
+                            pos.name = posName;
+                            entity.SaveChanges();
+                            #region add pos settings record
+                            var posSett = new posSetting()
+                            {
+                                posId = pos.posId,
+                                posSerialId = validSerial.id,
+                                posDeviceCode = deviceCode,
+                                createDate = DateTime.Now,
+                                updateDate = DateTime.Now,
+                            };
+                            entity.posSetting.Add(posSett);
+                            #endregion
+                            #region region settings
+                            List<countriesCodes> objectlist = entity.countriesCodes.Where(x => x.isDefault == 1).ToList();
+                            if (objectlist.Count > 0)
+                            {
+                                for (int i = 0; i < objectlist.Count; i++)
+                                {
+                                    objectlist[i].isDefault = 0;
+
+                                }
+                            }
+                            // set is selected to isdefault=1
+                            countriesCodes objectrow = entity.countriesCodes.Find(countryId);
+                            if (objectrow != null)
+                                objectrow.isDefault = 1;
+
+                            #endregion
+                            #region update user
+                            var user = entity.users.Find(2);
+                            user.username = userName;
+                            user.password = password;
+                            #endregion
+                            #region update branch
+                            var branch = entity.branches.Find(2);
+                            branch.name = branchName;
+                            branch.mobile = branchMobile;
+                            #endregion
+                            #region company info
+                            foreach(setValuesModel v in newObject)
+                            {
+                                var setId = entity.setting.Where(x => x.name == v.name).Select(x => x.settingId).Single();
+                                var setValue = new setValues()
+                                {
+                                    value = v.value,
+                                    isDefault = 1,
+                                    isSystem = 1,
+                                    settingId = setId,
+                                };
+                                entity.setValues.Add(setValue);
+                            }
+                            #endregion
+                            entity.SaveChanges();
+                            return TokenManager.GenerateToken(pos.posId.ToString());
+
+                        }
+                        else
+                            return TokenManager.GenerateToken("-3"); // activation code is unavailable
+                    }
+                    else
+                        return TokenManager.GenerateToken("-2"); // serial is wrong
+                }
+                //}
+                //catch
+                //{
+                //    message = "0";
+                //    return TokenManager.GenerateToken(message);
+                //}
+            }
+        }
     }
 }
