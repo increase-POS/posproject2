@@ -3,6 +3,7 @@ using POS.Classes;
 using POS.View.setup;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -105,7 +106,7 @@ namespace POS.View.windows
             }
         }
          
-        void CallPage(int index, string type)
+        void CallPage(int index, string type="")
         {
             if(index == 0)
             {
@@ -174,7 +175,6 @@ namespace POS.View.windows
                     }
                     else if (item.key.Equals("activationkey"))
                     {
-
                         if (string.IsNullOrWhiteSpace(uc_serverConfig.Instance.activationkey))
                         {
                             item.value = "";
@@ -186,14 +186,7 @@ namespace POS.View.windows
                             item.value = uc_serverConfig.Instance.activationkey;
                         }
                     }
-                }
-                // for watch list
-                string s = "";
-                foreach (var item in supsublist)
-                {
-                    s += item.key + " - " + item.value + "\n";
-                }
-                MessageBox.Show(s + "\n" + isValid);
+                }              
             }
             else if (pageIndex == 1)
             {
@@ -236,7 +229,15 @@ namespace POS.View.windows
                             break;
                         }
                         else
+                        {
                             item.value = uc_FirstPosGeneralSettings.Instance.userPassword;
+                            bool wrongPasswordLength = SectionData.chkPasswordLength(item.value);
+                            if (wrongPasswordLength)
+                            {
+                                isValid = false;
+                                break;
+                            }                          
+                        }
 
                     }
                     else if (item.key.Equals("branchName"))
@@ -277,13 +278,6 @@ namespace POS.View.windows
                     }
 
                 }
-                // for watch list
-                string s = "";
-                foreach (var item in supsublist)
-                {
-                    s += item.key + " - " + item.value + "\n";
-                }
-                MessageBox.Show(s + "\n" + isValid);
             }
             else if (pageIndex == 2)
             {
@@ -313,8 +307,8 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_companyInfo.Instance.address;
-                         }
+                            item.value = uc_companyInfo.Instance.address; 
+                        }
                     }
                     else if (item.key.Equals("email"))
                     {
@@ -369,61 +363,69 @@ namespace POS.View.windows
                          }
                     }
                 }
-
-
-                // for watch list
-                string s = "";
-                foreach (var item in supsublist)
-                {
-                    s += item.key + " - " + item.value + "\n";
-                }
-                MessageBox.Show(s + "\n" + isValid );
                 
             }
 
-            
-
             //if (isValid)
             //{
-                if (pageIndex == 0)
-                {
-                    //dina Work
-                    //MessageBox.Show("Server Config is done");
-                }
-                if (pageIndex == 1)
-                {
-                    //dina Work
-                    //MessageBox.Show("Setting Config is done");
-                }
                 if (pageIndex == 2)
                 {
-                //dina Work
+                //server INFO
                     string url = uc_serverConfig.Instance.serverUri;
                     string activationkey = uc_serverConfig.Instance.activationkey;
-
-                    string motherCode = setupConfiguration.GetMotherBoardID();
+                // user INFO
+                string userName = uc_FirstPosGeneralSettings.Instance.userName;
+                string password = Md5Encription.MD5Hash("Inc-m" + uc_FirstPosGeneralSettings.Instance.userPassword);
+                // branch INFO
+                string branchName = uc_FirstPosGeneralSettings.Instance.branchName;
+                string branchMobile = uc_FirstPosGeneralSettings.Instance.branchMobile;
+                // pos INFO
+                string posName = uc_FirstPosGeneralSettings.Instance.posName;
+                string motherCode = setupConfiguration.GetMotherBoardID();
                     string hardCode = setupConfiguration.GetHDDSerialNo();
                     string deviceCode = motherCode + "-" + hardCode;
-                    Global.APIUri = url;
-                    int res = await setupConfiguration.setConfiguration(activationkey,deviceCode);
+                // company INFO
+                List<SetValues> company = new List<SetValues>();
+                company.Add(new SetValues { name = "com_name", value = uc_companyInfo.Instance.companyName });
+                company.Add(new SetValues { name = "com_address", value = uc_companyInfo.Instance.address });
+                company.Add(new SetValues { name = "com_email", value = uc_companyInfo.Instance.email });
+                company.Add(new SetValues { name = "com_mobile", value = uc_companyInfo.Instance.mobile });
+                company.Add(new SetValues { name = "com_phone", value = uc_companyInfo.Instance.phone });
+                company.Add(new SetValues { name = "com_fax", value = uc_companyInfo.Instance.fax });
+                Global.APIUri = url+"/api/";
+                    int res = await setupConfiguration.setConfiguration(activationkey,deviceCode, countryId, userName, password, branchName,branchMobile,posName,company);
+                if(res == -2 || res == -3) // invalid or resrved activation key
+                {
+                    uc_serverConfig.Instance.activationkey = "";
+                    pageIndex = 0;
+                    CallPage(0);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupFirstPos.resourcemanager.GetString("trErrorWrongActivation"), animation: ToasterAnimation.FadeIn);
+                    return;
+                }
                 if (res > 0)
                 {
-                    //Properties.Settings.Default.APIUri = url;
-                    // Properties.Settings.Default.runNum = 2;
-                    MessageBox.Show("Setup Done");
-                    //Btn_cancel_Click(btn_cancel, null);
-                }
+                    Properties.Settings.Default.APIUri = Global.APIUri;
+                    Properties.Settings.Default.posId = res.ToString();
+                    Properties.Settings.Default.Save();
+                    restartApplication();
+                        //Btn_cancel_Click(btn_cancel, null);
+                    }
 
             }
-                if(pageIndex < 2)
+                if(pageIndex < 2 )
                 {
                     pageIndex++;
                     CallPage(pageIndex, (sender as Button).Tag.ToString());
                 }
-            //}
-            //else
-            //    Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
+        //}
+        //    else
+        //        Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
 
+        }
+        private void restartApplication()
+        {
+            System.Diagnostics.Process.Start("pos.exe");
+            Application.Current.Shutdown();
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {

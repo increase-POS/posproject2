@@ -2986,6 +2986,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مفتاح التفعيل خاطئ.
+        /// </summary>
+        internal static string trErrorWrongActivation {
+            get {
+                return ResourceManager.GetString("trErrorWrongActivation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رابط خطأ.
         /// </summary>
         internal static string trErrorWrongUrl {

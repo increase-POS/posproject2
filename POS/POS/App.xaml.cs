@@ -24,12 +24,17 @@ namespace POS
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
-
-                winLogIn logIn = new winLogIn();
-                logIn.Show();
-
-                //wd_setupFirstPos logIn = new wd_setupFirstPos();
-                //logIn.Show();
+                if (POS.Properties.Settings.Default.posId == "0")
+                {
+                    wd_setupFirstPos logIn = new wd_setupFirstPos();
+                    logIn.Show();
+                }
+                else
+                {
+                    winLogIn logIn = new winLogIn();
+                    logIn.Show();
+                }
+                
             }
 		 catch (Exception ex)
             {

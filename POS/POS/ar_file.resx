@@ -2665,4 +2665,7 @@
   <data name="trPaymentMethods" xml:space="preserve">
     <value>طرق الدفع</value>
   </data>
+  <data name="trErrorWrongActivation" xml:space="preserve">
+    <value>مفتاح التفعيل خاطئ</value>
+  </data>
 </root>

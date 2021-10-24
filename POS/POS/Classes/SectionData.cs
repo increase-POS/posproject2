@@ -1224,7 +1224,13 @@ namespace POS.Classes
 
             return sdate;
         }
-
+        public static bool chkPasswordLength(string password)
+        {
+            bool b = false;
+            if (password.Length < 6)
+                b = true;
+            return b;
+        }
 
         public static string DecTostring(decimal? dec)
         {

@@ -3013,6 +3013,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrong activation key.
+        /// </summary>
+        internal static string trErrorWrongActivation {
+            get {
+                return ResourceManager.GetString("trErrorWrongActivation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to wrong Url.
         /// </summary>
         internal static string trErrorWrongUrl {

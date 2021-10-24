@@ -94,5 +94,29 @@ namespace POS.Properties {
                 this["menuIsOpen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string APIUri {
+            get {
+                return ((string)(this["APIUri"]));
+            }
+            set {
+                this["APIUri"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public string posId {
+            get {
+                return ((string)(this["posId"]));
+            }
+            set {
+                this["posId"] = value;
+            }
+        }
     }
 }

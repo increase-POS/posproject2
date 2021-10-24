@@ -2683,4 +2683,7 @@ Please add Email in setting</value>
   <data name="trPaymentMethods" xml:space="preserve">
     <value>Payment Methods</value>
   </data>
+  <data name="trErrorWrongActivation" xml:space="preserve">
+    <value>Wrong activation key</value>
+  </data>
 </root>

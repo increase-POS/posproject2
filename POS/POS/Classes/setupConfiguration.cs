@@ -36,14 +36,22 @@ namespace POS.Classes
             }
             return valid;
         }
-        public async static Task<int> setConfiguration(string activationCode, string deviceCode)
+        public async static Task<int> setConfiguration(string activationCode, string deviceCode,int countryId,
+                                                       string userName, string password, string branchName, string branchMobile,
+                                                       string posName, List<SetValues> company)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             string method = "pos/setConfiguration";
-            //var myContent = JsonConvert.SerializeObject(item);
-           // parameters.Add("itemObject", myContent);
+            var myContent = JsonConvert.SerializeObject(company);
+           parameters.Add("setValues", myContent);
             parameters.Add("activationCode", activationCode);
             parameters.Add("deviceCode", deviceCode);
+            parameters.Add("countryId", countryId.ToString());
+            parameters.Add("userName", userName);
+            parameters.Add("password", password);
+            parameters.Add("branchName", branchName);
+            parameters.Add("branchMobile", branchMobile);
+            parameters.Add("posName", posName);
             return await APIResult.post(method, parameters);
         }
         public static string GetMotherBoardID()
