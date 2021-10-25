@@ -61,11 +61,6 @@ namespace POS.View.windows
             else
                 btn_next.Content = "Next";
         }
-        public class keyValueString
-        {
-            public string key { get; set; }
-            public string value { get; set; }
-        }
         static public List<keyValueString> list = new List<keyValueString>();
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

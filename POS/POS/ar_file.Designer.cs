@@ -376,7 +376,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to طرق دفع أخرى.
+        ///   Looks up a localized string similar to طرق دفع.
         /// </summary>
         internal static string trAnotherPaymentMethods {
             get {
@@ -444,6 +444,24 @@ namespace POS {
         internal static string trBackUp_Restore {
             get {
                 return ResourceManager.GetString("trBackUp/Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم النسخ الاحتياطي بنجاح.
+        /// </summary>
+        internal static string trBackupDoneSuccessfuly {
+            get {
+                return ResourceManager.GetString("trBackupDoneSuccessfuly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حدث خطأ قبل اتمام عملية النسخ.
+        /// </summary>
+        internal static string trBackupNotComplete {
+            get {
+                return ResourceManager.GetString("trBackupNotComplete", resourceCulture);
             }
         }
         
@@ -5791,6 +5809,24 @@ namespace POS {
         internal static string trRestore {
             get {
                 return ResourceManager.GetString("trRestore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تم الاستعادة بنجاح.
+        /// </summary>
+        internal static string trRestoreDoneSuccessfuly {
+            get {
+                return ResourceManager.GetString("trRestoreDoneSuccessfuly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حدث خطأ قبل اتمام عملية الاستعادة.
+        /// </summary>
+        internal static string trRestoreNotComplete {
+            get {
+                return ResourceManager.GetString("trRestoreNotComplete", resourceCulture);
             }
         }
         

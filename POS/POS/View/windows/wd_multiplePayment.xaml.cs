@@ -38,10 +38,13 @@ namespace POS.View.windows
         }
         static private object _Sender;
         public bool isOk { get; set; }
+        public bool hasCredit { get; set; }
+        public decimal creditValue { get; set; }
         ImageBrush brush = new ImageBrush();
         static private string _SelectedPaymentType = "cash";
         static private int _SelectedCard = -1;
         public List<CashTransfer> listPayments = new List<CashTransfer>();
+        CashTransfer cashTrasnfer;
         Card cardModel = new Card();
         public IEnumerable<Card> cards;
         public Invoice invoice = new Invoice();
@@ -150,14 +153,18 @@ namespace POS.View.windows
         }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            isOk = true;
-            if (invoice.paid < invoice.totalNet && invoice.agentId == null)
+            if (invoice.paid >= invoice.totalNet || ( hasCredit == true && creditValue > invoice.totalNet - invoice.paid))
+            {
+                isOk = true;
+                this.Close();
+            }
+           else // if (invoice.paid < invoice.totalNet && hasCredit == false &&)
             {
                 isOk = false;
-                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAmountPaidEqualInvoiceValue"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAmountPaidEqualInvoiceValue"), animation: ToasterAnimation.FadeIn);
             }
-            else
-                this.Close();
+
+
         }
 
         private void input_LostFocus(object sender, RoutedEventArgs e)
@@ -205,15 +212,7 @@ namespace POS.View.windows
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         SectionData.clearValidate(tb_processNum, p_errorCard);
                         break;
-                    case 1:// balance
-                        gd_card.Visibility = Visibility.Collapsed;
-                        tb_processNum.Clear();
-                        _SelectedCard = -1;
-                        txt_card.Text = "";
-                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
-                        SectionData.clearValidate(tb_processNum, p_errorCard);
-                        break;
-                    case 2://card
+                    case 1://card
                         gd_card.Visibility = Visibility.Visible;
                         break;
                 }
@@ -413,7 +412,7 @@ namespace POS.View.windows
             p_errorCash.Visibility = Visibility.Collapsed;
             //listPayments
             string s = "";
-            CashTransfer cashTrasnfer = new CashTransfer();
+            cashTrasnfer = new CashTransfer();
             try
             {
                 cashTrasnfer.cash = decimal.Parse(tb_cash.Text);
@@ -427,20 +426,26 @@ namespace POS.View.windows
                 cashTrasnfer.agentId = invoice.agentId;
                 cashTrasnfer.invId = invoice.invoiceId;
                 cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-
-                s =cb_paymentProcessType.Text + " : " + cashTrasnfer.cash;
-
-                if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                {
+                //s = cb_paymentProcessType.Text + " : " + cashTrasnfer.cash;
+                    s = validateDuplicate(cashTrasnfer.cash.Value );
+                }
+               else if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                 {
                     cashTrasnfer.cardId = _SelectedCard;
                     cashTrasnfer.docNum = tb_processNum.Text;
 
                     s =txt_card.Text + " : " + cashTrasnfer.cash;
                 }
+
+              
                 lst_payments.Items.Add(s);
                 listPayments.Add(cashTrasnfer);
                 invoice.paid += cashTrasnfer.cash;
                 txt_sum.Text = invoice.paid.ToString();
+
+
                 if (invoice.paid == invoice.totalNet)
                     txt_sum.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
                     else
@@ -455,7 +460,46 @@ namespace POS.View.windows
                 tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
             }
         }
+        string validateDuplicate(decimal dec )
+        {
+            try
+            {
+                string s = "";
+                //decimal dec = 0;
+                //List<string> str1 = s.ToString().Split(':').ToList<string>();
+                //str1[0] = str1[0].Replace(" ", "");
+                //dec = Decimal.Parse(str1[0]);
+                bool hasDuplicate = false;
+                int index = 0;
+                foreach (var item in lst_payments.Items)
+                {
+                    if (item.ToString().Contains(cb_paymentProcessType.Text))
+                    {
+                        List<string> str = item.ToString().Split(':').ToList<string>();
+                        str[1] = str[1].Replace(" ", "");
+                        dec += decimal.Parse(str[1]);
+                        invoice.paid -= decimal.Parse(str[1]);
+                        hasDuplicate = true;
+                        break;
+                    }
+                    index++;
+                }
+                if (hasDuplicate)
+                {
+                    listPayments.Remove(listPayments[index]);
+                    lst_payments.Items.Remove(lst_payments.Items[index]);
+                }
 
+                cashTrasnfer.cash = dec;
+                s = cb_paymentProcessType.Text + " : " + cashTrasnfer.cash;
+                return s;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+                return  "";
+            }
+        }
         private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -481,7 +525,6 @@ namespace POS.View.windows
 
             List<string> str = lst_payments.SelectedItem.ToString().Split(':').ToList<string>();
             str[1] = str[1].Replace(" ", "");
-
             invoice.paid -=decimal.Parse(str[1]);
             txt_sum.Text = invoice.paid.ToString();
 

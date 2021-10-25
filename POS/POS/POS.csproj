@@ -179,6 +179,7 @@
     <Compile Include="Classes\AgentMemberships.cs" />
     <Compile Include="Classes\Animations.cs" />
     <Compile Include="Classes\APIResult.cs" />
+    <Compile Include="Classes\BackupCls.cs" />
     <Compile Include="Classes\BadDateFixingConverter.cs" />
     <Compile Include="Classes\Bank.cs" />
     <Compile Include="Classes\Bonds.cs" />

@@ -2666,7 +2666,7 @@ Please add Email in setting</value>
     <value>QTY</value>
   </data>
   <data name="trAnotherPaymentMethods" xml:space="preserve">
-    <value>another payment methods</value>
+    <value>payment methods</value>
   </data>
   <data name="trErrorWrongUrl" xml:space="preserve">
     <value>wrong Url</value>
@@ -2697,5 +2697,17 @@ Please add Email in setting</value>
   </data>
   <data name="trRestore" xml:space="preserve">
     <value>Restore</value>
+  </data>
+  <data name="trBackupDoneSuccessfuly" xml:space="preserve">
+    <value>Backup done successfuly</value>
+  </data>
+  <data name="trBackupNotComplete" xml:space="preserve">
+    <value>Error .Backup not complete</value>
+  </data>
+  <data name="trRestoreDoneSuccessfuly" xml:space="preserve">
+    <value>Restore done successfuly</value>
+  </data>
+  <data name="trRestoreNotComplete" xml:space="preserve">
+    <value>Error, Restore not complete</value>
   </data>
 </root>

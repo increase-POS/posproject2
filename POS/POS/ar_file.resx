@@ -2648,7 +2648,7 @@
     <value>الكمية</value>
   </data>
   <data name="trAnotherPaymentMethods" xml:space="preserve">
-    <value>طرق دفع أخرى</value>
+    <value>طرق دفع</value>
   </data>
   <data name="trErrorWrongUrl" xml:space="preserve">
     <value>رابط خطأ</value>
@@ -2682,5 +2682,17 @@
   </data>
   <data name="trRestore" xml:space="preserve">
     <value>استعادة نسخة</value>
+  </data>
+  <data name="trBackupDoneSuccessfuly" xml:space="preserve">
+    <value>تم النسخ الاحتياطي بنجاح</value>
+  </data>
+  <data name="trBackupNotComplete" xml:space="preserve">
+    <value>حدث خطأ قبل اتمام عملية النسخ</value>
+  </data>
+  <data name="trRestoreDoneSuccessfuly" xml:space="preserve">
+    <value>تم الاستعادة بنجاح</value>
+  </data>
+  <data name="trRestoreNotComplete" xml:space="preserve">
+    <value>حدث خطأ قبل اتمام عملية الاستعادة</value>
   </data>
 </root>

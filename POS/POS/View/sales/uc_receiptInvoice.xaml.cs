@@ -1452,6 +1452,7 @@ namespace POS.View
         //        wait_saveBtn.IsIndeterminate = false;
         //    }
         //}
+
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
@@ -1474,70 +1475,94 @@ namespace POS.View
 
                     if (valid)
                     {
+                        bool multipleValid = true;
+                     List<CashTransfer> listPayments = new List<CashTransfer>();
+
                         if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                         {
                             Window.GetWindow(this).Opacity = 0.2;
-
                             wd_multiplePayment w = new wd_multiplePayment();
-                            if (cb_customer.SelectedValue!= null)
-                            w.invoice.agentId = (int)cb_customer.SelectedValue;
+                            if (cb_customer.SelectedValue != null)
+                                //w.invoice.agentId = (int)cb_customer.SelectedValue;
+
+                                //dina
+                                w.hasCredit = false;
+                                w.creditValue = 0;
+
                             w.invoice.invType = _InvoiceType;
                             w.invoice.totalNet = _Sum;
                             w.cards = cards;
                             w.ShowDialog();
-
                             Window.GetWindow(this).Opacity = 1;
-                            if (w.isOk == true)
-                            {
-                                #region Save
-
-
-                                if (_InvoiceType == "sbd") //sbd means sale bounse draft
-                                {
-                                    await addInvoice("sb"); // sb means sale bounce
-                                    await clearInvoice();
-                                    await refreshDraftNotification();
-                                }
-                                else if (_InvoiceType == "or")
-                                {
-                                    await saveOrder("s");
-                                    await clearInvoice();
-                                    await refreshOrdersWaitNotification();
-                                }
-                                else//s  sale invoice
-                                {
-                                    await saveSaleInvoice("s");
-                                    await clearInvoice();
-                                    await refreshDraftNotification();
-                                }
-                                //thread  + purchases
-                                if (invoice.invType == "s")
-                                {
-
-                                    if (MainWindow.print_on_save_sale == "1")
-                                    {
-                                        // printInvoice();
-                                        Thread t1 = new Thread(() =>
-                                        {
-                                            printInvoice();
-                                        });
-                                        t1.Start();
-                                    }
-                                    if (MainWindow.email_on_save_sale == "1")
-                                    {
-                                        //sendsaleEmail();
-                                        Thread t1 = new Thread(() =>
-                                        {
-                                            sendsaleEmail();
-                                        });
-                                        t1.Start();
-                                    }
-                                }
-                                prinvoiceId = 0;
-
-                                #endregion
-                            }
+                            //if (w.isOk == true)
+                            //{ }
+                            multipleValid = w.isOk;
+                            listPayments = w.listPayments;
                         }
+
+                        if (multipleValid)
+                        {
+                            // for dina
+                            if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                            {
+                                foreach (var item in listPayments)
+                                {
+
+                                }
+                            }
+
+
+                            #region Save
+                            if (_InvoiceType == "sbd") //sbd means sale bounse draft
+                            {
+                                await addInvoice("sb"); // sb means sale bounce
+                                await clearInvoice();
+                                await refreshDraftNotification();
+                            }
+                            else if (_InvoiceType == "or")
+                            {
+                                await saveOrder("s");
+                                await clearInvoice();
+                                await refreshOrdersWaitNotification();
+                            }
+                            else//s  sale invoice
+                            {
+                                await saveSaleInvoice("s");
+                                await clearInvoice();
+                                await refreshDraftNotification();
+                            }
+                            //thread  + purchases
+                            if (invoice.invType == "s")
+                            {
+
+                                if (MainWindow.print_on_save_sale == "1")
+                                {
+                                    // printInvoice();
+                                    Thread t1 = new Thread(() =>
+                                    {
+                                        printInvoice();
+                                    });
+                                    t1.Start();
+                                }
+                                if (MainWindow.email_on_save_sale == "1")
+                                {
+                                    //sendsaleEmail();
+                                    Thread t1 = new Thread(() =>
+                                    {
+                                        sendsaleEmail();
+                                    });
+                                    t1.Start();
+                                }
+                            }
+                            prinvoiceId = 0;
+
+                            #endregion
+                        }
+
+
+
+
+
                     }
                     //awaitSaveBtn(false);
                     //logInProcessing = true;

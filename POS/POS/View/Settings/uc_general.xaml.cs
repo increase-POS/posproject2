@@ -799,7 +799,6 @@ namespace POS.View.Settings
 
         private async void Btn_saveBackup_Click(object sender, RoutedEventArgs e)
         {
-
             if (cb_backup.SelectedValue.ToString() == "backup")
             {
                 BackupCls back = new BackupCls();
@@ -810,20 +809,10 @@ namespace POS.View.Settings
                     string filepath = saveFileDialog.FileName;
                     string message = await back.GetFile(filepath);
                     if (message == "1")
-                    {
-                        MessageBox.Show("Backup done successfuly");
-                    }
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
                     else
-                    {
-                        MessageBox.Show("Error .Backup not complete");
-                    }
-
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupNotComplete"), animation: ToasterAnimation.FadeIn);
                 }
-
-
-
-
-                // insert your code Here Mr.Naji
             }
             else
             {
@@ -834,22 +823,12 @@ namespace POS.View.Settings
                 if (openFileDialog.ShowDialog() == true)
                 {
                     filepath = openFileDialog.FileName;
-
                 }
                 string message = await back.uploadFile(filepath);
                 if (message == "1")
-                {
-                    MessageBox.Show("Restore done successfuly");
-
-
-                }
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
                 else
-                {
-                    MessageBox.Show("Error .Restore not complete");
-                }
-
-                // insert your code Here Mr.Naji
-
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreNotComplete"), animation: ToasterAnimation.FadeIn);
             }
         }
 
