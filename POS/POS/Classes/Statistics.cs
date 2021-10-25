@@ -1563,6 +1563,30 @@ namespace POS.Classes
             //}
         }
 
+        // الفواتير مع العناصر التي لديها اوفر
+        public async Task<List<ItemTransferInvoice>> GetPromoOffer(int mainBranchId, int userId)
+        {
+
+            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("mainBranchId", mainBranchId.ToString());
+            parameters.Add("userId", userId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetPromoOffer", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemTransferInvoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+        }
+
+
         // المخزون 
         #region Storage
 
