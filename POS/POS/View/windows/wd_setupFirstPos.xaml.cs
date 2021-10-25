@@ -29,10 +29,8 @@ namespace POS.View.windows
         {
             InitializeComponent();
         }
-
         public static ResourceManager resourcemanager;
         public bool isValid = false;
-     
         int _pageIndex;
         int pageIndex
         {
@@ -46,15 +44,32 @@ namespace POS.View.windows
         static public int countryId;
         static public string imgFileName = "pic/no-image-icon-125x125.png";
         static public ImageBrush brush = new ImageBrush();
-
         protected void OnPropertyChanged()
         {
-            txt_pageIndex.Text =(_pageIndex+1).ToString();
+            //txt_pageIndex.Text =(_pageIndex+1).ToString();
+            if (_pageIndex == 0)
+            {
+                path_step1.Visibility = Visibility.Visible;
+                path_step2.Visibility = Visibility.Hidden;
+                path_step3.Visibility = Visibility.Hidden;
+            }
+            else if (_pageIndex == 1)
+            {
+                path_step1.Visibility = Visibility.Hidden;
+                path_step2.Visibility = Visibility.Visible;
+                path_step3.Visibility = Visibility.Hidden;
+            }
+            else if (_pageIndex == 2)
+            {
+                path_step1.Visibility = Visibility.Hidden;
+                path_step2.Visibility = Visibility.Hidden;
+                path_step3.Visibility = Visibility.Visible;
+            }
 
             if (_pageIndex == 0)
-                btn_back.IsEnabled = false;
-            else
-                btn_back.IsEnabled = true;
+                            btn_back.IsEnabled = false;
+                        else
+                            btn_back.IsEnabled = true;
 
             if (_pageIndex == 2)
                 btn_next.Content = "Done";
@@ -100,7 +115,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-         
         void CallPage(int index, string type="")
         {
             if(index == 0)
@@ -119,7 +133,6 @@ namespace POS.View.windows
                 grid_main.Children.Add(uc_companyInfo.Instance);
             }
         }
-       
         private void Btn_cancel_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -136,8 +149,6 @@ namespace POS.View.windows
             pageIndex--;
             CallPage(pageIndex, (sender as Button).Tag.ToString());
         }
-       
-
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
             isValid = true;

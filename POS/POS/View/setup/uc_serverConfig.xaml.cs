@@ -72,9 +72,9 @@ namespace POS.View.setup
             if (name == "TextBox")
             {
                 if ((sender as TextBox).Name == "tb_serverUri")
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_serverUri, p_errorServerUri, tt_errorServerUri, "trEmptyError");
+                    SectionData.validateEmptyTextBox(tb_serverUri, p_errorServerUri, tt_errorServerUri, "trEmptyError");
                 else if ((sender as TextBox).Name == "tb_activationkey")
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_activationkey, p_errorActivationkey, tt_errorActivationkey, "trEmptyError");
+                    SectionData.validateEmptyTextBox(tb_activationkey, p_errorActivationkey, tt_errorActivationkey, "trEmptyError");
             }
             else if (name == "ComboBox")
             {
@@ -83,6 +83,26 @@ namespace POS.View.setup
                 //else if ((sender as ComboBox).Name == "cb_card")
                 //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
             }
+        }
+
+        public static BrushConverter bc = new BrushConverter();
+        public static bool validateEmptyTextBox(TextBox tb, Path p_error, ToolTip tt_error, string tr)
+        {
+            bool isValid = true;
+            if (string.IsNullOrWhiteSpace(tb.Text))
+            {
+                p_error.Visibility = Visibility.Visible;
+                //tt_error.Content = wd_setupFirstPos.resourcemanager.GetString(tr);
+                tt_error.Content = "This field cann't be empty";
+                tb.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                isValid = false;
+            }
+            else
+            {
+                tb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                p_error.Visibility = Visibility.Collapsed;
+            }
+            return isValid;
         }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {

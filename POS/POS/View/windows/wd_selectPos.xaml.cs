@@ -39,7 +39,6 @@ namespace POS.View.windows
         Branch branch = new Branch();
         IEnumerable<Branch> branches;
         IEnumerable<Pos> poss;
-
         SetValues valueModel = new SetValues();
         SettingCls setModel = new SettingCls();
         public int settingsPoSId = 0;
@@ -48,7 +47,6 @@ namespace POS.View.windows
         {
             this.Close();
         }
-
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -58,18 +56,18 @@ namespace POS.View.windows
 
                 #region translate
 
-                //if (winLogIn.lang.Equals("en"))
-                //{
-                //    winLogIn.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                //    grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
-                //}
-                //else
-                //{
-                //    winLogIn.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                //    grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
-                //}
+                if (winLogIn.lang.Equals("en"))
+                {
+                    winLogIn.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    winLogIn.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-                //translate();
+                translate();
                 #endregion
 
                 await fillBranch();
@@ -84,7 +82,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async Task fillBranch()
         {
             branches = await branchModel.GetBranchesActive("b");
@@ -93,7 +90,6 @@ namespace POS.View.windows
             cb_branch.SelectedValuePath = "branchId";
             cb_branch.SelectedIndex = -1;
         }
-
         private void translate()
         {
             txt_title.Text = winLogIn.resourcemanager.GetString("trInstallationSettings");
@@ -104,7 +100,6 @@ namespace POS.View.windows
             tt_branch.Content = winLogIn.resourcemanager.GetString("trBranch");
             tt_pos.Content = winLogIn.resourcemanager.GetString("trPosTooltip");
         }
-
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             try
@@ -117,7 +112,6 @@ namespace POS.View.windows
             catch(Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
         }
-
         List<SettingCls> set = new List<SettingCls>();
         private   void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
@@ -163,7 +157,6 @@ namespace POS.View.windows
             }
 
         }
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             try
@@ -177,9 +170,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
-
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
@@ -192,7 +182,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void validateEmpty(string name, object sender)
         {
             if (name == "ComboBox")
@@ -203,7 +192,6 @@ namespace POS.View.windows
                     validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trErrorEmptyPosToolTip");
             }
         }
-
         private async void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch
             try
@@ -229,7 +217,6 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void validateEmptyComboBox(ComboBox cb, Path p_error, ToolTip tt_error, string tr)
         {
             if (cb.SelectedIndex == -1)

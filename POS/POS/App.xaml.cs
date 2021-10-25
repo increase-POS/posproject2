@@ -34,7 +34,10 @@ namespace POS
                     winLogIn logIn = new winLogIn();
                     logIn.Show();
                 }
-                
+
+                //wd_setupOtherPos logIn = new wd_setupOtherPos();
+                //logIn.Show();
+
             }
 		 catch (Exception ex)
             {

@@ -480,6 +480,9 @@
     <Compile Include="View\setup\uc_FirstPosGeneralSettings.xaml.cs">
       <DependentUpon>uc_FirstPosGeneralSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\setup\uc_selectPos.xaml.cs">
+      <DependentUpon>uc_selectPos.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\setup\uc_serverConfig.xaml.cs">
       <DependentUpon>uc_serverConfig.xaml</DependentUpon>
     </Compile>
@@ -667,6 +670,9 @@
     </Compile>
     <Compile Include="View\windows\wd_setupGeneralSetting.xaml.cs">
       <DependentUpon>wd_setupGeneralSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_setupOtherPos.xaml.cs">
+      <DependentUpon>wd_setupOtherPos.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_setupServer.xaml.cs">
       <DependentUpon>wd_setupServer.xaml</DependentUpon>
@@ -968,6 +974,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\setup\uc_selectPos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\setup\uc_serverConfig.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1224,6 +1234,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_setupOtherPos.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\windows\wd_setupServer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1459,6 +1473,7 @@
     <Resource Include="pic\increase-login-bg.png" />
     <Resource Include="EmailTemplates\images\image-2.gif" />
     <Resource Include="pic\increase-login-bg-rtl.png" />
+    <Resource Include="pic\setup-bg.jpg" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
