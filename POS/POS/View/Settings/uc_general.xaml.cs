@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 namespace POS.View.Settings
 {
@@ -44,6 +45,10 @@ namespace POS.View.Settings
         static int taxId = 0, costId = 0, dateFormId, accuracyId;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private static uc_general _instance;
         public static uc_general Instance
         {
@@ -234,7 +239,7 @@ namespace POS.View.Settings
         {
             cb_backup.DisplayMemberPath = "Text";
             cb_backup.SelectedValuePath = "Value";
-                var typelist = new[] {
+            var typelist = new[] {
                  new { Text = MainWindow.resourcemanager.GetString("trBackup")       , Value = "backup" },
                  new { Text = MainWindow.resourcemanager.GetString("trRestore")       , Value = "restore" },
                 };
@@ -373,8 +378,8 @@ namespace POS.View.Settings
 
                 if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                   // string s = "";
-                   int s = 0;
+                    // string s = "";
+                    int s = 0;
                     SectionData.validateEmptyComboBox(cb_region, p_errorRegion, tt_errorRegion, "trEmptyRegion");
                     if (!cb_region.Text.Equals(""))
                     {
@@ -405,7 +410,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -413,7 +418,7 @@ namespace POS.View.Settings
         {//save language
             try
             {
-                
+
 
                 if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
@@ -429,8 +434,8 @@ namespace POS.View.Settings
                             usLanguage.userId = MainWindow.userID;
                             usLanguage.valId = Convert.ToInt32(cb_language.SelectedValue);
                             usLanguage.createUserId = MainWindow.userID;
-                          // string s = await usValueModel.Save(usLanguage);
-                           int s = await usValueModel.Save(usLanguage);
+                            // string s = await usValueModel.Save(usLanguage);
+                            int s = await usValueModel.Save(usLanguage);
                             if (!s.Equals(0))
                             {
                                 //update language in main window
@@ -448,7 +453,7 @@ namespace POS.View.Settings
                                 SectionData.EndAwait(grid_main);
                             uc_settings objUC1 = new uc_settings();
                             //objUC1.UserControl_Loaded(null , null);
-                           
+
                             //update languge in main window
                             MainWindow parentWindow = Window.GetWindow(this) as MainWindow;
 
@@ -459,13 +464,13 @@ namespace POS.View.Settings
                                 {
                                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                                     parentWindow.grid_mainWindow.FlowDirection = FlowDirection.LeftToRight;
-                                    
+
                                 }
                                 else
                                 {
                                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                                     parentWindow.grid_mainWindow.FlowDirection = FlowDirection.RightToLeft;
-                                    
+
                                 }
 
                                 parentWindow.translate();
@@ -482,7 +487,7 @@ namespace POS.View.Settings
                                 //set.UserControl_Loaded(null , null);
 
                                 //this.UserControl_Loaded(null , null);
-                            MainWindow.loadingDefaultPath("settings", "general");
+                                MainWindow.loadingDefaultPath("settings", "general");
                                 MainWindow.mainWindow.SetNotificationsLocation();
                             }
                         }
@@ -490,13 +495,13 @@ namespace POS.View.Settings
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-               
+
             }
             catch (Exception ex)
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void Btn_saveTax_Click(object sender, RoutedEventArgs e)
@@ -516,8 +521,8 @@ namespace POS.View.Settings
                         tax.value = tb_tax.Text;
                         tax.isSystem = 1;
                         tax.settingId = taxId;
-                       // string s = await valueModel.Save(tax);
-                      int s = await valueModel.Save(tax);
+                        // string s = await valueModel.Save(tax);
+                        int s = await valueModel.Save(tax);
                         if (!s.Equals(0))
                         {
                             //update tax in main window
@@ -539,11 +544,11 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
-        private   void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
+        private void Btn_saveCurrency_Click(object sender, RoutedEventArgs e)
         {//save currency
             try
             {
@@ -576,7 +581,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -588,7 +593,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -604,7 +609,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -617,7 +622,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -630,7 +635,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -657,7 +662,7 @@ namespace POS.View.Settings
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         User userModel = new User();
@@ -680,8 +685,8 @@ namespace POS.View.Settings
                         dateForm.value = cb_dateForm.SelectedValue.ToString();
                         dateForm.isSystem = 1;
                         dateForm.settingId = dateFormId;
-                       // string s = await valueModel.Save(dateForm);
-                       int s = await valueModel.Save(dateForm);
+                        // string s = await valueModel.Save(dateForm);
+                        int s = await valueModel.Save(dateForm);
                         if (!s.Equals(0))
                         {
                             //update dateForm in main window
@@ -703,7 +708,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -731,7 +736,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -741,17 +746,17 @@ namespace POS.View.Settings
             {
                 //if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 //{
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_userPath w = new wd_userPath();
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_userPath w = new wd_userPath();
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
                 //}
                 //else
                 //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -792,15 +797,57 @@ namespace POS.View.Settings
             //MessageBox.Show(s);
         }
 
-        private void Btn_saveBackup_Click(object sender, RoutedEventArgs e)
+        private async void Btn_saveBackup_Click(object sender, RoutedEventArgs e)
         {
-             
+
             if (cb_backup.SelectedValue.ToString() == "backup")
             {
+                BackupCls back = new BackupCls();
+                saveFileDialog.Filter = "BAK|*.bak;*.inc;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    string message = await back.GetFile(filepath);
+                    if (message == "1")
+                    {
+                        MessageBox.Show("Backup done successfuly");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error .Backup not complete");
+                    }
+
+                }
+
+
+
+
                 // insert your code Here Mr.Naji
             }
             else
             {
+                // restore
+                string filepath = "";
+                openFileDialog.Filter = "BAK | *.bak; *.inc; ";
+                BackupCls back = new BackupCls();
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    filepath = openFileDialog.FileName;
+
+                }
+                string message = await back.uploadFile(filepath);
+                if (message == "1")
+                {
+                    MessageBox.Show("Restore done successfuly");
+
+
+                }
+                else
+                {
+                    MessageBox.Show("Error .Restore not complete");
+                }
+
                 // insert your code Here Mr.Naji
 
             }
@@ -823,7 +870,7 @@ namespace POS.View.Settings
                         accuracy.value = cb_accuracy.SelectedValue.ToString();
                         accuracy.isSystem = 1;
                         accuracy.settingId = accuracyId;
-                      //  string s = await valueModel.Save(accuracy);
+                        //  string s = await valueModel.Save(accuracy);
                         int s = await valueModel.Save(accuracy);
                         if (!s.Equals(0))
                         {
@@ -846,7 +893,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -866,7 +913,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -900,7 +947,7 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this );
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }

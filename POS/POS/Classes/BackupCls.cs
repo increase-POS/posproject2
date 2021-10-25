@@ -102,49 +102,57 @@ namespace POS.Classes
 
             // ... Use HttpClient.
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
+            try
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-                client.BaseAddress = new Uri(Global.APIUri);
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-                client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-                HttpRequestMessage request = new HttpRequestMessage();
-                request.RequestUri = new Uri(Global.APIUri + "Backup/GetFile");
-                request.Headers.Add("APIKey", Global.APIKey);
-
-                request.Method = HttpMethod.Get;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = await client.SendAsync(request);
-
-                if (response.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
+                    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                    client.BaseAddress = new Uri(Global.APIUri);
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+                    HttpRequestMessage request = new HttpRequestMessage();
+                    request.RequestUri = new Uri(Global.APIUri + "Backup/GetFile");
+                    request.Headers.Add("APIKey", Global.APIKey);
 
-                    jsonString = await response.Content.ReadAsStreamAsync();
+                    request.Method = HttpMethod.Get;
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = await client.SendAsync(request);
 
-
-                    //  img = Bitmap.FromStream(jsonString);
-
-                    //  byteImg = await response.Content.ReadAsByteArrayAsync();
-
-                    // configure trmporery path
-                    //   string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                    // string tmpPath = Path.Combine(dir, Global.TMPAgentsFolder);
-
-                    //  if (!Directory.Exists(dest))
-                    //    Directory.CreateDirectory(dest);
-
-                    // tmpPath = Path.Combine(tmpPath, imageName);
-
-                    if (System.IO.File.Exists(dest))
+                    if (response.IsSuccessStatusCode)
                     {
-                        System.IO.File.Delete(dest);
-                    }
-                    CopyStream(jsonString, dest);
-                }
+                        jsonString = await response.Content.ReadAsStreamAsync();
 
+
+                        //  img = Bitmap.FromStream(jsonString);
+
+                        //  byteImg = await response.Content.ReadAsByteArrayAsync();
+
+                        // configure trmporery path
+                        //   string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        // string tmpPath = Path.Combine(dir, Global.TMPAgentsFolder);
+
+                        //  if (!Directory.Exists(dest))
+                        //    Directory.CreateDirectory(dest);
+
+                        // tmpPath = Path.Combine(tmpPath, imageName);
+
+                        //if (System.IO.File.Exists(dest))
+                        //{
+                        //    System.IO.File.Delete(dest);
+                        //}
+                        CopyStream(jsonString, dest);
+                    }
+
+                }
+                return "1";
             }
-            return "1";
+            catch
+            {
+                return "0";
+            }
+
+
         }
         public void CopyStream(Stream stream, string destPath)
         {
@@ -246,7 +254,7 @@ namespace POS.Classes
 
                 try
                 {
-             
+
 
                     // read file
                     var stream = new FileStream(source, FileMode.Open, FileAccess.Read);
@@ -294,7 +302,7 @@ namespace POS.Classes
             {
                 return "-3";
             }
-       
+
         }
 
 
