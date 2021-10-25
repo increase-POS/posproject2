@@ -40,8 +40,7 @@ namespace POS_Server.Controllers
             }
 
             var connectionBuilder = new System.Data.SqlClient.SqlConnectionStringBuilder(connectionstring);
-            //  string NEWCON = "data source= " + connection2.DataSource + ";initial catalog= " + connection2.InitialCatalog + ";integrated security= " + connection2.IntegratedSecurity.ToString() + ";MultipleActiveResultSets= " + connection2.MultipleActiveResultSets+";";
-
+            
             databaseName = connectionBuilder.InitialCatalog;
 
             connection = new SqlConnection(connectionstring);
@@ -52,8 +51,7 @@ namespace POS_Server.Controllers
             setConn();
             connection.Open();
 
-            //   sql = "BACKUP DATABASE " + databaseName + " TO DISK = '" + @"D:\\" + "back1" + DateTime.Now.ToFileTime().ToString() + ".bak'";
-            sql = "BACKUP DATABASE " + databaseName + " TO DISK = '" + filePath + "'";
+              sql = "BACKUP DATABASE " + databaseName + " TO DISK = '" + filePath + "'";
 
             command = new SqlCommand(sql, connection);
 
@@ -82,8 +80,7 @@ namespace POS_Server.Controllers
 
             sql += "ALTER DATABASE " + databaseName + " SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
             sql += "RESTORE DATABASE " + databaseName + "  FROM  DISK = '" + filePath + "' WITH REPLACE;";
-            //  sql = "BACKUP DATABASE " + databaseName + " TO DISK = '" + filePath + "';";
-            //  sql += "RESTORE DATABASE " + databaseName + " FROM DISK = '" + @"D:\\" + "back1" + ".bak'" + " WITH REPLACE;";
+     
             sql += " ALTER DATABASE " + databaseName + " SET Multi_User ;";
 
             command = new SqlCommand(sql, connection);
@@ -164,7 +161,7 @@ namespace POS_Server.Controllers
         [Route("getrestore")]
         public string getrestore(string token)
         {
-            //  public string Get(string token)
+       
             string message = "";
             token = TokenManager.readToken(HttpContext.Current.Request);
             if (TokenManager.GetPrincipal(token) == null) //invalid authorization
@@ -204,8 +201,6 @@ namespace POS_Server.Controllers
                 try
                 {
 
-                    // string path = "";
-                   // filename = "back.bak";
                     path = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), restoreFilename);
                     //  var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), filename);
                     if (File.Exists(path))
@@ -247,10 +242,7 @@ namespace POS_Server.Controllers
 
         }
 
-        //if (HttpContext.Current.Request.ServerVariables["SERVER_PORT"] != null && HttpContext.Current.Request.ServerVariables["SERVER_PORT"].ToString() != "80" )
-        //             {
-        //                string port = String.Concat(":", HttpContext.Current.Request.ServerVariables["SERVER_PORT"].ToString());
-        // }
+      
 
         [HttpGet]
         [Route("GetFile")]
@@ -266,6 +258,8 @@ namespace POS_Server.Controllers
             ProcessDirectory(dirpath);
 
             message = createBackup();
+
+            // send file to client
             if (message == "1")
             {
                 if (String.IsNullOrEmpty(backupFilename))
@@ -332,18 +326,7 @@ namespace POS_Server.Controllers
             return false;
         }
 
-        //[HttpGet]
-        //[Route("Getpath")]
-        //public IHttpActionResult Getpath(string fileName)
-        //{
-        //    string port = "";
-        //    if (HttpContext.Current.Request.ServerVariables["SERVER_PORT"] != null && HttpContext.Current.Request.ServerVariables["SERVER_PORT"].ToString() != "80")
-        //    {
-        //        port = String.Concat(":", HttpContext.Current.Request.ServerVariables["SERVER_PORT"].ToString());
-        //    }
-
-        //    return Ok(port);
-        //}
+    
 
 
         // upload file
@@ -381,21 +364,10 @@ namespace POS_Server.Controllers
                         if (!AllowedFileExtensions.Contains(extension))
                         {
                             
-                            var message = "3";
+                            var message = "-1";
                             return Ok(message);
                         }
-                       // else if (postedFile.ContentLength > MaxContentLength)
-                      //  {
-
-                            //var message = string.Format("Please Upload a file upto 1 mb.");
-
-                            //return Ok(message);
-                    //    }
-                        //else
-                        //{
-                            //  check if image exist
-                           // var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\agent"), imageWithNoExt);
-                            var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), restoreFilename);
+                        var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), restoreFilename);
                             if (files.Length > 0)
                             {
                                 File.Delete(files[0]);
@@ -411,16 +383,17 @@ namespace POS_Server.Controllers
                     }
 
 
-                   // var message1 = string.Format("Image Updated Successfully.");
-                    return  Ok(string.Format("1"));
+                    // var message1 = string.Format("Image Updated Successfully.");
+                    return Ok(string.Format("1"));
                 }
+   return  Ok(string.Format("1"));
               //  var res = string.Format("Please Upload a image.");
 
-                return Ok("2");
+               // return Ok("2");
             }
             catch (Exception ex)
             {
-                var res = string.Format("-1");
+                var res = string.Format("-2");
 
                 return Ok(res);
             }
