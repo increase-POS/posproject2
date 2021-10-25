@@ -169,7 +169,7 @@
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
                                                           Grid.Row="1"
-                                                          SelectionChanged="cb_internalItemsFromBranches_SelectionChanged"/>
+                                                          SelectionChanged="cb_SelectionChanged"/>
                                                 <CheckBox x:Name="chk_internalItemsFromAllBranches" 
                                                           Background="{StaticResource MainColorBlue}"
                                                           Grid.Row="1"
@@ -203,8 +203,8 @@
                                                 <CheckBox x:Name="chk_internalItemsTwoWay" 
                                                           Grid.Row="1" Grid.Column="4" Content="Two Ways"
                                                           IsEnabled="False"
-                                                          Checked="Chk_internalItemsTwoWay_Checked"
-                                                          Unchecked="Chk_internalItemsTwoWay_Unchecked"></CheckBox>
+                                                          Checked="Chk_Checked"
+                                                          Unchecked="Chk_Checked"></CheckBox>
 
                                                 <ComboBox Name="cb_internalItemsItems"
                                                           Grid.Row="2"
@@ -219,7 +219,7 @@
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
                                                           ItemsSource="{Binding}"
-                                                          SelectionChanged="cb_internalItemsItems_SelectionChanged" />
+                                                          SelectionChanged="cb_SelectionChanged" />
 
                                                 <CheckBox x:Name="chk_internalItemsAllItems"
                                                           Background="{StaticResource MainColorBlue}"
@@ -243,7 +243,7 @@
                                                           Height="40" 
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                          SelectionChanged="cb_internalItemsUnits_SelectionChanged"  />
+                                                          SelectionChanged="cb_SelectionChanged"  />
 
                                                 <CheckBox x:Name="chk_internalItemsAllUnits"
                                                           Background="{StaticResource MainColorBlue}"
@@ -255,10 +255,10 @@
                                                           Unchecked="chk_internalItemsAllUnits_Unchecked"/>
 
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="4" LastChildFill="False">
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_InternalItemsEndDate_SelectedDateChanged" Name="dp_InternalItemsEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged" Name="dp_InternalItemsEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_internalItemsStartDate_SelectedDateChanged"  Name="dp_internalItemsStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged"  Name="dp_internalItemsStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                                 </DockPanel>
@@ -295,7 +295,7 @@
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
                                                           Grid.Row="1"
-                                                          SelectionChanged="cb_internalOperaterFromBranches_SelectionChanged"/>
+                                                          SelectionChanged="cb_SelectionChanged"/>
                                                 <CheckBox x:Name="chk_internalOperaterFromAllBranches" 
                                                           Background="{StaticResource MainColorBlue}"
                                                           Grid.Row="1"
@@ -323,7 +323,7 @@
                                                           Padding="10,0,5,0"
                                                        
                                                           ItemsSource="{Binding}"
-                                                          SelectionChanged="cb_internalOperaterType_SelectionChanged" />
+                                                          SelectionChanged="cb_SelectionChanged" />
 
                                                 <CheckBox x:Name="chk_internalOperatorAllTypes"
                                                           Background="{StaticResource MainColorBlue}"
@@ -331,16 +331,17 @@
                                                           Grid.Column="1"
                                                           Content="All"
                                                           Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
-                                                          Checked="chk_internalOperatorAllTypes_Checked"
-                                                          Unchecked="chk_internalOperatorAllTypes_Unchecked"/>
+                                                          Checked="chk_internalOperatorAllTypes_Checked" 
+                                                          Unchecked="chk_internalOperatorAllTypes_Unchecked"
+                                                          />
 
 
 
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="4" LastChildFill="False">
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_InternalOperatorEndDate_SelectedDateChanged" Name="dp_InternalOperatorEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged" Name="dp_InternalOperatorEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_internalOperatorStartDate_SelectedDateChanged"  Name="dp_internalOperatorStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged"  Name="dp_internalOperatorStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                                 </DockPanel>
