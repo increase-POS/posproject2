@@ -987,7 +987,10 @@ namespace POS
         {
             //log out
             //update lognin record
-            await updateLogninRecord();
+            if (!go_out)
+            {
+                await updateLogninRecord();
+            }
             timer.Stop();
             idletimer.Stop();
             threadtimer.Stop();
