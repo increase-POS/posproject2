@@ -167,7 +167,6 @@ namespace POS
         {
             await Getprintparameter();
             await GetReportlang();
-
             await getPrintersNames();
         }
 
@@ -571,6 +570,23 @@ namespace POS
             }
 
         }
+        async void loading_getprintSitting()
+        {
+            try
+            {
+                await getprintSitting();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.name.Equals("loading_getprintSitting"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
         #endregion
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -628,6 +644,7 @@ namespace POS
                 loadingList.Add(new loadingThread { name = "loading_getDefaultSystemInfo", value = false });
                 loadingList.Add(new loadingThread { name = "loading_getItemUnitsUsers", value = false });
                 loadingList.Add(new loadingThread { name = "loading_getGroupObjects", value = false });
+                loadingList.Add(new loadingThread { name = "loading_getprintSitting", value = false });
 
 
                 loading_getUserPath();
@@ -640,6 +657,7 @@ namespace POS
                 loading_getUserPersonalInfo();
                 loading_getDefaultSystemInfo();
                 loading_getGroupObjects();
+                loading_getprintSitting();
                 do
                 {
                     isDone = true;
@@ -672,13 +690,8 @@ namespace POS
                 setTimer();
                 #endregion
 
-                await getprintSitting();
 
                 permission();
-                //BTN_Home_Click(null, null);
-                //btn_reports.Visibility = Visibility.Visible;
-                //grid_mainWindow.IsEnabled = true;
-
 
                 //SelectAllText
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
@@ -987,10 +1000,7 @@ namespace POS
         {
             //log out
             //update lognin record
-            if (!go_out)
-            {
-                await updateLogninRecord();
-            }
+            await updateLogninRecord();
             timer.Stop();
             idletimer.Stop();
             threadtimer.Stop();
