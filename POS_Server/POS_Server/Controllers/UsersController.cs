@@ -28,9 +28,10 @@ namespace POS_Server.Controllers
             token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -75,10 +76,10 @@ namespace POS_Server.Controllers
             token = TokenManager.readToken(HttpContext.Current.Request);
             List<UserModel> usersList = new List<UserModel>();
             UserModel user = new UserModel();
-
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -173,9 +174,10 @@ namespace POS_Server.Controllers
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -235,9 +237,10 @@ namespace POS_Server.Controllers
         public string GetUserByID(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -346,9 +349,10 @@ namespace POS_Server.Controllers
         public string GetSalesMan(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -410,9 +414,10 @@ namespace POS_Server.Controllers
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -530,9 +535,10 @@ namespace POS_Server.Controllers
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -696,9 +702,10 @@ namespace POS_Server.Controllers
             string message = "";
             var re = Request;
             var headers = re.Headers;
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {

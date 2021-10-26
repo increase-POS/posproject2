@@ -18,78 +18,78 @@ namespace POS_Server.Controllers
     public class ItemUnitUserController : ApiController
     {
         // GET api/<controller>
-//        [HttpPost]
-//        [Route("GetAll")]
-//        public IHttpActionResult GetAll()
-//        {
-//            var re = Request;
-//            var headers = re.Headers;
-//            string token = "";
-//            bool canDelete = false;
+        //        [HttpPost]
+        //        [Route("GetAll")]
+        //        public IHttpActionResult GetAll()
+        //        {
+        //            var re = Request;
+        //            var headers = re.Headers;
+        //            string token = "";
+        //            bool canDelete = false;
 
-//            if (headers.Contains("APIKey"))
-//            {
-//                token = headers.GetValues("APIKey").First();
-//            }
-//            Validation validation = new Validation();
-//            bool valid = validation.CheckApiKey(token);
+        //            if (headers.Contains("APIKey"))
+        //            {
+        //                token = headers.GetValues("APIKey").First();
+        //            }
+        //            Validation validation = new Validation();
+        //            bool valid = validation.CheckApiKey(token);
 
-//            if (valid) // APIKey is valid
-//            {
-//                using (incposdbEntities entity = new incposdbEntities())
-//                {
-//                    var List = (from S in entity.itemUnitUser
-//                                select new ItemUnitUserModel()
-//                                {
-//                                    id = S.id,
-//                                    itemUnitId = S.itemUnitId,
-//                                    userId = S.userId,
-//                                    notes = S.notes,
-//                                    createDate = S.createDate,
-//                                    updateDate = S.updateDate,
-//                                    createUserId = S.createUserId,
-//                                    updateUserId = S.updateUserId,
-//                                    isActive = S.isActive,
-
-
-
-//                                }).ToList();
-//                    /*
-//                         public int id { get; set; }
-//        public Nullable<int> itemUnitId { get; set; }
-//        public Nullable<int> userId { get; set; }
-//        public string notes { get; set; }
-//        public Nullable<System.DateTime> createDate { get; set; }
-//        public Nullable<System.DateTime> updateDate { get; set; }
-//        public Nullable<int> createUserId { get; set; }
-//        public Nullable<int> updateUserId { get; set; }
-//        public Nullable<byte> isActive { get; set; }
-          
-// id
-//itemUnitId
-//userId
-//notes
-//createDate
-//updateDate
-//createUserId
-//updateUserId
-//isActive
+        //            if (valid) // APIKey is valid
+        //            {
+        //                using (incposdbEntities entity = new incposdbEntities())
+        //                {
+        //                    var List = (from S in entity.itemUnitUser
+        //                                select new ItemUnitUserModel()
+        //                                {
+        //                                    id = S.id,
+        //                                    itemUnitId = S.itemUnitId,
+        //                                    userId = S.userId,
+        //                                    notes = S.notes,
+        //                                    createDate = S.createDate,
+        //                                    updateDate = S.updateDate,
+        //                                    createUserId = S.createUserId,
+        //                                    updateUserId = S.updateUserId,
+        //                                    isActive = S.isActive,
 
 
 
-//                    */
+        //                                }).ToList();
+        //                    /*
+        //                         public int id { get; set; }
+        //        public Nullable<int> itemUnitId { get; set; }
+        //        public Nullable<int> userId { get; set; }
+        //        public string notes { get; set; }
+        //        public Nullable<System.DateTime> createDate { get; set; }
+        //        public Nullable<System.DateTime> updateDate { get; set; }
+        //        public Nullable<int> createUserId { get; set; }
+        //        public Nullable<int> updateUserId { get; set; }
+        //        public Nullable<byte> isActive { get; set; }
+
+        // id
+        //itemUnitId
+        //userId
+        //notes
+        //createDate
+        //updateDate
+        //createUserId
+        //updateUserId
+        //isActive
 
 
 
-//                    if (List == null)
-//                        return NotFound();
-//                    else
-//                        return Ok(List);
-//                }
-//            }
-//            //else
-//            return NotFound();
-//        }
+        //                    */
+
+
+
+        //                    if (List == null)
+        //                        return NotFound();
+        //                    else
+        //                        return Ok(List);
+        //                }
+        //            }
+        //            //else
+        //            return NotFound();
+        //        }
 
         // GET api/<controller>
         //[HttpPost]
@@ -145,10 +145,14 @@ namespace POS_Server.Controllers
         public string GetByUserId(string token)
         {
             // public string GetUsersByGroupId(string token)int userId
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) 
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -191,7 +195,7 @@ namespace POS_Server.Controllers
 
                         return TokenManager.GenerateToken(row);
                     }
-                    }
+                }
                 catch
                 {
                     return TokenManager.GenerateToken("0");
@@ -346,20 +350,21 @@ namespace POS_Server.Controllers
             string message = "0";
 
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
                 int userId = 0;
-               // int offerId = 0;
+                // int offerId = 0;
 
                 List<itemUnitUser> newObject = new List<itemUnitUser>();
                 string Object = "";
 
-             
+
 
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
@@ -379,10 +384,10 @@ namespace POS_Server.Controllers
 
                 }
 
-          
+
                 try
                 {
-                   int count = 0;
+                    int count = 0;
 
                     using (incposdbEntities entityd = new incposdbEntities())
                     {
@@ -407,8 +412,8 @@ namespace POS_Server.Controllers
                         }
 
                     }
-               
-                       // return count.ToString();
+
+                    // return count.ToString();
                     return TokenManager.GenerateToken(count.ToString());
                 }
                 catch

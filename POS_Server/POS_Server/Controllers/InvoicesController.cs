@@ -24,9 +24,10 @@ namespace POS_Server.Controllers
         public string Get(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -77,10 +78,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
             decimal price = 0;
             int totalNum = 0;
             decimal smallUnitPrice = 0;
-
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -135,9 +136,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetByInvoiceId(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -196,9 +198,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getgeneratedInvoice(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -255,9 +258,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("getById")]
         public string GetById(string token   )
         {
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -315,9 +319,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetByInvNum(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -435,9 +440,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetByInvoiceType(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -581,9 +587,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetInvoicesByCreator(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -686,9 +693,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetInvoicesForAdmin(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -784,9 +792,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetCountByCreator(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -877,9 +886,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getBranchInvoices(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -976,9 +986,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getInvoicesToReturn(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1057,9 +1068,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getUnHandeldOrders(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1092,9 +1104,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetCountUnHandeledOrders(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1181,9 +1194,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetCountBranchInvoices(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1270,9 +1284,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getDeliverOrders(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1360,9 +1375,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getDeliverOrdersCount(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1441,9 +1457,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getOrdersForPay(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1525,9 +1542,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getAgentInvoices(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1619,9 +1637,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getNotPaidAgentInvoices(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1681,9 +1700,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getShipCompanyInvoices(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1775,9 +1795,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getUserInvoices(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1866,9 +1887,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetOrderByType(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2010,9 +2032,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetLastNumOfInv(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2057,9 +2080,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetinvCountBydate(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2131,9 +2155,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2221,9 +2246,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2262,10 +2288,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
 token = TokenManager.readToken(HttpContext.Current.Request);
             ItemsLocationsController ilc = new ItemsLocationsController();
             string message = "";
-
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {      

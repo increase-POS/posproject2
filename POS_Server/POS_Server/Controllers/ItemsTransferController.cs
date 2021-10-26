@@ -23,10 +23,10 @@ namespace POS_Server.Controllers
             //int invoiceId
 
             // public string GetUsersByGroupId(string token)
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //int groupId
+          token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -153,9 +153,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {

@@ -21,36 +21,38 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public string Get(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var couponsList = entity.coupons
-                  
-                   .Select(c => new CouponModel{
-                    cId= c.cId,
-                       name =   c.name ,
+
+                   .Select(c => new CouponModel
+                   {
+                       cId = c.cId,
+                       name = c.name,
                        code = c.code,
                        isActive = c.isActive,
                        discountType = c.discountType,
                        discountValue = c.discountValue,
-                       startDate =  c.startDate,
-                       endDate=c.endDate,
-                       notes  =c.notes,
-                       quantity  =  c.quantity,
+                       startDate = c.startDate,
+                       endDate = c.endDate,
+                       notes = c.notes,
+                       quantity = c.quantity,
                        remainQ = c.remainQ,
-                       invMin  = c.invMin,
-                       invMax  = c.invMax ,
+                       invMin = c.invMin,
+                       invMax = c.invMax,
                        createDate = c.createDate,
-                       updateDate = c.updateDate ,
-                       createUserId=  c.createUserId,
-                       updateUserId =  c.updateUserId ,
+                       updateDate = c.updateDate,
+                       createUserId = c.createUserId,
+                       updateUserId = c.updateUserId,
                        barcode = c.barcode,
                    })
                    .ToList();
@@ -58,22 +60,22 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     // can delet or not
                     if (couponsList.Count > 0)
                     {
-                        foreach(CouponModel couponitem  in couponsList)
+                        foreach (CouponModel couponitem in couponsList)
                         {
                             canDelete = false;
                             if (couponitem.isActive == 1)
                             {
                                 int cId = (int)couponitem.cId;
                                 var copinv = entity.couponsInvoices.Where(x => x.couponId == cId).Select(x => new { x.id }).FirstOrDefault();
-                      
-                                if ((copinv is null) )
+
+                                if ((copinv is null))
                                     canDelete = true;
                             }
                             couponitem.canDelete = canDelete;
                         }
                     }
 
-                  
+
                     return TokenManager.GenerateToken(couponsList);
                 }
             }
@@ -82,39 +84,41 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetEffictive")]
         public string GetEffictive(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var couponsList = entity.coupons.Where(x => x.remainQ > 0 && x.startDate <= DateTime.Now && x.endDate >= DateTime.Now && x.isActive == 1)
-                  
-                   .Select(c => new CouponModel{
-                    cId= c.cId,
-                       name =   c.name ,
+
+                   .Select(c => new CouponModel
+                   {
+                       cId = c.cId,
+                       name = c.name,
                        code = c.code,
                        isActive = c.isActive,
                        discountType = c.discountType,
                        discountValue = c.discountValue,
-                       startDate =  c.startDate,
-                       endDate=c.endDate,
-                       notes  =c.notes,
-                       quantity  =  c.quantity,
+                       startDate = c.startDate,
+                       endDate = c.endDate,
+                       notes = c.notes,
+                       quantity = c.quantity,
                        remainQ = c.remainQ,
-                       invMin  = c.invMin,
-                       invMax  = c.invMax ,
+                       invMin = c.invMin,
+                       invMax = c.invMax,
                        createDate = c.createDate,
-                       updateDate = c.updateDate ,
-                       createUserId=  c.createUserId,
-                       updateUserId =  c.updateUserId ,
+                       updateDate = c.updateDate,
+                       createUserId = c.createUserId,
+                       updateUserId = c.updateUserId,
                        barcode = c.barcode,
                    })
                    .ToList();
-                     
+
                     return TokenManager.GenerateToken(couponsList);
                 }
             }
@@ -124,10 +128,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetCouponByID")]
         public string GetcouponByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -144,7 +149,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     var coupon = entity.coupons
                    .Where(c => c.cId == cId)
-                   .Select(c => new {
+                   .Select(c => new
+                   {
                        c.cId,
                        c.name,
                        c.code,
@@ -165,7 +171,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        c.barcode,
                    })
                    .FirstOrDefault();
-                     
+
                     return TokenManager.GenerateToken(coupon);
                 }
             }
@@ -175,11 +181,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetCouponByCode")]
         public string GetCouponByCode(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-          
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -189,14 +195,15 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     if (c.Type == "itemId")
                     {
-                        code =  c.Value;
+                        code = c.Value;
                     }
                 }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
                    .Where(c => c.code == code)
-                   .Select(c => new {
+                   .Select(c => new
+                   {
                        c.cId,
                        c.name,
                        c.code,
@@ -217,7 +224,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        c.barcode,
                    })
                    .FirstOrDefault();
- 
+
                     return TokenManager.GenerateToken(coupon);
                 }
             }
@@ -227,10 +234,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetCouponByBarcode")]
         public string GetcouponByBarcode(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -247,7 +255,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     var coupon = entity.coupons
                    .Where(c => c.barcode == barcode)
-                   .Select(c => new {
+                   .Select(c => new
+                   {
                        c.cId,
                        c.name,
                        c.code,
@@ -278,10 +287,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("IsExistcode")]
         public string IsExistcode(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -298,11 +308,12 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     var coupon = entity.coupons
                    .Where(c => c.code == code)
-                   .Select(c => new {
+                   .Select(c => new
+                   {
                        c.cId,
                        c.name,
                        c.code,
-                   
+
                        c.barcode,
                    })
                    .FirstOrDefault();
@@ -316,11 +327,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("GetByisActive")]
         public string GetByisActive(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-           
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -330,14 +341,15 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                 {
                     if (c.Type == "itemId")
                     {
-                        isActive =int.Parse( c.Value);
+                        isActive = int.Parse(c.Value);
                     }
                 }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var coupon = entity.coupons
                    .Where(c => c.isActive == isActive)
-                   .Select(c => new {
+                   .Select(c => new
+                   {
                        c.cId,
                        c.name,
                        c.code,
@@ -367,11 +379,12 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -389,7 +402,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     }
                 }
 
-                 try
+                try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
@@ -406,7 +419,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             entity.SaveChanges();
                             message = tmpcoupon.cId.ToString();
                             return TokenManager.GenerateToken(message);
-                        }   
+                        }
                         else
                         {
 
@@ -423,9 +436,9 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             tmpcoupon.remainQ = Object.remainQ;
                             tmpcoupon.invMin = Object.invMin;
                             tmpcoupon.invMax = Object.invMax;
-                         
+
                             tmpcoupon.updateDate = DateTime.Now;// server current date;
-                           
+
                             tmpcoupon.updateUserId = Object.updateUserId;
                             tmpcoupon.barcode = Object.barcode;
                             entity.SaveChanges();
@@ -440,17 +453,18 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     message = "0";
                     return TokenManager.GenerateToken(message);
                 }
-            } 
+            }
         }
         [HttpPost]
         [Route("Delete")]
         public string Delete(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -514,6 +528,6 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     }
                 }
             }
-           }
+        }
     }
 }

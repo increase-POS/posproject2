@@ -21,9 +21,10 @@ namespace POS_Server.Controllers
         public string Get(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -63,9 +64,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {

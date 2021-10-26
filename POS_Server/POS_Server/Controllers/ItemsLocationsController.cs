@@ -29,9 +29,10 @@ namespace POS_Server.Controllers
         {
             //int branchId
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -159,9 +160,10 @@ namespace POS_Server.Controllers
         {
             //int branchId string token
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -289,9 +291,10 @@ namespace POS_Server.Controllers
         {
             //int branchId string token
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -409,9 +412,10 @@ namespace POS_Server.Controllers
         {
             //int branchId string token
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -489,9 +493,10 @@ namespace POS_Server.Controllers
 
             //int branchId string token
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -628,9 +633,10 @@ namespace POS_Server.Controllers
         {
             //int branchId string token
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -761,9 +767,10 @@ namespace POS_Server.Controllers
         {
             //int itemUnitId, int locationId string token
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -878,9 +885,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1035,9 +1043,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1226,9 +1235,10 @@ namespace POS_Server.Controllers
             string message = "";
 
             token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1540,9 +1550,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1764,9 +1775,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -1907,9 +1919,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2102,9 +2115,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2725,9 +2739,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -2970,9 +2985,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3068,9 +3084,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3158,9 +3175,10 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3269,9 +3287,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3402,9 +3421,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3609,9 +3629,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3747,9 +3768,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -3864,9 +3886,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -4695,9 +4718,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -5012,6 +5036,8 @@ namespace POS_Server.Controllers
 
         }
 
+
+
         private int getUnitValue(int itemunitId, int smallestItemUnitId)
         {
             int unitValue = 0;
@@ -5030,6 +5056,7 @@ namespace POS_Server.Controllers
             return unitValue;
         }
 
+
         [HttpPost]
         [Route("getSpecificItemLocation")]
         public string getSpecificItemLocation(string token)
@@ -5039,10 +5066,11 @@ namespace POS_Server.Controllers
 
             string message = "";
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -5129,68 +5157,10 @@ namespace POS_Server.Controllers
 
 
 
-            //    var re = Request;
-            //    var headers = re.Headers;
-            //    string token = "";
-            //    if (headers.Contains("APIKey"))
-            //    {
-            //        token = headers.GetValues("APIKey").First();
-            //    }
-            //    Validation validation = new Validation();
-            //    bool valid = validation.CheckApiKey(token);
-
-            //    if (valid) // APIKey is valid
-            //    {
-            //        itemUnitsIds = JsonConvert.DeserializeObject<string>(itemUnitsIds, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            //        List<int> ids = new List<int>();
-            //        List<string> strIds = itemUnitsIds.Split(',').ToList();
-            //        for (int i = 0; i < strIds.Count; i++)
-            //        {
-            //            if (!strIds[i].Equals(""))
-            //                ids.Add(int.Parse(strIds[i]));
-            //        }
-
-            //        using (incposdbEntities entity = new incposdbEntities())
-            //        {
-            //            var locList = (from b in entity.itemsLocations
-            //                           where b.quantity > 0 && b.invoiceId == null && ids.Contains(b.itemUnitId ?? 0)
-            //                           join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
-            //                           join i in entity.items on u.itemId equals i.itemId
-            //                           join l in entity.locations on b.locationId equals l.locationId
-            //                           join s in entity.sections on l.sectionId equals s.sectionId
-            //                           where s.branchId == branchId
-
-            //                           select new ItemLocationModel
-            //                           {
-            //                               createDate = b.createDate,
-            //                               createUserId = b.createUserId,
-            //                               endDate = b.endDate,
-            //                               itemsLocId = b.itemsLocId,
-            //                               itemUnitId = b.itemUnitId,
-            //                               locationId = b.locationId,
-            //                               note = b.note,
-            //                               quantity = b.quantity,
-            //                               startDate = b.startDate,
-
-            //                               updateDate = b.updateDate,
-            //                               updateUserId = b.updateUserId,
-            //                               itemName = i.name,
-            //                               sectionId = s.sectionId,
-            //                               isFreeZone = s.isFreeZone,
-            //                               itemType = i.type,
-            //                               location = l.x + "-" + l.y + "-" + l.z,
-            //                           }).OrderBy(a => a.endDate)
-            //                            .ToList();
-
-            //            if (locList == null)
-            //                return NotFound();
-            //            else
-            //                return Ok(locList);
-            //        }
-            //    }
-            //    //else
-            //    return NotFound();
         }
+
+
+
         [HttpPost]
         [Route("getShortageItems")]
         public string getShortageItems(string token)
@@ -5200,9 +5170,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -5358,9 +5329,10 @@ namespace POS_Server.Controllers
             string message = "";
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+ var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {

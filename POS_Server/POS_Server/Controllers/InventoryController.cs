@@ -71,9 +71,10 @@ namespace POS_Server.Controllers
         public string GetByID(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -111,9 +112,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetLastNumOfInv(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -149,9 +151,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string GetByCreator(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -196,9 +199,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string getByBranch(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -246,9 +250,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         public string shortageIsManipulated(string token)
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
-            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                return TokenManager.GenerateToken("-7");
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
@@ -286,10 +291,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
         string message = "";
-        if (TokenManager.GetPrincipal(token) == null)//invalid authorization
-        {
-            return TokenManager.GenerateToken("-7");
-        }
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
         else
         {
             string newObject = "";
@@ -397,10 +403,11 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         {
 token = TokenManager.readToken(HttpContext.Current.Request);
         string message = "";
-        if (TokenManager.GetPrincipal(token) == null)//invalid authorization
-        {
-            return TokenManager.GenerateToken("-7");
-        }
+var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
         else
         {
             int inventoryId = 0;
