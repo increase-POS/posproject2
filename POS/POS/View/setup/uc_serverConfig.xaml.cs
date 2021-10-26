@@ -72,9 +72,9 @@ namespace POS.View.setup
             if (name == "TextBox")
             {
                 if ((sender as TextBox).Name == "tb_serverUri")
-                    SectionData.validateEmptyTextBox(tb_serverUri, p_errorServerUri, tt_errorServerUri, "trEmptyError");
+                   validateEmptyTextBox(tb_serverUri, p_errorServerUri, tt_errorServerUri, "trEmptyError");
                 else if ((sender as TextBox).Name == "tb_activationkey")
-                    SectionData.validateEmptyTextBox(tb_activationkey, p_errorActivationkey, tt_errorActivationkey, "trEmptyError");
+                    validateEmptyTextBox(tb_activationkey, p_errorActivationkey, tt_errorActivationkey, "trEmptyError");
             }
             else if (name == "ComboBox")
             {
