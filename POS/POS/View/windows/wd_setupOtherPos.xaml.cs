@@ -150,7 +150,7 @@ namespace POS.View.windows
                             bool validUrl = setupConfiguration.validateUrl(item.value);
                             if (!validUrl)
                             {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupFirstPos.resourcemanager.GetString("trErrorWrongUrl"), animation: ToasterAnimation.FadeIn);
+                                Toaster.ShowWarning(this, message: "wrong Url", animation: ToasterAnimation.FadeIn);
                                 isValid = false;
                                 break;
                             }
