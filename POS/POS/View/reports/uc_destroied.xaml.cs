@@ -33,21 +33,17 @@ namespace POS.View.reports
 
     public partial class uc_destroied : UserControl
     {
-        private int selectedFatherTab = 0;
-        List<Storage> storages;
-
-        List<ItemTransferInvoice> itemsTransfer;
-        List<ItemTransferInvoice> itemsInternalTransfer;
-
-        IEnumerable<ItemTransferInvoice> agentsCount;
-        IEnumerable<ItemTransferInvoice> invTypeCount;
-        IEnumerable<ItemTransferInvoice> invCount;
-
-        IEnumerable<InventoryClass> archiveCount;
-
-        List<InventoryClass> inventory;
-        List<InventoryClass> falls;
         List<ItemTransferInvoice> Destroied;
+
+        Statistics statisticModel = new Statistics();
+
+        List<Branch> comboBranches;
+
+        Branch branchModel = new Branch();
+
+        List<DestroiedCombo> comboDestroiedItemmsUnits;
+
+        IEnumerable<ItemTransferInvoice> temp = null;
 
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
@@ -60,81 +56,10 @@ namespace POS.View.reports
             }
         }
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                inventory = await statisticModel.GetInventory((int)MainWindow.branchID, (int)MainWindow.userID);
-                falls = await statisticModel.GetInventoryItems((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
-
-              
-                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
-             
-
-
-                itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-                comboBranches = await branchModel.GetAllWithoutMain("all");
-
-
-                comboItems = statisticModel.getItemCombo(storages);
-                comboUnits = statisticModel.getUnitCombo(storages);
-                comboSection = statisticModel.getSectionCombo(storages);
-                comboLocation = statisticModel.getLocationCombo(storages);
-
-                comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
-                comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
-                comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
-                comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
-                comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
-                comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
-
-                comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
-                comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
-                comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
-                comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
-
-                comboDestroiedItemmsUnits = statisticModel.getDestroiedCombo(Destroied);
-                selectedFatherTab = 4;
-                txt_search.Text = "";
-                paint();
-                grid_detroied.Visibility = Visibility.Visible;
-                bdr_destroied.Background = Brushes.White;
-                path_destroied.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                fillComboBranches(cb_destroiedBranch);
-                isEnabledButtons();
-                hideAllColumn();
-                fillDestroidEvents();
-                col_branch.Visibility = Visibility.Visible;
-                col_destroiedItemsUnits.Visibility = Visibility.Visible;
-                col_destroiedNumber.Visibility = Visibility.Visible;
-                col_destroiedDate.Visibility = Visibility.Visible;
-                col_destroiedReason.Visibility = Visibility.Visible;
-                col_destroiedAmount.Visibility = Visibility.Visible;
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_destroied.Tag.ToString());
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-
         public uc_destroied()
         {
             try
             {
-
                 InitializeComponent();
             }
             catch (Exception ex)
@@ -143,10 +68,34 @@ namespace POS.View.reports
             }
         }
 
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                comboBranches = await branchModel.GetAllWithoutMain("all");
+
+                fillComboBranches(cb_destroiedBranch);
+
+                Btn_destroied_Click(btn_destroied , null);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         public void paint()
         {
-
             grid_detroied.Visibility = Visibility.Visible;
 
             bdr_destroied.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -154,116 +103,7 @@ namespace POS.View.reports
             path_destroied.Fill = Brushes.White;
         }
 
-
-
-
-
-
-        /*11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111*/
-        private int selectedStockTab = 0;
-        IEnumerable<itemCombo> comboItems;
-        IEnumerable<unitCombo> comboUnits;
-        IEnumerable<sectionCombo> comboSection;
-        IEnumerable<locationCombo> comboLocation;
-
-        private void fillComboItems(ComboBox cbBranches, ComboBox cbItems)
-        {
-            var temp = cbBranches.SelectedItem as Branch;
-            cbItems.SelectedValuePath = "ItemId";
-            cbItems.DisplayMemberPath = "ItemName";
-            if (temp == null)
-            {
-                cbItems.ItemsSource = comboItems
-                    .GroupBy(x => x.ItemId)
-                    .Select(g => new itemCombo
-                    {
-                        ItemId = g.FirstOrDefault().ItemId,
-                        ItemName = g.FirstOrDefault().ItemName,
-                        BranchId = g.FirstOrDefault().BranchId
-                    }).ToList();
-            }
-            else
-            {
-                cbItems.ItemsSource = comboItems
-                    .Where(x => x.BranchId == temp.branchId)
-                    .GroupBy(x => x.ItemId)
-                    .Select(g => new itemCombo
-                    {
-                        ItemId = g.FirstOrDefault().ItemId,
-                        ItemName = g.FirstOrDefault().ItemName,
-                        BranchId = g.FirstOrDefault().BranchId
-                    }).ToList();
-            }
-        }
-
-        private void fillComboUnits(ComboBox cbItems, ComboBox cbUnits)
-        {
-            var temp = cbItems.SelectedItem as itemCombo;
-            cbUnits.SelectedValuePath = "UnitId";
-            cbUnits.DisplayMemberPath = "UnitName";
-            if (temp == null)
-            {
-                cbUnits.ItemsSource = comboUnits
-                    .GroupBy(x => x.UnitId)
-                    .Select(g => new unitCombo
-                    {
-                        UnitId = g.FirstOrDefault().UnitId,
-                        UnitName = g.FirstOrDefault().UnitName,
-                        ItemId = g.FirstOrDefault().ItemId
-                    });
-            }
-            else
-            {
-                cbUnits.ItemsSource = comboUnits
-                    .Where(x => x.ItemId == temp.ItemId && x.BranchId == temp.BranchId)
-                    .GroupBy(x => x.UnitId)
-                    .Select(g => new unitCombo
-                    {
-                        UnitId = g.FirstOrDefault().UnitId,
-                        UnitName = g.FirstOrDefault().UnitName,
-                        ItemId = g.FirstOrDefault().ItemId
-                    }); ;
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-        /*2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222*/
-        private int selectedExternalTab = 0;
-        List<ExternalitemCombo> comboExternalItemsItems;
-        List<ExternalUnitCombo> comboExternalItemsUnits;
-        List<AgentTypeCombo> comboExternalAgentsAgentsType;
-        List<AgentCombo> comboExternalAgentsAgents;
-        List<InvTypeCombo> comboExternalInvType;
-        List<InvCombo> comboExternalInvoiceInvoice;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /*******************************************************************************************************************************************************/
-        Statistics statisticModel = new Statistics();
-
-        List<Branch> comboBranches;
-        Branch branchModel = new Branch();
+       
         private void fillComboBranches(ComboBox cb)
         {
             cb.SelectedValuePath = "branchId";
@@ -312,21 +152,7 @@ namespace POS.View.reports
             col_destroiedReason.Visibility = Visibility.Hidden;
             col_destroiedAmount.Visibility = Visibility.Hidden;
         }
-        /************************************************************************************************************************************/
 
-        List<ExternalitemCombo> comboInternalItemsItems;
-        List<ExternalUnitCombo> comboInternalItemsUnits;
-        List<internalTypeCombo> comboInternalOperatorType;
-        List<internalOperatorCombo> comboInternalOperatorOperator;
-
-        private void isEnabledButtons()
-        {
-            btn_destroied.IsEnabled = true;
-        }
-
-        /************************************اتلاف*************************************/
-        List<DestroiedCombo> comboDestroiedItemmsUnits;
-        IEnumerable<ItemTransferInvoice> temp = null;
         private void fillDestroidEvents()
         {
             temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
@@ -387,8 +213,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillComboItemsUnits();
                 fillDestroidEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -408,6 +236,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_destroiedBranch.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -428,6 +257,7 @@ namespace POS.View.reports
 
                 cb_destroiedBranch.SelectedItem = null;
                 cb_destroiedBranch.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -439,13 +269,15 @@ namespace POS.View.reports
             }
         }
 
-        private void Cb_destroiedItemsUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void fillEventsCall(object sender)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillDestroidEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -456,15 +288,16 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Chk_destroiedAllItemsUnits_Checked(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_destroiedItemsUnits.SelectedItem = null;
                 cb_destroiedItemsUnits.IsEnabled = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -484,43 +317,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_destroiedItemsUnits.IsEnabled = true;
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
 
-        private void Dp_destroiedEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillDestroidEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_destroiedStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillDestroidEvents();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -581,7 +378,6 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-
             var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
 
             var result = temp.GroupBy(s => new { s.branchId }).Select(s => new ItemTransferInvoice
@@ -600,21 +396,35 @@ namespace POS.View.reports
             SeriesCollection columnChartData = new SeriesCollection();
             List<long> cPa = new List<long>();
 
+            int xCount = 6;
+            if (result.Count() <= 6) xCount = result.Count();
 
-
-            for (int i = 0; i < result.Count(); i++)
+            for (int i = 0; i < xCount; i++)
             {
                 cPa.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().quantity.ToString()));
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
+            if(result.Count() > 6)
+            {
+                long c = 0;
+                for(int i = 6; i < result.Count(); i++)
+                {
+                    c = c + long.Parse(result.ToList().Skip(i).FirstOrDefault().quantity.ToString());
+                }
+                if(c != 0)
+                {
+                    cPa.Add(c);
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = cPa.AsChartValues(),
                 DataLabels = true,
-                Title = "Amount"
-            });
+                Title = MainWindow.resourcemanager.GetString("trAmount")
+            }); 
 
 
             DataContext = this;
@@ -672,7 +482,7 @@ namespace POS.View.reports
                       new PieSeries
                       {
                           Values = final.AsChartValues(),
-                          Title = "Others",
+                          Title = MainWindow.resourcemanager.GetString("trOthers"),
                           DataLabels = true,
                       }
                   );
@@ -684,9 +494,46 @@ namespace POS.View.reports
         }
 
         private void Btn_destroied_Click(object sender, RoutedEventArgs e)
-        {
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+        {//destroid
+
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                comboDestroiedItemmsUnits = statisticModel.getDestroiedCombo(Destroied);
+                txt_search.Text = "";
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_destroied);
+                path_destroied.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                hideAllColumn();
+                //show columns
+                col_branch.Visibility = Visibility.Visible;
+                col_destroiedItemsUnits.Visibility = Visibility.Visible;
+                col_destroiedNumber.Visibility = Visibility.Visible;
+                col_destroiedDate.Visibility = Visibility.Visible;
+                col_destroiedReason.Visibility = Visibility.Visible;
+                col_destroiedAmount.Visibility = Visibility.Visible;
+
+                chk_destroiedAllBranches.IsChecked = true;
+                chk_destroiedAllItemsUnits.IsChecked = true;
+
+                fillDestroidEvents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
+
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -901,6 +748,80 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillEventsCall(sender);
+        }
+
+        private void Dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillEventsCall(sender);
+        }
+
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
+
+            //    var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+            //dgStock.ItemsSource = temp.Where(obj => (
+            ////obj.importBranch.ToLower().Contains(txt_search.Text) 
+            ////||
+            //obj.invNumber.ToLower().Contains(txt_search.Text)
+            //||
+            //obj.userdestroy.ToLower().Contains(txt_search.Text)||
+            //obj.ItemUnits.ToLower().Contains(txt_search.Text) ||
+            //obj.causeDestroy.ToLower().Contains(txt_search.Text)||
+            //obj.quantity.ToString().ToLower().Contains(txt_search.Text)
+            //)) ;
+
+            //    txt_count.Text = dgStock.Items.Count.ToString();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                txt_search.Text = "";
+
+                cb_destroiedBranch.SelectedItem = null;
+                cb_destroiedItemsUnits.SelectedItem = null;
+
+                chk_destroiedAllBranches.IsChecked = true;
+                chk_destroiedAllItemsUnits.IsChecked = true;
+
+                dp_destroiedStartDate.SelectedDate = null;
+                dp_destroiedEndDate.SelectedDate = null;
+
+                fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
     }
 }

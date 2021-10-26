@@ -33,7 +33,6 @@ namespace POS.View.reports
 {
     public partial class uc_stocktaking : UserControl
     {
-        private int selectedFatherTab = 0;
         List<Storage> storages;
 
         List<ItemTransferInvoice> itemsTransfer;
@@ -41,7 +40,6 @@ namespace POS.View.reports
 
         //charts
         IEnumerable<InventoryClass> archiveCount;
-        IEnumerable<ItemTransferInvoice> fallsCount;
 
         List<InventoryClass> inventory;
 
@@ -49,8 +47,13 @@ namespace POS.View.reports
         List<ItemTransferInvoice> Destroied;
 
         private int selectedStocktakingTab = 0;
-        List<StocktakingArchivesTypeCombo> cbStockType;
         List<ShortFalls> comboShortFalls;
+
+        Statistics statisticModel = new Statistics();
+
+        List<Branch> comboBranches;
+        Branch branchModel = new Branch();
+
 
         // report
         ReportCls reportclass = new ReportCls();
@@ -70,12 +73,24 @@ namespace POS.View.reports
             }
         }
 
+        public uc_stocktaking()
+        {
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 inventory = await statisticModel.GetInventory((int)MainWindow.branchID, (int)MainWindow.userID);
 
@@ -93,158 +108,22 @@ namespace POS.View.reports
 
                 fillComboArchivedTypeType();
 
+                //cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
+                comboShortFalls = statisticModel.getshortFalls(falls);
 
-            //comboItems = statisticModel.getItemCombo(storages);
-            //comboUnits = statisticModel.getUnitCombo(storages);
-            //comboSection = statisticModel.getSectionCombo(storages);
-            //comboLocation = statisticModel.getLocationCombo(storages);
+                Btn_archives_Click(btn_archives, null);
 
-            //comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
-            //comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
-            //comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
-            //comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
-            //comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
-            //comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
-
-            //comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
-            //comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
-            //comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
-            //comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
-
-            //cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
-            comboShortFalls = statisticModel.getshortFalls(falls);
-
-            //hideAllColumn();
-            //col_stockTakeNum.Visibility = Visibility.Visible;
-            //col_stockTakingCoastType.Visibility = Visibility.Visible;
-            //col_stockTakingDate.Visibility = Visibility.Visible;
-            //col_branch.Visibility = Visibility.Visible;
-            //col_diffPercentage.Visibility = Visibility.Visible;
-            //col_itemCountAr.Visibility = Visibility.Visible;
-            //col_DestroyedCount.Visibility = Visibility.Visible;
-
-            //fillComboBranches(cb_stocktakingArchivedBranch);
-            //fillSocktakingEvents();
-
-            //SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_archives.Tag.ToString());
-
-            Btn_archives_Click(btn_archives, null);
-
-
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
-        }
-
-
-        public uc_stocktaking()
-        {
-            try
-            {
-                InitializeComponent();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        public void paint()
-        {
-
-        }
-
-        private void isEnabledButtons()
-        {
-        }
-
-
-
-
-
-        /*11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111*/
-        private int selectedStockTab = 0;
-        IEnumerable<itemCombo> comboItems;
-        IEnumerable<unitCombo> comboUnits;
-        IEnumerable<sectionCombo> comboSection;
-        IEnumerable<locationCombo> comboLocation;
-
-        private void fillComboItems(ComboBox cbBranches, ComboBox cbItems)
-        {
-            var temp = cbBranches.SelectedItem as Branch;
-            cbItems.SelectedValuePath = "ItemId";
-            cbItems.DisplayMemberPath = "ItemName";
-            if (temp == null)
-            {
-                cbItems.ItemsSource = comboItems
-                    .GroupBy(x => x.ItemId)
-                    .Select(g => new itemCombo
-                    {
-                        ItemId = g.FirstOrDefault().ItemId,
-                        ItemName = g.FirstOrDefault().ItemName,
-                        BranchId = g.FirstOrDefault().BranchId
-                    }).ToList();
-            }
-            else
-            {
-                cbItems.ItemsSource = comboItems
-                    .Where(x => x.BranchId == temp.branchId)
-                    .GroupBy(x => x.ItemId)
-                    .Select(g => new itemCombo
-                    {
-                        ItemId = g.FirstOrDefault().ItemId,
-                        ItemName = g.FirstOrDefault().ItemName,
-                        BranchId = g.FirstOrDefault().BranchId
-                    }).ToList();
-            }
-        }
-
-        private void fillComboUnits(ComboBox cbItems, ComboBox cbUnits)
-        {
-            var temp = cbItems.SelectedItem as itemCombo;
-            cbUnits.SelectedValuePath = "UnitId";
-            cbUnits.DisplayMemberPath = "UnitName";
-            if (temp == null)
-            {
-                cbUnits.ItemsSource = comboUnits
-                    .GroupBy(x => x.UnitId)
-                    .Select(g => new unitCombo
-                    {
-                        UnitId = g.FirstOrDefault().UnitId,
-                        UnitName = g.FirstOrDefault().UnitName,
-                        ItemId = g.FirstOrDefault().ItemId
-                    });
-            }
-            else
-            {
-                cbUnits.ItemsSource = comboUnits
-                    .Where(x => x.ItemId == temp.ItemId && x.BranchId == temp.BranchId)
-                    .GroupBy(x => x.UnitId)
-                    .Select(g => new unitCombo
-                    {
-                        UnitId = g.FirstOrDefault().UnitId,
-                        UnitName = g.FirstOrDefault().UnitName,
-                        ItemId = g.FirstOrDefault().ItemId
-                    }); ;
-            }
-        }
-
-
-
-
-
-        private int selectedExternalTab = 0;
-
-        Statistics statisticModel = new Statistics();
-
-        List<Branch> comboBranches;
-        Branch branchModel = new Branch();
+       
         private void fillComboBranches(ComboBox cb)
         {
             cb.SelectedValuePath = "branchId";
@@ -310,20 +189,6 @@ namespace POS.View.reports
             return result;
         }
 
-        private IEnumerable<ItemTransferInvoice> fillListshortFallsRowChart(ComboBox branch, ComboBox cb, DateTime startDate, DateTime endDate)
-        {
-            var selectedBranch = branch.SelectedItem as Branch;
-            var selectedType1 = cb.SelectedItem as DestroiedCombo;
-            var result = falls.Where(x => (
-
-                         (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
-                        && (cb.SelectedItem != null ? (x.itemUnitId == selectedType1.ItemsUnitsId) : true)
-                        && (dp_stocktakingFalseStartDate.SelectedDate != null ? (x.IupdateDate >= startDate) : true)
-                        && (dp_stocktakingFalseEndDate.SelectedDate != null ? (x.IupdateDate <= endDate) : true)
-          ));
-            return result;
-        }
-
         public void paintStockTakingChilds()
         {
             //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -357,26 +222,13 @@ namespace POS.View.reports
      
             var result = inventory.Where(x => (
                            (branch.SelectedItem != null ? (x.branchId        == selectedBranch.branchId) : true)
-                        && (cb.SelectedItem     != null ? (x.inventoryType   == selectedType.InventoryType) : true)
+                        && (cb.SelectedItem     != null ? (x.inventoryType   == cb_stocktakingArchivedType.SelectedValue.ToString()) : true)
                         && (dp_stocktakingArchivedStartDate.SelectedDate != null ? (x.inventoryDate >= startDate.SelectedDate) : true)
                         && (dp_stocktakingArchivedEndDate.SelectedDate != null ? (x.inventoryDate <= endDate.SelectedDate) : true)
           ));
             return result;
         }
 
-        private IEnumerable<InventoryClass> fillListStockTakingRowChart(ComboBox branch, ComboBox cb, DateTime startDate, DateTime endDate)
-        {
-            var selectedBranch = branch.SelectedItem as Branch;
-            var selectedType = cb.SelectedItem as StocktakingArchivesTypeCombo;
-
-            var result = inventory.Where(x => (
-                           (branch.SelectedItem != null ? (x.branchId == selectedBranch.branchId) : true)
-                        && (cb.SelectedItem != null ? (x.inventoryType == selectedType.InventoryType) : true)
-                          && (dp_stocktakingArchivedStartDate.SelectedDate != null ? (x.inventoryDate >= startDate) : true)
-                          && (dp_stocktakingArchivedEndDate.SelectedDate != null ? (x.inventoryDate <= endDate) : true)
-          ));
-            return result;
-        }
         private void fillSocktakingEvents()
         {
             RepInventory = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
@@ -387,26 +239,29 @@ namespace POS.View.reports
             fillStocktakingPieChart();
         }
 
-
-        private void Cb_stocktakingArchivedBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void fillSocktakingEventsCall(object sender)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
-
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 fillSocktakingEvents();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillSocktakingEventsCall(sender);
         }
 
         private void Chk_stocktakingArchivedAllBranches_Checked(object sender, RoutedEventArgs e)
@@ -439,26 +294,6 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_stocktakingArchivedBranch.IsEnabled = true;
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Cb_stocktakingArchivedType_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillSocktakingEvents();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -512,46 +347,8 @@ namespace POS.View.reports
             }
         }
 
-        private void Dp_stocktakingArchivedEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillSocktakingEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_stocktakingArchivedStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillSocktakingEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-
         private void fillComboItemsUnitsFalls()
         {
-
             var temp = cb_stocktakingFalseBranch.SelectedItem as Branch;
 
             cb_stocktakingFalseType.SelectedValuePath = "ItemsUnitsId";
@@ -582,44 +379,6 @@ namespace POS.View.reports
 
         }
 
-
-
-
-        private void Dp_stocktakingFalseStartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillShortFallsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_stocktakingFalseEndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillShortFallsEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
 
         private void Chk_stocktakingFalseAllTypes_Checked(object sender, RoutedEventArgs e)
         {
@@ -666,7 +425,7 @@ namespace POS.View.reports
             }
         }
 
-        private void Cb_stocktakingFalseType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void fillShortFallsEventsCall(object sender)
         {
             try
             {
@@ -685,7 +444,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        
         private void Chk_stocktakingFalseAllBranches_Unchecked(object sender, RoutedEventArgs e)
         {
             try
@@ -751,41 +510,42 @@ namespace POS.View.reports
             }
         }
 
-        //private void fillStocktakingRowChart()
-        //{
-        //    List<int> cP = new List<int>();
+        private void fillStocktakingRowChart()
+        {
+            #region
+            //List<int> cP = new List<int>();
 
-        //    MyAxis.Labels = new List<string>();
+            //MyAxis.Labels = new List<string>();
 
-        //    List<string> names = new List<string>();
+            //List<string> names = new List<string>();
 
-        //    var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingFalseEndDate);
+            //var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingFalseEndDate);
 
-        //    for (int month = 1; month <= 12; month++)
-        //    {
-        //        var firstOfThisMonth = new DateTime(DateTime.Now.Year, month, 1);
-        //        var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+            //for (int month = 1; month <= 12; month++)
+            //{
+            //    var firstOfThisMonth = new DateTime(DateTime.Now.Year, month, 1);
+            //    var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
 
-        //        var draw = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(c => c.amount.Value).Sum();
-        //        cP.Add(draw);
-               
-        //        MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
-        //    }
+            //    var draw = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(c => c.amount.Value).Sum();
+            //    cP.Add(draw);
 
-        //    List<string> lable = new List<string>();
-        //    SeriesCollection rowChartData = new SeriesCollection();
+            //    MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
+            //}
 
-        //    rowChartData.Add(
-        //     new LineSeries
-        //     {
-        //         Values = cP.AsChartValues(),
+            //List<string> lable = new List<string>();
+            //SeriesCollection rowChartData = new SeriesCollection();
 
-        //         DataLabels = true,
-        //     });
-        //    DataContext = this;
-        //    rowChart.Series = rowChartData;
+            //rowChartData.Add(
+            // new LineSeries
+            // {
+            //     Values = cP.AsChartValues(),
 
-        //}
+            //     DataLabels = true,
+            // });
+            //DataContext = this;
+            //rowChart.Series = rowChartData;
+            #endregion
+        }
 
         private void fillStocktakingColumnChart()
         {
@@ -910,7 +670,7 @@ namespace POS.View.reports
             titles.Add(MainWindow.resourcemanager.GetString("trArchived"));
             SeriesCollection piechartData = new SeriesCollection();
 
-            for (int i = 0; i < x.Count(); i++)
+            for (int i = 0; i < x.Count() ; i++)
             {
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
@@ -927,49 +687,50 @@ namespace POS.View.reports
             chart1.Series = piechartData;
         }
 
-        //private void fillFalsRowChart()
-        //{
-        //    List<long> cP = new List<long>();
+        private void fillFalsRowChart()
+        {
+            #region
+            //List<long> cP = new List<long>();
 
-        //    MyAxis.Labels = new List<string>();
+            //MyAxis.Labels = new List<string>();
 
-        //    List<string> names = new List<string>();
+            //List<string> names = new List<string>();
 
-        //    var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+            //var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
 
-        //    var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
-        //    {
-        //        branchId = s.FirstOrDefault().branchId,
-        //        branchName = s.FirstOrDefault().branchName,
-        //        //shortfalls = s.Sum(x => x.shortfalls),
-        //        ItemUnits = s.FirstOrDefault().ItemUnits,
-        //        itemUnitId = s.FirstOrDefault().itemUnitId,
-        //        itemName = s.FirstOrDefault().itemName,
-        //        unitName = s.FirstOrDefault().unitName
-        //    });
-        //    var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
-        //    {
-        //        itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
-        //    });
-        //    names.AddRange(tempName.Select(nn => nn.itemName));
-        //    for (int i = 0; i < result.Count(); i++)
-        //    {
-        //        //cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
-        //        MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-        //    }
-        //    SeriesCollection rowChartData = new SeriesCollection();
+            //var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            //{
+            //    branchId = s.FirstOrDefault().branchId,
+            //    branchName = s.FirstOrDefault().branchName,
+            //    //shortfalls = s.Sum(x => x.shortfalls),
+            //    ItemUnits = s.FirstOrDefault().ItemUnits,
+            //    itemUnitId = s.FirstOrDefault().itemUnitId,
+            //    itemName = s.FirstOrDefault().itemName,
+            //    unitName = s.FirstOrDefault().unitName
+            //});
+            //var tempName = result.GroupBy(s => new { s.itemUnitId }).Select(s => new
+            //{
+            //    itemName = s.FirstOrDefault().itemName + s.FirstOrDefault().unitName,
+            //});
+            //names.AddRange(tempName.Select(nn => nn.itemName));
+            //for (int i = 0; i < result.Count(); i++)
+            //{
+            //    //cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
+            //    MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            //}
+            //SeriesCollection rowChartData = new SeriesCollection();
 
-        //    rowChartData.Add(
-        //     new LineSeries
-        //     {
-        //         Values = cP.AsChartValues(),
+            //rowChartData.Add(
+            // new LineSeries
+            // {
+            //     Values = cP.AsChartValues(),
 
-        //         DataLabels = true,
-        //     });
-        //    DataContext = this;
-        //    rowChart.Series = rowChartData;
-
-        //}
+            //     DataLabels = true,
+            // });
+            //DataContext = this;
+            //rowChart.Series = rowChartData;
+            #endregion
+        }
 
         private void fillFalsColumnChart()
         {
@@ -996,10 +757,26 @@ namespace POS.View.reports
             SeriesCollection columnChartData = new SeriesCollection();
             List<int> cPa = new List<int>();
 
-            for (int i = 0; i < result.Count(); i++)
+            int xCount = 6;
+            if (result.Count() <= 6)
+                xCount = result.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 cPa.Add(result.ToList().Skip(i).FirstOrDefault().aCount);
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            if(xCount > 6)
+            {
+                int c = 0;
+                for (int i = 6; i < result.Count(); i++)
+                {
+                    c = c + result.ToList().Skip(i).FirstOrDefault().aCount;
+                }
+                if (c != 0)
+                {
+                    cPa.Add(c);
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
             }
 
             columnChartData.Add(
@@ -1007,9 +784,8 @@ namespace POS.View.reports
             {
                 Values = cPa.AsChartValues(),
                 DataLabels = true,
-                Title = "Amount"
+                Title = MainWindow.resourcemanager.GetString("trAmount")
             });
-
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
@@ -1041,7 +817,6 @@ namespace POS.View.reports
             for (int i = 0; i < result.Count(); i++)
             {
                 cP.Add(long.Parse(result.ToList().Skip(i).FirstOrDefault().shortfalls.ToString()));
-                //MyAxis.Labels.Add(titles.ToList().Skip(i).FirstOrDefault());
             }
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < cP.Count(); i++)
@@ -1074,10 +849,10 @@ namespace POS.View.reports
 
         private void Btn_archives_Click(object sender, RoutedEventArgs e)
         {//archives
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
@@ -1106,23 +881,23 @@ namespace POS.View.reports
 
                 fillSocktakingEvents();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_shortfalls_Click(object sender, RoutedEventArgs e)
         {//shortfalls
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
@@ -1151,15 +926,15 @@ namespace POS.View.reports
 
                 fillShortFallsEvents();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
@@ -1210,22 +985,22 @@ namespace POS.View.reports
                 // //StatisticReport\Storage\Stocktaking
                 if (selectedStocktakingTab == 0)
                 {
-                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArArchives.rdlc";////////?????????
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArArchives.rdlc";
                 }
                 else if (selectedStocktakingTab == 1)
                 {
-                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArShortfalls.rdlc";/////////?????????
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArShortfalls.rdlc";
                 }
             }
             else
             {
                 if (selectedStocktakingTab == 0)
                 {
-                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Archives.rdlc";//////////////????????????
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Archives.rdlc";
                 }
                 else if (selectedStocktakingTab == 1)
                 {
-                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Shortfalls.rdlc";//////////////????????????
+                    addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Shortfalls.rdlc";
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
@@ -1239,8 +1014,7 @@ namespace POS.View.reports
             {
                 clsReports.StocktakingShortfallsReport(RepItemtrans, rep, reppath, paramarr);
             }
-            //   clsReports.StocktakingArchivesReport(RepInventory , rep, reppath, paramarr);
-            // clsReports.StocktakingShortfallsReport(RepItemtrans, rep, reppath, paramarr);
+            
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1364,6 +1138,21 @@ namespace POS.View.reports
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
           //  });
+        }
+
+        private void Dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillSocktakingEventsCall(sender);
+        }
+
+        private void CbF_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillShortFallsEventsCall(sender);
+        }
+
+        private void DpFe_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillShortFallsEventsCall(sender);
         }
     }
 }

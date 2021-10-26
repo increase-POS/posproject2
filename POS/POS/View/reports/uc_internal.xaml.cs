@@ -84,7 +84,8 @@ namespace POS.View.reports
                 comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
                 comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
 
-                comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
+                //comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
+                fillComboInternalOperatorType();
 
                 btn_internalItems_Click(btn_item, null);
 
@@ -259,7 +260,6 @@ namespace POS.View.reports
                 showSelectedTabColumn();
 
                 fillComboBranches(cb_internalOperaterFromBranches);
-                fillComboInternalOperatorType();
 
                 chk_internalOperaterFromAllBranches.IsChecked = true;
                 chk_internalOperatorAllTypes.IsChecked = true;
@@ -622,37 +622,13 @@ namespace POS.View.reports
 
         private void fillComboInternalOperatorType()
         {//type
-            cb_internalOperaterType.SelectedValuePath = "InvType";
-            cb_internalOperaterType.DisplayMemberPath = "trInvType";
-           
-            var lst = comboInternalOperatorType.Where(x => x.InvType == "im" || x.InvType == "ex").GroupBy(x => x.InvType).Select(g => new internalTypeCombo
-            {
-                InvType = g.FirstOrDefault().InvType,
-                   trInvType = g.FirstOrDefault().InvType
-            });
-            List<internalTypeCombo> listtemp = new List<internalTypeCombo>();
-            internalTypeCombo intertyp = new internalTypeCombo();
-    
-            foreach (var i in lst)
-            {
-                intertyp = new internalTypeCombo();
-                intertyp.BranchId = i.BranchId;
-                intertyp.InvType = i.InvType;
-                if (i.InvType.Equals("ex"))
-                {
-         i.trInvType = MainWindow.resourcemanager.GetString("trExport");
-                intertyp.trInvType= MainWindow.resourcemanager.GetString("trExport");
-                }
-           
-                else if (i.InvType.Equals("im"))
-                {
-    i.trInvType = MainWindow.resourcemanager.GetString("trImport");
-                intertyp.trInvType = MainWindow.resourcemanager.GetString("trImport");
-                }
-                listtemp.Add(intertyp);
-
-            }
-            cb_internalOperaterType.ItemsSource = listtemp;
+            var dislist = new[] {
+                new { Text = MainWindow.resourcemanager.GetString("trExport")     , Value = "ex" },
+                new { Text = MainWindow.resourcemanager.GetString("trImport")     , Value = "im" }
+                 };
+            cb_internalOperaterType.SelectedValuePath = "Value";
+            cb_internalOperaterType.DisplayMemberPath = "Text";
+            cb_internalOperaterType.ItemsSource = dislist;
         }
 
         private IEnumerable<ItemTransferInvoice> fillListInternal(IEnumerable<ItemTransferInvoice> itemsTransfer, ComboBox comboFromBranch, ComboBox comboToBranch, ComboBox Items, ComboBox unit, DatePicker startDate, DatePicker endDate, CheckBox chkAllFromBranches, CheckBox chkAllToBranches, CheckBox chkAllItems, CheckBox chkAllUnits, CheckBox towWays)
@@ -695,7 +671,7 @@ namespace POS.View.reports
                 var result = itemsTransfer.Where(x => (
 
                                          (comboFromBranch.SelectedItem != null ? (x.branchId == selectedFromBranch.branchId) : true)
-                                      && (comboToBranch.SelectedItem   != null ? (x.invType  == selectedToBranch.InvType)    : true)
+                                      && (comboToBranch.SelectedItem   != null ? (x.invType  == cb_internalOperaterType.SelectedValue.ToString())    : true)
                                       && (dp_internalOperatorStartDate.SelectedDate != null ? (x.updateDate >= startDate.SelectedDate) : true)
                                       && (dp_InternalOperatorEndDate.SelectedDate   != null ? (x.updateDate <= endDate.SelectedDate) : true)
                         ));
@@ -798,20 +774,37 @@ namespace POS.View.reports
 
             var temp = lst;
 
-            var res = temp.GroupBy(x => new { x.branchId, x.invNumber }).Select(x => new ItemTransferInvoice
+            var res = temp.GroupBy(x => new { x.exportBranchId, x.invNumber }).Select(x => new ItemTransferInvoice
             {
                 invType = x.FirstOrDefault().invType,
-                branchId = x.FirstOrDefault().branchId,
-                branchName = x.FirstOrDefault().branchName
+                branchId = x.FirstOrDefault().exportBranchId,
+                branchName = x.FirstOrDefault().exportBranch
             });
-            invTypeCount = res.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
+            var res1 = temp.GroupBy(x => new { x.importBranchId, x.invNumber }).Select(x => new ItemTransferInvoice
+            {
+                invType = x.FirstOrDefault().invType,
+                branchId = x.FirstOrDefault().importBranchId,
+                branchName = x.FirstOrDefault().importBranch
+            });
+
+            List<ItemTransferInvoice> result = new List<ItemTransferInvoice>();
+
+            result.AddRange(res.ToList());
+
+            if (selectedTab == 0)
+            {
+                if (chk_internalItemsTwoWay.IsChecked == true)
+                    result.AddRange(res1.ToList());
+            }
+
+            invTypeCount = result.GroupBy(x => x.branchId).Select(x => new ItemTransferInvoice
             {
                 ImportCount = x.Where(g => g.invType == "im").Count(),
                 ExportCount = x.Where(g => g.invType == "ex").Count()
             }
             );
 
-            var tempName = res.GroupBy(s => new { s.branchId }).Select(s => new
+            var tempName = result.GroupBy(s => new { s.branchId }).Select(s => new
             {
                 itemName = s.FirstOrDefault().branchName,
             });
@@ -874,32 +867,8 @@ namespace POS.View.reports
                     itemName = s.FirstOrDefault().itemName,
                     unitName = s.FirstOrDefault().unitName,
                 }).OrderByDescending(s => s.quantity);
-            if (selectedTab == 0)
-            {
-                if (chk_internalItemsTwoWay.IsChecked == true)
-                {
-                    x = result.Select(m => (decimal)m.quantity / 2).ToList();
-
-                }
-                else
-                {
-                    x = result.Select(m => (decimal)m.quantity).ToList();
-
-                }
-            }
-            else if (selectedTab == 1)
-            {
-                if (cb_internalOperaterFromBranches.SelectedItem != null)
-                {
-                    x = result.Select(m => (decimal)m.quantity).ToList();
-
-                }
-                else
-                {
-                    x = result.Select(m => (decimal)m.quantity / 2).ToList();
-
-                }
-            }
+            
+            x = result.Select(m => (decimal)m.quantity).ToList();
             titles = result.Select(m => m.itemName).ToList();
             titles1 = result.Select(m => m.unitName).ToList();
             int count = x.Count();
@@ -1211,6 +1180,7 @@ namespace POS.View.reports
             var lst = fillListInternal(itemsInternalTransfer, cb_internalItemsFromBranches, cb_internalItemsToBranches, cb_internalItemsItems, cb_internalItemsUnits, dp_internalItemsStartDate, dp_InternalItemsEndDate, chk_internalItemsFromAllBranches, chk_internalItemsToAllBranches, chk_internalItemsAllItems, chk_internalItemsAllUnits, chk_internalItemsTwoWay);
             if(selectedTab == 1)
                 lst = fillListInternal(itemsInternalTransfer, cb_internalOperaterFromBranches, cb_internalOperaterType, null, null, dp_internalOperatorStartDate, dp_InternalOperatorEndDate, null, null, null, null, null);
+
             itemsTransferReport = lst;
             dgStock.ItemsSource = lst;
             txt_count.Text = lst.Count().ToString();

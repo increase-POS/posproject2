@@ -179,7 +179,7 @@
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
                                                           Grid.Row="1"
-                                                          SelectionChanged="Cb_stocktakingArchivedBranch_SelectionChanged"
+                                                          SelectionChanged="Cb_SelectionChanged"
 ></ComboBox>
                                                 <CheckBox x:Name="chk_stocktakingArchivedAllBranches"
                                                           Background="{StaticResource MainColorBlue}"
@@ -203,7 +203,7 @@
                                                           Height="40" 
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                       SelectionChanged="Cb_stocktakingArchivedType_SelectionChanged"
+                                                       SelectionChanged="Cb_SelectionChanged"
                                                           ItemsSource="{Binding}"
 ></ComboBox>
                                                 <CheckBox x:Name="chk_stocktakingArchivedAllTypes"
@@ -218,10 +218,10 @@
 
 
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="4" LastChildFill="False">
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="Dp_stocktakingArchivedEndDate_SelectedDateChanged" Name="dp_stocktakingArchivedEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="Dp_SelectedDateChanged" Name="dp_stocktakingArchivedEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="Dp_stocktakingArchivedStartDate_SelectedDateChanged" Name="dp_stocktakingArchivedStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="Dp_SelectedDateChanged" Name="dp_stocktakingArchivedStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                                 </DockPanel>
@@ -282,7 +282,7 @@
                                                           Height="40" 
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                       SelectionChanged="Cb_stocktakingFalseType_SelectionChanged"
+                                                       SelectionChanged="CbF_SelectionChanged"
                                                           ItemsSource="{Binding}"
 ></ComboBox>
                                                 <CheckBox x:Name="chk_stocktakingFalseAllTypes"
@@ -297,10 +297,10 @@
 
 
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="2" Grid.Column="4" LastChildFill="False">
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="Dp_stocktakingFalseEndDate_SelectedDateChanged" Name="dp_stocktakingFalseEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="DpFe_SelectedDateChanged" Name="dp_stocktakingFalseEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="Dp_stocktakingFalseStartDate_SelectedDateChanged" Name="dp_stocktakingFalseStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="DpFe_SelectedDateChanged" Name="dp_stocktakingFalseStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                                 </DockPanel>
@@ -565,7 +565,7 @@
 
             <Border Grid.Row="0"  Background="White" Margin="5,0,5,5" CornerRadius="7">
                 <Grid Margin="5,10,5,10">
-                    <lvc:CartesianChart Name="cartesianChart" >
+                    <lvc:CartesianChart Name="cartesianChart" LegendLocation="Bottom">
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis  x:Name="axcolumn">
                                 <lvc:Axis.Separator>

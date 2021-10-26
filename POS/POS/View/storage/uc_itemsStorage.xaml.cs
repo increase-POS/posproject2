@@ -134,23 +134,24 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                //if (itemLocationList is null)
-                if (chk_stored.IsChecked == true)
-                    await refreshItemsLocations();
-                else if (chk_freezone.IsChecked == true)
-                    await refreshFreeZoneItemsLocations();
-                else if (chk_locked.IsChecked == true)
-                    await refreshLockedItems();
-                clearInputs();
+                if (itemLocationList != null)
+                {
+                    if (chk_stored.IsChecked == true)
+                        await refreshItemsLocations();
+                    else if (chk_freezone.IsChecked == true)
+                        await refreshFreeZoneItemsLocations();
+                    else if (chk_locked.IsChecked == true)
+                        await refreshLockedItems();
+                    clearInputs();
 
-                searchText = tb_search.Text.ToLower();
+                    searchText = tb_search.Text.ToLower();
 
-
-                itemLocationListQuery = itemLocationList.Where(s => (s.itemName.ToLower().Contains(searchText) ||
-                s.unitName.ToLower().Contains(searchText) ||
-                s.section.ToLower().Contains(searchText) ||
-                s.location.ToLower().Contains(searchText)));
-                dg_itemsStorage.ItemsSource = itemLocationListQuery;
+                    itemLocationListQuery = itemLocationList.Where(s => (s.itemName.ToLower().Contains(searchText) ||
+                    s.unitName.ToLower().Contains(searchText) ||
+                    s.section.ToLower().Contains(searchText) ||
+                    s.location.ToLower().Contains(searchText)));
+                    dg_itemsStorage.ItemsSource = itemLocationListQuery;
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -866,6 +867,8 @@ namespace POS.View.storage
                         chk_locked.IsChecked = false;
                         btn_locked.Visibility = Visibility.Collapsed;
                         dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
+                        dg_itemsStorage.Columns[3].Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[4].Visibility = Visibility.Visible;
                         repTitle2 = "trStored";
 
 
@@ -876,6 +879,8 @@ namespace POS.View.storage
                         chk_locked.IsChecked = false;
                         btn_locked.Visibility = Visibility.Collapsed;
                         dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
+                        dg_itemsStorage.Columns[3].Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[4].Visibility = Visibility.Visible;
                         repTitle2 = "trFreeZone";
 
                     }
@@ -885,6 +890,8 @@ namespace POS.View.storage
                         chk_freezone.IsChecked = false;
                         btn_locked.Visibility = Visibility.Visible;
                         dg_itemsStorage.Columns[6].Visibility = Visibility.Visible; //make order num column visible
+                        dg_itemsStorage.Columns[3].Visibility = Visibility.Collapsed;
+                        dg_itemsStorage.Columns[4].Visibility = Visibility.Collapsed;
                         repTitle2 ="trReserved";
                     }
                 }
