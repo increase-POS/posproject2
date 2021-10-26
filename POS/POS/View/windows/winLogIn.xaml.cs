@@ -295,7 +295,6 @@ namespace POS.View.windows
                                 Properties.Settings.Default.menuIsOpen = "";
                             }
                             Properties.Settings.Default.Save();
-
                             //Window.GetWindow(this).Opacity = 1;
                             //open main window and close this window
                             MainWindow main = new MainWindow();

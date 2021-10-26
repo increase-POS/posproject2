@@ -100,7 +100,6 @@
                     </materialDesign:Badged>
 
                     <Border Grid.Column="3"  Background="White"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
-
                     <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_orders"  Click="Btn_orders_Click" >
                         <StackPanel>
@@ -125,6 +124,32 @@
                                            HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Button>
+                   
+                    <Border Grid.Column="3"  Background="White"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
+                    <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
+                    Background="{x:Null}" x:Name="btn_submitOrder"  Click="Btn_submitOrder_Click" >
+                        <StackPanel>
+                            <Path Fill="#4E4E4E" Stretch="Fill"  
+                           Width="30" Height="30"  FlowDirection="LeftToRight"
+                           Data="M22.6,18.8h54.9c-0.7,2.4-1.2,5-1.4,7.6h-5.4l0,0l5.5,22.9h6.1c1.5,2.1,3.2,4.1,5,5.8h-9.7l4.7,19.4l13.5-1.8
+	l0,0l-3.3-13.6c2.7,1.7,5.7,3.1,8.9,4.1l2,8.5l1-0.1c6.1-0.9,5.7,0.5,6.1-5.2l0.1-1.7c0.3,0,0.6,0,1,0c2.3,0,4.5-0.2,6.7-0.6
+	l-0.6,7.8c-0.6,7.1-0.1,5.3-7.6,6.4L41.6,87l3.6,10.5c29.8,0,44.2,0,73.9,0c1,3.7,2.4,9.8,3.4,14h-12.3l-1.2-4.3
+	c-24.8,0-34.3,0-59.1,0c-13.6-0.2-12.2,3.4-15.4-8.3L11.2,14.3H0V6.2h19.6C20.5,9.6,21.8,15.4,22.6,18.8L22.6,18.8z M111.7,0.1
+	c16,0,29,13,29,29s-13,29-29,29s-29-13-29-29S95.7,0.1,111.7,0.1L111.7,0.1z M98.9,29.8c0.4-2.3,3-3.5,5-2.3
+	c0.2,0.1,0.4,0.2,0.5,0.4l0,0c0.9,0.9,1.9,1.8,2.9,2.7l0.9,0.8l10.3-10.8c0.6-0.6,1.1-1.1,2-1.3c3.2-0.7,5.4,3.2,3.1,5.5l-12.8,13.5
+	c-1.2,1.3-3.4,1.4-4.7,0.2c-0.7-0.7-1.6-1.4-2.4-2.1c-1.4-1.2-2.9-2.5-4-3.7C99,32,98.7,30.8,98.9,29.8L98.9,29.8L98.9,29.8z
+	 M53.7,110.2c5.2,0,9.5,4.2,9.5,9.5c0,5.2-4.2,9.5-9.5,9.5c-5.2,0-9.5-4.2-9.5-9.5C44.2,114.4,48.5,110.2,53.7,110.2L53.7,110.2z
+	 M92.8,110.2c5.2,0,9.5,4.2,9.5,9.5c0,5.2-4.2,9.5-9.5,9.5c-5.2,0-9.5-4.2-9.5-9.5C83.3,114.4,87.6,110.2,92.8,110.2L92.8,110.2z
+	 M30.8,49.3h15.1l-5.5-22.9c-5.4,0-10.7,0-15.9,0l1.8,6.9h0.1L30.8,49.3L30.8,49.3L30.8,49.3z M48.3,26.4l5.5,22.9h14.5l-5.5-22.9
+	H48.3L48.3,26.4L48.3,26.4z M74.7,75.6l-4.9-20.5H55.2l5.4,22.4L74.7,75.6L74.7,75.6L74.7,75.6z M52.9,78.6l-5.6-23.5H32.4l7,25.3
+	L52.9,78.6L52.9,78.6z M71.6,0L71.6,0L71.6,0L71.6,0L71.6,0z M0,71.9L0,71.9L0,71.9L0,71.9L0,71.9z M71.6,143.8L71.6,143.8
+	L71.6,143.8L71.6,143.8L71.6,143.8z M143.2,71.9L143.2,71.9L143.2,71.9L143.2,71.9L143.2,71.9z"  />
+                            <TextBlock Text="submit" x:Name="txt_submitOrder" Foreground="#178DD2" 
+                                           FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
+                                           HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
                     <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" Visibility="Collapsed"
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Name="md_ordersWait">
                         <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0" Height="auto"

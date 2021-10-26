@@ -3044,3 +3044,5 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_selectPos.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupOtherPos.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\setup\uc_selectPos.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupOtherPos.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_submitOrder.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_submitOrder.baml

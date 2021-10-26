@@ -408,6 +408,7 @@ namespace POS.View.windows
         }
         private void Btn_enter_Click(object sender, RoutedEventArgs e)
         {
+           
             tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#f8f8f8"));
             p_errorCash.Visibility = Visibility.Collapsed;
             //listPayments
@@ -421,7 +422,9 @@ namespace POS.View.windows
             {
                 cashTrasnfer.cash = 0;
             }
-            if (cashTrasnfer.cash + invoice.paid <= invoice.totalNet)
+            if (cashTrasnfer.cash > 0)
+            {
+                if (cashTrasnfer.cash + invoice.paid <= invoice.totalNet)
             {
                 cashTrasnfer.agentId = invoice.agentId;
                 cashTrasnfer.invId = invoice.invoiceId;
@@ -459,6 +462,14 @@ namespace POS.View.windows
                 tt_errorCash.Content = MainWindow.resourcemanager.GetString("trAmountGreaterInvoiceValue");
                 tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
             }
+            }
+            else
+            {
+                p_errorCash.Visibility = Visibility.Visible;
+                tt_errorCash.Content = MainWindow.resourcemanager.GetString("trZeroAmmount");
+                tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
+            }
+
         }
         string validateDuplicate(decimal dec )
         {

@@ -70,6 +70,164 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+
+
+        #region loading
+        bool firstLoading = true;
+        List<keyValueBool> loadingList;
+        async void loading_fillRegions()
+        {
+            try
+            {
+                await fillRegions();
+                #region get default region
+                await getDefaultRegion();
+                if (region != null)
+                {
+                    cb_region.SelectedValue = region.countryId;
+                    cb_region.Text = region.name;
+                }
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillRegions"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillLanguages()
+        {
+            try
+            {
+                await fillLanguages();
+                #region get default language
+                await getDefaultLanguage();
+                if (usLanguage != null)
+                    cb_language.SelectedValue = usLanguage.valId;
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillLanguages"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillCurrencies()
+        {
+            try
+            {
+                await fillCurrencies();
+                #region get default currency
+                if (region != null)
+                {
+                    tb_currency.Text = region.currency;
+                }
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillCurrencies"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_getDefaultTax()
+        {
+            try
+            {
+                #region get default tax
+                await getDefaultTax();
+                if (tax != null)
+                    tb_tax.Text = tax.value;
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultTax"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_getDefaultDateForm()
+        {
+            try
+            {
+                #region fill dateform
+                DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
+                var date = DateTime.Now;
+                var typelist = new[] {
+                    new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
+                    new { Text = date.ToString(dtfi.LongDatePattern) , Value = "LongDatePattern" },
+                    new { Text =  date.ToString(dtfi.MonthDayPattern), Value = "MonthDayPattern" },
+                    new { Text =  date.ToString(dtfi.YearMonthPattern), Value = "YearMonthPattern" },
+                     };
+                cb_dateForm.DisplayMemberPath = "Text";
+                cb_dateForm.SelectedValuePath = "Value";
+                cb_dateForm.ItemsSource = typelist;
+                #endregion
+                #region get default date form
+                await getDefaultDateForm();
+                if (dateForm != null)
+                    cb_dateForm.SelectedValue = dateForm.value;
+                else
+                    cb_dateForm.SelectedIndex = -1;
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultDateForm"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillAccuracy()
+        {
+            try
+            {
+                fillAccuracy();
+                #region get default accracy
+                await getDefaultAccuracy();
+                if (accuracy != null)
+                {
+                    cb_accuracy.SelectedValue = accuracy.value;
+                }
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillAccuracy"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        #endregion
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -93,85 +251,52 @@ namespace POS.View.Settings
                 translate();
                 #endregion
 
-                await fillRegions();
-
-                #region get default region
-                await getDefaultRegion();
-                if (region != null)
+                #region loading
+                if (firstLoading)
                 {
-                    //int index = cb_region.Items.IndexOf(region);
-                    //test.Text = index.ToString();
-                    cb_region.SelectedValue = region.countryId;
-                    cb_region.Text = region.name;
+                    loadingList = new List<keyValueBool>();
+                    bool isDone = true;
+                    loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
+                    loading_fillRegions();
+                    loading_fillLanguages();
+                    loading_fillCurrencies();
+                    loading_getDefaultTax();
+                    loading_getDefaultDateForm();
+                    loading_fillAccuracy();
+                    do
+                    {
+                        isDone = true;
+                        foreach (var item in loadingList)
+                        {
+                            if (item.value == false)
+                            {
+                                isDone = false;
+                                break;
+                            }
+                        }
+                        if (!isDone)
+                        {
+                            //MessageBox.Show("not done");
+                            //string s = "";
+                            //foreach (var item in loadingList)
+                            //{
+                            //    s += item.name + " - " + item.value + "\n";
+                            //}
+                            //MessageBox.Show(s);
+                            await Task.Delay(0500);
+                            //MessageBox.Show("do");
+                        }
+                    }
+                    while (!isDone);
+                    fillBackup();
+                    firstLoading = false;
                 }
-                #endregion
 
-                await fillLanguages();
-
-                #region get default language
-                await getDefaultLanguage();
-                if (usLanguage != null)
-                    cb_language.SelectedValue = usLanguage.valId;
-                #endregion
-
-                await fillCurrencies();
-
-                #region get default currency
-                if (region != null)
-                {
-                    //cb_currency.SelectedValue = region.name;
-                    //int index = cb_currency.Items.IndexOf(region.currency.Trim());
-                    //cb_currency.SelectedIndex = 0;
-                    //cb_currency.Text = region.currency;
-                    tb_currency.Text = region.currency;
-                }
-                #endregion
-
-                #region get default tax
-                await getDefaultTax();
-                if (tax != null)
-                    tb_tax.Text = tax.value;
-                #endregion
-
-                #region get default cost
-                //await getDefaultCost();
-                //if (cost != null)
-                //    tb_storageCost.Text = cost.value;
-                #endregion
-
-                #region fill dateform
-                DateTimeFormatInfo dtfi = DateTimeFormatInfo.CurrentInfo;
-                var date = DateTime.Now;
-                var typelist = new[] {
-                    new { Text = date.ToString(dtfi.ShortDatePattern), Value = "ShortDatePattern" },
-                    new { Text = date.ToString(dtfi.LongDatePattern) , Value = "LongDatePattern" },
-                    new { Text =  date.ToString(dtfi.MonthDayPattern), Value = "MonthDayPattern" },
-                    new { Text =  date.ToString(dtfi.YearMonthPattern), Value = "YearMonthPattern" },
-                     };
-
-                cb_dateForm.DisplayMemberPath = "Text";
-                cb_dateForm.SelectedValuePath = "Value";
-                cb_dateForm.ItemsSource = typelist;
-                //cb_dateForm.SelectedIndex = 0;
-
-                #endregion
-
-                #region get default date form
-                await getDefaultDateForm();
-                if (dateForm != null)
-                    cb_dateForm.SelectedValue = dateForm.value;
-                else
-                    cb_dateForm.SelectedIndex = -1;
-                #endregion
-
-                fillAccuracy();
-                fillBackup();
-                #region get default accracy
-                await getDefaultAccuracy();
-                if (accuracy != null)
-                {
-                    cb_accuracy.SelectedValue = accuracy.value;
-                }
                 #endregion
 
                 if (sender != null)

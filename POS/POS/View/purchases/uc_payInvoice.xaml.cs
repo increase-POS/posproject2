@@ -192,29 +192,6 @@ namespace POS.View
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 saveBeforeExit();
-                //if (billDetails.Count > 0 && _InvoiceType == "pd")
-                //{
-                //    #region Accept
-                //    MainWindow.mainWindow.Opacity = 0.2;
-                //    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                //    w.contentText = "Do you want save pay invoice in drafts?";
-                //    w.ShowDialog();
-                //    MainWindow.mainWindow.Opacity = 1;
-                //    #endregion
-                //    if (w.isOk)
-                //        Btn_newDraft_Click(null, null);
-                //    else
-                //    {
-                //        clearInvoice();
-                //        _InvoiceType = "pd";
-                //    }
-                //}
-                //else
-                //{
-                //    clearInvoice();
-                //    _InvoiceType = "pd";
-                //}
                 timer.Stop();
 
                 if (sender != null)
@@ -245,14 +222,96 @@ namespace POS.View
             clearInvoice();
            
         }
-            public async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        #region loading
+        
+        List<keyValueBool> loadingList;
+
+
+        async void loading_RefrishItems()
+        {
+            try
+            {
+                await RefrishItems();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishItems"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBranchesWithoutCurrent()
+        {
+            try
+            {
+                await SectionData.fillBranchesWithoutCurrent(cb_branch, MainWindow.branchID.Value, "bs");
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBranchesWithoutCurrent"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_refrishVendors()
+        {
+            try
+            {
+                await RefrishVendors();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_refrishVendors"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBarcodeList()
+        {
+            try
+            {
+                await fillBarcodeList();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBarcodeList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+
+        #endregion
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 //Window parentWin = Window.GetWindow(this);
                 MainWindow.mainWindow.Closing += ParentWin_Closing;
+
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
@@ -278,12 +337,45 @@ namespace POS.View
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
 
+                #region loading
+                loadingList = new List<keyValueBool>();
+                bool isDone = true;
+                loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBranchesWithoutCurrent", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_refrishVendors", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
+
+
+
+                loading_RefrishItems();
+                loading_fillBranchesWithoutCurrent();
+                loading_refrishVendors();
+                loading_fillBarcodeList();
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        await Task.Delay(0500);
+                    }
+                }
+                while (!isDone);
+                #endregion
+
+
+
+
+
                 setTimer();
-                await RefrishItems();
                 configureDiscountType();
-                await SectionData.fillBranchesWithoutCurrent(cb_branch,MainWindow.branchID.Value, "bs");
-                await RefrishVendors();
-                await fillBarcodeList();
                 setNotifications();
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);

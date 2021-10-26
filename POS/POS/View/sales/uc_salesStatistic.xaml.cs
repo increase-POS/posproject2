@@ -715,5 +715,37 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        Invoice invoice;
+        private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main); //invoiceId
+                invoice = new Invoice();
+                if (dgInvoice.SelectedIndex != -1)
+                {
+                    ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
+                    if (item.invoiceId > 0)
+                    {
+                        invoice = await invoice.getById(item.invoiceId);
+                        MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
+                        uc_sales.Instance.Btn_receiptInvoice_Click(uc_sales.Instance.btn_reciptInvoice, null);
+                        uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
+                        uc_receiptInvoice._InvoiceType = invoice.invType;
+                        uc_receiptInvoice.Instance.invoice = invoice;
+                        await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
+                    }
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
