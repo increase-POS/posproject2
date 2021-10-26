@@ -109,7 +109,6 @@ namespace POS.View.sales
 
                 translate();
 
-                Keyboard.Focus(tb_name);
 
                 SectionData.clearValidate(tb_name, p_errorName);
 
@@ -117,6 +116,7 @@ namespace POS.View.sales
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

@@ -131,7 +131,6 @@ namespace POS.View.Settings
                 #endregion
                 translate();
 
-                Keyboard.Focus(tb_name);
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -145,6 +144,7 @@ namespace POS.View.Settings
                 await RefreshGroupObjectList();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

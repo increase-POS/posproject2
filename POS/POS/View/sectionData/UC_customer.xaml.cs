@@ -410,14 +410,13 @@ namespace POS.View
                     Tb_search_TextChanged(null, null);
                 });
                 if (citynum == null)
-                    await RefreshCity();
-
+                await RefreshCity();
                 await fillCountries();
                 await fillCity();
 
-                Keyboard.Focus(tb_name);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

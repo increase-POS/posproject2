@@ -70,7 +70,7 @@ namespace POS.View.windows
 
                 translate();
                 #endregion
-                 
+
 
                 configurProcessType();
 
@@ -80,14 +80,14 @@ namespace POS.View.windows
                 //////////////////////////
                 //invoice.agentId
                 //////////////////////////
-                 tb_moneySympol1.Text = tb_moneySympol2.Text = MainWindow.Currency;
+                tb_moneySympol1.Text = tb_moneySympol2.Text = MainWindow.Currency;
                 invoice.paid = 0;
-                tb_cash.Text =  tb_total.Text = invoice.totalNet.ToString() ;
-                
+                tb_cash.Text = tb_total.Text = invoice.totalNet.ToString();
+
             }
             catch (Exception ex)
             {
-             
+
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -153,18 +153,24 @@ namespace POS.View.windows
         }
         private void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice.paid >= invoice.totalNet || ( hasCredit == true && creditValue > invoice.totalNet - invoice.paid))
+            try
             {
-                isOk = true;
-                this.Close();
+                if (invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid))
+                {
+                    isOk = true;
+                    this.Close();
+                }
+                else // if (invoice.paid < invoice.totalNet && hasCredit == false &&)
+                {
+                    isOk = false;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAmountPaidEqualInvoiceValue"), animation: ToasterAnimation.FadeIn);
+                }
+
             }
-           else // if (invoice.paid < invoice.totalNet && hasCredit == false &&)
+            catch (Exception ex)
             {
-                isOk = false;
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAmountPaidEqualInvoiceValue"), animation: ToasterAnimation.FadeIn);
+                SectionData.ExceptionMessage(ex, this);
             }
-
-
         }
 
         private void input_LostFocus(object sender, RoutedEventArgs e)
@@ -179,7 +185,7 @@ namespace POS.View.windows
                 }
                 if (name == "ComboBox")
                 {
-                   
+
                     if ((sender as ComboBox).Name == "cb_paymentProcessType")
                         SectionData.validateEmptyComboBox((ComboBox)sender, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
 
@@ -201,7 +207,7 @@ namespace POS.View.windows
         {
             try
             {
-                
+
                 switch (cb_paymentProcessType.SelectedIndex)
                 {
                     case 0://cash
@@ -216,11 +222,11 @@ namespace POS.View.windows
                         gd_card.Visibility = Visibility.Visible;
                         break;
                 }
-                
+
             }
             catch (Exception ex)
             {
-                
+
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -269,15 +275,22 @@ namespace POS.View.windows
         }
         void card_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            _SelectedCard = int.Parse(button.Tag.ToString());
-            //txt_card.Text = button.DataContext.ToString();
-            Card card = button.DataContext as Card;
-            txt_card.Text = card.name;
-            if (card.hasProcessNum.Value)
-                tb_processNum.Visibility = Visibility.Visible;
-            else
-                tb_processNum.Visibility = Visibility.Collapsed;
+            try
+            {
+                var button = sender as Button;
+                _SelectedCard = int.Parse(button.Tag.ToString());
+                //txt_card.Text = button.DataContext.ToString();
+                Card card = button.DataContext as Card;
+                txt_card.Text = card.name;
+                if (card.hasProcessNum.Value)
+                    tb_processNum.Visibility = Visibility.Visible;
+                else
+                    tb_processNum.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         void loading_fillCardCombo()
         {
@@ -364,7 +377,7 @@ namespace POS.View.windows
             {
                 _Sender = sender;
                 string name = sender.GetType().Name;
-                 validateEmpty(name, sender);
+                validateEmpty(name, sender);
                 var txb = sender as TextBox;
                 if ((sender as TextBox).Name == "tb_cash")
                 {
@@ -394,7 +407,7 @@ namespace POS.View.windows
             if (name == "TextBox")
             {
                 if ((sender as TextBox).Name == "tb_cash")
-                    amountIsValid =  SectionData.validateEmptyTextBox((TextBox)sender, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                    amountIsValid = SectionData.validateEmptyTextBox((TextBox)sender, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
             }
 
         }
@@ -408,70 +421,75 @@ namespace POS.View.windows
         }
         private void Btn_enter_Click(object sender, RoutedEventArgs e)
         {
-           
-            tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#f8f8f8"));
-            p_errorCash.Visibility = Visibility.Collapsed;
-            //listPayments
-            string s = "";
-            cashTrasnfer = new CashTransfer();
             try
             {
-                cashTrasnfer.cash = decimal.Parse(tb_cash.Text);
-            }
-            catch
-            {
-                cashTrasnfer.cash = 0;
-            }
-            if (cashTrasnfer.cash > 0)
-            {
-                if (cashTrasnfer.cash + invoice.paid <= invoice.totalNet)
-            {
-                cashTrasnfer.agentId = invoice.agentId;
-                cashTrasnfer.invId = invoice.invoiceId;
-                cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#f8f8f8"));
+                p_errorCash.Visibility = Visibility.Collapsed;
+                //listPayments
+                string s = "";
+                cashTrasnfer = new CashTransfer();
+                try
                 {
-                //s = cb_paymentProcessType.Text + " : " + cashTrasnfer.cash;
-                    s = validateDuplicate(cashTrasnfer.cash.Value );
+                    cashTrasnfer.cash = decimal.Parse(tb_cash.Text);
                 }
-               else if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                catch
                 {
-                    cashTrasnfer.cardId = _SelectedCard;
-                    cashTrasnfer.docNum = tb_processNum.Text;
-
-                    s =txt_card.Text + " : " + cashTrasnfer.cash;
+                    cashTrasnfer.cash = 0;
                 }
+                if (cashTrasnfer.cash > 0)
+                {
+                    if (cashTrasnfer.cash + invoice.paid <= invoice.totalNet)
+                    {
+                        cashTrasnfer.agentId = invoice.agentId;
+                        cashTrasnfer.invId = invoice.invoiceId;
+                        cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                        {
+                            //s = cb_paymentProcessType.Text + " : " + cashTrasnfer.cash;
+                            s = validateDuplicate(cashTrasnfer.cash.Value);
+                        }
+                        else if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                        {
+                            cashTrasnfer.cardId = _SelectedCard;
+                            cashTrasnfer.docNum = tb_processNum.Text;
 
-              
-                lst_payments.Items.Add(s);
-                listPayments.Add(cashTrasnfer);
-                invoice.paid += cashTrasnfer.cash;
-                txt_sum.Text = invoice.paid.ToString();
+                            s = txt_card.Text + " : " + cashTrasnfer.cash;
+                        }
 
 
-                if (invoice.paid == invoice.totalNet)
-                    txt_sum.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
+                        lst_payments.Items.Add(s);
+                        listPayments.Add(cashTrasnfer);
+                        invoice.paid += cashTrasnfer.cash;
+                        txt_sum.Text = invoice.paid.ToString();
+
+
+                        if (invoice.paid == invoice.totalNet)
+                            txt_sum.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
+                        else
+                            txt_sum.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+
+                        tb_cash.Text = (invoice.totalNet - invoice.paid).ToString();
+                    }
                     else
-                    txt_sum.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
-
-                tb_cash.Text = (invoice.totalNet -  invoice.paid).ToString();
+                    {
+                        p_errorCash.Visibility = Visibility.Visible;
+                        tt_errorCash.Content = MainWindow.resourcemanager.GetString("trAmountGreaterInvoiceValue");
+                        tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
+                    }
+                }
+                else
+                {
+                    p_errorCash.Visibility = Visibility.Visible;
+                    tt_errorCash.Content = MainWindow.resourcemanager.GetString("trZeroAmmount");
+                    tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
+                }
             }
-            else
+            catch (Exception ex)
             {
-                p_errorCash.Visibility = Visibility.Visible;
-                tt_errorCash.Content = MainWindow.resourcemanager.GetString("trAmountGreaterInvoiceValue");
-                tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
+                SectionData.ExceptionMessage(ex, this);
             }
-            }
-            else
-            {
-                p_errorCash.Visibility = Visibility.Visible;
-                tt_errorCash.Content = MainWindow.resourcemanager.GetString("trZeroAmmount");
-                tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
-            }
-
         }
-        string validateDuplicate(decimal dec )
+        string validateDuplicate(decimal dec)
         {
             try
             {
@@ -508,7 +526,7 @@ namespace POS.View.windows
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
-                return  "";
+                return "";
             }
         }
         private void Btn_clearSerial_Click(object sender, RoutedEventArgs e)
@@ -530,26 +548,32 @@ namespace POS.View.windows
 
         private void Lst_payments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lst_payments.SelectedItem != null)
+            try
             {
+                if (lst_payments.SelectedItem != null)
+                {
 
 
-            List<string> str = lst_payments.SelectedItem.ToString().Split(':').ToList<string>();
-            str[1] = str[1].Replace(" ", "");
-            invoice.paid -=decimal.Parse(str[1]);
-            txt_sum.Text = invoice.paid.ToString();
+                    List<string> str = lst_payments.SelectedItem.ToString().Split(':').ToList<string>();
+                    str[1] = str[1].Replace(" ", "");
+                    invoice.paid -= decimal.Parse(str[1]);
+                    txt_sum.Text = invoice.paid.ToString();
 
-            listPayments.Remove(listPayments[lst_payments.SelectedIndex]);
-            lst_payments.Items.Remove(lst_payments.SelectedItem);
+                    listPayments.Remove(listPayments[lst_payments.SelectedIndex]);
+                    lst_payments.Items.Remove(lst_payments.SelectedItem);
 
-            if (invoice.paid == invoice.totalNet)
-                txt_sum.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
-            else
-                txt_sum.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                    if (invoice.paid == invoice.totalNet)
+                        txt_sum.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
+                    else
+                        txt_sum.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
 
-            tb_cash.Text = (invoice.totalNet - invoice.paid).ToString();
+                    tb_cash.Text = (invoice.totalNet - invoice.paid).ToString();
+                }
             }
-
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

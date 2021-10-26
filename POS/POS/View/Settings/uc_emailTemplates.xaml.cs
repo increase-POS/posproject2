@@ -107,7 +107,6 @@ namespace POS.View.Settings
 
                 //btn_addRange.IsEnabled = false;
 
-                Keyboard.Focus(tb_title);
 
                 SectionData.clearValidate(tb_title, p_errorTitle);
 
@@ -122,6 +121,7 @@ namespace POS.View.Settings
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_title);
             }
             catch (Exception ex)
             {

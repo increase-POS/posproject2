@@ -49,7 +49,6 @@ namespace POS.View
                 return _instance;
             }
         }
-
         public uc_home()
         {
             try
@@ -79,10 +78,11 @@ namespace POS.View
         public List<TotalPurSale> listMonthlyInvoice { get; set; }
         public List<IUStorage> listIUStorage { get; set; }
         public List<ItemUnit> IUList = new List<ItemUnit>();
+        bool firstLoading = true;
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 //if (sender != null)
                 //    SectionData.StartAwait(grid_main);
 
@@ -112,22 +112,25 @@ namespace POS.View
 
                 starTimerAfter10();
                 starTimerAfter30();
-
-                await SectionData.fillBranchesWithAll(cb_branch);
-                cb_branch.SelectedValue = MainWindow.branchID;
+                if (firstLoading)
+                {
+                    await SectionData.fillBranchesWithAll(cb_branch);
+                    firstLoading = false;
+                    cb_branch.SelectedValue = MainWindow.branchID;
+                }
                 if (MainWindow.groupObject.HasPermissionAction(branchesPermission, MainWindow.groupObjects, "one"))
                     cb_branch.IsEnabled = true;
                 else cb_branch.IsEnabled = false;
 
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //if (sender != null)
+            //    //    SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
 
         }
         async void starTimerAfter10()
@@ -170,19 +173,19 @@ namespace POS.View
         }
         void timer_Thread30(object sendert, EventArgs et)
         {
-            try
-            {
+            //try
+            //{
                 refreshView();
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         void timer_Thread10(object sendert, EventArgs et)
         {
-            try
-            {
+            //try
+            //{
                 #region BestSeller
                 if (!firstLoad)
                 {
@@ -214,23 +217,23 @@ namespace POS.View
 
                 firstLoad = false;
 
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         List<loadingThread> loadingList;
         async void loading_getDailySalPur()
         {
-            try
-            {
+            //try
+            //{
                 await CountMonthlySalPur();
             await DailySalPur();
-            }
-            catch (Exception)
-            { }
+            //}
+            //catch (Exception)
+            //{ }
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("loading_getDailySalPur"))
@@ -242,8 +245,8 @@ namespace POS.View
         }
         async Task refreshViewTask()
         {
-            try
-            {
+            //try
+            //{
                 #region loading
                 loadingList = new List<loadingThread>();
                 bool isDone = true;
@@ -295,24 +298,24 @@ namespace POS.View
 
                 this.DataContext = new Dash();
                 this.DataContext = dash;
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         async void IUStorageRefresh()
         {
-            try
-            {
+            //try
+            //{
                 #region IUStorage
                 await IUStorage();
                 paginationIUStorage(listIUStorage, SkipIUStorage);
                 #endregion
-            }
-            catch (Exception)
-            { }
+            //}
+            //catch (Exception)
+            //{ }
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("IUStorageRefresh"))
@@ -324,15 +327,15 @@ namespace POS.View
         }
         async void BestSellerRefresh()
         {
-            try
-            {
+            //try
+            //{
                 #region BestSeller
                 await BestSeller();
                 paginationBestSeller(listBestSeller, SkipBestSeller);
                 #endregion
-            }
-            catch (Exception)
-            { }
+            //}
+            //catch (Exception)
+            //{ }
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("BestSellerRefresh"))
@@ -344,8 +347,8 @@ namespace POS.View
         }
         void refreshView()
         {
-            try
-            {
+            //try
+            //{
             AllSalPur();
             CountMonthlySalPur();
             DailySalPur();
@@ -365,16 +368,16 @@ namespace POS.View
 
             this.DataContext = new Dash();
             this.DataContext = dash;
-        }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-        }
+        //}
+        //    catch (Exception ex)
+        //    {
+        //        SectionData.ExceptionMessage(ex, this);
+        //}
     }
         async Task AllSalPur()
         {
-            try
-            {
+            //try
+            //{
                 List<InvoiceCount> listSalPur = await dash.Getdashsalpur();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -393,11 +396,11 @@ namespace POS.View
                         else
                             dash.countAllPurchase = dash.countAllSalesValue = "0";
                     }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("AllSalPur"))
@@ -409,8 +412,8 @@ namespace POS.View
         }
         async Task CountMonthlySalPur()
         {
-            try
-            {
+            //try
+            //{
                 List<TotalPurSale> listSalPur = await dash.GetTotalPurSale();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -429,16 +432,16 @@ namespace POS.View
                         else
                             dash.countMonthlyPurchase = dash.countMonthlySales = "0";
                     }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         async Task DailySalPur()
         {
-            try
-            {
+            //try
+            //{
                 List<InvoiceCount> listSalPur = await dash.GetdashsalpurDay();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -464,16 +467,16 @@ namespace POS.View
                 InitializePieChart(pch_dailySalesInvoice,
                     int.Parse(dash.countDailySales),
                     (int.Parse(dash.countDailySales) + int.Parse(dash.countMonthlySales)));
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         async Task AgentCount()
         {
-            try
-            {
+            //try
+            //{
                 List<AgentsCount> listAgentCount = await dash.GetAgentCount();
                 var newAgentCount = listAgentCount.FirstOrDefault();
                 if (newAgentCount != null)
@@ -485,11 +488,11 @@ namespace POS.View
                 {
                     dash.customerCount = dash.vendorCount = "0";
                 }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("AgentCount"))
@@ -501,8 +504,8 @@ namespace POS.View
         }
         async Task UserOnline()
         {
-            try
-            {
+            //try
+            //{
                 List<UserOnlineCount> listUserOnline = await dash.Getuseronline();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -524,11 +527,11 @@ namespace POS.View
                 InitializePieChart(pch_userOnline,
                 int.Parse(dash.userOnline),
                 (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("UserOnline"))
@@ -540,8 +543,8 @@ namespace POS.View
         }
         async Task UserOnlinePic()
         {
-            try
-            {
+            //try
+            //{
                 dash.listUserOnline = await dash.GetuseronlineInfo();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -561,11 +564,11 @@ namespace POS.View
                 InitializePieChart(pch_userOnline,
                 int.Parse(dash.userOnline),
                 (int.Parse(dash.userOnline) + int.Parse(dash.userOffline)));
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("UserOnlinePic"))
@@ -675,8 +678,8 @@ namespace POS.View
         }
         async Task BranchOnline()
         {
-            try
-            {
+            //try
+            //{
                 List<BranchOnlineCount> listBranchOnline = await dash.GetBrachonline();
                 var newBranchOnline = listBranchOnline.FirstOrDefault();
                 if (newBranchOnline != null)
@@ -689,11 +692,11 @@ namespace POS.View
                 InitializePieChart(pch_branch,
                     int.Parse(dash.branchOnline),
                     (int.Parse(dash.branchOnline) + int.Parse(dash.branchOffline)));
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("BranchOnline"))
@@ -705,25 +708,25 @@ namespace POS.View
         }
         void userOnlineListWindow(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_usersOnline w = new wd_usersOnline();
                 w.usersOnline = dash.listUserOnline;
                 w.ShowDialog();
                 Window.GetWindow(this).Opacity = 1;
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         #region BestSeller
         async Task BestSeller()
         {
-            try
-            {
+            //try
+            //{
                 List<BestSeller> listAllBestSeller = await dash.Getbestseller();
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -750,11 +753,11 @@ namespace POS.View
                         else
                             listBestSeller = new List<BestSeller>();
                     }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         void paginationBestSeller(List<BestSeller> listBestSeller, int skip)
         {
@@ -867,8 +870,8 @@ namespace POS.View
         #region IUStorage
         private async void Btn_storageSetting_Click(object sender, RoutedEventArgs e)
         {//settings
-            try
-            {
+            //try
+            //{
                 //if (sender != null)
                 //    SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
@@ -890,19 +893,19 @@ namespace POS.View
                 Window.GetWindow(this).Opacity = 1;
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    //if (sender != null)
+            //    //    SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
 
         }
         void refrishIUList(List<ItemUnitUser> itemUnitsUsers)
         {
-            try
-            {
+            //try
+            //{
                 IUList.Clear();
                 foreach (var item in itemUnitsUsers)
                 {
@@ -912,16 +915,16 @@ namespace POS.View
                     itemUnit.unitId = item.unitId;
                     IUList.Add(itemUnit);
                 }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         async Task IUStorage()
         {
-            try
-            {
+            //try
+            //{
                 List<IUStorage> listAllIUStorage = await dash.GetIUStorage(IUList);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
@@ -953,11 +956,11 @@ namespace POS.View
                             listIUStorage = listIUStorage.Take(9).ToList();
                         }
                     }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         void paginationIUStorage(List<IUStorage> listIUStorage, int skip = 0)
         {
@@ -1070,8 +1073,8 @@ namespace POS.View
 
         async Task AmountMonthlySalPur()
         {
-            try
-            {
+            //try
+            //{
                 double[] ArrayS = new double[NumberDaysInMonth];
                 double[] ArrayP = new double[NumberDaysInMonth];
                 string[] ArrayCount = new string[NumberDaysInMonth];
@@ -1137,11 +1140,11 @@ namespace POS.View
                 dash.Labels = ArrayCount;
                 dash.YFormatter = value => value.ToString("C");
                 //DataContext = this;
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
             foreach (var item in loadingList)
             {
                 if (item.name.Equals("AmountMonthlySalPur"))
@@ -1176,8 +1179,8 @@ namespace POS.View
         }
         async void userImageLoad(Ellipse ellipse, string image)
         {
-            try
-            {
+            //try
+            //{
                 if (!string.IsNullOrEmpty(image))
                 {
                     clearImg(ellipse);
@@ -1197,11 +1200,11 @@ namespace POS.View
                 {
                     clearImg(ellipse);
                 }
-            }
-            catch
-            {
-                clearImg(ellipse);
-            }
+            //}
+            //catch
+            //{
+            //    clearImg(ellipse);
+            //}
         }
         private void clearImg(Ellipse ellipse)
         {
@@ -1226,8 +1229,8 @@ namespace POS.View
         }
         void timer_Tick(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
 
                 x += 86;
             y += 74;
@@ -1243,11 +1246,11 @@ namespace POS.View
                 //tb_sales.Text = Convert.ToString(value_sales);
                 timer.Stop();
             }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private void UserControl_TouchLeave(object sender, TouchEventArgs e)
         {
@@ -1255,21 +1258,21 @@ namespace POS.View
         }
         private async void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 await refreshViewTask();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
 

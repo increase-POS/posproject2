@@ -166,7 +166,6 @@ namespace POS.View
 
                 //fillBranches();
                 //cb_branch.SelectedIndex = 0;
-                Keyboard.Focus(tb_name);
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -175,6 +174,7 @@ namespace POS.View
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

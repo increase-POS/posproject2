@@ -260,11 +260,11 @@ namespace POS.View
 
                 await fillCountries();
                 await fillCity();
-                Keyboard.Focus(tb_code);
 
                 btn_stores.IsEnabled = false;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_code);
             }
             catch (Exception ex)
             {

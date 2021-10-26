@@ -158,7 +158,6 @@ namespace POS.View.sectionData
                 translate();
                 #endregion
 
-                Keyboard.Focus(tb_name);
 
                 this.Dispatcher.Invoke(() =>
                 {
@@ -167,6 +166,7 @@ namespace POS.View.sectionData
                 MainWindow mw = new MainWindow();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

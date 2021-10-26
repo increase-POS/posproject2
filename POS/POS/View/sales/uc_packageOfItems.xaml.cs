@@ -181,7 +181,6 @@ namespace POS.View
 
                 await fillBarcodeList();
 
-                tb_code.Focus();
                 SectionData.clearValidate(tb_code, p_errorCode);
 
                 units = await unitModel.Get();
@@ -192,6 +191,7 @@ namespace POS.View
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_code.Focus();
             }
             catch (Exception ex)
             {
@@ -652,9 +652,9 @@ namespace POS.View
                 tglItemState = 0;
 
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -681,9 +681,9 @@ namespace POS.View
 
                 tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -707,9 +707,9 @@ namespace POS.View
 
                 tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -1001,11 +1001,11 @@ namespace POS.View
                     await RefrishCategoriesCard();
                     category.categoryId = int.Parse(b.Tag.ToString());
                 }
-                tb_barcode.Focus();
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -1026,9 +1026,9 @@ namespace POS.View
                 category.categoryId = 0;
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {

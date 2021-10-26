@@ -208,13 +208,13 @@ namespace POS.View
                 #endregion
                 await fillCountries();
                 await fillCity();
-                Keyboard.Focus(tb_name);
                 this.Dispatcher.Invoke(() =>
                 {
                     Tb_search_TextChanged(null, null);
                 });
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

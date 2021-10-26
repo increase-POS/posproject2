@@ -306,7 +306,6 @@ namespace POS.View
 
                 btn_items.IsEnabled = false;
 
-                Keyboard.Focus(tb_code);
 
                 SectionData.clearValidate(tb_code, p_errorCode);
 
@@ -378,6 +377,7 @@ namespace POS.View
                 Tb_search_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_code);
             }
             catch (Exception ex)
             {

@@ -166,9 +166,9 @@ namespace POS.View.windows
 
                     await getImg();
                 }
-                Keyboard.Focus(tb_name);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

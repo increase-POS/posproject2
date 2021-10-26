@@ -299,7 +299,6 @@ namespace POS.View
 
                 await fillCity();
 
-                Keyboard.Focus(tb_name);
 
                 //default img
                 Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
@@ -309,6 +308,7 @@ namespace POS.View
                 img_vendor.Background = brush;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_name);
             }
             catch (Exception ex)
             {

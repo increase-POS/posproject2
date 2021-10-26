@@ -189,10 +189,10 @@ namespace POS.View.accounts
                 cb_state.SelectedIndex = 0;
                 #endregion
 
-                this.Dispatcher.Invoke(() =>
-                {
+                //this.Dispatcher.Invoke(() =>
+                //{
                     Tb_search_TextChanged(null, null);
-                });
+                //});
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);

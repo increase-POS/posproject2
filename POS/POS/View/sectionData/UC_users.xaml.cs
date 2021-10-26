@@ -333,7 +333,6 @@ namespace POS.View
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 translate();
-                Keyboard.Focus(tb_firstName);
                 //fill job combo
                 await fillJobCombo();
                 await fillCountries();
@@ -345,6 +344,7 @@ namespace POS.View
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_firstName);
             }
             catch (Exception ex)
             {

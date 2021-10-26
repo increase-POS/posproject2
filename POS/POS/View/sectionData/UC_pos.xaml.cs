@@ -289,7 +289,6 @@ namespace POS.View
                 #endregion
                 await fillBranches();
 
-                Keyboard.Focus(tb_code);
 
                 cb_branch.SelectedIndex = 0;
 
@@ -299,6 +298,7 @@ namespace POS.View
                 });
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_code);
             }
             catch (Exception ex)
             {

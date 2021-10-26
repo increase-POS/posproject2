@@ -176,12 +176,12 @@ namespace POS.View
                 }
                 translate();
 
-                Keyboard.Focus(tb_categoryCode);
 
               await  fillCategories();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                Keyboard.Focus(tb_categoryCode);
             }
             catch (Exception ex)
             {

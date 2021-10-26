@@ -2479,11 +2479,11 @@ namespace POS.View
                         Total = total,
                     });
                 }
-                tb_barcode.Focus();
 
                 refrishBillDetails();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {

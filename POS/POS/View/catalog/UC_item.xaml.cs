@@ -356,9 +356,9 @@ namespace POS.View
                 cb_minUnit.SelectedIndex = 0;
                 cb_maxUnit.SelectedIndex = 0;
 
-                tb_code.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_code.Focus();
             }
             catch (Exception ex)
             {
@@ -948,9 +948,9 @@ namespace POS.View
                     tb_serviceName.Clear();
                     tb_costVal.Clear();
                 }
-                cb_selectProperties.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                cb_selectProperties.Focus();
             }
             catch (Exception ex)
             {
@@ -999,9 +999,9 @@ namespace POS.View
                     }
                     tb_serial.Clear();
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -1066,9 +1066,9 @@ namespace POS.View
 
                     await refreshSerials(item.itemId);
                 }
-                cb_selectProperties.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                cb_selectProperties.Focus();
             }
             catch (Exception ex)
             {
@@ -1098,9 +1098,9 @@ namespace POS.View
 
                     await refreshServicesGrid(item.itemId);
                 }
-                cb_selectProperties.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                cb_selectProperties.Focus();
             }
             catch (Exception ex)
             {
@@ -1722,6 +1722,7 @@ namespace POS.View
         {//clear
             try
             {
+                cb_selectProperties.Focus();
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
@@ -1736,7 +1737,6 @@ namespace POS.View
                 tb_max.Clear();
                 cb_minUnit.SelectedIndex = -1;
                 cb_maxUnit.SelectedIndex = -1;
-                cb_selectProperties.Focus();
 
                 //clear img
                 Uri resourceUri = new Uri("/pic/no-image-icon-125x125.png", UriKind.Relative);
@@ -1935,9 +1935,9 @@ namespace POS.View
                 {
                     itemProp = dg_properties.SelectedItem as ItemsProp;
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -1962,9 +1962,9 @@ namespace POS.View
                 {
                     serial = dg_serials.SelectedItem as Serial;
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -1992,9 +1992,9 @@ namespace POS.View
                     tb_serviceName.Text = service.name;
                     tb_costVal.Text = service.costVal.ToString();
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2042,9 +2042,9 @@ namespace POS.View
                     if (parentItem.maxUnitId != null)
                         cb_maxUnit.SelectedValue = (int)parentItem.maxUnitId;
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2067,9 +2067,9 @@ namespace POS.View
                     cb_value.SelectedValuePath = "propertyItemId";
                     cb_value.DisplayMemberPath = "propertyItemName";
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2092,9 +2092,9 @@ namespace POS.View
                     //tb_taxes.Text = cat.taxes.ToString();
                     tb_taxes.Text = SectionData.DecTostring(cat.taxes);
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2323,9 +2323,9 @@ namespace POS.View
                     getImg();
 
                 }
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2385,11 +2385,11 @@ namespace POS.View
                 categoryParentId = category.categoryId;
                 await RefrishCategoriesCard();
             }
-            tb_barcode.Focus();
 
             await generateTrack(categoryId);
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
+            tb_barcode.Focus();
 
         }
 
@@ -2520,9 +2520,9 @@ namespace POS.View
 
                 tglItemState = 0;
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2549,9 +2549,9 @@ namespace POS.View
 
                 tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2576,9 +2576,9 @@ namespace POS.View
 
                 tgl_itemIsActive.IsChecked = (tglItemState == 1) ? true : false;
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2867,12 +2867,12 @@ namespace POS.View
                     category.categoryId = int.Parse(b.Tag.ToString());
 
                 }
-                tb_barcode.Focus();
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2894,10 +2894,10 @@ namespace POS.View
                 //category.categoryId = 0;
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
-                tb_barcode.Focus();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -3131,10 +3131,10 @@ namespace POS.View
                     if (itemUnit.itemUnitId == 0)
                     generateBarcode("", true);
                     cb_unit.SelectedValue = itemUnit.subUnitId;
-                    tb_barcode.Focus();
                     if (sender != null)
                         SectionData.EndAwait(grid_main);
-                }               
+                    tb_barcode.Focus();
+                }
             }
             catch (Exception ex)
             {
