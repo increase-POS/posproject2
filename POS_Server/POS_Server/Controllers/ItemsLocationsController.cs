@@ -5055,28 +5055,21 @@ namespace POS_Server.Controllers
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
-                    if (c.Type == "Object")
+                    if (c.Type == "itemUnitsIds")
                     {
-
-                        Object = c.Value.Replace("\\", string.Empty);
-                        Object = Object.Trim('"');
-                        newObject = JsonConvert.DeserializeObject<string>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        newObject = c.Value;
                         strIds = newObject.Split(',').ToList();
-
                     }
                     else if (c.Type == "branchId")
                     {
                         branchId = int.Parse(c.Value);
-
                     }
-
                 }
 
                 if (strIds != null)
                 {
                     try
                     {
-
                         for (int i = 0; i < strIds.Count; i++)
                         {
                             if (!strIds[i].Equals(""))
@@ -5086,7 +5079,7 @@ namespace POS_Server.Controllers
                         using (incposdbEntities entity = new incposdbEntities())
                         {
                             var locList = (from b in entity.itemsLocations
-                                           where b.quantity > 0 && b.invoiceId == null && ids.Contains(b.itemUnitId ?? 0)
+                                           where b.quantity > 0 && b.invoiceId == null && ids.Contains((int)b.itemUnitId)
                                            join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
                                            join i in entity.items on u.itemId equals i.itemId
                                            join l in entity.locations on b.locationId equals l.locationId
@@ -5120,16 +5113,11 @@ namespace POS_Server.Controllers
                             return TokenManager.GenerateToken(locList);
                         }
                     }
-
-
-
-
                     catch
                     {
                         message = "0";
                         return TokenManager.GenerateToken(message);
                     }
-
                 }
                 else
                 {

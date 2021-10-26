@@ -347,10 +347,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                         posName = c.Value; 
                     }
                 }
-          
-                //try
-                //{
-                using (incposdbEntities entity = new incposdbEntities())
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
                 {
                     pos tmpPos = new pos();
                     var unitEntity = entity.Set<pos>();
@@ -424,12 +424,41 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                     else
                         return TokenManager.GenerateToken("-2"); // serial is wrong
                 }
-                //}
-                //catch
-                //{
-                //    message = "0";
-                //    return TokenManager.GenerateToken(message);
-                //}
+            }
+                catch
+            {
+                return TokenManager.GenerateToken("0");
+            }
+        }
+        }
+
+        [HttpPost]
+        [Route("getInstallationNum")]
+        public string getInstallationNum(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            if (TokenManager.GetPrincipal(token) == null)//invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    try
+                    {
+                        var pos = entity.posSetting.FirstOrDefault();
+                        if (pos == null)
+                            return TokenManager.GenerateToken("1");
+                        else
+                            return TokenManager.GenerateToken("2");
+                    }
+                    catch
+                    {
+                        return TokenManager.GenerateToken("0");
+                    }
+                }
             }
         }
     }
