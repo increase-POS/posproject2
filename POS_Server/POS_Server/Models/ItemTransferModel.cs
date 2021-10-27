@@ -11,6 +11,9 @@ namespace POS_Server.Models
         public Nullable<int> itemId { get; set; }
         public string itemName { get; set; }
         public Nullable<long> quantity { get; set; }
+        public Nullable<long> lockedQuantity { get; set; }
+        public Nullable<long> availableQuantity { get; set; }
+        public Nullable<long> newLocked { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public string invNumber { get; set; }
         public Nullable<int> locationIdNew { get; set; }

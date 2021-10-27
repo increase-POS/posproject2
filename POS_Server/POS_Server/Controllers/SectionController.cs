@@ -251,7 +251,7 @@ var strP = TokenManager.GetPrincipal(token);
                             tmpSection.updateDate = DateTime.Now;
                             tmpSection.updateUserId = newObject.updateUserId;
                             entity.SaveChanges();
-                            message = tmpSection.sectionId.ToString(); ;
+                            message = tmpSection.sectionId.ToString(); 
                         }
                       
                     }
@@ -261,7 +261,7 @@ var strP = TokenManager.GetPrincipal(token);
                     message = "-1";
                 }
             }
-            return message;
+            return TokenManager.GenerateToken(message);
         }
         [HttpPost]
         [Route("Delete")]

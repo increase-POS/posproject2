@@ -3877,6 +3877,125 @@ namespace POS_Server.Controllers
             //    return false;
         }
         [HttpPost]
+        [Route("reReserveItems")]
+        public string reReserveItems(string token)
+        {
+            string message = "";
+
+          token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string Object = "";
+                int invoiceId = 0;
+                int branchId = 0;
+                int userId = 0;
+
+                List<ItemTransferModel> newObject = new List<ItemTransferModel>();
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Object")
+                    {
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<List<ItemTransferModel>>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+
+                    }
+                    else if (c.Type == "invoiceId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+
+                    }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+
+                    }
+                }
+
+                if (newObject != null)
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            foreach (ItemTransferModel item in newObject)
+                            {
+                                if (item.newLocked > item.lockedQuantity)
+                                {
+                                    int lockedQuantity = (int)(item.newLocked - item.lockedQuantity);
+                                    lockItem(item.itemUnitId.Value, invoiceId, branchId, lockedQuantity, userId);
+                                }
+                                else if(item.newLocked > item.lockedQuantity)
+                                {
+                                    int unreserveQnt = (int)(item.lockedQuantity - item.newLocked);
+                                    unlockQuantity(invoiceId, (int)item.itemUnitId, unreserveQnt);
+                                }
+                            }
+                        }
+                        // return true;
+
+                        return TokenManager.GenerateToken("1");
+                    }
+
+                    catch
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
+
+                }
+                else
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+
+            }
+
+
+
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+
+            //itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
+            //itemLocationObject = itemLocationObject.Trim('"');
+
+            //if (valid)
+            //{
+            //    List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        foreach (itemsTransfer item in itemList)
+            //        {
+            //            lockItem(item.itemUnitId.Value, invoiceId, branchId, (int)item.quantity, userId);
+            //        }
+            //    }
+            //    return true;
+            //}
+            //else
+            //    return false;
+        }
+        [HttpPost]
         [Route("lockItem")]
         public string lockItem(string token)
         {
@@ -5177,10 +5296,7 @@ namespace POS_Server.Controllers
             }
             else
             {
-
                 int branchId = 0;
-
-
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -5488,9 +5604,51 @@ namespace POS_Server.Controllers
 
 
         }
-        // DELETE api/<controller>/5
-        public void Delete(int id)
+        public void unlockQuantity(int invoiceId, int itemUnitId, int quantity)
         {
+            string Object = "";  
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemLoc = entity.itemsLocations.Where(b => b.invoiceId == invoiceId && b.itemUnitId == itemUnitId).FirstOrDefault();
+                    itemLoc.quantity -= quantity;
+                    if (itemLoc.quantity == 0)
+                        entity.itemsLocations.Remove(itemLoc);
+                    var location = entity.itemsLocations.Where(x => x.invoiceId == null && x.locationId == itemLoc.locationId &&
+                                    x.itemUnitId == itemLoc.itemUnitId && x.startDate == itemLoc.startDate && x.endDate == itemLoc.endDate).FirstOrDefault();
+
+
+                    if (location == null)
+                    {
+                        var loc = new itemsLocations()
+                        {
+                            locationId = itemLoc.locationId,
+                            quantity = quantity,
+                            createDate = DateTime.Now,
+                            updateDate = DateTime.Now,
+                            createUserId = itemLoc.createUserId,
+                            updateUserId = itemLoc.createUserId,
+                            startDate = itemLoc.startDate,
+                            endDate = itemLoc.endDate,
+                            itemUnitId = itemLoc.itemUnitId,
+                            note = itemLoc.note,
+                        };
+                        entity.itemsLocations.Add(loc);
+                    }
+                    else
+                    {
+                        location.quantity += quantity;
+                        location.updateDate = DateTime.Now;
+                        location.updateUserId = itemLoc.updateUserId;
+                    }
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+               
+            }   
         }
     }
 }
