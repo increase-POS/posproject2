@@ -684,8 +684,6 @@ namespace POS.View.sales
                 valid = false;
             if (valid)
                 valid = validateItemUnits();
-            //if (valid == true && _InvoiceType == "ord")
-            //    valid = await checkItemsAmounts();
             return valid;
         }
         private bool validateItemUnits()
@@ -849,7 +847,7 @@ namespace POS.View.sales
         }
         private async Task addInvoice(string invType)
         {
-            branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
+            //branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -921,7 +919,8 @@ namespace POS.View.sales
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
-                await itemLocationModel.reserveItems(invoiceItems,invoiceId, MainWindow.branchID.Value, MainWindow.userID.Value);
+                //await itemLocationModel.reserveItems(invoiceItems,invoiceId, MainWindow.branchID.Value, MainWindow.userID.Value);
+                await itemLocationModel.reserveItems(invoiceItems,invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
                 // save order status
                 await saveOrderStatus(invoiceId, "pr");
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -1918,7 +1917,7 @@ SectionData.isAdminPermision())
                                 createUserId = MainWindow.userID.Value,
                                 updateUserId = MainWindow.userID.Value,
                             };
-                            await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", branch.name);
+                            await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", cb_branch.Text);
                             #endregion
                             clearInvoice();
                             await refreshDraftNotification();
@@ -2653,6 +2652,7 @@ SectionData.isAdminPermision())
                 {
 
                     wd_submitOrder w = new wd_submitOrder();
+                    w.invoice = invoice;
                     w.ShowDialog();
 
                 }

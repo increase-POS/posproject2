@@ -945,7 +945,8 @@ namespace POS.View
                     if (invType == "pw" || invType =="p")
                     {
                         await invoice.recordPosCashTransfer(invoice, "pi");
-                        await invoice.recordCashTransfer(invoice, "pi");
+                        if(invoice.agentId != null)
+                            await invoice.recordCashTransfer(invoice, "pi");
                     }
                     //else if (invType == "pb")
                     //    await invoice.recordCashTransfer(invoice,"pb");
@@ -1212,6 +1213,7 @@ namespace POS.View
         private void clearInvoice()
         {
             _Sum = 0;
+         
             txt_invNumber.Text = "";
             _SequenceNum = 0;
             _SelectedBranch = -1;
@@ -1245,6 +1247,7 @@ namespace POS.View
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             refrishBillDetails();
+            _InvoiceType = "pd";
             inputEditable();
             btn_next.Visibility = Visibility.Collapsed;
             btn_previous.Visibility = Visibility.Collapsed;

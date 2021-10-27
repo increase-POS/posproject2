@@ -35,11 +35,13 @@ namespace POS.View.windows
             }
         }
         public Invoice invoice = new Invoice();
-        private void Btn_select_Click(object sender, RoutedEventArgs e)
+        private ItemLocation itemLocation = new ItemLocation();
+        private List<ItemTransfer> invoiceItems;
+        private async void Btn_select_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
+                await itemLocation.reReserveItems(invoiceItems, invoice.invoiceId, (int)invoice.branchId, MainWindow.userID.Value);
             }
             catch (Exception ex)
             {
@@ -82,7 +84,7 @@ namespace POS.View.windows
                 }
                 translat();
                 #endregion
-
+                await fillOrderItems();
                 if (sender != null)
                     SectionData.EndAwait(grid_ucInvoice);
             }
@@ -112,6 +114,11 @@ namespace POS.View.windows
 
 
             //btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
+        }
+        private async Task fillOrderItems()
+        {
+           invoiceItems = await invoice.getOrderItems(invoice.invoiceId, (int)invoice.branchId);
+            dg_itemOrder.ItemsSource = invoiceItems;
         }
         private void Dg_itemOrder_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -151,6 +158,50 @@ namespace POS.View.windows
             }
         }
 
-      
+        private void Dg_itemOrder_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            try
+            {
+                TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+                var columnName = e.Column.Header.ToString();
+
+                ItemTransfer row = e.Row.Item as ItemTransfer;
+                int index = invoiceItems.IndexOf(invoiceItems.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
+              
+                long oldReserved = 0;
+                long newReserved = 0;
+
+                newReserved = int.Parse(t.Text);
+                oldReserved = (long) invoiceItems[index].lockedQuantity;
+                if( newReserved > oldReserved && (newReserved - oldReserved) > row.availableQuantity)
+                {
+                    t.Text = oldReserved.ToString();
+                    invoiceItems[index].newLocked = oldReserved;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+                else if (newReserved > row.quantity)
+                {
+                    t.Text = oldReserved.ToString();
+                    invoiceItems[index].newLocked = oldReserved;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                {
+                    t.Text = newReserved.ToString();
+                    invoiceItems[index].newLocked = newReserved;
+                }
+                refrishDataGridItems();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void refrishDataGridItems()
+        {
+            dg_itemOrder.ItemsSource = null;
+            dg_itemOrder.ItemsSource = invoiceItems;
+            dg_itemOrder.Items.Refresh();
+        }
     }
 }

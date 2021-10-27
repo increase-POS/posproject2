@@ -597,6 +597,20 @@ namespace POS.Classes
             //    return false;
             //}
         }
+        public async Task<int> reReserveItems(List<ItemTransfer> invoiceItems, int invoiceId, int branchId, int userId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "ItemsLocations/reReserveItems";
+
+            parameters.Add("invoiceId", invoiceId.ToString());
+            parameters.Add("branchId", branchId.ToString());
+            parameters.Add("userId", userId.ToString());
+
+            var myContent = JsonConvert.SerializeObject(invoiceItems);
+            parameters.Add("Object", myContent);
+
+            return await APIResult.post(method, parameters);
+        }
         public async Task<int> getAmountInBranch(int itemUnitId, int branchId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
