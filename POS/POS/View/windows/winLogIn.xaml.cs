@@ -248,12 +248,20 @@ namespace POS.View.windows
                                 MainWindow.lang = "en";
                                 lang = MainWindow.lang;
                             }
-                            string m = await SectionData.getUserMenuIsOpen(user.userId);
+                            try
+                            {
+                                string m = await SectionData.getUserMenuIsOpen(user.userId);
                             if (!m.Equals("-1"))
                                 MainWindow.menuIsOpen = m;
                             else
                                 MainWindow.menuIsOpen = "close";
                             menuIsOpen = MainWindow.menuIsOpen;
+                            }
+                            catch
+                            {
+                                MainWindow.menuIsOpen = "close";
+                                menuIsOpen = MainWindow.menuIsOpen;
+                            }
                             //make user online
                             user.isOnline = 1;
                             //  user.isActive = 1;

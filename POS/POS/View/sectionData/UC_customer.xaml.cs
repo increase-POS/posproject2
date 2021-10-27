@@ -520,7 +520,9 @@ namespace POS.View
 
         private async void getImg()
         {
-           
+            try
+            {
+
                 if (string.IsNullOrEmpty(agent.image))
                 {
                     SectionData.clearImg(img_customer);
@@ -550,7 +552,11 @@ namespace POS.View
                     else
                         SectionData.clearImg(img_customer);
                 }
-            
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete

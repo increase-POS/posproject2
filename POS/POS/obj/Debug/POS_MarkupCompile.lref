@@ -128,6 +128,7 @@ FE:\GitHub\posproject2\POS\POS\View\windows\wd_setupFirstPos.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_setupGeneralSetting.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_setupOtherPos.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_setupServer.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\windows\wd_submitOrder.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_subscriptionFees.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_transItemsLocation.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_unitConversion.xaml;;
@@ -139,5 +140,4 @@ FE:\GitHub\posproject2\POS\POS\View\windows\wd_usersList.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\wd_usersOnline.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\winControlPanel.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\windows\winLogIn.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\windows\wd_submitOrder.xaml;;
 

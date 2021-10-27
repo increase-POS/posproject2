@@ -263,7 +263,7 @@
                         </Ellipse.Fill>
                     </Ellipse>
                 </Button>
-                <StackPanel VerticalAlignment="Center" Orientation="Vertical" Grid.Column="9" Margin="5,5,5,5">
+                <StackPanel x:Name="stp_userName" VerticalAlignment="Center" Orientation="Vertical" Grid.Column="9" Margin="5,5,5,5">
                     <TextBlock x:Name="txt_userName"  Text="" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
                     <TextBlock x:Name="txt_userJob"  Text=""   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
                 </StackPanel>

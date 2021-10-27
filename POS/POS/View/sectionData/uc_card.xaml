@@ -42,7 +42,7 @@
 	c0-1.4,0.2-2.8,0.6-4.2C68,27.3,58.3,36.5,57.9,48.2C57.5,60,66.7,69.7,78.5,70.1c11.7,0.4,21.5-8.8,21.9-20.6c0.1-2-0.2-4-0.7-5.9
 	C97.6,44.8,95.2,45.5,92.7,45.5z"/>
                     </Border>
-                    <TextBox  x:Name="tb_search" TabIndex="14"
+                    <TextBox  x:Name="tb_search" 
                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                               Padding="10,0,5,0" BorderBrush="{x:Null}"
                               materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
@@ -87,7 +87,7 @@
                     </Button>
                     <ToggleButton DockPanel.Dock="Right"   x:Name="tgl_cardIsActive"  
                                       VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 
-                                      Margin="0" Height="13" Width="28"  TabIndex="15" Checked="Tgl_cardIsActive_Checked" Unchecked="Tgl_cardIsActive_Unchecked" />
+                                      Margin="0" Height="13" Width="28"  Checked="Tgl_cardIsActive_Checked" Unchecked="Tgl_cardIsActive_Unchecked" />
                     <TextBlock  DockPanel.Dock="Right" x:Name="txt_cardIsActive"
                                    Margin="5,0,5,0" Text="Active" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -397,7 +397,7 @@
 
                         <DockPanel LastChildFill="True" Grid.Row="0">
                             <TextBlock x:Name="txt_baseInformation" Text="Base Infomation" Foreground="#737373" FontSize="10" VerticalAlignment="Center" Margin="5,5,5,5"/>
-                            <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
+                            <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" >
                                 <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle" HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center" Width="20" Height="20">
                                     <materialDesign:PackIcon.ToolTip>
                                         <ToolTip x:Name="tt_clear" Content="clear" Placement="left" HorizontalOffset="5" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
@@ -424,7 +424,7 @@
                         <TextBox x:Name="tb_name" 
                          Grid.Row="2" 
                          Text="{Binding name, Mode=OneWay}" 
-                         Padding="10,0,5,0"  TabIndex="0" 
+                         Padding="10,0,5,0"   
                          BorderThickness="0,0,0,2"    
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                          materialDesign:HintAssist.Hint="Card Name..."  
@@ -454,7 +454,7 @@
                                   FontSize="12"/>
                             <ToggleButton   x:Name="tgl_hasProcessNum"  IsChecked="{Binding hasProcessNum, Mode=OneWay}"
                                         VerticalAlignment="Center" Padding="10,15,5,5"  
-                                      Margin="0" Height="13" Width="28"  TabIndex="15" />
+                                      Margin="0" Height="13" Width="28"   />
                         </StackPanel>
                         <!--#endregion-->
                         
@@ -466,7 +466,7 @@
                                   FontSize="12"/>
                             <ToggleButton   x:Name="tgl_isActive"  IsChecked="{Binding isActive, Mode=OneWay}"
                                         VerticalAlignment="Center" Padding="10,15,5,5"  
-                                      Margin="0" Height="13" Width="28"  TabIndex="15" />
+                                      Margin="0" Height="13" Width="28"    />
                         </StackPanel>
                         <!--#endregion-->
 
@@ -475,7 +475,7 @@
                         <!--Note-->
                         <!--#region -->
                         <TextBox x:Name="tb_notes" Grid.Row="5" Text="{Binding notes, Mode=OneWay}" 
-                                 Padding="10,0,5,5"   TabIndex="9" Margin="10,5,10,5"
+                                 Padding="10,0,5,5"    Margin="10,5,10,5"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -512,7 +512,7 @@
                     </Grid.ColumnDefinitions>
                     <Border>
 
-                        <Button x:Name="btn_add" TabIndex="10"
+                        <Button x:Name="btn_add" 
                           Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1" Click="Btn_add_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -534,7 +534,7 @@
                         </Border.ToolTip>
                     </Border>
                     <Border Grid.Column="1">
-                        <Button x:Name="btn_update"  TabIndex="11"
+                        <Button x:Name="btn_update"  
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                    Margin="1,1"  Click="Btn_update_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -558,7 +558,7 @@
                         </Border.ToolTip>
                     </Border>
                     <Border Grid.Column="2">
-                        <Button x:Name="btn_delete"  TabIndex="12"
+                        <Button x:Name="btn_delete"  
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"  Click="Btn_delete_Click" >
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Center">

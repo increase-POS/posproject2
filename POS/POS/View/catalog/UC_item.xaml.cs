@@ -2195,7 +2195,7 @@ namespace POS.View
         async Task<IEnumerable<Item>> RefrishItems()
         {
             allItems = await itemModel.GetAllItems();
-            if (category.categoryId == 0)
+            if (category.categoryId == 0 || categoryParentId == 0)
                 items = allItems;
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             items = items.Where(x => x.type != "p").ToList();

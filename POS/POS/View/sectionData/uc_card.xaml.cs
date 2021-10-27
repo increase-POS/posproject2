@@ -242,7 +242,7 @@ namespace POS.View.sectionData
                     byte active;
                     try
                     {
-                        active = byte.Parse((tgl_isActive.IsChecked.Value ? 0 : 1).ToString());
+                        active = byte.Parse((tgl_isActive.IsChecked.Value ? 1 : 0).ToString());
                     }
                     catch
                     {
@@ -980,7 +980,10 @@ namespace POS.View.sectionData
 
         private async void getImg()
         {
+            try
+            {
 
+             
             if (string.IsNullOrEmpty(card.image))
             {
                 SectionData.clearImg(img_card);
@@ -1009,6 +1012,11 @@ namespace POS.View.sectionData
                 }
                 else
                     SectionData.clearImg(img_card);
+            }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

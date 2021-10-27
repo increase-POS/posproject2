@@ -61,7 +61,7 @@ namespace POS
         internal static User userLogin;
         internal static int? userLogInID;
         internal static Pos posLogIn = new Pos();
-        internal static int? posID = 2;
+        internal static int? posID = 1;
         internal static int? branchID;
         public static Branch loginBranch;
         bool isHome = false;
@@ -721,26 +721,24 @@ namespace POS
             #endregion
             #region notifications location
             /*
-            Point positionBtnMinimize = BTN_Minimize.PointToScreen(new Point(0d, 0d)),
-            positionBtnUserImage = btn_userImage.PointToScreen(new Point(0d, 0d)),
-            controlPositionBtnMinimize = this.PointToScreen(new Point(0d, 0d)),
-            controlPositionBtnUserImage = this.PointToScreen(new Point(0d, 0d));
-            positionBtnMinimize.X -= controlPositionBtnMinimize.X;
-            positionBtnUserImage.X -= controlPositionBtnUserImage.X;
-            Double position;
-            if (positionBtnMinimize.X > positionBtnUserImage.X)
-            position = positionBtnMinimize.X - positionBtnUserImage.X;
-            else 
-            position =   positionBtnUserImage.X - positionBtnMinimize.X;
-            var thickness = bdrMain.Margin;
-
-            bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 5 -35, 0);
-
-            //if(lang.Equals("en"))
-            //bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 5 , 0);
-            //else
-            //  bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 10, 0);
-            */
+           Point positionBtnMinimize = BTN_Minimize.PointToScreen(new Point(0d, 0d)),
+           positionBtnUserImage = btn_userImage.PointToScreen(new Point(0d, 0d)),
+           controlPositionBtnMinimize = this.PointToScreen(new Point(0d, 0d)),
+           controlPositionBtnUserImage = this.PointToScreen(new Point(0d, 0d));
+           positionBtnMinimize.X -= controlPositionBtnMinimize.X;
+           positionBtnUserImage.X -= controlPositionBtnUserImage.X;
+           Double position;
+           if (positionBtnMinimize.X > positionBtnUserImage.X)
+           position = positionBtnMinimize.X - positionBtnUserImage.X;
+           else 
+           position =   positionBtnUserImage.X - positionBtnMinimize.X;
+           var thickness = bdrMain.Margin;
+           bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 25, 0);
+           //if(lang.Equals("en"))
+           //bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 5 , 0);
+           //else
+           //  bdrMain.Margin = new Thickness(0, 70, thickness.Right + position - 10, 0);
+           */
             #endregion
             #region notifications location
             //Point position = BTN_notifications.PointToScreen(new Point(0d, 0d)),
@@ -750,6 +748,10 @@ namespace POS
             ////bdrMain.Margin = new Thickness(0, 70, position.X, 0);
             #endregion
 
+            #region notifications location
+            var thickness = bdrMain.Margin;
+            bdrMain.Margin = new Thickness(0, 70, thickness.Right + stp_userName.ActualWidth, 0);
+            #endregion
         }
         void SelectAllText(object sender, RoutedEventArgs e)
         {

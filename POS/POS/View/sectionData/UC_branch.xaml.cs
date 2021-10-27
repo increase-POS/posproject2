@@ -414,8 +414,8 @@ namespace POS.View
         // Error Here
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
-            try
-            {
+            //try
+            //{
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
@@ -478,27 +478,26 @@ namespace POS.View
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             else
                             {
-                                await AddFreeThone(s);
-                            }
-                           
+                            fillComboBranchParent();
                             await RefreshBranchesList();
                             tb_search_TextChanged(null, null);
-                            await fillComboBranchParent();
-                        }
 
+                            await AddFreeThone(s);
+                        }
+                    }
                     }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
+                //SectionData.ExceptionMessage(ex, this);
+            //}
         }
         async Task AddFreeThone(int branchId)
         {

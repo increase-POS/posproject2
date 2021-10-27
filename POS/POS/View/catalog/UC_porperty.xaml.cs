@@ -598,18 +598,18 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     var bc = new BrushConverter();
-                    if (tb_valueName.Text.Equals(""))
+                    if (tb_name.Text.Equals(""))
                     {
                         p_errorNameSub.Visibility = Visibility.Visible;
                         tt_errorNameSub.Content = MainWindow.resourcemanager.GetString("trEmptyNameToolTip");
-                        tb_valueName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                        tb_name.Background = (Brush)bc.ConvertFrom("#15FF0000");
                     }
                     else
                     {
                         p_errorNameSub.Visibility = Visibility.Collapsed;
-                        tb_valueName.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                        tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                     }
-                    if (!tb_valueName.Text.Equals(""))
+                    if (!tb_name.Text.Equals(""))
                     {
                         property = new Property
                         {

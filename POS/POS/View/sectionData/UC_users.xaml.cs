@@ -411,7 +411,6 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    user.userId = 0;
 
                     #region validate
                     //chk empty name
@@ -469,6 +468,7 @@ namespace POS.View
                         }
                         else
                         {
+                            user.userId = 0;
                             tb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                             pb_password.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                             user.username = tb_userName.Text;
