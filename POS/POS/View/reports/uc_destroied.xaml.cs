@@ -111,48 +111,6 @@ namespace POS.View.reports
             cb.ItemsSource = comboBranches;
         }
 
-        private void hideAllColumn()
-        {
-            col_branch.Visibility = Visibility.Hidden;
-            col_item.Visibility = Visibility.Hidden;
-            col_unit.Visibility = Visibility.Hidden;
-            col_locationSection.Visibility = Visibility.Hidden;
-            col_quantity.Visibility = Visibility.Hidden;
-            col_startDate.Visibility = Visibility.Hidden;
-            col_endDate.Visibility = Visibility.Hidden;
-            col_Min.Visibility = Visibility.Hidden;
-            col_Max.Visibility = Visibility.Hidden;
-            col_stockCost.Visibility = Visibility.Hidden;
-
-            col_location.Visibility = Visibility.Hidden;
-            col_section.Visibility = Visibility.Hidden;
-            col_itemUnits.Visibility = Visibility.Hidden;
-
-            col_invNumber.Visibility = Visibility.Hidden;
-            col_invType.Visibility = Visibility.Hidden;
-            col_invTypeNumber.Visibility = Visibility.Hidden;
-            col_agentType.Visibility = Visibility.Hidden;
-            col_agent.Visibility = Visibility.Hidden;
-            col_agentTypeAgent.Visibility = Visibility.Hidden;
-            col_MaxCollect.Visibility = Visibility.Hidden;
-            col_MinCollect.Visibility = Visibility.Hidden;
-            col_branchFrom.Visibility = Visibility.Hidden;
-            col_branchTo.Visibility = Visibility.Hidden;
-
-            col_stockTakeNum.Visibility = Visibility.Hidden;
-            col_stockTakingCoastType.Visibility = Visibility.Hidden;
-            col_stockTakingDate.Visibility = Visibility.Hidden;
-            col_diffPercentage.Visibility = Visibility.Hidden;
-            col_itemCountAr.Visibility = Visibility.Hidden;
-            col_DestroyedCount.Visibility = Visibility.Hidden;
-
-            col_destroiedNumber.Visibility = Visibility.Hidden;
-            col_destroiedDate.Visibility = Visibility.Hidden;
-            col_destroiedItemsUnits.Visibility = Visibility.Hidden;
-            col_destroiedReason.Visibility = Visibility.Hidden;
-            col_destroiedAmount.Visibility = Visibility.Hidden;
-        }
-
         private void fillDestroidEvents()
         {
             temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
@@ -509,15 +467,6 @@ namespace POS.View.reports
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_destroied);
                 path_destroied.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                hideAllColumn();
-                //show columns
-                col_branch.Visibility = Visibility.Visible;
-                col_destroiedItemsUnits.Visibility = Visibility.Visible;
-                col_destroiedNumber.Visibility = Visibility.Visible;
-                col_destroiedDate.Visibility = Visibility.Visible;
-                col_destroiedReason.Visibility = Visibility.Visible;
-                col_destroiedAmount.Visibility = Visibility.Visible;
-
                 chk_destroiedAllBranches.IsChecked = true;
                 chk_destroiedAllItemsUnits.IsChecked = true;
 
@@ -762,36 +711,39 @@ namespace POS.View.reports
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-            //    var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
-            //dgStock.ItemsSource = temp.Where(obj => (
-            ////obj.importBranch.ToLower().Contains(txt_search.Text) 
-            ////||
-            //obj.invNumber.ToLower().Contains(txt_search.Text)
-            //||
-            //obj.userdestroy.ToLower().Contains(txt_search.Text)||
-            //obj.ItemUnits.ToLower().Contains(txt_search.Text) ||
-            //obj.causeDestroy.ToLower().Contains(txt_search.Text)||
-            //obj.quantity.ToString().ToLower().Contains(txt_search.Text)
-            //)) ;
+                var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+                dgStock.ItemsSource = temp
+                    .Where(obj => (
+                obj.branchName.ToLower().Contains(txt_search.Text)
+                ||
+                obj.invNumber.ToLower().Contains(txt_search.Text)
+                //||
+                //obj.userdestroy.ToLower().Contains(txt_search.Text) 
+                //obj.cUserAccName != null ? obj.cUserAccName.ToLower().Contains(txt_search.Text) : false
+                //||
+                //obj.causeDestroy != null ? obj.causeDestroy.ToLower().Contains(txt_search.Text) : true
+                ||
+                obj.quantity.ToString().ToLower().Contains(txt_search.Text)
+                ));
 
-            //    txt_count.Text = dgStock.Items.Count.ToString();
+                txt_count.Text = dgStock.Items.Count.ToString();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
-
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
             try

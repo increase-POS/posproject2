@@ -32,21 +32,9 @@ namespace POS.View.reports
 {
     public partial class uc_stock : UserControl
     {
-        private int selectedFatherTab = 0;
         List<Storage> storages;
 
-        List<ItemTransferInvoice> itemsTransfer;
-        List<ItemTransferInvoice> itemsInternalTransfer;
-
-        IEnumerable<ItemTransferInvoice> agentsCount;
-        IEnumerable<ItemTransferInvoice> invTypeCount;
-        IEnumerable<ItemTransferInvoice> invCount;
-
-        IEnumerable<InventoryClass> archiveCount;
-
-        List<InventoryClass> inventory;
-        List<InventoryClass> falls;
-        List<ItemTransferInvoice> Destroied;
+        IEnumerable<Storage> storeLst;
 
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
@@ -66,27 +54,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                inventory = await statisticModel.GetInventory((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                //inventory = await statisticModel.GetInventory();
-
-                falls = await statisticModel.GetInventoryItems((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                //  falls = await statisticModel.GetInventoryItems();
-
-                Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                //Destroied = await statisticModel.GetDesItems();
-
                 storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                // storages = await statisticModel.GetStorage();
-                itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                // itemsTransfer = await statisticModel.GetExternalMov();
-                itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
-               // itemsInternalTransfer = await statisticModel.GetInternalMov();
                 comboBranches = await branchModel.GetAllWithoutMain("all");
 
                 comboItems = statisticModel.getItemCombo(storages);
@@ -94,41 +63,28 @@ namespace POS.View.reports
                 comboSection = statisticModel.getSectionCombo(storages);
                 comboLocation = statisticModel.getLocationCombo(storages);
 
-                comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
-                comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
-                comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
-                comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
-                comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
-                comboInternalOperatorOperator = statisticModel.getOperatroCompo(itemsInternalTransfer);
+                chk_allBranchesItem.IsChecked = true;
+                chk_allBranchesLocation.IsChecked = true;
+                chk_allBranchesCollect.IsChecked = true;
 
-                comboExternalAgentsAgentsType = statisticModel.GetExternalAgentTypeCombos(itemsTransfer);
-                comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
-                comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
-                comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
+                chk_allItemsItem.IsChecked = true;
+                chk_allSectionsLocation.IsChecked = true;
+                chk_allItemsCollect.IsChecked = true;
 
-                fillComboBranches(cb_branchesItem);
-                fillComboItems(cb_branchesItem, cb_itemsItem);
-                fillComboUnits(cb_itemsItem, cb_unitsItem);
-                fillComboSection();
-                fillComboLoaction();
-                fillComboItems(cb_branchesCollect, cb_itemsCollect);
-                fillComboUnits(cb_itemsCollect, cb_unitsCollect);
+                chk_allUnitsItem.IsChecked = true;
+                chk_allLocationsLocation.IsChecked = true;
+                chk_allUnitsCollect.IsChecked = true;
 
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
-
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_item.Tag.ToString());
+                Btn_item_Click(btn_item, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -147,17 +103,15 @@ namespace POS.View.reports
 
         public void paint()
         {
-            bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
+            //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
 
             grid_byItem.Visibility = Visibility.Hidden;
             grid_byLocation.Visibility = Visibility.Hidden;
             grid_collect.Visibility = Visibility.Hidden;
 
-
             bdr_item.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_location.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_collect.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
 
             path_item.Fill = Brushes.White;
             path_location.Fill = Brushes.White;
@@ -165,23 +119,6 @@ namespace POS.View.reports
 
         }
 
-
-
-        private void isEnabledButtons()
-        {
-            btn_item.IsEnabled = true;
-            btn_location.IsEnabled = true;
-            btn_collect.IsEnabled = true;
-
-        }
-
-
-
-
-
-
-
-        /*11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111*/
         private int selectedStockTab = 0;
         IEnumerable<itemCombo> comboItems;
         IEnumerable<unitCombo> comboUnits;
@@ -291,7 +228,6 @@ namespace POS.View.reports
             var selectedUnit = comboUnit.SelectedItem as unitCombo;
             var selectedSection = comboItem.SelectedItem as sectionCombo;
             var selectedLocation = comboUnit.SelectedItem as locationCombo;
-            int selected = selectedStockTab;
             var result = storages.Where(x => (
             (selectedStockTab != 1 ? (
                      (expireDate != null ? ((chk_expireDateItem.IsChecked == true ? (x.endDate != null) : true)
@@ -309,6 +245,7 @@ namespace POS.View.reports
                     && (endDate.SelectedDate != null ? (x.endDate <= endDate.SelectedDate) : true))
             )
             );
+            storeLst = result;
             return result;
         }
 
@@ -320,16 +257,17 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_itemsItem.IsEnabled = true;
+                cb_itemsItem.IsEnabled = false;
                 chk_allItemsItem.IsEnabled = true;
                 cb_unitsItem.IsEnabled = false;
                 cb_unitsItem.SelectedItem = null;
                 chk_allUnitsItem.IsEnabled = false;
+
                 fillComboItems(cb_branchesItem, cb_itemsItem);
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+                chk_allItemsItem.IsChecked = true;
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -350,11 +288,12 @@ namespace POS.View.reports
 
                 cb_unitsItem.IsEnabled = true;
                 chk_allUnitsItem.IsEnabled = true;
+
                 fillComboUnits(cb_itemsItem, cb_unitsItem);
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+                chk_allUnitsItem.IsChecked = true;
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -397,9 +336,7 @@ namespace POS.View.reports
 
                 cb_branchesItem.IsEnabled = false;
                 cb_branchesItem.SelectedItem = null;
-                cb_itemsItem.IsEnabled = true;
-                chk_allItemsItem.IsEnabled = true;
-                cb_itemsItem.SelectedItem = null;
+               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -418,14 +355,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_itemsItem.IsEnabled = false;
                 cb_branchesItem.IsEnabled = true;
 
-                chk_allUnitsItem.IsEnabled = false;
-                chk_allItemsItem.IsEnabled = false;
-
-                chk_allUnitsItem.IsChecked = false;
-                chk_allItemsItem.IsChecked = false;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -445,10 +376,8 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_itemsItem.IsEnabled = false;
-
-                cb_unitsItem.IsEnabled = true;
-                chk_allUnitsItem.IsEnabled = true;
                 cb_itemsItem.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -468,10 +397,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_itemsItem.IsEnabled = true;
-                cb_unitsItem.IsEnabled = false;
-                cb_unitsItem.SelectedItem = null;
-                chk_allUnitsItem.IsEnabled = false;
-                chk_allUnitsItem.IsChecked = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -489,8 +415,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_unitsItem.IsEnabled = false;
                 cb_unitsItem.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -508,7 +436,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_unitsItem.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -526,12 +456,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 dp_endDateItem.IsEnabled = true;
                 dp_startDateItem.IsEnabled = true;
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -551,10 +481,9 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
                 dp_endDateItem.IsEnabled = false;
                 dp_startDateItem.IsEnabled = false;
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -614,16 +543,18 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_sectionsLocation.IsEnabled = true;
                 chk_allSectionsLocation.IsEnabled = true;
                 cb_locationsLocation.IsEnabled = false;
                 cb_locationsLocation.SelectedItem = null;
                 chk_allLocationsLocation.IsEnabled = false;
+
                 fillComboSection();
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+                chk_allSectionsLocation.IsChecked = true;
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -641,13 +572,15 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_locationsLocation.IsEnabled = true;
                 chk_allLocationsLocation.IsEnabled = true;
+
                 fillComboLoaction();
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+                chk_allLocationsLocation.IsChecked = true;
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -665,10 +598,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -686,11 +618,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_branchesLocation.IsEnabled = false;
                 cb_branchesLocation.SelectedItem = null;
-                cb_sectionsLocation.IsEnabled = true;
-                chk_allSectionsLocation.IsEnabled = true;
-                cb_sectionsLocation.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -708,12 +639,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                cb_sectionsLocation.IsEnabled = false;
+
                 cb_branchesLocation.IsEnabled = true;
-                chk_allLocationsLocation.IsEnabled = false;
-                chk_allSectionsLocation.IsEnabled = false;
-                chk_allLocationsLocation.IsChecked = false;
-                chk_allSectionsLocation.IsChecked = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -731,10 +659,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_sectionsLocation.IsEnabled = false;
-                cb_locationsLocation.IsEnabled = true;
-                chk_allLocationsLocation.IsEnabled = true;
                 cb_sectionsLocation.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -752,12 +680,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_sectionsLocation.IsEnabled = true;
-                cb_locationsLocation.IsEnabled = false;
-                cb_locationsLocation.SelectedItem = null;
-                chk_allSectionsLocation.IsEnabled = false;
-                chk_allLocationsLocation.IsEnabled = false;
-                chk_allSectionsLocation.IsChecked = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -775,8 +700,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_locationsLocation.IsEnabled = false;
                 cb_locationsLocation.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -794,7 +721,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_locationsLocation.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -812,12 +741,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 dp_endDateLocation.IsEnabled = true;
                 dp_startDateLocation.IsEnabled = true;
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -835,12 +764,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 dp_endDateLocation.IsEnabled = false;
                 dp_startDateLocation.IsEnabled = false;
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -858,10 +787,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -879,10 +807,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -900,33 +827,17 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_itemsCollect.IsEnabled = true;
                 chk_allItemsCollect.IsEnabled = true;
                 cb_unitsCollect.IsEnabled = false;
                 cb_unitsCollect.SelectedItem = null;
                 chk_allUnitsCollect.IsEnabled = false;
+
                 fillComboItems(cb_branchesCollect, cb_itemsCollect);
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null)
-                     .GroupBy(x => new { x.branchId, x.itemUnitId })
-                               .Select(s => new Storage
-                               {
-                                   branchId = s.FirstOrDefault().branchId,
-                                   branchName = s.FirstOrDefault().branchName,
-                                   storeCost = s.FirstOrDefault().storeCost,
-                                   itemUnitId = s.FirstOrDefault().itemUnitId,
-                                   ItemUnits = s.FirstOrDefault().ItemUnits
-                               ,
-                                   itemId = s.FirstOrDefault().itemId,
-                                   itemName = s.FirstOrDefault().itemName,
-                                   unitId = s.FirstOrDefault().unitId,
-                                   unitName = s.FirstOrDefault().unitName,
-                                   quantity = s.Sum(g => g.quantity),
-                                   minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-                                   maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
-                               });
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -944,29 +855,14 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_unitsCollect.IsEnabled = true;
                 chk_allUnitsCollect.IsEnabled = true;
+
                 fillComboUnits(cb_itemsCollect, cb_unitsCollect);
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
-                                 .Select(s => new Storage
-                                 {
-                                     branchId = s.FirstOrDefault().branchId,
-                                     branchName = s.FirstOrDefault().branchName,
-                                     storeCost = s.FirstOrDefault().storeCost,
-                                     itemUnitId = s.FirstOrDefault().itemUnitId,
-                                     ItemUnits = s.FirstOrDefault().ItemUnits
-                                 ,
-                                     itemId = s.FirstOrDefault().itemId,
-                                     itemName = s.FirstOrDefault().itemName,
-                                     unitId = s.FirstOrDefault().unitId,
-                                     unitName = s.FirstOrDefault().unitName,
-                                     quantity = s.Sum(g => g.quantity),
-                                     minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-                                     maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
-                                 });
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -984,26 +880,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
-.Select(s => new Storage
-{
-    branchId = s.FirstOrDefault().branchId,
-    branchName = s.FirstOrDefault().branchName,
-    storeCost = s.FirstOrDefault().storeCost,
-    itemUnitId = s.FirstOrDefault().itemUnitId,
-    ItemUnits = s.FirstOrDefault().ItemUnits
-,
-    itemId = s.FirstOrDefault().itemId,
-    itemName = s.FirstOrDefault().itemName,
-    unitId = s.FirstOrDefault().unitId,
-    unitName = s.FirstOrDefault().unitName,
-    quantity = s.Sum(g => g.quantity),
-    minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-    maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
-});
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
+               
+                fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1021,11 +900,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_branchesCollect.IsEnabled = false;
                 cb_branchesCollect.SelectedItem = null;
-                cb_itemsCollect.IsEnabled = true;
-                chk_allItemsCollect.IsEnabled = true;
-                cb_itemsCollect.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1043,12 +921,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                cb_itemsCollect.IsEnabled = false;
+
                 cb_branchesCollect.IsEnabled = true;
-                chk_allUnitsCollect.IsEnabled = false;
-                chk_allItemsCollect.IsEnabled = false;
-                chk_allUnitsCollect.IsChecked = false;
-                chk_allItemsCollect.IsChecked = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1066,10 +941,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_itemsCollect.IsEnabled = false;
                 cb_unitsCollect.IsEnabled = true;
-                chk_allUnitsCollect.IsEnabled = true;
-                cb_itemsCollect.SelectedItem = null;
+              
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1087,11 +962,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_itemsCollect.IsEnabled = true;
-                cb_unitsCollect.IsEnabled = false;
-                cb_unitsCollect.SelectedItem = null;
-                chk_allUnitsCollect.IsEnabled = false;
-                chk_allUnitsCollect.IsChecked = false;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1109,8 +982,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_unitsCollect.IsEnabled = false;
                 cb_unitsCollect.SelectedItem = null;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1128,7 +1003,9 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_unitsCollect.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1142,64 +1019,58 @@ namespace POS.View.reports
 
         IEnumerable<Storage> temp = null;
         private void Btn_item_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        {//items
+         //try
+         //{
+         //    if (sender != null)
+         //        SectionData.StartAwait(grid_main);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                fillComboBranches(cb_branchesItem);
+                chk_allBranchesItem.IsChecked = true;
 
                 selectedStockTab = 0;
                 txt_search.Text = "";
+
                 paint();
-                isEnabledButtonsStock();
-                btn_item.IsEnabled = false;
-                btn_item.Opacity = 1;
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_item);
                 grid_byItem.Visibility = Visibility.Visible;
                 path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                bdr_item.Background = Brushes.White;
 
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                showSelectedTabColumn();
-                fillPieChart();
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                fillEvents();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         private void btn_location_Click(object sender, RoutedEventArgs e)
-        {
+        {//location
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 selectedStockTab = 1;
                 txt_search.Text = "";
+
                 paint();
-                isEnabledButtonsStock();
-                fillComboBranches(cb_branchesLocation);
-                btn_location.IsEnabled = false;
-                btn_location.Opacity = 1;
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_location);
                 grid_byLocation.Visibility = Visibility.Visible;
                 path_location.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                bdr_location.Background = Brushes.White;
-                showSelectedTabColumn();
 
+                fillComboBranches(cb_branchesLocation);
+                chk_allBranchesLocation.IsChecked = true;
 
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                fillEvents();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1213,45 +1084,29 @@ namespace POS.View.reports
         }
 
         private void btn_collect_Click(object sender, RoutedEventArgs e)
-        {
+        {//collect
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
                 selectedStockTab = 2;
                 txt_search.Text = "";
+
                 paint();
-                isEnabledButtonsStock();
-                fillComboBranches(cb_branchesCollect);
-                btn_collect.IsEnabled = false;
-                btn_collect.Opacity = 1;
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_collect);
                 grid_collect.Visibility = Visibility.Visible;
                 path_collect.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-                bdr_collect.Background = Brushes.White;
+
+                fillComboBranches(cb_branchesCollect);
+               
                 showSelectedTabColumn();
 
+                fillEvents();
+                
 
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
-                     .Select(s => new Storage
-                     {
-                         branchId = s.FirstOrDefault().branchId,
-                         branchName = s.FirstOrDefault().branchName,
-                         storeCost = s.FirstOrDefault().storeCost,
-                         itemUnitId = s.FirstOrDefault().itemUnitId,
-                         ItemUnits = s.FirstOrDefault().ItemUnits
-                     ,
-                         itemId = s.FirstOrDefault().itemId,
-                         itemName = s.FirstOrDefault().itemName,
-                         unitId = s.FirstOrDefault().unitId,
-                         unitName = s.FirstOrDefault().unitName,
-                         quantity = s.Sum(g => g.quantity),
-                         minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-                         maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
-                     });
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1263,17 +1118,44 @@ namespace POS.View.reports
             }
         }
 
-
-        private void isEnabledButtonsStock()
+        private void fillEvents()
         {
-            btn_item.IsEnabled = true;
-            btn_location.IsEnabled = true;
-            btn_collect.IsEnabled = true;
-        }
+            if (selectedStockTab == 0)
+                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
 
-        public void paintStockChilds()
-        {
+            else if (selectedStockTab == 1)
+                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation,chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
 
+            else if(selectedStockTab == 2)
+            {
+                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
+                   .Select(s => new Storage
+                   {
+                       branchId = s.FirstOrDefault().branchId,
+                       branchName = s.FirstOrDefault().branchName,
+                       storeCost = s.FirstOrDefault().storeCost,
+                       itemUnitId = s.FirstOrDefault().itemUnitId,
+                       ItemUnits = s.FirstOrDefault().ItemUnits
+                   ,
+                       itemId = s.FirstOrDefault().itemId,
+                       itemName = s.FirstOrDefault().itemName,
+                       unitId = s.FirstOrDefault().unitId,
+                       unitName = s.FirstOrDefault().unitName,
+                       quantity = s.Sum(g => g.quantity),
+                       minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
+                       maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
+                   });
+            }
+
+            dgStock.ItemsSource = temp;
+
+            txt_count.Text = dgStock.Items.Count.ToString();
+
+            showSelectedTabColumn();
+
+            fillColumnChart();
+            fillPieChart();
+            fillRowChart();
         }
 
         private void fillRowChart(IEnumerable<Storage> List)
@@ -1365,25 +1247,7 @@ namespace POS.View.reports
             fillRowChart(temp);
         }
 
-
-
-
-
-        /*2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222*/
         private int selectedExternalTab = 0;
-        List<ExternalitemCombo> comboExternalItemsItems;
-        List<ExternalUnitCombo> comboExternalItemsUnits;
-        List<AgentTypeCombo> comboExternalAgentsAgentsType;
-        List<AgentCombo> comboExternalAgentsAgents;
-        List<InvTypeCombo> comboExternalInvType;
-        List<InvCombo> comboExternalInvoiceInvoice;
-
-
-
-
-
-
-        /*******************************************************************************************************************************************************/
         Statistics statisticModel = new Statistics();
 
         List<Branch> comboBranches;
@@ -1439,94 +1303,44 @@ namespace POS.View.reports
         private void showSelectedTabColumn()
         {
             hideAllColumn();
-            if (selectedFatherTab == 0)
-            {
-                if (selectedStockTab == 0)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_locationSection.Visibility = Visibility.Visible;
-                    col_startDate.Visibility = Visibility.Visible;
-                    col_endDate.Visibility = Visibility.Visible;
-                    col_Min.Visibility = Visibility.Visible;
-                    col_Max.Visibility = Visibility.Visible;
-                    col_stockCost.Visibility = Visibility.Visible;
-                }
-                else if (selectedStockTab == 1)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_section.Visibility = Visibility.Visible;
-                    col_location.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                    col_startDate.Visibility = Visibility.Visible;
-                    col_endDate.Visibility = Visibility.Visible;
-                    col_Min.Visibility = Visibility.Visible;
-                    col_Max.Visibility = Visibility.Visible;
-                    col_stockCost.Visibility = Visibility.Visible;
-                }
-                else if (selectedStockTab == 2)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_MinCollect.Visibility = Visibility.Visible;
-                    col_MaxCollect.Visibility = Visibility.Visible;
-                }
 
-            }
-            else if (selectedFatherTab == 1)
+            if (selectedStockTab == 0)
             {
-                if (selectedExternalTab == 0)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_item.Visibility = Visibility.Visible;
-                    col_unit.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentTypeAgent.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
-                else if (selectedExternalTab == 1)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                    col_agent.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentType.Visibility = Visibility.Visible;
-                    col_invTypeNumber.Visibility = Visibility.Visible;
-                }
-                else if (selectedExternalTab == 2)
-                {
-                    hideAllColumn();
-                    col_branch.Visibility = Visibility.Visible;
-                    col_invType.Visibility = Visibility.Visible;
-                    col_invNumber.Visibility = Visibility.Visible;
-                    col_quantity.Visibility = Visibility.Visible;
-                    col_agentTypeAgent.Visibility = Visibility.Visible;
-                    col_itemUnits.Visibility = Visibility.Visible;
-                }
+                col_branch.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_locationSection.Visibility = Visibility.Visible;
+                col_startDate.Visibility = Visibility.Visible;
+                col_endDate.Visibility = Visibility.Visible;
+                col_Min.Visibility = Visibility.Visible;
+                col_Max.Visibility = Visibility.Visible;
+                col_stockCost.Visibility = Visibility.Visible;
             }
-
+            else if (selectedStockTab == 1)
+            {
+                col_branch.Visibility = Visibility.Visible;
+                col_section.Visibility = Visibility.Visible;
+                col_location.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_itemUnits.Visibility = Visibility.Visible;
+                col_startDate.Visibility = Visibility.Visible;
+                col_endDate.Visibility = Visibility.Visible;
+                col_Min.Visibility = Visibility.Visible;
+                col_Max.Visibility = Visibility.Visible;
+                col_stockCost.Visibility = Visibility.Visible;
+            }
+            else if (selectedStockTab == 2)
+            {
+                col_branch.Visibility = Visibility.Visible;
+                col_item.Visibility = Visibility.Visible;
+                col_unit.Visibility = Visibility.Visible;
+                col_quantity.Visibility = Visibility.Visible;
+                col_MinCollect.Visibility = Visibility.Visible;
+                col_MaxCollect.Visibility = Visibility.Visible;
+            }
 
         }
-        /************************************************************************************************************************************/
-
-
-        List<ExternalitemCombo> comboInternalItemsItems;
-        List<ExternalUnitCombo> comboInternalItemsUnits;
-        List<internalTypeCombo> comboInternalOperatorType;
-        List<internalOperatorCombo> comboInternalOperatorOperator;
-
-
-
 
         private void fillRowChart()
         {
@@ -1534,19 +1348,7 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             IEnumerable<decimal> pTemp = null;
 
-            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-
-            if (selectedStockTab == 1)
-            {
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            }
-
-            if (selectedStockTab == 2)
-            {
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
-            }
-
-            var result = temp.GroupBy(s => new { s.sectionId, s.locationId }).Select(s => new
+            var result = storeLst.GroupBy(s => new { s.sectionId, s.locationId }).Select(s => new
             {
                 itemId = s.FirstOrDefault().itemId,
                 quantity = s.Sum(g => g.quantity)
@@ -1563,17 +1365,32 @@ namespace POS.View.reports
 
             SeriesCollection rowChartData = new SeriesCollection();
             List<decimal> purchase = new List<decimal>();
-            for (int i = 0; i < pTemp.Count(); i++)
+            int xCount = 6;
+            if (pTemp.Count() <= 6) xCount = pTemp.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            if(pTemp.Count() > 6)
+            {
+                decimal d = 0;
+                for (int i = 6; i < pTemp.Count(); i++)
+                {
+                    d = d + pTemp.ToList().Skip(i).FirstOrDefault();
+                }
+                if(d != 0)
+                {
+                    purchase.Add(d);
+                    MyAxis.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
             }
 
             rowChartData.Add(
           new LineSeries
           {
               Values = purchase.AsChartValues(),
-              Title = "Items Quantity"
+              Title = MainWindow.resourcemanager.GetString("trQuantity")
 
           });
             DataContext = this;
@@ -1585,18 +1402,7 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-
-            if (selectedStockTab == 1)
-            {
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            }
-            if (selectedStockTab == 2)
-            {
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
-            }
-
-            var result = temp.GroupBy(s => new { s.itemId, s.unitId }).Select(s => new Storage
+            var result = storeLst.GroupBy(s => new { s.itemId, s.unitId }).Select(s => new Storage
             {
                 branchId = s.FirstOrDefault().branchId,
                 itemId = s.FirstOrDefault().itemId,
@@ -1615,25 +1421,36 @@ namespace POS.View.reports
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> cP = new List<decimal>();
-            List<decimal> cPb = new List<decimal>();
-            List<decimal> cD = new List<decimal>();
 
-
-            for (int i = 0; i < cc.Count(); i++)
+            int xCount = 6;
+            if (cc.Count() <= 6) xCount = cc.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 cP.Add(cc.ToList().Select(jj => (decimal)jj.quantity).Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            if(cc.Count() > 6)
+            {
+                decimal d = 0;
+                for (int i = 6 ; i < cc.Count(); i++)
+                {
+                    d = d + cc.ToList().Select(jj => (decimal)jj.quantity).Skip(i).FirstOrDefault();
+                }
+                if(d != 0)
+                {
+                    cP.Add(d);
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
             }
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = cP.AsChartValues(),
-                Title = "Items Quantity",
+                Title = MainWindow.resourcemanager.GetString("trQuantity"),
                 DataLabels = true,
             });
             DataContext = this;
             cartesianChart.Series = columnChartData;
-            fillRowChart();
         }
 
         private void fillPieChart()
@@ -1642,18 +1459,8 @@ namespace POS.View.reports
             List<decimal> x = new List<decimal>();
             titles.Clear();
 
-            var temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
+            var titleTemp = storeLst.GroupBy(m => m.branchName);
 
-            if (selectedStockTab == 1)
-            {
-                temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation);
-            }
-            if (selectedStockTab == 2)
-            {
-                temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null);
-            }
-
-            var titleTemp = temp.GroupBy(m => m.branchName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
             var result = temp.GroupBy(s => s.branchId).Select(s => new Storage
             {
@@ -1690,7 +1497,7 @@ namespace POS.View.reports
                       new PieSeries
                       {
                           Values = final.AsChartValues(),
-                          Title = "Others",
+                          Title = MainWindow.resourcemanager.GetString("trOthers"),
                           DataLabels = true,
                       }
                   );
@@ -1699,19 +1506,18 @@ namespace POS.View.reports
 
             }
             chart1.Series = piechartData;
-            fillColumnChart();
         }
 
 
         private void txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (selectedStockTab == 0)
                 {
-                    temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem)
+                    temp = storeLst
                         .Where(s => (s.branchName.Contains(txt_search.Text) ||
            s.itemName.Contains(txt_search.Text) ||
            s.unitName.Contains(txt_search.Text) ||
@@ -1724,7 +1530,7 @@ namespace POS.View.reports
                 else if (selectedStockTab == 1)
                 {
 
-                    temp = fillList(storages, cb_branchesLocation, cb_sectionsLocation, cb_locationsLocation, dp_startDateLocation, dp_endDateLocation, chk_allBranchesLocation, chk_allSectionsLocation, chk_allLocationsLocation, chk_expireDateLocation)
+                    temp = storeLst
 
                    .Where(s => (s.branchName.Contains(txt_search.Text) ||
       s.itemName.Contains(txt_search.Text) ||
@@ -1739,30 +1545,18 @@ namespace POS.View.reports
 
                 else
                 {
-                    temp = fillList(storages, cb_branchesCollect, cb_itemsCollect, cb_unitsCollect, null, null, chk_allBranchesCollect, chk_allItemsCollect, chk_allUnitsCollect, null).GroupBy(x => new { x.branchId, x.itemUnitId })
-                   .Select(s => new Storage
-                   {
-                       branchId = s.FirstOrDefault().branchId,
-                       branchName = s.FirstOrDefault().branchName,
-                       storeCost = s.FirstOrDefault().storeCost,
-                       itemUnitId = s.FirstOrDefault().itemUnitId,
-                       ItemUnits = s.FirstOrDefault().ItemUnits
-                   ,
-                       itemId = s.FirstOrDefault().itemId,
-                       itemName = s.FirstOrDefault().itemName,
-                       unitId = s.FirstOrDefault().unitId,
-                       unitName = s.FirstOrDefault().unitName,
-                       quantity = s.Sum(g => g.quantity),
-                       minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-                       maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
-                   })
+                    temp = storeLst
                        .Where(s => (s.branchName.Contains(txt_search.Text) ||
            s.itemName.Contains(txt_search.Text) ||
            s.unitName.Contains(txt_search.Text)
 
            ));
                     dgStock.ItemsSource = temp;
+                    storeLst = temp;
                     txt_count.Text = dgStock.Items.Count.ToString();
+                    fillColumnChart();
+                    fillPieChart();
+                    fillRowChart();
                 }
 
 
@@ -1778,20 +1572,20 @@ namespace POS.View.reports
         }
 
         private void btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        {//refresh
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 txt_search.Text = "";
+
                 if (selectedStockTab == 0)
                 {
                     cb_branchesItem.SelectedItem = null;
                     cb_itemsItem.SelectedItem = null;
                     cb_unitsItem.SelectedItem = null;
-                    chk_allBranchesItem.IsChecked = false;
-                    chk_allItemsItem.IsChecked = false;
-                    chk_allUnitsItem.IsChecked = false;
+                    chk_allBranchesItem.IsChecked = true;
                     chk_expireDateItem.IsChecked = false;
                     dp_endDateItem.SelectedDate = null;
                     dp_startDateItem.SelectedDate = null;
@@ -1801,9 +1595,7 @@ namespace POS.View.reports
                     cb_branchesLocation.SelectedItem = null;
                     cb_locationsLocation.SelectedItem = null;
                     cb_sectionsLocation.SelectedItem = null;
-                    chk_allBranchesLocation.IsChecked = false;
-                    chk_allLocationsLocation.IsChecked = false;
-                    chk_allSectionsLocation.IsChecked = false;
+                    chk_allBranchesLocation.IsChecked = true;
                     chk_expireDateLocation.IsChecked = false;
                     dp_endDateLocation.SelectedDate = null;
                     dp_startDateLocation.SelectedDate = null;
@@ -1813,13 +1605,12 @@ namespace POS.View.reports
                     cb_branchesCollect.SelectedItem = null;
                     cb_itemsCollect.SelectedItem = null;
                     cb_unitsCollect.SelectedItem = null;
-                    chk_allBranchesCollect.IsChecked = false;
-                    chk_allItemsCollect.IsChecked = false;
-                    chk_allUnitsCollect.IsChecked = false;
+                    chk_allBranchesCollect.IsChecked = true;
                     chk_expireDateCollect.IsChecked = false;
                     dp_endDateCollect.SelectedDate = null;
                     dp_startDateCollect.SelectedDate = null;
                 }
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1883,7 +1674,7 @@ namespace POS.View.reports
             rep.Refresh();
 
         }
-            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
