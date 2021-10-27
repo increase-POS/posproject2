@@ -796,6 +796,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
                 case "or": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -812,6 +813,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
+                    btn_submitOrder.Visibility = Visibility.Visible;
                     break;
                 case "s": //sale invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -828,6 +830,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
             }
             if (_InvoiceType.Equals("or"))

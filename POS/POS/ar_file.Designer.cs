@@ -430,6 +430,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to متاح.
+        /// </summary>
+        internal static string trAvailable {
+            get {
+                return ResourceManager.GetString("trAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نسخ احتياطي.
         /// </summary>
         internal static string trBackup {
@@ -5791,6 +5800,15 @@ namespace POS {
         internal static string trRequiredAmount {
             get {
                 return ResourceManager.GetString("trRequiredAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حجز.
+        /// </summary>
+        internal static string trReservation {
+            get {
+                return ResourceManager.GetString("trReservation", resourceCulture);
             }
         }
         

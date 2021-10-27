@@ -2695,4 +2695,10 @@
   <data name="trRestoreNotComplete" xml:space="preserve">
     <value>حدث خطأ قبل اتمام عملية الاستعادة</value>
   </data>
+  <data name="trAvailable" xml:space="preserve">
+    <value>متاح</value>
+  </data>
+  <data name="trReservation" xml:space="preserve">
+    <value>حجز</value>
+  </data>
 </root>

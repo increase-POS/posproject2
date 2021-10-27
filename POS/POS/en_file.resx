@@ -2710,4 +2710,10 @@ Please add Email in setting</value>
   <data name="trRestoreNotComplete" xml:space="preserve">
     <value>Error, Restore not complete</value>
   </data>
+  <data name="trAvailable" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="trReservation" xml:space="preserve">
+    <value>Reservation</value>
+  </data>
 </root>

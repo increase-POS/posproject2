@@ -42,6 +42,7 @@ namespace POS.View.windows
             try
             {
                 await itemLocation.reReserveItems(invoiceItems, invoice.invoiceId, (int)invoice.branchId, MainWindow.userID.Value);
+                await fillOrderItems();
             }
             catch (Exception ex)
             {
@@ -97,23 +98,14 @@ namespace POS.View.windows
         }
         private void translat()
         {
-            //txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
+           txt_title.Text = MainWindow.resourcemanager.GetString("trReservation");
 
-            //dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            //dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch");
-            //dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trUser");
-            //dg_Invoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trQTR");
-            //dg_Invoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
+           dg_itemOrder.Columns[0].Header = MainWindow.resourcemanager.GetString("trItemUnit");        
+            dg_itemOrder.Columns[1].Header = MainWindow.resourcemanager.GetString("trQTR");
+            dg_itemOrder.Columns[2].Header = MainWindow.resourcemanager.GetString("trReserved");
+            dg_itemOrder.Columns[3].Header = MainWindow.resourcemanager.GetString("trAvailable");
 
-            //col_num.Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            //col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
-            //col_user.Header = MainWindow.resourcemanager.GetString("trUser");
-            //col_count.Header = MainWindow.resourcemanager.GetString("trQTR");
-            //col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
-            //col_type.Header = MainWindow.resourcemanager.GetString("trType");
-
-
-            //btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
+           btn_select.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private async Task fillOrderItems()
         {
@@ -171,7 +163,8 @@ namespace POS.View.windows
                 long oldReserved = 0;
                 long newReserved = 0;
 
-                newReserved = int.Parse(t.Text);
+                if(!t.Text.Equals(""))
+                    newReserved = int.Parse(t.Text);
                 oldReserved = (long) invoiceItems[index].lockedQuantity;
                 if( newReserved > oldReserved && (newReserved - oldReserved) > row.availableQuantity)
                 {

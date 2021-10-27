@@ -74,7 +74,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <DataGrid  Margin="5,5,5,5"  Grid.Row="0"   Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" 
+                      materialDesign:DataGridAssist.CornerRadius="5" CanUserAddRows="False"
                        x:Name="dg_itemOrder" CellEditEnding="Dg_itemOrder_CellEditEnding"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_itemOrder_SelectionChanged"  
