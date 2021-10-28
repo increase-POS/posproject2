@@ -150,6 +150,7 @@
                             <DataGridTextColumn x:Name="col_count" Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
                             <DataGridTextColumn x:Name="col_total"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
                             <DataGridTextColumn x:Name="col_type" Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
+                            <DataGridTextColumn x:Name="col_status" Width="*"  Header="" Binding="{Binding status}" Visibility="Collapsed"/>
                         </DataGrid.Columns>
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">

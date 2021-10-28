@@ -140,6 +140,7 @@ namespace POS.View.windows
                 {
                     dg_Invoice.Columns[2].Visibility = Visibility.Visible; //make branch column visible
                     dg_Invoice.Columns[3].Visibility = Visibility.Visible; //make user column visible
+                    dg_Invoice.Columns[7].Visibility = Visibility.Visible; //make user column visible
                 }
                 #endregion
                 await refreshInvoices();
