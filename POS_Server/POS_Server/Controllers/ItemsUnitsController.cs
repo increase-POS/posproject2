@@ -23,7 +23,8 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public string Get(string token)
         {
-            token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -134,7 +135,8 @@ namespace POS_Server.Controllers
         {
 
             // public string GetUsersByGroupId(string token)int itemUnitId
-          token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenManager.GetPrincipal(token);
+          token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -251,7 +253,8 @@ namespace POS_Server.Controllers
         [Route("GetAll")]
         public string GetAll(string token)
         {
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1097,7 +1100,8 @@ var strP = TokenManager.GetPrincipal(token);
         {
 
             // public string GetUsersByGroupId(string token)int itemId
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1231,9 +1235,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("getSmallItemUnits")]
         public string getSmallItemUnits(string token)
         {
-
+            token = TokenManager.readToken(HttpContext.Current.Request);
             // public string GetUsersByGroupId(string token)//int itemId, int itemUnitId
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1383,9 +1387,9 @@ var strP = TokenManager.GetPrincipal(token);
         public string largeToSmallUnitQuan(string token)
         {
 
-
+            token = TokenManager.readToken(HttpContext.Current.Request);
             // public string GetUsersByGroupId(string token)//int fromItemUnit, int toItemUnit
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1470,9 +1474,9 @@ var strP = TokenManager.GetPrincipal(token);
         public string smallToLargeUnitQuan(string token)
         {
 
-
+            token = TokenManager.readToken(HttpContext.Current.Request);
             // public string GetUsersByGroupId(string token)//int fromItemUnit, int toItemUnit
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);

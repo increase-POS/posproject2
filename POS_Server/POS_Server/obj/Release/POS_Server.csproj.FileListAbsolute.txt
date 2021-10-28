@@ -673,7 +673,6 @@ F:\increase\sales\POS_Server\POS_Server\bin\Microsoft.Owin.Security.xml
 F:\increase\sales\POS_Server\POS_Server\bin\Microsoft.Owin.Security.OAuth.xml
 F:\increase\sales\POS_Server\POS_Server\bin\System.IdentityModel.Tokens.Jwt.xml
 F:\increase\sales\POS_Server\POS_Server\bin\System.Web.Http.Owin.xml
-C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\POS_Server.dll.config
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\POS_Server.xml
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\POS_Server.dll
@@ -798,7 +797,8 @@ C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\System.Web.WebPag
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\System.Web.WebPages.Razor.xml
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\Antlr3.Runtime.pdb
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache
+C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.dll
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.pdb
-C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache

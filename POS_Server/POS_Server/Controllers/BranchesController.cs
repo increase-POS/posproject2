@@ -21,10 +21,10 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public string Get(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -76,8 +76,8 @@ var strP = TokenManager.GetPrincipal(token);
                                 var parentBrancheL = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
                                 var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
                                 // var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
-                                var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
-                                if ((parentBrancheL is null) && (posL is null) && (usersL is null))
+                               // var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
+                                if ((parentBrancheL is null) && (posL is null))
                                     canDelete = true;
                             }
                             branchesList[i].canDelete = canDelete;
@@ -91,8 +91,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetAll")]
         public string GetAll(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -129,9 +129,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetActive")]
         public string GetActive(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -173,7 +173,7 @@ var strP = TokenManager.GetPrincipal(token);
                            b.type
                        })
                        .ToList();
-                    return TokenManager.GenerateToken(branchesList);
+                        return TokenManager.GenerateToken(branchesList);
 
 
                     }
@@ -201,7 +201,7 @@ var strP = TokenManager.GetPrincipal(token);
                             type = b.type
                         })
                             .ToList();
-                    return TokenManager.GenerateToken(branchesList);
+                        return TokenManager.GenerateToken(branchesList);
                     }
                 }
             }
@@ -211,8 +211,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetBranchByID")]
         public string GetBranchByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -243,10 +243,10 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetBranchTreeByID")]
         public string GetBranchTreeByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
 
             List<branches> treebranch = new List<branches>();
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -324,10 +324,10 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetAllWithoutMain")]
         public string GetAllWithoutMain(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -393,9 +393,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetBalance")]
         public string GetBalance(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -432,8 +432,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetJoindBrByBranchId")]
         public string GetJoindBrByBranchId(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -486,8 +486,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("BranchesByBranchandUser")]
         public string BranchesByBranchandUser(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -534,7 +534,7 @@ var strP = TokenManager.GetPrincipal(token);
                     type = X.FirstOrDefault().type,
 
                 }).ToList();
-                    return TokenManager.GenerateToken(List);
+                return TokenManager.GenerateToken(List);
             }
         }
 
@@ -544,8 +544,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetByBranchStor")]
         public string GetByBranchStor(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -562,7 +562,7 @@ var strP = TokenManager.GetPrincipal(token);
                     }
                 }
                 var List = BranchesByBranch(mainBranchId);
-                    return TokenManager.GenerateToken(List);
+                return TokenManager.GenerateToken(List);
             }
         }
 
@@ -573,8 +573,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetByBranchUser")]
         public string GetByBranchUser(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -591,7 +591,7 @@ var strP = TokenManager.GetPrincipal(token);
                     }
                 }
                 var List = BranchesByUser(userId);
-                    return TokenManager.GenerateToken(List);
+                return TokenManager.GenerateToken(List);
 
             }
         }
@@ -716,9 +716,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -773,7 +773,7 @@ var strP = TokenManager.GetPrincipal(token);
                             if (branchesCount >= branchMaxCount)
                             {
                                 message = "-1";
-                    return TokenManager.GenerateToken(message);
+                                return TokenManager.GenerateToken(message);
                             }
                             else
                             {
@@ -785,7 +785,7 @@ var strP = TokenManager.GetPrincipal(token);
                                 entity.SaveChanges();
                                 message = newObject.branchId.ToString();
                             }
-                    return TokenManager.GenerateToken(message);
+                            return TokenManager.GenerateToken(message);
 
                         }
                         else
@@ -805,7 +805,7 @@ var strP = TokenManager.GetPrincipal(token);
                             tmpBranch.isActive = newObject.isActive;
                             entity.SaveChanges();
                             message = newObject.branchId.ToString();
-                    return TokenManager.GenerateToken(message);
+                            return TokenManager.GenerateToken(message);
                         }
                     }
                 }
@@ -820,9 +820,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Delete")]
         public string Delete(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -831,7 +831,7 @@ var strP = TokenManager.GetPrincipal(token);
             {
                 int branchId = 0;
                 int userId = 0;
-                Boolean final = false;
+                bool final = false;
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -848,46 +848,210 @@ var strP = TokenManager.GetPrincipal(token);
                         final = bool.Parse(c.Value);
                     }
                 }
-                if (!final)
+                using (incposdbEntities entity = new incposdbEntities())
                 {
-                    try
+
+                    if (!final)
                     {
-                        using (incposdbEntities entity = new incposdbEntities())
+                        try
                         {
                             var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
                             tmpBranch.isActive = 0;
                             tmpBranch.updateUserId = userId;
                             tmpBranch.updateDate = DateTime.Now;
                             message = entity.SaveChanges().ToString();
-                        }
 
-                    return TokenManager.GenerateToken(message);
-                    }
-                    catch
-                    {
-                    return TokenManager.GenerateToken("0");
-                    }
-                   
-                }
-                else
-                {
-                    try
-                    {
-                        using (incposdbEntities entity = new incposdbEntities())
+                            return TokenManager.GenerateToken(message);
+                        }
+                        catch 
                         {
-                            var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
-                            entity.branches.Remove(tmpBranch);
-                            message = entity.SaveChanges().ToString();
+                            return TokenManager.GenerateToken("0");
                         }
-                    return TokenManager.GenerateToken(message);
+
                     }
-                    catch
+                    else
                     {
-                    return TokenManager.GenerateToken("0");
+                        int dbbranchId = 0;
+                        bool isdel = true;
+
+                        var res = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
+                        if (res != null)
+                        {
+                            isdel = false;
+                        }
+                        else
+                        {
+
+
+                            var res1 = entity.Inventory.Where(x => x.branchId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
+
+                            if (res1 != null)
+                            {
+                                isdel = false;
+                            }
+                            else
+                            {
+                                res1 = entity.invoices.Where(x => x.branchId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
+
+                                if (res1 != null)
+                                {
+                                    isdel = false;
+                                }
+                                else
+                                {
+                                    var res3 = entity.invoices.Where(x => x.branchCreatorId == branchId).Select(x => new { x.branchCreatorId }).FirstOrDefault();
+                                    if (res3 != null)
+                                    {
+                                        isdel = false;
+                                    }
+                                    else
+                                    {
+                                        res1 = entity.pos.Where(x => x.branchId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
+                                        if (res1 != null)
+                                        {
+                                            isdel = false;
+                                        }
+                                        else
+                                        {
+
+                                            //,x.branchesUsers,x.branchStore,x.branchStore1,x.Inventory,x.invoices,x.invoices1,x.locations,x.pos,x.sections,x.sysEmails 
+
+                                            //res1 = entity.sysEmails.Where(x => x.branchId == branchId && x.isMajor == true).Select(x => new { x.branchId }).FirstOrDefault();
+                                            //if (res1 != null)
+                                            //{
+                                            //    isdel = false;
+                                            //}
+                                            //else
+                                            //{
+
+                                                var item = (from L in entity.locations
+                                                            join IL in entity.itemsLocations on L.locationId equals IL.locationId
+                                                            join B in entity.branches on L.branchId equals B.branchId
+
+                                                            where B.branchId == branchId
+                                                            select new
+                                                            {
+                                                                // branch
+                                                                IL.itemsLocId,
+
+                                                            }).FirstOrDefault();
+                                                if (item != null)
+                                                {
+
+                                                    isdel = false;
+                                                }
+                                                else
+                                                {
+
+                                                    // delete
+                                                    try
+                                                    {
+                                                        //var res1 = entity.branchesUsers.1
+                                                        //res1 = entity.branchStore.2
+                                                        //    var res2 = entity.branchStore3
+                                                        // res1 = entity.sysEmails.Where
+
+
+                                                        var tmploc = entity.locations.Where(p => p.branchId == branchId);
+                                                        entity.locations.RemoveRange(tmploc);
+                                                        message = entity.SaveChanges().ToString();
+
+                                                        var tmpsections = entity.sections.Where(p => p.branchId == branchId);
+
+                                                        entity.sections.RemoveRange(tmpsections);
+                                                        message = entity.SaveChanges().ToString();
+
+
+
+
+                                                        var tmpbranchesUsers = entity.branchesUsers.Where(p => p.branchId == branchId);
+                                                        entity.branchesUsers.RemoveRange(tmpbranchesUsers);
+                                                        message = entity.SaveChanges().ToString();
+
+                                                        var tmpbranchStore = entity.branchStore.Where(p => p.branchId == branchId);
+                                                        entity.branchStore.RemoveRange(tmpbranchStore);
+                                                        message = entity.SaveChanges().ToString();
+
+                                                        var tmpbranchStore1 = entity.branchStore.Where(p => p.storeId == branchId);
+                                                        entity.branchStore.RemoveRange(tmpbranchStore1);
+                                                        message = entity.SaveChanges().ToString();
+
+                                                        var tmpsysEmails = entity.sysEmails.Where(p => p.branchId == branchId);
+                                                        entity.sysEmails.RemoveRange(tmpsysEmails);
+                                                        message = entity.SaveChanges().ToString();
+
+                                                        var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                                                        entity.branches.Remove(tmpBranch);
+                                                        message = entity.SaveChanges().ToString();
+                                                        return TokenManager.GenerateToken(message);
+                                                    }
+                                                    catch 
+                                                    {
+                                                        return TokenManager.GenerateToken("0");
+                                                    }
+                                                }
+
+
+                                            }
+
+                                       
+
+                                    }
+
+
+                                }
+
+                            }
+
+                        }
+
+                        if (isdel == false)
+                        {
+                            try
+                            {
+
+                                var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                                tmpBranch.isActive = 0;
+                                tmpBranch.updateUserId = userId;
+                                tmpBranch.updateDate = DateTime.Now;
+                                message = entity.SaveChanges().ToString();
+
+
+                                return TokenManager.GenerateToken(message);
+                            }
+                            catch
+                            {
+                                return TokenManager.GenerateToken("0");
+                            }
+                        }
+
                     }
 
+
+
                 }
+
+                return TokenManager.GenerateToken(message);
+                //else
+                //{
+                //    try
+                //    {
+                //        using (incposdbEntities entity = new incposdbEntities())
+                //        {
+                //            var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                //            entity.branches.Remove(tmpBranch);
+                //            message = entity.SaveChanges().ToString();
+                //        }
+                //        return TokenManager.GenerateToken(message);
+                //    }
+                //    catch
+                //    {
+                //        return TokenManager.GenerateToken("0");
+                //    }
+
+                //}
             }
+          
         }
     }
 }

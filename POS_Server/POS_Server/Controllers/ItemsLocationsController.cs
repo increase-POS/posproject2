@@ -3937,7 +3937,7 @@ namespace POS_Server.Controllers
                                     int lockedQuantity = (int)(item.newLocked - item.lockedQuantity);
                                     lockItem(item.itemUnitId.Value, invoiceId, branchId, lockedQuantity, userId);
                                 }
-                                else if(item.newLocked > item.lockedQuantity)
+                                else if(item.newLocked < item.lockedQuantity)
                                 {
                                     int unreserveQnt = (int)(item.lockedQuantity - item.newLocked);
                                     unlockQuantity(invoiceId, (int)item.itemUnitId, unreserveQnt);
