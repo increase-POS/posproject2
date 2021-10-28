@@ -234,9 +234,10 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-                    location.locationId = 0;
                     if (validate(location))
                     {
+                        location = new Location();
+                        //location.locationId = 0;
                         location.x = tb_x.Text;
                         location.y = tb_y.Text;
                         location.z = tb_z.Text;

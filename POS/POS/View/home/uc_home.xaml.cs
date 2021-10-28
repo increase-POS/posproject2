@@ -74,9 +74,9 @@ namespace POS.View
         //List<User> users = new List<User>();
         ImageBrush brush = new ImageBrush();
 
-        public List<BestSeller> listBestSeller { get; set; }
-        public List<TotalPurSale> listMonthlyInvoice { get; set; }
-        public List<IUStorage> listIUStorage { get; set; }
+        public List<BestSeller> listBestSeller = new List<BestSeller>();
+        public List<TotalPurSale> listMonthlyInvoice = new List<TotalPurSale>();
+        public List<IUStorage> listIUStorage = new List<IUStorage>();
         public List<ItemUnit> IUList = new List<ItemUnit>();
         bool firstLoading = true;
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -110,8 +110,6 @@ namespace POS.View
 
                 //await refreshViewTask();
 
-                starTimerAfter10();
-                starTimerAfter30();
                 if (firstLoading)
                 {
                     await SectionData.fillBranchesWithAll(cb_branch);
@@ -122,8 +120,12 @@ namespace POS.View
                     cb_branch.IsEnabled = true;
                 else cb_branch.IsEnabled = false;
 
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
+
+
+            starTimerAfter10();
+            starTimerAfter30();
+            //if (sender != null)
+            //    SectionData.EndAwait(grid_main);
             //}
             //catch (Exception ex)
             //{

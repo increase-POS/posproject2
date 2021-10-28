@@ -257,7 +257,7 @@ namespace POS.View
 
                         if (unit1 != null)
                         {
-                            if (dg_barcode.Visibility == Visibility.Visible)
+                            if (grid_barcode.Visibility == Visibility.Visible)
                             {
                                 if (!await checkBarcodeValidity(tb_barcode.Text))
                                 {
@@ -451,7 +451,7 @@ namespace POS.View
 
             try
             {
-                dg_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
+                grid_barcode.Visibility = grid_properties.Visibility = Visibility.Collapsed;
                 grid_itemData.Visibility = Visibility.Visible;
                 brd_barcodeTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
                 brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
@@ -470,8 +470,9 @@ namespace POS.View
                 if (item.itemId > 0)
                 {
                     grid_itemData.Visibility = grid_properties.Visibility = Visibility.Collapsed;
-                    dg_barcode.Visibility = Visibility.Visible;
-                    brd_itemDataTab.BorderBrush = brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
+                    grid_barcode.Visibility = Visibility.Visible;
+                    brd_itemDataTab.BorderBrush =
+                    brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
                     brd_barcodeTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
                     tb_barcode.Focus();
                 }
@@ -490,7 +491,7 @@ namespace POS.View
             {
                 if (item.itemId > 0)
                 {
-                    grid_itemData.Visibility = dg_barcode.Visibility = Visibility.Collapsed;
+                    grid_itemData.Visibility = grid_barcode.Visibility = Visibility.Collapsed;
                     grid_properties.Visibility = Visibility.Visible;
                     brd_barcodeTab.BorderBrush = brd_itemDataTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4e4e4e"));
                     brd_propertiesTab.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
@@ -1208,7 +1209,7 @@ namespace POS.View
                                     itemUnit.createUserId = MainWindow.userID;
 
                                   int res = await itemUnit.saveItemUnit(itemUnit);
-                                    if (res.Equals(res > 0))
+                                    if (res > 0)
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1813,6 +1814,7 @@ namespace POS.View
 
             // get all item serials
             itemSerials = await serialModel.GetItemSerials(itemId);
+            //dg_serials.ItemsSource = new List<Serial>();
             dg_serials.ItemsSource = itemSerials;
 
         }
@@ -1820,18 +1822,20 @@ namespace POS.View
         {
 
             itemsProp = await itemsPropModel.Get(item.itemId);
+            //dg_properties.ItemsSource = new List<ItemsProp>();
             dg_properties.ItemsSource = itemsProp.ToList();
 
         }
         async Task refreshItemUnitsGrid(int itemId)
         {
             itemUnits = await itemUnitModel.GetAllItemUnits(itemId);
+            // dg_unit.ItemsSource = new List<ItemUnit>();
             dg_unit.ItemsSource = itemUnits.ToList();
         }
         async Task refreshServicesGrid(int itemId)
         {
-
             services = await serviceModel.GetItemServices(item.itemId);
+            //dg_service.ItemsSource = new List<Service>();
             dg_service.ItemsSource = services.ToList();
 
         }

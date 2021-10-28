@@ -134,8 +134,7 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (itemLocationList != null)
-                {
+                
                     if (chk_stored.IsChecked == true)
                         await refreshItemsLocations();
                     else if (chk_freezone.IsChecked == true)
@@ -145,11 +144,13 @@ namespace POS.View.storage
                     clearInputs();
 
                     searchText = tb_search.Text.ToLower();
-
+                if (itemLocationList != null)
+                {
                     itemLocationListQuery = itemLocationList.Where(s => (s.itemName.ToLower().Contains(searchText) ||
                     s.unitName.ToLower().Contains(searchText) ||
                     s.section.ToLower().Contains(searchText) ||
                     s.location.ToLower().Contains(searchText)));
+              
                     dg_itemsStorage.ItemsSource = itemLocationListQuery;
                 }
                 if (sender != null)

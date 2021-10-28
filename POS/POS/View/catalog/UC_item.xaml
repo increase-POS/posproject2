@@ -552,20 +552,14 @@
                     ToolTip="" Height="auto"
                     x:Name="btn_barcodeTab" Click="Btn_barcode_Click" >
                                 <StackPanel Orientation="Horizontal" >
-
                                     <materialDesign:PackIcon Foreground="#E8E8E8" Kind="Barcode"  Margin="0,0,3,0" 
-                           
                          Width="20" Height="20"/>
-                                    <TextBlock x:Name="txt_barcode" Text="Barcode"  Foreground="#E8E8E8"
-                                   
-                                 />
+                                    <TextBlock x:Name="txt_barcode" Text="Barcode"  Foreground="#E8E8E8"/>
                                 </StackPanel>
-
                             </Button>
                         </Border>
                     </Grid>
                 </Border>
-
                 <!--#region -->
 
 
@@ -965,7 +959,6 @@
                         </Border>
                     </Grid>
                 </Grid>
-
                 <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
                 <Grid  Grid.Row="1"
                          x:Name="grid_properties"  Visibility="Collapsed">
@@ -1002,11 +995,13 @@
                         </DockPanel>
 
 
-                        <DataGrid x:Name="dg_properties" Grid.Row="1" Margin="10,5,10,5" Background="White"
+                        <DataGrid x:Name="dg_properties" 
+                      Grid.Row="1"  Margin="10,5,10,5" Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                          IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader" SelectionChanged="dg_propertiesSelectionChanged"     AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                        ColumnWidth="SizeToHeader" SelectionChanged="dg_propertiesSelectionChanged" 
+                                  AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -1196,11 +1191,13 @@
                                     <Separator Background="#999999"    Margin="5,0,5,0"
                                      />
                                 </DockPanel>
-                                <DataGrid x:Name="dg_service" MinHeight="200" Grid.Row="1" Margin="5" Background="White"
+                                <DataGrid x:Name="dg_service" MinHeight="200"
+                             Grid.Row="1" Margin="5" Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                         IsReadOnly="True" CanUserAddRows="False" 
                         AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader" SelectionChanged="dg_services_SelectionChanged"   AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                        ColumnWidth="SizeToHeader" SelectionChanged="dg_services_SelectionChanged"   
+                                          AlternatingRowBackground="#f3f3f3" AlternationCount="2">
                                     <DataGrid.Resources>
                                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -1340,7 +1337,7 @@
                 </Grid>
                 <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                 <Grid  Grid.Row="1"
-                      x:Name="dg_barcode"  Visibility="Collapsed" >
+                      x:Name="grid_barcode"  Visibility="Collapsed" >
                     <Grid.RowDefinitions >
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
