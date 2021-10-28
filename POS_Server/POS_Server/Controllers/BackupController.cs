@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Data.SqlClient;
 using System.IO;
-
+using System.Collections;
 using Newtonsoft.Json.Converters;
 
 
@@ -144,16 +144,19 @@ namespace POS_Server.Controllers
             string path = "";
           backupFilename = "back" + DateTime.Now.ToFileTime() + ".bak";
             //  string filename = "back.bak";
-
-            path = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), backupFilename);
-            var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), backupFilename);
+            string dirpath = System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\");
+            path = Path.Combine(dirpath, backupFilename);
+            var files = Directory.GetFiles(dirpath, backupFilename);
             if (files.Length > 0)
             {
 
                 File.Delete(files[0]);
             }
+            
 
             message = backupDB(path);
+
+
 
             return message;
         }
@@ -199,15 +202,37 @@ namespace POS_Server.Controllers
                 logITEM = logcntrlr.GetByID(logId);
 
 
-                string path = "";
+               
+
                 try
                 {
+                    //decode
+                    string sourcpath = "";
+                    string destpath = "";
 
-                    path = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), restoreFilename);
+                    bool decres = false;
+                    string direpath = System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\");
+                    string destfile = "file" + DateTime.Now.ToFileTime() + ".bak";
+
+                    sourcpath = Path.Combine(direpath, restoreFilename);
+                    destpath= Path.Combine(direpath, destfile);
                     //  var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), filename);
-                    if (File.Exists(path))
+                  
+
+                    if (File.Exists(sourcpath) )
                     {
-                        message = restoreDB(path);
+                        //decode file
+                        //   decres=decodefile()
+                        decres = decodefile(sourcpath, destpath);
+                        // delete after decode
+                        File.Delete(sourcpath);
+
+                      if(  File.Exists(destpath) && decres == true)
+                        { 
+                            //restore
+                        message = restoreDB(destpath);
+                        // delete after restore
+                        File.Delete(destpath);
                         if (message == "1")
                         {
 
@@ -217,6 +242,12 @@ namespace POS_Server.Controllers
 
 
                         }
+                        }
+                        else
+                        {
+                            message = "0";
+                        }
+
                     }
                     else
                     {
@@ -251,7 +282,7 @@ namespace POS_Server.Controllers
         public HttpResponseMessage GetFile()
         {
             string message = "";
-
+            bool encres = false;
             string dirpath = System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\");
             if (!Directory.Exists(dirpath))
             {
@@ -260,24 +291,35 @@ namespace POS_Server.Controllers
             ProcessDirectory(dirpath);
 
             message = createBackup();
-
-            // send file to client
             if (message == "1")
             {
-                if (String.IsNullOrEmpty(backupFilename))
+                //encode file
+                string filename="back1"+ DateTime.Now.ToFileTime() + ".inc";
+            string destpath = Path.Combine(dirpath, filename);
+            string sourcPath;
+
+            sourcPath = Path.Combine(dirpath, backupFilename);
+                encres = encodefile(sourcPath, destpath);
+
+            // send file to client
+          
+                if (String.IsNullOrEmpty(filename))
                     return Request.CreateResponse(HttpStatusCode.BadRequest);
-
-                string localFilePath;
-
-                localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), backupFilename);
+                File.Delete(sourcPath);
+                if (encres) { 
 
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+                response.Content = new StreamContent(new FileStream(destpath, FileMode.Open, FileAccess.Read));
                 response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-                response.Content.Headers.ContentDisposition.FileName = backupFilename;
+                response.Content.Headers.ContentDisposition.FileName = filename;
 
                 return response;
-             
+
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
 
             }
             else
@@ -369,14 +411,14 @@ namespace POS_Server.Controllers
                             var message = "-1";
                             return Ok(message);
                         }
-                        var files = Directory.GetFiles(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), restoreFilename);
+                        var files = Directory.GetFiles(dirPath, restoreFilename);
                             if (files.Length > 0)
                             {
                                 File.Delete(files[0]);
                             }
 
                             // myfolder name where i want to save my file
-                            var filePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp\\"), restoreFilename);
+                            var filePath = Path.Combine(dirPath, restoreFilename);
                             postedFile.SaveAs(filePath);
 
                         // restore to DB
@@ -399,6 +441,168 @@ namespace POS_Server.Controllers
 
                 return Ok(res);
             }
+        }
+
+
+        public bool encodefile(string source, string dest)
+        {
+            try
+            {
+                //string source = System.IO.Path.Combine(@"D:/temp/", "backlocal2.bak");
+                //string dest = System.IO.Path.Combine(@"D:/temp/", "backlocal3.bak");
+                //end test
+                //message = backupDB(path);//remove comment
+                int firstpartLength = 100;
+                int reverslength = 50;
+                int injlength;
+                byte[] result = System.Text.Encoding.ASCII.GetBytes("null");
+                injlength = result.Length;
+                //    byte[] arr = File.ReadAllBytes(path);
+                byte[] arr = File.ReadAllBytes(source);
+                byte[] arr1 = new byte[firstpartLength];
+                Buffer.BlockCopy(arr, 0, arr1, 0, firstpartLength);
+                byte[] arr2 = new byte[arr.Length - firstpartLength];
+                Buffer.BlockCopy(arr, firstpartLength, arr2, 0, arr.Length - firstpartLength);
+                byte[] arrtorvrs = new byte[reverslength];
+                Buffer.BlockCopy(arr1, reverslength, arrtorvrs, 0, reverslength);
+
+                arrtorvrs = arrtorvrs.Reverse().ToArray();
+                Buffer.BlockCopy(arrtorvrs, 0, arr1, reverslength, reverslength);
+
+
+
+                byte[] arr3 = new byte[arr1.Length + result.Length];
+                arr3 = Combine(arr1, result);
+
+                // string str2 = str.Substring(50, 50);
+
+                arr = Combine(arr3, arr2);
+
+                arr = arr.Reverse().ToArray();
+                arr = Encrypt(arr);
+
+                File.WriteAllBytes(dest, arr);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        public bool decodefile(string source, string dest)
+        {
+            try
+            {
+                //string source = System.IO.Path.Combine(@"D:/temp/", "backlocal3.bak");
+                //string dest = System.IO.Path.Combine(@"D:/temp/", "backlocal4.bak");
+                int firstpartLength = 100;
+                int resfirstpartLength;
+                int resreverslength = 50;
+                int resinjlength;
+                byte[] resresult = System.Text.Encoding.ASCII.GetBytes("null");
+                resinjlength = resresult.Length;
+                resfirstpartLength = firstpartLength + resinjlength;//100+4
+                byte[] restorearr = File.ReadAllBytes(source);
+                restorearr = Decrypt(restorearr);
+
+                restorearr = restorearr.Reverse().ToArray();
+
+                byte[] resarr1 = new byte[resfirstpartLength];
+                int secondpartLength = restorearr.Length - resfirstpartLength;
+                byte[] resarr2 = new byte[secondpartLength];//120
+                Buffer.BlockCopy(restorearr, 0, resarr1, 0, resfirstpartLength);
+
+                Buffer.BlockCopy(restorearr, resfirstpartLength, resarr2, 0, secondpartLength);
+
+                byte[] resreversarr = new byte[resreverslength];
+                Buffer.BlockCopy(resarr1, resreverslength, resreversarr, 0, resreverslength);
+                resreversarr = resreversarr.Reverse().ToArray();
+                Buffer.BlockCopy(resreversarr, 0, resarr1, resreverslength, resreverslength);
+                byte[] resarrnoinj = new byte[firstpartLength];//120
+                Buffer.BlockCopy(resarr1, 0, resarrnoinj, 0, firstpartLength);
+                restorearr = Combine(resarrnoinj, resarr2);
+
+
+                File.WriteAllBytes(dest, restorearr);
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
+        public string Reverse(string text)
+        {
+            if (text == null) return null;
+
+            // this was posted by petebob as well 
+            char[] array = text.ToCharArray();
+            Array.Reverse(array);
+            return new String(array);
+        }
+
+        public static byte[] Combine(byte[] first, byte[] second)
+        {
+            byte[] ret = new byte[first.Length + second.Length];
+            Buffer.BlockCopy(first, 0, ret, 0, first.Length);
+            Buffer.BlockCopy(second, 0, ret, first.Length, second.Length);
+            return ret;
+        }
+
+        //encript decript
+        public static byte[] Decrypt(byte[] Encrypted)
+        {
+            BitArray enc = ToBits(Encrypted);
+            BitArray XorH = SubBits(enc, 0, enc.Length / 2);
+            XorH = XorH.Not();
+            BitArray RHH = SubBits(enc, enc.Length / 2, enc.Length / 2);
+            RHH = RHH.Not();
+            BitArray LHH = XorH.Xor(RHH);
+            BitArray bits = ConcateBits(LHH, RHH);
+            byte[] decr = new byte[bits.Length / 8];
+            bits.CopyTo(decr, 0);
+            return decr;
+        }
+        public static byte[] Encrypt(byte[] ordinary)
+        {
+            BitArray bits = ToBits(ordinary);
+            BitArray LHH = SubBits(bits, 0, bits.Length / 2);
+            BitArray RHH = SubBits(bits, bits.Length / 2, bits.Length / 2);
+            BitArray XorH = LHH.Xor(RHH);
+            RHH = RHH.Not();
+            XorH = XorH.Not();
+            BitArray encr = ConcateBits(XorH, RHH);
+            byte[] b = new byte[encr.Length / 8];
+            encr.CopyTo(b, 0);
+            return b;
+        }
+
+
+        private static BitArray ToBits(byte[] Bytes)
+        {
+            BitArray bits = new BitArray(Bytes);
+            return bits;
+        }
+        private static BitArray SubBits(BitArray Bits, int Start, int Length)
+        {
+            BitArray half = new BitArray(Length);
+            for (int i = 0; i < half.Length; i++)
+                half[i] = Bits[i + Start];
+            return half;
+        }
+        private static BitArray ConcateBits(BitArray LHH, BitArray RHH)
+        {
+            BitArray bits = new BitArray(LHH.Length + RHH.Length);
+            for (int i = 0; i < LHH.Length; i++)
+                bits[i] = LHH[i];
+            for (int i = 0; i < RHH.Length; i++)
+                bits[i + LHH.Length] = RHH[i];
+            return bits;
         }
     }
 }

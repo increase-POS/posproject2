@@ -258,7 +258,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("getById")]
         public string GetById(string token   )
         {
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -676,29 +677,11 @@ var strP = TokenManager.GetPrincipal(token);
 
                     if (invoicesList != null)
                     {
-                        string complete = "ready";
                         for (int i = 0; i < invoicesList.Count; i++)
                         {
-                           complete = "ready";
                             int invoiceId = invoicesList[i].invoiceId;
-                            //int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
-                            var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
-                            invoicesList[i].itemsCount = itemList.Count;
-                            if(invTypeL.Contains("or"))
-                            {
-                                foreach (itemsTransfer tr in itemList)
-                                {
-                                    var lockedQuantity = entity.itemsLocations
-                                       .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
-                                       .Select(x => x.quantity).Sum();
-                                    if(lockedQuantity < tr.quantity)
-                                    {
-                                        complete = "notReady";
-                                        break;
-                                    }
-                                }
-                            }
-                            invoicesList[i].status = complete;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
                         }
                     }
                  
@@ -2527,22 +2510,9 @@ var strP = TokenManager.GetPrincipal(token);
                 {
                     for (int i = 0; i < invoicesList.Count(); i++)
                     {
-                        string complete = "ready";
                         int invoiceId = invoicesList[i].invoiceId;
-                        var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
-                        invoicesList[i].itemsCount = itemList.Count;
-                        foreach (itemsTransfer tr in itemList)
-                        {
-                            var lockedQuantity = entity.itemsLocations
-                                .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
-                                .Select(x => x.quantity).Sum();
-                            if (lockedQuantity < tr.quantity)
-                            {
-                                complete = "notReady";
-                                break;
-                            }
-                        }
-                        invoicesList[i].status = complete;
+                        int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                        invoicesList[i].itemsCount = itemCount;
                     }
                 }
                 return invoicesList;
