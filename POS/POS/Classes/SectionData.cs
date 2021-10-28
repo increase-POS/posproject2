@@ -858,6 +858,7 @@ namespace POS.Classes
 
         static List<Branch> branches;
         static List<Branch> branchesWithAll;
+        static List<Branch> branchesWithoutMain;
         static public async Task fillBranches(ComboBox combo, string type = "")
         { 
             if (isAdminPermision())
@@ -902,6 +903,17 @@ namespace POS.Classes
             branchesWithAll.Insert(0, branch);
 
             combo.ItemsSource = branchesWithAll.Where(b => b.type != type && b.branchId != 1);
+            combo.SelectedValuePath = "branchId";
+            combo.DisplayMemberPath = "name";
+            combo.SelectedIndex = -1;
+        }
+
+        static public async Task fillBranchesWithoutMain(ComboBox combo)
+        {
+            if(branchesWithoutMain == null)
+                branchesWithoutMain = await branchModel.GetAllWithoutMain("all");
+
+            combo.ItemsSource = branchesWithoutMain;
             combo.SelectedValuePath = "branchId";
             combo.DisplayMemberPath = "name";
             combo.SelectedIndex = -1;

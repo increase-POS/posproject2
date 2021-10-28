@@ -36,6 +36,15 @@ namespace POS.View.reports
 
         IEnumerable<Storage> storeLst;
 
+        Statistics statisticModel = new Statistics();
+
+        List<Branch> comboBranches;
+        Branch branchModel = new Branch();
+
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private static uc_storageReports _instance;
         public static uc_storageReports Instance
         {
@@ -257,14 +266,9 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_itemsItem.IsEnabled = false;
-                chk_allItemsItem.IsEnabled = true;
-                cb_unitsItem.IsEnabled = false;
-                cb_unitsItem.SelectedItem = null;
-                chk_allUnitsItem.IsEnabled = false;
-
                 fillComboItems(cb_branchesItem, cb_itemsItem);
                 chk_allItemsItem.IsChecked = true;
+                chk_allItemsItem.IsEnabled = true;
 
                 fillEvents();
 
@@ -286,36 +290,12 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_unitsItem.IsEnabled = true;
                 chk_allUnitsItem.IsEnabled = true;
-
-                fillComboUnits(cb_itemsItem, cb_unitsItem);
                 chk_allUnitsItem.IsChecked = true;
+                fillComboUnits(cb_itemsItem, cb_unitsItem);
 
                 fillEvents();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void cb_unitsItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -479,53 +459,12 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 dp_endDateItem.IsEnabled = false;
                 dp_startDateItem.IsEnabled = false;
 
                 fillEvents();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void dp_startDateItem_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void dp_endDateItem_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                temp = fillList(storages, cb_branchesItem, cb_itemsItem, cb_unitsItem, dp_startDateItem, dp_endDateItem, chk_allBranchesItem, chk_allItemsItem, chk_allUnitsItem, chk_expireDateItem);
-                dgStock.ItemsSource = temp;
-                txt_count.Text = dgStock.Items.Count.ToString();
-                fillPieChart();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -544,14 +483,9 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_sectionsLocation.IsEnabled = true;
                 chk_allSectionsLocation.IsEnabled = true;
-                cb_locationsLocation.IsEnabled = false;
-                cb_locationsLocation.SelectedItem = null;
-                chk_allLocationsLocation.IsEnabled = false;
-
-                fillComboSection();
                 chk_allSectionsLocation.IsChecked = true;
+                fillComboSection();
 
                 fillEvents();
 
@@ -573,31 +507,9 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_locationsLocation.IsEnabled = true;
                 chk_allLocationsLocation.IsEnabled = true;
-
-                fillComboLoaction();
                 chk_allLocationsLocation.IsChecked = true;
-
-                fillEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void cb_locationsLocation_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                fillComboLoaction();
 
                 fillEvents();
 
@@ -781,46 +693,6 @@ namespace POS.View.reports
             }
         }
 
-        private void dp_endDateLocation_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void dp_startDateLocation_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
         private void cb_branchesCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -828,14 +700,9 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_itemsCollect.IsEnabled = true;
                 chk_allItemsCollect.IsEnabled = true;
-                cb_unitsCollect.IsEnabled = false;
-                cb_unitsCollect.SelectedItem = null;
-                chk_allUnitsCollect.IsEnabled = false;
-
+                chk_allItemsCollect.IsChecked = true;
                 fillComboItems(cb_branchesCollect, cb_itemsCollect);
-
                 fillEvents();
 
                 if (sender != null)
@@ -856,31 +723,10 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                cb_unitsCollect.IsEnabled = true;
                 chk_allUnitsCollect.IsEnabled = true;
-
+                chk_allUnitsCollect.IsChecked = true;
                 fillComboUnits(cb_itemsCollect, cb_unitsCollect);
 
-                fillEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void cb_unitsCollect_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-               
                 fillEvents();
 
                 if (sender != null)
@@ -943,7 +789,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_itemsCollect.IsEnabled = false;
-                cb_unitsCollect.IsEnabled = true;
+                cb_itemsCollect.SelectedItem = null;
               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1017,13 +863,37 @@ namespace POS.View.reports
             }
         }
 
+        private void fillEventsCall(object sender)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                fillEvents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillEventsCall(sender);
+        }
         IEnumerable<Storage> temp = null;
         private void Btn_item_Click(object sender, RoutedEventArgs e)
         {//items
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
@@ -1040,15 +910,15 @@ namespace POS.View.reports
 
                 fillEvents();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void btn_location_Click(object sender, RoutedEventArgs e)
@@ -1239,7 +1109,7 @@ namespace POS.View.reports
             new StackedColumnSeries
             {
                 Values = cP.AsChartValues(),
-                Title = "Items Quantity",
+                Title = MainWindow.resourcemanager.GetString("trQuantity"),
                 DataLabels = true,
             });
             DataContext = this;
@@ -1247,11 +1117,6 @@ namespace POS.View.reports
             fillRowChart(temp);
         }
 
-        private int selectedExternalTab = 0;
-        Statistics statisticModel = new Statistics();
-
-        List<Branch> comboBranches;
-        Branch branchModel = new Branch();
         private void fillComboBranches(ComboBox cb)
         {
             cb.SelectedValuePath = "branchId";
@@ -1519,11 +1384,11 @@ namespace POS.View.reports
                 {
                     temp = storeLst
                         .Where(s => (s.branchName.Contains(txt_search.Text) ||
-           s.itemName.Contains(txt_search.Text) ||
-           s.unitName.Contains(txt_search.Text) ||
-           s.Secname.Contains(txt_search.Text) ||
-           s.LoactionName.Contains(txt_search.Text)
-           ));
+                       s.itemName.Contains(txt_search.Text) ||
+                       s.unitName.Contains(txt_search.Text) ||
+                       s.Secname.Contains(txt_search.Text) ||
+                       s.LoactionName.Contains(txt_search.Text)
+                       ));
                     dgStock.ItemsSource = temp;
                     txt_count.Text = dgStock.Items.Count.ToString();
                 }
@@ -1532,12 +1397,12 @@ namespace POS.View.reports
 
                     temp = storeLst
 
-                   .Where(s => (s.branchName.Contains(txt_search.Text) ||
-      s.itemName.Contains(txt_search.Text) ||
-      s.unitName.Contains(txt_search.Text) ||
-      s.Secname.Contains(txt_search.Text) ||
-      s.LoactionName.Contains(txt_search.Text)
-      ));
+                      .Where(s => (s.branchName.Contains(txt_search.Text) ||
+                      s.itemName.Contains(txt_search.Text) ||
+                      s.unitName.Contains(txt_search.Text) ||
+                      s.Secname.Contains(txt_search.Text) ||
+                      s.LoactionName.Contains(txt_search.Text)
+                      ));
                     dgStock.ItemsSource = temp;
                     txt_count.Text = dgStock.Items.Count.ToString();
                 }
@@ -1621,10 +1486,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        ReportCls reportclass = new ReportCls();
-        LocalReport rep = new LocalReport();
-        SaveFileDialog saveFileDialog = new SaveFileDialog();
-
+      
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -1803,5 +1665,6 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+     
     }
 }

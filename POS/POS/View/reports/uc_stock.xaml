@@ -217,10 +217,10 @@
                                               Grid.Row="1" Grid.Column="2" Checked="chk_expireDateItem_Checked" Unchecked="chk_expireDateItem_Unchecked"
                                               Content="Expire Date" Foreground="{StaticResource MainColorGrey}"></CheckBox>
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="1" Grid.Column="4" LastChildFill="False">
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_endDateItem_SelectedDateChanged" IsEnabled="False" Name="dp_endDateItem" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="cb_SelectionChanged" IsEnabled="False" Name="dp_endDateItem" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_startDateItem_SelectedDateChanged" IsEnabled="False" Name="dp_startDateItem" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker SelectedDateFormat="Short" SelectedDateChanged="cb_SelectionChanged" IsEnabled="False" Name="dp_startDateItem" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                                 </DockPanel>
@@ -232,7 +232,7 @@
                                                 <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItemsItem"
                                                Grid.Row="2" Grid.Column="1" IsEnabled="False" Checked="chk_allItemsItem_Checked" Unchecked="chk_allItemsItem_Unchecked"
                                                Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                                <ComboBox Name="cb_unitsItem" IsEnabled="False" SelectionChanged="cb_unitsItem_SelectionChanged" Grid.Row="2"
+                                                <ComboBox Name="cb_unitsItem" IsEnabled="False" SelectionChanged="cb_SelectionChanged" Grid.Row="2"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Units ...." Grid.Column="2"
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
@@ -270,10 +270,10 @@
                                               Grid.Row="1" Grid.Column="2" 
                                               Content="Expire Date" Foreground="{StaticResource MainColorGrey}"></CheckBox>
                                                 <DockPanel Grid.ColumnSpan="3" Grid.Row="1" Grid.Column="4" LastChildFill="False">
-                                                    <DatePicker IsEnabled="False" SelectedDateChanged="dp_endDateLocation_SelectedDateChanged" SelectedDateFormat="Short"  Name="dp_endDateLocation" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker IsEnabled="False" SelectedDateChanged="cb_SelectionChanged" SelectedDateFormat="Short"  Name="dp_endDateLocation" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                                    <DatePicker IsEnabled="False" SelectedDateChanged="dp_startDateLocation_SelectedDateChanged" SelectedDateFormat="Short"  Name="dp_startDateLocation" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                                    <DatePicker IsEnabled="False" SelectedDateChanged="cb_SelectionChanged" SelectedDateFormat="Short"  Name="dp_startDateLocation" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                                 </DockPanel>
@@ -285,7 +285,7 @@
                                                 <CheckBox IsEnabled="False" Background="{StaticResource MainColorBlue}" x:Name="chk_allSectionsLocation"
                                                Grid.Row="2" Grid.Column="1" Checked="chk_allSectionsLocation_Checked" Unchecked="chk_allSectionsLocation_Unchecked"
                                                Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                                <ComboBox Name="cb_locationsLocation" IsEnabled="False" Grid.Row="2" SelectionChanged="cb_locationsLocation_SelectionChanged"
+                                                <ComboBox Name="cb_locationsLocation" IsEnabled="False" Grid.Row="2" SelectionChanged="cb_SelectionChanged"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Location ...." Grid.Column="2"
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
@@ -336,7 +336,7 @@
                                                 <CheckBox Checked="chk_allItemsCollect_Checked" IsEnabled="False" Unchecked="chk_allItemsCollect_Unchecked" Background="{StaticResource MainColorBlue}" x:Name="chk_allItemsCollect"
                                                Grid.Row="2" Grid.Column="1"
                                                Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                                <ComboBox IsEnabled="False" SelectionChanged="cb_unitsCollect_SelectionChanged" Name="cb_unitsCollect"  Grid.Row="2"
+                                                <ComboBox IsEnabled="False" SelectionChanged="cb_SelectionChanged" Name="cb_unitsCollect"  Grid.Row="2"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Units ...." Grid.Column="2"
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 

@@ -33,7 +33,7 @@
                         Grid.Row="0" Margin="0,0,5,0"
                         BorderBrush="{x:Null}"
                         Background="#4E4E4E">
-                    <Grid >
+                    <Grid x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -162,8 +162,10 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                             </Button>
                         </Border>
 
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
                     </Grid>
                 </Border>
                 <Border CornerRadius="0,0,7,7" 
@@ -234,13 +236,13 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                     <CheckBox x:Name="chk_externalItemsIn"
                                                               Content="In" 
                                                               Margin="5,0,10,0"
-                                                              Checked="chk_externalItemsIn_Checked"
-                                                              Unchecked="chk_externalItemsIn_Unchecked"/>
+                                                              Checked="selectionChanged"
+                                                              Unchecked="selectionChanged"/>
 
                                                     <CheckBox x:Name="chk_externalItemsOut"
                                                               Content="Out"
-                                                              Checked="chk_externalItemsOut_Checked"
-                                                              Unchecked="chk_externalItemsOut_Unchecked" />
+                                                              Checked="selectionChanged"
+                                                              Unchecked="selectionChanged" />
                                                 </StackPanel>
 
                                                 <DockPanel Grid.ColumnSpan="3" 
@@ -260,7 +262,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                 materialDesign:HintAssist.Hint="End Date..."
-                                                                SelectedDateChanged="dp_externalItemsEndDate_SelectedDateChanged"/>
+                                                                SelectedDateChanged="selectionChanged"/>
 
                                                     <DatePicker Name="dp_externalItemsStartDate"
                                                                 SelectedDateFormat="Short"
@@ -274,7 +276,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                 materialDesign:HintAssist.Hint="Start date..." 
-                                                                SelectedDateChanged="dp_externalItemsStartDate_SelectedDateChanged"/>
+                                                                SelectedDateChanged="selectionChanged"/>
 
                                                 </DockPanel>
 
@@ -291,7 +293,6 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                           Height="40" 
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                       
                                                           ItemsSource="{Binding}"
                                                           SelectionChanged="cb_externalItemsItems_SelectionChanged" />
 
@@ -319,7 +320,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                           Height="40" 
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                          SelectionChanged="cb_externalItemsUnits_SelectionChanged"  />
+                                                          SelectionChanged="selectionChanged"  />
 
                                                 <CheckBox x:Name="chk_externalItemsAllUnits"
                                                           Background="{StaticResource MainColorBlue}"
@@ -382,13 +383,13 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                     <CheckBox x:Name="chk_externalAgentsIn"
                                                               Content="In"
                                                               Margin="5,0,10,0"
-                                                              Checked="chk_externalAgentsIn_Checked"
-                                                              Unchecked="chk_externalAgentsIn_Unchecked"/>
+                                                              Checked="selectionChanged"
+                                                              Unchecked="selectionChanged"/>
 
                                                     <CheckBox x:Name="chk_externalAgentsOut"
                                                               Content="Out"
-                                                              Checked="chk_externalAgentsOut_Checked"
-                                                              Unchecked="chk_externalAgentsOut_Unchecked"/>
+                                                              Checked="selectionChanged"
+                                                              Unchecked="selectionChanged"/>
                                                 </StackPanel>
 
                                                 <DockPanel Grid.ColumnSpan="3"
@@ -408,7 +409,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                 materialDesign:HintAssist.Hint="End Date..."
-                                                                SelectedDateChanged="dp_externalAgentsEndDate_SelectedDateChanged"/>
+                                                                SelectedDateChanged="selectionChanged"/>
 
                                                     <DatePicker Name="dp_externalAgentsStartDate"
                                                                 SelectedDateFormat="Short"
@@ -422,7 +423,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                                 materialDesign:HintAssist.Hint="Start date..." 
-                                                                SelectedDateChanged="dp_externalAgentsStartDate_SelectedDateChanged" />
+                                                                SelectedDateChanged="selectionChanged" />
                                                 </DockPanel>
 
                                                 <ComboBox Name="cb_externalAgentsAgentsType"
@@ -464,7 +465,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                           Height="40"
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0"
-                                                          SelectionChanged="cb_externalAgentsCustomer_SelectionChanged" />
+                                                          SelectionChanged="selectionChanged" />
 
 
                                                 <CheckBox x:Name="chk_externalAgentsAllCustomers"
@@ -537,7 +538,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                                 Padding="10,0,5,0"
                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                                 materialDesign:HintAssist.Hint="End Date..."
-                                                                SelectedDateChanged="dp_externalInvoicesEndDate_SelectedDateChanged"/>
+                                                                SelectedDateChanged="selectionChanged"/>
 
                                                     <DatePicker Name="dp_externalInvoicesStartDate"
                                                                 SelectedDateFormat="Short"
@@ -550,7 +551,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                                 BorderThickness="0" 
                                                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                                                                 materialDesign:HintAssist.Hint="Start date..." 
-                                                                SelectedDateChanged="dp_externalInvoicesStartDate_SelectedDateChanged" />
+                                                                SelectedDateChanged="selectionChanged" />
                                                 </DockPanel>
 
                                                 <ComboBox Name="cb_externalInvoicesInvoiceType"
@@ -592,7 +593,7 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                                                           Height="40"
                                                           Margin="10,5,10,5"
                                                           Padding="10,0,5,0" 
-                                                          SelectionChanged="cb_externalInvoicesInvoice_SelectionChanged"/>
+                                                          SelectionChanged="selectionChanged"/>
 
                                                 <CheckBox x:Name="chk_externalInvoicesALlInvoice"
                                                           Background="{StaticResource MainColorBlue}"
