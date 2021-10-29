@@ -86,7 +86,8 @@ namespace POS.View.windows
                 //return;
                 if (selectedItemsLocations.Count == 0)
                     valid = false;
-            for(int i=0; i<selectedItemsLocations.Count; i++)
+            //for(int i=0; i<selectedItemsLocations.Count; i++)
+            for(int i=0; i< orderList.Count; i++)
             {
                 if (_Quantity[i] < orderList[i].quantity)
                 {

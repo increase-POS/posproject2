@@ -115,20 +115,14 @@ namespace POS.View.setup
         {//select branch
             try
             {
-
-
-
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
-
-
 
                 int bId = Convert.ToInt32(cb_branch.SelectedValue);
                 branchId = bId;
 
-                poss = await posModel.Get();
-                var pos = poss.Where(p => p.branchId == bId);
+                var pos = await posModel.GetUnactivated(branchId);
+                //var pos = poss.Where(p => p.branchId == bId);
                 cb_pos.ItemsSource = pos;
                 cb_pos.DisplayMemberPath = "name";
                 cb_pos.SelectedValuePath = "posId";

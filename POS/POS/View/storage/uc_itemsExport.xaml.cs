@@ -207,7 +207,7 @@ namespace POS.View.storage
                 configureProcessType();
                 pos = await pos.getById(MainWindow.posID.Value);
                 branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
-                await SectionData.fillBranches(cb_branch, "bs");
+                await SectionData.fillWithoutCurrent(cb_branch, MainWindow.branchID.Value);
                 //await RefrishBranches();
                 await RefrishItems();
                 //await fillShippingCompanies();
@@ -2111,6 +2111,9 @@ namespace POS.View.storage
             */
         }
 
-
+        private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            _IsFocused = true;
+        }
     }
 }

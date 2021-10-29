@@ -176,6 +176,17 @@ namespace POS.View.windows
                                 isValid = false;
                                 break;
                             }
+                            else
+                            {
+                                int installationNum = await setupConfiguration.getInstallationNum();
+                                if (installationNum == 2)
+                                {
+                                    wd_setupOtherPos logIn = new wd_setupOtherPos();
+                                    //uc_serverConfig.Instance
+                                    logIn.Show();
+                                    this.Close();
+                                }
+                            }
                         }
                         
                     }
@@ -372,8 +383,8 @@ namespace POS.View.windows
                 
             }
 
-            //if (isValid)
-            //{
+            if (isValid)
+            {
                 if (pageIndex == 2)
                 {
                 //server INFO
@@ -408,13 +419,12 @@ namespace POS.View.windows
                     Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupFirstPos.resourcemanager.GetString("trErrorWrongActivation"), animation: ToasterAnimation.FadeIn);
                     return;
                 }
-                if (res > 0)
+                else if (res > 0)
                 {
                     Properties.Settings.Default.APIUri = Global.APIUri;
                     Properties.Settings.Default.posId = res.ToString();
                     Properties.Settings.Default.Save();
                     restartApplication();
-                        //Btn_cancel_Click(btn_cancel, null);
                     }
 
             }
@@ -423,9 +433,9 @@ namespace POS.View.windows
                     pageIndex++;
                     CallPage(pageIndex, (sender as Button).Tag.ToString());
                 }
-        //}
-        //    else
-        //        Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
 
         }
         private void restartApplication()

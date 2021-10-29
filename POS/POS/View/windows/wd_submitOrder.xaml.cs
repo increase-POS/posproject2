@@ -41,8 +41,14 @@ namespace POS.View.windows
         {
             try
             {
-                await itemLocation.reReserveItems(invoiceItems, invoice.invoiceId, (int)invoice.branchId, MainWindow.userID.Value);
-                await fillOrderItems();
+               int res = await itemLocation.reReserveItems(invoiceItems, invoice.invoiceId, (int)invoice.branchId, MainWindow.userID.Value);
+                if (res > 0)
+                {
+                    await fillOrderItems();
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {

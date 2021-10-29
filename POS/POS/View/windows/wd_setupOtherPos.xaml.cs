@@ -179,7 +179,7 @@ namespace POS.View.windows
                 {
                     if (item.key.Equals("posId"))
                     {
-                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.countryId))
+                        if (uc_selectPos.Instance.posId.Equals(0))
                         {
                             item.value = "";
                             isValid = false;
@@ -187,14 +187,12 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_FirstPosGeneralSettings.Instance.countryId;
-                            countryId = int.Parse(item.value);
+                            item.value = uc_selectPos.Instance.posId.ToString();
                         }
-
                     }
                     else if (item.key.Equals("branchId"))
                     {
-                        if (string.IsNullOrWhiteSpace(uc_FirstPosGeneralSettings.Instance.countryId))
+                        if (uc_selectPos.Instance.branchId.Equals(0))
                         {
                             item.value = "";
                             isValid = false;
@@ -202,62 +200,44 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_FirstPosGeneralSettings.Instance.countryId;
-                            countryId = int.Parse(item.value);
+                            item.value = uc_selectPos.Instance.branchId.ToString();
                         }
-
                     }
-
-
                 }
             }
-          
 
-            //if (isValid)
-            //{
-            if (pageIndex == 1)
+            if (isValid)
+            {
+                if (pageIndex == 1)
             {
                 //server INFO
                 string url = uc_serverConfig.Instance.serverUri;
                 string activationkey = uc_serverConfig.Instance.activationkey;
 
-                //// user INFO
-                //string userName = uc_FirstPosGeneralSettings.Instance.userName;
-                //string password = Md5Encription.MD5Hash("Inc-m" + uc_FirstPosGeneralSettings.Instance.userPassword);
-                //// branch INFO
-                //string branchName = uc_FirstPosGeneralSettings.Instance.branchName;
-                //string branchMobile = uc_FirstPosGeneralSettings.Instance.branchMobile;
+
                 //// pos INFO
-                //string posName = uc_FirstPosGeneralSettings.Instance.posName;
-                //string motherCode = setupConfiguration.GetMotherBoardID();
-                //string hardCode = setupConfiguration.GetHDDSerialNo();
-                //string deviceCode = motherCode + "-" + hardCode;
-                //// company INFO
-                //List<SetValues> company = new List<SetValues>();
-                //company.Add(new SetValues { name = "com_name", value = uc_companyInfo.Instance.companyName });
-                //company.Add(new SetValues { name = "com_address", value = uc_companyInfo.Instance.address });
-                //company.Add(new SetValues { name = "com_email", value = uc_companyInfo.Instance.email });
-                //company.Add(new SetValues { name = "com_mobile", value = uc_companyInfo.Instance.mobile });
-                //company.Add(new SetValues { name = "com_phone", value = uc_companyInfo.Instance.phone });
-                //company.Add(new SetValues { name = "com_fax", value = uc_companyInfo.Instance.fax });
-                //Global.APIUri = url + "/api/";
-                //int res = await setupConfiguration.setConfiguration(activationkey, deviceCode, countryId, userName, password, branchName, branchMobile, posName, company);
-                //if (res == -2 || res == -3) // invalid or resrved activation key
-                //{
-                //    uc_serverConfig.Instance.activationkey = "";
-                //    pageIndex = 0;
-                //    CallPage(0);
-                //    Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupFirstPos.resourcemanager.GetString("trErrorWrongActivation"), animation: ToasterAnimation.FadeIn);
-                //    return;
-                //}
-                //if (res > 0)
-                //{
-                //    Properties.Settings.Default.APIUri = Global.APIUri;
-                //    Properties.Settings.Default.posId = res.ToString();
-                //    Properties.Settings.Default.Save();
-                //    restartApplication();
-                //    //Btn_cancel_Click(btn_cancel, null);
-                //}
+               int posId = uc_selectPos.Instance.posId;
+               string motherCode = setupConfiguration.GetMotherBoardID();
+               string hardCode = setupConfiguration.GetHDDSerialNo();
+               string deviceCode = motherCode + "-" + hardCode;
+               
+                Global.APIUri = url + "/api/";
+                int res = await setupConfiguration.setPosConfiguration(activationkey, deviceCode, posId);
+                if (res == -2 || res == -3) // invalid or resrved activation key
+                {
+                    uc_serverConfig.Instance.activationkey = "";
+                    pageIndex = 0;
+                    CallPage(0);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupOtherPos.resourcemanager.GetString("trErrorWrongActivation"), animation: ToasterAnimation.FadeIn);
+                    return;
+                }
+                else if (res > 0)
+                {
+                    Properties.Settings.Default.APIUri = Global.APIUri;
+                    Properties.Settings.Default.posId = res.ToString();
+                    Properties.Settings.Default.Save();
+                    restartApplication();
+                }
 
             }
             if (pageIndex < 1)
@@ -265,9 +245,9 @@ namespace POS.View.windows
                 pageIndex++;
                 CallPage(pageIndex, (sender as Button).Tag.ToString());
             }
-            //}
-            //    else
-            //        Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: "Should fill form first", animation: ToasterAnimation.FadeIn);
 
         }
         private void restartApplication()

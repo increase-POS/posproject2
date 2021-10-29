@@ -43,6 +43,21 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<List<Pos>> GetUnactivated(int branchId)
+        {
+            List<Pos> items = new List<Pos>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("branchId", branchId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("Pos/GetUnactivated", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Pos>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
         public async Task<Pos> getById(int itemId)
         {
             Pos item = new Pos();

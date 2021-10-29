@@ -1067,7 +1067,7 @@ namespace POS.View
                             else//pw  waiting purchase invoice
                             {                               
                                 
-                                if(cb_branch.SelectedIndex == -1) // reciept invoice directly
+                                if(cb_branch.SelectedIndex == -1 || cb_branch.SelectedIndex == 0) // reciept invoice directly
                                 {
                                     await addInvoice("p", "pi");
                                     #region notification Object
