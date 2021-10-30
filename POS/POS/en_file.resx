@@ -2635,9 +2635,6 @@ Please add Email in setting</value>
   <data name="trProfits" xml:space="preserve">
     <value>Profits</value>
   </data>
-  <data name="trNoNetworkConnection" xml:space="preserve">
-    <value>No network connection</value>
-  </data>
   <data name="trAdministrativePullHint" xml:space="preserve">
     <value>Administrative Pull...</value>
   </data>
@@ -2715,5 +2712,11 @@ Please add Email in setting</value>
   </data>
   <data name="trReservation" xml:space="preserve">
     <value>Reservation</value>
+  </data>
+  <data name="trContinueProcess?" xml:space="preserve">
+    <value>Do you want to continue process?</value>
+  </data>
+  <data name="trNoConnection" xml:space="preserve">
+    <value>No Connection</value>
   </data>
 </root>

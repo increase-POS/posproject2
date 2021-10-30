@@ -27,10 +27,10 @@ namespace POS
                 //POS.Properties.Settings.Default.posId = "0";
                 if (POS.Properties.Settings.Default.posId == "0")
                 {
-                    wd_setupOtherPos logIn = new wd_setupOtherPos();
-                    logIn.Show();
-                    //wd_setupFirstPos logIn = new wd_setupFirstPos();
+                    //wd_setupOtherPos logIn = new wd_setupOtherPos();
                     //logIn.Show();
+                    wd_setupFirstPos logIn = new wd_setupFirstPos();
+                    logIn.Show();
                 }
                 else
                 {

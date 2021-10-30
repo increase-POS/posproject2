@@ -1150,6 +1150,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to continue process?.
+        /// </summary>
+        internal static string trContinueProcess_ {
+            get {
+                return ResourceManager.GetString("trContinueProcess?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Convert.
         /// </summary>
         internal static string trConvert {
@@ -4417,6 +4426,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Connection.
+        /// </summary>
+        internal static string trNoConnection {
+            get {
+                return ResourceManager.GetString("trNoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is no draft.
         /// </summary>
         internal static string trNoDraft {
@@ -4450,15 +4468,6 @@ namespace POS {
         internal static string trNoInventory {
             get {
                 return ResourceManager.GetString("trNoInventory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No network connection.
-        /// </summary>
-        internal static string trNoNetworkConnection {
-            get {
-                return ResourceManager.GetString("trNoNetworkConnection", resourceCulture);
             }
         }
         

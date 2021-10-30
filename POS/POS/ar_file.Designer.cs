@@ -1150,6 +1150,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هل تريد متابعة العملية؟.
+        /// </summary>
+        internal static string trContinueProcess_ {
+            get {
+                return ResourceManager.GetString("trContinueProcess?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تحويل.
         /// </summary>
         internal static string trConvert {
@@ -4399,6 +4408,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يوجد اتصال.
+        /// </summary>
+        internal static string trNoConnection {
+            get {
+                return ResourceManager.GetString("trNoConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يوجد مسودة.
         /// </summary>
         internal static string trNoDraft {
@@ -4432,15 +4450,6 @@ namespace POS {
         internal static string trNoInventory {
             get {
                 return ResourceManager.GetString("trNoInventory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to لا يوجد اتصال بالشبكة.
-        /// </summary>
-        internal static string trNoNetworkConnection {
-            get {
-                return ResourceManager.GetString("trNoNetworkConnection", resourceCulture);
             }
         }
         
