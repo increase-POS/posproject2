@@ -53,12 +53,12 @@ namespace POS.View.windows
 
         Printers printerModel = new Printers();
         Papersize papersizeModel = new Papersize();
-      
+
 
         public List<Printers> getsystemPrinters()
         {
             Printers printermodel = new Printers();
-         
+
             List<Printers> printerList = new List<Printers>();
 
             for (int i = 0; i < PrinterSettings.InstalledPrinters.Count; i++)
@@ -72,6 +72,15 @@ namespace POS.View.windows
             }
             return printerList;
         }
+        public string getdefaultPrinters()
+        {
+
+            PrinterSettings settings = new PrinterSettings();
+            string defaultPrinterName = settings.PrinterName;
+
+          
+            return defaultPrinterName;
+        }
         async Task GetposSetting()
         {
             papersizeList = await papersizeModel.GetAll();
@@ -79,7 +88,7 @@ namespace POS.View.windows
             if (possettingModel is null || possettingModel.posSettingId <= 0)
             {
 
-
+                possettingModel = new PosSetting();
             }
             else
             {
@@ -91,7 +100,7 @@ namespace POS.View.windows
                 if (possettingModel.docPapersizeId != null && possettingModel.docPapersizeId > 0)
                 {
                     docpapersizeId = (int)possettingModel.docPapersizeId;
-                //   docpapersizerow = await papersizeModel.GetByID(docpapersizeId);
+                    //   docpapersizerow = await papersizeModel.GetByID(docpapersizeId);
                 }
 
                 if (reportPrinterId > 0)
@@ -178,35 +187,114 @@ namespace POS.View.windows
             PosSetting posscls = new PosSetting();
             // string msg = "";
             int msg = 0;
-            repprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes((string)cb_repname.SelectedValue));
+            string printern = (string)cb_repname.SelectedValue;
+    
+        
+            if (printern != null && printern != "")
+            {
+                repprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(printern));
+
+            }
+            else
+            {
+                printern = getdefaultPrinters();
+                repprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(printern));
+            }
             repprinterRow.printFor = "rep";
             repprinterRow.createUserId = MainWindow.userID;
 
             msg = await printerModel.Save(repprinterRow);
-           // reportPrinterId = int.Parse(msg);
+            // reportPrinterId = int.Parse(msg);
             reportPrinterId = msg;
 
-            salprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes((string)cb_salname.SelectedValue));
+       
+            printern = (string)cb_salname.SelectedValue;
+            if (printern != null && printern != "")
+            {
+                salprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(printern));
+
+            }
+            else
+            {
+                printern = getdefaultPrinters();
+                salprinterRow.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(printern));
+            }
+
+           
+
+
+
             salprinterRow.printFor = "sal";
             salprinterRow.createUserId = MainWindow.userID;
 
             msg = await printerModel.Save(salprinterRow);
-           // saleInvPrinterId = int.Parse(msg);
+            // saleInvPrinterId = int.Parse(msg);
             saleInvPrinterId = msg;
-            possettingModel.posId = MainWindow.posID;
+          
+           
+
+            possettingModel.posId =MainWindow.posID;
             possettingModel.reportPrinterId = reportPrinterId;
             possettingModel.saleInvPrinterId = saleInvPrinterId;
+            ////
+            int salsizeid = papersizeList.Where(x => x.printfor.Contains("sal") && x.sizeValue == "A4").FirstOrDefault().sizeId;
+            int docsizeid = papersizeList.Where(x => x.printfor.Contains("doc") && x.sizeValue == "A5").FirstOrDefault().sizeId;
+            string psize = "";
+            if (cb_saleInvPaperSize.SelectedIndex != -1)
+            {
+                psize = (string)cb_saleInvPaperSize.SelectedValue.ToString();
+                if (psize != null && psize != "")
+                {
+                    possettingModel.saleInvPapersizeId = int.Parse(psize);
+                }
+                else
+                {
+                    possettingModel.saleInvPapersizeId = salsizeid;
+                }
 
-            possettingModel.saleInvPapersizeId = (int)cb_saleInvPaperSize.SelectedValue;
-            possettingModel.docPapersizeId = (int)cb_docpapersize.SelectedValue;
+            }
+            else
+            {
+                possettingModel.saleInvPapersizeId = salsizeid;
+            }
+
+
+
+            // possettingModel.saleInvPapersizeId = (int)cb_saleInvPaperSize.SelectedValue;
+           
+            if (cb_docpapersize.SelectedIndex != -1)
+            {
+                psize = (string)cb_docpapersize.SelectedValue.ToString();
+
+                if (psize != null && psize != "")
+                {
+                    possettingModel.docPapersizeId = int.Parse(psize);
+                }
+                else
+                {
+                    possettingModel.docPapersizeId = docsizeid;
+                }
+
+            }
+            else
+            {
+                possettingModel.docPapersizeId = docsizeid;
+            }
+           
+
+           // possettingModel.docPapersizeId = (int)cb_docpapersize.SelectedValue;
 
             posscls.posSettingId = possettingModel.posSettingId;
             posscls.posId = possettingModel.posId;
             posscls.saleInvPrinterId = possettingModel.saleInvPrinterId;
             posscls.reportPrinterId = possettingModel.reportPrinterId;
+
             posscls.saleInvPapersizeId = possettingModel.saleInvPapersizeId;
             posscls.docPapersizeId = possettingModel.docPapersizeId;
-           // msg = await possettingModel.Save(posscls);
+
+           
+         
+            // msg = await possettingModel.Save(posscls);
             msg = await possettingModel.Save(posscls);
             return msg.ToString();
         }
@@ -304,20 +392,20 @@ namespace POS.View.windows
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
-            string msg;
-            msg= await Saveprinters();
-         
+            string msg="";
+            msg = await Saveprinters();
+
             await refreshWindow();
             await MainWindow.getPrintersNames();
             if (int.Parse(msg) > 0)
             {
-               Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 await Task.Delay(1500);
                 this.Close();
             }
             else
             {
-               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
             }
 
 

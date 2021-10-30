@@ -141,6 +141,7 @@ namespace POS
         }
         public static async Task getPrintersNames()
         {
+            posSetting = new PosSetting();
             posSetting = await posSetting.GetByposId((int)MainWindow.posID);
             if (posSetting.repname is null || posSetting.repname == "")
             {
