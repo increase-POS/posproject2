@@ -927,27 +927,27 @@ namespace POS.View.Settings
             if (cb_backup.SelectedValue.ToString() == "backup")
             {
                 BackupCls back = new BackupCls();
-                saveFileDialog.Filter = "BAK|*.bak;*.inc;";
+                saveFileDialog.Filter = "INC|*.inc;";
 
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     string filepath = saveFileDialog.FileName;
                     string message = await back.GetFile(filepath);
                     if (message == "1")
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
                     else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupNotComplete"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupNotComplete"), animation: ToasterAnimation.FadeIn);
                 }
             }
             else
             {
                 // restore
                 string filepath = "";
-                openFileDialog.Filter = "BAK | *.bak; *.inc; ";
+                openFileDialog.Filter = "INC|*.inc; ";
                 BackupCls back = new BackupCls();
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    bool confirmrestore = false;
+                    bool confirmrestore = true;
                     if (confirmrestore)
                     {
                         // here start restore if user click yes button Mr. Yasin //////////////////////////////////////////////////////
