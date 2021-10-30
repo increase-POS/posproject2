@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,6 +56,15 @@ namespace POS.Classes
             parameters.Add("posName", posName);
             return await APIResult.post(method, parameters);
         }
+        public async static Task<int> setPosConfiguration(string activationCode, string deviceCode,int posId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "pos/setPosConfiguration";
+            parameters.Add("activationCode", activationCode);
+            parameters.Add("deviceCode", deviceCode);
+            parameters.Add("posId", posId.ToString());
+            return await APIResult.post(method, parameters);
+        }
         public static string GetMotherBoardID()
         {
             string mbInfo = String.Empty;
@@ -79,6 +90,20 @@ namespace POS.Classes
                 result += Convert.ToString(strt["VolumeSerialNumber"]);
             }
             return result;
+        }
+        public async static Task<int> getInstallationNum()
+        {
+            int value = 0;
+            IEnumerable<Claim> claims = await APIResult.getList("pos/getInstallationNum");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    value = int.Parse(JsonConvert.DeserializeObject<String>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return value;
         }
     }
 }
