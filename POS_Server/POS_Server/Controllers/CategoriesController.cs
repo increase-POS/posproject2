@@ -767,7 +767,7 @@ var strP = TokenManager.GetPrincipal(token);
 
                         int MaxContentLength = 1024 * 1024 * 1; //Size = 1 MB
 
-                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff" };
+                        IList<string> AllowedFileExtensions = new List<string> { ".jpg", ".gif", ".png", ".bmp", ".jpeg", ".tiff",".jfif" };
                         var ext = postedFile.FileName.Substring(postedFile.FileName.LastIndexOf('.'));
                         var extension = ext.ToLower();
 
@@ -815,7 +815,7 @@ var strP = TokenManager.GetPrincipal(token);
                 return Ok(res);
             }
         }
-        [HttpPost]
+        [HttpGet]
         [Route("GetImage")]
         public HttpResponseMessage GetImage(string imageName)
         {
@@ -828,10 +828,15 @@ var strP = TokenManager.GetPrincipal(token);
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             if (System.IO.File.Exists(localFilePath))
+            {
                 response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
-            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = imageName;
-
+                response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                response.Content.Headers.ContentDisposition.FileName = imageName;
+            }
+            else
+            {
+                response.Content = null;
+            }
             return response;
         }
         [HttpPost]

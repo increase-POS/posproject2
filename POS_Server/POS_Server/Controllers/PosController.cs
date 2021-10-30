@@ -439,6 +439,81 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+        [HttpPost]
+        [Route("setPosConfiguration")]
+        public string setPosConfiguration(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string activationCode = "";
+                string deviceCode = "";
+                int posId = 0;               
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "activationCode")
+                    {
+                        activationCode = c.Value;
+                    }
+                    else if (c.Type == "deviceCode")
+                    {
+                        deviceCode = c.Value;
+                    }
+                    else if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }  
+                }
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        pos tmpPos = new pos();
+                        var unitEntity = entity.Set<pos>();
+                        var validSerial = entity.posSerials.Where(x => x.posSerial == activationCode).FirstOrDefault();
+                        if (validSerial != null) // activation code is correct
+                        {
+                            var serialExist = entity.posSetting.Where(x => x.posSerialId == validSerial.id).FirstOrDefault();
+                            if (serialExist == null) // activation code is available
+                            {
+                                #region add pos settings record
+                                var posSett = new posSetting()
+                                {
+                                    posId = posId,
+                                    posSerialId = validSerial.id,
+                                    posDeviceCode = deviceCode,
+                                    createDate = DateTime.Now,
+                                    updateDate = DateTime.Now,
+                                };
+                                entity.posSetting.Add(posSett);
+                                #endregion
+                               
+                                entity.SaveChanges();
+                                return TokenManager.GenerateToken(posId.ToString());
+
+                            }
+                            else
+                                return TokenManager.GenerateToken("-3"); // activation code is unavailable
+                        }
+                        else
+                            return TokenManager.GenerateToken("-2"); // serial is wrong
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }
+        }
 
         [HttpPost]
         [Route("getInstallationNum")]
@@ -452,7 +527,7 @@ var strP = TokenManager.GetPrincipal(token);
                 return TokenManager.GenerateToken(strP);
             }
             else
-            {
+            {             
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     try
@@ -470,7 +545,44 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+        [HttpPost]
+        [Route("GetUnactivated")]
+        public string GetUnactivated(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var posList = (from p in entity.pos where p.isActive == 1
+                                   join b in entity.branches on p.branchId equals b.branchId into lj
+                                   from x in lj.DefaultIfEmpty()
+                                   where x.branchId == branchId && !entity.posSetting.Any(m => m.posId == p.posId)
+                                   select new PosModel()
+                                   {
+                                       posId = p.posId,
+                                       name = p.name,                                      
+                                   }).ToList();
+   
+                    return TokenManager.GenerateToken(posList);
+                }
+            }
 
+        }
 
     }
 }
