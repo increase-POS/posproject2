@@ -1003,8 +1003,8 @@ namespace POS.View
         {
             //bool isValid = true;
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-            //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
-            //    exp_vendor.IsExpanded = true;
+            if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+                exp_vendor.IsExpanded = true;
             if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
                 exp_vendor.IsExpanded = true;
             if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
@@ -1031,7 +1031,7 @@ namespace POS.View
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if ( !tb_invoiceNumber.Equals("") && billDetails.Count > 0
+                        if ( !tb_invoiceNumber.Equals("") && billDetails.Count > 0 && cb_vendor.SelectedIndex !=-1 && cb_vendor.SelectedIndex != 0
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                         {                          
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
