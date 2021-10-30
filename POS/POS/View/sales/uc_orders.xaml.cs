@@ -517,7 +517,7 @@ namespace POS.View.sales
             barcode = barcode.ToLower();
             switch (prefix)
             {
-                case "si":// this barcode for invoice
+                case "or":// this barcode for invoice
 
                     Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);

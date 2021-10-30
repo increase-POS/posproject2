@@ -104,6 +104,7 @@ namespace POS.View.reports
             cb.ItemsSource = list;
         }
 
+        List<CashTransferSts> bankLst;
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
            , DatePicker startDate, DatePicker endDate)
         {
@@ -118,6 +119,7 @@ namespace POS.View.reports
                         && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
                         && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
 
+            bankLst = result.ToList();
             return result.ToList();
         }
        
@@ -319,12 +321,13 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            if (selectedTab == 1)
-            {
-                temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            }
-            var res = temp.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
+            //var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            //if (selectedTab == 1)
+            //{
+            //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            //}
+            //var res = temp.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
+            var res = bankLst.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
             {
                 bankName = x.FirstOrDefault().bankName,
                 transType = x.FirstOrDefault().transType,
@@ -420,12 +423,12 @@ namespace POS.View.reports
             MyAxis.Labels = new List<string>();
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
-
-            var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            if (selectedTab == 1)
-            {
-                temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            }
+            var temp = bankLst;
+            //var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            //if (selectedTab == 1)
+            //{
+            //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
+            //}
 
             SeriesCollection rowChartData = new SeriesCollection();
             var tempName = temp.GroupBy(s => new { s.bankId }).Select(s => new
@@ -725,13 +728,13 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                    IEnumerable<CashTransferSts> temp ;
-                    if(selectedTab == 0)
-                        temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
-                    else
-                        temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                    //IEnumerable<CashTransferSts> temp ;
+                    //if(selectedTab == 0)
+                    //    temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                    //else
+                    //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
 
-                    dgPayments.ItemsSource = temp.Where(obj => (
+                    dgPayments.ItemsSource = bankLst.Where(obj => (
                     obj.transNum.Contains(txt_search.Text) ||
                     obj.bankName.Contains(txt_search.Text) ||
                     obj.updateUserAcc.Contains(txt_search.Text) ||

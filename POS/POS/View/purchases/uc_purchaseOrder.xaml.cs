@@ -1350,35 +1350,24 @@ namespace POS.View.purchases
             barcode = barcode.ToLower();
             switch (prefix)
             {
-                case "pi":// this barcode for invoice               
+                case "po":// this barcode for invoice               
                     Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
                     _InvoiceType = invoice.invType;
-                    if (_InvoiceType.Equals("pd") || _InvoiceType.Equals("p") || _InvoiceType.Equals("pbd") || _InvoiceType.Equals("pb"))
+                    if (_InvoiceType.Equals("po") || _InvoiceType.Equals("pod"))
                     {
                         // set title to bill
-                        if (_InvoiceType == "pd")
+                        if (_InvoiceType == "pod")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
-                        else if (_InvoiceType == "p")
+                        else if (_InvoiceType == "po")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trOrders");
                             brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
-                        else if (_InvoiceType == "pbd")
-                        {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                        }
-                        else if (_InvoiceType == "pb")
-                        {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                            // orange #FFA926 red #D22A17
-                            brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                        }
-
+                      
                         await fillInvoiceInputs(invoice);
                     }
                     break;
@@ -2133,7 +2122,7 @@ namespace POS.View.purchases
                                 string msg = mailtosend.Sendmail();
                                 if (msg == "Failure sending mail.")
                                 {
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
                                 }
                                 else if (msg == "mailsent")
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);

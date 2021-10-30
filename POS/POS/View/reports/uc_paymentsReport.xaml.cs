@@ -133,7 +133,7 @@ namespace POS.View.reports
             cb.DisplayMemberPath = "UserAcc";
             cb.ItemsSource = list;
         }
-
+        List<CashTransferSts> payLst;
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
            , DatePicker startDate, DatePicker endDate)
         {
@@ -167,6 +167,7 @@ namespace POS.View.reports
                        && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
                        && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
             }
+            payLst = result.ToList();
             return result.ToList();
         }
 
@@ -1212,8 +1213,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                    var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
-                    dgPayments.ItemsSource = temp.Where(obj => (
+                    //var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
+                    dgPayments.ItemsSource = payLst.Where(obj => (
                     obj.transNum.Contains(txt_search.Text) ||
                     obj.processType.Contains(txt_search.Text) ||
                     obj.updateUserAcc.Contains(txt_search.Text) ||

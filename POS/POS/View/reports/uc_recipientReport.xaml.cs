@@ -140,7 +140,7 @@ namespace POS.View.reports
             cb.DisplayMemberPath = "ShippingName";
             cb.ItemsSource = list;
         }
-
+        List<CashTransferSts> recLst;
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
            , DatePicker startDate, DatePicker endDate)
         {
@@ -176,6 +176,7 @@ namespace POS.View.reports
                            && (startDate.SelectedDate != null  ? x.updateDate >= startDate.SelectedDate : true)
                            && (endDate.SelectedDate != null    ? x.updateDate <= endDate.SelectedDate : true)));
             }
+            recLst = result.ToList();
             return result.ToList();
         }
     

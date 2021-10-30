@@ -1766,6 +1766,7 @@ namespace POS.View
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                tb_barcode.Focus();
             }
             catch (Exception ex)
             {
@@ -2674,7 +2675,7 @@ namespace POS.View
                 {
                 if (!_IsFocused)
                 {
-                    Control c = CheckActiveControl();
+                        Control c = CheckActiveControl();
                     if (c == null)
                         tb_barcode.Focus();
                     _IsFocused = true;
@@ -2806,21 +2807,18 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         else if (_InvoiceType == "s")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         else if (_InvoiceType == "sbd")
                         {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnDraft");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
                         else if (_InvoiceType == "sb")
                         {
@@ -3939,7 +3937,7 @@ namespace POS.View
                                             {
                                                 // msg = "No Internet connection";
 
-                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
                                             }
                                             else if (msg == "mailsent")
                                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);

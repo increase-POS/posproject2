@@ -956,7 +956,7 @@ namespace POS.Classes
 
                 //Message
                 if (ex.HResult == -2146233088)
-                    Toaster.ShowError(window as Window, message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowError(window as Window, message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
                 else
                     Toaster.ShowError(window as Window, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
 

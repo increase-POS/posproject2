@@ -447,7 +447,7 @@ namespace POS.View.sales
             barcode = barcode.ToLower();
             switch (prefix)
             {
-                case "si":// this barcode for invoice
+                case "qt":// this barcode for invoice
 
                     Btn_newDraft_Click(null, null);
                     invoice = await invoiceModel.GetInvoicesByNum(barcode);
@@ -461,7 +461,7 @@ namespace POS.View.sales
                         }
                         else if (_InvoiceType == "q")
                         {
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
                         }
                         await fillInvoiceInputs(invoice);
                     }

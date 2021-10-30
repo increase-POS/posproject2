@@ -924,48 +924,68 @@ namespace POS.View.Settings
 
         private async void Btn_saveBackup_Click(object sender, RoutedEventArgs e)
         {
-            if (cb_backup.SelectedValue.ToString() == "backup")
+            try
             {
-                BackupCls back = new BackupCls();
-                saveFileDialog.Filter = "INC|*.inc;";
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (cb_backup.SelectedValue.ToString() == "backup")
+                {
+                    BackupCls back = new BackupCls();
+                    saveFileDialog.Filter = "INC|*.inc;";
 
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    string filepath = saveFileDialog.FileName;
-                    string message = await back.GetFile(filepath);
-                    if (message == "1")
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
-                    else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupNotComplete"), animation: ToasterAnimation.FadeIn);
-                }
-            }
-            else
-            {
-                // restore
-                string filepath = "";
-                openFileDialog.Filter = "INC|*.inc; ";
-                BackupCls back = new BackupCls();
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    bool confirmrestore = true;
-                    if (confirmrestore)
+                    if (saveFileDialog.ShowDialog() == true)
                     {
-                        // here start restore if user click yes button Mr. Yasin //////////////////////////////////////////////////////
-                        filepath = openFileDialog.FileName;
-                        string message = await back.uploadFile(filepath);
+                        string filepath = saveFileDialog.FileName;
+                        string message = await back.GetFile(filepath);
                         if (message == "1")
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
                         else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreNotComplete"), animation: ToasterAnimation.FadeIn);
-
-
-                    }
-                    else
-                    {
-                        // here if user click no button
-
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBackupNotComplete"), animation: ToasterAnimation.FadeIn);
                     }
                 }
+                else
+                {
+                    // restore
+                    string filepath = "";
+                    openFileDialog.Filter = "INC|*.inc; ";
+                    BackupCls back = new BackupCls();
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trContinueProcess?");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            // here start restore if user click yes button Mr. Yasin //////////////////////////////////////////////////////
+                            filepath = openFileDialog.FileName;
+                            string message = await back.uploadFile(filepath);
+                            if (message == "1")
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreNotComplete"), animation: ToasterAnimation.FadeIn);
+
+
+                        }
+                        else
+                        {
+                            // here if user click no button
+
+                        }
+                    }
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 

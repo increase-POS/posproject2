@@ -619,7 +619,9 @@ namespace POS.View.accounts
                         { cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue); agentid = Convert.ToInt32(cb_depositorV.SelectedValue); }
 
                         if (cb_depositorC.IsVisible)
-                        { cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue); agentid = Convert.ToInt32(cb_depositorC.SelectedValue); }
+                        { cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+                            agentid = Convert.ToInt32(cb_depositorC.SelectedValue);
+                        }
 
                         if (cb_depositorU.IsVisible)
                             cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);

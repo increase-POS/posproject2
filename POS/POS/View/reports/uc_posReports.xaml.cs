@@ -102,6 +102,8 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        List<CashTransferSts> posLst;
         private List<CashTransferSts> fillList()
         {
             var result = list
@@ -137,7 +139,7 @@ namespace POS.View.reports
               (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
           )
           );
-
+            posLst = result.ToList();
             return result.ToList();
         }
         private void fillComboBranches()
@@ -587,8 +589,8 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            var temp = fillList();
-
+            //var temp = fillList();
+            var temp = posLst;
             var result = temp
                 .GroupBy(s => new { s.transType })
                 .Select(s => new CashTransferSts
@@ -624,7 +626,8 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            var temp = fillList();
+            //var temp = fillList();
+            var temp = posLst;
 
             var res = temp.GroupBy(x => new { x.fromposId }).Select(x => new CashTransferSts
             {
@@ -733,7 +736,8 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = fillList();
+            //var temp = fillList();
+            var temp = posLst;
 
             SeriesCollection rowChartData = new SeriesCollection();
 
@@ -841,7 +845,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                dgPayments.ItemsSource = fillList()
+                //dgPayments.ItemsSource = fillList()
+                dgPayments.ItemsSource = posLst
                                             .Where(obj => (
                                             obj.transNum.Contains(txt_search.Text) ||
                                             obj.frombranchName.Contains(txt_search.Text) ||

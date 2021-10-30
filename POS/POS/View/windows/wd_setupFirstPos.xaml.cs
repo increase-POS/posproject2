@@ -181,10 +181,12 @@ namespace POS.View.windows
                                 int installationNum = await setupConfiguration.getInstallationNum();
                                 if (installationNum == 2)
                                 {
-                                    wd_setupOtherPos logIn = new wd_setupOtherPos();
+                                    wd_setupOtherPos logInOther = new wd_setupOtherPos();
                                     //uc_serverConfig.Instance
-                                    logIn.Show();
+                                    grid_main.Children.Clear();
+                                    logInOther.Show();
                                     this.Close();
+                                    return;
                                 }
                             }
                         }
@@ -382,7 +384,7 @@ namespace POS.View.windows
                 }
                 
             }
-
+            isValid = true;
             if (isValid)
             {
                 if (pageIndex == 2)

@@ -1457,12 +1457,13 @@ namespace POS.View.storage
             }
             clearProcess();
         }
-        private bool validateOrder()
+        private async Task<bool> validateOrder()
         {
             bool valid = true;
             if (cb_branch.SelectedIndex == -1 || billDetails.Count == 0)
                 valid = false;
 
+            valid = await checkItemsAmounts();
             if (billDetails.Count == 0)
                 clearProcess();
             else
@@ -1486,7 +1487,7 @@ namespace POS.View.storage
                         && (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
                         )
                 {
-                    bool valid = validateOrder();
+                    bool valid = await validateOrder();
                     if (valid)
                     {
                         wd_transItemsLocation w;
@@ -1500,16 +1501,26 @@ namespace POS.View.storage
                             List<int> ordersIds = new List<int>();
                                 foreach (BillDetails d in billDetails)
                                 {
-                                    orderList.Add(new ItemTransfer()
+                                    if (d.Count == 0)
                                     {
-                                        itemName = d.Product,
-                                        itemId = d.itemId,
-                                        unitName = d.Unit,
-                                        itemUnitId = d.itemUnitId,
-                                        quantity = d.Count,
-                                        invoiceId = d.OrderId,
-                            });
-                                ordersIds.Add(d.OrderId);
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorQuantIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+                                        if (sender != null)
+                                            SectionData.EndAwait(grid_main);
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        orderList.Add(new ItemTransfer()
+                                        {
+                                            itemName = d.Product,
+                                            itemId = d.itemId,
+                                            unitName = d.Unit,
+                                            itemUnitId = d.itemUnitId,
+                                            quantity = d.Count,
+                                            invoiceId = d.OrderId,
+                                        });
+                                        ordersIds.Add(d.OrderId);
+                                    }
                                 }
                                 w.orderList = orderList;
                                 if (w.ShowDialog() == true)
@@ -1589,7 +1600,7 @@ namespace POS.View.storage
             }
         }
 
-        private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
@@ -1610,21 +1621,47 @@ namespace POS.View.storage
                 }
                 else
                 {
-                    int oldCount = 0;
-                    int newCount = 0;
+                    int availableAmount = 0;
 
+                    int oldCount = 0;
+                    if (!t.Text.Equals(""))
+                        oldCount = int.Parse(t.Text);
+                    else
+                        oldCount = 0;
+                    int newCount = 0;
                     //"tb_amont"
                     if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
                     {
-                        if (!t.Text.Equals(""))
-                            newCount = int.Parse(t.Text);
+                        if (_ProcessType == "exd")
+                        {
+                            availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+                            if (availableAmount < oldCount)
+                            {
+
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                                newCount = newCount + availableAmount;
+                                t.Text = availableAmount.ToString();
+                            }
+                            else
+                            {
+                                if (!t.Text.Equals(""))
+                                    newCount = int.Parse(t.Text);
+                                else
+                                    newCount = 0;
+                            }
+                        }
                         else
-                            newCount = 0;
+                        {
+                            if (!t.Text.Equals(""))
+                                newCount = int.Parse(t.Text);
+                            else
+                                newCount = 0;
+                        }
                     }
                     else
                         newCount = row.Count;
 
-                    if(row.OrderId != 0)
+                    if (row.OrderId != 0)
                     {
                         ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
                         if (newCount > item.quantity)
@@ -1636,7 +1673,7 @@ namespace POS.View.storage
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
                         }
                     }
-                    oldCount = row.Count;
+                  
 
                     _Count -= oldCount;
                     _Count += newCount;
@@ -1661,7 +1698,43 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
+        {
+            // var itemUnits = await itemUnitModel.GetItemUnits(itemId);
+            var itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
+            int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
+            var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
+            foreach (ItemUnit u in itemUnits)
+            {
+                var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)u.itemUnitId && x.ID != ID); // unit exist in invoice
+                if (isInBill != null)
+                {
+                    var isSmall = smallUnits.Find(x => x.itemUnitId == (int)u.itemUnitId);
+                    int unitValue = 0;
 
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == u.itemUnitId).FirstOrDefault());
+                    int quantity = billDetails[index].Count;
+                    if (itemUnitId == u.itemUnitId)
+                    { }
+                    else if (isSmall != null) // from-unit is bigger than to-unit
+                    {
+                        unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, u.itemUnitId);
+                        quantity = quantity / unitValue;
+                    }
+                    else
+                    {
+                        unitValue = await itemUnitModel.smallToLargeUnit(itemUnitId, u.itemUnitId);
+
+                        if (unitValue != 0)
+                        {
+                            quantity = quantity * unitValue;
+                        }
+                    }
+                    availableAmount -= quantity;
+                }
+            }
+            return availableAmount;
+        }
         private void Cb_processType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -1678,7 +1751,10 @@ namespace POS.View.storage
                     if (cb_processType.SelectedValue.ToString() == "im")
                         btn_save.Content = MainWindow.resourcemanager.GetString("trImport");
                     else if (cb_processType.SelectedValue.ToString() == "ex")
+                    {
                         btn_save.Content = MainWindow.resourcemanager.GetString("trExport");
+                        ereaseQuantity();
+                    }
                 }
                 else
                 {
@@ -1694,8 +1770,29 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
+        private async Task<Boolean> checkItemsAmounts()
+        {
+            Boolean available = true;
+            for (int i = 0; i < billDetails.Count; i++)
+            {
+                int availableAmount = await itemLocationModel.getAmountInBranch(billDetails[i].itemUnitId, MainWindow.branchID.Value);
+                if (availableAmount < billDetails[i].Count)
+                {
+                    available = false;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
+                    return available;
+                }
+            }
+            return available;
+        }
+        private void ereaseQuantity()
+        {
+            foreach(BillDetails b in billDetails)
+            {
+                b.Count = 0;
+            }
+            refrishDataGridItems();
+        }
 
         private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print

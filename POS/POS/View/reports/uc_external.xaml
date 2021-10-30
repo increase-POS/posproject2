@@ -694,51 +694,16 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                     <DataGrid.Columns>
 
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Brnach" Binding="{Binding branchName}"/>
-                        <DataGridTextColumn x:Name="col_branchFrom" Width="*" Header="From Brnach" Visibility="Hidden" Binding="{Binding exportBranch}"/>
-                        <DataGridTextColumn x:Name="col_branchTo" Width="*" Header="To Brnach" Visibility="Hidden" Binding="{Binding importBranch}"/>
-                        <!--<DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType}"/>-->
                         <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType , Converter={StaticResource agentTypeConverter}}"/>
-
                         <DataGridTextColumn x:Name="col_agent" Visibility="Hidden" Width="*" Header="Agent Name" Binding="{Binding agentName}"/>
                         <DataGridTextColumn x:Name="col_invType" Visibility="Hidden" Width="*" Header="Invoice Type" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter }}" />
-
                         <DataGridTextColumn x:Name="col_invNumber" Visibility="Hidden" Width="*" Header="Invoice Number" Binding="{Binding invNumber}"/>
-
-                        <DataGridTextColumn x:Name="col_section" Visibility="Hidden" Width="*" Header="Section" Binding="{Binding Secname}" />
-                        <DataGridTextColumn x:Name="col_location" Visibility="Hidden" Width="*" Header="Location" Binding="{Binding LoactionName}" />
                         <DataGridTextColumn x:Name="col_itemUnits" Visibility="Hidden" Width="*" Header="Items - Units" Binding="{Binding ItemUnits}"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>
                         <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
-                        <DataGridTextColumn x:Name="col_locationSection" Width="*" Header="Location - Section" Binding="{Binding SectionLoactionName}"/>
-                        <DataGridTextColumn x:Name="col_startDate" Width="*" Header="Start Date" Binding="{Binding startDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_endDate" Width="*" Header="End Date" Binding="{Binding endDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_Min" Width="*" Header="Min" Binding="{Binding MinAll}"/>
-                        <DataGridTextColumn x:Name="col_Max" Width="*" Header="Max" Binding="{Binding MaxAll}"/>
-                        <DataGridTextColumn x:Name="col_MinCollect" Width="*" Header="Min" Binding="{Binding minUnitName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_MaxCollect" Width="*" Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
-                        <!--<DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue}"/>-->
-                        <DataGridTextColumn x:Name="col_stockCost" Width="*" Header="Stock Cost" Binding="{Binding storageCostValue , Converter={StaticResource accuracyConverter}}"/>
-
                         <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>
                         <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding InvTypeNumber}"/>
-
-                        <DataGridTextColumn x:Name="col_stockTakeNum" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding inventoryNum}"/>
-                        <DataGridTextColumn x:Name="col_stockTakingCoastType" Visibility="Hidden" Width="*" Header="Type" Binding="{Binding inventoryType}"/>
-                        <DataGridTextColumn x:Name="col_stockTakingDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding inventoryDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <!--<DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,StringFormat=F2}"/>-->
-                        <DataGridTextColumn x:Name="col_diffPercentage" Visibility="Hidden" Width="*" Header="diffrence Percentage" Binding="{Binding diffPercentage,Converter={StaticResource accuracyConverter}}"/>
-
-                        <DataGridTextColumn x:Name="col_itemCountAr" Visibility="Hidden" Width="*" Header="Items Count" Binding="{Binding itemCount}"/>
-                        <DataGridTextColumn x:Name="col_DestroyedCount" Visibility="Hidden" Width="*" Header="Destroyed Count" Binding="{Binding DestroyedCount}"/>
-
-
-
-                        <DataGridTextColumn x:Name="col_destroiedNumber" Visibility="Hidden" Width="*" Header="Number" Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_destroiedDate" Visibility="Hidden" Width="*" Header="Date" Binding="{Binding IupdateDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_destroiedItemsUnits" Visibility="Hidden" Width="*" Header="Items/Units" Binding="{Binding ItemUnits}"/>
-                        <DataGridTextColumn x:Name="col_destroiedAmount" Visibility="Hidden" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
-                        <DataGridTextColumn x:Name="col_destroiedReason" Visibility="Hidden" Width="*" Header="Reason" Binding="{Binding }"/>
 
                     </DataGrid.Columns>
                 </DataGrid>

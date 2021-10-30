@@ -35,7 +35,6 @@ namespace POS.View.reports
         List<Storage> storages;
 
         List<ItemTransferInvoice> itemsTransfer;
-        List<ItemTransferInvoice> itemsInternalTransfer;
 
         IEnumerable<ItemTransferInvoice> agentsCount;
         IEnumerable<ItemTransferInvoice> invCount;
@@ -74,8 +73,6 @@ namespace POS.View.reports
 
                 itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
                 comboItems = statisticModel.getItemCombo(storages);
                 comboUnits = statisticModel.getUnitCombo(storages);
                 comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
@@ -83,7 +80,6 @@ namespace POS.View.reports
                 comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
                 comboExternalInvType = statisticModel.GetExternalInvoiceTypeCombos(itemsTransfer);
                 comboExternalInvoiceInvoice = statisticModel.GetExternalInvoiceCombos(itemsTransfer);
-
 
                 fillComboExternalAgentsAgentsType();
                 fillComboExternalInvType();
@@ -118,8 +114,6 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
 
         public void paintExternlaChilds()
         {
@@ -1253,9 +1247,9 @@ namespace POS.View.reports
             List<int> pbTemp = new List<int>();
             List<int> sbTemp = new List<int>();
 
-            var temp = itemTransferInvoicesLst;
+            //var temp = itemTransferInvoicesLst;
 
-            var result = temp.GroupBy(x => new { x.branchId, x.invoiceId }).Select(x => new ItemTransferInvoice
+            var result = itemTransferInvoicesLst.GroupBy(x => new { x.branchId, x.invoiceId }).Select(x => new ItemTransferInvoice
             {
                 invType = x.FirstOrDefault().invType,
                 branchId = x.FirstOrDefault().branchId
@@ -1268,9 +1262,6 @@ namespace POS.View.reports
                 PbCount = x.Where(g => g.invType == "pb").Count(),
                 SbCount = x.Where(g => g.invType == "sb").Count()
             });
-
-
-
 
             for (int i = 0; i < agentsCount.Count(); i++)
             {
@@ -1326,8 +1317,8 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            var temp = itemTransferInvoicesLst;
-            var res = temp.GroupBy(x => new { x.branchId, x.agentId }).Select(x => new ItemTransferInvoice
+            //var temp = itemTransferInvoicesLst;
+            var res = itemTransferInvoicesLst.GroupBy(x => new { x.branchId, x.agentId }).Select(x => new ItemTransferInvoice
             {
                 agentId = x.FirstOrDefault().agentId,
                 branchId = x.FirstOrDefault().branchId,
@@ -1393,7 +1384,6 @@ namespace POS.View.reports
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
-            fillExternalRowChart();
         }
 
         private void fillExternalPieChart()
@@ -1404,8 +1394,8 @@ namespace POS.View.reports
             titles.Clear();
             titles1.Clear();
             
-            var temp = itemTransferInvoicesLst;
-            var result = temp
+           // var temp = itemTransferInvoicesLst;
+            var result = itemTransferInvoicesLst
                 .GroupBy(s => new { s.itemId, s.unitId })
                 .Select(s => new ItemTransferInvoice
                 {
@@ -1461,49 +1451,22 @@ namespace POS.View.reports
             col_branch.Visibility = Visibility.Hidden;
             col_item.Visibility = Visibility.Hidden;
             col_unit.Visibility = Visibility.Hidden;
-            col_locationSection.Visibility = Visibility.Hidden;
             col_quantity.Visibility = Visibility.Hidden;
-            col_startDate.Visibility = Visibility.Hidden;
-            col_endDate.Visibility = Visibility.Hidden;
-            col_Min.Visibility = Visibility.Hidden;
-            col_Max.Visibility = Visibility.Hidden;
-            col_stockCost.Visibility = Visibility.Hidden;
-
-            col_location.Visibility = Visibility.Hidden;
-            col_section.Visibility = Visibility.Hidden;
             col_itemUnits.Visibility = Visibility.Hidden;
-
             col_invNumber.Visibility = Visibility.Hidden;
             col_invType.Visibility = Visibility.Hidden;
             col_invTypeNumber.Visibility = Visibility.Hidden;
             col_agentType.Visibility = Visibility.Hidden;
             col_agent.Visibility = Visibility.Hidden;
             col_agentTypeAgent.Visibility = Visibility.Hidden;
-            col_MaxCollect.Visibility = Visibility.Hidden;
-            col_MinCollect.Visibility = Visibility.Hidden;
-            col_branchFrom.Visibility = Visibility.Hidden;
-            col_branchTo.Visibility = Visibility.Hidden;
-
-            col_stockTakeNum.Visibility = Visibility.Hidden;
-            col_stockTakingCoastType.Visibility = Visibility.Hidden;
-            col_stockTakingDate.Visibility = Visibility.Hidden;
-            col_diffPercentage.Visibility = Visibility.Hidden;
-            col_itemCountAr.Visibility = Visibility.Hidden;
-            col_DestroyedCount.Visibility = Visibility.Hidden;
-
-            col_destroiedNumber.Visibility = Visibility.Hidden;
-            col_destroiedDate.Visibility = Visibility.Hidden;
-            col_destroiedItemsUnits.Visibility = Visibility.Hidden;
-            col_destroiedReason.Visibility = Visibility.Hidden;
-            col_destroiedAmount.Visibility = Visibility.Hidden;
         }
         private void showSelectedTabColumn()
         {
+             
             hideAllColumn();
 
             if (selectedExternalTab == 0)
             {
-                hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
                 col_unit.Visibility = Visibility.Visible;
@@ -1513,7 +1476,6 @@ namespace POS.View.reports
             }
             else if (selectedExternalTab == 1)
             {
-                hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_itemUnits.Visibility = Visibility.Visible;
                 col_agent.Visibility = Visibility.Visible;
@@ -1523,7 +1485,6 @@ namespace POS.View.reports
             }
             else if (selectedExternalTab == 2)
             {
-                hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_invType.Visibility = Visibility.Visible;
                 col_invNumber.Visibility = Visibility.Visible;
@@ -1531,7 +1492,6 @@ namespace POS.View.reports
                 col_agentTypeAgent.Visibility = Visibility.Visible;
                 col_itemUnits.Visibility = Visibility.Visible;
             }
-
 
         }
        

@@ -2617,9 +2617,6 @@
   <data name="trProfits" xml:space="preserve">
     <value>الربح</value>
   </data>
-  <data name="trNoNetworkConnection" xml:space="preserve">
-    <value>لا يوجد اتصال بالشبكة</value>
-  </data>
   <data name="trAdministrativePullHint" xml:space="preserve">
     <value>سحوبات إدارية...</value>
   </data>
@@ -2700,5 +2697,11 @@
   </data>
   <data name="trReservation" xml:space="preserve">
     <value>حجز</value>
+  </data>
+  <data name="trContinueProcess?" xml:space="preserve">
+    <value>هل تريد متابعة العملية؟</value>
+  </data>
+  <data name="trNoConnection" xml:space="preserve">
+    <value>لا يوجد اتصال</value>
   </data>
 </root>
