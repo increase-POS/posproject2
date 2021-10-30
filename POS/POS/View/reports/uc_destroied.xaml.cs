@@ -77,9 +77,11 @@ namespace POS.View.reports
 
                 Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                comboBranches = await branchModel.GetAllWithoutMain("all");
+                //comboBranches = await branchModel.GetAllWithoutMain("all");
 
-                fillComboBranches(cb_destroiedBranch);
+                //fillComboBranches(cb_destroiedBranch);
+
+                await SectionData.fillBranchesWithoutMain(cb_destroiedBranch);
 
                 Btn_destroied_Click(btn_destroied , null);
 
@@ -116,6 +118,7 @@ namespace POS.View.reports
             temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
             dgStock.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
+
             fillDestroyColumnChart();
             fillDestroyRowChart();
             fillDestroyPieChart();
@@ -151,6 +154,7 @@ namespace POS.View.reports
             }
         }
 
+        IEnumerable<ItemTransferInvoice> lst;
         private IEnumerable<ItemTransferInvoice> fillListDestroied(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
         {
             var selectedBranch = branch.SelectedItem as Branch;
@@ -162,6 +166,8 @@ namespace POS.View.reports
                         && (startDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
                         && (endDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
           ));
+
+            lst = result;
             return result;
         }
 
@@ -295,9 +301,10 @@ namespace POS.View.reports
 
             List<string> names = new List<string>();
 
-            var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+            //var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
 
-            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            //var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            var result = lst.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -336,9 +343,10 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+            //var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
 
-            var result = temp.GroupBy(s => new { s.branchId }).Select(s => new ItemTransferInvoice
+            //var result = temp.GroupBy(s => new { s.branchId }).Select(s => new ItemTransferInvoice
+            var result = lst.GroupBy(s => new { s.branchId }).Select(s => new ItemTransferInvoice
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -395,9 +403,10 @@ namespace POS.View.reports
             List<long> cP = new List<long>();
 
             titles.Clear();
-            var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
+            //var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
 
-            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            //var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
+            var result = lst.GroupBy(s => new { s.itemUnitId }).Select(s => new ItemTransferInvoice
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -453,7 +462,6 @@ namespace POS.View.reports
 
         private void Btn_destroied_Click(object sender, RoutedEventArgs e)
         {//destroid
-
             try
             {
                 if (sender != null)
@@ -716,8 +724,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                var temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);
-                dgStock.ItemsSource = temp
+                dgStock.ItemsSource = lst
                     .Where(obj => (
                 obj.branchName.ToLower().Contains(txt_search.Text)
                 ||

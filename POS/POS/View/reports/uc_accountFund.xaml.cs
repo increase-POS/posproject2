@@ -161,9 +161,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
-            //col_branchCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_branchName.Header = MainWindow.resourcemanager.GetString("trBranch");
-            //col_posCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_posName.Header = MainWindow.resourcemanager.GetString("trPOS");
             col_posBalance.Header = MainWindow.resourcemanager.GetString("trBalance");
 
@@ -200,19 +198,19 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<decimal> balances = new List<decimal>();
          
-            var temp = balancesQuery;
-            var result = temp.GroupBy(s => s.posId).Select(s => new
+            //var temp = balancesQuery;
+            var result = balancesQuery.GroupBy(s => s.posId).Select(s => new
             {
                 posId = s.Key,
             });
            
-            var tempName = temp.GroupBy(s => s.posName+"/"+s.branchName).Select(s => new
+            var tempName = balancesQuery.GroupBy(s => s.posName+"/"+s.branchName).Select(s => new
             {
                 posName = s.Key
             });
             names.AddRange(tempName.Select(nn => nn.posName));
 
-            var tempBalance = temp.GroupBy(s => s.balance).Select(s => new
+            var tempBalance = balancesQuery.GroupBy(s => s.balance).Select(s => new
             {
                 balance = s.Key
             });
@@ -231,7 +229,6 @@ namespace POS.View.reports
 
             for (int i = 0; i < x; i++)
             {
-                //cS.Add(x.ToList().Skip(i).FirstOrDefault());
                 cS.Add(balances.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
@@ -268,10 +265,10 @@ namespace POS.View.reports
 
             titles.Clear();
 
-            var temp = balancesQuery;
-            var titleTemp = temp.GroupBy(m => m.branchName);
+            //var temp = balancesQuery;
+            var titleTemp = balancesQuery.GroupBy(m => m.branchName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
-            var result = temp.GroupBy(s => s.branchId)
+            var result = balancesQuery.GroupBy(s => s.branchId)
                         .Select(
                             g => new
                             {
@@ -303,8 +300,6 @@ namespace POS.View.reports
         {
         
         }
-
-       
 
         private async void cb_branches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch

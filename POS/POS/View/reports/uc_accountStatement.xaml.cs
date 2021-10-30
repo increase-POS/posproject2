@@ -169,7 +169,7 @@ namespace POS.View.reports
                 }
             }
         }
-
+        List<CashTransferSts> stateLst;
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox date)
         {
             var selectedItem1 = vendor.SelectedItem as VendorCombo;
@@ -194,6 +194,8 @@ namespace POS.View.reports
                                 (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem2.ShippingId : false)
                              && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
             }
+
+            stateLst = result.ToList();
             return result.ToList();
         }
 
@@ -454,6 +456,7 @@ namespace POS.View.reports
         private void fillEvents()
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+            //temp = statisticModel.getstate(stateLst);
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
@@ -502,8 +505,8 @@ namespace POS.View.reports
                 year = (int)cb_vendorsDate.SelectedItem;
             }
 
-            var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-           
+            //var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+
             SeriesCollection rowChartData = new SeriesCollection();
 
             List<string> lable = new List<string>();
@@ -515,7 +518,8 @@ namespace POS.View.reports
             {
                 var firstOfThisMonth = new DateTime(year, month, 1);
                 var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(x => x.cashTotal).LastOrDefault();
+                var drawCash = temp.Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(x => x.cashTotal).LastOrDefault();
+
                 if (drawCash > 0)
                 {
                     names.Add(MainWindow.resourcemanager.GetString("trWorthy"));
@@ -546,7 +550,7 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+            //var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -617,7 +621,7 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+            //var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
            
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "p").Count());
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "d").Count());

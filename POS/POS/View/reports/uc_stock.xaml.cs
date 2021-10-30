@@ -65,7 +65,7 @@ namespace POS.View.reports
 
                 storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                comboBranches = await branchModel.GetAllWithoutMain("all");
+                //comboBranches = await branchModel.GetAllWithoutMain("all");
 
                 comboItems = statisticModel.getItemCombo(storages);
                 comboUnits = statisticModel.getUnitCombo(storages);
@@ -883,12 +883,12 @@ namespace POS.View.reports
             }
         }
 
-        private void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fillEventsCall(sender);
         }
         IEnumerable<Storage> temp = null;
-        private void Btn_item_Click(object sender, RoutedEventArgs e)
+        private async void Btn_item_Click(object sender, RoutedEventArgs e)
         {//items
             try
             {
@@ -897,7 +897,8 @@ namespace POS.View.reports
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
-                fillComboBranches(cb_branchesItem);
+                //fillComboBranches(cb_branchesItem);
+                await SectionData.fillBranchesWithoutMain(cb_branchesItem);
                 chk_allBranchesItem.IsChecked = true;
 
                 selectedStockTab = 0;
@@ -921,7 +922,7 @@ namespace POS.View.reports
             }
         }
 
-        private void btn_location_Click(object sender, RoutedEventArgs e)
+        private async void btn_location_Click(object sender, RoutedEventArgs e)
         {//location
             try
             {
@@ -937,7 +938,8 @@ namespace POS.View.reports
                 grid_byLocation.Visibility = Visibility.Visible;
                 path_location.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                fillComboBranches(cb_branchesLocation);
+                //fillComboBranches(cb_branchesLocation);
+                await SectionData.fillBranchesWithoutMain(cb_branchesLocation);
                 chk_allBranchesLocation.IsChecked = true;
 
                 fillEvents();
@@ -953,7 +955,7 @@ namespace POS.View.reports
             }
         }
 
-        private void btn_collect_Click(object sender, RoutedEventArgs e)
+        private async void btn_collect_Click(object sender, RoutedEventArgs e)
         {//collect
             try
             {
@@ -970,8 +972,9 @@ namespace POS.View.reports
                 grid_collect.Visibility = Visibility.Visible;
                 path_collect.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                fillComboBranches(cb_branchesCollect);
-               
+                //fillComboBranches(cb_branchesCollect);
+                await SectionData.fillBranchesWithoutMain(cb_branchesCollect);
+
                 showSelectedTabColumn();
 
                 fillEvents();
@@ -1136,34 +1139,12 @@ namespace POS.View.reports
             col_Min.Visibility = Visibility.Hidden;
             col_Max.Visibility = Visibility.Hidden;
             col_stockCost.Visibility = Visibility.Hidden;
-
             col_location.Visibility = Visibility.Hidden;
             col_section.Visibility = Visibility.Hidden;
             col_itemUnits.Visibility = Visibility.Hidden;
-
-            col_invNumber.Visibility = Visibility.Hidden;
-            col_invType.Visibility = Visibility.Hidden;
-            col_invTypeNumber.Visibility = Visibility.Hidden;
-            col_agentType.Visibility = Visibility.Hidden;
-            col_agent.Visibility = Visibility.Hidden;
-            col_agentTypeAgent.Visibility = Visibility.Hidden;
             col_MaxCollect.Visibility = Visibility.Hidden;
             col_MinCollect.Visibility = Visibility.Hidden;
-            col_branchFrom.Visibility = Visibility.Hidden;
-            col_branchTo.Visibility = Visibility.Hidden;
-
-            col_stockTakeNum.Visibility = Visibility.Hidden;
-            col_stockTakingCoastType.Visibility = Visibility.Hidden;
-            col_stockTakingDate.Visibility = Visibility.Hidden;
-            col_diffPercentage.Visibility = Visibility.Hidden;
-            col_itemCountAr.Visibility = Visibility.Hidden;
-            col_DestroyedCount.Visibility = Visibility.Hidden;
-
-            col_destroiedNumber.Visibility = Visibility.Hidden;
-            col_destroiedDate.Visibility = Visibility.Hidden;
-            col_destroiedItemsUnits.Visibility = Visibility.Hidden;
-            col_destroiedReason.Visibility = Visibility.Hidden;
-            col_destroiedAmount.Visibility = Visibility.Hidden;
+            
         }
         private void showSelectedTabColumn()
         {

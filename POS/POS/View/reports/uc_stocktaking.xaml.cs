@@ -33,18 +33,12 @@ namespace POS.View.reports
 {
     public partial class uc_stocktaking : UserControl
     {
-        List<Storage> storages;
-
-        List<ItemTransferInvoice> itemsTransfer;
-        List<ItemTransferInvoice> itemsInternalTransfer;
-
         //charts
         IEnumerable<InventoryClass> archiveCount;
 
         List<InventoryClass> inventory;
 
         List<ItemTransferInvoice> falls;
-        List<ItemTransferInvoice> Destroied;
 
         private int selectedStocktakingTab = 0;
         List<ShortFalls> comboShortFalls;
@@ -96,15 +90,7 @@ namespace POS.View.reports
 
                 falls = await statisticModel.GetFallsItems((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                comboBranches = await branchModel.GetAllWithoutMain("all");
+                //comboBranches = await branchModel.GetAllWithoutMain("all");
 
                 fillComboArchivedTypeType();
 
@@ -136,45 +122,16 @@ namespace POS.View.reports
             grid_stocktakingArchived.Visibility = Visibility.Hidden;
             grid_stocktakingShortfalse.Visibility = Visibility.Hidden;
             col_branch.Visibility = Visibility.Hidden;
-            col_item.Visibility = Visibility.Hidden;
-            col_unit.Visibility = Visibility.Hidden;
-            col_locationSection.Visibility = Visibility.Hidden;
-            col_quantity.Visibility = Visibility.Hidden;
-            col_startDate.Visibility = Visibility.Hidden;
-            col_endDate.Visibility = Visibility.Hidden;
-            col_Min.Visibility = Visibility.Hidden;
-            col_Max.Visibility = Visibility.Hidden;
-            col_stockCost.Visibility = Visibility.Hidden;
-
-            col_location.Visibility = Visibility.Hidden;
-            col_section.Visibility = Visibility.Hidden;
             col_itemUnits.Visibility = Visibility.Hidden;
-
-            col_invNumber.Visibility = Visibility.Hidden;
-            col_invType.Visibility = Visibility.Hidden;
-            col_invTypeNumber.Visibility = Visibility.Hidden;
-            col_agentType.Visibility = Visibility.Hidden;
-            col_agent.Visibility = Visibility.Hidden;
-            col_agentTypeAgent.Visibility = Visibility.Hidden;
-            col_MaxCollect.Visibility = Visibility.Hidden;
-            col_MinCollect.Visibility = Visibility.Hidden;
-            col_branchFrom.Visibility = Visibility.Hidden;
-            col_branchTo.Visibility = Visibility.Hidden;
-
             col_stockTakeNum.Visibility = Visibility.Hidden;
             col_stockTakingCoastType.Visibility = Visibility.Hidden;
             col_stockTakingDate.Visibility = Visibility.Hidden;
             col_diffPercentage.Visibility = Visibility.Hidden;
             col_itemCountAr.Visibility = Visibility.Hidden;
             col_DestroyedCount.Visibility = Visibility.Hidden;
-
-            col_destroiedNumber.Visibility = Visibility.Hidden;
-            col_destroiedDate.Visibility = Visibility.Hidden;
-            col_destroiedItemsUnits.Visibility = Visibility.Hidden;
             col_destroiedReason.Visibility = Visibility.Hidden;
-            col_destroiedAmount.Visibility = Visibility.Hidden;
         }
-
+        IEnumerable<ItemTransferInvoice> shortFallsLst;
         private IEnumerable<ItemTransferInvoice> fillListshortFalls(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
         {
             var selectedBranch = branch.SelectedItem as Branch;
@@ -186,6 +143,7 @@ namespace POS.View.reports
                         && (dp_stocktakingFalseStartDate.SelectedDate != null ? (x.IupdateDate >= startDate.SelectedDate) : true)
                         && (dp_stocktakingFalseEndDate.SelectedDate != null ? (x.IupdateDate <= endDate.SelectedDate) : true)
           ));
+            shortFallsLst = result;
             return result;
         }
 
@@ -215,6 +173,7 @@ namespace POS.View.reports
             cb_stocktakingArchivedType.ItemsSource = dislist;
         }
 
+        IEnumerable<InventoryClass> stockTakingLst;
         private IEnumerable<InventoryClass> fillListStockTaking(ComboBox branch, ComboBox cb, DatePicker startDate, DatePicker endDate)
         {
             var selectedBranch = branch.SelectedItem as Branch;
@@ -226,6 +185,7 @@ namespace POS.View.reports
                         && (dp_stocktakingArchivedStartDate.SelectedDate != null ? (x.inventoryDate >= startDate.SelectedDate) : true)
                         && (dp_stocktakingArchivedEndDate.SelectedDate != null ? (x.inventoryDate <= endDate.SelectedDate) : true)
           ));
+            stockTakingLst = result;
             return result;
         }
 
@@ -552,9 +512,10 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            //var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
 
-            var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
+            //var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
+            var result = stockTakingLst.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -650,8 +611,9 @@ namespace POS.View.reports
             int n;
             int a;
             titles.Clear();
-            var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
-            var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
+            //var temp = fillListStockTaking(cb_stocktakingArchivedBranch, cb_stocktakingArchivedType, dp_stocktakingArchivedStartDate, dp_stocktakingArchivedEndDate);
+            //var result = temp.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
+            var result = stockTakingLst.GroupBy(s => new { s.inventoryId }).Select(s => new InventoryClass
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -738,9 +700,10 @@ namespace POS.View.reports
             List<string> names = new List<string>();
 
 
-            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+            //var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
 
-            var result = temp.GroupBy(s => new { s.branchId }).Select(s => new InventoryClass
+            //var result = temp.GroupBy(s => new { s.branchId }).Select(s => new InventoryClass
+            var result = shortFallsLst.GroupBy(s => new { s.branchId }).Select(s => new InventoryClass
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -797,9 +760,10 @@ namespace POS.View.reports
             List<long> cP = new List<long>();
 
             titles.Clear();
-            var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
+            //var temp = fillListshortFalls(cb_stocktakingFalseBranch, cb_stocktakingFalseType, dp_stocktakingFalseStartDate, dp_stocktakingFalseEndDate);
 
-            var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
+            //var result = temp.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
+            var result = shortFallsLst.GroupBy(s => new { s.itemUnitId }).Select(s => new InventoryClass
             {
                 branchId = s.FirstOrDefault().branchId,
                 branchName = s.FirstOrDefault().branchName,
@@ -847,7 +811,7 @@ namespace POS.View.reports
             fillFalsPieChart();
         }
 
-        private void Btn_archives_Click(object sender, RoutedEventArgs e)
+        private async void Btn_archives_Click(object sender, RoutedEventArgs e)
         {//archives
             try
             {
@@ -873,11 +837,11 @@ namespace POS.View.reports
                 col_itemCountAr.Visibility = Visibility.Visible;
                 col_DestroyedCount.Visibility = Visibility.Visible;
 
-
                 chk_stocktakingArchivedAllBranches.IsChecked = true;
                 chk_stocktakingArchivedAllTypes.IsChecked = true;
 
-                fillComboBranches(cb_stocktakingArchivedBranch);
+                //fillComboBranches(cb_stocktakingArchivedBranch);
+                await SectionData.fillBranchesWithoutMain(cb_stocktakingArchivedBranch);
 
                 fillSocktakingEvents();
 
@@ -892,7 +856,7 @@ namespace POS.View.reports
             }
         }
 
-        private void Btn_shortfalls_Click(object sender, RoutedEventArgs e)
+        private async void Btn_shortfalls_Click(object sender, RoutedEventArgs e)
         {//shortfalls
             try
             {
@@ -921,7 +885,8 @@ namespace POS.View.reports
                 chk_stocktakingFalseAllBranches.IsChecked = true;
                 chk_stocktakingFalseAllTypes.IsChecked = true;
 
-                fillComboBranches(cb_stocktakingFalseBranch);
+                //fillComboBranches(cb_stocktakingFalseBranch);
+                await SectionData.fillBranchesWithoutMain(cb_stocktakingFalseBranch);
                 fillComboItemsUnitsFalls();
 
                 fillShortFallsEvents();
@@ -1153,6 +1118,64 @@ namespace POS.View.reports
         private void DpFe_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             fillShortFallsEventsCall(sender);
+        }
+
+        private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (selectedStocktakingTab == 0)
+                    dgStock.ItemsSource = stockTakingLst
+                        .Where(obj => (
+                    obj.branchName.ToLower().Contains(txt_search.Text)
+                    ||
+                    obj.ItemUnits.ToLower().Contains(txt_search.Text)
+                    //||
+                    //obj.inventoryNum != null ? obj.inventoryNum.ToString().ToLower().Contains(txt_search.Text) : false
+                    //||
+                    //obj.diffPercentage != null ? obj.diffPercentage.ToString().ToLower().Contains(txt_search.Text) : true
+                    //||
+                    //obj.itemCount != null      ? obj.itemCount.ToString().ToLower().Contains(txt_search.Text)      : true
+                    // ||
+                    //obj.DestroyedCount != null ? obj.DestroyedCount.ToString().ToLower().Contains(txt_search.Text) : true
+                    ));
+
+                else if(selectedStocktakingTab == 1)
+                    dgStock.ItemsSource = shortFallsLst
+                        .Where(obj => (
+                    obj.branchName.ToLower().Contains(txt_search.Text)
+                    ||
+                    obj.ItemUnits.ToLower().Contains(txt_search.Text)
+                    //||
+                    //obj.inventoryNum != null ? obj.inventoryNum.ToString().ToLower().Contains(txt_search.Text)  : false
+                    //||
+                    //obj.causeFalls.ToString().ToLower().Contains(txt_search.Text)
+                    //||
+                    //obj.itemCount.ToString().ToLower().Contains(txt_search.Text)
+                    ));
+                txt_count.Text = dgStock.Items.Count.ToString();
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                //SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            if (selectedStocktakingTab == 0) Btn_archives_Click(btn_archives, null);
+            else if (selectedStocktakingTab == 1) Btn_shortfalls_Click(btn_shortfalls , null);
+
         }
     }
 }
