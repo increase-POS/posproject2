@@ -947,13 +947,25 @@ namespace POS.View.Settings
                 BackupCls back = new BackupCls();
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    filepath = openFileDialog.FileName;
+                    bool confirmrestore = false;
+                    if (confirmrestore)
+                    {
+                        // here start restore if user click yes button Mr. Yasin //////////////////////////////////////////////////////
+                        filepath = openFileDialog.FileName;
+                        string message = await back.uploadFile(filepath);
+                        if (message == "1")
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreNotComplete"), animation: ToasterAnimation.FadeIn);
+
+
+                    }
+                    else
+                    {
+                        // here if user click no button
+
+                    }
                 }
-                string message = await back.uploadFile(filepath);
-                if (message == "1")
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreDoneSuccessfuly"), animation: ToasterAnimation.FadeIn);
-                else
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trRestoreNotComplete"), animation: ToasterAnimation.FadeIn);
             }
         }
 
