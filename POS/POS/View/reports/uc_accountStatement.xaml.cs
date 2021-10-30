@@ -863,7 +863,7 @@ namespace POS.View.reports
                                 {
                                     this.Dispatcher.Invoke(() =>
                                     {
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInternetConnection"), animation: ToasterAnimation.FadeIn);
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
                                     });
                                 }
                                 else if (msg == "mailsent")
