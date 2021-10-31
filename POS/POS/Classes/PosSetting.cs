@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Security.Claims;
+using System.Drawing.Printing;
 
 using Newtonsoft.Json.Converters;
 
@@ -24,15 +25,15 @@ namespace POS.Classes
 
         public string posSerial { get; set; }
 
-     //   public int repprinterId { get; set; }
+        public Nullable<int> repprinterId { get; set; }
         public string repname { get; set; }
         public string repprintFor { get; set; }
 
-       // public int salprinterId { get; set; }
+        public Nullable<int> salprinterId { get; set; }
         public string salname { get; set; }
         public string salprintFor { get; set; }
 
-        public int sizeId { get; set; }
+        public Nullable<int> sizeId { get; set; }
         public string paperSize1 { get; set; }
         public Nullable<int> docPapersizeId { get; set; }
         public string docPapersize { get; set; }
@@ -100,6 +101,71 @@ namespace POS.Classes
             //    }
             //    return memberships;
             //}
+
+        }
+
+        public string getdefaultPrinters()
+        {
+
+            PrinterSettings settings = new PrinterSettings();
+            string defaultPrinterName = settings.PrinterName;
+
+
+            return defaultPrinterName;
+        }
+      
+        public PosSetting MaindefaultPrinterSetting(PosSetting oldsetting)
+        {
+           
+
+            PosSetting defpossetting = new PosSetting();
+            defpossetting = oldsetting;
+            //defpossetting.posId = oldsetting.posId;
+            //defpossetting.posSettingId = oldsetting.posSettingId;
+
+            //defpossetting.posSerial = oldsetting.posSerial;
+
+
+            //defpossetting.posSettingId = oldsetting.posSettingId;
+
+            string printname = getdefaultPrinters();
+
+            Printers defpr = new Printers();
+
+            defpr.name = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(printname));
+            if (oldsetting.saleInvPrinterId == null)
+            {
+
+               
+                
+            
+                defpossetting.salname = defpr.name;
+
+            }
+            if (oldsetting.reportPrinterId == null)
+            {
+            
+                defpossetting.repname = defpr.name;
+
+
+            }
+
+
+            if (oldsetting.saleInvPapersizeId == null)
+            {
+
+                defpossetting.saleSizeValue = "A4";
+            }
+
+            if (oldsetting.docPapersizeId == null)
+            {
+               
+                defpossetting.docPapersize = "A5";
+
+            }
+
+
+            return defpossetting;
 
         }
 

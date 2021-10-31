@@ -141,8 +141,12 @@ namespace POS
         }
         public static async Task getPrintersNames()
         {
+
             posSetting = new PosSetting();
+          
             posSetting = await posSetting.GetByposId((int)MainWindow.posID);
+            posSetting = posSetting.MaindefaultPrinterSetting(posSetting);
+
             if (posSetting.repname is null || posSetting.repname == "")
             {
                 rep_printer_name = "";
@@ -151,7 +155,7 @@ namespace POS
             {
                 rep_printer_name = Encoding.UTF8.GetString(Convert.FromBase64String(posSetting.repname));
             }
-            if (posSetting.salname is null || posSetting.repname == "")
+            if (posSetting.salname is null || posSetting.salname == "")
             {
                 posSetting.salname = "";
             }
