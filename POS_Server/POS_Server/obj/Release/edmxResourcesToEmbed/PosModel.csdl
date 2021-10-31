@@ -1477,6 +1477,11 @@
     <Property Name="versionIncId" Type="Int32" />
     <Property Name="versionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="storeCount" Type="Int32" Nullable="false" />
+    <Property Name="packageSaleCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="customerServerCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="expireDate" Type="DateTime" Precision="7" />
+    <Property Name="isOnlineServer" Type="Boolean" />
+    <Property Name="packageNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_agentMemberships_agents">
     <End Role="agents" Type="Self.agents" Multiplicity="0..1" />

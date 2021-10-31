@@ -2571,8 +2571,6 @@ namespace POS_Server.Controllers
             //int agentId, decimal amount, string payType, string cashTransfer 
             string message = "";
 
-
-
           token = TokenManager.readToken(HttpContext.Current.Request); 
  var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
@@ -2603,7 +2601,7 @@ namespace POS_Server.Controllers
                     }
                     else if (c.Type == "amount")
                     {
-                        amount = int.Parse(c.Value);
+                        amount = decimal.Parse(c.Value);
                     }
                     else if (c.Type == "payType")
                     {
@@ -2847,7 +2845,7 @@ namespace POS_Server.Controllers
                                         #endregion
                                 }
                                 //return Ok(cashIds);
-                                return TokenManager.GenerateToken(cashIds.ToString());
+                                return TokenManager.GenerateToken("1");
                             }
                             else
                             {
@@ -2911,8 +2909,9 @@ namespace POS_Server.Controllers
                                                 agent.balance += amount;
                                             }
 
-                                            entity.SaveChanges();
-                                            break;
+                                       entity.SaveChanges();
+                                           // return TokenManager.GenerateToken(message);
+                                          break;
                                     }
                                 }
                                 return TokenManager.GenerateToken("-1");
@@ -4242,7 +4241,7 @@ namespace POS_Server.Controllers
                         if (c.Type == "invoices")
                         {
                         listObject = c.Value.Replace("\\", string.Empty);
-                        listObject = Object.Trim('"');
+                        listObject = listObject.Trim('"');
                         invoiceList = JsonConvert.DeserializeObject<List<invoices>>(listObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
 
                         }
@@ -4358,7 +4357,7 @@ namespace POS_Server.Controllers
                                     break;
                             }
                            // return Ok(cashIds);
-                            return TokenManager.GenerateToken(cashIds.ToString());
+                            return TokenManager.GenerateToken("1");
 
 
                         }
@@ -4367,7 +4366,7 @@ namespace POS_Server.Controllers
                 }
                     catch
                     {
-                        return TokenManager.GenerateToken("0");
+                        return TokenManager.GenerateToken("-2");
                     }
                 }
                 else
@@ -4537,7 +4536,7 @@ namespace POS_Server.Controllers
                         if (c.Type == "invoices")
                         {
                             listObject = c.Value.Replace("\\", string.Empty);
-                            listObject = Object.Trim('"');
+                            listObject = listObject.Trim('"');
                             invoiceList = JsonConvert.DeserializeObject<List<invoices>>(listObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
 
                         }
@@ -4614,7 +4613,7 @@ namespace POS_Server.Controllers
                                     break;
                             }
                             //return Ok(cashIds);
-                            return TokenManager.GenerateToken(cashIds.ToString());
+                            return TokenManager.GenerateToken("1");
 
                         }
 
@@ -4623,7 +4622,7 @@ namespace POS_Server.Controllers
                     }
                     catch
                         {
-                            return TokenManager.GenerateToken("0");
+                            return TokenManager.GenerateToken("-2");
                         }
                     }
                     else
@@ -4753,7 +4752,7 @@ namespace POS_Server.Controllers
                     if (c.Type == "invoices")
                     {
                         listObject = c.Value.Replace("\\", string.Empty);
-                        listObject = Object.Trim('"');
+                        listObject = listObject.Trim('"');
                         invoiceList = JsonConvert.DeserializeObject<List<invoices>>(listObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
 
                     }
@@ -4830,7 +4829,7 @@ namespace POS_Server.Controllers
                                     break;
                             }
                         //    return Ok(cashIds);
-                            return TokenManager.GenerateToken(cashIds.ToString());
+                            return TokenManager.GenerateToken("1");
 
                         }
                    
@@ -4840,7 +4839,7 @@ namespace POS_Server.Controllers
                     }
                     catch
                     {
-                        return TokenManager.GenerateToken("0");
+                        return TokenManager.GenerateToken("-2");
                     }
                 }
                 else
@@ -5193,7 +5192,7 @@ namespace POS_Server.Controllers
                     }
                     catch
                     {
-                        return TokenManager.GenerateToken("0");
+                        return TokenManager.GenerateToken("-2");
                     }
                 }
                 else

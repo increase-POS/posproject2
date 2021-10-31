@@ -2212,7 +2212,7 @@ namespace POS_Server.Controllers
                             dic = checkUpperUnit(itemUnitId, branchId, requiredAmount, userId);
 
                             var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                            var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                            var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
 
                             if (dic["remainQuantity"] > 0)
@@ -2418,7 +2418,7 @@ namespace POS_Server.Controllers
                     dic = checkUpperUnit(itemUnitId, branchId, requiredAmount, userId);
 
                     var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                    var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                    var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
 
                     if (dic["remainQuantity"] > 0)
@@ -2484,7 +2484,7 @@ namespace POS_Server.Controllers
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if (upperUnit != null)
                 {
@@ -2810,7 +2810,7 @@ namespace POS_Server.Controllers
             //return amount;
         }
 
-        public int getAmountInBranch(int itemUnitId, int branchId)
+        public int getBranchAmount(int itemUnitId, int branchId)
         {
 
             int amount = 0;
@@ -2848,7 +2848,7 @@ namespace POS_Server.Controllers
                 }
 
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if ((upperUnit != null && itemUnitId == upperUnit.itemUnitId))
                     return amount;
@@ -2928,7 +2928,7 @@ namespace POS_Server.Controllers
                 }
 
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if ((upperUnit != null && itemUnitId == upperUnit.itemUnitId) || upperUnit == null)
                     return amount;
@@ -2964,7 +2964,7 @@ namespace POS_Server.Controllers
                 }
 
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if ((upperUnit != null && itemUnitId == upperUnit.itemUnitId) || upperUnit == null)
                     return amount;
@@ -4640,7 +4640,7 @@ namespace POS_Server.Controllers
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId, x.unitValue }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if (upperUnit != null && upperUnit.itemUnitId != itemUnitId)
                 {
@@ -5326,7 +5326,7 @@ namespace POS_Server.Controllers
                                 var lockedQuantity = entity.itemsLocations
                                     .Where(x => x.invoiceId == invoice.invoiceId && x.itemUnitId == tr.itemUnitId)
                                     .Select(x => x.quantity).Sum();
-                                var availableAmount = getAmountInBranch((int)tr.itemUnitId, branchId);
+                                var availableAmount = getBranchAmount((int)tr.itemUnitId, branchId);
                                 var item = (from i in entity.items
                                             join u in entity.itemsUnits on i.itemId equals u.itemId
                                             where u.itemUnitId == tr.itemUnitId

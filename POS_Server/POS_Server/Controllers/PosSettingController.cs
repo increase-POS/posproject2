@@ -19,17 +19,17 @@ namespace POS_Server.Controllers
         // GET api/<controller>
         [HttpPost]
         [Route("GetAll")]
-      public string   GetAll(string token)
+        public string GetAll(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId    DateTime? date=new DateTime?();
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -112,90 +112,90 @@ namespace POS_Server.Controllers
 
 
 
-   //        
-   //         
-   //         string token = "";
+            //        
+            //         
+            //         string token = "";
 
 
-   //         if (headers.Contains("APIKey"))
-   //         {
-   //             token = headers.GetValues("APIKey").First();
-   //         }
-   //         Validation validation = new Validation();
-   //         bool valid = validation.CheckApiKey(token);
+            //         if (headers.Contains("APIKey"))
+            //         {
+            //             token = headers.GetValues("APIKey").First();
+            //         }
+            //         Validation validation = new Validation();
+            //         bool valid = validation.CheckApiKey(token);
 
-   //         if (valid) // APIKey is valid
-   //         {
-   //             using (incposdbEntities entity = new incposdbEntities())
-   //             {
-   //                 var List = (from S in entity.posSetting
-   //                             join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
-   //                             join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
-   //                             join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
-   //                             join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
-   //                             from jjsale in jsale.DefaultIfEmpty()
-   //                             from jjrep in jrep.DefaultIfEmpty()
-   //                             from jjpaper in jpaper.DefaultIfEmpty()
-   //                             from jdocpaper in jdcpaper.DefaultIfEmpty()
-   //                             select new PosSettingModel()
-   //                             {
-   //                                 posSettingId = S.posSettingId,
+            //         if (valid) // APIKey is valid
+            //         {
+            //             using (incposdbEntities entity = new incposdbEntities())
+            //             {
+            //                 var List = (from S in entity.posSetting
+            //                             join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
+            //                             join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
+            //                             join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
+            //                             join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
+            //                             from jjsale in jsale.DefaultIfEmpty()
+            //                             from jjrep in jrep.DefaultIfEmpty()
+            //                             from jjpaper in jpaper.DefaultIfEmpty()
+            //                             from jdocpaper in jdcpaper.DefaultIfEmpty()
+            //                             select new PosSettingModel()
+            //                             {
+            //                                 posSettingId = S.posSettingId,
 
-   //                                 posId = S.posId,
-   //                                 saleInvPrinterId = S.saleInvPrinterId,
-   //                                 reportPrinterId = S.reportPrinterId,
-   //                                 saleInvPapersizeId = S.saleInvPapersizeId,
-   //                                 posSerial = S.posSerial,
+            //                                 posId = S.posId,
+            //                                 saleInvPrinterId = S.saleInvPrinterId,
+            //                                 reportPrinterId = S.reportPrinterId,
+            //                                 saleInvPapersizeId = S.saleInvPapersizeId,
+            //                                 posSerial = S.posSerial,
 
-   //                                 repprinterId = jjrep.printerId,//printer
-   //                                 repname = jjrep.name,//printer
-   //                                 repprintFor = jjrep.printFor,//printer
-   //                                 salprinterId = jjsale.printerId,//printer
-   //                                 salname = jjsale.name,//printer
-   //                                 salprintFor = jjsale.printFor,//printer
-   //                                 sizeId = jjpaper.sizeId,// paper
-   //                                 paperSize1 = jjpaper.paperSize1,// paper saleInvPapersize
-   //                                 saleSizeValue= jjpaper.sizeValue,// paper sale
-   //                                 docSizeValue = jdocpaper.sizeValue,// paper doc
-   //                                 docPapersize = jdocpaper.paperSize1,// paper
-   //                                 docPapersizeId = S.docPapersizeId,// paper
+            //                                 repprinterId = jjrep.printerId,//printer
+            //                                 repname = jjrep.name,//printer
+            //                                 repprintFor = jjrep.printFor,//printer
+            //                                 salprinterId = jjsale.printerId,//printer
+            //                                 salname = jjsale.name,//printer
+            //                                 salprintFor = jjsale.printFor,//printer
+            //                                 sizeId = jjpaper.sizeId,// paper
+            //                                 paperSize1 = jjpaper.paperSize1,// paper saleInvPapersize
+            //                                 saleSizeValue= jjpaper.sizeValue,// paper sale
+            //                                 docSizeValue = jdocpaper.sizeValue,// paper doc
+            //                                 docPapersize = jdocpaper.paperSize1,// paper
+            //                                 docPapersizeId = S.docPapersizeId,// paper
 
-   //                             }).ToList();
-   //                 /*
-   //public int posSettingId { get; set; }
-   //     public Nullable<int> posId { get; set; }
-   //     public Nullable<int> saleInvPrinterId { get; set; }
-   //     public Nullable<int> reportPrinterId { get; set; }
-   //     public Nullable<int> saleInvPapersize { get; set; }
+            //                             }).ToList();
+            //                 /*
+            //public int posSettingId { get; set; }
+            //     public Nullable<int> posId { get; set; }
+            //     public Nullable<int> saleInvPrinterId { get; set; }
+            //     public Nullable<int> reportPrinterId { get; set; }
+            //     public Nullable<int> saleInvPapersize { get; set; }
 
-   //     public string posSerial { get; set; }
+            //     public string posSerial { get; set; }
 
-   //     public int repprinterId { get; set; }
-   //     public string repname { get; set; }
-   //     public string repprintFor { get; set; }
+            //     public int repprinterId { get; set; }
+            //     public string repname { get; set; }
+            //     public string repprintFor { get; set; }
 
-   //     public int salprinterId { get; set; }
-   //     public string salname { get; set; }
-   //     public string salprintFor { get; set; }
+            //     public int salprinterId { get; set; }
+            //     public string salname { get; set; }
+            //     public string salprintFor { get; set; }
 
-   //     public int sizeId { get; set; }
-   //     public string paperSize1 { get; set; }
+            //     public int sizeId { get; set; }
+            //     public string paperSize1 { get; set; }
 
-   //                 */
+            //                 */
 
 
 
-   //                 if (List == null)
-   //                     return NotFound();
-   //                 else
-   //                     return Ok(List);
-   //             }
-   //         }
-   //         //else
-   //         return NotFound();
+            //                 if (List == null)
+            //                     return NotFound();
+            //                 else
+            //                     return Ok(List);
+            //             }
+            //         }
+            //         //else
+            //         return NotFound();
         }
 
-    
+
         //[HttpPost]
         //[Route("GetByID")]
         //public IHttpActionResult GetByID(int posSettingId)
@@ -261,74 +261,99 @@ namespace POS_Server.Controllers
 
 
         // get by posId
+        private PosSettingModel GetByposId(int posId)
+        {
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+
+                PosSettingModel item = (from S in entity.posSetting
+                            join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
+                            join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
+                            join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
+                            join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
+                            from jdocpaper in jdcpaper.DefaultIfEmpty()
+                            from jjsale in jsale.DefaultIfEmpty()
+                            from jjrep in jrep.DefaultIfEmpty()
+                            from jjpaper in jpaper.DefaultIfEmpty()
+                            where S.posId == posId
+                            select new PosSettingModel()
+                            {
+                                posSettingId = S.posSettingId,
+
+                                posId = S.posId,
+                                saleInvPrinterId = S.saleInvPrinterId,
+                                reportPrinterId = S.reportPrinterId,
+                                saleInvPapersizeId = S.saleInvPapersizeId,
+                                posSerial = S.posSerial,
+                                repprinterId = S.reportPrinterId,
+                                repname = jjrep.name,
+                                repprintFor = jjrep.printFor,
+                                salprinterId = S.saleInvPrinterId,
+                                salname = jjsale.name,
+                                salprintFor = jjsale.printFor,
+                                sizeId = S.saleInvPapersizeId,
+                                paperSize1 = jjpaper.paperSize1,
+                                docPapersize = jdocpaper.paperSize1,
+                                docPapersizeId = S.docPapersizeId,
+                                saleSizeValue = jjpaper.sizeValue,// paper sale
+                                docSizeValue = jdocpaper.sizeValue,// paper doc
+                            }).FirstOrDefault();
+
+
+                return item;
+            }
+        }
 
         [HttpPost]
-        [Route("GetByposId")]
-      public string   GetByposId(string token)
+        [Route("GetByposId")] 
+        public string GetByposId(string token)
         {
             // public ResponseVM GetItemByID(string token)int posId
             // {
-           
-                
-                
-              token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
-                else
+            else
+            {
+                int message = 0;
+                int posId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
                 {
-                    int posId = 0;
-                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
-                    foreach (Claim c in claims)
+                    if (c.Type == "posId")
                     {
-                        if (c.Type == "posId")
-                        {
                         posId = int.Parse(c.Value);
-                        }
                     }
-                    using (incposdbEntities entity = new incposdbEntities())
-                    {
-
-                    var item = (from S in entity.posSetting
-                               join psal in entity.printers on S.saleInvPrinterId equals psal.printerId into jsale
-                               join prep in entity.printers on S.reportPrinterId equals prep.printerId into jrep
-                               join paper in entity.paperSize on S.saleInvPapersizeId equals paper.sizeId into jpaper
-                               join dpaper in entity.paperSize on S.docPapersizeId equals dpaper.sizeId into jdcpaper
-                               from jdocpaper in jdcpaper.DefaultIfEmpty()
-                               from jjsale in jsale.DefaultIfEmpty()
-                               from jjrep in jrep.DefaultIfEmpty()
-                               from jjpaper in jpaper.DefaultIfEmpty()
-                               where S.posId == posId
-                               select new PosSettingModel()
-                               {
-                                   posSettingId = S.posSettingId,
-
-                                   posId = S.posId,
-                                   saleInvPrinterId = S.saleInvPrinterId,
-                                   reportPrinterId = S.reportPrinterId,
-                                   saleInvPapersizeId = S.saleInvPapersizeId,
-                                   posSerial = S.posSerial,
-                                   repprinterId = jjrep.printerId,
-                                   repname = jjrep.name,
-                                   repprintFor = jjrep.printFor,
-                                   salprinterId = jjsale.printerId,
-                                   salname = jjsale.name,
-                                   salprintFor = jjsale.printFor,
-                                   sizeId = jjpaper.sizeId,
-                                   paperSize1 = jjpaper.paperSize1,
-                                   docPapersize = jdocpaper.paperSize1,
-                                   docPapersizeId = S.docPapersizeId,
-                                   saleSizeValue = jjpaper.sizeValue,// paper sale
-                                   docSizeValue = jdocpaper.sizeValue,// paper doc
-                               }).FirstOrDefault();
-                  
-                    return TokenManager.GenerateToken(item);
-                }
                 }
 
+                PosSettingModel item = GetByposId(posId);
+                //if (item == null)
+                //{
+                //    item = new PosSettingModel();
+                //    posSetting newObject = new posSetting();
+                //    newObject.posId = posId;
+                //    message = Save(newObject);
+                //    if (message > 0)
+                //    {
+                //        item = GetByposId(posId);
+                //    }
 
+
+                //}
+
+
+
+                return TokenManager.GenerateToken(item);
+            }
+       
+
+    
                 //var re = Request;
                 //
                 //string token = "";
@@ -385,7 +410,90 @@ namespace POS_Server.Controllers
                 //else
                 //    return NotFound();
             }
+        private int Save(posSetting newObject)
+        {
+            int message = 0;
+            if (newObject != null)
+            {
 
+
+                posSetting tmpObject;
+                if (newObject.posId == 0 || newObject.posId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.posId = id;
+                }
+                if (newObject.reportPrinterId == 0 || newObject.reportPrinterId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.reportPrinterId = id;
+                }
+                if (newObject.saleInvPapersizeId == 0 || newObject.saleInvPapersizeId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.saleInvPapersizeId = id;
+                }
+                if (newObject.saleInvPrinterId == 0 || newObject.saleInvPrinterId == null)
+                {
+                    Nullable<int> id = null;
+                    newObject.saleInvPrinterId = id;
+                }
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var locationEntity = entity.Set<posSetting>();
+                        if (newObject.posSettingId == 0)
+                        {
+
+
+
+                            locationEntity.Add(newObject);
+                            entity.SaveChanges();
+                            message = newObject.posSettingId;
+                        }
+                        else
+                        {
+                            tmpObject = entity.posSetting.Where(p => p.posSettingId == newObject.posSettingId).FirstOrDefault();
+
+
+                            tmpObject.posSettingId = newObject.posSettingId;
+
+                            tmpObject.posId = newObject.posId;
+                            tmpObject.saleInvPrinterId = newObject.saleInvPrinterId;
+                            tmpObject.reportPrinterId = newObject.reportPrinterId;
+                            tmpObject.saleInvPapersizeId = newObject.saleInvPapersizeId;
+                            tmpObject.docPapersizeId = newObject.docPapersizeId;
+                            //  tmpObject.posSerial = newObject.posSerial;      public Nullable<int> docPapersizeId { get; set; }
+
+
+
+
+                            entity.SaveChanges();
+
+                            message = tmpObject.posSettingId;
+                        }
+                        //  entity.SaveChanges();
+                    }
+                    return (message);
+
+                }
+                catch
+                {
+                    message = 0;
+                    return (message);
+                }
+
+
+            }
+            else
+            {
+                return (-1);
+            }
+
+
+        }
         // add or update location
         [HttpPost]
         [Route("Save")]

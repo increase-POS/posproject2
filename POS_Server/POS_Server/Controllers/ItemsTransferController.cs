@@ -188,23 +188,23 @@ namespace POS_Server.Controllers
                             List<invoiceOrder> iol = entity.invoiceOrder.Where(x => x.invoiceId == invoiceId).ToList();
                             entity.invoiceOrder.RemoveRange(iol);
                             entity.SaveChanges();
-
+                            
                             List<itemsTransfer> items = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
                             entity.itemsTransfer.RemoveRange(items);
                             entity.SaveChanges();
-
+                          
                             for (int i = 0; i < newObject.Count; i++)
                             {
                                 itemsTransfer t;
-                                if (newObject[i].updateUserId == 0 || newObject[i].updateUserId == null)
-                                {
-                                    Nullable<int> id = null;
-                                    newObject[i].updateUserId = id;
-                                }
                                 if (newObject[i].createUserId == 0 || newObject[i].createUserId == null)
                                 {
                                     Nullable<int> id = null;
                                     newObject[i].createUserId = id;
+                                }
+                            if (newObject[i].offerId == 0 )
+                                {
+                                    Nullable<int> id = null;
+                                    newObject[i].offerId = id;
                                 }
                                 if (newObject[i].itemSerial == null)
                                     newObject[i].itemSerial = "";
@@ -218,6 +218,7 @@ namespace POS_Server.Controllers
                       
                             t = entity.itemsTransfer.Add(newObject[i]);
                                 entity.SaveChanges();
+                             
                                 if (orderId != 0)
                                 {
                                     invoiceOrder invoiceOrder = new invoiceOrder()
@@ -230,110 +231,22 @@ namespace POS_Server.Controllers
                                     entity.invoiceOrder.Add(invoiceOrder);
                                 }
                             }
-                            //try
-                            //{
                             entity.SaveChanges();
-                        message = "1";
+                            message = "1";
                             return TokenManager.GenerateToken(message);
-                            //}
                         }
-                }
+                    }
                     catch
-                {
-                    message = "0";
-                    return TokenManager.GenerateToken(message);
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
                 }
-
-
-            }
                 else
                 {
                     return TokenManager.GenerateToken("0");
                 }
-
-
-            }
-
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //itemTransferObject = itemTransferObject.Replace("\\", string.Empty);
-            //itemTransferObject = itemTransferObject.Trim('"');
-
-            //List< itemsTransfer> transferObj = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemTransferObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-
-            //if (valid)
-            //{
-            //    // delete old invoice items
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        List<invoiceOrder> iol = entity.invoiceOrder.Where(x => x.invoiceId == invoiceId).ToList();
-            //        entity.invoiceOrder.RemoveRange(iol);
-            //        entity.SaveChanges();
-
-            //        List<itemsTransfer> items = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
-            //        entity.itemsTransfer.RemoveRange(items);
-            //        entity.SaveChanges(); 
-
-            //        for (int i = 0; i < transferObj.Count; i++)
-            //        {
-            //            itemsTransfer t;
-            //            if (transferObj[i].updateUserId == 0 || transferObj[i].updateUserId == null)
-            //            {
-            //                Nullable<int> id = null;
-            //                transferObj[i].updateUserId = id;
-            //            }
-            //            if (transferObj[i].createUserId == 0 || transferObj[i].createUserId == null)
-            //            {
-            //                Nullable<int> id = null;
-            //                transferObj[i].createUserId = id;
-            //            }
-            //            if (transferObj[i].itemSerial == null)
-            //                transferObj[i].itemSerial = "";
-
-            //            var transferEntity = entity.Set<itemsTransfer>();
-            //            int orderId = (int)transferObj[i].invoiceId;
-            //            transferObj[i].invoiceId = invoiceId;
-            //            transferObj[i].createDate = DateTime.Now;
-            //            transferObj[i].updateDate = DateTime.Now;
-            //            transferObj[i].updateUserId = transferObj[i].createUserId;
-
-            //           t = entity.itemsTransfer.Add(transferObj[i]);
-            //            entity.SaveChanges();
-            //            if ( orderId != 0)
-            //                {
-            //                    invoiceOrder invoiceOrder = new invoiceOrder()
-            //                    {
-            //                        invoiceId = invoiceId,
-            //                        orderId = orderId,
-            //                        quantity = (int)transferObj[i].quantity,
-            //                        itemsTransferId = t.itemsTransId,
-            //                    };
-            //                    entity.invoiceOrder.Add(invoiceOrder);
-            //                }
-            //        }
-            //        //try
-            //        //{
-            //            entity.SaveChanges();
-            //        //}
-
-            //        //catch
-            //        //{
-            //        //    return false;
-            //        //}
-            //    }
-
-            //}
-
-            //return true;
+            } 
         }
         [HttpPost]
         [Route("getOrderItems")]
@@ -370,7 +283,7 @@ namespace POS_Server.Controllers
                             var lockedQuantity = entity.itemsLocations
                                 .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
                                 .Select(x => x.quantity).Sum();
-                            var availableAmount = ilc.getAmountInBranch((int)tr.itemUnitId, branchId);
+                            var availableAmount = ilc.getBranchAmount((int)tr.itemUnitId, branchId);
                             var item = (from i in entity.items
                                         join u in entity.itemsUnits on i.itemId equals u.itemId
                                         where u.itemUnitId == tr.itemUnitId
