@@ -114,6 +114,7 @@ namespace POS.View.purchases
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        bool isClose = false;
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             try
@@ -168,24 +169,9 @@ namespace POS.View.purchases
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+
                 saveBeforeExit();
-                //if (billDetails.Count > 0 && _InvoiceType == "pod")
-                //{
-                //    #region Accept
-                //    MainWindow.mainWindow.Opacity = 0.2;
-                //    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                //    w.contentText = "Do you want save pay invoice in drafts?";
-                //    w.ShowDialog();
-                //    MainWindow.mainWindow.Opacity = 1;
-                //    #endregion
-                //    if (w.isOk)
-                //        Btn_newDraft_Click(null, null);
-                //    else
-                //        clearInvoice();
-                //}
-                //else
-                //    clearInvoice();
+                
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -211,7 +197,7 @@ namespace POS.View.purchases
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk)
+                if (w.isOk || isClose == true)
                 {
                     //Btn_newDraft_Click(null, null);
                     bool valid = validateItemUnits();
@@ -373,6 +359,7 @@ namespace POS.View.purchases
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            isClose = true;
             UserControl_Unloaded(this, null);
         }
 
