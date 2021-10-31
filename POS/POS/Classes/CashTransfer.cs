@@ -568,7 +568,7 @@ namespace POS.Classes
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             
             parameters.Add("agentId", agentId.ToString());
-            parameters.Add("ammount", ammount.ToString());
+            parameters.Add("amount", ammount.ToString());
             parameters.Add("payType", payType.ToString());
             var myContent = JsonConvert.SerializeObject(cashTr);
             parameters.Add("cashTransfer", myContent);
@@ -619,7 +619,7 @@ namespace POS.Classes
             Dictionary<string, string> parameters = new Dictionary<string, string>();
          
             parameters.Add("userId", userId.ToString());
-            parameters.Add("ammount", ammount.ToString());
+            parameters.Add("amount", ammount.ToString());
             parameters.Add("payType", payType.ToString());
             var myContent = JsonConvert.SerializeObject(cashTr);
             parameters.Add("cashTransfer", myContent);
@@ -672,7 +672,7 @@ namespace POS.Classes
             Dictionary<string, string> parameters = new Dictionary<string, string>();
 
             parameters.Add("shippingCompanyId", shippingCompanyId.ToString());
-            parameters.Add("ammount", ammount.ToString());
+            parameters.Add("amount", ammount.ToString());
             parameters.Add("payType", payType.ToString());
             var myContent = JsonConvert.SerializeObject(cashTr);
             parameters.Add("cashTransfer", myContent);
