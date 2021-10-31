@@ -274,7 +274,7 @@ namespace POS.View
             }
         }
         #region loading
-        List<loadingThread> loadingList;
+        List<keyValueBool> loadingList;
         async void loading_RefrishItems()
         {
             try
@@ -286,7 +286,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_RefrishItems"))
+                if (item.key.Equals("loading_RefrishItems"))
                 {
                     item.value = true;
                     break;
@@ -304,7 +304,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_RefrishCustomers"))
+                if (item.key.Equals("loading_RefrishCustomers"))
                 {
                     item.value = true;
                     break;
@@ -322,7 +322,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_fillBarcodeList"))
+                if (item.key.Equals("loading_fillBarcodeList"))
                 {
                     item.value = true;
                     break;
@@ -340,7 +340,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_fillCouponsList"))
+                if (item.key.Equals("loading_fillCouponsList"))
                 {
                     item.value = true;
                     break;
@@ -358,7 +358,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_fillShippingCompanies"))
+                if (item.key.Equals("loading_fillShippingCompanies"))
                 {
                     item.value = true;
                     break;
@@ -376,7 +376,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_fillUsers"))
+                if (item.key.Equals("loading_fillUsers"))
                 {
                     item.value = true;
                     break;
@@ -397,7 +397,7 @@ namespace POS.View
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_fillCardCombo"))
+                if (item.key.Equals("loading_fillCardCombo"))
                 {
                     item.value = true;
                     break;
@@ -444,15 +444,15 @@ namespace POS.View
 
 
                 #region loading
-                loadingList = new List<loadingThread>();
+                loadingList = new List<keyValueBool>();
                 bool isDone = true;
-                loadingList.Add(new loadingThread { name = "loading_RefrishItems", value = false });
-                loadingList.Add(new loadingThread { name = "loading_RefrishCustomers", value = false });
-                loadingList.Add(new loadingThread { name = "loading_fillBarcodeList", value = false });
-                loadingList.Add(new loadingThread { name = "loading_fillCouponsList", value = false });
-                loadingList.Add(new loadingThread { name = "loading_fillShippingCompanies", value = false });
-                loadingList.Add(new loadingThread { name = "loading_fillUsers", value = false });
-                loadingList.Add(new loadingThread { name = "loading_fillCardCombo", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_RefrishCustomers", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillCouponsList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillShippingCompanies", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillUsers", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillCardCombo", value = false });
                 loading_RefrishItems();
                 loading_RefrishCustomers();
                 loading_fillBarcodeList();

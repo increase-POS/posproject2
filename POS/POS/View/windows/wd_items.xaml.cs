@@ -68,11 +68,68 @@ namespace POS.View.windows
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
 
         public bool isActive;
-        /// <summary>
-        /// Selcted Items if selectedItems Have Items At the beginning
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+        #region loading
+        public class loadingThread
+        {
+            public string name { get; set; }
+            public bool value { get; set; }
+        }
+        List<keyValueBool> loadingList;
+        async void loading_RefrishItems()
+        {
+            try
+            {
+                await RefrishItems();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishItems"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_RefrishCategories()
+        {
+            try
+            {
+                await RefrishCategories();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishCategories"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_RefrishCategoriesCard()
+        {
+            try
+            {
+                await RefrishCategoriesCard();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishCategoriesCard"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+
+        #endregion
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -98,10 +155,45 @@ namespace POS.View.windows
                 }
                 translate();
                 #endregion
+                #region loading
+                loadingList = new List<keyValueBool>();
+                bool isDone = true;
+                loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_RefrishCategories", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_RefrishCategoriesCard", value = false });
 
-                await RefrishItems();
-                await RefrishCategories();
-                await RefrishCategoriesCard();
+
+                loading_RefrishItems();
+                loading_RefrishCategories();
+                loading_RefrishCategoriesCard();
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        //MessageBox.Show("not done");
+                        //string s = "";
+                        //foreach (var item in loadingList)
+                        //{
+                        //    s += item.name + " - " + item.value + "\n";
+                        //}
+                        //MessageBox.Show(s);
+                        await Task.Delay(0500);
+                        //MessageBox.Show("do");
+                    }
+                }
+                while (!isDone);
+                #endregion
+
+
                 Txb_searchitems_TextChanged(null, null);
                
                 if (sender != null)

@@ -226,7 +226,7 @@ namespace POS.View
             //}
         }
 
-        List<loadingThread> loadingList;
+        List<keyValueBool> loadingList;
         async void loading_getDailySalPur()
         {
             //try
@@ -238,7 +238,7 @@ namespace POS.View
             //{ }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getDailySalPur"))
+                if (item.key.Equals("loading_getDailySalPur"))
                 {
                     item.value = true;
                     break;
@@ -250,17 +250,17 @@ namespace POS.View
             //try
             //{
                 #region loading
-                loadingList = new List<loadingThread>();
+                loadingList = new List<keyValueBool>();
                 bool isDone = true;
-                loadingList.Add(new loadingThread { name = "AllSalPur", value = false });
-                loadingList.Add(new loadingThread { name = "AgentCount", value = false });
-                loadingList.Add(new loadingThread { name = "UserOnline", value = false });
-                loadingList.Add(new loadingThread { name = "BranchOnline", value = false });
-                loadingList.Add(new loadingThread { name = "IUStorageRefresh", value = false });
-                loadingList.Add(new loadingThread { name = "BestSellerRefresh", value = false });
-                loadingList.Add(new loadingThread { name = "UserOnlinePic", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getDailySalPur", value = false });
-                loadingList.Add(new loadingThread { name = "AmountMonthlySalPur", value = false });
+                loadingList.Add(new keyValueBool { key = "AllSalPur", value = false });
+                loadingList.Add(new keyValueBool { key = "AgentCount", value = false });
+                loadingList.Add(new keyValueBool { key = "UserOnline", value = false });
+                loadingList.Add(new keyValueBool { key = "BranchOnline", value = false });
+                loadingList.Add(new keyValueBool { key = "IUStorageRefresh", value = false });
+                loadingList.Add(new keyValueBool { key = "BestSellerRefresh", value = false });
+                loadingList.Add(new keyValueBool { key = "UserOnlinePic", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getDailySalPur", value = false });
+                loadingList.Add(new keyValueBool { key = "AmountMonthlySalPur", value = false });
 
                 AllSalPur();
                 AgentCount();
@@ -320,7 +320,7 @@ namespace POS.View
             //{ }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("IUStorageRefresh"))
+                if (item.key.Equals("IUStorageRefresh"))
                 {
                     item.value = true;
                     break;
@@ -340,7 +340,7 @@ namespace POS.View
             //{ }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("BestSellerRefresh"))
+                if (item.key.Equals("BestSellerRefresh"))
                 {
                     item.value = true;
                     break;
@@ -405,7 +405,7 @@ namespace POS.View
             //}
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("AllSalPur"))
+                if (item.key.Equals("AllSalPur"))
                 {
                     item.value = true;
                     break;
@@ -497,7 +497,7 @@ namespace POS.View
             //}
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("AgentCount"))
+                if (item.key.Equals("AgentCount"))
                 {
                     item.value = true;
                     break;
@@ -536,7 +536,7 @@ namespace POS.View
             //}
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("UserOnline"))
+                if (item.key.Equals("UserOnline"))
                 {
                     item.value = true;
                     break;
@@ -573,7 +573,7 @@ namespace POS.View
             //}
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("UserOnlinePic"))
+                if (item.key.Equals("UserOnlinePic"))
                 {
                     item.value = true;
                     break;
@@ -701,7 +701,7 @@ namespace POS.View
             //}
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("BranchOnline"))
+                if (item.key.Equals("BranchOnline"))
                 {
                     item.value = true;
                     break;
@@ -1149,7 +1149,7 @@ namespace POS.View
             //}
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("AmountMonthlySalPur"))
+                if (item.key.Equals("AmountMonthlySalPur"))
                 {
                     item.value = true;
                     break;

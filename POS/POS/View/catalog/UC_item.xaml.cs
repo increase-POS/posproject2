@@ -2199,11 +2199,19 @@ namespace POS.View
         async Task<IEnumerable<Item>> RefrishItems()
         {
             allItems = await itemModel.GetAllItems();
-            if (category.categoryId == 0 || categoryParentId == 0)
+
+
+            //if (category.categoryId == 0 && categoryParentId == 0)
+            //    items = allItems;
+            //else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+
+            if(category.categoryId != 0)
+                items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            else
                 items = allItems;
-            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+
             items = items.Where(x => x.type != "p").ToList();
-     
+
             return items;
 
         }
@@ -2892,6 +2900,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                category.categoryId = 0;
                 categoryParentId = 0;
                 await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();

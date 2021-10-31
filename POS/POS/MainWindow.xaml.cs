@@ -205,12 +205,7 @@ namespace POS
         }
 
         #region loading
-        public class loadingThread
-        {
-            public string name { get; set; }
-            public bool value { get; set; }
-        }
-        List<loadingThread> loadingList;
+        List<keyValueBool> loadingList;
         //loadingThread[] loadingList = new loadingThread[25];
         async void loading_getUserPath()
         {
@@ -244,7 +239,7 @@ namespace POS
             #endregion
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getUserPath"))
+                if (item.key.Equals("loading_getUserPath"))
                 {
                     item.value = true;
                     break;
@@ -264,7 +259,7 @@ namespace POS
             }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getTax"))
+                if (item.key.Equals("loading_getTax"))
                 {
                     item.value = true;
                     break;
@@ -284,7 +279,7 @@ namespace POS
             }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getDateForm"))
+                if (item.key.Equals("loading_getDateForm"))
                 {
                     item.value = true;
                     break;
@@ -309,7 +304,7 @@ namespace POS
             }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getRegionAndCurrency"))
+                if (item.key.Equals("loading_getRegionAndCurrency"))
                 {
                     item.value = true;
                     break;
@@ -329,7 +324,7 @@ namespace POS
             }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getStorageCost"))
+                if (item.key.Equals("loading_getStorageCost"))
                 {
                     item.value = true;
                     break;
@@ -349,7 +344,7 @@ namespace POS
             }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getAccurac"))
+                if (item.key.Equals("loading_getAccurac"))
                 {
                     item.value = true;
                     break;
@@ -390,7 +385,7 @@ namespace POS
             }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getUserPersonalInfo"))
+                if (item.key.Equals("loading_getUserPersonalInfo"))
                 {
                     item.value = true;
                     break;
@@ -408,7 +403,7 @@ namespace POS
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getItemUnitsUsers"))
+                if (item.key.Equals("loading_getItemUnitsUsers"))
                 {
                     item.value = true;
                     break;
@@ -425,7 +420,7 @@ namespace POS
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getGroupObjects"))
+                if (item.key.Equals("loading_getGroupObjects"))
                 {
                     item.value = true;
                     break;
@@ -563,7 +558,7 @@ namespace POS
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getDefaultSystemInfo"))
+                if (item.key.Equals("loading_getDefaultSystemInfo"))
                 {
                     item.value = true;
                     break;
@@ -581,7 +576,7 @@ namespace POS
             { }
             foreach (var item in loadingList)
             {
-                if (item.name.Equals("loading_getprintSitting"))
+                if (item.key.Equals("loading_getprintSitting"))
                 {
                     item.value = true;
                     break;
@@ -633,19 +628,19 @@ namespace POS
                 #endregion
                 translate();
                 #region loading
-                loadingList = new List<loadingThread>();
+                loadingList = new List<keyValueBool>();
                 bool isDone = true;
-                loadingList.Add(new loadingThread { name = "loading_getUserPath", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getTax", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getDateForm", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getRegionAndCurrency", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getStorageCost", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getAccurac", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getUserPersonalInfo", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getDefaultSystemInfo", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getItemUnitsUsers", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getGroupObjects", value = false });
-                loadingList.Add(new loadingThread { name = "loading_getprintSitting", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getUserPath", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getTax", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getDateForm", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getRegionAndCurrency", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getStorageCost", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getAccurac", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getUserPersonalInfo", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getDefaultSystemInfo", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getItemUnitsUsers", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getGroupObjects", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getprintSitting", value = false });
 
 
                 loading_getUserPath();
