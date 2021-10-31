@@ -35,7 +35,7 @@
                         Grid.Row="0" Margin="0,0,5,0"
                         BorderBrush="{x:Null}"
                         Background="#4E4E4E">
-                    <Grid >
+                    <Grid  x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -44,8 +44,6 @@
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
-
-
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_branch" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="10,5,0,-1">
@@ -210,7 +208,7 @@
                         </Border>
                         <Border x:Name="bdr_items" Visibility="Collapsed" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_items"  Background="Transparent"  Tag="items"
-                                    materialDesign:RippleAssist.Feedback="Transparent" Click="btn_items_Click"
+                                    materialDesign:RippleAssist.Feedback="Transparent" 
                                     BorderBrush="Transparent" Height="auto" Width="60">
                                 <Button.Triggers>
                                     <EventTrigger RoutedEvent="Button.Click">
@@ -268,9 +266,11 @@
                             </Button>
                         </Border>
 
-
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
+                        
                     </Grid>
                 </Border>
 
@@ -319,193 +319,6 @@
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End time..."/>
                                         <materialDesign:TimePicker SelectedTimeChanged="dt_startTime_SelectedTimeChanged" Name="dt_startTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start time..."/>
-
-                                    </DockPanel>
-
-
-                                </Grid>
-                                <Grid Grid.Row="1" x:Name="grid_pos" Margin="10,0,10,10" Visibility="Hidden">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"></RowDefinition>
-                                        <RowDefinition Height="auto" ></RowDefinition>
-
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-
-
-                                    <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_posInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_posInvoice_Checked" Unchecked="chk_posInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_posReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_posReturn_Checked" Unchecked="chk_posReturn_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_posDraft"  Content="Drafts" Checked="chk_posDrafs_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_posDrafs_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_posEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_posEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_posStartDate_SelectedDateChanged" Name="dp_posStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
-
-                                    </DockPanel>
-
-
-                                    <ComboBox SelectionChanged="cb_pos_SelectionChanged" Name="cb_pos" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="Pos ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allPos" Click="chk_allPos_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-                                        <materialDesign:TimePicker  SelectedTimeChanged="dt_posEndTime_SelectedTimeChanged" Name="dt_posEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End time..."/>
-                                        <materialDesign:TimePicker SelectedTimeChanged="dt_posStartTime_SelectedTimeChanged" Name="dt_posStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start time..."/>
-
-                                    </DockPanel>
-
-
-
-                                </Grid>
-                                <Grid Grid.Row="1" x:Name="grid_vendors" Margin="10,0,10,10"  Visibility="Hidden">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"></RowDefinition>
-                                        <RowDefinition Height="auto" ></RowDefinition>
-
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-
-
-                                    <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_vendorsInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_vendorsInvoice_Checked" Unchecked="chk_vendorsInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_vendorsReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_vendorsReturn_Checked" Unchecked="chk_vendorsReturn_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_vendorsDraft" IsEnabled="False" Content="Drafts" Checked="chk_vendorsDraft_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_vendorsDraft_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_vendorsEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_vendorsStartDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_vendorsStartDate_SelectedDateChanged" Name="dp_vendorsStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
-
-                                    </DockPanel>
-
-
-                                    <ComboBox SelectionChanged="cb_vendors_SelectionChanged" Name="cb_vendors" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="Vendor ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allVendors" Click="chk_allVendors_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-
-
-                                        <materialDesign:TimePicker  SelectedTimeChanged="dt_vendorsEndTime_SelectedTimeChanged" Name="dt_vendorsEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End time..."/>
-                                        <materialDesign:TimePicker SelectedTimeChanged="dt_vendorsStartTime_SelectedTimeChanged" Name="dt_vendorsStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start time..."/>
-
-                                    </DockPanel>
-
-
-
-                                </Grid>
-                                <Grid Grid.Row="1" x:Name="grid_users" Margin="10,0,10,10"  Visibility="Hidden">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"></RowDefinition>
-                                        <RowDefinition Height="auto" ></RowDefinition>
-
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-
-
-                                    <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_usersInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_usersInvoice_Checked" Unchecked="chk_usersInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_usersReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_usersReturn_Checked" Unchecked="chk_usersReturn_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_usersDraft"  Content="Drafts" Checked="chk_usersDraft_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_usersDraft_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_usersEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_usersEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_usersStartDate_SelectedDateChanged" Name="dp_usersStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
-
-                                    </DockPanel>
-
-
-                                    <ComboBox SelectionChanged="cb_users_SelectionChanged" Name="cb_users" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="User ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allUsers" Click="chk_allUsers_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-
-
-                                        <materialDesign:TimePicker  SelectedTimeChanged="dt_usersEndTime_SelectedTimeChanged" Name="dt_usersEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End time..."/>
-                                        <materialDesign:TimePicker SelectedTimeChanged="dt_usersStartTime_SelectedTimeChanged" Name="dt_usersStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start time..."/>
-
-                                    </DockPanel>
-
-
-
-                                </Grid>
-                                <Grid Grid.Row="1" x:Name="grid_items" Margin="10,0,10,10"  Visibility="Hidden">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"></RowDefinition>
-                                        <RowDefinition Height="auto"></RowDefinition>
-
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-
-
-                                    <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_itemInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_itemInvoice_Checked" Unchecked="chk_itemInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_itemReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_itemReturn_Checked" Unchecked="chk_itemReturn_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_itemDrafs" IsEnabled="False" Content="Drafts" Checked="chk_itemDrafs_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_itemDrafs_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_ItemEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_ItemEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_ItemStartDate_SelectedDateChanged" Name="dp_ItemStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
-
-                                    </DockPanel>
-
-
-                                    <ComboBox SelectionChanged="cb_Items_SelectionChanged" Name="cb_Items" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="Item ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Click="chk_allItems_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-                                        <materialDesign:TimePicker  SelectedTimeChanged="dt_ItemEndTime_SelectedTimeChanged" Name="dt_ItemEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End time..."/>
-                                        <materialDesign:TimePicker SelectedTimeChanged="dt_itemStartTime_SelectedTimeChanged" Name="dt_itemStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start time..."/>
 
