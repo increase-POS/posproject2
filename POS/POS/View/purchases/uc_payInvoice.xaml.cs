@@ -120,6 +120,7 @@ namespace POS.View
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         int prInvoiceId;
         Invoice prInvoice = new Invoice();
+        bool isClose = false;
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -216,7 +217,7 @@ namespace POS.View
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk)
+                if (w.isOk || isClose == true)
                     await addInvoice(_InvoiceType, "pi");
             }
             clearInvoice();
@@ -455,6 +456,7 @@ namespace POS.View
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            isClose = true;
             UserControl_Unloaded(this, null);
         }
         private void configureDiscountType()

@@ -133,6 +133,8 @@ namespace POS.View
         public static int height;
         Invoice prInvoice = new Invoice();
         int prinvoiceId;
+        bool isClose = false;
+
         #region bill
 
         public class BillDetails
@@ -219,23 +221,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 saveBeforeExit();
-                //if (billDetails.Count > 0 &&( _InvoiceType == "sd" || _InvoiceType == "sbd"))
-                //{
-                //    #region Accept
-                //    MainWindow.mainWindow.Opacity = 0.2;
-                //    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                //    w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
-
-                //    w.ShowDialog();
-                //    MainWindow.mainWindow.Opacity = 1;
-                //    #endregion
-                //    if (w.isOk)
-                //        Btn_newDraft_Click(null, null);
-                //    else
-                //        await clearInvoice();
-                //}
-                //else
-                //    await clearInvoice();
+                
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -247,6 +233,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        
         private async void saveBeforeExit()
         {
             if (billDetails.Count > 0 && (_InvoiceType == "sd" || _InvoiceType == "sbd"))
@@ -259,9 +246,11 @@ namespace POS.View
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk)
+                    if (w.isOk)
                     Btn_newDraft_Click(null, null);
-                else
+                if ( isClose  == true)
+                    await newDraft();
+                    else
                 {
                     await clearInvoice();
                     setNotifications();
@@ -575,6 +564,7 @@ namespace POS.View
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            isClose = true;
             UserControl_Unloaded(this, null);
         }
         public void FindControl(DependencyObject root, List<Control> controls)
@@ -1732,38 +1722,42 @@ namespace POS.View
             }
             return true;
         }
+        async Task newDraft()
+        {
+            if (billDetails.Count > 0 && (_InvoiceType == "sd" || _InvoiceType == "sbd"))
+            {
+                Boolean available = true;
+                if (_InvoiceType == "sd")
+                    available = await checkItemsAmounts();
+                bool valid = validateItemUnits();
+                if (billDetails.Count > 0 && available && valid)
+                {
+                    await addInvoice(_InvoiceType);
+                    // await refreshDraftNotification();
+                    await clearInvoice();
+                    setNotifications();
+                }
+                else if (billDetails.Count == 0)
+                {
+                    _InvoiceType = "sd";
+                    await clearInvoice();
+                }
+
+            }
+            else
+            {
+                await clearInvoice();
+                setNotifications();
+            }
+
+        }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (billDetails.Count > 0 && (_InvoiceType == "sd" || _InvoiceType == "sbd"))
-                {
-                    Boolean available = true;
-                    if (_InvoiceType == "sd")
-                        available = await checkItemsAmounts();
-                    bool valid = validateItemUnits();
-                    if (billDetails.Count > 0 && available && valid)
-                    {
-                        await addInvoice(_InvoiceType);
-                        // await refreshDraftNotification();
-                        await clearInvoice();
-                        setNotifications();
-                    }
-                    else if (billDetails.Count == 0)
-                    {
-                        _InvoiceType = "sd";
-                        await clearInvoice();
-                    }
-
-                }
-                else
-                {
-                    await clearInvoice();
-                    setNotifications();
-                }
-
+                newDraft();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_barcode.Focus();
@@ -2642,8 +2636,8 @@ namespace POS.View
                 firstTimeForDatagrid = false;
             }
             //dg_billDetails.Items.Refresh();
-            DataGrid_CollectionChanged(dg_billDetails, null);
 
+                    DataGrid_CollectionChanged(dg_billDetails, null);
 
             //tb_sum.Text = _Sum.ToString();
             //if (_Sum != 0)
@@ -2667,7 +2661,6 @@ namespace POS.View
             DataGrid_CollectionChanged(dg_billDetails, null);
 
         }
-
         // read item from barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -3014,7 +3007,6 @@ namespace POS.View
                 {
                     int itemUnitId = (int)cmb.SelectedValue;
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-
                     #region Dina
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
@@ -3080,7 +3072,7 @@ namespace POS.View
                     billDetails[dg_billDetails.SelectedIndex].Count = (int)newCount;
                     billDetails[dg_billDetails.SelectedIndex].Price = newPrice;
                     billDetails[dg_billDetails.SelectedIndex].Total = total;
-                    refrishBillDetails();
+                    //refrishBillDetails();
                     #endregion
                 }
                 if (sender != null)
@@ -3118,27 +3110,29 @@ namespace POS.View
                 int count = 0;
                 foreach (var item in billDetails)
                 {
-                    if (dg_billDetails.Items.Count != 0)
-                    {
-                        if (dg_billDetails.Items.Count > 1)
-                        {
-                            DataGridCell cell = null;
-                            try
+                    
+                            if (dg_billDetails.Items.Count != 0)
                             {
-                                cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                                if (dg_billDetails.Items.Count > 1)
+                                {
+                                    DataGridCell cell = null;
+                                    try
+                                    {
+                                        cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
+                                    }
+                                    catch
+                                    { }
+
+                                    if (cell != null)
+                                    {
+                                        var cp = (ContentPresenter)cell.Content;
+                                        var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
+                                        //var combo = (combo)cell.Content;
+                                        combo.SelectedValue = (int)item.itemUnitId;
+                                    }
+                                }
                             }
-                            catch
-                            {}
-                           
-                            if (cell != null)
-                            {
-                                var cp = (ContentPresenter)cell.Content;
-                                var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
-                                //var combo = (combo)cell.Content;
-                                combo.SelectedValue = (int)item.itemUnitId;
-                            }
-                        }
-                    }
+
                     count++;
                 }
                 
@@ -3205,14 +3199,26 @@ namespace POS.View
         }
 
         #endregion
-
+        async void validateAvailableAmount(BillDetails row, long newCount,  int index,TextBlock tb)
+        {
+            int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+            if (availableAmount < newCount)
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                //newCount = newCount + availableAmount;
+                newCount = availableAmount;
+                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                tb.Text = newCount.ToString();
+                row.Count = (int)newCount;
+            }
+        }
         private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                TextBlock tb;
+                TextBlock tb = new TextBlock();
                 TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
                 var columnName = e.Column.Header.ToString();
 
@@ -3260,16 +3266,7 @@ namespace POS.View
                     }
                     else
                     {
-                        int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
-                        if (availableAmount < newCount)
-                        {
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                            //newCount = newCount + availableAmount;
-                            newCount = availableAmount;
-                            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                            tb.Text = newCount.ToString();
-                            row.Count = (int)newCount;
-                        }
+                        validateAvailableAmount(row, newCount, index, tb );
                     }
 
                     if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
@@ -3311,14 +3308,7 @@ namespace POS.View
                     billDetails[index].Total = total;
 
                 }
-                //dg_billDetails.CancelEdit();
-                //dg_billDetails.CancelEdit();
-                //dg_billDetails.Items.Refresh();
-
-                //dg_billDetails.CommitEdit();
-                //dg_billDetails.Items.Refresh();
-                refrishDataGridItems();
-                //refrishBillDetails();
+                //refrishDataGridItems();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

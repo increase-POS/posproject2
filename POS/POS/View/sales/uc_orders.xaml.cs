@@ -120,6 +120,8 @@ namespace POS.View.sales
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         Invoice prInvoice = new Invoice();
+        bool isClose = false;
+
         #region bill
         public class BillDetails
         {
@@ -270,6 +272,7 @@ namespace POS.View.sales
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            isClose = true;
             UserControl_Unloaded(this, null);
         }
         public void FindControl(DependencyObject root, List<Control> controls)
@@ -2068,7 +2071,7 @@ SectionData.isAdminPermision())
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk)
+                if (w.isOk || isClose == true)
                     Btn_newDraft_Click(null, null);
                 else
                 {
