@@ -2719,4 +2719,7 @@ Please add Email in setting</value>
   <data name="trNoConnection" xml:space="preserve">
     <value>No Connection</value>
   </data>
+  <data name="trCashType" xml:space="preserve">
+    <value>Cash</value>
+  </data>
 </root>

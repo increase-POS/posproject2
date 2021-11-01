@@ -916,6 +916,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نقدي.
+        /// </summary>
+        internal static string trCashType {
+            get {
+                return ResourceManager.GetString("trCashType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفهرس.
         /// </summary>
         internal static string trCatalog {
