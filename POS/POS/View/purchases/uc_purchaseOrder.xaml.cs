@@ -180,7 +180,7 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task<bool> saveBeforeExit()
@@ -389,8 +389,8 @@ namespace POS.View.purchases
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
 
                 for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                     if (vis is DataGridRow)
@@ -418,14 +418,14 @@ namespace POS.View.purchases
                     _Sum += billDetails[i].Total;
                     billDetails[i].ID = _SequenceNum;
                 }
-                refrishBillDetails();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //refrishBillDetails();
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -1550,8 +1550,8 @@ namespace POS.View.purchases
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
 
                 TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
                 var columnName = e.Column.Header.ToString();
@@ -1575,6 +1575,11 @@ namespace POS.View.purchases
                         newCount = int.Parse(t.Text);
                     else
                         newCount = row.Count;
+                    if (newCount < 0)
+                    {
+                        newCount = 0;
+                        t.Text = "0";
+                    }
 
                     oldCount = row.Count;
 
@@ -1600,15 +1605,15 @@ namespace POS.View.purchases
                     // update item in billdetails           
                     billDetails[index].Count = (int)newCount;
 
-                refrishDataGridItems();
+                //refrishDataGridItems();
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

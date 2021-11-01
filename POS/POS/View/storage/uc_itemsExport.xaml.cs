@@ -178,7 +178,7 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -984,8 +984,8 @@ namespace POS.View.storage
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
 
                 for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                     if (vis is DataGridRow)
@@ -1008,15 +1008,15 @@ namespace POS.View.storage
                     _SequenceNum++;
                     billDetails[i].ID = _SequenceNum;
                 }
-                refrishBillDetails();
+                //refrishBillDetails();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -1611,8 +1611,8 @@ namespace POS.View.storage
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
 
                 TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
                 var columnName = e.Column.Header.ToString();
@@ -1655,6 +1655,11 @@ namespace POS.View.storage
                                     newCount = int.Parse(t.Text);
                                 else
                                     newCount = 0;
+                                if (newCount < 0)
+                                {
+                                    newCount = 0;
+                                    t.Text = "0";
+                                }
                             }
                         }
                         else
@@ -1693,15 +1698,15 @@ namespace POS.View.storage
                     if (invoiceItems != null)
                         invoiceItems[index].quantity = (int)newCount;
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                refrishDataGridItems();
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
+                //refrishDataGridItems();
 
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

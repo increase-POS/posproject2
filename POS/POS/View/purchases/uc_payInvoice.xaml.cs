@@ -202,7 +202,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task saveBeforeExit()
@@ -500,8 +500,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //SectionData.StartAwait(grid_main);
 
             for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                 if (vis is DataGridRow)
@@ -528,14 +528,14 @@ namespace POS.View
                 _Sum += billDetails[i].Total;
                 billDetails[i].ID = _SequenceNum;
             }
-            refrishBillDetails();
-            if (sender != null)
-                SectionData.EndAwait(grid_main);
+            //refrishBillDetails();
+            //if (sender != null)
+            //    SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)
             {
-				if (sender != null)
-				SectionData.EndAwait(grid_main);
+				//if (sender != null)
+				//SectionData.EndAwait(grid_main);
 				SectionData.ExceptionMessage(ex,this);
         }
     }
@@ -2254,8 +2254,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 //if (invoice.invoiceId == 0 && e.Column.DisplayIndex == 3)
                 //{
 
@@ -2291,6 +2291,11 @@ namespace POS.View
                             newCount = int.Parse(t.Text);
                         else
                             newCount = 0;
+                        if (newCount < 0)
+                        {
+                            newCount = 0;
+                            t.Text = "0";
+                        }
                     }
                     else
                         newCount = row.Count;
@@ -2337,15 +2342,15 @@ namespace POS.View
                         billDetails[index].Price = newPrice;
                         billDetails[index].Total = total;
                     }
-                refrishDataGridItems();
+                //refrishDataGridItems();
             //}
-                if (sender != null)
-                SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

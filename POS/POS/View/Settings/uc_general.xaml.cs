@@ -482,8 +482,8 @@ namespace POS.View.Settings
             //txt_emailHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
             //txt_backupHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            txt_dashBoard.Text = MainWindow.resourcemanager.GetString("trDashBoard");
-            txt_dashHint.Text = MainWindow.resourcemanager.GetString("trDashHint");
+            //txt_dashBoard.Text = MainWindow.resourcemanager.GetString("trDashBoard");
+            //txt_dashHint.Text = MainWindow.resourcemanager.GetString("trDashHint");
 
             tt_region.Content = MainWindow.resourcemanager.GetString("trRegion");
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");

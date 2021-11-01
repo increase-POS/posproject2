@@ -28,7 +28,8 @@
                 </Grid.ColumnDefinitions>
                 <Border BorderThickness="0"  Height="auto"  Grid.Column="0"  Margin="10,0,0,0"
                     CornerRadius="7" BorderBrush="Black" Background="#4E4E4E" Padding="0">
-                    <Button Grid.Column="8" BorderBrush="{x:Null}"     Margin="5,10,5,0" Height="auto" Click="Btn_items_Click"
+                    <Button Grid.Column="8" BorderBrush="{x:Null}"     Margin="5,10,5,0" Height="auto" 
+                            Click="Btn_items_Click"
                     Background="{x:Null}" x:Name="btn_items" Padding="0"    >
                         <StackPanel>
                             <Path Fill="White" Stretch="Fill"  x:Name="path_itemsIcon"
@@ -886,7 +887,8 @@
                         
                         <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="False" CanUserAddRows="False"   BeginningEdit="Dg_billDetails_BeginningEdit" PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
+                         IsReadOnly="False" CanUserAddRows="False"   BeginningEdit="Dg_billDetails_BeginningEdit" 
+PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
                         ColumnWidth="SizeToHeader" CanUserSortColumns="False"
                                   VirtualizingStackPanel.IsVirtualizing="False"  
@@ -948,7 +950,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn x:Name="col_count"  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
-                            <DataGridTextColumn x:Name="col_price"   IsReadOnly="True"  Width="*" Header="Price" Binding="{Binding Path=Price , Converter={StaticResource accuracyConverter}}" />
+                            <DataGridTextColumn x:Name="col_price"   IsReadOnly="True"  Width="*" Header="Price" Binding="{Binding Path=Price , Converter={StaticResource accuracyConverter} , Mode=TwoWay}" />
                                 <DataGridTextColumn x:Name="col_total" IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total ,Converter={StaticResource accuracyConverter}}"/>
                                 <DataGridTemplateColumn Width="30" Header="" IsReadOnly="True" >
                                     <DataGridTemplateColumn.CellTemplate>

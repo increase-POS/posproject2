@@ -230,7 +230,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         
@@ -550,6 +550,10 @@ namespace POS.View
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
+
+
+                //refrishBillDetails();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_barcode.Focus();
@@ -849,8 +853,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                     if (vis is DataGridRow)
                     {
@@ -879,14 +883,14 @@ namespace POS.View
                     _Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
-                refrishBillDetails();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //refrishBillDetails();
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -2620,15 +2624,7 @@ namespace POS.View
         async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
-            //if (billDetails.Count == 1)
-            //{
-            //    BillDetails bd = new BillDetails();
-            //    billDetails.Add(bd);
-            //    dg_billDetails.ItemsSource = billDetails;
-            //    billDetails.Remove(bd);
-            //}
-            //else
-                dg_billDetails.ItemsSource = billDetails;
+            dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
                 await Task.Delay(1000);
@@ -2636,8 +2632,7 @@ namespace POS.View
                 firstTimeForDatagrid = false;
             }
             //dg_billDetails.Items.Refresh();
-
-                    DataGrid_CollectionChanged(dg_billDetails, null);
+            DataGrid_CollectionChanged(dg_billDetails, null);
 
             //tb_sum.Text = _Sum.ToString();
             //if (_Sum != 0)
@@ -2999,19 +2994,20 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 var cmb = sender as ComboBox;
                 TextBlock tb;
                 if (dg_billDetails.SelectedIndex != -1 && cmb != null)
                 {
+                    int _datagridSelectedIndex = dg_billDetails.SelectedIndex;
                     int itemUnitId = (int)cmb.SelectedValue;
-                    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                    billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     #region Dina
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
                     //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
-                    int availableAmount = await getAvailableAmount(billDetails[dg_billDetails.SelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[dg_billDetails.SelectedIndex].ID);
+                    int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
 
 
                     int oldCount = 0;
@@ -3024,25 +3020,24 @@ namespace POS.View
 
                     // decimal newPrice = (decimal)unit.price;
                     decimal newPrice = price;
-
                     //"tb_amont"
 
 
-                    oldCount = billDetails[dg_billDetails.SelectedIndex].Count;
-                    oldPrice = billDetails[dg_billDetails.SelectedIndex].Price;
+                    oldCount = billDetails[_datagridSelectedIndex].Count;
+                    oldPrice = billDetails[_datagridSelectedIndex].Price;
 
                     if (availableAmount < oldCount)
                     //if (availableAmount <= 0)
                     {
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
                         newCount = newCount + availableAmount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
                         tb.Text = availableAmount.ToString();
                     }
                     else
                     {
                         // newCount = oldCount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
                         newCount = int.Parse(tb.Text);
                     }
 
@@ -3061,27 +3056,30 @@ namespace POS.View
                     tax = (decimal)itemTax * newCount;
                     _Tax += tax;
 
+                    //refresh Price cell
+                    tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    tb.Text = newPrice.ToString();
                     //refresh total cell
-                    tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[dg_billDetails.SelectedIndex]) as TextBlock;
+                    tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
                     tb.Text = total.ToString();
 
                     //  refresh sum and total text box
                     refreshTotalValue();
 
                     // update item in billdetails           
-                    billDetails[dg_billDetails.SelectedIndex].Count = (int)newCount;
-                    billDetails[dg_billDetails.SelectedIndex].Price = newPrice;
-                    billDetails[dg_billDetails.SelectedIndex].Total = total;
+                    billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                    billDetails[_datagridSelectedIndex].Price = newPrice;
+                    billDetails[_datagridSelectedIndex].Total = total;
                     //refrishBillDetails();
                     #endregion
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -3199,27 +3197,28 @@ namespace POS.View
         }
 
         #endregion
-        async void validateAvailableAmount(BillDetails row, long newCount,  int index,TextBlock tb)
-        {
-            int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
-            if (availableAmount < newCount)
-            {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                //newCount = newCount + availableAmount;
-                newCount = availableAmount;
-                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                tb.Text = newCount.ToString();
-                row.Count = (int)newCount;
-            }
-        }
-        private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        //async void validateAvailableAmount(BillDetails row, long newCount,  int index,TextBlock tb)
+        //{
+    //    int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+    //        if (availableAmount<newCount)
+    //        {
+    //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+    //            //newCount = newCount + availableAmount;
+    //            newCount = availableAmount;
+    //            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+    //            tb.Text = newCount.ToString();
+    //            row.Count = (int) newCount;
+    //}
+    //}
+    private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 TextBlock tb = new TextBlock();
                 TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
+
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
@@ -3246,6 +3245,12 @@ namespace POS.View
                         newCount = int.Parse(t.Text);
                         if (row.type == "sn")
                             billDetails[index].valid = false;
+                        if (newCount < 0)
+                        {
+                            newCount = 0;
+                            t.Text = "0";
+                        }
+
                     }
                     else
                         newCount = row.Count;
@@ -3266,7 +3271,17 @@ namespace POS.View
                     }
                     else
                     {
-                        validateAvailableAmount(row, newCount, index, tb );
+                        //validateAvailableAmount(row, newCount, index, tb );
+                        int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+                        if (availableAmount < newCount)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                            //newCount = newCount + availableAmount;
+                            newCount = availableAmount;
+                            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                            tb.Text = newCount.ToString();
+                            row.Count = (int)newCount;
+                        }
                     }
 
                     if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
@@ -3309,13 +3324,13 @@ namespace POS.View
 
                 }
                 //refrishDataGridItems();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

@@ -115,7 +115,9 @@ namespace POS.View.windows
                 txt_Invoices.Text = title;
                 translat();
                 #endregion
+                dg_Invoice.Columns[0].Visibility = Visibility.Collapsed;
                 #region hide Total column in grid if invoice is import/export order
+
                 string[] invTypeArray = new string[] { "imd" ,"exd","im","ex" ,"exw" };
                 var impExpTypes = invTypeArray.ToList();
                 List<string> invTypeL = invoiceType.Split(',').ToList();
