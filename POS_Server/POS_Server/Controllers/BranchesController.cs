@@ -508,32 +508,11 @@ namespace POS_Server.Controllers
                         userId = int.Parse(c.Value);
                     }
                 }
-                List<BranchModel> Listb = new List<BranchModel>();
-                List<BranchModel> Listu = new List<BranchModel>();
-                List<BranchModel> List = new List<BranchModel>();
-                Listb = BranchesByBranch(mainBranchId);
-                Listu = BranchesByUser(userId);
-
-                List = Listb.Union(Listu).ToList().GroupBy(X => X.branchId).Select(X => new BranchModel
-                {
-                    branchId = X.FirstOrDefault().branchId,
-
-                    code = X.FirstOrDefault().code,
-                    name = X.FirstOrDefault().name,
-                    address = X.FirstOrDefault().address,
-                    email = X.FirstOrDefault().email,
-                    phone = X.FirstOrDefault().phone,
-                    mobile = X.FirstOrDefault().mobile,
-                    createDate = X.FirstOrDefault().createDate,
-                    updateDate = X.FirstOrDefault().updateDate,
-                    createUserId = X.FirstOrDefault().createUserId,
-                    updateUserId = X.FirstOrDefault().updateUserId,
-                    notes = X.FirstOrDefault().notes,
-                    parentId = X.FirstOrDefault().parentId,
-                    isActive = X.FirstOrDefault().isActive,
-                    type = X.FirstOrDefault().type,
-
-                }).ToList();
+               
+                List<branches> List = new List<branches>();
+               
+                List= BrListByBranchandUser( mainBranchId,  userId);
+                
                 return TokenManager.GenerateToken(List);
             }
         }
@@ -634,6 +613,36 @@ namespace POS_Server.Controllers
 
                                           }).ToList();
 
+                List<BranchModel> Listmain = (from B in entity.branches
+                                          
+                                          where B.branchId == mainBranchId
+
+                                          select new BranchModel
+                                          {
+
+
+                                              //  isActive = S.isActive,
+
+                                              //store
+                                              branchId = B.branchId,//
+                                              code = B.code,//
+                                              name = B.name,//
+                                              address = B.address,//
+                                              email = B.email,//
+                                              phone = B.phone,//
+                                              mobile = B.mobile,//
+                                              createDate = B.createDate,//
+                                              updateDate = B.updateDate,//
+                                              createUserId = B.createUserId,//
+                                              updateUserId = B.updateUserId,//
+                                              notes = B.notes,//
+                                              parentId = B.parentId,//
+                                              isActive = B.isActive,//
+                                              type = B.type,//
+
+                                          }).ToList();
+
+                List.AddRange(Listmain);
                 return List;
 
             }
@@ -681,11 +690,14 @@ namespace POS_Server.Controllers
         {
             List<BranchModel> Listb = new List<BranchModel>();
             List<BranchModel> Listu = new List<BranchModel>();
+            List<BranchModel> Lists= new List<BranchModel>();
             List<branches> List = new List<branches>();
             Listb = BranchesByBranch(mainBranchId);
             Listu = BranchesByUser(userId);
+            Lists = BranchSonsbyId(mainBranchId);
+            List = Listb.Union(Listu).ToList().Union(Lists).GroupBy(X => X.branchId).Select(X => new branches
+            
 
-            List = Listb.Union(Listu).ToList().GroupBy(X => X.branchId).Select(X => new branches
             {
                 branchId = X.FirstOrDefault().branchId,
 
@@ -1053,5 +1065,79 @@ namespace POS_Server.Controllers
             }
           
         }
+
+        List<int> branchIdlist = new List<int>();
+        public IEnumerable<branches> Recursive(List<branches> branchList, int toplevelid)
+        {
+            List<branches> inner = new List<branches>();
+
+            foreach (var t in branchList.Where(item => item.parentId == toplevelid))
+            {
+                branchIdlist.Add(t.branchId);
+                inner.Add(t);
+                inner = inner.Union(Recursive(branchList, t.branchId)).ToList();
+            }
+
+            return inner;
+        }
+        public List<BranchModel> BranchSonsbyId(int parentId)
+        {
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {  // get all sub categories of categoryId
+                List<branches> branchList = entity.branches
+                 .ToList()
+                  .Select(p => new branches
+                  {
+                      branchId = p.branchId,
+                      name = p.name,
+                      parentId = p.parentId,
+                  })
+                 .ToList();
+
+                List<int> branchesIdlist = new List<int>();
+                List<int> catIdlist = new List<int>();
+                branchesIdlist.Add(parentId);
+
+
+                var result = Recursive(branchList, parentId).ToList();
+
+
+                foreach (var r in result)
+                {
+                    catIdlist.Add(r.branchId);
+
+                }
+
+                List<branches> branchListR= entity.branches.Where(U => catIdlist.Contains(U.branchId)).ToList();
+                List<BranchModel>  branchListreturn = branchListR.Select(b => new BranchModel
+                {
+
+                    branchId = b.branchId,
+                    address = b.address,
+                    createDate = b.createDate,
+                    createUserId = b.createUserId,
+                    email = b.email,
+                    mobile = b.mobile,
+                    name = b.name,
+                    code = b.code,
+                    notes = b.notes,
+                    parentId = b.parentId,
+                    phone = b.phone,
+                    updateDate = b.updateDate,
+                    updateUserId = b.updateUserId,
+                    isActive = b.isActive,
+                    type = b.type
+                }
+                ).ToList();
+
+            
+                return branchListreturn;
+
+            }
+
+            }
+
+
     }
 }

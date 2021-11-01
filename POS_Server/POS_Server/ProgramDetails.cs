@@ -27,5 +27,10 @@ namespace POS_Server
         public Nullable<int> versionIncId { get; set; }
         public string versionName { get; set; }
         public int storeCount { get; set; }
+        public string packageSaleCode { get; set; }
+        public string customerServerCode { get; set; }
+        public Nullable<System.DateTime> expireDate { get; set; }
+        public Nullable<bool> isOnlineServer { get; set; }
+        public string packageNumber { get; set; }
     }
 }

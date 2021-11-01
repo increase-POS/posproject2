@@ -15,15 +15,15 @@ namespace POS_Server.Models
 
         public string posSerial { get; set; }
 
-        public int repprinterId { get; set; }
+        public Nullable<int> repprinterId { get; set; }
         public string repname { get; set; }
         public string repprintFor { get; set; }
 
-        public int salprinterId { get; set; }
+        public Nullable<int> salprinterId { get; set; }
         public string salname { get; set; }
         public string salprintFor { get; set; }
 
-        public int sizeId { get; set; }
+        public Nullable<int> sizeId { get; set; }
         public string paperSize1 { get; set; }
         public Nullable<int> docPapersizeId { get; set; }
         public string docPapersize { get; set; }

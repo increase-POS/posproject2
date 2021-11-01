@@ -855,6 +855,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="versionIncId" Type="int" />
           <Property Name="versionName" Type="nvarchar" MaxLength="500" />
           <Property Name="storeCount" Type="int" Nullable="false" />
+          <Property Name="packageSaleCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="customerServerCode" Type="nvarchar" MaxLength="500" />
+          <Property Name="expireDate" Type="datetime2" Precision="7" />
+          <Property Name="isOnlineServer" Type="bit" />
+          <Property Name="packageNumber" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -3396,30 +3401,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_units_users">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="units" Type="Self.units" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="units">
-              <PropertyRef Name="createUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_units_users1">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="units" Type="Self.units" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="units">
-              <PropertyRef Name="updateUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_users_groups">
           <End Role="groups" Type="Self.groups" Multiplicity="0..1" />
           <End Role="users" Type="Self.users" Multiplicity="*" />
@@ -3585,7 +3566,12 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
     [ProgramDetails].[programIncId] AS [programIncId], 
     [ProgramDetails].[versionIncId] AS [versionIncId], 
     [ProgramDetails].[versionName] AS [versionName], 
-    [ProgramDetails].[storeCount] AS [storeCount]
+    [ProgramDetails].[storeCount] AS [storeCount], 
+    [ProgramDetails].[packageSaleCode] AS [packageSaleCode], 
+    [ProgramDetails].[customerServerCode] AS [customerServerCode], 
+    [ProgramDetails].[expireDate] AS [expireDate], 
+    [ProgramDetails].[isOnlineServer] AS [isOnlineServer], 
+    [ProgramDetails].[packageNumber] AS [packageNumber]
     FROM [dbo].[ProgramDetails] AS [ProgramDetails]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_agentMemberships_agents" Association="Self.FK_agentMemberships_agents">
@@ -4355,14 +4341,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <AssociationSet Name="FK_sysEmails_users1" Association="Self.FK_sysEmails_users1">
             <End Role="users" EntitySet="users" />
             <End Role="sysEmails" EntitySet="sysEmails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="units" EntitySet="units" />
-          </AssociationSet>
-          <AssociationSet Name="FK_units_users1" Association="Self.FK_units_users1">
-            <End Role="users" EntitySet="users" />
-            <End Role="units" EntitySet="units" />
           </AssociationSet>
           <AssociationSet Name="FK_users_groups" Association="Self.FK_users_groups">
             <End Role="groups" EntitySet="groups" />
@@ -5874,6 +5852,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="versionIncId" Type="Int32" />
           <Property Name="versionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="storeCount" Type="Int32" Nullable="false" />
+          <Property Name="packageSaleCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="customerServerCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="expireDate" Type="DateTime" Precision="7" />
+          <Property Name="isOnlineServer" Type="Boolean" />
+          <Property Name="packageNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_agentMemberships_agents">
           <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
@@ -10295,6 +10278,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="ProgramDetails">
             <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
               <MappingFragment StoreEntitySet="ProgramDetails">
+                <ScalarProperty Name="packageNumber" ColumnName="packageNumber" />
+                <ScalarProperty Name="isOnlineServer" ColumnName="isOnlineServer" />
+                <ScalarProperty Name="expireDate" ColumnName="expireDate" />
+                <ScalarProperty Name="customerServerCode" ColumnName="customerServerCode" />
+                <ScalarProperty Name="packageSaleCode" ColumnName="packageSaleCode" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="programName" ColumnName="programName" />
                 <ScalarProperty Name="branchCount" ColumnName="branchCount" />

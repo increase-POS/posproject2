@@ -894,7 +894,7 @@ namespace POS_Server.Controllers
                     {
                         var itemUnitsList = (from IU in entity.itemsUnits
 
-                                             join u in entity.units on IU.unitId equals u.unitId
+                                             join u in entity.units on IU.unitId equals u.unitId where u.isActive==1
 
                                              join i in entity.items on IU.itemId equals i.itemId
                                              orderby i.name
