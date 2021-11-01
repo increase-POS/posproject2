@@ -177,6 +177,86 @@ namespace POS.View.sales
 
 
         }
+        #region loading
+
+        List<keyValueBool> loadingList;
+
+        async void loading_RefrishItems()
+        {
+            try
+            {
+                // your code
+        await RefrishItems();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishItems"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_RefrishCustomers()
+        {
+            try
+            {
+                // your code
+          await RefrishCustomers();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishCustomers"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBarcodeList()
+        {
+            try
+            {
+                // your code
+        await fillBarcodeList();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBarcodeList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillCouponsList()
+        {
+            try
+            {
+                // your code
+            await fillCouponsList();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillCouponsList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+
+
+        #endregion
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -206,11 +286,52 @@ namespace POS.View.sales
                 configureDiscountType();
                 setTimer();
                 refreshDraftNotification();
-                await RefrishItems();
-                await RefrishCustomers();
-                await fillBarcodeList();
-                await fillCouponsList();
-                pos = await posModel.getById(MainWindow.posID.Value);
+
+                #region loading
+                loadingList = new List<keyValueBool>();
+                bool isDone = true;
+                loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_RefrishCustomers", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillCouponsList", value = false });
+
+
+
+                loading_RefrishItems();
+                loading_RefrishCustomers();
+                loading_fillBarcodeList();
+                loading_fillCouponsList();
+
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        //MessageBox.Show("not done");
+                        //string s = "";
+                        //foreach (var item in loadingList)
+                        //{
+                        //    s += item.name + " - " + item.value + "\n";
+                        //}
+                        //MessageBox.Show(s);
+                        await Task.Delay(0500);
+                        //MessageBox.Show("do");
+                    }
+                }
+                while (!isDone);
+                #endregion
+               
+
+                //pos = await posModel.getById(MainWindow.posID.Value);
+                pos = MainWindow.posLogIn;
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
@@ -638,10 +759,6 @@ namespace POS.View.sales
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 
-                //Boolean available = true;
-                //if (_InvoiceType == "qd")
-                //    available = await checkItemsAmounts();
-
                 bool valid = validateItemUnits();
                 if (billDetails.Count > 0 )
                 {
@@ -830,7 +947,7 @@ namespace POS.View.sales
         }
 
         #region Get Id By Click  Y
-        public async Task ChangeItemIdEvent(int itemId)
+        public void ChangeItemIdEvent(int itemId)
         {
             if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
@@ -1683,7 +1800,7 @@ namespace POS.View.sales
                         for (int i = 0; i < w.selectedItems.Count; i++)
                         {
                             int itemId = w.selectedItems[i];
-                            await ChangeItemIdEvent(itemId);
+                            ChangeItemIdEvent(itemId);
                         }
                         refreshTotalValue();
                         refrishBillDetails();

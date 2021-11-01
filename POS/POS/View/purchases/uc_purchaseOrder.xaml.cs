@@ -273,6 +273,68 @@ namespace POS.View.purchases
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        #region loading
+
+        List<keyValueBool> loadingList;
+
+
+        async void loading_RefrishItems()
+        {
+            try
+            {
+                await RefrishItems();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishItems"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_refrishVendors()
+        {
+            try
+            {
+                await RefrishVendors();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_refrishVendors"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBarcodeList()
+        {
+            try
+            {
+                await fillBarcodeList();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBarcodeList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+
+        #endregion
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -300,9 +362,45 @@ namespace POS.View.purchases
                 translate();
                 setTimer();
                 //catigoriesAndItemsView.ucPayInvoice = this;
-                await RefrishItems();
-                await RefrishVendors();
-                await fillBarcodeList();
+
+
+
+                #region loading
+                loadingList = new List<keyValueBool>();
+                bool isDone = true;
+                loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBranchesWithoutCurrent", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_refrishVendors", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
+
+
+
+                loading_RefrishItems();
+                loading_refrishVendors();
+                loading_fillBarcodeList();
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        await Task.Delay(0500);
+                    }
+                }
+                while (!isDone);
+                #endregion
+
+
+                //await RefrishItems();
+                //await RefrishVendors();
+                //await fillBarcodeList();
                 refreshDraftNotification();
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
@@ -439,7 +537,7 @@ namespace POS.View.purchases
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        async void timer_Tick(object sendert, EventArgs et)
+         void timer_Tick(object sendert, EventArgs et)
         {
             try
             {

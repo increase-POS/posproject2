@@ -307,7 +307,7 @@ namespace POS.View.storage
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        async   void timer_Tick(object sendert, EventArgs et)
+          void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
@@ -320,7 +320,7 @@ namespace POS.View.storage
         }
         #endregion
         #region notifications
-        private async void setNotifications()
+        private  void setNotifications()
         {
             try
             {

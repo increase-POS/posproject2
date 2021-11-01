@@ -178,7 +178,7 @@ namespace POS.View.storage
             timer.Tick += timer_Tick;
             timer.Start();
         }
-        async void timer_Tick(object sendert, EventArgs et)
+         void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
@@ -287,7 +287,7 @@ namespace POS.View.storage
         {
             vendors = await agentModel.GetAgentsActive("v");
         }
-        private async void HandleKeyPress(object sender, KeyEventArgs e)
+        private  void HandleKeyPress(object sender, KeyEventArgs e)
         {
 
             try

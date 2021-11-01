@@ -666,7 +666,7 @@ namespace POS.Classes
                 if (type.Equals("Category"))
                 {
                     Category category = new Category();
-                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPFolder); 
+                    byte[] imageBuffer =  readLocalImage(imageUri, Global.TMPFolder); 
                     var bitmapImage = new BitmapImage();
                     using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
                     {
@@ -680,7 +680,7 @@ namespace POS.Classes
                 else if (type.Equals("Item"))
                 {
                     Item item = new Item();
-                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPItemsFolder);
+                    byte[] imageBuffer =  readLocalImage(imageUri, Global.TMPItemsFolder);
                     var bitmapImage = new BitmapImage();
                     using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
                     {
@@ -694,7 +694,7 @@ namespace POS.Classes
                 else if (type.Equals("User"))
                 {
                     User user = new User();
-                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPUsersFolder); 
+                    byte[] imageBuffer =  readLocalImage(imageUri, Global.TMPUsersFolder); 
                     var bitmapImage = new BitmapImage();
                     using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
                     {
@@ -708,7 +708,7 @@ namespace POS.Classes
                 else if (type.Equals("Agent"))
                 {
                     Agent agent = new Agent();
-                    byte[] imageBuffer = await readLocalImage(imageUri, Global.TMPAgentsFolder);
+                    byte[] imageBuffer =  readLocalImage(imageUri, Global.TMPAgentsFolder);
                     var bitmapImage = new BitmapImage();
                     using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
                     {
@@ -745,7 +745,7 @@ namespace POS.Classes
             }
             return false;
         }
-        public static async Task<byte[]> readLocalImage(string imageName, string TMPFolder)
+        public static byte[] readLocalImage(string imageName, string TMPFolder)
         {
             byte[] data = null;
             string dir =System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;

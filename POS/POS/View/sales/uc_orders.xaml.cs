@@ -186,6 +186,144 @@ namespace POS.View.sales
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
         }
+        #region loading
+        List<keyValueBool> loadingList;
+        async void loading_RefrishItems()
+        {
+            try
+            {
+                await RefrishItems();
+
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishItems"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_RefrishCustomers()
+        {
+            try
+            {
+               await RefrishCustomers();
+
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_RefrishCustomers"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBarcodeList()
+        {
+            try
+            {
+                await fillBarcodeList();
+
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBarcodeList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillCouponsList()
+        {
+            try
+            {
+                await fillCouponsList();
+
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillCouponsList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillBranches()
+        {
+            try
+            {
+
+                await SectionData.fillBranches(cb_branch, "bs");
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBranches"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillShippingCompanies()
+        {
+            try
+            {
+                await fillShippingCompanies();
+
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillShippingCompanies"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_fillUsers()
+        {
+            try
+            {
+                await fillUsers();
+
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillUsers"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+      
+
+        #endregion
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -219,18 +357,58 @@ namespace POS.View.sales
                 translate();
                 configureDiscountType();
                 setNotifications();
-                setTimer();              
-                await RefrishItems();
-               await RefrishCustomers();
-                await fillBarcodeList();
-                await fillCouponsList();
-                await SectionData.fillBranches(cb_branch, "bs");
-                //await fillBranches();
-                await fillShippingCompanies();
-                await fillUsers();
+                setTimer();
 
-                pos = await posModel.getById(MainWindow.posID.Value);
-               // branch = await branchModel.getBranchById((int)pos.branchId);
+                #region loading
+                loadingList = new List<keyValueBool>();
+                bool isDone = true;
+                loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_RefrishCustomers", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillCouponsList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBranches", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillShippingCompanies", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillUsers", value = false });
+
+                loading_RefrishItems();
+                loading_RefrishCustomers();
+                loading_fillBarcodeList();
+                loading_fillCouponsList();
+                loading_fillBranches();
+                loading_fillShippingCompanies();
+                loading_fillUsers();
+                do
+                {
+                    isDone = true;
+                    foreach (var item in loadingList)
+                    {
+                        if (item.value == false)
+                        {
+                            isDone = false;
+                            break;
+                        }
+                    }
+                    if (!isDone)
+                    {
+                        //string s = "";
+                        //foreach (var item in loadingList)
+                        //{
+                        //    s += item.name + " - " + item.value + "\n";
+                        //}
+                        //MessageBox.Show(s);
+                        await Task.Delay(0500);
+                        //MessageBox.Show("do");
+                    }
+                }
+                while (!isDone);
+                #endregion
+
+
+
+                //pos = await posModel.getById(MainWindow.posID.Value);
+                pos = MainWindow.posLogIn;
+
+                // branch = await branchModel.getBranchById((int)pos.branchId);
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
@@ -722,13 +900,6 @@ namespace POS.View.sales
                     }
                     clearInvoice();
                     setNotifications();
-                    //else if (billDetails.Count == 0 || _InvoiceType == "s")
-                    //{
-
-
-                    //    setNotifications();
-                    //}
-
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1399,7 +1570,7 @@ namespace POS.View.sales
             refrishBillDetails();
         }
         
-        private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        private  void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {

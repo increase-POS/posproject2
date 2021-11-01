@@ -213,7 +213,7 @@ namespace POS.View
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
         }
 
-        private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        private  void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -234,7 +234,7 @@ namespace POS.View
             }
         }
         
-        private async void saveBeforeExit()
+        private async Task saveBeforeExit()
         {
             if (billDetails.Count > 0 && (_InvoiceType == "sd" || _InvoiceType == "sbd"))
             {
@@ -566,10 +566,24 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        async private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            isClose = true;
-            UserControl_Unloaded(this, null);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                isClose = true;
+                //UserControl_Unloaded(this, null);
+                await saveBeforeExit();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         public void FindControl(DependencyObject root, List<Control> controls)
         {
@@ -947,7 +961,7 @@ namespace POS.View
             }
         }
         #region Get Id By Click  Y
-        public async Task ChangeItemIdEvent(int itemId)
+        public void ChangeItemIdEvent(int itemId)
         {
             if (items != null) item = items.ToList().Find(c => c.itemId == itemId);
 
@@ -966,7 +980,7 @@ namespace POS.View
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
-                    await addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, price, false);
+                     addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, price, false);
 
                 }
                 else
@@ -1755,13 +1769,13 @@ namespace POS.View
             }
 
         }
-        private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
+        private async  void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                newDraft();
+              await  newDraft();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_barcode.Focus();
@@ -2872,7 +2886,7 @@ namespace POS.View
                             int itemId = (int)unit1.itemId;
                             if (unit1.itemId != 0)
                             {
-                                await addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price, false);
+                                 addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price, false);
                                 refreshTotalValue();
                                 refrishBillDetails();
                             }
@@ -2887,7 +2901,7 @@ namespace POS.View
 
             tb_barcode.Clear();
         }
-        private async Task addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
+        private void addItemToBill(int itemId, int itemUnitId, string unitName, decimal price, bool valid)
         {
             item = items.ToList().Find(i => i.itemId == itemId);
             bool isValid = true;
@@ -3113,7 +3127,10 @@ namespace POS.View
                             {
                                 if (dg_billDetails.Items.Count > 1)
                                 {
-                                    DataGridCell cell = null;
+
+                            //ComboBox cb = dg_billDetails.Columns[3].GetCellContent(dg_billDetails.Items[count]) as ComboBox;
+
+                            DataGridCell cell = null;
                                     try
                                     {
                                         cell = DataGridHelper.GetCell(dg_billDetails, count, 3);
@@ -3479,7 +3496,7 @@ namespace POS.View
             return pdfpath;
         }
 
-        private async void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        private  void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
@@ -3707,7 +3724,7 @@ namespace POS.View
                 }
             }
         }
-        private async void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        private  void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
         {//print
             try
             {
@@ -4022,7 +4039,7 @@ namespace POS.View
 
             //
         }
-        private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        private  void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
         {//email
             try
             {
@@ -4072,7 +4089,7 @@ namespace POS.View
                     for (int i = 0; i < w.selectedItems.Count; i++)
                     {
                         int itemId = w.selectedItems[i];
-                        await ChangeItemIdEvent(itemId);
+                        ChangeItemIdEvent(itemId);
                     }
                     refreshTotalValue();
                     refrishBillDetails();

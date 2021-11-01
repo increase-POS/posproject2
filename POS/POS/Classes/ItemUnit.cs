@@ -100,8 +100,6 @@ namespace POS.Classes
 
         public async Task<ItemUnit> GetById(int itemUnitId)
         {
-
-
             ItemUnit item = new ItemUnit();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("itemUnitId", itemUnitId.ToString());

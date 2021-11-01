@@ -1289,7 +1289,7 @@ namespace POS.View
             else
             {
                // byte[] imageBuffer = await categoryModel.downloadImage(category.image); // read this as BLOB from your DB
-                byte[] imageBuffer = await SectionData.readLocalImage(category.image, Global.TMPFolder);
+                byte[] imageBuffer =  SectionData.readLocalImage(category.image, Global.TMPFolder);
                 var bitmapImage = new BitmapImage();
                 if (imageBuffer != null)
                 {

@@ -888,7 +888,7 @@
                         <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"   BeginningEdit="Dg_billDetails_BeginningEdit" 
-PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
+                        PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
                         ColumnWidth="SizeToHeader" CanUserSortColumns="False"
                                   VirtualizingStackPanel.IsVirtualizing="False"  
@@ -944,8 +944,7 @@ PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
                                                               SelectedItem="{Binding Unit}"
-                                                      IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}"
-                                                />
+                                                      IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
