@@ -3576,7 +3576,7 @@ namespace POS.View
         }
         public async  void multiplePaytable(List<ReportParameter> paramarr)
         {
-            if (invoice.invType == "s" && MainWindow.salePaperSize == "A4")
+            if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb") && MainWindow.salePaperSize == "A4")
             {
                 CashTransfer cachModel = new CashTransfer();
                 List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -3791,7 +3791,7 @@ namespace POS.View
                         paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
 
 
-                        if (invoice.invType == "s" && MainWindow.salePaperSize == "A4")
+                        if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb") && MainWindow.salePaperSize == "A4")
                         {
                             CashTransfer cachModel = new CashTransfer();
                             List<PayedInvclass> payedList = new List<PayedInvclass>();
