@@ -1262,7 +1262,6 @@
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
-                      <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -1270,7 +1269,6 @@
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
-                      <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -1278,7 +1276,6 @@
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
-                      <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1587,8 +1584,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox41</rd:DefaultName>
-            <Top>5.48948cm</Top>
-            <Left>17.09868cm</Left>
+            <Top>5.45389cm</Top>
+            <Left>16.15233cm</Left>
             <Height>0.635cm</Height>
             <Width>2.98403cm</Width>
             <ZIndex>23</ZIndex>
