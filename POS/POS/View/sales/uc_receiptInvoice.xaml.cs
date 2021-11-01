@@ -3461,7 +3461,13 @@ namespace POS.View
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
-
+                    if (invoice.invType == "s" && MainWindow.salePaperSize == "A4")
+                    {
+                        CashTransfer cachModel = new CashTransfer();
+                        List<PayedInvclass> payedList = new List<PayedInvclass>();
+                        payedList = await cachModel.GetPayedByInvId(invoice.invoiceId);
+                        rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+                    }
                     rep.SetParameters(paramarr);
                     rep.Refresh();
 
@@ -3540,6 +3546,9 @@ namespace POS.View
                         invoice.agentName = "-";
                         invoice.agentCompany = "-";
                     }
+
+
+
                     string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice, 0);
                     ReportCls.checkLang();
                     Branch branch = new Branch();
@@ -3552,11 +3561,15 @@ namespace POS.View
                     {
                         i.price = decimal.Parse(SectionData.DecTostring(i.price));
                     }
+
+                  
+
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
 
+                    multiplePaytable(paramarr);
                     rep.SetParameters(paramarr);
                     rep.Refresh();
 
@@ -3576,7 +3589,24 @@ namespace POS.View
 
             }
         }
+        public async  void multiplePaytable(List<ReportParameter> paramarr)
+        {
+            if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb") && MainWindow.salePaperSize == "A4")
+            {
+                CashTransfer cachModel = new CashTransfer();
+                List<PayedInvclass> payedList = new List<PayedInvclass>();
+                payedList = await cachModel.GetPayedByInvId(invoice.invoiceId);
+                decimal sump = payedList.Sum(x => x.cash).Value;
+                decimal deservd = (decimal)invoice.totalNet - sump;
+                paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
+                paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump) ));
+                paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring (deservd)));
+                rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+
+
+            }
+        }
         public async void printInvoice()
         {
 
@@ -3641,12 +3671,17 @@ namespace POS.View
                     {
                         i.price = decimal.Parse(SectionData.DecTostring(i.price));
                     }
+                
+                      
+
+
+
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
 
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
-
+                    multiplePaytable(paramarr);
                     rep.SetParameters(paramarr);
                     rep.Refresh();
 
@@ -3769,6 +3804,24 @@ namespace POS.View
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
                         paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+
+
+                        if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb") && MainWindow.salePaperSize == "A4")
+                        {
+                            CashTransfer cachModel = new CashTransfer();
+                            List<PayedInvclass> payedList = new List<PayedInvclass>();
+                            payedList = await cachModel.GetPayedByInvId(invoice.invoiceId);
+                            decimal sump = payedList.Sum(x => x.cash).Value;
+                            decimal deservd = (decimal)invoice.totalNet - sump;
+                            paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
+
+                            paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
+                            paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring(deservd)));
+                            rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+
+
+                        }
+
 
                         rep.SetParameters(paramarr);
                         rep.Refresh();

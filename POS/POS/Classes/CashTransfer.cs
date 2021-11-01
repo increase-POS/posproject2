@@ -19,8 +19,18 @@ using System.Security.Claims;
 
 namespace POS.Classes
 {
+
+    public class PayedInvclass
+    {
+        public string processType { get; set; }
+        public Nullable<decimal> cash { get; set; }
+        public string cardName { get; set; }
+        public int sequenc { get; set; }
+
+    }
     public class CashTransfer
     {
+      
         public int cashTransId { get; set; }
         public string transType { get; set; }
         public Nullable<int> posId { get; set; }
@@ -413,9 +423,30 @@ namespace POS.Classes
             //}
         }
 
+    
+        public async Task<List<PayedInvclass>> GetPayedByInvId(int invId)
+        {
+
+            List<PayedInvclass> list = new List<PayedInvclass>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+          
+            parameters.Add("invId", invId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetPayedByInvId", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<PayedInvclass>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+        }
 
 
-        public async Task<List<CashTransfer>> GetbySourcId(string side, int sourceId)
+            public async Task<List<CashTransfer>> GetbySourcId(string side, int sourceId)
         {
 
             List<CashTransfer> list = new List<CashTransfer>();
