@@ -1019,43 +1019,40 @@ namespace POS_Server.Controllers
                                             I.invType,
                                             I.total,
                                             I.totalNet,
-                                            I.paid,
-                                            I.deserved,
-                                            I.deservedDate,
-                                            I.invDate,
-                                            I.invoiceMainId,
-                                            I.invCase,
-                                            I.invTime,
-                                            I.notes,
-                                            I.vendorInvNum,
-                                            I.vendorInvDate,
+                                            //I.paid,
+                                            //I.deserved,
+                                            //I.deservedDate,
+                                            //I.invDate,
+                                            //I.invoiceMainId,
+                                            //I.invCase,
+                                            //I.invTime,
+                                            //I.notes,
+                                            //I.vendorInvNum,
+                                            //I.vendorInvDate,
                                             I.createUserId,
                                             I.updateDate,
-                                            I.updateUserId,
+                                            //I.updateUserId,
                                             I.branchId,
-
                                             I.discountType,
                                             I.tax,
-                                            I.name,
-                                            I.isApproved,
+                                            //I.name,
+                                            //I.isApproved,
                                             discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
                                             I.branchCreatorId,
                                             branchCreatorName = JBCC.name,
                                             //
-                                            branchName = JBB.name,
-
-                                            branchType = JBB.type,
+                                            //branchName = JBB.name,
+                                            //branchType = JBB.type,
                                             posName = JPP.name,
-                                            posCode = JPP.code,
+                                            //posCode = JPP.code,
                                             agentName = JAA.name,
-                                            agentCode = JAA.code,
-                                            agentType = JAA.type,
-
-                                            cuserName = JUU.name,
-                                            cuserLast = JUU.lastname,
-                                            cUserAccName = JUU.username,
-                                            uuserName = JUPUS.name,
-                                            uuserLast = JUPUS.lastname,
+                                            //agentCode = JAA.code,
+                                            //agentType = JAA.type,
+                                            //cuserName = JUU.name,
+                                            //cuserLast = JUU.lastname,
+                                            //cUserAccName = JUU.username,
+                                            //uuserName = JUPUS.name,
+                                            //uuserLast = JUPUS.lastname,
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
 
@@ -4347,10 +4344,14 @@ else
 
                                         select new
                                         {
+                                            /*branchId-agentType-agentName-invType-invNumber-ItemUnit-quantity-AgentTypeAgent
+                                              InvTypeNumber-itemId-branchId-unitId-Secname-ItemUnits-SectionLoactionName-startDate-endDate-MinAll
+                                              MaxAll-sectionId-locationId-LoactionName
+                                              exportBranch-importBranch*/
                                             // item unit
                                             itemName = ITEM.name,
-                                            ITEM.min,
-                                            ITEM.max,
+                                            //ITEM.min,
+                                            //ITEM.max,
                                             ITEM.minUnitId,
                                             ITEM.maxUnitId,
                                             minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
@@ -4361,61 +4362,59 @@ else
                                             IU.itemId,
                                             IU.unitId,
 
-                                            IU.barcode,
+                                            //IU.barcode,
                                             //item location
-                                            CreateuserName = JUU.name,
-                                            CreateuserLName = JUU.lastname,
-                                            CreateuserAccName = JUU.username,
-                                            UuserName = JUPUSS.name,
-                                            UuserLName = JUPUSS.lastname,
+                                            //CreateuserName = JUU.name,
+                                            //CreateuserLName = JUU.lastname,
+                                            //CreateuserAccName = JUU.username,
+                                            //UuserName = JUPUSS.name,
+                                            //UuserLName = JUPUSS.lastname,
                                             UuserAccName = JUPUSS.username,
-
                                             //
                                             branchName = JBB.name,
-
                                             branchType = JBB.type,
                                             //itemslocations
 
-                                            IUL.itemsLocId,
-                                            IUL.locationId,
-                                            IUL.quantity,
+                                            //IUL.itemsLocId,
+                                            //IUL.locationId,
+                                            //IUL.quantity,
 
-                                            IUL.startDate,
-                                            IUL.endDate,
+                                            //IUL.startDate,
+                                            //IUL.endDate,
 
-                                            IULnote = IUL.note,
+                                            //IULnote = IUL.note,
                                             IU.storageCostId,
 
-                                            storageCostName = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name : "",
+                                            //storageCostName = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name : "",
                                             storageCostValue = IU.storageCostId != null ?
                                           entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
                                           : 0,
 
                                             //  IUL.updateDate.
-                                            cuserName = JUU.name,
-                                            cuserLast = JUU.lastname,
+                                            //cuserName = JUU.name,
+                                            //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
-                                            uuserName = JUPUSS.name,
-                                            uuserLast = JUPUSS.lastname,
+                                            //uuserName = JUPUSS.name,
+                                            //uuserLast = JUPUSS.lastname,
                                             uUserAccName = JUPUSS.username,
                                             // Location
-                                            L.x,
-                                            L.y,
-                                            L.z,
-
-                                            LocisActive = L.isActive,
-                                            L.sectionId,
-                                            Locnote = L.note,
-                                            L.branchId,
-                                            LocisFreeZone = L.isFreeZone,
+                                            //L.x,
+                                            //L.y,
+                                            //L.z,
+                                           
+                                            //LocisActive = L.isActive,
+                                            //L.sectionId,
+                                            //Locnote = L.note,
+                                            //L.branchId,
+                                            //LocisFreeZone = L.isFreeZone,
 
 
                                             // section
 
                                             Secname = JSS.name,
                                             SecisActive = JSS.isActive,
-                                            Secnote = JSS.note,
-                                            SecisFreeZone = JSS.isFreeZone,
+                                            //Secnote = JSS.note,
+                                            //SecisFreeZone = JSS.isFreeZone,
 
 
                                             //username
@@ -4797,56 +4796,59 @@ else
 
                                         select new
                                         {
+                                            /*itemId-itemName-branchId-unitId-unitName-agentId-agentName
+                                              agentType-invType-invoiceId-invNumber*/
+
                                             itemName = ITEM.name,
                                             unitName = UNIT.name,
-                                            IT.itemsTransId,
+                                           // IT.itemsTransId,
                                             IT.itemUnitId,
 
                                             IU.itemId,
                                             IU.unitId,
-                                            IT.quantity,
+                                            //IT.quantity,
 
                                             // createDate = IT.createDate,
                                             //updateDate = IT.updateDate,
                                             //  ITcreateUserId = IT.createUserId,
                                             //ITupdateUserId = IT.updateUserId,
                                             //notes = IT.notes,
-                                            IT.price,
-                                            IU.barcode,
-                                            CreateuserName = ITCUSER.name,
-                                            CreateuserLName = ITCUSER.lastname,
-                                            CreateuserAccName = ITCUSER.username,
+                                            //IT.price,
+                                            //IU.barcode,
+                                            //CreateuserName = ITCUSER.name,
+                                            //CreateuserLName = ITCUSER.lastname,
+                                            //CreateuserAccName = ITCUSER.username,
 
-                                            UpdateuserName = ITUPUSER.name,
-                                            UpdateuserLName = ITUPUSER.lastname,
-                                            UpdateuserAccName = ITUPUSER.username,
+                                           // UpdateuserName = ITUPUSER.name,
+                                           // UpdateuserLName = ITUPUSER.lastname,
+                                           // UpdateuserAccName = ITUPUSER.username,
                                             I.invoiceId,
                                             I.invNumber,
-
-                                            I.posId,
-                                            I.invType,
-                                            I.total,
-                                            I.totalNet,
-                                            I.paid,
-                                            I.deserved,
-                                            I.deservedDate,
-                                            I.invDate,
-                                            I.invoiceMainId,
-                                            I.invCase,
-                                            I.invTime,
-                                            I.notes,
-                                            I.vendorInvNum,
-                                            I.vendorInvDate,
-                                            I.createUserId,
-                                            I.updateDate,
-                                            I.updateUserId,
+                                            
+                                            //I.posId,
+                                            //I.invType,
+                                            //I.total,
+                                            //I.totalNet,
+                                            //I.paid,
+                                            //I.deserved,
+                                            //I.deservedDate,
+                                            //I.invDate,
+                                            //I.invoiceMainId,
+                                            //I.invCase,
+                                            //I.invTime,
+                                            //I.notes,
+                                            //I.vendorInvNum,
+                                           // I.vendorInvDate,
+                                            //I.createUserId,
+                                            //I.updateDate,
+                                            //I.updateUserId,
                                             // I.branchId,
                                             discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
-                                            I.discountType,
-                                            I.tax,
-                                            I.name,
+                                            //I.discountType,
+                                            //I.tax,
+                                            //I.name,
                                             I.isApproved,
-
+                                            
                                             //
                                             I.branchCreatorId,
                                             branchCreatorName = JBCC.name,
@@ -4856,9 +4858,9 @@ else
                                             //  branchName = JBB.name,
 
                                             branchType = JBB.type,
-                                            posName = JPP.name,
-                                            posCode = JPP.code,
-                                            agentCode = JAA.code,
+                                            //posName = JPP.name,
+                                            //posCode = JPP.code,
+                                            //agentCode = JAA.code,
                                             //   agentName =  JAA.name,
                                             agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.name,
@@ -4869,14 +4871,14 @@ else
                                             ? "c" : JAA.type,
                                             agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                             ? 0 : I.agentId,
-                                            cuserName = JUU.name,
-                                            cuserLast = JUU.lastname,
+                                            //cuserName = JUU.name,
+                                            //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
-                                            uuserName = JUPUS.name,
-                                            uuserLast = JUPUS.lastname,
+                                            //uuserName = JUPUS.name,
+                                            //uuserLast = JUPUS.lastname,
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
-
+                                            
                                             //username
 
                                             //  I.invoiceId,
@@ -5525,6 +5527,20 @@ else
                                     where (brIds.Contains(lo.branches.branchId))
                                     select new
                                     {
+                                        /*branchId
+                                          inventoryType
+                                          inventoryDate
+                                          branchName
+                                          ItemUnits
+                                          inventoryNum
+                                          inventoryType
+                                          inventoryDate
+                                          diffPercentage
+                                          itemCount
+                                          DestroyedCount
+                                          causeFalls
+                                          inventoryId
+                                       */
                                         usr.username,
                                         inventoryILId = c.id,
                                         c.isDestroyed,
@@ -5539,6 +5555,7 @@ else
                                         i.updateDate,
                                         i.createUserId,
                                         i.updateUserId,
+
                                         i.branchId,
                                         branchName = i.branches.name,
                                         u.items.itemId,
@@ -6052,68 +6069,70 @@ else
                                         where I.invType == "d" &&
                                         (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
 
-
-
                                         select new
                                         {
+                                           
                                             causeDestroy = IT.inventoryItemLocation.cause,
                                             userdestroy = duu.username,
-                                            I.userId,
+                                            //I.userId,
                                             itemName = ITEM.name,
                                             unitName = UNIT.name,
-                                            IT.itemsTransId,
+                                            //IT.itemsTransId,
                                             IT.itemUnitId,
 
                                             IU.itemId,
                                             IU.unitId,
                                             IT.quantity,
-                                            IT.price,
-                                            IU.barcode,
+                                            //IT.price,
+                                            //IU.barcode,
 
                                             I.invoiceId,
                                             I.invNumber,
 
-                                            I.posId,
-                                            I.invType,
-                                            I.total,
-                                            I.totalNet,
-                                            I.paid,
-                                            I.deserved,
-                                            I.deservedDate,
-                                            I.invDate,
-                                            I.invoiceMainId,
-                                            I.invCase,
-                                            I.invTime,
-                                            I.notes,
-                                            I.vendorInvNum,
-                                            I.vendorInvDate,
-                                            I.createUserId,
+                                            //I.posId,
+                                            //I.invType,
+                                            //I.total,
+                                            //I.totalNet,
+                                            //I.paid,
+                                            //I.deserved,
+
+                                          
+                                            //I.deservedDate,
+                                            //I.invDate,
+                                            //I.invoiceMainId,
+                                            //I.invCase,
+                                            //I.invTime,
+                                            //I.notes,
+                                            //I.vendorInvNum,
+                                            //I.vendorInvDate,
+                                            //I.createUserId,
                                             IupdateDate = I.updateDate,
-                                            I.updateUserId,
+                                            //I.updateUserId,
                                             // I.branchId,
-                                            I.discountValue,
-                                            I.discountType,
-                                            I.tax,
-                                            I.name,
-                                            I.isApproved,
-                                            IT.itemSerial,
+                                            //I.discountValue,
+                                            //I.discountType,
+                                            //I.tax,
+                                            //I.name,
+                                            //I.isApproved,
+                                            //IT.itemSerial,
                                             //
-                                            I.branchCreatorId,
+                                            //I.branchCreatorId,
 
                                             //
                                             branchName = JBCC.name,
                                             branchId = I.branchCreatorId,
 
-                                            branchType = JBCC.type,
-                                            posName = JPP.name,
-                                            posCode = JPP.code,
+                                            //branchType = JBCC.type,
+                                            //posName = JPP.name,
+                                            //posCode = JPP.code,
 
-                                            cuserName = JUU.name,
-                                            cuserLast = JUU.lastname,
-                                            cUserAccName = JUU.username,
-                                            uuserName = JUPUS.name,
-                                            uuserLast = JUPUS.lastname,
-                                            uUserAccName = JUPUS.username,
+                                            //cuserName = JUU.name,
+                                            //cuserLast = JUU.lastname,
+                                            //cUserAccName = JUU.username,
+                                            //uuserName = JUPUS.name,
+                                            //uuserLast = JUPUS.lastname,
+                                            //uUserAccName = JUPUS.username,
+                                           
 
                                         }).ToList();
 
@@ -6313,15 +6332,16 @@ else
 
                                         select new
                                         {
-
-
-                                            inventoryNum = IT.inventoryItemLocation.Inventory.num,
-                                            IT.inventoryItemLocation.Inventory.inventoryType,
-                                            inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
+                                            /*
+                                             inventoryType
+                                          */
+                                            //inventoryNum = IT.inventoryItemLocation.Inventory.num,
+                                            //IT.inventoryItemLocation.Inventory.inventoryType,
+                                            //inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
                                             //   itemCount
-                                            causeFalls = IT.inventoryItemLocation.fallCause,
-                                            userFalls = duu.username,
-                                            I.userId,
+                                            //causeFalls = IT.inventoryItemLocation.fallCause,
+                                            //userFalls = duu.username,
+                                            //I.userId,
                                             itemName = ITEM.name,
                                             unitName = UNIT.name,
                                             IT.itemsTransId,
@@ -6330,53 +6350,55 @@ else
                                             IU.itemId,
                                             IU.unitId,
                                             itemCount = IT.quantity,
-                                            IT.price,
-                                            IU.barcode,
+                                            //IT.price,
+                                            //IU.barcode,
 
-                                            I.invoiceId,
-                                            I.invNumber,
+                                            //I.invoiceId,
+                                            //I.invNumber,
 
-                                            I.posId,
-                                            I.invType,
-                                            I.total,
-                                            I.totalNet,
-                                            I.paid,
-                                            I.deserved,
-                                            I.deservedDate,
-                                            I.invDate,
-                                            I.invoiceMainId,
-                                            I.invCase,
-                                            I.invTime,
-                                            I.notes,
-                                            I.vendorInvNum,
-                                            I.vendorInvDate,
-                                            I.createUserId,
+                                            //I.posId,
+                                            //I.invType,
+                                            //I.total,
+                                            //I.totalNet,
+                                            //I.paid,
+                                            //I.deserved,
+                                            //I.deservedDate,
+                                            //I.invDate,
+                                            //I.invoiceMainId,
+                                            //I.invCase,
+                                            //I.invTime,
+                                            //I.notes,
+                                            //I.vendorInvNum,
+                                            //I.vendorInvDate,
+
+                                            //I.createUserId,
                                             IupdateDate = I.updateDate,
-                                            I.updateUserId,
+                                            //I.updateUserId,
                                             // I.branchId,
-                                            I.discountValue,
-                                            I.discountType,
-                                            I.tax,
-                                            I.name,
-                                            I.isApproved,
-                                            IT.itemSerial,
+                                            //I.discountValue,
+                                            //I.discountType,
+                                            //I.tax,
+                                            // I.name,
+                                            // I.isApproved,
+                                            // IT.itemSerial,
                                             //
-                                            I.branchCreatorId,
+                                            //I.branchCreatorId,
 
                                             //
+                                          
                                             branchName = JBCC.name,
                                             branchId = I.branchCreatorId,
 
-                                            branchType = JBCC.type,
-                                            posName = JPP.name,
-                                            posCode = JPP.code,
+                                            //branchType = JBCC.type,
+                                            //posName = JPP.name,
+                                            //posCode = JPP.code,
 
-                                            cuserName = JUU.name,
-                                            cuserLast = JUU.lastname,
-                                            cUserAccName = JUU.username,
-                                            uuserName = JUPUS.name,
-                                            uuserLast = JUPUS.lastname,
-                                            uUserAccName = JUPUS.username,
+                                            //cuserName = JUU.name,
+                                            //cuserLast = JUU.lastname,
+                                            //cUserAccName = JUU.username,
+                                            //uuserName = JUPUS.name,
+                                            //uuserLast = JUPUS.lastname,
+                                            //uUserAccName = JUPUS.username,
 
                                         }).ToList();
 

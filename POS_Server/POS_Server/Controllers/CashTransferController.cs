@@ -337,6 +337,93 @@ namespace POS_Server.Controllers
             //           return NotFound();
         }
 
+
+        [HttpPost]
+        [Route("GetPayedByInvId")]
+        public string GetPayedByInvId(string token)
+        {
+            //  string token
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+
+                int invId = 0;
+
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invId")
+                    {
+                        invId = int.Parse(c.Value);
+                    }
+
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        List<CashTransferModel> cachtrans = new List<CashTransferModel>();
+                        cachtrans = (from C in entity.cashTransfer
+                                     join b in entity.cards on C.cardId equals b.cardId into jb
+
+                                     from Card in jb.DefaultIfEmpty()
+
+
+                                     select new CashTransferModel()
+                                     {
+                                         cashTransId = C.cashTransId,
+                                         transType = C.transType,
+
+                                         invId = C.invId,
+
+
+                                         cash = C.cash,
+
+
+                                         cardName = Card.name,
+                                         processType = C.processType,
+                                         cardId = C.cardId,
+
+
+                                     }).Where(C => C.invId == invId && (C.processType == "card" || C.processType == "cash")).ToList();
+
+                        int i = 0;
+                        var cachtranslist = cachtrans.GroupBy(x => x.cardId).Select(x => new {
+                            processType = x.FirstOrDefault().processType,
+
+                            cash = x.Sum(c => c.cash),
+                            cardId = x.FirstOrDefault().cardId,
+                            cardName = x.FirstOrDefault().processType == "card" ? x.FirstOrDefault().cardName : "cash",
+                            sequenc = x.FirstOrDefault().processType == "cash" ? 0 : ++i,
+                        }).OrderBy(c => c.cardId).ToList();
+
+
+                        return TokenManager.GenerateToken(cachtranslist);
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+
+
+            }
+
+        }
+
+
         [HttpPost]
         [Route("GetBytypeAndSideForPos")]
         public string GetBytypeAndSideForPos(string token)
