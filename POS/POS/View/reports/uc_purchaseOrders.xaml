@@ -35,7 +35,7 @@
                         Grid.Row="0" Margin="0,0,5,0"
                         BorderBrush="{x:Null}"
                         Background="#4E4E4E">
-                    <Grid >
+                    <Grid x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -270,9 +270,10 @@
                             </Button>
                         </Border>
 
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
-                              VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
-
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                                        VerticalAlignment="Center"       FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
 
                     </Grid>
                 </Border>
@@ -333,7 +334,7 @@
 
 
 
-                                <Grid Grid.Row="1" x:Name="grid_pos" Margin="10,0,10,10" Visibility="Hidden">
+                                <!--<Grid Grid.Row="1" x:Name="grid_pos" Margin="10,0,10,10" Visibility="Hidden">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
                                         <RowDefinition Height="auto" ></RowDefinition>
@@ -519,7 +520,7 @@
                                     </DockPanel>
 
 
-                                </Grid>
+                                </Grid>-->
 
 
 
