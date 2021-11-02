@@ -610,8 +610,7 @@
                                                               ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
-                                                              SelectedItem="{Binding Unit}"
-                                                />
+                                                              SelectedItem="{Binding Unit}"  />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

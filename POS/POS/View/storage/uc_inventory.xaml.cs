@@ -49,7 +49,7 @@ namespace POS.View.storage
 
         private static int _ShortageAmount = 0;
         private static int _DestroyAmount = 0;
-        bool isClose = false;
+        //bool isClose = false;
         public static uc_inventory Instance
         {
             get
@@ -89,7 +89,7 @@ namespace POS.View.storage
                     w.ShowDialog();
                     MainWindow.mainWindow.Opacity = 1;
                     #endregion
-                    if (w.isOk || isClose == true)
+                    if (w.isOk  )
                         await addInventory("d"); // d:draft        
                 }
                 clearInventory();
@@ -138,8 +138,8 @@ namespace POS.View.storage
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            isClose = true;
-            UserControl_Unloaded(this, null);
+            //isClose = true;
+            //UserControl_Unloaded(this, null);
         }
         private void translate()
         {

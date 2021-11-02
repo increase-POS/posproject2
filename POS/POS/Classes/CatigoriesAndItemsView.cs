@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using static POS.View.uc_categorie;
 
 namespace POS.Classes
@@ -472,6 +473,8 @@ namespace POS.Classes
             }
         }
         ////////////////////////////////////////////////////////////
+        ///
+        /*
         void doubleClickCategory(object sender)
         {
             try
@@ -504,15 +507,47 @@ namespace POS.Classes
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-      
+        */
+            void doubleClickCategory(object sender)
+        {
+            try
+            {
+                UC_squareCard uc = (UC_squareCard)sender;
+                uc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + uc.categoryCardView.category.categoryId).FirstOrDefault();
+
+                //gridCatigories.Children.Remove(uc);
+
+                //FN_createCatalogCard(uc.categoryCardView, uc.columnCount, "#178DD2");
+                uc.squareCardBorderBrush = "#178DD2";
+
+
+                if (pastCatalogCard != -1 && pastCatalogCard != uc.categoryCardView.category.categoryId)
+                {
+                    var pastUc = new UC_squareCard() { ContentId = pastCatalogCard };
+                    pastUc = gridCatigories.Children.OfType<UC_squareCard>().Where(x => x.Name.ToString() == "categorie" + pastUc.ContentId).FirstOrDefault();
+                    if (pastUc != null)
+                    {
+                        //gridCatigories.Children.Remove(pastUc);
+                        //FN_createCatalogCard(pastUc.categoryCardView, pastUc.columnCount,
+                        // "#DFDFDF");
+                        pastUc.squareCardBorderBrush = "#DFDFDF";
+                    }
+                }
+
+                pastCatalogCard = uc.categoryCardView.category.categoryId;
+                idCatigories = uc.categoryCardView.category.categoryId;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         #endregion
         #region Catalog Items
 
 
         private int pastCatalogItem = -1;
         internal uc_receiptInvoice ucReceiptInvoice;
-
-      
         public void  FN_refrishCatalogItem(List<Item> items, string language, string cardType)
         {
             gridCatigorieItems.Children.Clear();
@@ -556,7 +591,7 @@ namespace POS.Classes
             if (e.ClickCount > 0)
                 doubleClickItem(sender);
         }
-
+        /*
         private void doubleClickItem(object sender)
         {
             try
@@ -584,7 +619,39 @@ namespace POS.Classes
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        */
+        private void doubleClickItem(object sender)
+        {
+            try
+            {
+                UC_rectangleCard uc = (UC_rectangleCard)sender;
+                uc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + uc.cardViewitem.item.itemId).FirstOrDefault();
 
+                //uc.rectangleCardBorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
+                uc.rectangleCardBorderBrush ="#178DD2";
+
+                //gridCatigorieItems.Children.Remove(uc);
+                //FN_createRectangelCard(uc.cardViewitem, "#178DD2");
+                if (pastCatalogItem != -1 && pastCatalogItem != uc.cardViewitem.item.itemId)
+                {
+                    var pastUc = new UC_rectangleCard() { contentId = pastCatalogItem };
+                    pastUc = gridCatigorieItems.Children.OfType<UC_rectangleCard>().Where(x => x.Name.ToString() == "CardName" + pastUc.contentId).FirstOrDefault();
+                    if (pastUc != null)
+                    {
+                        //    gridCatigorieItems.Children.Remove(pastUc);
+                        //    FN_createRectangelCard(pastUc.cardViewitem, "#DFDFDF");
+                        pastUc.rectangleCardBorderBrush = "#DFDFDF";
+                    }
+
+                }
+                pastCatalogItem = uc.cardViewitem.item.itemId;
+                idItem = uc.cardViewitem.item.itemId;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         #region User
         public void FN_refrishUsers(List<User> users, string language, string cardType)

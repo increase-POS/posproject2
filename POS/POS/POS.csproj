@@ -289,6 +289,7 @@
     <Compile Include="converters\locationFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\notificationsContentConverter.cs" />
     <Compile Include="converters\notificationsTitleConverter.cs" />
+    <Compile Include="converters\orderStatusConverter.cs" />
     <Compile Include="converters\permissionsNameConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />
     <Compile Include="converters\SectionFreeZoneConverter.cs" />

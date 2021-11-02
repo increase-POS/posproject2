@@ -2408,7 +2408,6 @@ namespace POS.View
         public async Task ChangeItemIdEvent(int itemId)
         {
 
-
             p_errorName.Visibility = Visibility.Collapsed;
             p_errorCode.Visibility = Visibility.Collapsed;
             var bc = new BrushConverter();

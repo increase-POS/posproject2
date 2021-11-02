@@ -936,15 +936,15 @@
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
+                                        <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
                                                   SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
                                                               Tag="cbm_unitItemDetails" 
                                                               x:Name="cbm_unitItemDetails"
                                                               ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
-                                                              SelectedItem="{Binding Unit}"
-                                                      IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}" />
+                                                              SelectedItem="{Binding Unit}"/>
+                                        <!--IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}" />-->
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

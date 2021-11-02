@@ -17,6 +17,8 @@ namespace POS
         //public static string APIUri = Properties.Settings.Default.APIUri;
         public static string APIUri = "http://141.95.1.58:44/api/";
 
+        //public static string APIUri = "http://192.168.1.6:44730/api/";
+
         public static string ScannedImageLocation = "Thumb/Scan/scan.jpg";
         public const string TMPFolder = "Thumb";
         public const string TMPItemsFolder = "Thumb/items"; // folder to save items photos locally 

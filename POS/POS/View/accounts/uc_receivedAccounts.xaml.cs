@@ -549,15 +549,15 @@ namespace POS.View.accounts
                     else
                     {
                     }
-                    //chk empty process num
-                    if (tb_docNumCard.IsVisible)
-                    {
-                        SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
-                    }
-                    else
-                    {
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                    }
+                    ////chk empty process num
+                    //if (tb_docNumCard.IsVisible)
+                    //{
+                    //    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
+                    //}
+                    //else
+                    //{
+                    //    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                    //}
                     //chk empty deposit from
                     SectionData.validateEmptyComboBox(cb_depositFrom, p_errorDepositFrom, tt_errorDepositFrom, "trErrorEmptyDepositFromToolTip");
 
@@ -590,17 +590,26 @@ namespace POS.View.accounts
                     #endregion
 
                     #region save
-                    if ((!tb_cash.Text.Equals("")) && (!cb_depositFrom.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
-                    (((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
-                    (((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
-                    (((cb_depositorU.IsVisible) && (!cb_depositorU.Text.Equals(""))) || (!cb_depositorU.IsVisible)) &&
-                    (((cb_depositorSh.IsVisible) && (!cb_depositorSh.Text.Equals(""))) || (!cb_depositorSh.IsVisible)) &&
-                    (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
-                    (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-                    (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                    (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible))
-                    )
-                    {
+                    //if ((!tb_cash.Text.Equals("")) && (!cb_depositFrom.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
+                    //(((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
+                    //(((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
+                    //(((cb_depositorU.IsVisible) && (!cb_depositorU.Text.Equals(""))) || (!cb_depositorU.IsVisible)) &&
+                    //(((cb_depositorSh.IsVisible) && (!cb_depositorSh.Text.Equals(""))) || (!cb_depositorSh.IsVisible)) &&
+                    //(((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
+                    //(((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                    //(((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
+                    //(((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible))
+                    //)
+                        if ((!tb_cash.Text.Equals("")) && (!cb_depositFrom.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
+                        (((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
+                        (((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
+                        (((cb_depositorU.IsVisible) && (!cb_depositorU.Text.Equals(""))) || (!cb_depositorU.IsVisible)) &&
+                        (((cb_depositorSh.IsVisible) && (!cb_depositorSh.Text.Equals(""))) || (!cb_depositorSh.IsVisible)) &&
+                        (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
+                        (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                        (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible))
+                        )
+                        {
                         string depositor = cb_depositFrom.SelectedValue.ToString();
                         int agentid = 0;
 
@@ -847,7 +856,7 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
                 SectionData.clearTextBlockValidate(txt_card, p_errorCard);
-                SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
@@ -1027,8 +1036,8 @@ namespace POS.View.accounts
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
                 else if ((sender as TextBox).Name == "tb_docNumCheque")
                     SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
-                else if ((sender as TextBox).Name == "tb_docNumCard")
-                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
+                //else if ((sender as TextBox).Name == "tb_docNumCard")
+                //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
             }
             else if (name == "ComboBox")
             {
@@ -1107,7 +1116,7 @@ namespace POS.View.accounts
                         grid_cheque.Visibility = Visibility.Collapsed;
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
@@ -1128,7 +1137,7 @@ namespace POS.View.accounts
                         grid_cheque.Visibility = Visibility.Collapsed;
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         if (grid_cheque.IsVisible)
@@ -1143,7 +1152,7 @@ namespace POS.View.accounts
                         grid_cheque.Visibility = Visibility.Visible;
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         if (grid_doc.IsVisible)

@@ -2707,4 +2707,10 @@
   <data name="trCashType" xml:space="preserve">
     <value>نقدي</value>
   </data>
+  <data name="trNotReady" xml:space="preserve">
+    <value>غير جاهز</value>
+  </data>
+  <data name="trReady" xml:space="preserve">
+    <value>جاهز</value>
+  </data>
 </root>

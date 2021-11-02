@@ -554,15 +554,15 @@ namespace POS.View.accounts
                     {
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
                     }
-                    //chk empty process num
-                    if (tb_docNumCard.IsVisible)
-                    {
-                        SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
-                    }
-                    else
-                    {
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                    }
+                    ////chk empty process num
+                    //if (tb_docNumCard.IsVisible)
+                    //{
+                    //    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
+                    //}
+                    //else
+                    //{
+                    //    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                    //}
                     //chk empty deposit to
                     SectionData.validateEmptyComboBox(cb_depositTo, p_errorDepositTo, tt_errorDepositTo, "trErrorEmptyDepositToToolTip");
 
@@ -611,18 +611,28 @@ namespace POS.View.accounts
 
                     #region save
 
-                    if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
-                         (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
-                         (((cb_recipientC.IsVisible) && (!cb_recipientC.Text.Equals(""))) || (!cb_recipientC.IsVisible)) &&
-                         (((cb_recipientU.IsVisible) && (!cb_recipientU.Text.Equals(""))) || (!cb_recipientU.IsVisible)) &&
-                         (((cb_recipientSh.IsVisible) && (!cb_recipientSh.Text.Equals(""))) || (!cb_recipientSh.IsVisible)) &&
-                         (((tb_docNumCheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!tb_docNumCheque.IsVisible)) &&
-                         (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-                         (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible)) &&
-                         (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                          enoughMoney
-                         )
-                    {
+                    //if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
+                    //     (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
+                    //     (((cb_recipientC.IsVisible) && (!cb_recipientC.Text.Equals(""))) || (!cb_recipientC.IsVisible)) &&
+                    //     (((cb_recipientU.IsVisible) && (!cb_recipientU.Text.Equals(""))) || (!cb_recipientU.IsVisible)) &&
+                    //     (((cb_recipientSh.IsVisible) && (!cb_recipientSh.Text.Equals(""))) || (!cb_recipientSh.IsVisible)) &&
+                    //     (((tb_docNumCheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!tb_docNumCheque.IsVisible)) &&
+                    //     (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                    //     (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible)) &&
+                    //     (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
+                    //      enoughMoney
+                    //     )
+                        if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
+                       (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
+                       (((cb_recipientC.IsVisible) && (!cb_recipientC.Text.Equals(""))) || (!cb_recipientC.IsVisible)) &&
+                       (((cb_recipientU.IsVisible) && (!cb_recipientU.Text.Equals(""))) || (!cb_recipientU.IsVisible)) &&
+                       (((cb_recipientSh.IsVisible) && (!cb_recipientSh.Text.Equals(""))) || (!cb_recipientSh.IsVisible)) &&
+                       (((tb_docNumCheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!tb_docNumCheque.IsVisible)) &&
+                       (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                       (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible)) &&
+                        enoughMoney
+                       )
+                        {
                         string recipient = cb_depositTo.SelectedValue.ToString();
                         int agentid = 0;
 
@@ -840,7 +850,7 @@ namespace POS.View.accounts
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_cash, p_errorCash);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                 SectionData.clearComboBoxValidate(cb_depositTo, p_errorDepositTo);
                 SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                 SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
@@ -1074,7 +1084,7 @@ namespace POS.View.accounts
                         _SelectedCard = -1;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
@@ -1088,7 +1098,7 @@ namespace POS.View.accounts
                         _SelectedCard = -1;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
@@ -1101,7 +1111,7 @@ namespace POS.View.accounts
                         _SelectedCard = -1;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 

@@ -90,7 +90,6 @@ namespace POS.View.sales
         ItemLocation itemLocationModel = new ItemLocation();
         public List<Control> controls;
         private static DispatcherTimer timer;
-        bool isClose = false;
 
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
@@ -369,8 +368,8 @@ namespace POS.View.sales
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            isClose = true;
-            UserControl_Unloaded(this, null);
+            //isClose = true;
+            //UserControl_Unloaded(this, null);
         }
         public void FindControl(DependencyObject root, List<Control> controls)
         {
@@ -1864,7 +1863,7 @@ namespace POS.View.sales
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk || isClose == true)
+                if (w.isOk  )
                     Btn_newDraft_Click(null, null);
                 else
                 {

@@ -114,7 +114,7 @@ namespace POS.View.purchases
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        bool isClose = false;
+        //bool isClose = false;
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             try
@@ -197,7 +197,7 @@ namespace POS.View.purchases
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk || isClose == true)
+                if (w.isOk  )
                 {
                     //Btn_newDraft_Click(null, null);
                     bool valid = validateItemUnits();
@@ -369,7 +369,6 @@ namespace POS.View.purchases
                 loadingList = new List<keyValueBool>();
                 bool isDone = true;
                 loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
-                loadingList.Add(new keyValueBool { key = "loading_fillBranchesWithoutCurrent", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_refrishVendors", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
 
@@ -457,8 +456,8 @@ namespace POS.View.purchases
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            isClose = true;
-            UserControl_Unloaded(this, null);
+            //isClose = true;
+            //UserControl_Unloaded(this, null);
         }
 
         #region bill

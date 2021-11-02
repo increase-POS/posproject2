@@ -4544,6 +4544,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not Ready.
+        /// </summary>
+        internal static string trNotReady {
+            get {
+                return ResourceManager.GetString("trNotReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Num.
         /// </summary>
         internal static string trNum {
@@ -5620,6 +5629,15 @@ namespace POS {
         internal static string trQuotationsDraft {
             get {
                 return ResourceManager.GetString("trQuotationsDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ready.
+        /// </summary>
+        internal static string trReady {
+            get {
+                return ResourceManager.GetString("trReady", resourceCulture);
             }
         }
         

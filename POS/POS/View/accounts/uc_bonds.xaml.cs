@@ -13,6 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,6 +24,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Resources;
 using System.Windows.Shapes;
 
 namespace POS.View.accounts
@@ -49,6 +51,7 @@ namespace POS.View.accounts
         IEnumerable<Bonds> bondsQuery;
         IEnumerable<Bonds> bondsQueryExcel;
         string searchText = "";
+        static private int _SelectedCard = -1;
 
         CashTransfer cashModel = new CashTransfer();
         IEnumerable<CashTransfer> cashbondsQuery;
@@ -91,7 +94,8 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
                 #endregion
@@ -176,13 +180,16 @@ namespace POS.View.accounts
                             ca = cashbondsQuery.Where(c => c.bondId == bond.bondId).FirstOrDefault();
                             cb_paymentProcessType.SelectedValue = ca.processType;
                             if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                                cb_card.SelectedValue = ca.cardId;
+                                //cb_card.SelectedValue = ca.cardId;
+                            _SelectedCard =(int) ca.cardId;
                         }
                         else
                         {
                             cb_paymentProcessType.SelectedIndex = -1;
-                            cb_card.SelectedIndex = -1;
-                            cb_card.Visibility = Visibility.Collapsed;
+                            //cb_card.SelectedIndex = -1;
+                            _SelectedCard = -1;
+                            //cb_card.Visibility = Visibility.Collapsed;
+                            gd_card.Visibility = Visibility.Collapsed;
                         }
 
                     }
@@ -211,10 +218,13 @@ namespace POS.View.accounts
                     //chk empty payment type
                     SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                     //chk empty card 
-                    if (cb_card.IsVisible)
-                        SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                    //if (cb_card.IsVisible)
+                    if (gd_card.IsVisible)
+                        //SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
                     else
-                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                     //chk empty payment type
                     SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                     //chk enough money
@@ -230,7 +240,7 @@ namespace POS.View.accounts
                     #region pay
 
                     if ((!cb_paymentProcessType.Text.Equals("")) &&
-                        (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
+                        (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible)) &&
                         enoughMoney)
                     {
                         //update bond
@@ -250,8 +260,9 @@ namespace POS.View.accounts
                             cash.notes = tb_note.Text;
                             cash.createUserId = MainWindow.userID;
                             cash.side = "bnd";
-                            cash.docNum = tb_number.Text;
+                            //cash.docNum = tb_number.Text;
                             cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+                            cash.docNum = tb_processNum.Text;
                             cash.bondId = bond.bondId;
 
                             if (cb_depositorV.IsVisible)
@@ -264,7 +275,7 @@ namespace POS.View.accounts
                                 cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
 
                             if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                                cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                                cash.cardId =_SelectedCard;
 
                             s = await cashModel.Save(cash);
 
@@ -449,7 +460,8 @@ namespace POS.View.accounts
                 cb_depositorC.SelectedIndex = -1;
                 cb_depositorU.SelectedIndex = -1;
                 cb_paymentProcessType.SelectedIndex = -1;
-                cb_card.SelectedIndex = -1;
+                //cb_card.SelectedIndex = -1;
+                _SelectedCard =  -1;
                 dp_deservecDate.SelectedDate = null;
 
                 cb_depositorV.Visibility = Visibility.Collapsed;
@@ -463,7 +475,8 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
             }
@@ -646,15 +659,19 @@ namespace POS.View.accounts
                 cb_paymentProcessType.ItemsSource = typelist;
                 #endregion
 
+
+                //#region fill card combo
+                //cards = await cardModel.GetAll();
+                //cb_card.ItemsSource = cards;
+                //cb_card.DisplayMemberPath = "name";
+                //cb_card.SelectedValuePath = "cardId";
+                //cb_card.SelectedIndex = -1;
+                //#endregion
                 #region fill card combo
                 cards = await cardModel.GetAll();
-                cb_card.ItemsSource = cards;
-                cb_card.DisplayMemberPath = "name";
-                cb_card.SelectedValuePath = "cardId";
-                cb_card.SelectedIndex = -1;
+                InitializeCardsPic(cards);
                 #endregion
 
-               
 
                 SectionData.defaultDatePickerStyle(dp_deservecDate);
 
@@ -685,7 +702,101 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        void InitializeCardsPic(IEnumerable<Card> cards)
+        {
+            #region cardImageLoad
+            dkp_cards.Children.Clear();
+            int userCount = 0;
+            foreach (var item in cards)
+            {
+                #region Button
+                Button button = new Button();
+                //button.DataContext = item.name;
+                button.DataContext = item;
+                button.Tag = item.cardId;
+                button.Padding = new Thickness(0, 0, 0, 0);
+                button.Margin = new Thickness(2.5, 5, 2.5, 5);
+                button.Background = null;
+                button.BorderBrush = null;
+                button.Height = 35;
+                button.Width = 35;
+                button.Click += card_Click;
+                //Grid.SetColumn(button, 4);
+                #region grid
+                Grid grid = new Grid();
+                #region 
+                Ellipse ellipse = new Ellipse();
+                //ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                ellipse.StrokeThickness = 1;
+                ellipse.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                ellipse.Height = 35;
+                ellipse.Width = 35;
+                ellipse.FlowDirection = FlowDirection.LeftToRight;
+                ellipse.ToolTip = item.name;
+                userImageLoad(ellipse, item.image);
+                Grid.SetColumn(ellipse, userCount);
+                grid.Children.Add(ellipse);
+                #endregion
+                #endregion
+                button.Content = grid;
+                #endregion
+                dkp_cards.Children.Add(button);
 
+            }
+            #endregion
+        }
+        void card_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            _SelectedCard = int.Parse(button.Tag.ToString());
+            //txt_card.Text = button.DataContext.ToString();
+            Card card = button.DataContext as Card;
+            txt_card.Text = card.name;
+            if (card.hasProcessNum.Value)
+                tb_processNum.Visibility = Visibility.Visible;
+            else
+                tb_processNum.Visibility = Visibility.Collapsed;
+
+            //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
+        }
+        ImageBrush brush = new ImageBrush();
+        async void userImageLoad(Ellipse ellipse, string image)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(image))
+                {
+                    clearImg(ellipse);
+
+                    byte[] imageBuffer = await cardModel.downloadImage(image); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    ellipse.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg(ellipse);
+                }
+            }
+            catch
+            {
+                clearImg(ellipse);
+            }
+        }
+        private void clearImg(Ellipse ellipse)
+        {
+            Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            ellipse.Fill = brush;
+        }
         private async void dp_SelectedEndDateChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -748,7 +859,8 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_deservecDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+            txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
             dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
@@ -798,17 +910,26 @@ namespace POS.View.accounts
                 {
 
                     case 0://cash
-                        cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
-                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        //cb_card.Visibility = Visibility.Collapsed;
+                        gd_card.Visibility = Visibility.Collapsed;
+                        //cb_card.SelectedIndex = -1;
+                        _SelectedCard = -1;
+                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
                     case 1://cheque
-                        cb_card.Visibility = Visibility.Collapsed; cb_card.SelectedIndex = -1;
-                        SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        //cb_card.Visibility = Visibility.Collapsed;
+                        gd_card.Visibility = Visibility.Collapsed;
+                        //cb_card.SelectedIndex = -1;
+                        _SelectedCard = -1;
+                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
                     case 2://card
-                        cb_card.Visibility = Visibility.Visible;
+                        //cb_card.Visibility = Visibility.Visible;
+                        gd_card.Visibility = Visibility.Visible;
                         break;
                 }
 
@@ -1323,5 +1444,13 @@ buildbondDocReport();
             }
         }
 
+        private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
+        
+        
     }
 }

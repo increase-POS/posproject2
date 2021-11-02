@@ -114,7 +114,7 @@ namespace POS.View.storage
         public byte tglItemState = 1;
         public string txtItemSearch;
         //tglItemState
-        bool isClose = false;
+        //bool isClose = false;
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             try
@@ -163,7 +163,7 @@ namespace POS.View.storage
                     w.ShowDialog();
                     MainWindow.mainWindow.Opacity = 1;
                     #endregion
-                    if (w.isOk || isClose == true)
+                    if (w.isOk  )
                         Btn_newDraft_Click(null, null);
                     else
                         clearProcess();
@@ -273,8 +273,8 @@ namespace POS.View.storage
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            isClose = true;
-            UserControl_Unloaded(this, null);
+            //isClose = true;
+            //UserControl_Unloaded(this, null);
         }
         public void FindControl(DependencyObject root, List<Control> controls)
         {

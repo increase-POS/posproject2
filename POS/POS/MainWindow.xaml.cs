@@ -109,6 +109,15 @@ namespace POS
         static public List<Item> InvoiceGlobalItemsList = new List<Item>();
         static public List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
 
+
+
+
+
+        static public ItemUnit GlobalItemUnit = new ItemUnit();
+        static public List<ItemUnit> GlobalItemUnitsList = new List<ItemUnit>();
+        static public Unit GlobalUnit = new Unit();
+        static public List<Unit> GlobalUnitsList = new List<Unit>();
+
         public static async Task Getprintparameter()
         {
             List<SetValues> printList = new List<SetValues>();
@@ -174,7 +183,6 @@ namespace POS
             await GetReportlang();
             await getPrintersNames();
         }
-
         static public MainWindow mainWindow;
         public MainWindow()
         {
@@ -191,7 +199,6 @@ namespace POS
             { SectionData.ExceptionMessage(ex, this); }
 
         }
-
         void windowFlowDirection()
         {
             #region translate
@@ -587,6 +594,42 @@ namespace POS
                 }
             }
         }
+        async void loading_GlobalItemUnitsList()
+        {
+            try
+            {
+                GlobalItemUnitsList = await GlobalItemUnit.GetIU();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_GlobalItemUnitsList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+        async void loading_GlobalUnitsList()
+        {
+            try
+            {
+                GlobalUnitsList = await GlobalUnit.GetU();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_GlobalUnitsList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
         #endregion
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -645,6 +688,8 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_getItemUnitsUsers", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getGroupObjects", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getprintSitting", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_GlobalItemUnitsList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_GlobalUnitsList", value = false });
 
 
                 loading_getUserPath();
@@ -658,6 +703,8 @@ namespace POS
                 loading_getDefaultSystemInfo();
                 loading_getGroupObjects();
                 loading_getprintSitting();
+                loading_GlobalItemUnitsList();
+                loading_GlobalUnitsList();
                 do
                 {
                     isDone = true;

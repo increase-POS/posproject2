@@ -4526,6 +4526,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to غير جاهز.
+        /// </summary>
+        internal static string trNotReady {
+            get {
+                return ResourceManager.GetString("trNotReady", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الرقم.
         /// </summary>
         internal static string trNum {
@@ -5584,6 +5593,15 @@ namespace POS {
         internal static string trQuotationsDraft {
             get {
                 return ResourceManager.GetString("trQuotationsDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to جاهز.
+        /// </summary>
+        internal static string trReady {
+            get {
+                return ResourceManager.GetString("trReady", resourceCulture);
             }
         }
         

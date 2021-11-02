@@ -133,7 +133,7 @@ namespace POS.View
         public static int height;
         Invoice prInvoice = new Invoice();
         int prinvoiceId;
-        bool isClose = false;
+        //bool isClose = false;
 
         #region bill
 
@@ -248,8 +248,6 @@ namespace POS.View
                 #endregion
                     if (w.isOk)
                     Btn_newDraft_Click(null, null);
-                if ( isClose  == true)
-                    await newDraft();
                     else
                 {
                     await clearInvoice();
@@ -568,22 +566,22 @@ namespace POS.View
         }
         async private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                isClose = true;
-                //UserControl_Unloaded(this, null);
-                await saveBeforeExit();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
+            //    isClose = true;
+            //    //UserControl_Unloaded(this, null);
+            //    await saveBeforeExit();
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         public void FindControl(DependencyObject root, List<Control> controls)
         {

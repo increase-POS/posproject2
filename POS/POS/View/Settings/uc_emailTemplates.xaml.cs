@@ -416,8 +416,18 @@ namespace POS.View.Settings
 
         }
 
-
-
-
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
+        {
+            tb_title.Text = 
+                tb_text1.Text =
+                tb_text2.Text =
+                tb_link1text.Text =
+                tb_link2text.Text =
+                tb_link3text.Text =
+                tb_link1url.Text =
+                tb_link2url.Text =
+                tb_link3url.Text =  "";
+            this.DataContext = new SetValues(); 
+        }
     }
 }
