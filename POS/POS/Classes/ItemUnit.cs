@@ -36,7 +36,8 @@ namespace POS.Classes
         public string unitName { get; set; }
         public Boolean canDelete { get; set; }
         public Nullable<byte> isActive { get; set; }
-
+        public Nullable<decimal> purchasePrice { get; set; }
+ 
         //**************************************************
         //*************** item unit methods *********************
         public async Task<List<ItemUnit>> GetAllItemUnits(int itemId)
@@ -213,6 +214,50 @@ namespace POS.Classes
             //    return items;
             //}
         }
+
+        public List<ItemUnit> GetIUbyItem(int itemId, List<ItemUnit>AllIU,List<Unit>AllUnits)
+        {
+
+            List<ItemUnit> itemUnitsList = new List<ItemUnit>();
+            try
+            {
+                itemUnitsList = ( from IU in AllIU
+                            where (IU.itemId == itemId && IU.isActive == 1)
+                            join U in AllUnits on IU.unitId equals U.unitId into lj
+
+                            from v in lj.DefaultIfEmpty()
+                            join u1 in AllUnits on IU.subUnitId equals u1.unitId into tj
+                            from v1 in tj.DefaultIfEmpty()
+                            select new ItemUnit()
+                            {
+                                itemUnitId = IU.itemUnitId,
+                                unitId = IU.unitId,
+                                mainUnit = v.name,
+                                createDate = IU.createDate,
+                                createUserId = IU.createUserId,
+                                defaultPurchase = IU.defaultPurchase,
+                                defaultSale = IU.defaultSale,
+                                price = IU.price,
+                                subUnitId = IU.subUnitId,
+                                smallUnit = v1.name,
+                                unitValue = IU.unitValue,
+                                barcode = IU.barcode,
+                                updateDate = IU.updateDate,
+                                updateUserId = IU.updateUserId,
+                                storageCostId = IU.storageCostId,
+
+                            }).ToList();
+
+                    return itemUnitsList;
+              
+            }
+            catch
+            {
+                return itemUnitsList;
+            }
+        }
+
+
         //***************************************
         // get all barcodes from DB , return list of string represent barcodes
         //***************************************
@@ -406,6 +451,22 @@ namespace POS.Classes
             //    return items;
             //}
         }
+
+        public async Task<List<ItemUnit>> GetIU()
+        {
+            List<ItemUnit> list = new List<ItemUnit>();
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetIU");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemUnit>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+        }
+
         public async Task<List<ItemUnit>> GetActiveItemsUnits()
         {
             List<ItemUnit> list = new List<ItemUnit>();
