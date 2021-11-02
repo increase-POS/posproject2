@@ -949,7 +949,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn x:Name="col_count"  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
-                            <DataGridTextColumn x:Name="col_price"   IsReadOnly="True"  Width="*" Header="Price" Binding="{Binding Path=Price , Converter={StaticResource accuracyConverter} , Mode=TwoWay}" />
+                                <DataGridTextColumn x:Name="col_price"   IsReadOnly="True"  Width="*" Header="Price" Binding="{Binding Path=Price , Converter={StaticResource accuracyConverter}}" />
                                 <DataGridTextColumn x:Name="col_total" IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total ,Converter={StaticResource accuracyConverter}}"/>
                                 <DataGridTemplateColumn Width="30" Header="" IsReadOnly="True" >
                                     <DataGridTemplateColumn.CellTemplate>
