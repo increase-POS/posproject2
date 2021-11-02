@@ -129,6 +129,68 @@ namespace POS_Server.Controllers
             //        //else
             //        return NotFound();
         }
+
+        [HttpPost]
+        [Route("GetIU")]
+        public string GetIU(string token)
+        {
+
+            // public string GetUsersByGroupId(string token)int itemId
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var itemUnitsList = (from IU in entity.itemsUnits
+
+                                                 //where IU.isActive ==1
+                                             select new
+                                             {
+                                                 itemUnitId = IU.itemUnitId,
+                                                 unitId = IU.unitId,
+                                                 itemId = IU.itemId,
+                                                 unitValue = IU.unitValue,
+
+                                                 createDate = IU.createDate,
+                                                 createUserId = IU.createUserId,
+                                                 defaultPurchase = IU.defaultPurchase,
+                                                 defaultSale = IU.defaultSale,
+                                                 price = IU.price,
+                                                 subUnitId = IU.subUnitId,
+
+
+                                                 barcode = IU.barcode,
+                                                 updateDate = IU.updateDate,
+                                                 updateUserId = IU.updateUserId,
+
+                                                 storageCostId = IU.storageCostId,
+                                                 purchasePrice = IU.purchasePrice,
+                                                 IU.isActive,
+                                             })
+                                                         .ToList();
+
+
+                        return TokenManager.GenerateToken(itemUnitsList);
+                    }
+
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }
+
+        }
+
+
         [HttpPost]
         [Route("GetById")]
         public string GetById(string token)

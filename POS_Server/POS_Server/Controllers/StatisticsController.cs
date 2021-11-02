@@ -4281,9 +4281,7 @@ else
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
+
           token = TokenManager.readToken(HttpContext.Current.Request); 
  var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
@@ -4350,8 +4348,8 @@ else
                                               exportBranch-importBranch*/
                                             // item unit
                                             itemName = ITEM.name,
-                                            //ITEM.min,
-                                            //ITEM.max,
+                                            ITEM.min,
+                                            ITEM.max,
                                             ITEM.minUnitId,
                                             ITEM.maxUnitId,
                                             minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
@@ -4371,16 +4369,18 @@ else
                                             //UuserLName = JUPUSS.lastname,
                                             UuserAccName = JUPUSS.username,
                                             //
+                                            branchId = L.branchId,
                                             branchName = JBB.name,
                                             branchType = JBB.type,
+
                                             //itemslocations
 
-                                            //IUL.itemsLocId,
-                                            //IUL.locationId,
-                                            //IUL.quantity,
+                                            IUL.itemsLocId,
+                                            IUL.locationId,
+                                            IUL.quantity,
 
-                                            //IUL.startDate,
-                                            //IUL.endDate,
+                                            IUL.startDate,
+                                            IUL.endDate,
 
                                             //IULnote = IUL.note,
                                             IU.storageCostId,
@@ -4390,7 +4390,7 @@ else
                                           entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
                                           : 0,
 
-                                            //  IUL.updateDate.
+                                            IUL.updateDate,
                                             //cuserName = JUU.name,
                                             //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
@@ -4398,15 +4398,15 @@ else
                                             //uuserLast = JUPUSS.lastname,
                                             uUserAccName = JUPUSS.username,
                                             // Location
-                                            //L.x,
-                                            //L.y,
-                                            //L.z,
-                                           
+                                            L.x,
+                                            L.y,
+                                            L.z,
+
                                             //LocisActive = L.isActive,
-                                            //L.sectionId,
+                                            L.sectionId,
                                             //Locnote = L.note,
                                             //L.branchId,
-                                            //LocisFreeZone = L.isFreeZone,
+                                            LocisFreeZone = L.isFreeZone,
 
 
                                             // section
@@ -4414,7 +4414,7 @@ else
                                             Secname = JSS.name,
                                             SecisActive = JSS.isActive,
                                             //Secnote = JSS.note,
-                                            //SecisFreeZone = JSS.isFreeZone,
+                                            SecisFreeZone = JSS.isFreeZone,
 
 
                                             //username
@@ -4424,12 +4424,7 @@ else
                                         }).ToList();
 
 
-
-
-
-
-
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -5533,8 +5528,7 @@ else
                                           branchName
                                           ItemUnits
                                           inventoryNum
-                                          inventoryType
-                                          inventoryDate
+                                       
                                           diffPercentage
                                           itemCount
                                           DestroyedCount
@@ -5573,7 +5567,7 @@ else
                                         inventoryDate = c.Inventory.createDate,
                                         inventoryNum = c.Inventory.num,
                                         c.Inventory.inventoryType,
-                                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+                                      // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
                                         //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
                                     }).ToList();
 

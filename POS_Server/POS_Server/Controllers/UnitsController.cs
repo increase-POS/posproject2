@@ -77,7 +77,52 @@ var strP = TokenManager.GetPrincipal(token);
             }
          }
 
-        
+
+
+        [HttpPost]
+        [Route("GetU")]
+        public string GetU(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var unitsList = (from u in entity.units
+
+                                     select new
+                                     {
+                                         unitId = u.unitId,
+                                         name = u.name,
+                                         isSmallest = u.isSmallest,
+
+                                         parentid = u.parentid,
+                                         smallestId = u.smallestId,
+                                         notes = u.notes,
+                                         createDate = u.createDate,
+                                         createUserId = u.createUserId,
+                                         updateDate = u.updateDate,
+                                         updateUserId = u.updateUserId,
+                                         isActive = u.isActive,
+
+
+                                     }).ToList();
+
+             
+                    return TokenManager.GenerateToken(unitsList);
+                }
+
+            }
+
+        }
+
+
         [HttpPost]
         [Route("getSmallUnits")]
         public string getSmallUnits(string token)
