@@ -130,8 +130,8 @@ namespace POS.View.windows
                 var orderTypes = invTypeArray.ToList();
                invTypeL = invoiceType.Split(',').ToList();
                 inCommen = invTypeL.Any(s => orderTypes.Contains(s));
-                if (inCommen)
-                    dg_Invoice.Columns[0].Visibility = Visibility.Visible; //make total column unvisible
+                //if (inCommen)
+                //    dg_Invoice.Columns[0].Visibility = Visibility.Visible; //make total column unvisible
                 #endregion
                 #region display branch & user columns in grid if invoice is sales order
                 invTypeArray = new string[] { "or" };
