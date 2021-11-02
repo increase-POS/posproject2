@@ -704,7 +704,7 @@ namespace POS.View.reports
             }
         }
 
-        private async void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
+        private  void Btn_emailMessage_Click(object sender, RoutedEventArgs e)
         {//email
             try
             {

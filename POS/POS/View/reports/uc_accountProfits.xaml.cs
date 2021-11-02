@@ -292,7 +292,7 @@ namespace POS.View.reports
             }
 
         }
-        private async void Btn_invoice_Click(object sender, RoutedEventArgs e)
+        private  void Btn_invoice_Click(object sender, RoutedEventArgs e)
         {//invoices
             try
             {

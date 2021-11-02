@@ -152,7 +152,7 @@ namespace POS.View.reports
 
         }
 
-        private async void Btn_vendor_Click(object sender, RoutedEventArgs e)
+        private  void Btn_vendor_Click(object sender, RoutedEventArgs e)
         {//payments
             try
             {
@@ -200,7 +200,7 @@ namespace POS.View.reports
             }
         }
 
-        private async void Btn_customer_Click(object sender, RoutedEventArgs e)
+        private  void Btn_customer_Click(object sender, RoutedEventArgs e)
         {//received
             try
             {

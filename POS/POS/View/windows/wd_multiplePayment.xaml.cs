@@ -49,7 +49,7 @@ namespace POS.View.windows
         public IEnumerable<Card> cards;
         public Invoice invoice = new Invoice();
         bool amountIsValid = false;
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private  void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {

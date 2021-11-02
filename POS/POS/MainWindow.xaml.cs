@@ -1017,6 +1017,7 @@ namespace POS
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
                 await close();
+
                 Application.Current.Shutdown();
 
                 if (sender != null)

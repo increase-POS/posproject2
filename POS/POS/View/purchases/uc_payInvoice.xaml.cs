@@ -184,7 +184,7 @@ namespace POS.View
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trBuy");
         }
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+       async private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -192,7 +192,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                saveBeforeExit();
+                 saveBeforeExit();
                 timer.Stop();
 
                 if (sender != null)
@@ -1644,7 +1644,7 @@ namespace POS.View
             btn_next.Visibility = Visibility.Visible;
             btn_previous.Visibility = Visibility.Visible;
         }
-        private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
+        private  void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
             try
             {

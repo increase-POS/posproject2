@@ -2357,7 +2357,7 @@ namespace POS.View
             else
             {
                 //byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
-                byte[] imageBuffer = await SectionData.readLocalImage(item.image,Global.TMPItemsFolder);
+                byte[] imageBuffer =  SectionData.readLocalImage(item.image,Global.TMPItemsFolder);
 
                 if (imageBuffer != null)
                 {

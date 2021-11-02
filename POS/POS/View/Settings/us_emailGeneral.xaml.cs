@@ -39,7 +39,7 @@ namespace POS.View.Settings
                 return _instance;
             }
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private  void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
             {

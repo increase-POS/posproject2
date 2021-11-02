@@ -883,7 +883,7 @@ namespace POS.View.reports
             }
         }
 
-        private async void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private  void cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             fillEventsCall(sender);
         }
