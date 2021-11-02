@@ -1118,8 +1118,8 @@ namespace POS.View
                 int count = 0;
                 foreach (var item in listMonthlyInvoice)
                 {
-                    ArrayS[count] = double.Parse(item.totalPur.ToString());
-                    ArrayP[count] = double.Parse(item.totalSale.ToString());
+                    ArrayS[count] = double.Parse(item.totalSale.ToString()); 
+                    ArrayP[count] = double.Parse(item.totalPur.ToString());
                     ArrayCount[count] = (count+1).ToString();
                     count++;
                 }

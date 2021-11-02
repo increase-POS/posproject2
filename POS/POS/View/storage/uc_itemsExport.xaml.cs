@@ -1487,12 +1487,18 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 if (
-                        ((_ProcessType == "im" || _ProcessType == "imd")
-                        && (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
+                            (
+                                (_ProcessType == "im" || _ProcessType == "imd")
+                            && 
+                                 (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one"))
+                            )
                         ||
-                        ((_ProcessType == "ex" || _ProcessType == "exd")
-                        && (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
-                        )
+                            (
+                                (_ProcessType == "ex" || _ProcessType == "exd" || _ProcessType == "exw")
+                            &&
+                                (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") )
+                            )
+                   )
                 {
                     bool valid = await validateOrder();
                     if (valid)
