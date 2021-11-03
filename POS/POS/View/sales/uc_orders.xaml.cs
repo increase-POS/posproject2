@@ -915,6 +915,7 @@ namespace POS.View.sales
         }
         private async Task clearInvoice()
         {
+            txt_invNumber.Text = "";
             _Sum = 0;
             _Discount = 0;
             _SequenceNum = 0;
@@ -1359,7 +1360,7 @@ namespace POS.View.sales
                             break;
                         case Key.S:
                             //handle S key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
                             break;
                         case Key.I:
                             //handle S key
@@ -1487,6 +1488,8 @@ namespace POS.View.sales
 
         private async Task fillInvoiceInputs(Invoice invoice)
         {
+            txt_invNumber.Text = invoice.invNumber;
+
             _Sum = (decimal)invoice.total;
             if (invoice.tax != null)
                 _Tax = (decimal)invoice.tax;
@@ -1522,7 +1525,6 @@ namespace POS.View.sales
                 cb_typeDiscount.SelectedIndex = 2;
             tb_barcode.Clear();
             tb_barcode.Focus();
-
             await getInvoiceCoupons(invoice.invoiceId);
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);

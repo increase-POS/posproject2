@@ -1970,7 +1970,7 @@ namespace POS.View
                             break;
                         case Key.S:
                             //handle S key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
                             break;
                         case Key.I:
                             //handle S key

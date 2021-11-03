@@ -244,7 +244,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
