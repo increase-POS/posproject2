@@ -736,9 +736,9 @@ namespace POS.View
         {
             var vendors = await agentModel.GetAgentsActive("v");
             var agent = new Agent();
-            agent.agentId = 0;
-            agent.name = "---";
-            vendors.Insert(0,agent);
+            //agent.agentId = 0;
+            //agent.name = "---";
+            //vendors.Insert(0,agent);
             //vendors.ToList().AddRange(vendorsL.ToArray());
             cb_vendor.ItemsSource = vendors;
             cb_vendor.DisplayMemberPath = "name";
@@ -915,7 +915,7 @@ namespace POS.View
                 invoice.totalNet = decimal.Parse(tb_total.Text);
                 invoice.paid = 0;
                 invoice.deserved = invoice.totalNet;
-                if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex !=0)
+                if (cb_vendor.SelectedIndex != -1)
                     invoice.agentId = (int)cb_vendor.SelectedValue;
 
                 if (cb_branch.SelectedIndex != -1 && cb_branch.SelectedIndex != 0)
@@ -1033,7 +1033,7 @@ namespace POS.View
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if ( !tb_invoiceNumber.Equals("") && billDetails.Count > 0 && cb_vendor.SelectedIndex !=-1 && cb_vendor.SelectedIndex != 0
+                        if ( !tb_invoiceNumber.Equals("") && billDetails.Count > 0 && cb_vendor.SelectedIndex !=-1 
                             && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
                         {                          
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
@@ -1970,7 +1970,7 @@ namespace POS.View
                             break;
                         case Key.S:
                             //handle S key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
                             break;
                         case Key.I:
                             //handle S key

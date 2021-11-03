@@ -9,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0" 
-        Height="500" Width="700"   Background="Transparent"
+        Height="500" Width="775"   Background="Transparent"
         AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_ucInvoice" >
@@ -144,13 +144,13 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn x:Name="col_num" Width="*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn x:Name="col_branch" Width="*"  Header="Branch" Binding="{Binding Path=branchCreatorName}" Visibility="Collapsed"/>
-                            <DataGridTextColumn x:Name="col_user" Width="*"  Header="User" Binding="{Binding Path=createrUserName}" Visibility="Collapsed"/>
-                            <DataGridTextColumn x:Name="col_count" Width="*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
-                            <DataGridTextColumn x:Name="col_total"  Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
-                            <DataGridTextColumn x:Name="col_type" Width="*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
-                            <DataGridTextColumn x:Name="col_status" Width="*"  Header="" Binding="{Binding status,Converter={StaticResource orderStatusConverter}}" Visibility="Collapsed"/>
+                            <DataGridTextColumn x:Name="col_num" Width="3*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
+                            <DataGridTextColumn x:Name="col_branch" Width="2*"  Header="Branch" Binding="{Binding Path=branchCreatorName}" Visibility="Collapsed"/>
+                            <DataGridTextColumn x:Name="col_user" Width="2*"  Header="User" Binding="{Binding Path=createrUserName}" Visibility="Collapsed"/>
+                            <DataGridTextColumn x:Name="col_count" Width="1.5*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
+                            <DataGridTextColumn x:Name="col_total" Width="2*" Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
+                            <DataGridTextColumn x:Name="col_type" Width="2*"  Header="" Binding="{Binding invType,Converter={StaticResource invoiceTypeConverter}}"/>
+                            <DataGridTextColumn x:Name="col_status" Width="2*"  Header="" Binding="{Binding status,Converter={StaticResource orderStatusConverter}}" Visibility="Collapsed"/>
                         </DataGrid.Columns>
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">

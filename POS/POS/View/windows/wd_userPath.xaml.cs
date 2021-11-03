@@ -287,7 +287,7 @@ namespace POS.View.windows
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
 

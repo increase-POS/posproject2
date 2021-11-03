@@ -576,7 +576,7 @@ namespace POS.View.windows
                             break;
                         case Key.S:
                             //handle X key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
                             break;
                     }
                 }

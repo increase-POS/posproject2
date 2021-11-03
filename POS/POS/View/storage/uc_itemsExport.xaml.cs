@@ -446,7 +446,7 @@ namespace POS.View.storage
                             break;
                         case Key.S:
                             //handle S key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
                             break;
                         case Key.I:
                             //handle S key
@@ -1487,12 +1487,18 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 if (
-                        ((_ProcessType == "im" || _ProcessType == "imd")
-                        && (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
+                            (
+                                (_ProcessType == "im" || _ProcessType == "imd")
+                            && 
+                                 (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one"))
+                            )
                         ||
-                        ((_ProcessType == "ex" || _ProcessType == "exd")
-                        && (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision()))
-                        )
+                            (
+                                (_ProcessType == "ex" || _ProcessType == "exd" || _ProcessType == "exw")
+                            &&
+                                (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") )
+                            )
+                   )
                 {
                     bool valid = await validateOrder();
                     if (valid)

@@ -1530,13 +1530,13 @@ namespace POS.View
                                 await addInvoice("sb"); // sb means sale bounce
                                 await saveBounceCash();
                                 await clearInvoice();
-                                await refreshDraftNotification();
+                                refreshDraftNotification();
                             }
                             else if (_InvoiceType == "or")
                             {
                                 await saveOrder("s");
                                 await clearInvoice();
-                                await refreshOrdersWaitNotification();
+                                refreshOrdersWaitNotification();
                             }
                             else//s  sale invoice
                             {
@@ -1554,7 +1554,7 @@ namespace POS.View
                                 else
                                     await saveCashTransfers();
                                 await clearInvoice();
-                                await refreshDraftNotification();
+                                refreshDraftNotification();
                             }
                             //thread  + purchases
                             if (invoice.invType == "s")
@@ -2754,7 +2754,8 @@ namespace POS.View
                             break;
                         case Key.S:
                             //handle S key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
+                            //await Task.Delay(3000);
                             break;
                         case Key.I:
                             //handle S key

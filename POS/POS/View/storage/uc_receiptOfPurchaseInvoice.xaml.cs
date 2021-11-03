@@ -302,7 +302,7 @@ namespace POS.View.storage
                             break;
                         case Key.S:
                             //handle S key
-                            Btn_save_Click(null, null);
+                            Btn_save_Click(btn_save, null);
                             break;
                      }
                 }
