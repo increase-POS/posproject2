@@ -822,8 +822,9 @@ namespace POS.View.sales
             {
                 case "qd": // quotation draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
-                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                    dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
                     tb_discount.IsEnabled = true;
                     cb_typeDiscount.IsEnabled = true;
                     cb_customer.IsEnabled = true;
@@ -837,8 +838,7 @@ namespace POS.View.sales
                     break;
                 case "q": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
-                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
-                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[3].IsReadOnly = true; //خ price read only
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
                     cb_customer.IsEnabled = false;
@@ -1583,6 +1583,13 @@ namespace POS.View.sales
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            if (_InvoiceType == "qd" )
+                e.Cancel = false;
+            else if (_InvoiceType == "q" )
+                e.Cancel = true;
         }
         private   void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {

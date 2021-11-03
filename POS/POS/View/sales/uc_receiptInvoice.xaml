@@ -943,8 +943,8 @@
                                                               ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
-                                                              SelectedItem="{Binding Unit}"/>
-                                        <!--IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}" />-->
+                                                              SelectedItem="{Binding Unit}" 
+                                        IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

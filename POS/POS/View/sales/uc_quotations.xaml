@@ -580,7 +580,7 @@
                       materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
                          IsReadOnly="False" CanUserAddRows="False"  
                         AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
-                        ColumnWidth="SizeToHeader"     CanUserSortColumns="False"
+                        ColumnWidth="SizeToHeader"     CanUserSortColumns="False" BeginningEdit="Dg_billDetails_BeginningEdit"
                         VirtualizingStackPanel.IsVirtualizing="False"   PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
                         EnableRowVirtualization="True" EnableColumnVirtualization="True">
                             <DataGrid.Resources>
@@ -610,17 +610,16 @@
                                 <DataGridTemplateColumn Header="Unit"  Width="*" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
+                                        <ComboBox DataContextChanged="Cbm_unitItemDetails_DataContextChanged" 
                                                 SelectionChanged="Cbm_unitItemDetails_SelectionChanged" 
                                                               Tag="cbm_unitItemDetails" 
                                                               x:Name="cbm_unitItemDetails"
                                                               ItemsSource="{Binding itemId,Converter={StaticResource unitItemsListConverter}}"
                                                               DisplayMemberPath="mainUnit" 
                                                               SelectedValuePath="itemUnitId"
-                                                              SelectedItem="{Binding Unit}"/>
-                                                      <!--IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}"-->
-                                                
-                                        </DataTemplate>
+                                                              SelectedItem="{Binding Unit}" 
+                                                      IsEnabled="{Binding Path=IsEnabled, ElementName=cb_customer}"/>
+                                    </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>

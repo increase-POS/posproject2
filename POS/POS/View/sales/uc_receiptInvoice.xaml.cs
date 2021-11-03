@@ -2862,7 +2862,7 @@ namespace POS.View
                             else if (_Sum > couponModel.invMax)
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxInvToolTip"), animation: ToasterAnimation.FadeIn);
                         }
-                        else
+                        else  if (exist != null)
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponExist"), animation: ToasterAnimation.FadeIn);
                         }
@@ -3215,18 +3215,21 @@ namespace POS.View
         #endregion
         //async void validateAvailableAmount(BillDetails row, long newCount,  int index,TextBlock tb)
         //{
-    //    int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
-    //        if (availableAmount<newCount)
-    //        {
-    //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-    //            //newCount = newCount + availableAmount;
-    //            newCount = availableAmount;
-    //            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-    //            tb.Text = newCount.ToString();
-    //            row.Count = (int) newCount;
-    //}
-    //}
-    private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        //    int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+        //        if (availableAmount<newCount)
+        //        {
+        //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+        //            //newCount = newCount + availableAmount;
+        //            newCount = availableAmount;
+        //            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+        //            tb.Text = newCount.ToString();
+        //            row.Count = (int) newCount;
+        //}
+        //}
+
+      
+
+        private async void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
