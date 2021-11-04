@@ -981,6 +981,7 @@ namespace POS_Server.Controllers
                                                  itemCode = i.code,
                                                  unitName = u.name,
                                                  storageCostId = IU.storageCostId,
+                                                 isActive=IU.isActive,
 
                                              })
                                                          .ToList();

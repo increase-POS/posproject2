@@ -2454,7 +2454,7 @@ var strP = TokenManager.GetPrincipal(token);
                     sumNum = 0;
 
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == smallestUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if (upperUnit != null && upperUnit.itemUnitId != smallestUnitId)
                     sumNum += (int)upperUnit.unitValue * getItemUnitNum(upperUnit.itemUnitId);
@@ -2484,6 +2484,8 @@ var strP = TokenManager.GetPrincipal(token);
                                     join u in entity.users on b.createUserId equals u.userId
                                     join l in entity.branches on b.branchId equals l.branchId into lj
                                     from x in lj.DefaultIfEmpty()
+                                    join y in entity.branches on b.branchCreatorId equals y.branchId into yj
+                                    from z in yj.DefaultIfEmpty()
                                     where !entity.invoices.Any(y => y.invoiceMainId == b.invoiceId)
                                     select new InvoiceModel()
                                     {
@@ -2495,7 +2497,7 @@ var strP = TokenManager.GetPrincipal(token);
                                         taxtype = b.taxtype,
                                         name = b.name,
                                         branchName = x.name,
-                                        branchCreatorName = b.branches1.name,
+                                        branchCreatorName = z.name,
                                         createrUserName = u.name + " " + u.lastname,
                                         totalNet = b.totalNet,
                                         total = b.total,
@@ -2519,7 +2521,7 @@ var strP = TokenManager.GetPrincipal(token);
                             var lockedQuantity = entity.itemsLocations
                                 .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
                                 .Select(x => x.quantity).Sum();
-                            if (lockedQuantity < tr.quantity)
+                            if (lockedQuantity < tr.quantity || lockedQuantity == null)
                             {
                                 complete = "notReady";
                                 break;

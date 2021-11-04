@@ -4821,7 +4821,7 @@ else
                                             I.invNumber,
                                             
                                             //I.posId,
-                                            //I.invType,
+                                            I.invType,
                                             //I.total,
                                             //I.totalNet,
                                             //I.paid,
@@ -7775,7 +7775,11 @@ else
                                             shippingCompaniesBType = jshh.balanceType,
 
                                             invNumber = jinvv.invNumber,//yasmine
-                                            bondNumber = jbbo.number//yasmine
+                                            bondNumber = jbbo.number,//yasmine
+
+                                       invShippingCompanyId = jinvv.shippingCompanyId,
+                                            jinvv.shipUserId,
+                                            invAgentId = jinvv.agentId,
 
                                         }).ToList();
                         /*
