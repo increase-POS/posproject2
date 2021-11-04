@@ -2096,7 +2096,7 @@ SectionData.isAdminPermision())
                         {
                             await saveOrderStatus(invoice.invoiceId, "tr");
                             clearInvoice();
-                            await refreshOrdersWaitNotification();
+                             refreshOrdersWaitNotification();
                         }
                         else
                         {

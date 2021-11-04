@@ -1272,6 +1272,8 @@ namespace POS.View
                         item.taxes = tax;
                         item.min = 0;
                         item.max = 0;
+                        item.minUnitId = 1;
+                        item.maxUnitId = 1;
                         item.isActive = 1;
                         item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
                         item.createUserId = MainWindow.userID;
@@ -1297,7 +1299,9 @@ namespace POS.View
                         itemUnit.price = price;
                         itemUnit.defaultPurchase = 1;
                         itemUnit.defaultSale = 1;
-                        itemUnit.unitValue = 0;
+                        itemUnit.unitValue = 1;
+                        itemUnit.purchasePrice = 0;
+                        itemUnit.subUnitId = 1;
                         itemUnit.barcode = tb_barcode.Text;
                         itemUnit.createUserId = MainWindow.userID;
 
@@ -1356,7 +1360,7 @@ namespace POS.View
                         item.type = "p";
                         item.image = "";
                         item.taxes = tax;
-                        item.isActive = 1;
+                        //item.isActive = 1;
                         item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
                         item.createUserId = MainWindow.userID;
 
@@ -1379,7 +1383,10 @@ namespace POS.View
                         var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitpackageId).FirstOrDefault();
                         int itemUnitId = 0;
                         if (uQuery != null)
+                        {
                             itemUnitId = uQuery.itemUnitId;
+                            itemUnit= uQuery;
+                        }
 
                         //itemunit record
                         itemUnit.itemUnitId = itemUnitId;
@@ -1387,7 +1394,7 @@ namespace POS.View
                         itemUnit.unitId = unitpackageId;
                         itemUnit.price = price;
                         itemUnit.barcode = tb_barcode.Text;
-                        itemUnit.createUserId = MainWindow.userID;
+                        itemUnit.updateUserId = MainWindow.userID;
 
                        int s = await itemUnitModel.saveItemUnit(itemUnit);
 

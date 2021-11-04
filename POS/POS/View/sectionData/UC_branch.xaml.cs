@@ -599,7 +599,7 @@ namespace POS.View
                             branch.mobile = cb_area.Text + "-" + tb_mobile.Text;
                             branch.updateUserId = MainWindow.userID;
                             branch.type = "b";
-                            branch.isActive = 1;
+                            //branch.isActive = 1;
                             branch.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
                             int s = await branchModel.save(branch);

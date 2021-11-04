@@ -182,8 +182,8 @@ namespace POS.View.accounts
 
                 #region fill status combo
                 var statuslist = new[] {
-                new { Text = MainWindow.resourcemanager.GetString("trInDelivery")  , Value = "rc" },
-                new { Text = MainWindow.resourcemanager.GetString("trDelivered")   , Value = "tr" }
+                new { Text = MainWindow.resourcemanager.GetString("trDelivered")  , Value = "rc" },
+                new { Text = MainWindow.resourcemanager.GetString("trInDelivery")   , Value = "tr" }
                  };
                 cb_state.DisplayMemberPath = "Text";
                 cb_state.SelectedValuePath = "Value";
@@ -327,10 +327,7 @@ namespace POS.View.accounts
 
                     if (invoice != null)
                     {
-                        if (invoice.status == "tr")
-                            btn_save.IsEnabled = false;
-                        else
-                            btn_save.IsEnabled = true;
+                        
 
                         tb_cash.IsEnabled = true;
 
@@ -353,6 +350,28 @@ namespace POS.View.accounts
                         {
                             tb_cash.IsEnabled = true;
                             tb_cash.Clear();
+                        }
+
+
+
+
+                        if (invoice.status == "rc")
+                        {
+
+                            btn_save.IsEnabled = false;
+                            tb_cash.IsEnabled = false;
+                            cb_paymentProcessType.IsEnabled = false;
+                            tb_note.IsEnabled = false;
+                            SectionData.clearValidate(tb_cash, p_errorCash);
+
+                        }
+                        else
+                        {
+                            btn_save.IsEnabled = true;
+                            tb_cash.IsEnabled = true;
+                            cb_paymentProcessType.IsEnabled = true;
+                            tb_note.IsEnabled = true;
+
                         }
                     }
                     else

@@ -9,13 +9,14 @@ namespace POS
     class Global
     {
         public const string APIKey = "1234";
-        public static string APIUri = "http://localhost:44/api/";
+        //public static string APIUri = "http://localhost:44/api/";
+        //public static string APIUri = "http://localhost:44370/api/";
         //public static string APIUri = "http://192.168.1.5:44370/api/";
         //public static string APIUri = "http://192.168.1.37:44370/api/";
         //public static string APIUri = "http://192.168.1.3:44370/api/";
         //public static string APIUri = "http://141.95.1.58:44370/api/";
         //public static string APIUri = Properties.Settings.Default.APIUri;
-        //public static string APIUri = "http://141.95.1.58:44/api/";
+        public static string APIUri = "http://141.95.1.58:44/api/";
 
         //public static string APIUri = "http://192.168.1.6:44730/api/";
 

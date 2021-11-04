@@ -531,7 +531,7 @@ namespace POS.View
                             store.mobile = cb_area.Text + "-" + tb_mobile.Text;
                             store.updateUserId = MainWindow.userID;
                             store.type = "s";
-                            store.isActive = 1;
+                            //store.isActive = 1;
                             store.parentId = Convert.ToInt32(cb_branch.SelectedValue);
 
                             int s = await storeModel.save(store);

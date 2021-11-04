@@ -434,7 +434,7 @@ namespace POS.View
                             bank.notes = tb_notes.Text;
                             bank.createUserId = MainWindow.userID;
                             bank.updateUserId = MainWindow.userID;
-                            bank.isActive = 1;
+                            //bank.isActive = 1;
 
                             int s = await bankModel.save(bank);
 

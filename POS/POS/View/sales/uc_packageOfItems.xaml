@@ -323,7 +323,7 @@
 	z M6.4,6.4l-3-3.9c-0.2-0.3-0.6,0-0.6,0.6v7.9c0,0.6,0.3,1,0.6,0.6l3-3.9C6.6,7.3,6.6,6.7,6.4,6.4z"/>
                             </Button>
                             <TextBox  Grid.Column="5" x:Name="tb_pageNumberSearch"  TextChanged="Tb_pageNumberSearch_TextChanged"   
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
+                        Padding="10,0,5,0" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="..."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" 
@@ -637,7 +637,7 @@
                                         </Grid.ColumnDefinitions>
                                         <!--LostFocus="Tb_code_LostFocus" TextChanged="Tb_code_TextChanged"-->
                                         <TextBox x:Name="tb_code"  Text="{Binding code, Mode=OneWay}" Grid.Row="1" 
-                                                 Padding="10,5,5,5" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                                Padding="10,0,5,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Code..."   
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                  BorderBrush="AliceBlue"  MaxLength="100" 
@@ -662,7 +662,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <!--LostFocus="tb_name_LostFocus" TextChanged="Tb_name_TextChanged"-->
-                                        <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,5,5,5"
+                                        <TextBox x:Name="tb_name"  Text="{Binding name, Mode=OneWay}" Padding="10,0,5,0"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                                  Grid.Row="2" BorderThickness="1"  materialDesign:HintAssist.Hint="Name..."  
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -684,7 +684,7 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBox x:Name="tb_details"  Text="{Binding details, Mode=OneWay}"  Padding="10,5,5,5"
+                                        <TextBox x:Name="tb_details"  Text="{Binding details, Mode=OneWay}"  Padding="10,0,5,0"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                  Grid.Row="3" BorderThickness="1"  MaxLength="100" 
                                  materialDesign:HintAssist.Hint="Details..."  
@@ -727,7 +727,7 @@
                                         </Grid.ColumnDefinitions>
                                         <!--LostFocus="Cb_categorie_LostFocus"-->
                                         <ComboBox  x:Name="cb_categorie" Grid.Row="2"
-                                                   Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                                    materialDesign:HintAssist.Hint="Select Categorie "  
                                                    TextBlock.FontSize="12"   Background="#f8f8f8" 
@@ -751,7 +751,7 @@
                                         <!--PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="tb_upperLimit_PreviewKeyDown"-->
                                         <!--LostFocus="Tb_taxes_LostFocus"-->
                                         <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
-                                                 Grid.Row="2" Padding="10,5,5,5" MaxLength="20" 
+                                                 Grid.Row="2" Padding="10,0,5,0" MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
@@ -800,7 +800,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_price"   Text="{Binding price, Mode=OneWay}"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                                 Grid.Row="1" Padding="10,5,5,5" 
+                                                 Grid.Row="1" Padding="10,0,5,0" 
                                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Price..."   
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                  BorderBrush="AliceBlue" 
@@ -823,7 +823,7 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBox x:Name="tb_barcode"   Text="{Binding test, Mode=OneWay}"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                                 Grid.Row="1" Padding="10,5,5,5" 
+                                                 Grid.Row="1" Padding="10,0,5,0" 
                                                  BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..."   
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                  BorderBrush="AliceBlue" IsReadOnly="True"

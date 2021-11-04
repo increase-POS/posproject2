@@ -600,7 +600,7 @@ namespace POS.View
                             user.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                             user.email = tb_email.Text;
                             user.address = tb_address.Text;
-                            user.isActive = 1;
+                            //user.isActive = 1;
                             user.isOnline = 1;
                             user.createUserId = MainWindow.userID.Value;
                             user.updateUserId = MainWindow.userID.Value;

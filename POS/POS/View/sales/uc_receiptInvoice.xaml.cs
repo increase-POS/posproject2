@@ -1788,6 +1788,8 @@ namespace POS.View
         private async Task clearInvoice()
         {
             _Sum = 0;
+            companyModel = new ShippingCompanies();
+
             _Tax = 0;
             _Discount = 0;
             _DeliveryCost = 0;

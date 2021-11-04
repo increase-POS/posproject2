@@ -321,15 +321,15 @@ namespace POS.View.sectionData
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
 
-                    byte active;
-                    try
-                    {
-                        active = byte.Parse((tgl_isActive.IsChecked.Value ? 1 : 0).ToString());
-                    }
-                    catch
-                    {
-                        active = 0;
-                    }
+                    //byte active;
+                    //try
+                    //{
+                    //    active = byte.Parse((tgl_isActive.IsChecked.Value ? 1 : 0).ToString());
+                    //}
+                    //catch
+                    //{
+                    //    active = 0;
+                    //}
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
 
@@ -351,7 +351,7 @@ namespace POS.View.sectionData
                             card.notes = tb_notes.Text;
                             card.createUserId = MainWindow.userID;
                             card.updateUserId = MainWindow.userID;
-                            card.isActive = active;
+                            //card.isActive = active;
 
                             int s = await cardModel.save(card);
 

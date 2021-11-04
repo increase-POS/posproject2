@@ -134,9 +134,10 @@
                         </Border>
 
 
-
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
                     </Grid>
                 </Border>
 
