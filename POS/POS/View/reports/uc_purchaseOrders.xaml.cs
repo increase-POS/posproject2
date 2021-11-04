@@ -625,9 +625,19 @@ namespace POS.View.reports
             dgInvoice.ItemsSource = filltoprint();
             txt_count.Text = dgInvoice.Items.Count.ToString();
 
-            fillPieChart(cb_branches, selectedBranchId);
-            fillColumnChart(cb_branches, selectedBranchId);
-            //fillRowChart(cb_branches, selectedBranchId);
+            ObservableCollection<int> selected = new ObservableCollection<int>();
+            if (selectedTab == 0)
+                selected = selectedBranchId;
+            if (selectedTab == 1)
+                selected = selectedPosId;
+            if (selectedTab == 2)
+                selected = selectedVendorsId;
+            if (selectedTab == 3)
+                selected = selectedUserId;
+
+            fillPieChart(cb_branches, selected);
+            fillColumnChart(cb_branches, selected);
+            //fillRowChart(cb_branches, selected);
         }
 
         private void hideSatacks()

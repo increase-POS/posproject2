@@ -89,24 +89,17 @@ namespace POS.View.reports
 
                 dp_invoiceDate.SelectedDate = DateTime.Now;
                 chk_invoice.IsChecked = true;
-                chk_return.IsChecked = true;
-                chk_drafs.IsChecked = true;
-                chk_allBranches.IsChecked = true;
-                chk_allPos.IsChecked = true;
-
-                await RefreshItemTransferInvoiceList();
-                await Search();
-
+              
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
             }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -183,8 +176,6 @@ namespace POS.View.reports
                     selectedTab == 1 //order
                     ?
                     (chk_invoice.IsChecked == true ? s.invType == "or" : false)
-                    //||
-                    //(chk_return.IsChecked == true ? s.invType == "sbd" : false)
                     ||
                     (chk_drafs.IsChecked == true ? s.invType == "ord" : false)
                     : false
@@ -194,8 +185,6 @@ namespace POS.View.reports
                     selectedTab == 2 //quotation
                     ?
                     (chk_invoice.IsChecked == true ? s.invType == "q" : false)
-                    //||
-                    //(chk_return.IsChecked == true ? s.invType == "sbd" : false)/////????
                     ||
                     (chk_drafs.IsChecked == true ? s.invType == "qd" : false)
                     : false
@@ -423,8 +412,9 @@ namespace POS.View.reports
             List<int> cSd = new List<int>();
             List<string> titles = new List<string>()
             {
-                //"مبيعات","مرتجع","مسودة"
-                MainWindow.resourcemanager.GetString("tr_Sales"),MainWindow.resourcemanager.GetString("trReturned"),MainWindow.resourcemanager.GetString("trDraft")
+                MainWindow.resourcemanager.GetString("tr_Sales"),
+                MainWindow.resourcemanager.GetString("trReturned"),
+                MainWindow.resourcemanager.GetString("trDraft")
         };
             for (int i = 0; i < x.Count(); i++)
             {
@@ -493,7 +483,9 @@ namespace POS.View.reports
             List<decimal> sub = new List<decimal>();
             List<string> titles = new List<string>()
             {
-                         "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
+                MainWindow.resourcemanager.GetString("trNetSales"),
+                MainWindow.resourcemanager.GetString("trTotalReturn"),
+                MainWindow.resourcemanager.GetString("trTotalSales")
             };
             for (int i = 0; i < pbTemp.Count(); i++)
             {
@@ -533,10 +525,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                await RefreshItemTransferInvoiceList();
-                await Search();
                 fillPos(Convert.ToInt32(cb_branches.SelectedValue));
-
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -567,7 +556,6 @@ namespace POS.View.reports
             if (isArabic)
             {
                 addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc";
-                //Reports\StatisticReport\Sale\Daily\Ar
             }
             else
                 addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc";
@@ -720,8 +708,6 @@ namespace POS.View.reports
 
                 cb_branches.SelectedIndex = -1;
                 cb_branches.IsEnabled = false;
-                await RefreshItemTransferInvoiceList();
-                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -742,9 +728,6 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_branches.IsEnabled = true;
-
-                await RefreshItemTransferInvoiceList();
-                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -767,8 +750,6 @@ namespace POS.View.reports
                 cb_pos.SelectedIndex = -1;
                 cb_pos.IsEnabled = false;
 
-                await RefreshItemTransferInvoiceList();
-                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -789,9 +770,6 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_pos.IsEnabled = true;
-
-                await RefreshItemTransferInvoiceList();
-                await Search();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

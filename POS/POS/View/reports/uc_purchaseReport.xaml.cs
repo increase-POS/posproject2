@@ -421,17 +421,6 @@ namespace POS.View.purchases
             DataContext = this;
             cartesianChart.Series = columnChartData;
         }
-
-        private List<ItemTransferInvoice> fillList(ComboBox comboBox, ObservableCollection<int> stackedButton)
-        {
-            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
-
-            var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
-            temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
-            list = temp.ToList();
-            return list;
-        }
-
         private List<ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();

@@ -100,9 +100,10 @@ namespace POS.Classes
 
     public class CashTransferSts
     {
-
+        public Nullable<int> invShippingCompanyId { get; set; }
+        public Nullable<int> shipUserId { get; set; }
+        public Nullable<int> invAgentId { get; set; }
         public Nullable<decimal> agentBalance { get; set; }
-
         public Nullable<byte> agentBType { get; set; }
         public Nullable<decimal> userBalance { get; set; }
         public Nullable<byte> userBType { get; set; }

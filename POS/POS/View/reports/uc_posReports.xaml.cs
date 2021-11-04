@@ -95,11 +95,11 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -199,8 +199,10 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 fillComboFromPos();
                 fillEvents();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -241,6 +243,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 cb_formBranch.IsEnabled = true;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -282,7 +285,7 @@ namespace POS.View.reports
 
                 cb_toBranch.IsEnabled = true;
 
-            if (sender != null)
+                if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -300,7 +303,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if(cb_formPos.SelectedItem != null)
+                if (cb_formPos.SelectedItem != null)
                     chk_twoWay.IsEnabled = true;
 
                 fillEvents();
@@ -326,9 +329,12 @@ namespace POS.View.reports
                 cb_formPos.IsEnabled = false;
                 cb_formPos.SelectedItem = null;
 
-                if (cb_toPos.SelectedItem == null)
-                    chk_twoWay.IsEnabled = false;
-
+                try
+                {
+                    if (cb_toPos.SelectedItem == null)
+                        chk_twoWay.IsEnabled = false;
+                }
+                catch { }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -349,14 +355,14 @@ namespace POS.View.reports
 
                 cb_formPos.IsEnabled = true;
 
-            if (sender != null)
-                SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -372,14 +378,14 @@ namespace POS.View.reports
                 if (cb_formPos.SelectedItem == null)
                     chk_twoWay.IsEnabled = false;
 
-            if (sender != null)
-                SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -392,14 +398,14 @@ namespace POS.View.reports
 
                 cb_toPos.IsEnabled = true;
 
-            if (sender != null)
-                SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -414,14 +420,14 @@ namespace POS.View.reports
                
                 fillEvents();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
             }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -447,61 +453,14 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        private void Dp_EndDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void Dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            changeSelection(sender);
         }
-
-        private void Dp_StartDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        
+        private void Cb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                fillEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Cb_Accountant_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            changeSelection(sender);
         }
 
         private void Chk_allAccountant_Checked(object sender, RoutedEventArgs e)
@@ -534,38 +493,18 @@ namespace POS.View.reports
 
                 cb_Accountant.IsEnabled = true;
 
-            if (sender != null)
-                SectionData.EndAwait(grid_main);
-            }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_twoWay_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillEvents();
-
-            if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
-        private void Chk_twoWay_Unchecked(object sender, RoutedEventArgs e)
+        private void changeSelection(object sender)
         {
             try
             {
@@ -573,6 +512,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 fillEvents();
+
             if (sender != null)
                 SectionData.EndAwait(grid_main);
             }
@@ -582,6 +522,11 @@ namespace POS.View.reports
                         SectionData.EndAwait(grid_main);
                     SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Chk_Checked(object sender, RoutedEventArgs e)
+        {
+            changeSelection(sender);
         }
 
         private void fillPieChart()
@@ -589,7 +534,7 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            //var temp = fillList();
+
             var temp = posLst;
             var result = temp
                 .GroupBy(s => new { s.transType })
@@ -626,7 +571,6 @@ namespace POS.View.reports
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
 
-            //var temp = fillList();
             var temp = posLst;
 
             var res = temp.GroupBy(x => new { x.fromposId }).Select(x => new CashTransferSts
@@ -736,7 +680,6 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            //var temp = fillList();
             var temp = posLst;
 
             SeriesCollection rowChartData = new SeriesCollection();
@@ -897,7 +840,7 @@ namespace POS.View.reports
 
             rep.Refresh();
         }
-            private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
             {
@@ -1035,5 +978,7 @@ namespace POS.View.reports
             SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
         }
+
+      
     }
 }
