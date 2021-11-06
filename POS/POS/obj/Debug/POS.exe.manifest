@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="POS.exe" version="1.0.0.4" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="POS.exe" version="1.0.0.16" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="pic\increaseLogo.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
@@ -871,14 +871,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="27136">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="26624">
       <assemblyIdentity name="netoaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/0U/dNOGTZQX4NcNFP6QqOqwdGE6nk5aPYgFa4pesKw=</dsig:DigestValue>
+        <dsig:DigestValue>QY+20qxpcKOwaXXNaW36+fSmcUoPgF7X3LtL/MkTDjA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="56145416">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15424520">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>sCL98Qdke9orNuqA9BhN/F7ldY/cik+s2azleaTRfsk=</dsig:DigestValue>
+        <dsig:DigestValue>eRLzIYTsDcz4LVAHpR+iClR+fkCODdGTQChDjErfHVc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1030,6 +1030,1482 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>C4nX8AWTZZ7h9W3pWYaO03zcQ+6eDBQqxkJNwk19Gp8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArBankAccReport.rdlc" size="394331">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UugzEmfWBu3CZS2WyU2maZG3zG9J4TSE50KqZjx/5jo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArBankDoc.rdlc" size="219923">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>12FIjLRROyXrxgXLkb6hbDgUK3Utxbb5jb587AQ7Tzk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArBankDocA4.rdlc" size="265400">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4LMO+9SjECaBYNjOUVDrRJ2ylB17LbjkcaX31sfppgI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArBondAccReport.rdlc" size="405970">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gy0irJzGLCtHfXWHNBw6NTlCsQMKlBbAAMjMv4arLhY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArBondDoc.rdlc" size="216736">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WQX4Vkl6EOf1zvdoMyB2mro/aNuxjeLheQKgoipWxgo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArBondDocA4.rdlc" size="259723">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oaWrXEmqW/thJ0pfBgXf9eFQlQWjuxLOuBIicFQZE5g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArOrderAccReport.rdlc" size="403557">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cNlxgKEXtVGoCVv4i8M7BiMShFGj/+EXbIivYrTmJ38=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArPayAccReport.rdlc" size="402076">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WVReoheP8dUY+1J6hWnsyjVaoMlOI14lGRJyNpF9/2Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArPayReport.rdlc" size="210278">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>D8tLOK1pM7tEfhaEIocSgmADGAb21Dj2UivXLIHZsOo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArPayReportA4.rdlc" size="250652">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>U3FtYBlcqnW19T3gXVRNyVFEAF+OZlRrOm3Jc+VyZ+E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArPosAccReport.rdlc" size="398417">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mpg48HWj8kllaaxTTAx2es40Zm6auVtfCbibOuoYLeE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArReceiptAccReport.rdlc" size="402071">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>COycLbfzhMw5mmXR481du13qsaElyQZmNzwOlXx3XPI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArReciveReport.rdlc" size="210290">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>PTu3oujyu8khO/l6pvIN3YZPjESsDjT4QZUbSQOaNWU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\Ar\ArReciveReportA4.rdlc" size="250679">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WCgyCn5wlbXytLToBLPuXM5Q+s9/H4TzZRCapbuJH5Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\Ar\ArCategoryReport.rdlc" size="383582">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>aG+lAQO0pi52Zll8TGbxXzwN1Y/Mg1/Izag+sCAh5KU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\Ar\ArItemReport.rdlc" size="392912">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6OlfXqqdLzDBm42/JFSPx1UNYM72qdqFpR2G15nUvOA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\Ar\ArPropertiesReport.rdlc" size="380358">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ktJYB7UKqG3bmgdvqFFG+dZhsCcNf/2AOdppFK5R6J0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\Ar\ArStorageCostReport.rdlc" size="381239">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5Xfs2Z7ywNfKB51VDlustHzfs54Eg0lzfHkv8buLYjU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\Ar\ArUnitReport.rdlc" size="381804">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5Mw1exa/2J/dN8opDHy7TBSwo6ZYk9fMWbUnDFiZxzY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\En\CategoryReport.rdlc" size="375051">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CvlPGg2q98NgEnln5AeP4dA3/U/9JUhgVnV6xe+IlNA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\En\ItemReport.rdlc" size="383989">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oSVIXqoYGih5+tqxfbzVioKIxKykpxdzGmRna+aOc6Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\En\PropertiesReport.rdlc" size="372330">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1gXrWBCNuQzekLN/6F2FCIGsboNWispvbpsu711tWCg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\En\StorageCostReport.rdlc" size="372374">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GaYDRiQasphBvFtj3fiVqwbjpxckxhbOY+NL2GMdfnk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Catalog\En\UnitReport.rdlc" size="373006">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DwN9ee1HJYhu+qzu/zgYI0gKeCpKqeomKpQOfdRds4k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\image\image.rdlc" size="345001">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3qM9BUbLulvPrNvIj0DPmCanQ3GDizmc7XY9EYqFbFE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Purchase\Ar\ArInvPurOrderReport.rdlc" size="464909">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+vMXlKXRePQc/JBzxyQaS+Fx4wf+aqwmmCY27VE8OIY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Purchase\Ar\ArInvPurReport.rdlc" size="486285">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>NH52chNzVIzd5WqLppRJbUPZE5qcUD3zdeEJvL+RjoY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Purchase\En\InvPurOrderReport.rdlc" size="456341">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>VT2xio6N61MDt0XnXlt0vHV/ydvF/Slv2q4SBweVwgA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Purchase\En\InvPurReport.rdlc" size="477337">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>VxBgK77sy88u7RmHOwSXf0N0ADG3QsYKOmPrz4hBDPU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\ArInvPurOrderReport.rdlc" size="486077">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>y/m0vCuwtsR5hRnu/mliOXwWw8ifhbRXf716Ww6wJlY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\ArInvPurQtReport.rdlc" size="477331">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QbZuJ/4KihwD5JIXXWOk+vlwKwJ5/x7OOrKR1Onpdc0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\ArInvPurReport.rdlc" size="495814">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CeZie18M+1BnVxGmBEQHBO70+i11gDERcSdNqqhkqus=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\CouponReport.rdlc" size="396591">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ye+YlitS1kye3T9omK9aaJYFIwgD4nxFxppcQmf0iKA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\dailySale.rdlc" size="431789">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oW9zQ+WUI7Yf0mWNo4XylcyFAg8DLrgtmV2aQRdSdO0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\LargeSaleReport.rdlc" size="458862">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>XUutLz5KlcUdYTw+D4KCeXNj9rwdtTgtsuNKorUiQUs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\MediumSaleReport.rdlc" size="458690">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4q0mlRj6eMjw+xq7YKEEBQrUKaKLIWLv2HhmusSLRK4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\OfferReport.rdlc" size="393425">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>c3Ji1XgvQJA1/NV/RvOq7bmwRYBBt6emxs95lccdIYY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\PackageReport.rdlc" size="392912">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6OlfXqqdLzDBm42/JFSPx1UNYM72qdqFpR2G15nUvOA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\Ar\SmallSaleReport.rdlc" size="457936">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zPhdO0fGn7SU7u82yDgOMTAd/oFk3Zh1WhDeaXZ5yxA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\coupon\coupExport.rdlc" size="4212">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GMaMlCzTEOKfXymqMaMPhW0xB2bCFRhg9tRBNmW6AxY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\coupExport.rdlc" size="457830">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Pr7xoGttwota0ovbuNflmCINdRTNVeWUOFffawSwm00=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\CouponReport.rdlc" size="387668">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QOGK8vFNWXbTknlk82kUSDri5Oh0s61eXXmU2dm48Ik=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\dailySale.rdlc" size="427726">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Gs0I+HjqvliopmJqGOuwfi2OZWza/1WkO/afPsRAAX4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\InvPurOrderReport.rdlc" size="477723">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>y3JwR8SjfZazjGld8vqrlYRJtfadUF4tUcIJQfaePdA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\InvPurQtReport.rdlc" size="470784">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wdj4P11VzqPzjLKJgkBGfthB5H01KJM15nRv0B9lFKc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\InvPurReport.rdlc" size="487415">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>c+UH2gKqYJvr29ZHmA50XPNENc9KYNXCaE5sOsB6XrE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\LargeSaleReport.rdlc" size="457830">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Pr7xoGttwota0ovbuNflmCINdRTNVeWUOFffawSwm00=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\MediumSaleReport.rdlc" size="458066">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RBuf9hdoKufZ7oCM7wRDE1UMskdoEhjQxcfQMib+5OM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\OfferReport.rdlc" size="384291">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0fY4jrq5nbkb76BkLqWdvPlgTQBaePcZY9/MtADDl94=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\PackageReport.rdlc" size="383989">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oSVIXqoYGih5+tqxfbzVioKIxKykpxdzGmRna+aOc6Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Sale\En\SmallSaleReport.rdlc" size="457560">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6KyrL67YxEGFeoMZ/2dnJ3dtuV0vWR4/FX8f9f2IRkU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArBankReport.rdlc" size="390866">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9ZYTCePPPZKmrH2tSahYcbwDtaSAzRpGhShoCPEPpn8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArBranchReport.rdlc" size="231646">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rWQvWZrmOLOTK9hp02if2qWQQEFML1iZr9+5OdRbgcA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArCardReport.rdlc" size="378960">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>7kutHCCYKvVcq2zgEh1DohpQXJaxOCr4UjS/jUJMvOw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArCustomerReport.rdlc" size="232945">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tlyFwBZAP/Gy+gnpQcblkk90nWdd5h6sRwnpvcOclog=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArPosReport.rdlc" size="232382">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>t3l1v/+UW+L6yEdaAppFDWgfIN6j7WaFBFW9Zb30Lvw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArShippingReport.rdlc" size="386100">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>a0dUQ6UFOFfpPHPuZ+oSh4zp+iDlca8TRUTptBNw9/k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArStoreReport.rdlc" size="231648">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1HcLLZpdtZq/K+na8MOUH3+OIYPieIqb5ImvM69VeEA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArUserReport.rdlc" size="232898">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>T1fmSaI2Ft5K4+MEtsTXF9hLyog2+Qu7YaxFCZZltsk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\Ar\ArVendorReport.rdlc" size="232947">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5a9APyaxwDRv/fTDJ78u6Y00APc8ZE3JvD5yUIqRvmI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\BankReport.rdlc" size="382109">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>p8iyY5E471/MjCFNwAkQQcYQkFAl5S8d8yeP4p02jTs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\BranchReport.rdlc" size="222823">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>r9aIjaALOYzfc/sgE7A2wc87lG40iZpJLeQaw+n7YjA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\CardReport.rdlc" size="370124">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UTXjwXYYdT0XkhFHVUlASk4wyfuCMxyf3j/QBlnuHO4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\CustomerReport.rdlc" size="223755">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TJWhWmRd9jGocFgPH2lAWagMXe+mBW2FeJld8has3s0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\PosReport.rdlc" size="223504">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9Copd/6XnopwqqKe8sgHNMiY1XYbAqpL/GXBh8MocSQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\ShippingReport.rdlc" size="377290">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>r8eAsHIDTHbGK4vUZk4mtsFHmdXM14cxAO3mc5VraQw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\StoreReport.rdlc" size="222821">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ZXC52NCxforPhNBKt3Gvnmj3hHgAsecmZQpIe5Mv/Jg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\UserReport.rdlc" size="224050">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>trVF6mtE3b+2yLnByMfBTEdn3hLCaZsWLJ93JYQsXO4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\SectionData\En\VendorReport.rdlc" size="223753">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pKeHdGE1rk2kLFiPoZxPuLtYiMyP9AJuQR5uGBSifqQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\AccountStatement\Ar\ArAccStatement.rdlc" size="401290">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>NIBLuPRp2elTjIx/qirBiN/LpWv/9Rz2Bdoxd2RIPCs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\AccountStatement\En\AccStatement.rdlc" size="395563">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tuLRu+Gm4VHYfioyehB7fSpMeHYuuCY0NdblA6xR7FM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc" size="405547">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>202hEWi+Rr6V1EoZI7+LUZCsxtFGmm9Ra5uBIVCHHZw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc" size="405543">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2wC8jx69lTDI4KJpx4rcK7FCOuQwd52JfUs9sbzAbkU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc" size="399871">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>V+kEX43+KEc0yhckZFyT5yY/u3MFL71Dspd2fvBcgqw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc" size="399867">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>B0zaeBhbdvXz44PfzNeCPcr9HmkA6WZ7QWcdKnVsbvk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Fund\Ar\ArFund.rdlc" size="382390">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Uj4ip4H2m3ww0M91gjMg3QzFYKeQeJl4hGQY2jxhO88=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Fund\En\Fund.rdlc" size="377150">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RYRMmULmR3tDw8664q/fBT279OCUOpW7I8NpbDrHuZs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc" size="400520">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WDB+ySErDFvw3Q2T5C6stV9YEfSsUBQLXEh1RP7cIxA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc" size="407412">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oAN6LkOKy4ma3kG78BC3y/WnH7kQNfvkQ88+1U813s0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc" size="400505">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cYIqpXJtKWuSZUZxxRi+FhrmG327XBT0z9zLEywlMWs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc" size="403962">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>n8VsnjFjCfNK07SzRZBHvfOf7++AVc3pg0R5t7vvg1Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc" size="403991">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uN4ACmSIlepulX28oOqrkWLxR+bP4Z18HGUjYn+Uiwo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc" size="403952">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>PhqZ0ladPE6c7TQY89gP8TxCtTn5jLTsUzEGo5JQ7fA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc" size="407421">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RVVYDXofHlgQs/T0GXhc305cmqSTC1brHIYpHQr8MNE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc" size="394845">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/vIvKGePuWZZBk7ILgpdL9ICR1EHSLOYe1mOyl5z+m0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc" size="401735">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ba+1W2BPMivVP/kWMB09yJdQvi7WgVF0Ec4tlVF1Kac=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc" size="394843">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>rzJjIqsmS4aPxuCK1ks5fXOtVJgUFosDBFjYGMXz128=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc" size="398276">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3ATNVCMGcfG/EnCdndebwoGQjD9O7zB8pu6b2flQI+k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc" size="398310">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UM89kl/51PKlEQS6o80K8w1sLjPqY15z9H/JbZvwpik=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc" size="398274">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WIqULTBxtHN3HDIsiue/Yz1oDDMSK86p/CSNg3fvIWk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc" size="401733">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8qZhiDG6KIA42qnz7Pl7f2U+7QXJuYowpnvfRp0CPFc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc" size="412495">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WYiq7ZP2R/G1Y7DheMebJXrh8KOMDBOP1c1b/2c3C1w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc" size="406798">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>DxA7TGnTmxjxvRT6Gjv5yKCxENSWgSBvK6cUNA4Qzxc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Profit\Ar\Profit.rdlc" size="409490">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KF2zomhV5MFx/XbHazKi5+lnPyxdcOQqe26qK0gzXds=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Profit\Ar\ProfitItem.rdlc" size="400496">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Hr94vBhvTJ8Xl2SColiiq5+gmTko7reQOuxQg6EfFfE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Profit\En\Profit.rdlc" size="401694">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>h6swvyI7GJ1mk5xirWlxwcB3UxfNpHXGgn/zJXjQAkw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Profit\En\ProfitItem.rdlc" size="393200">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WnvHlNI+XB6BHZ8um24uZ5bQv7SvI4xfQhTgEYVAHnc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc" size="407412">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YEqCTUFWlY+jeZWMy9O9F1uBAmnbCPUTW9dPVKaMKWE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc" size="403991">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3VT/zjWcluHU9XI+oTfvkRrPE3Wx2ZsUyzdoPg4G5XI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc" size="403952">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vKeSPRd09l0CQQLhcD0cbbl4U0ulzg3OmAGRDwJrqfA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc" size="407421">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+bqAI+6XlUnsT0JDAQW/gTc1H7LdSFha2BXIdZUxG3w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc" size="401737">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>i303wVMKvGE9zjf/74mCE5UYTDsXLF6G1hg2eOgDPJ4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc" size="398312">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Cm1TFO4ySef+vvrULkVXLASqy8A0Yf+6M07xxIQUFVc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\En\User.rdlc" size="398276">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TaBOoDqKREVLOFxusqUSaZsJAK4vls6YRSU/TLpp970=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc" size="401735">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RY0X+nfPs57/Lo6b0UE53jFHUZVK25zbnrYoZxDh51g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc" size="425165">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0J9jAiTOtVGuq3pqn3DM55GX4nHD6mvlGXyDulGcdG4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc" size="425109">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>jwtIieRIVur0Gh5BVWimLX9AS56SJ0V08D6eEtBv3JA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc" size="421359">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bhz/wBnQefFv2a0Pd1nHSLZHR6aySa/++j6tGYsAbTQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc" size="425109">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KEPsgGRyI+vsDy/UmVIIQzrDu2w31GgGzA+/ETCT6eU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc" size="428876">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3T7Rmr0MNPH9/5ZA83T7MMs4ugYVKTM8P42LRoDkqjo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc" size="417945">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gRaO6efyevi3xEK51zE/x4rnk6QVuF5+NBKQTVGbVPI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc" size="417919">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>apAAzmSp6RLDYgAqFk1ddeI6A9wnz0pVhM4+z6/gOf0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\En\EnPurSts.rdlc" size="414495">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RZ0pw2U8WqJb7az5asFb303Pl5gIwEFXElhObSh7dM0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc" size="417939">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6B3H200C/9Bz5Kh7VfOKoc15zgFTjPDdekAN7CQ+QNY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc" size="421401">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5bpFlLs99jgdksrU2BRa0EzmJg8HiVUjzIsjYsWsn5Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurItemSts.rdlc" size="428962">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TkeAc2vabCuOwSZSDL5kkcwiJHi1L10erazFTYSrpK4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurPosSts.rdlc" size="428911">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>USIo76R19HlDRAuueOiiccuOCVP8v9hvQUuOfKIT9+0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurSts.rdlc" size="425160">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mjxC82+NPQofCGyA4lTjVtebNRNytW3+j9bzM8dywvw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurUserSts.rdlc" size="432656">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mKLoadS7EPTng30uVjp4wBtpjA6zsSVJyTEwHpF/6nQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurVendorSts.rdlc" size="440169">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0wGuRHhUNvWPL7KuaLUeAhDqIIV506eSF9g9AGOc6K0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\En\EnPurItemSts.rdlc" size="421432">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oW8DQZcbhKEwMuHsnAd+3Aqe7O4r1oj+Y8LMy8xMdYU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\En\EnPurPosSts.rdlc" size="421410">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>jSl/RM3vM1+YPyOhaeFHHpht8eur7CJGb9HhsnmDL5k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\En\EnPurSts.rdlc" size="417986">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vI8a1P79g4WpP1rG4DBkSZw7iZxBVy+4H4RC1wckn6Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\En\EnPurUserSts.rdlc" size="421430">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JU/2F2YJqz2FDKSsy/DrWEAetkumPoxkoNMgQIYLWIs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Invoice\En\EnPurVendorSts.rdlc" size="431770">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QS2EnHmmpUU0OJJxxkS6BGRJg2Rfuee/K63Jj43mw6I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Item\Ar\ArItem.rdlc" size="431132">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LOlIqdRnLZSX5zVLoeKleV+XzZ5TM2AK5JKTqFUvHSA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Item\Ar\ArMostPur.rdlc" size="429449">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>A0K8+vTJpip5DIAHxnDbfHdbGr76cnrxWJYmdW74TA0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Item\En\EnItem.rdlc" size="423347">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tprF1FXBROs/YGXDBpaA22lOkYCplf7gBpDPGHakkZs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Purchase\Item\En\EnMostPur.rdlc" size="421950">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WSdugEVRF0ul0oXUyREcpX/cr06lzS1dHTryEIEStUo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc" size="428915">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4+oIvWLyjLSpZK8pXLGpWaAE+EDh4lMVozFXHALrYUs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc" size="436387">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cyQLUHiXnw9Puv3ea9nSpwE6xZa7Trx2F9jj7ewET1U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc" size="432588">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ln5HY76+2wBSFo64+2Sp0urx3pum7JxPR1XvWR+gg8o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc" size="436335">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pLFQe2yKvyUIUlVuE4iF8Ic3s8kU36rHUp8comWrkw4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc" size="440113">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nftROJ0xxuxiX8Hqehkn35zB9UkZwnbHDP2LVeLb2Gw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc" size="431789">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>oW9zQ+WUI7Yf0mWNo4XylcyFAg8DLrgtmV2aQRdSdO0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc" size="427726">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Gs0I+HjqvliopmJqGOuwfi2OZWza/1WkO/afPsRAAX4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc" size="421429">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>FYKupOo1Er3kMj/HLNGw0UtkeWHG0Ly7TWauSiUIeG0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc" size="428245">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sAjrDayTOb17+DeDH1t2jyrsPgw7q/iyQ4fz88TmGdI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\En\EnPurSts.rdlc" size="424873">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RVCyrllfMyDJ/jGPWnoeKqpn4UGfqXkVoFZNk7O7XCI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc" size="428254">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6HP+lNSgJed3g2wTqiSBLEn5sS11fvMxW3sIhvWWOb8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc" size="431711">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zFx0eMSHAe2qLGANJMv9NfA38fHpDePb0dRN7R4zXps=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Item\Ar\ArBestSel.rdlc" size="429447">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>laj1qcepRJuOdkcNZM7+OgI/kl7vbrwcHyf0xv3ZZ1Q=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Item\Ar\ArItem.rdlc" size="431130">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>igjxApr7tXF/zIC5wazRqhlt8LmbUgy1j1ihGR0SoCA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Item\En\EnBestSel.rdlc" size="421947">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WuEFIS8ZrPx3jYhSrasmKPKxuE7g8uhYVvwoXbDpvsU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Item\En\EnItem.rdlc" size="423344">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mNUtCH0PD3RgkDAyKzVLLpV38Sc6G7OYwvGf9fhIfDk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\Ar\ArPurItemSts.rdlc" size="428915">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4+oIvWLyjLSpZK8pXLGpWaAE+EDh4lMVozFXHALrYUs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\Ar\ArPurPosSts.rdlc" size="436387">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cyQLUHiXnw9Puv3ea9nSpwE6xZa7Trx2F9jj7ewET1U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\Ar\ArPurSts.rdlc" size="432588">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ln5HY76+2wBSFo64+2Sp0urx3pum7JxPR1XvWR+gg8o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\Ar\ArPurUserSts.rdlc" size="436335">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pLFQe2yKvyUIUlVuE4iF8Ic3s8kU36rHUp8comWrkw4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\Ar\ArPurVendorSts.rdlc" size="440113">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nftROJ0xxuxiX8Hqehkn35zB9UkZwnbHDP2LVeLb2Gw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\En\EnPurItemSts.rdlc" size="421429">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>FYKupOo1Er3kMj/HLNGw0UtkeWHG0Ly7TWauSiUIeG0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\En\EnPurPosSts.rdlc" size="428245">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sAjrDayTOb17+DeDH1t2jyrsPgw7q/iyQ4fz88TmGdI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\En\EnPurSts.rdlc" size="424873">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RVCyrllfMyDJ/jGPWnoeKqpn4UGfqXkVoFZNk7O7XCI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\En\EnPurUserSts.rdlc" size="428254">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>6HP+lNSgJed3g2wTqiSBLEn5sS11fvMxW3sIhvWWOb8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Order\En\EnPurVendorSts.rdlc" size="431711">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zFx0eMSHAe2qLGANJMv9NfA38fHpDePb0dRN7R4zXps=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Promotion\Ar\ArCoupons.rdlc" size="426718">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tl9CDywYHMwu/5bGpsEPALlk9Qfhu0SwY2+F7PoMlj8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Promotion\Ar\ArOffers.rdlc" size="432117">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Q/XkjvAYpUxwaGYXnTl/yVk5xDLIgq5dr6cDTPB4at8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Promotion\En\EnCoupons.rdlc" size="419508">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UZGmGGtnheyLrULOBuRllN+7AEIf86lsQcA615iV5d0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\Promotion\En\EnOffers.rdlc" size="424349">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>GnFWftamxZ2cmZkOhfsnHELcASkRp2QVG1uR9YHZl0g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\QT\Ar\ArPurItemSts.rdlc" size="428915">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>4+oIvWLyjLSpZK8pXLGpWaAE+EDh4lMVozFXHALrYUs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\QT\Ar\ArPurPosSts.rdlc" size="436387">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cyQLUHiXnw9Puv3ea9nSpwE6xZa7Trx2F9jj7ewET1U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\QT\Ar\ArPurSts.rdlc" size="432588">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Ln5HY76+2wBSFo64+2Sp0urx3pum7JxPR1XvWR+gg8o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\QT\Ar\ArPurUserSts.rdlc" size="436335">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pLFQe2yKvyUIUlVuE4iF8Ic3s8kU36rHUp8comWrkw4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\StatisticReport\Sale\QT\Ar\ArPurVendorSts.rdlc" size="440113">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nftROJ0xxuxiX8Hqehkn35zB9UkZwnbHDP2LVeLb2Gw=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SqlServerTypes\readme.htm" size="2369">

@@ -161,3 +161,17 @@ C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.pdb
 C:\Users\HP\Documents\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
 D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache
+D:\increase\sales\POS\netoaster\bin\Debug\netoaster.dll
+D:\increase\sales\POS\netoaster\bin\Debug\netoaster.pdb
+D:\increase\sales\POS\netoaster\obj\Debug\ToasterWindow.g.cs
+D:\increase\sales\POS\netoaster\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster_MarkupCompile.cache
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster_MarkupCompile.lref
+D:\increase\sales\POS\netoaster\obj\Debug\Themes\Generic.baml
+D:\increase\sales\POS\netoaster\obj\Debug\ToasterWindow.baml
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster.g.resources
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster.Properties.Resources.resources
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster.csproj.GenerateResource.cache
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster.dll
+D:\increase\sales\POS\netoaster\obj\Debug\netoaster.pdb
