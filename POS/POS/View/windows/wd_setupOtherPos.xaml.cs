@@ -43,6 +43,8 @@ namespace POS.View.windows
         static public int countryId;
         static public string imgFileName = "pic/no-image-icon-125x125.png";
         static public ImageBrush brush = new ImageBrush();
+        uc_serverConfig serverConfigInstance = uc_serverConfig.Instance;
+        uc_selectPos selectPosInstance;
         protected void OnPropertyChanged()
         {
             //txt_pageIndex.Text =(_pageIndex+1).ToString();
@@ -102,11 +104,12 @@ namespace POS.View.windows
             if (index == 0)
             {
                 grid_main.Children.Clear();
-                grid_main.Children.Add(uc_serverConfig.Instance);
+                grid_main.Children.Add(serverConfigInstance);
             }
             else if (index == 1)
             {
                 grid_main.Children.Clear();
+                selectPosInstance = uc_selectPos.Instance;
                 grid_main.Children.Add(uc_selectPos.Instance);
             }
            
@@ -138,7 +141,7 @@ namespace POS.View.windows
                 {
                     if (item.key.Equals("serverUri"))
                     {
-                        if (string.IsNullOrWhiteSpace(uc_serverConfig.Instance.serverUri))
+                        if (string.IsNullOrWhiteSpace(serverConfigInstance.serverUri))
                         {
                             item.value = "";
                             isValid = false;
@@ -146,7 +149,7 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_serverConfig.Instance.serverUri;
+                            item.value = serverConfigInstance.serverUri;
                             bool validUrl = setupConfiguration.validateUrl(item.value);
                             if (!validUrl)
                             {
@@ -159,7 +162,7 @@ namespace POS.View.windows
                     }
                     else if (item.key.Equals("activationkey"))
                     {
-                        if (string.IsNullOrWhiteSpace(uc_serverConfig.Instance.activationkey))
+                        if (string.IsNullOrWhiteSpace(serverConfigInstance.activationkey))
                         {
                             item.value = "";
                             isValid = false;
@@ -167,7 +170,7 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_serverConfig.Instance.activationkey;
+                            item.value = serverConfigInstance.activationkey;
                         }
                     }
                 }
@@ -179,7 +182,7 @@ namespace POS.View.windows
                 {
                     if (item.key.Equals("posId"))
                     {
-                        if (uc_selectPos.Instance.posId.Equals(0))
+                        if (selectPosInstance.posId.Equals(0))
                         {
                             item.value = "";
                             isValid = false;
@@ -187,12 +190,12 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_selectPos.Instance.posId.ToString();
+                            item.value = selectPosInstance.posId.ToString();
                         }
                     }
                     else if (item.key.Equals("branchId"))
                     {
-                        if (uc_selectPos.Instance.branchId.Equals(0))
+                        if (selectPosInstance.branchId.Equals(0))
                         {
                             item.value = "";
                             isValid = false;
@@ -200,7 +203,7 @@ namespace POS.View.windows
                         }
                         else
                         {
-                            item.value = uc_selectPos.Instance.branchId.ToString();
+                            item.value = selectPosInstance.branchId.ToString();
                         }
                     }
                 }
@@ -211,12 +214,12 @@ namespace POS.View.windows
                 if (pageIndex == 1)
             {
                 //server INFO
-                string url = uc_serverConfig.Instance.serverUri;
-                string activationkey = uc_serverConfig.Instance.activationkey;
+                string url = serverConfigInstance.serverUri;
+                string activationkey = serverConfigInstance.activationkey;
 
 
                 //// pos INFO
-               int posId = uc_selectPos.Instance.posId;
+               int posId = selectPosInstance.posId;
                string motherCode = setupConfiguration.GetMotherBoardID();
                string hardCode = setupConfiguration.GetHDDSerialNo();
                string deviceCode = motherCode + "-" + hardCode;
@@ -225,7 +228,7 @@ namespace POS.View.windows
                 int res = await setupConfiguration.setPosConfiguration(activationkey, deviceCode, posId);
                 if (res == -2 || res == -3) // invalid or resrved activation key
                 {
-                    uc_serverConfig.Instance.activationkey = "";
+                    //uc_serverConfig.Instance.activationkey = "";
                     pageIndex = 0;
                     CallPage(0);
                     Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupOtherPos.resourcemanager.GetString("trErrorWrongActivation"), animation: ToasterAnimation.FadeIn);
