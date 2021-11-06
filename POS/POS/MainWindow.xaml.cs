@@ -60,6 +60,7 @@ namespace POS
         internal static int? userID;
         internal static User userLogin;
         internal static int? userLogInID;
+        internal static List<Pos> posList = new List<Pos>();
         internal static Pos posLogIn = new Pos();
         internal static int? posID = 1;
         internal static int? branchID;
@@ -611,7 +612,6 @@ namespace POS
                 }
             }
         }
-
         async void loading_GlobalUnitsList()
         {
             try
@@ -629,7 +629,24 @@ namespace POS
                 }
             }
         }
-
+        async void loading_POSList()
+        {
+            try
+            {
+                posList = await posLogIn.Get();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_POSList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        
         #endregion
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
@@ -690,6 +707,7 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_getprintSitting", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_GlobalItemUnitsList", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_GlobalUnitsList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_POSList", value = false });
 
 
                 loading_getUserPath();
@@ -705,6 +723,7 @@ namespace POS
                 loading_getprintSitting();
                 loading_GlobalItemUnitsList();
                 loading_GlobalUnitsList();
+                loading_POSList();
                 do
                 {
                     isDone = true;

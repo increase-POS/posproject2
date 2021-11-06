@@ -679,8 +679,10 @@ namespace POS.View.accounts
                 dp_startSearchDate.SelectedDate = DateTime.Now;
                 dp_endSearchDate.SelectedDate = DateTime.Now;
 
-                sDate = dp_startSearchDate.SelectedDate.Value;
-                eDate = dp_endSearchDate.SelectedDate.Value;
+                //sDate = dp_startSearchDate.SelectedDate.Value;
+                //eDate = dp_endSearchDate.SelectedDate.Value;
+                sDate = eDate = DateTime.Now.Date;
+
 
                 dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
                 dp_endSearchDate.SelectedDateChanged += this.dp_SelectedEndDateChanged;

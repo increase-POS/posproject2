@@ -775,7 +775,6 @@ namespace POS.View.reports
                 card.Add(resultList.ToList().Skip(i).FirstOrDefault().cardTotal);
                 doc.Add(resultList.ToList().Skip(i).FirstOrDefault().docTotal);
                 cheque.Add(resultList.ToList().Skip(i).FirstOrDefault().chequeTotal);
-                balance.Add(resultList.ToList().Skip(i).FirstOrDefault().balanceTotal);
                 invoice.Add(resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal);
 
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
@@ -789,7 +788,6 @@ namespace POS.View.reports
                     cardSum = cardSum + resultList.ToList().Skip(i).FirstOrDefault().cardTotal;
                     docSum = docSum + resultList.ToList().Skip(i).FirstOrDefault().docTotal;
                     chequeSum = chequeSum + resultList.ToList().Skip(i).FirstOrDefault().chequeTotal;
-                    balanceSum = balanceSum + resultList.ToList().Skip(i).FirstOrDefault().balanceTotal;
                     invoiceSum = invoiceSum + resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal;
                 }
                 if (!((cashSum == 0) && (cardSum == 0) && (docSum == 0) && (chequeSum == 0) && (chequeSum == 0) && (balanceSum == 0) && (invoiceSum == 0)))
@@ -798,7 +796,6 @@ namespace POS.View.reports
                     card.Add(cardSum);
                     doc.Add(docSum);
                     cheque.Add(chequeSum);
-                    balance.Add(balanceSum);
                     invoice.Add(invoiceSum);
 
                     axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
@@ -831,13 +828,6 @@ namespace POS.View.reports
              Values = cheque.AsChartValues(),
              DataLabels = true,
              Title = MainWindow.resourcemanager.GetString("trCheque")
-         });
-            columnChartData.Add(
-         new StackedColumnSeries
-         {
-             Values = balance.AsChartValues(),
-             DataLabels = true,
-             Title = MainWindow.resourcemanager.GetString("trCredit")
          });
             columnChartData.Add(
          new StackedColumnSeries
@@ -902,7 +892,6 @@ namespace POS.View.reports
             List<decimal> card = new List<decimal>();
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
-            List<decimal> balance = new List<decimal>();
             List<decimal> invoice = new List<decimal>();
 
             if (endYear - startYear <= 1)
@@ -924,7 +913,6 @@ namespace POS.View.reports
                         card.Add(drawCard);
                         doc.Add(drawDoc);
                         cheque.Add(drawCheque);
-                        balance.Add(drawBalance);
                         invoice.Add(drawInvoice);
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
 
@@ -950,14 +938,12 @@ namespace POS.View.reports
                     var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Select(c => c.cash.Value).Sum();
                     var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "doc").Select(c => c.cash.Value).Sum();
                     var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cheque").Select(c => c.cash.Value).Sum();
-                    var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "balance").Select(c => c.cash.Value).Sum();
                     var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "inv").Select(c => c.cash.Value).Sum();
 
                     cash.Add(drawCash);
                     card.Add(drawCard);
                     doc.Add(drawDoc);
                     cheque.Add(drawCheque);
-                    balance.Add(drawBalance);
                     invoice.Add(drawInvoice);
                     MyAxis.Labels.Add(year.ToString());
                 }
@@ -986,13 +972,6 @@ namespace POS.View.reports
             {
                 Values = cheque.AsChartValues(),
                 Title = MainWindow.resourcemanager.GetString("trCheque")
-
-            });
-            rowChartData.Add(
-            new LineSeries
-            {
-                Values = balance.AsChartValues(),
-                Title = MainWindow.resourcemanager.GetString("trCredit")
 
             });
             rowChartData.Add(

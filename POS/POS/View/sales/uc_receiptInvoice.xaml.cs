@@ -2116,11 +2116,21 @@ namespace POS.View
             {
                 CashTransfer cashTrasnfer = new CashTransfer();// cach transfer model
                 cashTrasnfer = await cashTrasnfer.GetByInvId(invoice.invoiceId);
-                cb_paymentProcessType.SelectedValue = cashTrasnfer.processType;
+                if (cashTrasnfer != null)
+                {
+                    cb_paymentProcessType.SelectedValue = cashTrasnfer.processType;
+                }
+                else
+                {
+                    cashTrasnfer = new CashTransfer();
+                    cashTrasnfer.processType = "balance";
+                }
+                
                 switch (cashTrasnfer.processType)
                 {
                     case "cash":
 
+                        cb_paymentProcessType.SelectedIndex = 1;
                         gd_theRest.Visibility = Visibility.Visible;
                         tb_cashPaid.Text = txt_theRest.Text = "0";
                         gd_card.Visibility = Visibility.Collapsed;
@@ -2129,6 +2139,7 @@ namespace POS.View
                         tb_processNum.Clear();
                         break;
                     case "balance":
+                        cb_paymentProcessType.SelectedIndex = 1;
                         gd_theRest.Visibility = Visibility.Collapsed;
                         tb_cashPaid.Text = txt_theRest.Text = "0";
                         gd_card.Visibility = Visibility.Collapsed;
@@ -2137,6 +2148,7 @@ namespace POS.View
                         tb_processNum.Clear();
                         break;
                     case "card":
+                        cb_paymentProcessType.SelectedIndex = 2;
                         gd_card.Visibility = Visibility.Visible;
                         _SelectedCard = cashTrasnfer.cardId.Value;
                         tb_processNum.Text = cashTrasnfer.docNum;

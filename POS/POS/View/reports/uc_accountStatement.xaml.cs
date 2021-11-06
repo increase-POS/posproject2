@@ -456,7 +456,11 @@ namespace POS.View.reports
         private void fillEvents()
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-            //temp = statisticModel.getstate(stateLst);
+            if(selectedTab == 1)
+            {
+                temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null)||
+                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+            }
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
@@ -505,8 +509,6 @@ namespace POS.View.reports
                 year = (int)cb_vendorsDate.SelectedItem;
             }
 
-            //var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-
             SeriesCollection rowChartData = new SeriesCollection();
 
             List<string> lable = new List<string>();
@@ -550,22 +552,18 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            //var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> cash = new List<decimal>();
             List<decimal> card = new List<decimal>();
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
-            List<decimal> balance = new List<decimal>();
             List<decimal> inv = new List<decimal>();
 
             cash.Add(temp.Where(x => x.processType == "cash").Select(x => x.cash.Value).Sum());
             card.Add(temp.Where(x => x.processType == "card").Select(x => x.cash.Value).Sum());
             doc.Add(temp.Where(x => x.processType == "doc").Select(x => x.cash.Value).Sum());
             cheque.Add(temp.Where(x => x.processType == "cheque").Select(x => x.cash.Value).Sum());
-            balance.Add(temp.Where(x => x.processType == "balance").Select(x => x.cash.Value).Sum());
             inv.Add(temp.Where(x => x.processType == "inv").Select(x => x.cash.Value).Sum());
 
             columnChartData.Add(
@@ -597,17 +595,11 @@ namespace POS.View.reports
                DataLabels = true,
                Title = MainWindow.resourcemanager.GetString("trCheque")
            });
-            columnChartData.Add(
-           new ColumnSeries
-           {
-               Values = balance.AsChartValues(),
-               DataLabels = true,
-               Title = MainWindow.resourcemanager.GetString("tr_Balance")
-           });
+          
            columnChartData.Add(
            new ColumnSeries
             {
-                Values = balance.AsChartValues(),
+                Values = inv.AsChartValues(),
                 DataLabels = true,
                 Title = MainWindow.resourcemanager.GetString("tr_Invoice")
             });
@@ -621,7 +613,6 @@ namespace POS.View.reports
             List<string> titles = new List<string>();
             List<int> resultList = new List<int>();
             titles.Clear();
-            //var temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
            
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "p").Count());
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "d").Count());

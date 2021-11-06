@@ -162,10 +162,9 @@
 
 
                                     <DockPanel  Grid.Column="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_itemInvoice" Content="Invoice" Margin="10,5,10,5" Foreground="{StaticResource MainColorGrey}" Checked="chk_itemInvoice_Checked" Unchecked="chk_itemInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_itemReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_itemReturn_Checked" Unchecked="chk_itemReturn_Unchecked"></CheckBox>
+                                        <CheckBox x:Name="chk_itemInvoice" Content="Invoice" Margin="10,5,10,5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_itemReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
                                         <CheckBox x:Name="chk_itemDrafs" Visibility="Collapsed"></CheckBox>
-
 
                                     </DockPanel>
                                     <ComboBox SelectionChanged="cb_Items_SelectionChanged" Name="cb_Items" 
@@ -182,16 +181,16 @@
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                     <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Checked="Chk_allItems_Checked" Unchecked="Chk_allItems_Unchecked" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_ItemEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_ItemEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
+                                        <DatePicker SelectedDateFormat="Short"  Name="dp_ItemEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_ItemStartDate_SelectedDateChanged" Name="dp_ItemStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged" Name="dp_ItemStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
-                                        <materialDesign:TimePicker Visibility="Collapsed" SelectedTimeChanged="dt_ItemEndTime_SelectedTimeChanged" Name="dt_ItemEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
+                                        <materialDesign:TimePicker Visibility="Collapsed" SelectedTimeChanged="dt_SelectedTimeChanged" Name="dt_ItemEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End time..."/>
-                                        <materialDesign:TimePicker Visibility="Collapsed" SelectedTimeChanged="dt_itemStartTime_SelectedTimeChanged" Name="dt_itemStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                        <materialDesign:TimePicker Visibility="Collapsed" SelectedTimeChanged="dt_SelectedTimeChanged" Name="dt_itemStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start time..."/>
 
@@ -211,14 +210,11 @@
                                         <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
-
-
-
                                     <DockPanel LastChildFill="False" Grid.Row="1" Grid.Column="2">
-                                        <DatePicker SelectedDateFormat="Short" Grid.Row="1" Grid.Column="2" Name="dp_collectEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="Dp_collectEndDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
+                                        <DatePicker SelectedDateFormat="Short" Grid.Row="1" Grid.Column="2" Name="dp_collectEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="Dp_colletSelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short"  SelectedDateChanged="Dp_collectStartDate_SelectedDateChanged" Name="dp_collectStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                        <DatePicker SelectedDateFormat="Short"  SelectedDateChanged="Dp_colletSelectedDateChanged" Name="dp_collectStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                     </DockPanel>
@@ -319,14 +315,9 @@
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemName}" />
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding ITunitName}" />
                         <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" />
-                        <!--<DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice}" />-->
                         <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice,Converter={StaticResource accuracyConverter}}" />
-
-                        <!--<DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal}"/>-->
                         <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal ,Converter={StaticResource accuracyConverter}}"/>
-
                         <DataGridTextColumn x:Name="col_invCount" Width="*" Header="Invoices" Binding="{Binding count}" Visibility="Collapsed"/>
-                        <!--<DataGridTextColumn x:Name="col_avg" Width="*" Header="Items/Invoice" Binding="{Binding itemAvg,StringFormat=N2}" Visibility="Collapsed"/>-->
                         <DataGridTextColumn x:Name="col_avg" Width="*" Header="Items/Invoice" Binding="{Binding itemAvg,Converter={StaticResource accuracyConverter}}" Visibility="Collapsed"/>
                     </DataGrid.Columns>
                 </DataGrid>

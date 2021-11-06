@@ -164,7 +164,6 @@ namespace POS.View.accounts
                 cb_fromBranch.DisplayMemberPath = "name";
                 cb_fromBranch.SelectedValuePath = "branchId";
                 cb_fromBranch.SelectedValue = MainWindow.branchID.Value;
-                //cb_fromBranch.IsEnabled = false;////////////permissions
                 #endregion
 
                 #region fill branch combo2
@@ -172,7 +171,6 @@ namespace POS.View.accounts
                 cb_toBranch.DisplayMemberPath = "name";
                 cb_toBranch.SelectedValuePath = "branchId";
                 cb_toBranch.SelectedValue = MainWindow.branchID.Value;
-                cb_toBranch.IsEnabled = false;/////////////permissions
                 #endregion
 
 
@@ -310,8 +308,10 @@ namespace POS.View.accounts
                             cashtrans2 = cashes2.ToList()[1] as CashTransfer;
                             cashtrans3 = cashes2.ToList()[0] as CashTransfer;
                         }
-
+                        cb_fromBranch.SelectedValue =( MainWindow.posList.Where(x=> x.posId ==  cashtrans2.posId).FirstOrDefault() as Pos ).branchId;
                         cb_pos1.SelectedValue = cashtrans2.posId;
+
+                        cb_toBranch.SelectedValue = (MainWindow.posList.Where(x => x.posId == cashtrans3.posId).FirstOrDefault() as Pos).branchId;
                         cb_pos2.SelectedValue = cashtrans3.posId;
                         #endregion
                     }

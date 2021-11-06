@@ -15,7 +15,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>E:\GitHub\posproject2\Publish\</PublishUrl>
+    <PublishUrl>C:\Users\DIna-HP\Desktop\publish-dina\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,11 +25,16 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ProductName>POS</ProductName>
+    <PublisherName>Increase</PublisherName>
+    <SuiteName>POS</SuiteName>
+    <ApplicationRevision>18</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -64,6 +69,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'content|AnyCPU'">
+    <OutputPath>bin\content\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
@@ -1334,111 +1342,321 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\Account\Ar\ArBankAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArBondAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArOrderAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArPayAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArPayReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArPosAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArReceiptAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\Ar\ArReciveReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\BankAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\BondAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\OrderAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\PayAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\PayReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\PosAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\ReceiptAccReport.rdlc" />
-    <EmbeddedResource Include="Reports\Account\En\ReciveReport.rdlc" />
-    <EmbeddedResource Include="Reports\Purchase\Ar\ArInvPurOrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\Purchase\Ar\ArInvPurReport.rdlc" />
-    <EmbeddedResource Include="Reports\Purchase\En\InvPurOrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\Purchase\En\InvPurReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurOrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurQtReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\ArInvPurReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\CouponReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\LargeSaleReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\MediumSaleReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\OfferReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\Ar\SmallSaleReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\CouponReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\InvPurOrderReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\InvPurQtReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\InvPurReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\LargeSaleReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\MediumSaleReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\OfferReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\PackageReport.rdlc" />
-    <EmbeddedResource Include="Reports\Sale\En\SmallSaleReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArBankReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArBranchReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArCardReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArCustomerReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArPosReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArShippingReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArStoreReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArUserReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\Ar\ArVendorReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\BankReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\BranchReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\CardReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\CustomerReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\PosReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\ShippingReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\StoreReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\UserReport.rdlc" />
-    <EmbeddedResource Include="Reports\SectionData\En\VendorReport.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\AccountStatement\Ar\ArAccStatement.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\AccountStatement\En\AccStatement.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\En\User.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\En\EnPurSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc" />
+    <Content Include="Reports\Account\Ar\ArBankAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArBondAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArOrderAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArPayAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArPayReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArPosAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArReceiptAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArReciveReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\BankAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\BondAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\OrderAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\PayAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\PayReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\PosAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\ReceiptAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\ReciveReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Purchase\Ar\ArInvPurOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Purchase\Ar\ArInvPurReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Purchase\En\InvPurOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Purchase\En\InvPurReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\ArInvPurOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\ArInvPurQtReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\ArInvPurReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\CouponReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\LargeSaleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\MediumSaleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\OfferReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\SmallSaleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\CouponReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\InvPurOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\InvPurQtReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\InvPurReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\LargeSaleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\MediumSaleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\OfferReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\PackageReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\SmallSaleReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArBankReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArBranchReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArCardReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArCustomerReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArPosReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArShippingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArStoreReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArUserReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\Ar\ArVendorReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\BankReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\BranchReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\CardReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\CustomerReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\PosReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\ShippingReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\StoreReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\UserReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SectionData\En\VendorReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\AccountStatement\Ar\ArAccStatement.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\AccountStatement\En\AccStatement.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\En\User.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\En\EnPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Ar\ArPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Ar\ArPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Ar\ArPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Ar\ArPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Ar\ArPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\En\EnPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\En\EnPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\En\EnPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\En\EnPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\Destructive\En\Des.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc" />
@@ -1450,6 +1668,230 @@
     <EmbeddedResource Include="Reports\Store\Ar\ArDestroyReport.rdlc" />
     <EmbeddedResource Include="Reports\Store\Ar\ArLocationReport.rdlc" />
     <EmbeddedResource Include="Reports\Store\En\DestroyReport.rdlc" />
+    <Content Include="Reports\Account\Ar\ArBankDoc.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArBankDocA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArBondDoc.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArBondDocA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArPayReportA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\Ar\ArReciveReportA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\BankDoc.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\BankDocA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\BondDoc.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\BondDocA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\PayReportA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Account\En\ReciveReportA4.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\Ar\ArCategoryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\Ar\ArItemReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\Ar\ArPropertiesReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\Ar\ArStorageCostReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\Ar\ArUnitReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\En\CategoryReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\En\ItemReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\En\PropertiesReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\En\StorageCostReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\En\UnitReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\image\image.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\dailySale.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\Ar\PackageReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\coupon\coupExport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\coupExport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sale\En\dailySale.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Fund\Ar\ArFund.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Fund\En\Fund.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Profit\Ar\Profit.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Profit\Ar\ProfitItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Profit\En\Profit.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Profit\En\ProfitItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\Ar\ArPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\En\EnPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\En\EnPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\En\EnPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\En\EnPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Invoice\En\EnPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Item\Ar\ArItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Item\Ar\ArMostPur.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Item\En\EnItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Purchase\Item\En\EnMostPur.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Item\Ar\ArBestSel.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Item\Ar\ArItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Item\En\EnBestSel.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Item\En\EnItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\Ar\ArPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\Ar\ArPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\Ar\ArPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\Ar\ArPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\Ar\ArPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\En\EnPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\En\EnPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\En\EnPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\En\EnPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Order\En\EnPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Promotion\Ar\ArCoupons.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Promotion\Ar\ArOffers.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Promotion\En\EnCoupons.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Promotion\En\EnOffers.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\Ar\ArPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\Ar\ArPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\Ar\ArPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\Ar\ArPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\Ar\ArPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc" />
+    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurPosSts.rdlc" />
+    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurSts.rdlc" />
+    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurUserSts.rdlc" />
+    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurVendorSts.rdlc" />
     <Resource Include="fonts\cairo-font\cairo bold.ttf" />
     <Resource Include="fonts\cairo-font\cairo-light.ttf" />
     <Resource Include="fonts\barcodeFont.ttf" />
@@ -1522,5 +1964,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
