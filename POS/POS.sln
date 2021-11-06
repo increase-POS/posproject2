@@ -9,14 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "netoaster", "netoaster\neto
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		content|Any CPU = content|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78EAEA71-5B9D-4911-8BCA-EB1F87164BF0}.content|Any CPU.ActiveCfg = content|Any CPU
+		{78EAEA71-5B9D-4911-8BCA-EB1F87164BF0}.content|Any CPU.Build.0 = content|Any CPU
 		{78EAEA71-5B9D-4911-8BCA-EB1F87164BF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78EAEA71-5B9D-4911-8BCA-EB1F87164BF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78EAEA71-5B9D-4911-8BCA-EB1F87164BF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78EAEA71-5B9D-4911-8BCA-EB1F87164BF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{211D37EF-74F8-4E4F-9ED0-DA4566F423F5}.content|Any CPU.ActiveCfg = content|Any CPU
+		{211D37EF-74F8-4E4F-9ED0-DA4566F423F5}.content|Any CPU.Build.0 = content|Any CPU
 		{211D37EF-74F8-4E4F-9ED0-DA4566F423F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{211D37EF-74F8-4E4F-9ED0-DA4566F423F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{211D37EF-74F8-4E4F-9ED0-DA4566F423F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
