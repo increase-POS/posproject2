@@ -620,8 +620,10 @@ namespace POS.View
             {
                 //if (sendert != null)
                 //    SectionData.StartAwait(grid_main);
-                await refreshOrdersWaitNotification();
-                await refreshQuotationNotification();
+                if (SectionData.isAdminPermision())
+                    refreshInvoiceNotification();
+                refreshOrdersWaitNotification();
+                refreshQuotationNotification();
                 if (invoice.invoiceId != 0)
                 {
                     await refreshDocCount(invoice.invoiceId);
@@ -645,6 +647,7 @@ namespace POS.View
             try
             {
                 refreshDraftNotification();
+                refreshInvoiceNotification();
                 refreshOrdersWaitNotification();
                 refreshQuotationNotification();
             }
@@ -674,6 +677,33 @@ namespace POS.View
                 else if (draftCount == 0) md_draft.Badge = "";
                 else
                     md_draft.Badge = draftCount.ToString();
+            }
+        }
+        private async Task refreshInvoiceNotification()
+        {
+            string invoiceType = "s ,sb";
+            int duration = 1;
+            int invoicesCount = 0;
+            if (SectionData.isAdminPermision())
+                invoicesCount = await invoice.GetCountForAdmin(invoiceType, duration);
+            else
+                invoicesCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice.invoiceId != 0)
+                invoicesCount--;
+
+            int previouseCount = 0;
+            if (md_invoice.Badge != null && md_invoice.Badge.ToString() != "") previouseCount = int.Parse(md_invoice.Badge.ToString());
+
+            if (invoicesCount != previouseCount)
+            {
+                if (invoicesCount > 9)
+                {
+                    invoicesCount = 9;
+                    md_invoice.Badge = "+" + invoicesCount.ToString();
+                }
+                else if (invoicesCount == 0) md_invoice.Badge = "";
+                else
+                    md_invoice.Badge = invoicesCount.ToString();
             }
         }
         private async Task refreshOrdersWaitNotification()
@@ -1555,6 +1585,7 @@ namespace POS.View
                                     await saveCashTransfers();
                                 await clearInvoice();
                                 refreshDraftNotification();
+                                refreshInvoiceNotification();
                             }
                             //thread  + purchases
                             if (invoice.invType == "s")

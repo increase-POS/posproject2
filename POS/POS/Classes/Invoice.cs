@@ -253,6 +253,26 @@ namespace POS.Classes
             }
             return count;
         }
+        public async Task<int> GetCountForAdmin(string invType, int duration)
+        {
+            int count = 0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invType", invType);
+            parameters.Add("createUserId", createUserId.ToString());
+            parameters.Add("duration", duration.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/GetCountInvoicesForAdmin", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    count = int.Parse(c.Value);
+                    break;
+                }
+            }
+            return count;
+        }
         public async Task<List<Invoice>> getBranchInvoices(string invType, int branchCreatorId, int branchId=0 )
         {
             List<Invoice> items = new List<Invoice>();

@@ -93,6 +93,8 @@ namespace POS.Classes
 
             string newPath = path + addtopath;
             return newPath;
+            //addtopath = addtopath.Substring(1);
+            //return addtopath;
         }
 
         public string TimeToString(TimeSpan? time)
