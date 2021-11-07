@@ -85,6 +85,15 @@ namespace POS.Classes
             //    return message;
             //}
         }
+        public async Task<int> getRemain(int offerId, int itemUnitId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "ItemsOffers/getRemain";
+
+            parameters.Add("offerId", offerId.ToString());
+            parameters.Add("itemUnitId", itemUnitId.ToString());
+            return await APIResult.post(method, parameters);  
+        }
 
 
 

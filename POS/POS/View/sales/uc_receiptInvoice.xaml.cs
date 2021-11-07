@@ -127,6 +127,7 @@ namespace POS.View
         // for report
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
+        ItemUnitOffer offer;
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         public static int width;
         public static int itemscount;
@@ -2869,7 +2870,7 @@ namespace POS.View
                 case "cop":// this barcode for coupon
                     {
                         // await fillCouponsList();
-                        couponModel = coupons.ToList().Find(c => c.barcode == barcode);
+                        couponModel = coupons.ToList().Find(c => c.barcode.ToLower() == barcode);
                         var exist = selectedCoupons.Find(c => c.couponId == couponModel.cId);
                         if (couponModel != null && exist == null)
                         {
@@ -3329,10 +3330,30 @@ namespace POS.View
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
                             //newCount = newCount + availableAmount;
+                            if ((int)row.offerId != 0)
+                            {
+                                offer = new ItemUnitOffer();
+                                int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
+                                if (remainAmount < availableAmount)
+                                    availableAmount = remainAmount;
+                            }                        
                             newCount = availableAmount;
                             tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
                             tb.Text = newCount.ToString();
                             row.Count = (int)newCount;
+                        }
+                        else if((int)row.offerId != 0)
+                        {
+                            offer = new ItemUnitOffer();
+                            int remainAmount = await offer.getRemain((int)row.offerId,row.itemUnitId);
+                            if (remainAmount < newCount)
+                            {
+                                availableAmount = remainAmount;
+                                newCount = availableAmount;
+                                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                                tb.Text = newCount.ToString();
+                                row.Count = (int)newCount;
+                            }
                         }
                     }
 
