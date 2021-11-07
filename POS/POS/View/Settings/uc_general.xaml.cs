@@ -989,6 +989,16 @@ namespace POS.View.Settings
             }
         }
 
+        private void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Btn_saveErrorsExport_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private async void Btn_saveAccuracy_Click(object sender, RoutedEventArgs e)
         {//save accuracy
             try

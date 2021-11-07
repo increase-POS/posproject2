@@ -2204,7 +2204,7 @@ Please add Email in setting</value>
     <value>Month count ...</value>
   </data>
   <data name="trSalesOrderAlertContent" xml:space="preserve">
-    <value>trSalesOrderAlertContent</value>
+    <value>branch have receved order</value>
   </data>
   <data name="trSalesOrderAlertTilte" xml:space="preserve">
     <value>Sales Order</value>
@@ -2727,5 +2727,8 @@ Please add Email in setting</value>
   </data>
   <data name="trReady" xml:space="preserve">
     <value>Ready</value>
+  </data>
+  <data name="trOfferHint" xml:space="preserve">
+    <value>Offer...</value>
   </data>
 </root>

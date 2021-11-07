@@ -4562,6 +4562,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عرض....
+        /// </summary>
+        internal static string trOfferHint {
+            get {
+                return ResourceManager.GetString("trOfferHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to موافق.
         /// </summary>
         internal static string trOK {
@@ -6020,7 +6029,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trSalesOrderAlertContent.
+        ///   Looks up a localized string similar to تم تحويل طلب للفرع.
         /// </summary>
         internal static string trSalesOrderAlertContent {
             get {

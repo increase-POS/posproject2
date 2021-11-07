@@ -4589,6 +4589,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offer....
+        /// </summary>
+        internal static string trOfferHint {
+            get {
+                return ResourceManager.GetString("trOfferHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offer Name....
         /// </summary>
         internal static string trOfferNameHint {
@@ -6047,7 +6056,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trSalesOrderAlertContent.
+        ///   Looks up a localized string similar to branch have receved order.
         /// </summary>
         internal static string trSalesOrderAlertContent {
             get {

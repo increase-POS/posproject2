@@ -2186,7 +2186,7 @@
     <value>عدد الأشهر ...</value>
   </data>
   <data name="trSalesOrderAlertContent" xml:space="preserve">
-    <value>trSalesOrderAlertContent</value>
+    <value>تم تحويل طلب للفرع</value>
   </data>
   <data name="trSalesOrderAlertTilte" xml:space="preserve">
     <value>طلبية مبيعات</value>
@@ -2712,5 +2712,8 @@
   </data>
   <data name="trReady" xml:space="preserve">
     <value>جاهز</value>
+  </data>
+  <data name="trOfferHint" xml:space="preserve">
+    <value>عرض...</value>
   </data>
 </root>

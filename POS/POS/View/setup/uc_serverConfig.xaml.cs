@@ -84,7 +84,6 @@ namespace POS.View.setup
                 //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
             }
         }
-
         public static BrushConverter bc = new BrushConverter();
         public static bool validateEmptyTextBox(TextBox tb, Path p_error, ToolTip tt_error, string tr)
         {
