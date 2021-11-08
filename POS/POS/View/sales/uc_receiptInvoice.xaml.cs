@@ -3054,7 +3054,7 @@ namespace POS.View
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
                     var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
                     //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
-                    int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
+                   // int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
 
 
                     int oldCount = 0;
@@ -3073,20 +3073,66 @@ namespace POS.View
                     oldCount = billDetails[_datagridSelectedIndex].Count;
                     oldPrice = billDetails[_datagridSelectedIndex].Price;
 
-                    if (availableAmount < oldCount)
-                    //if (availableAmount <= 0)
+                    if (_InvoiceType == "sbd")
                     {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                        newCount = newCount + availableAmount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                        tb.Text = availableAmount.ToString();
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == billDetails[_datagridSelectedIndex].itemUnitId);
+                        if (newCount > item.quantity)
+                        {
+                            // return old value 
+                            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                            tb.Text = item.quantity.ToString();
+                            newCount = (long)item.quantity;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
                     else
                     {
-                        // newCount = oldCount;
-                        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                        newCount = int.Parse(tb.Text);
+                        //validateAvailableAmount(row, newCount, index, tb );
+                        int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, billDetails[_datagridSelectedIndex].itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
+                        if (availableAmount < newCount)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                            //newCount = newCount + availableAmount;
+                            if ((int)billDetails[_datagridSelectedIndex].offerId != 0)
+                            {
+                                offer = new ItemUnitOffer();
+                                int remainAmount = await offer.getRemain((int)billDetails[_datagridSelectedIndex].offerId, billDetails[_datagridSelectedIndex].itemUnitId);
+                                if (remainAmount < availableAmount)
+                                    availableAmount = remainAmount;
+                            }
+                            newCount = availableAmount;
+                            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                            tb.Text = newCount.ToString();
+                            billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                        }
+                        else if ((int)billDetails[_datagridSelectedIndex].offerId != 0)
+                        {
+                            offer = new ItemUnitOffer();
+                            int remainAmount = await offer.getRemain((int)billDetails[_datagridSelectedIndex].offerId, billDetails[_datagridSelectedIndex].itemUnitId);
+                            if (remainAmount < newCount)
+                            {
+                                availableAmount = remainAmount;
+                                newCount = availableAmount;
+                                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                                tb.Text = newCount.ToString();
+                                billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                            }
+                        }
                     }
+                    //if (availableAmount < oldCount)
+                    ////if (availableAmount <= 0)
+                    //{
+                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    //    newCount = newCount + availableAmount;
+                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    //    tb.Text = availableAmount.ToString();
+                    //}
+                    //else
+                    //{
+                    //    // newCount = oldCount;
+                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    //    newCount = int.Parse(tb.Text);
+                    //}
 
                     // old total for changed item
                     decimal total = oldPrice * oldCount;
