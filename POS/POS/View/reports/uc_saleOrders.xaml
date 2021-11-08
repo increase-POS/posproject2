@@ -35,7 +35,7 @@
                         Grid.Row="0" Margin="0,0,5,0"
                         BorderBrush="{x:Null}"
                         Background="#4E4E4E">
-                    <Grid >
+                    <Grid x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -210,7 +210,7 @@
                                 </Path>
                             </Button>
                         </Border>
-                        <Border x:Name="bdr_items" Visibility="Collapsed" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
+                        <!--<Border x:Name="bdr_items" Visibility="Collapsed" Grid.Column="4" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
                             <Button x:Name="btn_items"  Background="Transparent"  Tag="items"
                                     materialDesign:RippleAssist.Feedback="Transparent" Click="btn_items_Click"
                                     BorderBrush="Transparent" Height="auto" Width="60">
@@ -393,10 +393,13 @@
                                     </Path.ToolTip>
                                 </Path>
                             </Button>
-                        </Border>
+                        </Border>-->
 
-                        <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
+                        <Border Grid.Column="10" >
+                            <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
+                        
                     </Grid>
                 </Border>
 
@@ -421,13 +424,13 @@
 
 
                                     <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox Visibility="Collapsed" x:Name="chk_invoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_invoice_Checked" Unchecked="chk_invoice_Unchecked"></CheckBox>
-                                        <CheckBox Visibility="Collapsed" x:Name="chk_return" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_return_Checked" Unchecked="chk_return_Unchecked"></CheckBox>
-                                        <CheckBox Visibility="Collapsed" x:Name="chk_drafs"  Content="Drafts" Checked="chk_drafs_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_drafs_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_endDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_endDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
+                                        <CheckBox Visibility="Collapsed" x:Name="chk_invoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox Visibility="Collapsed" x:Name="chk_return" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox Visibility="Collapsed" x:Name="chk_drafs"  Content="Drafts" Checked="chk_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_Checked"></CheckBox>
+                                        <DatePicker SelectedDateFormat="Short"  Name="dp_endDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
-                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_startDate_SelectedDateChanged" Name="dp_startDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
+                                        <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged" Name="dp_startDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
 
@@ -441,10 +444,10 @@
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0"></ComboBox>
                                     <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Click="chk_allBranches_Click" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
-                                        <materialDesign:TimePicker  SelectedTimeChanged="dp_endTime_SelectedTimeChanged" Name="dt_endTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
+                                        <materialDesign:TimePicker  SelectedTimeChanged="dt_SelectedTimeChanged" Name="dt_endTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End time..."/>
-                                        <materialDesign:TimePicker SelectedTimeChanged="dt_startTime_SelectedTimeChanged" Name="dt_startTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                        <materialDesign:TimePicker SelectedTimeChanged="dt_SelectedTimeChanged" Name="dt_startTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="Start time..."/>
 
@@ -456,7 +459,7 @@
 
 
 
-                                <Grid Grid.Row="1" x:Name="grid_pos" Margin="10,0,10,10" Visibility="Hidden">
+                                <!--<Grid Grid.Row="1" x:Name="grid_pos" Margin="10,0,10,10" Visibility="Hidden">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
                                         <RowDefinition Height="auto" ></RowDefinition>
@@ -737,7 +740,7 @@
                                     </DockPanel>
 
 
-                                </Grid>
+                                </Grid>-->
                             </Grid>
 
                         </ScrollViewer>
