@@ -283,7 +283,10 @@ namespace POS.View.windows
             }
             items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase,branchId);
             MainWindow.InvoiceGlobalItemsList = items.ToList();
-            MainWindow.InvoiceGlobalItemUnitsList = await itemUnitModel.Getall();
+            if (defaultSale == 1)
+                MainWindow.InvoiceGlobalSaleUnitsList = await itemUnitModel.GetForSale();
+            else
+                MainWindow.InvoiceGlobalItemUnitsList = await itemUnitModel.Getall();
             return items;
         }
 

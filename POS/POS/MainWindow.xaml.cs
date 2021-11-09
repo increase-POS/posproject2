@@ -108,6 +108,7 @@ namespace POS
 
         static public List<Item> InvoiceGlobalItemsList = new List<Item>();
         static public List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
+        static public List<Item> InvoiceGlobalSaleUnitsList = new List<Item>();
 
 
 

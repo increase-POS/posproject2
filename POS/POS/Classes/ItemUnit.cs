@@ -23,6 +23,7 @@ namespace POS.Classes
         public Nullable<short> defaultSale { get; set; }
         public Nullable<short> defaultPurchase { get; set; }
         public Nullable<decimal> price { get; set; }
+        public Nullable<decimal> priceTax { get; set; }
         public string barcode { get; set; }
         public string mainUnit { get; set; }
         public string smallUnit { get; set; }
@@ -448,6 +449,21 @@ namespace POS.Classes
             //    }
             //    return items;
             //}
+        }
+       
+        public async Task<List<Item>> GetForSale()
+        {
+            List<Item> list = new List<Item>();
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsUnits/GetForSale");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<Item>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list; 
         }
 
         public async Task<List<ItemUnit>> GetIU()

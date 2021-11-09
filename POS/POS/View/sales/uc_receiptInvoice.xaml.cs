@@ -78,7 +78,7 @@ namespace POS.View
         IEnumerable<Agent> customers;
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
-        List<ItemUnit> itemUnits;
+        List<Item> itemUnits;
         Invoice invoiceModel = new Invoice();
         List<Invoice> invoices;
         public Invoice invoice = new Invoice();
@@ -127,7 +127,7 @@ namespace POS.View
         // for report
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
-        ItemUnitOffer offer;
+        ItemUnitOffer offer = new ItemUnitOffer();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         public static int width;
         public static int itemscount;
@@ -1000,7 +1000,7 @@ namespace POS.View
 
                 // get item units
                 //itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
-                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
+                itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 // search for default unit for purchase
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
@@ -1008,8 +1008,8 @@ namespace POS.View
                     decimal itemTax = 0;
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
-                    decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
-                     addItemToBill(itemId, defaultsaleUnit.itemUnitId, defaultsaleUnit.mainUnit, price, false);
+                    //decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
+                     addItemToBill(itemId, (int)defaultsaleUnit.itemUnitId, defaultsaleUnit.unitName, (decimal)defaultsaleUnit.priceTax, false);
 
                 }
                 else
@@ -1168,7 +1168,17 @@ namespace POS.View
             for (int i = 0; i < billDetails.Count; i++)
             {
                 int availableAmount = await itemLocationModel.getAmountInBranch(billDetails[i].itemUnitId, MainWindow.branchID.Value);
-                if (availableAmount < billDetails[i].Count)
+                if(billDetails[i].offerId != 0)
+                {
+                    int remainAmount = await offer.getRemain((int)billDetails[i].offerId, billDetails[i].itemUnitId);
+                    if ((availableAmount < billDetails[i].Count || remainAmount < billDetails[i].Count))
+                    {
+                        available = false;
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
+                        return available;
+                    }
+                }
+                else if (availableAmount < billDetails[i].Count)
                 {
                     available = false;
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
@@ -1499,8 +1509,8 @@ namespace POS.View
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            try
-            {            
+            //try
+            //{            
                 if (((MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                         &&
                         (invoice.invType == "sd" || invoice.invType == "s"))
@@ -1625,13 +1635,13 @@ namespace POS.View
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private async Task saveCashTransfers()
         {
@@ -1851,12 +1861,11 @@ namespace POS.View
             cb_paymentProcessType.SelectedIndex = 0;
             cb_paymentProcessType.IsEnabled = true;
             lst_coupons.Items.Clear();
-            //tb_discountCoupon.Text = "0";
+            btn_items.IsEnabled = true;
             md_docImage.Badge = "";
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
             gd_theRest.Visibility = Visibility.Collapsed;
-            //btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
@@ -1867,7 +1876,6 @@ namespace POS.View
             refrishBillDetails();
             tb_barcode.Focus();
             inputEditable();
-            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
             btn_next.Visibility = Visibility.Collapsed;
             btn_previous.Visibility = Visibility.Collapsed;
             await fillCouponsList();
@@ -2093,29 +2101,19 @@ namespace POS.View
                 _Tax = (decimal)invoice.tax;
                 //tb_taxValue.Text = invoice.tax.ToString();
                 tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
-
-                //_Discount = (decimal) invoice.discountValue;
-                //if (invoice.discountValue != 0 && invoice.discountValue != null)
-                //    tb_discountCoupon.Text = SectionData.DecTostring(invoice.discountValue);
-                //else
-                //    tb_discountCoupon.Text = "0";
             }
             if (_InvoiceType == "sbd")
             {
                 _Tax = 0;
-                //tb_taxValue.Text = _Tax.ToString();
                 if (_Tax != 0)
                     tb_taxValue.Text = SectionData.DecTostring(_Tax);
                 else
                     tb_taxValue.Text = "0";
-
-                //tb_discountCoupon.Text = "0";
             }
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             if (invoice.totalNet != null)
             {
-                //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
                 if ((decimal)invoice.totalNet != 0 && invoice.totalNet != null)
                     tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
                 else
@@ -2124,12 +2122,10 @@ namespace POS.View
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
             tb_note.Text = invoice.notes;
-            //tb_sum.Text = invoice.total.ToString();
             if (invoice.total != 0 && invoice.total != null)
                 tb_sum.Text = SectionData.DecTostring(invoice.total);
             else tb_sum.Text = "0";
 
-            //tb_discount.Text = invoice.manualDiscountValue.ToString();
             if (invoice.manualDiscountValue != 0)
                 tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
             else
@@ -2148,33 +2144,45 @@ namespace POS.View
             {
                 CashTransfer cashTrasnfer = new CashTransfer();// cach transfer model
                 cashTrasnfer = await cashTrasnfer.GetByInvId(invoice.invoiceId);
-                cb_paymentProcessType.SelectedValue = cashTrasnfer.processType;
-                switch (cashTrasnfer.processType)
+                if (cashTrasnfer != null)
                 {
-                    case "cash":
+                    cb_paymentProcessType.SelectedValue = cashTrasnfer.processType;
+                    switch (cashTrasnfer.processType)
+                    {
+                        case "cash":
 
-                        gd_theRest.Visibility = Visibility.Visible;
-                        tb_cashPaid.Text = txt_theRest.Text = "0";
-                        gd_card.Visibility = Visibility.Collapsed;
-                        _SelectedCard = -1;
-                        txt_card.Text = "";
-                        tb_processNum.Clear();
-                        break;
-                    case "balance":
-                        gd_theRest.Visibility = Visibility.Collapsed;
-                        tb_cashPaid.Text = txt_theRest.Text = "0";
-                        gd_card.Visibility = Visibility.Collapsed;
-                       _SelectedCard = -1;
-                        txt_card.Text = "";
-                        tb_processNum.Clear();
-                        break;
-                    case "card":
-                        gd_card.Visibility = Visibility.Visible;
-                        _SelectedCard = cashTrasnfer.cardId.Value;
-                        tb_processNum.Text = cashTrasnfer.docNum;
-                        gd_theRest.Visibility = Visibility.Collapsed;
-                        tb_cashPaid.Text = txt_theRest.Text = "0";
-                        break;
+                            gd_theRest.Visibility = Visibility.Visible;
+                            tb_cashPaid.Text = txt_theRest.Text = "0";
+                            gd_card.Visibility = Visibility.Collapsed;
+                            _SelectedCard = -1;
+                            txt_card.Text = "";
+                            tb_processNum.Clear();
+                            break;
+                        case "balance":
+                            gd_theRest.Visibility = Visibility.Collapsed;
+                            tb_cashPaid.Text = txt_theRest.Text = "0";
+                            gd_card.Visibility = Visibility.Collapsed;
+                            _SelectedCard = -1;
+                            txt_card.Text = "";
+                            tb_processNum.Clear();
+                            break;
+                        case "card":
+                            gd_card.Visibility = Visibility.Visible;
+                            _SelectedCard = cashTrasnfer.cardId.Value;
+                            tb_processNum.Text = cashTrasnfer.docNum;
+                            gd_theRest.Visibility = Visibility.Collapsed;
+                            tb_cashPaid.Text = txt_theRest.Text = "0";
+                            break;
+                    }
+                }
+                else
+                {
+                    gd_theRest.Visibility = Visibility.Visible;
+                    tb_cashPaid.Text = txt_theRest.Text = "0";
+                    gd_card.Visibility = Visibility.Collapsed;
+                    _SelectedCard = -1;
+                    txt_card.Text = "";
+                    tb_processNum.Clear();
                 }
             }
             else if (invoice.invType == "or")
@@ -2217,7 +2225,6 @@ namespace POS.View
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
 
-                            //this.DataContext = invoice;
                             await fillInvoiceInputs(invoice);
                             if (w.condition == "admin")
                                 invoices = await invoice.GetInvoicesForAdmin(invoiceType,0);
@@ -2320,6 +2327,7 @@ namespace POS.View
                     btn_clearCoupon.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
+                    btn_items.IsEnabled = false;
                     //btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
                 case "sd": // sales draft invoice
@@ -2340,7 +2348,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
-                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_items.IsEnabled = true;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -2354,9 +2362,9 @@ namespace POS.View
                     cb_typeDiscount.IsEnabled = true;
                     break;
                 case "or": //sales order
-                    dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                    dg_billDetails.Columns[3].IsReadOnly = false;
-                    dg_billDetails.Columns[4].IsReadOnly = false;
+                    dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
+                    dg_billDetails.Columns[3].IsReadOnly = true;//make unit readonly
+                    dg_billDetails.Columns[4].IsReadOnly = true; //make qty readonly
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
@@ -2374,7 +2382,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
-                    //btn_deleteInvoice.Visibility = Visibility.Visible;
+                    btn_items.IsEnabled = false;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -2406,7 +2414,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
-                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_items.IsEnabled = false;
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
                     break;
@@ -2429,7 +2437,7 @@ namespace POS.View
                     tb_processNum.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
-                    //btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_items.IsEnabled = false;
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
@@ -2919,7 +2927,7 @@ namespace POS.View
                             int itemId = (int)unit1.itemId;
                             if (unit1.itemId != 0)
                             {
-                                 addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.price, false);
+                                 addItemToBill(itemId, unit1.itemUnitId, unit1.mainUnit, (decimal)unit1.priceTax, false);
                                 refreshTotalValue();
                                 refrishBillDetails();
                             }
@@ -2948,7 +2956,7 @@ namespace POS.View
             if (index == -1)//item doesn't exist in bill
             {
                 // get item units
-                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
+                itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 // itemUnits = await itemUnitModel.GetItemUnits(itemId);
 
 
@@ -3052,18 +3060,30 @@ namespace POS.View
                     billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     #region Dina
                     //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
-                    var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
+                    // var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
+                    dynamic unit;
+                    if (MainWindow.InvoiceGlobalSaleUnitsList == null)
+                    {
+                        unit = new Item();
+                        unit = barcodesList.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+                    }
+                    else
+                    {
+                        unit = new ItemUnit();
+                        unit = MainWindow.InvoiceGlobalSaleUnitsList.Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+                    }
+
                     //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
-                   // int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
+                    // int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
 
 
                     int oldCount = 0;
                     long newCount = 0;
                     decimal oldPrice = 0;
                     decimal itemTax = 0;
-                    if (item.taxes != null)
-                        itemTax = (decimal)item.taxes;
-                    decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
+                    //if (item.taxes != null)
+                    //    itemTax = (decimal)item.taxes;
+                    decimal price = (decimal)unit.priceTax + SectionData.calcPercentage((decimal)unit.priceTax, itemTax);
 
                     // decimal newPrice = (decimal)unit.price;
                     decimal newPrice = price;
@@ -3095,7 +3115,6 @@ namespace POS.View
                             //newCount = newCount + availableAmount;
                             if ((int)billDetails[_datagridSelectedIndex].offerId != 0)
                             {
-                                offer = new ItemUnitOffer();
                                 int remainAmount = await offer.getRemain((int)billDetails[_datagridSelectedIndex].offerId, billDetails[_datagridSelectedIndex].itemUnitId);
                                 if (remainAmount < availableAmount)
                                     availableAmount = remainAmount;
@@ -3456,10 +3475,10 @@ namespace POS.View
         private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
         {
            // var itemUnits = await itemUnitModel.GetItemUnits(itemId);
-           var itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
+           var itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
             int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
             var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
-            foreach (ItemUnit u in itemUnits)
+            foreach (Item u in itemUnits)
             {
                 var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)u.itemUnitId && x.ID != ID); // unit exist in invoice
                 if (isInBill != null)
@@ -3473,12 +3492,12 @@ namespace POS.View
                     { }
                     else if (isSmall != null) // from-unit is bigger than to-unit
                     {
-                        unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, u.itemUnitId);
+                        unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, (int)u.itemUnitId);
                         quantity = quantity / unitValue;
                     }
                     else
                     {
-                        unitValue = await itemUnitModel.smallToLargeUnit(itemUnitId, u.itemUnitId);
+                        unitValue = await itemUnitModel.smallToLargeUnit(itemUnitId, (int)u.itemUnitId);
 
                         if (unitValue != 0)
                         {
