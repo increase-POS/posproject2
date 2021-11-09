@@ -2731,4 +2731,7 @@ Please add Email in setting</value>
   <data name="trOfferHint" xml:space="preserve">
     <value>Offer...</value>
   </data>
+  <data name="trReserve" xml:space="preserve">
+    <value>Reserve</value>
+  </data>
 </root>

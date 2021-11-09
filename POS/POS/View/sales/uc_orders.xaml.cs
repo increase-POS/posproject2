@@ -170,6 +170,7 @@ namespace POS.View.sales
             txt_orders.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
+            txt_submitOrder.Text = MainWindow.resourcemanager.GetString("trReserve");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");

@@ -5885,6 +5885,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reserve.
+        /// </summary>
+        internal static string trReserve {
+            get {
+                return ResourceManager.GetString("trReserve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reserved.
         /// </summary>
         internal static string trReserved {

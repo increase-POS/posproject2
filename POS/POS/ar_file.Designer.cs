@@ -5858,6 +5858,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حجز.
+        /// </summary>
+        internal static string trReserve {
+            get {
+                return ResourceManager.GetString("trReserve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to محجوز.
         /// </summary>
         internal static string trReserved {

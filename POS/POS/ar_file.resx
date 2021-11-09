@@ -2716,4 +2716,7 @@
   <data name="trOfferHint" xml:space="preserve">
     <value>عرض...</value>
   </data>
+  <data name="trReserve" xml:space="preserve">
+    <value>حجز</value>
+  </data>
 </root>
