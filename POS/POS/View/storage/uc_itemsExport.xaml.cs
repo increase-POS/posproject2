@@ -1368,7 +1368,7 @@ namespace POS.View.storage
                             createUserId = MainWindow.userID.Value,
                             updateUserId = MainWindow.userID.Value,
                         };
-                       await not.save(not, (int) cb_branch.SelectedValue, "storageAlerts_ImpExp", cb_branch.Text);
+                       await not.save(not, (int) cb_branch.SelectedValue, "storageAlerts_ImpExp", MainWindow.loginBranch.name);
                         #endregion
                         // expot order
                         if (invoice.invoiceId == 0) // create new export order
