@@ -394,7 +394,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arabic.
+        ///   Looks up a localized string similar to العربية.
         /// </summary>
         internal static string trArabic {
             get {

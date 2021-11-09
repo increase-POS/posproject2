@@ -2482,7 +2482,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الانكليزية.
+        ///   Looks up a localized string similar to English.
         /// </summary>
         internal static string trEnglish {
             get {
