@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="POS.exe" version="1.0.0.16" publicKeyToken="15a6c5385adc9f32" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="POS.exe" version="1.0.0.16" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="pic\increaseLogo.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
@@ -871,14 +871,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="26624">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="27136">
       <assemblyIdentity name="netoaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>QY+20qxpcKOwaXXNaW36+fSmcUoPgF7X3LtL/MkTDjA=</dsig:DigestValue>
+        <dsig:DigestValue>olL5if/nJHyOhiJK+IocBQ1S4l/OXSz+yPAtlBFSEdc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15424520">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15281160">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>eRLzIYTsDcz4LVAHpR+iClR+fkCODdGTQChDjErfHVc=</dsig:DigestValue>
+        <dsig:DigestValue>3lNo/1DYcG2nXQeveE+UM3Hn8fJByvlybr4KRBYzb8c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -2553,4 +2553,4 @@
       <dsig:DigestValue>rLztN4VXMw69Q6b6MX/FIYxzyxMKuwcEaaz4TnqMk8A=</dsig:DigestValue>
     </hash>
   </file>
-<publisherIdentity name="CN=DESKTOP-03LUNCQ\YasinIdlbiPC" issuerKeyHash="5936bd9e8c08ff83f773233653e4f398e3c2155f" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>4fnlYvSuDaYFJiJGXf3oDp6iyTz2h/4vyqlMUNNwLpU=</DigestValue></Reference></SignedInfo><SignatureValue>YazeXT2Phvgd6X+rEC7BywnfXEYi/EI8vi3d64AU7v9p8XreNFRaO+4alk9GPnQzjrulJgiszUCNDBzIxtCaEGCazdk12iwYKGeyaFN+N5oUykTIkQziDH5BoV9k8OKgM+FYo8y5CL6FwXuMrGD8u7/4XdT7OAsu8VXeGDUJV1M=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>2zRTGODT2Nk9N+5IzDPPDwejRNuCob9SuPO0EJQ5IGhj4fGHGGs0vMBwHkKyu07mGO9qk7bBOlYuKCqNUaWif/o1Afg90XdLfsk4JZ2f1sD8c/29hPRufGk1uZE3TI6uhJ+77AeIjlaoh2gz+oGbuPlB126YwAQxh9UATVoh5/0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="952e70d3504ca9ca2ffe87f63cc9a29e0ee8fd5d46222605a60daef462e5f9e1" Description="" Url=""><as:assemblyIdentity name="POS.exe" version="1.0.0.16" publicKeyToken="15a6c5385adc9f32" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=DESKTOP-03LUNCQ\YasinIdlbiPC</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>/xgikte1IW4ogIV0Vu8Svc0Ok2vrQcyoWVEqvV3K4bg=</DigestValue></Reference></SignedInfo><SignatureValue>IZzrK5Zm4nxDt6TKj0X9uGADZXLwdnKK+qpOuro364itzb4Tp9QytWQx/9mwKd18uUdSoD0IRjUAVl248uHhv0jNH8Rhtc0hNYtYI0OwY+gOdLO6y9aVnJMTQaRWKIkgDgRRQJzceMUSzfVab8OU4aleqhIBqJWIfM2Ke0QETDI=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>2zRTGODT2Nk9N+5IzDPPDwejRNuCob9SuPO0EJQ5IGhj4fGHGGs0vMBwHkKyu07mGO9qk7bBOlYuKCqNUaWif/o1Afg90XdLfsk4JZ2f1sD8c/29hPRufGk1uZE3TI6uhJ+77AeIjlaoh2gz+oGbuPlB126YwAQxh9UATVoh5/0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIICCTCCAXKgAwIBAgIQSqMfv/6iCr9PzYay2YsMbjANBgkqhkiG9w0BAQsFADBDMUEwPwYDVQQDHjgARABFAFMASwBUAE8AUAAtADAAMwBMAFUATgBDAFEAXABZAGEAcwBpAG4ASQBkAGwAYgBpAFAAQzAeFw0yMTExMDMxNTA5NDlaFw0yMjExMDMyMTA5NDlaMEMxQTA/BgNVBAMeOABEAEUAUwBLAFQATwBQAC0AMAAzAEwAVQBOAEMAUQBcAFkAYQBzAGkAbgBJAGQAbABiAGkAUABDMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbNFMY4NPY2T037kjMM88PB6NE24Khv1K487QQlDkgaGPh8YcYazS8wHAeQrK7TuYY72qTtsE6Vi4oKo1RpaJ/+jUB+D3Rd0t+yTglnZ/WwPxz/b2E9G58aTW5kTdMjq6En7vsB4iOVqiHaDP6gZu4+UHXbpjABDGH1QBNWiHn/QIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAHmg+A2kMgCTRDGZcxCX86s1C4uCCpl9LOY+XiLLl+qstm8iCQauJpb2IZxbW3YNd5CQpZnNziVQELanLPbLvVzHwqnUs7xtdawHACpjWv/OS/hPSK3C6sqvcgS4AERo/QmaRhakEDIrnIYTYRFl80U/UNiIWKZsvTvAaMIAes/1</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+</asmv1:assembly>

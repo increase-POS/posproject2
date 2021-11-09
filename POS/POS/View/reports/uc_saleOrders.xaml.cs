@@ -125,11 +125,8 @@ namespace POS.View.reports
                 dynamicComboUsers = new ObservableCollection<User>(comboUsers);
 
                 fillComboBranches();
-                fillComboPos();
-                fillComboUsers();
-                fillComboVendors();
 
-                chk_invoice.IsChecked = true;
+                fillEvent();
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_branch.Tag.ToString());
 
@@ -207,18 +204,6 @@ namespace POS.View.reports
             return result;
         }
 
-        //private IEnumerable<ItemTransferInvoice> fillRowChartList(IEnumerable<ItemTransferInvoice> Invoices, CheckBox chkInvoice, CheckBox chkReturn, CheckBox chkDraft
-        //  , DatePicker startDate, DatePicker endDate, TimePicker startTime, TimePicker endTime)
-        //{
-        //    fillDates(startDate, endDate, startTime, endTime);
-        //    var result = Invoices.Where(x => (
-        //                 (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
-        //                && (endDate.SelectedDate != null ? x.invDate <= endDate.SelectedDate : true)
-        //                && (startTime.SelectedTime != null ? x.invDate >= startTime.SelectedTime : true)
-        //                && (endTime.SelectedTime != null ? x.invDate <= endTime.SelectedTime : true)));
-        //    return result;
-        //}
-
         private void fillPieChart(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             List<string> titles = new List<string>();
@@ -260,11 +245,12 @@ namespace POS.View.reports
             }
           
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            int xCount = 0;
+            if(x.Count() <= 6) xCount = x.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 List<int> final = new List<int>();
 
-                List<string> lable = new List<string>();
                 final.Add(x.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
                   new PieSeries
@@ -274,6 +260,28 @@ namespace POS.View.reports
                       DataLabels = true,
                   }
               );
+            }
+            if(x.Count() > 6)
+            {
+                int finalSum = 0;
+                for (int i = 6; i < x.Count(); i++)
+                {
+                    finalSum = finalSum + x.ToList().Skip(i).FirstOrDefault();
+                }
+                if(finalSum != 0)
+                {
+                    List<int> final = new List<int>();
+
+                    final.Add(finalSum);
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = MainWindow.resourcemanager.GetString("trOthers"),
+                          DataLabels = true,
+                      }
+                  );
+                }
             }
             chart1.Series = piechartData;
         }
@@ -322,7 +330,7 @@ namespace POS.View.reports
                 z = result.Select(m => m.countD);
                 var tempName = temp.GroupBy(s => s.posName).Select(s => new
                 {
-                    uUserName = s.Key
+                    uUserName = s.Key +"/"+ s.FirstOrDefault().branchCreatorName
                 });
                 names.AddRange(tempName.Select(nn => nn.uUserName));
             }
@@ -379,14 +387,33 @@ namespace POS.View.reports
                 MainWindow.resourcemanager.GetString("trDraft")
 
             };
-            for (int i = 0; i < x.Count(); i++)
+
+            int xCount = 0;
+            if (x.Count() <= 6) xCount = x.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 cP.Add(x.ToList().Skip(i).FirstOrDefault());
                 cPb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-
+            if (x.Count() > 6)
+            {
+                int cPSum = 0, cPbSum = 0, cDSum = 0;
+                for (int i = 6; i < x.Count() ; i++)
+                {
+                    cPSum = cPSum + x.ToList().Skip(i).FirstOrDefault();
+                    cPbSum = cPbSum + y.ToList().Skip(i).FirstOrDefault();
+                    cDSum = cDSum + z.ToList().Skip(i).FirstOrDefault();
+                }
+                if(!((cPSum == 0)&&(cPbSum == 0)&&(cDSum == 0)))
+                {
+                    cP.Add(cPSum);
+                    cPb.Add(cPbSum);
+                    cD.Add(cDSum);
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             //3 فوق بعض
             columnChartData.Add(
             new StackedColumnSeries
@@ -503,12 +530,31 @@ namespace POS.View.reports
                 MainWindow.resourcemanager.GetString("trTotalReturn"),
                 MainWindow.resourcemanager.GetString("trTotalSales")
             };
-            for (int i = 0; i < pTemp.Count(); i++)
+            int xCount = 0;
+            if (pTemp.Count() <= 6) xCount = pTemp.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
                 sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            if (pTemp.Count() < 6)
+            {
+                decimal purchaseSum = 0, returnsSum = 0, subSum = 0;
+                for (int i = 6; i < pTemp.Count(); i++)
+                {
+                    purchaseSum = purchaseSum + pTemp.ToList().Skip(i).FirstOrDefault();
+                    returnsSum = returnsSum + pbTemp.ToList().Skip(i).FirstOrDefault();
+                    subSum = subSum +resultTemp.ToList().Skip(i).FirstOrDefault();
+                }
+                if(!((purchaseSum == 0)&&(returnsSum == 0)&&(subSum == 0)))
+                {
+                    purchase.Add(purchaseSum);
+                    returns.Add(returnsSum);
+                    sub.Add(subSum);
+                    MyAxis.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
             }
 
             rowChartData.Add(
@@ -1036,13 +1082,15 @@ namespace POS.View.reports
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); if (cb_branches.SelectedItem != null)
+                    SectionData.StartAwait(grid_main);
 
+                if (cb_branches.SelectedItem != null)
+                {
                     if (selectedTab == 0)
                     {
                         if (stk_tagsBranches.Children.Count < 5)
                         {
-                       
+
                             selectedBranch = cb_branches.SelectedItem as Branch;
                             var b = new MaterialDesignThemes.Wpf.Chip()
                             {
@@ -1057,63 +1105,63 @@ namespace POS.View.reports
                             selectedBranchId.Add(selectedBranch.branchId);
                             dynamicComboBranches.Remove(selectedBranch);
                         }
-                        if (selectedTab == 1)
+                    }
+                    else if (selectedTab == 1)
+                    {
+                        if (stk_tagsPos.Children.Count < 5)
                         {
-                            if (stk_tagsPos.Children.Count < 5)
-                            {
-                                selectedPos = cb_branches.SelectedItem as Pos;
-                                var b = new MaterialDesignThemes.Wpf.Chip()
-                                {
-                                    Content = selectedPos.name,
-                                    Name = "btn" + selectedPos.posId.ToString(),
-                                    IsDeletable = true,
-                                    Margin = new Thickness(5, 0, 5, 0)
-                                };
-                                b.DeleteClick += Chip_OnDeleteClick;
-                                stk_tagsPos.Children.Add(b);
-                                comboPosTemp.Add(selectedPos);
-                                selectedPosId.Add(selectedPos.posId);
-                                dynamicComboPoss.Remove(selectedPos);
-                            }
-                        }
-                        if (selectedTab == 2)
-                        {
-                            if (stk_tagsVendors.Children.Count < 5)
-                            {
-                                selectedVendor = cb_branches.SelectedItem as Agent;
-                                var b = new MaterialDesignThemes.Wpf.Chip()
-                                {
-                                    Content = selectedVendor.name,
-                                    Name = "btn" + selectedVendor.agentId.ToString(),
-                                    IsDeletable = true,
-                                    Margin = new Thickness(5, 0, 5, 0)
-                                };
-                                b.DeleteClick += Chip_OnDeleteClick;
-                                stk_tagsVendors.Children.Add(b);
-                                comboVendorTemp.Add(selectedVendor);
-                                selectedVendorsId.Add(selectedVendor.agentId);
-                                dynamicComboVendors.Remove(selectedVendor);
-                            }
-                        }
-                        if (selectedTab == 3)
-                        {
-                            selectedUser = cb_branches.SelectedItem as User;
+                            selectedPos = cb_branches.SelectedItem as Pos;
                             var b = new MaterialDesignThemes.Wpf.Chip()
                             {
-                                Content = selectedUser.username,
-                                Name = "btn" + selectedUser.userId.ToString(),
+                                Content = selectedPos.name,
+                                Name = "btn" + selectedPos.posId.ToString(),
                                 IsDeletable = true,
                                 Margin = new Thickness(5, 0, 5, 0)
                             };
                             b.DeleteClick += Chip_OnDeleteClick;
-                            stk_tagsUsers.Children.Add(b);
-                            comboUserTemp.Add(selectedUser);
-                            selectedUserId.Add(selectedUser.userId);
-                            dynamicComboUsers.Remove(selectedUser);
+                            stk_tagsPos.Children.Add(b);
+                            comboPosTemp.Add(selectedPos);
+                            selectedPosId.Add(selectedPos.posId);
+                            dynamicComboPoss.Remove(selectedPos);
                         }
                     }
-                        fillEvent();
-
+                    else if (selectedTab == 2)
+                    {
+                        if (stk_tagsVendors.Children.Count < 5)
+                        {
+                            selectedVendor = cb_branches.SelectedItem as Agent;
+                            var b = new MaterialDesignThemes.Wpf.Chip()
+                            {
+                                Content = selectedVendor.name,
+                                Name = "btn" + selectedVendor.agentId.ToString(),
+                                IsDeletable = true,
+                                Margin = new Thickness(5, 0, 5, 0)
+                            };
+                            b.DeleteClick += Chip_OnDeleteClick;
+                            stk_tagsVendors.Children.Add(b);
+                            comboVendorTemp.Add(selectedVendor);
+                            selectedVendorsId.Add(selectedVendor.agentId);
+                            dynamicComboVendors.Remove(selectedVendor);
+                        }
+                    }
+                    else if (selectedTab == 3)
+                    {
+                        selectedUser = cb_branches.SelectedItem as User;
+                        var b = new MaterialDesignThemes.Wpf.Chip()
+                        {
+                            Content = selectedUser.username,
+                            Name = "btn" + selectedUser.userId.ToString(),
+                            IsDeletable = true,
+                            Margin = new Thickness(5, 0, 5, 0)
+                        };
+                        b.DeleteClick += Chip_OnDeleteClick;
+                        stk_tagsUsers.Children.Add(b);
+                        comboUserTemp.Add(selectedUser);
+                        selectedUserId.Add(selectedUser.userId);
+                        dynamicComboUsers.Remove(selectedUser);
+                    }
+                fillEvent();
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1205,7 +1253,8 @@ namespace POS.View.reports
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_main); //invoiceId
+                    SectionData.StartAwait(grid_main);
+
                 invoice = new Invoice();
                 if (dgInvoice.SelectedIndex != -1)
                 {
@@ -1219,9 +1268,6 @@ namespace POS.View.reports
                         uc_receiptInvoice._InvoiceType = invoice.invType;
                         uc_receiptInvoice.Instance.invoice = invoice;
                         await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
-
-
-
                     }
                 }
                 if (sender != null)

@@ -608,7 +608,7 @@ namespace POS.View.catalog
         {
             txt_active.Text = MainWindow.resourcemanager.GetString("trActive");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
+            txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCostPerDay");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cost, MainWindow.resourcemanager.GetString("trStorageCostHent"));

@@ -394,7 +394,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arabic.
+        ///   Looks up a localized string similar to العربية.
         /// </summary>
         internal static string trArabic {
             get {
@@ -3175,7 +3175,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trExportAlertContent.
+        ///   Looks up a localized string similar to Export order waiting to confirm.
         /// </summary>
         internal static string trExportAlertContent {
             get {
@@ -6808,6 +6808,15 @@ namespace POS {
         internal static string trStorageCostHent {
             get {
                 return ResourceManager.GetString("trStorageCostHent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Storage Cost Per Day.
+        /// </summary>
+        internal static string trStorageCostPerDay {
+            get {
+                return ResourceManager.GetString("trStorageCostPerDay", resourceCulture);
             }
         }
         

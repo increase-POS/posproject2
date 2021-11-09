@@ -198,8 +198,8 @@
 
                                     <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
                                         <CheckBox x:Name="chk_couponInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
-                                        <CheckBox x:Name="chk_couponReturn" IsEnabled="False" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
-                                        <CheckBox x:Name="chk_couponDrafs" IsEnabled="False" Content="Drafts" Checked="chk_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_couponReturn" IsEnabled="True" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_couponDrafs" IsEnabled="True" Content="Drafts" Checked="chk_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_Checked"></CheckBox>
                                         <DatePicker SelectedDateFormat="Short"  Name="dp_couponEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
@@ -310,25 +310,15 @@
                         <DataGridTextColumn x:Name="col_code" Width="*" Header="Code" Binding="{Binding Copcode}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_couponType" Width="*" Header="Type" Binding="{Binding CopdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_coupoValue" Width="*" Header="Value" Binding="{Binding CopdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_couponTotalValue" Width="*" Header="Total" Binding="{Binding couponTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  />
-                        <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Customer" Binding="{Binding agentName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_agentCompany" Width="*" Header="Company" Binding="{Binding agentCompany}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_couponTotalValue" Width="*" Header="Discount Amount" Binding="{Binding couponTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemUnitName1}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Items Quantity" Binding="{Binding count}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,Converter={StaticResource accuracyConverter}}"/>
                         <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offers" Width="*" Header="Offer" Binding="{Binding Oname}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_offerCode" Width="*" Header="Code" Binding="{Binding Ocode}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_offersType" Width="*" Header="Type" Binding="{Binding OdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offersValue" Width="*" Header="Value" Binding="{Binding OdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_offersTotalValue" Width="*" Header="Total" Binding="{Binding offerTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_offersTotalValue" Width="*" Header="Discount Amount" Binding="{Binding offerTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
 
                     </DataGrid.Columns>
                 </DataGrid>
@@ -429,11 +419,6 @@
 
                         </StackPanel >
                     </Border>
-                    <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsBranches" Orientation="Horizontal"/>
-                    <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsPos" Orientation="Horizontal"/>
-                    <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsVendors" Orientation="Horizontal"/>
-                    <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsUsers" Orientation="Horizontal"/>
-                    <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsItems" Orientation="Horizontal"/>
                     <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsCoupons" Orientation="Horizontal"/>
                     <StackPanel DockPanel.Dock="Right"  x:Name="stk_tagsOffers" Orientation="Horizontal"/>
 

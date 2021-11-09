@@ -60,14 +60,8 @@ namespace POS.View.reports
         ObservableCollection<CouponCombo> dynamicComboCoupon;
         ObservableCollection<OfferCombo> dynamicComboOffer;
 
-        Item itemModel = new Item();
-        Coupon couponModel = new Coupon();
-        Offer offerModel = new Offer();
         /*************************/
 
-        Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
-
-        ObservableCollection<int> selectedItemId = new ObservableCollection<int>();
         ObservableCollection<int> selectedcouponId = new ObservableCollection<int>();
         ObservableCollection<int> selectedOfferId = new ObservableCollection<int>();
 
@@ -96,10 +90,10 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 coupons = await statisticModel.GetSalecoupon((int)MainWindow.branchID, (int)MainWindow.userID);
 
@@ -112,8 +106,6 @@ namespace POS.View.reports
                 dynamicComboOffer = new ObservableCollection<OfferCombo>(comboOffer);
 
                 fillComboCoupon();
-                fillComboOffer();
-
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_coupons.Tag.ToString());
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_Coupons, MainWindow.resourcemanager.GetString("trCoponHint"));
@@ -123,16 +115,22 @@ namespace POS.View.reports
 
                 chk_couponInvoice.IsChecked = true;
 
+                hidAllColumns();
+                col_code.Visibility = Visibility.Visible;
+                col_coupon.Visibility = Visibility.Visible;
+                col_couponType.Visibility = Visibility.Visible;
+                col_coupoValue.Visibility = Visibility.Visible;
+                col_couponTotalValue.Visibility = Visibility.Visible;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void fillComboCoupon()
@@ -363,19 +361,20 @@ namespace POS.View.reports
             dgInvoice.ItemsSource = itemTransfers;
             txt_count.Text = dgInvoice.Items.Count.ToString();
 
-            fillPieChart(selectedcouponId);
-            fillColumnChart(selectedcouponId);
-            fillRowChartCoupAndOffer(cb_Coupons, selectedcouponId);
+            ObservableCollection<int> selected = new ObservableCollection<int>();
+            if (selectedTab == 0)
+                selected = selectedcouponId;
+            else if (selectedTab == 1)
+                selected = selectedOfferId;
+          
+            fillPieChart(selected);
+            fillColumnChart(selected);
+            fillRowChartCoupAndOffer(cb_Coupons, selected);
         }
 
         #region Functions
         private void hideSatacks()
         {
-            stk_tagsBranches.Visibility = Visibility.Collapsed;
-            stk_tagsItems.Visibility = Visibility.Collapsed;
-            stk_tagsPos.Visibility = Visibility.Collapsed;
-            stk_tagsUsers.Visibility = Visibility.Collapsed;
-            stk_tagsVendors.Visibility = Visibility.Collapsed;
             stk_tagsCoupons.Visibility = Visibility.Collapsed;
             stk_tagsOffers.Visibility = Visibility.Collapsed;
         }
@@ -398,20 +397,11 @@ namespace POS.View.reports
         #region tabControl
         private void hidAllColumns()
         {
-            col_type.Visibility = Visibility.Hidden;
-            col_branch.Visibility = Visibility.Hidden;
-            col_pos.Visibility = Visibility.Hidden;
-            col_vendor.Visibility = Visibility.Hidden;
-            col_agentCompany.Visibility = Visibility.Hidden;
-            col_user.Visibility = Visibility.Hidden;
+            col_code.Visibility = Visibility.Hidden;
+            col_offerCode.Visibility = Visibility.Hidden;
             col_item.Visibility = Visibility.Hidden;
-            col_discount.Visibility = Visibility.Hidden;
-            col_count.Visibility = Visibility.Hidden;
             col_itQuantity.Visibility = Visibility.Hidden;
-            col_price.Visibility = Visibility.Hidden;
             col_total.Visibility = Visibility.Hidden;
-            col_totalNet.Visibility = Visibility.Hidden;
-            col_tax.Visibility = Visibility.Hidden;
             col_coupon.Visibility = Visibility.Hidden;
             col_offers.Visibility = Visibility.Hidden;
             col_coupoValue.Visibility = Visibility.Hidden;
@@ -424,10 +414,10 @@ namespace POS.View.reports
         
         private void btn_coupons_Click(object sender, RoutedEventArgs e)
         {//copouns
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_Coupons, MainWindow.resourcemanager.GetString("trCoponHint"));
@@ -440,61 +430,69 @@ namespace POS.View.reports
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_coupon);
                 path_coupons.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
+                fillComboCoupon();
                 fillEvent();
 
                 hidAllColumns();
+                col_code.Visibility = Visibility.Visible;
                 col_coupon.Visibility = Visibility.Visible;
                 col_couponType.Visibility = Visibility.Visible;
                 col_coupoValue.Visibility = Visibility.Visible;
                 col_couponTotalValue.Visibility = Visibility.Visible;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
         private void btn_offers_Click(object sender, RoutedEventArgs e)
         {//offers
-         //try
-         //{
-         //    if (sender != null)
-         //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_Coupons, MainWindow.resourcemanager.GetString("trOfferHint"));
                 selectedTab = 1;
                 txt_search.Text = "";
                 hideSatacks();
-                stk_tagsCoupons.Visibility = Visibility.Visible;
+                stk_tagsOffers.Visibility = Visibility.Visible;
 
                 paint();
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_offers);
                 path_offers.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
+                fillComboOffer();
                 fillEvent();
+
                 hidAllColumns();
                 
+                col_offerCode.Visibility = Visibility.Visible;
                 col_offers.Visibility = Visibility.Visible;
                 col_offersType.Visibility = Visibility.Visible;
                 col_offersValue.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
                 col_itQuantity.Visibility = Visibility.Visible;
                 col_offersTotalValue.Visibility = Visibility.Visible;
+                col_total.Visibility = Visibility.Visible;
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+               
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
         #endregion
 
@@ -645,22 +643,22 @@ namespace POS.View.reports
       
         private void fillEventCall(object sender)
         {
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 fillEvent();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void chk_Checked(object sender, RoutedEventArgs e)
@@ -678,6 +676,7 @@ namespace POS.View.reports
             fillEventCall(sender);
         }
 
+        bool isClicked = true;
         private void chk_allCoupon_Click(object sender, RoutedEventArgs e)
         {//all coupons
             try
@@ -685,10 +684,11 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (cb_Coupons.IsEnabled == true)
+                if(isClicked)
                 {
                     cb_Coupons.SelectedItem = null;
                     cb_Coupons.IsEnabled = false;
+                    isClicked = false;
 
                     if (selectedTab == 0)
                     {
@@ -714,6 +714,7 @@ namespace POS.View.reports
                 else
                 {
                     cb_Coupons.IsEnabled = true;
+                    isClicked = true;
                 }
 
                 fillEvent();

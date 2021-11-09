@@ -1564,7 +1564,7 @@
     <value>SMS</value>
   </data>
   <data name="trArabic" xml:space="preserve">
-    <value>Arabic</value>
+    <value>العربية</value>
   </data>
   <data name="trEnglish" xml:space="preserve">
     <value>English</value>
@@ -2183,7 +2183,7 @@ Please add Email in setting</value>
     <value>lack of quantity</value>
   </data>
   <data name="trExportAlertContent" xml:space="preserve">
-    <value>trExportAlertContent</value>
+    <value>Export order waiting to confirm</value>
   </data>
   <data name="trExportAlertTilte" xml:space="preserve">
     <value>Export Order</value>
@@ -2733,5 +2733,8 @@ Please add Email in setting</value>
   </data>
   <data name="trReserve" xml:space="preserve">
     <value>Reserve</value>
+  </data>
+  <data name="trStorageCostPerDay" xml:space="preserve">
+    <value>Storage Cost Per Day</value>
   </data>
 </root>

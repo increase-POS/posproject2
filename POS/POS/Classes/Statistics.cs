@@ -1437,7 +1437,7 @@ namespace POS.Classes
         {
             List<OfferCombo> iulist = new List<OfferCombo>();
 
-            iulist = ITInvoice.GroupBy(x => x.CopcId)
+            iulist = ITInvoice.GroupBy(x => x.OofferId)
                    .Select(g => new OfferCombo { OofferId = g.FirstOrDefault().OofferId, Oname = g.FirstOrDefault().Oname }).ToList();
             return iulist;
 

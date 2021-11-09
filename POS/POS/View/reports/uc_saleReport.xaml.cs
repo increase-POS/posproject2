@@ -357,7 +357,7 @@ namespace POS.View.reports
                 z = result.Select(m => m.countD);
                 var tempName = temp.GroupBy(s => s.posName).Select(s => new
                 {
-                    uUserName = s.Key
+                    uUserName = s.Key +"/"+s.FirstOrDefault().branchCreatorName 
                 });
                 names.AddRange(tempName.Select(nn => nn.uUserName));
             }

@@ -871,14 +871,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="26624">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="27136">
       <assemblyIdentity name="netoaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>QY+20qxpcKOwaXXNaW36+fSmcUoPgF7X3LtL/MkTDjA=</dsig:DigestValue>
+        <dsig:DigestValue>olL5if/nJHyOhiJK+IocBQ1S4l/OXSz+yPAtlBFSEdc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15424520">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15281160">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>eRLzIYTsDcz4LVAHpR+iClR+fkCODdGTQChDjErfHVc=</dsig:DigestValue>
+        <dsig:DigestValue>3lNo/1DYcG2nXQeveE+UM3Hn8fJByvlybr4KRBYzb8c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
