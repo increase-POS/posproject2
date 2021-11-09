@@ -76,6 +76,7 @@ namespace POS_Server.Controllers
                                                 barcode = u.barcode,
                                                 itemSerial = t.itemSerial,
                                                 itemType = i.type,
+                                                offerId = t.offerId,
                                             })
                                             .ToList();
 
@@ -88,61 +89,6 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken("0");
                 }
             }
-
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid)
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var transferList = (from t in entity.itemsTransfer.Where(x => x.invoiceId == invoiceId)
-            //                            join u in entity.itemsUnits on t.itemUnitId equals u.itemUnitId
-            //                            join i in entity.items on u.itemId equals i.itemId
-            //                            join un in entity.units on u.unitId equals un.unitId
-            //                            join inv in entity.invoices on t.invoiceId equals inv.invoiceId
-            //                            select new ItemTransferModel()
-            //                            {
-            //                                itemsTransId = t.itemsTransId,
-            //                                itemId = i.itemId,
-            //                                itemName = i.name,
-            //                                quantity = t.quantity,
-            //                                invoiceId = entity.invoiceOrder.Where(x=> x.itemsTransferId == t.itemsTransId).Select(x=> x.orderId).FirstOrDefault(),
-            //                                invNumber = inv.invNumber,
-            //                                locationIdNew = t.locationIdNew,
-            //                                locationIdOld = t.locationIdOld,
-            //                                createUserId = t.createUserId,
-            //                                updateUserId = t.updateUserId,
-            //                                notes = t.notes,
-            //                                createDate = t.createDate,
-            //                                updateDate = t.updateDate,
-            //                                itemUnitId = u.itemUnitId,
-            //                                price = t.price,
-            //                                unitName = un.name,
-            //                                unitId = un.unitId,
-            //                                barcode = u.barcode,
-            //                                itemSerial = t.itemSerial,
-            //                                itemType = i.type,
-            //                            })
-            //                            .ToList();
-            //        if (transferList == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(transferList);
-
-            //    }
-            //}
-            //else
-            //    return NotFound();
         }
 
         // add or update item transfer
@@ -152,8 +98,8 @@ namespace POS_Server.Controllers
         {
             string message = "";
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -180,10 +126,10 @@ namespace POS_Server.Controllers
                 if (newObject != null)
                 {
 
-                    try
-                    {
-                        // delete old invoice items
-                        using (incposdbEntities entity = new incposdbEntities())
+                try
+                {
+                  // delete old invoice items
+                    using (incposdbEntities entity = new incposdbEntities())
                         {
                             List<invoiceOrder> iol = entity.invoiceOrder.Where(x => x.invoiceId == invoiceId).ToList();
                             entity.invoiceOrder.RemoveRange(iol);
@@ -192,7 +138,8 @@ namespace POS_Server.Controllers
                             List<itemsTransfer> items = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
                             entity.itemsTransfer.RemoveRange(items);
                             entity.SaveChanges();
-                          
+
+                            var invoice = entity.invoices.Find(invoiceId);
                             for (int i = 0; i < newObject.Count; i++)
                             {
                                 itemsTransfer t;
@@ -230,23 +177,31 @@ namespace POS_Server.Controllers
                                     };
                                     entity.invoiceOrder.Add(invoiceOrder);
                                 }
+                                if(newObject[i].offerId != null && invoice.invType =="s")
+                                {
+                                    int offerId = (int)newObject[i].offerId;
+                                    int itemUnitId = (int)newObject[i].itemUnitId;
+                                    var offer = entity.itemsOffers.Where(x => x.iuId == itemUnitId && x.offerId == offerId).FirstOrDefault();                         
+
+                                    offer.used += (int)newObject[i].quantity;
+                                }
                             }
                             entity.SaveChanges();
-                            message = "1";
+                            message ="1";
                             return TokenManager.GenerateToken(message);
                         }
-                    }
+            }
                     catch
-                    {
-                        message = "0";
-                        return TokenManager.GenerateToken(message);
-                    }
-                }
+            {
+                message = "0";
+                return TokenManager.GenerateToken(message);
+            }
+        }
                 else
                 {
                     return TokenManager.GenerateToken("0");
                 }
-            } 
+           } 
         }
         [HttpPost]
         [Route("getOrderItems")]

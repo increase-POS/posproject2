@@ -428,6 +428,7 @@
           <Property Name="manualDiscountValue" Type="decimal" Precision="20" Scale="3" Nullable="false" />
           <Property Name="manualDiscountType" Type="nvarchar" MaxLength="10" />
           <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="invoiceProfit" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -506,6 +507,7 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="quantity" Type="int" />
+          <Property Name="used" Type="int" />
         </EntityType>
         <EntityType Name="itemsProp">
           <Key>
@@ -538,6 +540,8 @@
           <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="inventoryItemLocId" Type="int" />
           <Property Name="offerId" Type="int" />
+          <Property Name="profit" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -4920,6 +4924,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
           <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
+          <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -5029,6 +5034,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="offers" Relationship="Self.FK_itemsOffers_offers" FromRole="itemsOffers" ToRole="offers" />
           <NavigationProperty Name="users" Relationship="Self.FK_itemsOffers_users" FromRole="itemsOffers" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_itemsOffers_users1" FromRole="itemsOffers" ToRole="users" />
+          <Property Name="used" Type="Int32" />
         </EntityType>
         <EntityType Name="itemsProp">
           <Key>
@@ -5073,6 +5079,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="offers" Relationship="Self.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
           <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
+          <Property Name="profit" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -9568,6 +9576,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="invoices">
             <EntityTypeMapping TypeName="incposdbModel.invoices">
               <MappingFragment StoreEntitySet="invoices">
+                <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="invNumber" ColumnName="invNumber" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -9678,6 +9687,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="itemsOffers">
             <EntityTypeMapping TypeName="incposdbModel.itemsOffers">
               <MappingFragment StoreEntitySet="itemsOffers">
+                <ScalarProperty Name="used" ColumnName="used" />
                 <ScalarProperty Name="ioId" ColumnName="ioId" />
                 <ScalarProperty Name="iuId" ColumnName="iuId" />
                 <ScalarProperty Name="offerId" ColumnName="offerId" />
@@ -9705,6 +9715,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="itemsTransfer">
             <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
               <MappingFragment StoreEntitySet="itemsTransfer">
+                <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
+                <ScalarProperty Name="profit" ColumnName="profit" />
                 <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />

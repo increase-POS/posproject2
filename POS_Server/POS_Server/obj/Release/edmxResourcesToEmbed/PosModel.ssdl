@@ -423,6 +423,7 @@
     <Property Name="manualDiscountValue" Type="decimal" Precision="20" Scale="3" Nullable="false" />
     <Property Name="manualDiscountType" Type="nvarchar" MaxLength="10" />
     <Property Name="isActive" Type="bit" Nullable="false" />
+    <Property Name="invoiceProfit" Type="decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -501,6 +502,7 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="quantity" Type="int" />
+    <Property Name="used" Type="int" />
   </EntityType>
   <EntityType Name="itemsProp">
     <Key>
@@ -533,6 +535,8 @@
     <Property Name="itemSerial" Type="nvarchar" MaxLength="200" Nullable="false" />
     <Property Name="inventoryItemLocId" Type="int" />
     <Property Name="offerId" Type="int" />
+    <Property Name="profit" Type="decimal" Precision="20" Scale="3" />
+    <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>

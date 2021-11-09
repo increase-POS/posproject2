@@ -36,6 +36,8 @@ namespace POS_Server
         public string itemSerial { get; set; }
         public Nullable<int> inventoryItemLocId { get; set; }
         public Nullable<int> offerId { get; set; }
+        public Nullable<decimal> profit { get; set; }
+        public Nullable<decimal> purchasePrice { get; set; }
     
         public virtual inventoryItemLocation inventoryItemLocation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

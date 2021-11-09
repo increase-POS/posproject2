@@ -411,6 +411,7 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="incposdbModel.invoices">
         <MappingFragment StoreEntitySet="invoices">
+          <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
           <ScalarProperty Name="invNumber" ColumnName="invNumber" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -521,6 +522,7 @@
     <EntitySetMapping Name="itemsOffers">
       <EntityTypeMapping TypeName="incposdbModel.itemsOffers">
         <MappingFragment StoreEntitySet="itemsOffers">
+          <ScalarProperty Name="used" ColumnName="used" />
           <ScalarProperty Name="ioId" ColumnName="ioId" />
           <ScalarProperty Name="iuId" ColumnName="iuId" />
           <ScalarProperty Name="offerId" ColumnName="offerId" />
@@ -548,6 +550,8 @@
     <EntitySetMapping Name="itemsTransfer">
       <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
         <MappingFragment StoreEntitySet="itemsTransfer">
+          <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
+          <ScalarProperty Name="profit" ColumnName="profit" />
           <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />

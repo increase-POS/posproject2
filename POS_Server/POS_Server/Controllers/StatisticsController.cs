@@ -6592,7 +6592,7 @@ else
                                                             from jucc in juc.DefaultIfEmpty()
                                                             from jcrd in jcr.DefaultIfEmpty()
                                                             from jbbo in jbo.DefaultIfEmpty()
-                                                            where (C.transType == "p")
+                                                            where (C.transType == "p" && C.processType != "balance")
                                                             //&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 
                                                             //( C.transType == "p" && C.side==Side)
@@ -7133,7 +7133,7 @@ else
                                                             from jucc in juc.DefaultIfEmpty()
                                                             from jcrd in jcr.DefaultIfEmpty()
                                                             from jbbo in jbo.DefaultIfEmpty()
-                                                            where (C.transType == "d")
+                                                            where (C.transType == "d" && C.processType != "balance")
                                                             //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 
                                                             //( C.transType == "p" && C.side==Side)
@@ -7716,7 +7716,7 @@ else
                                         from jbbo in jbo.DefaultIfEmpty()
                                         from jshh in jsh.DefaultIfEmpty()
                                         from jinvv in jinv.DefaultIfEmpty()//yasmine
-                                        where (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh")//( C.transType == "p" && C.side==Side)
+                                        where (C.processType != "balance" &&(C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh"))//( C.transType == "p" && C.side==Side)
 
                                         //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 

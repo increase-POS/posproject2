@@ -49,7 +49,7 @@ namespace POS_Server.Models
         public Nullable<decimal> discountValue { get; set; }
         public Nullable<decimal> priceTax { get; set; }
         public Nullable<short> defaultPurchase { get; set; }
-
+        public Nullable<int> used { get; set; }
         public string parentName { get; set; }
         public string minUnitName { get; set; }
         public string maxUnitName { get; set; }

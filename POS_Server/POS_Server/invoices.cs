@@ -62,6 +62,7 @@ namespace POS_Server
         public decimal manualDiscountValue { get; set; }
         public string manualDiscountType { get; set; }
         public bool isActive { get; set; }
+        public Nullable<decimal> invoiceProfit { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }

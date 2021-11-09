@@ -81,10 +81,9 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
-            if (strP != "0") //invalid authorization
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return TokenManager.GenerateToken(strP);
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -141,6 +140,7 @@ namespace POS_Server.Controllers
 
                                         newitofrow.createUserId = userId;
                                         newitofrow.updateUserId = userId;
+                                        newitofrow.used = 0;
                                     }
                                     else
                                     {
@@ -262,10 +262,9 @@ namespace POS_Server.Controllers
 
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
-            if (strP != "0") //invalid authorization
+ if (TokenManager.GetPrincipal(token) == null) //invalid authorization
             {
-                return TokenManager.GenerateToken(strP);
+                return TokenManager.GenerateToken("-7");
             }
             else
             {
@@ -384,6 +383,72 @@ namespace POS_Server.Controllers
             //            return NotFound();
             //        }
 
+        }
+        #endregion 
+        #region
+        [HttpPost]
+        [Route("getRemain")]
+
+        public string getRemain(string token )
+        {
+            string message = "";
+           
+             token = TokenManager.readToken(HttpContext.Current.Request); 
+            if (TokenManager.GetPrincipal(token) == null) //invalid authorization
+            {
+                return TokenManager.GenerateToken("-7");
+            }
+            else
+            {
+                int offerId = 0;
+                int itemUnitId = 0;
+                int remain = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "offerId")
+                    {
+                            offerId = int.Parse(c.Value);
+                     }
+                    else if (c.Type == "itemUnitId")
+                    {
+                        itemUnitId = int.Parse(c.Value);
+                    }
+                }
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var iuoffer = (from itofr in entity.itemsOffers
+                                       where itofr.offerId == (int)offerId && itofr.iuId == (int)itemUnitId
+                                       select new ItemOfferModel()
+                                       {
+                                           offerId = itofr.offerId,
+                                           quantity = itofr.quantity,
+                                           used = itofr.used,
+                                           createDate = itofr.createDate,
+                                           updateDate = itofr.updateDate,
+                                           createUserId = itofr.createUserId,
+                                           updateUserId = itofr.updateUserId,
+                                       }).FirstOrDefault();
+
+                        if (iuoffer != null)
+                        {
+                            if (iuoffer.used == null)
+                                iuoffer.used = 0;
+                            remain = (int)iuoffer.quantity - (int)iuoffer.used;
+                        }
+                    
+                    return TokenManager.GenerateToken(remain);
+                }
+                }
+                catch
+                {
+                    message = "10";
+                    return TokenManager.GenerateToken(message);
+                }
+            }          
         }
         #endregion
 

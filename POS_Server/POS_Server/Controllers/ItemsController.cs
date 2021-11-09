@@ -555,8 +555,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetSaleOrPurItems")]
         public string GetSaleOrPurItems(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -568,6 +568,7 @@ var strP = TokenManager.GetPrincipal(token);
                 short defaultPurchase = 0;
                 int branchId = 0;
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                #region reding params
                 foreach (Claim c in claims)
                 {
                     if (c.Type == "categoryId")
@@ -587,13 +588,13 @@ var strP = TokenManager.GetPrincipal(token);
                         branchId = short.Parse(c.Value);
                     }
                 }
+                #endregion
                 DateTime cmpdate = DateTime.Now.AddDays(newdays);
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var searchPredicate = PredicateBuilder.New<items>();
-
                         var unitPredicate = PredicateBuilder.New<itemsUnits>();
 
                         if (categoryId != 0)
@@ -821,7 +822,6 @@ var strP = TokenManager.GetPrincipal(token);
                                                  maxUnitId = I.maxUnitId,
                                                  minUnitId = I.minUnitId,
                                                  min = I.min,
-
                                                  parentId = I.parentId,
                                                  isActive = I.isActive,
                                                  image = I.image,
@@ -833,8 +833,8 @@ var strP = TokenManager.GetPrincipal(token);
                                                  createUserId = I.createUserId,
                                                  updateUserId = I.updateUserId,
                                                  isNew = 0,
-                                                 price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.price).FirstOrDefault(),
-                                                 itemUnitId = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultPurchase == 1).Select(iu => iu.itemUnitId).FirstOrDefault(),
+                                                 price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultSale == 1).Select(iu => iu.price).FirstOrDefault(),
+                                                 itemUnitId = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultSale == 1).Select(iu => iu.itemUnitId).FirstOrDefault(),
 
                                              }).DistinctBy(x => x.itemId)
                                       .ToList();
@@ -860,13 +860,14 @@ var strP = TokenManager.GetPrincipal(token);
                                                        startDate = off.startDate,
                                                        endDate = off.endDate,
                                                        unitId = iu.unitId,
-
+                                                       itemCount = itof.quantity,
                                                        price = iu.price,
                                                        discountType = off.discountType,
                                                        desPrice = iu.price,
                                                        defaultSale = iu.defaultSale,
+                                                       used = itof.used,
 
-                                                   }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1).Distinct().ToList();
+                                                   }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1 && IO.itemCount > IO.used).Distinct().ToList();
                             //.Where(IO => IO.isActiveOffer == 1 && DateTime.Compare(IO.startDate,DateTime.Now)<0 && System.DateTime.Compare(IO.endDate, DateTime.Now) > 0).ToList();
 
                             // test
@@ -939,11 +940,8 @@ var strP = TokenManager.GetPrincipal(token);
 
                                 foreach (var itofflist in itemsofferslist)
                                 {
-
-
                                     if (iunlist.itemId == itofflist.itemId)
                                     {
-
                                         // get unit name of item that has the offer
                                         using (incposdbEntities entitydb = new incposdbEntities())
                                         { // put it in item
@@ -951,8 +949,7 @@ var strP = TokenManager.GetPrincipal(token);
                                              .Where(a => a.unitId == itofflist.unitId)
                                                 .Select(u => new
                                                 {
-                                                    u.name
-                                               ,
+                                                    u.name,
                                                     u.unitId
                                                 }).FirstOrDefault();
                                             iunlist.unitName = un.name;
@@ -965,11 +962,16 @@ var strP = TokenManager.GetPrincipal(token);
                                         iunlist.itemUnitId = itofflist.itemUnitId;
                                         iunlist.offerId = itofflist.offerId;
                                         iunlist.isActiveOffer = itofflist.isActiveOffer;
-
+                                        
                                         iunlist.price = itofflist.price;
                                         iunlist.priceTax = iunlist.price + (iunlist.price * iunlist.taxes / 100);
                                         iunlist.discountType = itofflist.discountType;
                                         iunlist.discountValue = itofflist.discountValue;
+                                        if (itofflist.used == null)
+                                            itofflist.used = 0;
+
+                                        if (iunlist.itemCount >= (itofflist.itemCount - itofflist.used))
+                                            iunlist.itemCount = (itofflist.itemCount - itofflist.used);
 
                                         if (iunlist.discountType == "1") // value
                                         {
@@ -982,12 +984,9 @@ var strP = TokenManager.GetPrincipal(token);
                                             totaldis = totaldis + Calc.percentValue(iunlist.price, iunlist.discountValue);
 
                                         }
-
-
-
                                     }
                                 }
-                                iunlist.desPrice = iunlist.priceTax - totaldis;
+                                iunlist.priceTax = iunlist.priceTax - totaldis;
                             }
                             return  TokenManager.GenerateToken(itemsList) ;
                         }

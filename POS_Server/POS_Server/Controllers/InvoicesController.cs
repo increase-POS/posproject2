@@ -258,8 +258,7 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("getById")]
         public string GetById(string token   )
         {
-            token = TokenManager.readToken(HttpContext.Current.Request);
-            var strP = TokenManager.GetPrincipal(token);
+var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -677,11 +676,29 @@ var strP = TokenManager.GetPrincipal(token);
 
                     if (invoicesList != null)
                     {
+                        string complete = "ready";
                         for (int i = 0; i < invoicesList.Count; i++)
                         {
+                           complete = "ready";
                             int invoiceId = invoicesList[i].invoiceId;
-                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
-                            invoicesList[i].itemsCount = itemCount;
+                            //int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
+                            invoicesList[i].itemsCount = itemList.Count;
+                            if(invTypeL.Contains("or"))
+                            {
+                                foreach (itemsTransfer tr in itemList)
+                                {
+                                    var lockedQuantity = entity.itemsLocations
+                                       .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
+                                       .Select(x => x.quantity).Sum();
+                                    if(lockedQuantity < tr.quantity)
+                                    {
+                                        complete = "notReady";
+                                        break;
+                                    }
+                                }
+                            }
+                            invoicesList[i].status = complete;
                         }
                     }
                  
@@ -785,6 +802,62 @@ var strP = TokenManager.GetPrincipal(token);
                     }
 
                     return TokenManager.GenerateToken(invoicesList);
+                }
+            }
+        }
+        [HttpPost]
+        [Route("GetCountInvoicesForAdmin")]
+        public string GetCountInvoicesForAdmin(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string invType = "";
+                int duration = 0;
+                List<string> invTypeL = new List<string>();
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invType")
+                    {
+                        invType = c.Value;
+                        string[] invTypeArray = invType.Split(',');
+                        foreach (string s in invTypeArray)
+                            invTypeL.Add(s.Trim());
+                    }
+                    else if (c.Type == "duration")
+                    {
+                        duration = int.Parse(c.Value);
+                    }
+                }
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var searchPredicate = PredicateBuilder.New<invoices>();
+
+                    if (duration > 0)
+                    {
+                        DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-duration).ToShortDateString());
+                        searchPredicate = searchPredicate.And(inv => inv.updateDate >= dt);
+                    }
+                    searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
+                    searchPredicate = searchPredicate.And(inv => inv.isActive == true);
+
+                    var invoicesCount = (from b in entity.invoices.Where(searchPredicate)
+                                        join l in entity.branches on b.branchId equals l.branchId into lj
+                                        from x in lj.DefaultIfEmpty()
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                        })
+                    .ToList().Count;
+                    return TokenManager.GenerateToken(invoicesCount);
                 }
             }
         }
@@ -2521,7 +2594,7 @@ var strP = TokenManager.GetPrincipal(token);
                             var lockedQuantity = entity.itemsLocations
                                 .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
                                 .Select(x => x.quantity).Sum();
-                            if (lockedQuantity < tr.quantity || lockedQuantity == null)
+                            if (lockedQuantity < tr.quantity)
                             {
                                 complete = "notReady";
                                 break;

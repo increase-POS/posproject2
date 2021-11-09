@@ -27,20 +27,15 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public string Get(string token)
         {
-            //int branchId
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
             else
             {
-
-
                 int branchId = 0;
-
-
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -48,11 +43,8 @@ namespace POS_Server.Controllers
                     {
                         branchId = int.Parse(c.Value);
                     }
-
-
                 }
 
-                //bool canDelete = false;
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -98,80 +90,20 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken("0");
                 }
             }
-
-
-
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId == null
-            //                            join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
-            //                            join i in entity.items on u.itemId equals i.itemId
-            //                            join l in entity.locations on b.locationId equals l.locationId
-            //                           join s in entity.sections on l.sectionId equals s.sectionId where s.branchId == branchId && s.isFreeZone != 1
-
-            //                            select new ItemLocationModel
-            //                            {
-            //                                createDate = b.createDate,
-            //                                createUserId = b.createUserId,
-            //                                endDate = b.endDate,
-            //                                itemsLocId = b.itemsLocId,
-            //                                itemUnitId = b.itemUnitId,
-            //                                locationId = b.locationId,
-            //                                note = b.note,
-            //                                quantity = b.quantity,
-            //                                startDate = b.startDate,
-
-            //                                updateDate = b.updateDate,
-            //                                updateUserId = b.updateUserId,
-            //                                itemName = i.name,
-            //                                location = l.x+l.y+l.z,
-            //                                section = s.name,
-            //                                sectionId = s.sectionId,
-            //                                itemType = i.type,
-            //                                unitName = u.units.name,
-            //                                invoiceId = b.invoiceId,
-            //                            }).ToList().OrderBy(x => x.location).ToList();
-
-            //        if (docImageList == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(docImageList);
-            //    }
-            //}
-            ////else
-            //return NotFound();
         }
         [HttpPost]
         [Route("GetLockedItems")]
         public string GetLockedItems(string token)
         {
-            //int branchId string token
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
             else
             {
-
-
                 int branchId = 0;
-
-
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -179,11 +111,7 @@ namespace POS_Server.Controllers
                     {
                         branchId = int.Parse(c.Value);
                     }
-
-
                 }
-
-                //bool canDelete = false;
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -1037,13 +965,10 @@ namespace POS_Server.Controllers
         [Route("receiptInvoice")]
         public string receiptInvoice(string token)
         {
-            //string itemLocationObject, int branchId,int userId, string objectName, string notificationObj
             string message = "";
 
-
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1065,36 +990,20 @@ namespace POS_Server.Controllers
                         Object = c.Value.Replace("\\", string.Empty);
                         Object = Object.Trim('"');
                         newObject = JsonConvert.DeserializeObject<List<itemsTransfer>>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-
                     }
                     else if (c.Type == "branchId")
-                    {
                         branchId = int.Parse(c.Value);
-
-                    }
                     else if (c.Type == "userId")
-                    {
                         userId = int.Parse(c.Value);
-
-                    }
                     else if (c.Type == "objectName")
-                    {
                         objectName = c.Value;
-
-                    }
                     else if (c.Type == "notificationObj")
-                    {
                         notificationObj = c.Value;
-
-                    }
 
                 }
 
                 if (newObject != null)
                 {
-
-
-
                     try
                     {
                         using (incposdbEntities entity = new incposdbEntities())
@@ -1111,74 +1020,36 @@ namespace POS_Server.Controllers
                                     increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
                                 else//for order
                                     increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, (int)item.invoiceId, userId);
+                                if(item.offerId != 0)
+                                {
+                                    int offerId = (int)item.offerId;
+                                    int itemUnitId = (int)item.itemUnitId;
+                                    var offer = entity.itemsOffers.Where(x => x.iuId == itemUnitId && x.offerId == offerId).FirstOrDefault();
+                                    offer.used -= (int)item.quantity;
+                                entity.SaveChanges();
+                                return offer.used.ToString();
+                                }
                                 bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId, branchId, userId);
                                 if (isExcedded == true) //add notification
                                 {
                                     notificationController.addNotifications(objectName, notificationObj, branchId, itemV.name);
                                 }
                             }
+                       
                         }
-
-                        //   return Ok(1);
                         return TokenManager.GenerateToken("1");
-                    }
-
-
-                    catch
-                    {
-                        message = "0";
-                        return TokenManager.GenerateToken(message);
-                    }
-
-
                 }
+                    catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+            }
                 else
                 {
                     return TokenManager.GenerateToken("0");
                 }
-
-
-            }
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
-            //itemLocationObject = itemLocationObject.Trim('"');
-
-            //if (valid)
-            //{            
-            //    List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var freeZoneLocation =  (from s in entity.sections.Where(x => x.branchId == branchId && x.isFreeZone==1)
-            //                         join l in entity.locations on s.sectionId equals l.sectionId
-            //                         select l.locationId).SingleOrDefault();
-            //        foreach (itemsTransfer item in itemList)
-            //        {
-            //            var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
-            //            var itemV = entity.items.Find(itemId);
-
-            //            if (item.invoiceId == 0 || item.invoiceId == null)
-            //            increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,userId);
-            //            else//for order
-            //                increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity,(int)item.invoiceId, userId);
-            //           bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId,branchId ,userId );
-            //            if (isExcedded == true) //add notification
-            //            {
-            //                notificationController.addNotifications(objectName,notificationObj, branchId, itemV.name);                        
-            //            }
-            //        }
-            //    }
-            //}
-            //return Ok(1);
+            }          
         }
 
         public bool isExceddMaxQuantity(int itemUnitId, int branchId, int userId)
@@ -1277,7 +1148,6 @@ namespace POS_Server.Controllers
                     packageParentId = int.Parse(c.Value);
 
                 }
-
             }
             try
             {
@@ -1329,14 +1199,12 @@ namespace POS_Server.Controllers
                                 }
                                 if (itemQuantity == 0)
                                     break;
-                            }
-                            increaseItemQuantity(packageParentId, locationId, quantity, userId);
+                            }                          
                         }
+                        increaseItemQuantity(packageParentId, locationId, quantity, userId);
                     }
                     return TokenManager.GenerateToken("1");
             }
-
-
             catch
             {
                 message = "0";
