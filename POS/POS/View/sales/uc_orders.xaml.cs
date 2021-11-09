@@ -2111,7 +2111,7 @@ SectionData.isAdminPermision())
                                 createUserId = MainWindow.userID.Value,
                                 updateUserId = MainWindow.userID.Value,
                             };
-                            await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", cb_branch.Text);
+                            await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", MainWindow.userLogin.name);
                             #endregion
                             clearInvoice();
                             await refreshDraftNotification();
