@@ -3157,7 +3157,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to trExportAlertContent.
+        ///   Looks up a localized string similar to طلب تصدير مواد بانتظار الموافقة.
         /// </summary>
         internal static string trExportAlertContent {
             get {
@@ -6772,6 +6772,15 @@ namespace POS {
         internal static string trStorageCostHent {
             get {
                 return ResourceManager.GetString("trStorageCostHent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكلفة التخزين باليوم.
+        /// </summary>
+        internal static string trStorageCostPerDay {
+            get {
+                return ResourceManager.GetString("trStorageCostPerDay", resourceCulture);
             }
         }
         

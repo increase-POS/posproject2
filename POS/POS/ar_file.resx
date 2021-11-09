@@ -2165,7 +2165,7 @@
     <value>نقص الكمية</value>
   </data>
   <data name="trExportAlertContent" xml:space="preserve">
-    <value>trExportAlertContent</value>
+    <value>طلب تصدير مواد بانتظار الموافقة</value>
   </data>
   <data name="trExportAlertTilte" xml:space="preserve">
     <value>طلب تصدير</value>
@@ -2718,5 +2718,8 @@
   </data>
   <data name="trReserve" xml:space="preserve">
     <value>حجز</value>
+  </data>
+  <data name="trStorageCostPerDay" xml:space="preserve">
+    <value>تكلفة التخزين باليوم</value>
   </data>
 </root>
