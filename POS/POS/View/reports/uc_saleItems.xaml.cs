@@ -667,14 +667,34 @@ namespace POS.View.reports
                 MainWindow.resourcemanager.GetString("trTotalReturn"),
                 MainWindow.resourcemanager.GetString("trTotalSales")
             };
-            for (int i = 0; i < pTemp.Count(); i++)
+
+            int xCount = 0;
+            if (pTemp.Count() <= 6) xCount = pTemp.Count();
+
+            for (int i = 0; i < xCount; i++)
             {
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 returns.Add(pbTemp.ToList().Skip(i).FirstOrDefault());
                 sub.Add(resultTemp.ToList().Skip(i).FirstOrDefault());
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-
+            if(pTemp.Count() > 6)
+            {
+                decimal purchaseSum = 0, returnsSum = 0, subSum = 0;
+                for (int i = 0; i < xCount; i++)
+                {
+                    purchaseSum = purchaseSum + pTemp.ToList().Skip(i).FirstOrDefault();
+                    returnsSum = returnsSum + pbTemp.ToList().Skip(i).FirstOrDefault();
+                    subSum = subSum + resultTemp.ToList().Skip(i).FirstOrDefault();
+                }
+                if(!((purchaseSum == 0)&&(returnsSum == 0)&&(subSum == 0)))
+                {
+                    purchase.Add(purchaseSum);
+                    returns.Add(returnsSum);
+                    sub.Add(subSum);
+                    MyAxis.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             rowChartData.Add(
           new LineSeries
           {

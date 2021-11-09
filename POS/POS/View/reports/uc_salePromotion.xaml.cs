@@ -230,11 +230,12 @@ namespace POS.View.reports
             }
 
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            int xCount = 0;
+            if (x.Count() <= 6) xCount = x.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 List<int> final = new List<int>();
 
-                List<string> lable = new List<string>();
                 final.Add(x.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
                   new PieSeries
@@ -244,6 +245,27 @@ namespace POS.View.reports
                       DataLabels = true,
                   }
               );
+            }
+            if(x.Count() > 6)
+            {
+                int finalSum = 0;
+                for (int i = 6; i < x.Count(); i++)
+                {
+                    finalSum = finalSum + x.ToList().Skip(i).FirstOrDefault();
+                }
+                if(finalSum != 0)
+                {
+                    List<int> final = new List<int>();
+                    final.Add(finalSum);
+                    piechartData.Add(
+                      new PieSeries
+                      {
+                          Values = final.AsChartValues(),
+                          Title = MainWindow.resourcemanager.GetString("trOthers"),
+                          DataLabels = true,
+                      }
+                  );
+                }
             }
             chart1.Series = piechartData;
         }
@@ -311,14 +333,32 @@ namespace POS.View.reports
                 MainWindow.resourcemanager.GetString("trReturned"),
                 MainWindow.resourcemanager.GetString("trDraft")
             };
-            for (int i = 0; i < x.Count(); i++)
+            int xCount = 0;
+            if (x.Count() <= 6) xCount = x.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 cP.Add(x.ToList().Skip(i).FirstOrDefault());
                 cPb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-
+            if(x.Count() > 6)
+            {
+                int cPSum = 0, cPbSum = 0, cDSum = 0;
+                for (int i = 0; i < xCount; i++)
+                {
+                    cPSum = cPSum + x.ToList().Skip(i).FirstOrDefault();
+                    cPbSum = cPbSum + y.ToList().Skip(i).FirstOrDefault();
+                    cDSum = cDSum + z.ToList().Skip(i).FirstOrDefault();
+                }
+                if(!((cPSum == 0)&&(cPbSum == 0)&&(cDSum == 0)))
+                {
+                    cP.Add(cPSum);
+                    cPb.Add(cPbSum);
+                    cD.Add(cDSum);
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             //3 فوق بعض
             columnChartData.Add(
             new StackedColumnSeries
@@ -356,7 +396,7 @@ namespace POS.View.reports
             else if (selectedTab == 1)
             {
                 itemTransfers = fillList(Offers, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime).Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
-                fillRowChartList(coupons, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime).Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
+                fillRowChartList(Offers, chk_couponInvoice, chk_couponReturn, chk_couponDrafs, dp_couponStartDate, dp_couponEndDate, dt_couponStartTime, dt_couponEndTime).Where(j => (selectedOfferId.Count != 0 ? selectedOfferId.Contains((int)j.OofferId) : true));
             }
             dgInvoice.ItemsSource = itemTransfers;
             txt_count.Text = dgInvoice.Items.Count.ToString();
@@ -855,11 +895,11 @@ namespace POS.View.reports
             {
                 names.Clear();
                 temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
-                var result1 = temp.GroupBy(s => new { s.itemId }).Select(s => new
+                var result1 = temp.GroupBy(s => new { s.OofferId }).Select(s => new
                 {
                     offerId = s.FirstOrDefault().OofferId,
                     offerName = s.FirstOrDefault().Oname,
-                    itemId = s.FirstOrDefault().itemId,
+                    itemId = s.FirstOrDefault().ITitemUnitId,
                     offerTotalValue = s.Sum(x => x.offerTotalValue)
                 }
              );
@@ -882,12 +922,27 @@ namespace POS.View.reports
                 MainWindow.resourcemanager.GetString("trTotalReturn"),
                 MainWindow.resourcemanager.GetString("trSum"),
             };
-            for (int i = 0; i < pTemp.Count(); i++)
+            int xCount = 0;
+            if (pTemp.Count() <= 6) xCount = pTemp.Count();
+            for (int i = 0; i < xCount; i++)
             {
                 purchase.Add(pTemp.ToList().Skip(i).FirstOrDefault());
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
+            if (pTemp.Count() > 6)
+            {
+                decimal purchaseSum = 0;
+                for (int i = xCount; i < pTemp.Count(); i++)
+                {
+                    purchaseSum = purchaseSum + pTemp.ToList().Skip(i).FirstOrDefault();
+                }
+                if(purchaseSum != 0 )
+                {
+                    purchase.Add(purchaseSum);
+                    MyAxis.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             rowChartData.Add(
                   new LineSeries
                   {
