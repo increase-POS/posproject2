@@ -111,8 +111,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetLastNumOfInv")]
         public string GetLastNumOfInv(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -120,6 +120,7 @@ var strP = TokenManager.GetPrincipal(token);
             else
             {
                 string invCode = "";
+                int branchId = 0;
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -127,12 +128,16 @@ var strP = TokenManager.GetPrincipal(token);
                     {
                         invCode = c.Value;
                     }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
                 }
                 List<string> numberList;
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    numberList = entity.Inventory.Where(b => b.num.Contains(invCode + "-")).Select(b => b.num).ToList();
+                    numberList = entity.Inventory.Where(b => b.num.Contains(invCode + "-") && b.branchId == branchId).Select(b => b.num).ToList();
 
                     for (int i = 0; i < numberList.Count; i++)
                     {
@@ -140,8 +145,11 @@ var strP = TokenManager.GetPrincipal(token);
                         string s = code.Substring(code.LastIndexOf("-") + 1);
                         numberList[i] = s;
                     }
-                    numberList.Sort();
-                    lastNum = int.Parse(numberList[numberList.Count - 1]);
+                    if (numberList.Count > 0)
+                    {
+                        numberList.Sort();
+                        lastNum = int.Parse(numberList[numberList.Count - 1]);
+                    }
                 }
                 return TokenManager.GenerateToken(lastNum);
             }

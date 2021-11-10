@@ -128,7 +128,7 @@ namespace POS_Server.Controllers
                                                                 shippingCompanyId = C.shippingCompanyId,
                                                                 shippingCompanyName = jssh.name
 
-                                                            }).Where(C => ((type == "all") ? true : C.transType == type)
+                                                            }).Where(C => ((type == "all") ? true : C.transType == type ) && (C.processType != "balance")
                 && ((side == "all") ? true : C.side == side) && !(C.agentId == null && C.userId == null && C.shippingCompanyId == null)).ToList();
 
                         if (cachlist.Count > 0 && side == "p")
@@ -524,7 +524,7 @@ namespace POS_Server.Controllers
                                                                 shippingCompanyId = C.shippingCompanyId,
                                                                 shippingCompanyName = jssh.name
 
-                                                            }).Where(C => ((type == "all") ? true : C.transType == type)
+                                                            }).Where(C => ((type == "all") ? true : C.transType == type) && (C.processType != "balance")
                 && ((side == "all") ? true : C.side == side)).ToList();
 
                         if (cachlist.Count > 0 && side == "p")

@@ -74,11 +74,11 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetAvgItemPrice")]
         public string GetAvgItemPrice(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             decimal price = 0;
             int totalNum = 0;
             decimal smallUnitPrice = 0;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2453,7 +2453,7 @@ var strP = TokenManager.GetPrincipal(token);
             {
 
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if (upperUnit == null)
                     return 1;
@@ -2492,7 +2492,7 @@ var strP = TokenManager.GetPrincipal(token);
                     sumNum = 0;
 
                 var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
 
                 if (upperUnit != null)
                     sumNum += (int)upperUnit.unitValue * getItemUnitNum(upperUnit.itemUnitId);
@@ -2612,7 +2612,6 @@ var strP = TokenManager.GetPrincipal(token);
             decimal price = 0;
             int totalNum = 0;
             decimal smallUnitPrice = 0;
-
 
             using (incposdbEntities entity = new incposdbEntities())
             {

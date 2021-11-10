@@ -249,8 +249,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -269,7 +269,6 @@ var strP = TokenManager.GetPrincipal(token);
                         newObject = c.Value.Replace("\\", string.Empty);
                         newObject = newObject.Trim('"');
                         Object = JsonConvert.DeserializeObject<List<InventoryItemLocationModel>>(newObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-                        //break;
                     }
                     else if (c.Type == "inventoryId")
                     {
@@ -309,9 +308,10 @@ var strP = TokenManager.GetPrincipal(token);
                             tmp.updateUserId = il.createUserId;
                             entity.inventoryItemLocation.Add(tmp);
                             message = tmp.id.ToString();
-                            return TokenManager.GenerateToken(message);
+                           
                         }
-
+                        entity.SaveChanges();
+                        return TokenManager.GenerateToken(message);
                     }
                     else // edit saved inventory details
                     {
@@ -327,8 +327,10 @@ var strP = TokenManager.GetPrincipal(token);
                             invItem.updateDate = DateTime.Now;
                             invItem.updateUserId = il.updateUserId;
                             message = invItem.id.ToString();
-                            return TokenManager.GenerateToken(message);
+                           
                         }
+                        entity.SaveChanges();
+                        return TokenManager.GenerateToken(message);
                     }
                 }
                 message = "0";

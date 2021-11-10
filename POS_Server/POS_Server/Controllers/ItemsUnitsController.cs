@@ -946,9 +946,6 @@ namespace POS_Server.Controllers
             }
             else
             {
-
-
-
                 try
                 {
 
@@ -985,6 +982,116 @@ namespace POS_Server.Controllers
 
                                              })
                                                          .ToList();
+                        return TokenManager.GenerateToken(itemUnitsList);
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }
+        }
+         [HttpPost]
+        [Route("GetForSale")]
+        public string GetForSale(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var itemUnitsList = (from IU in entity.itemsUnits
+
+                                             join u in entity.units on IU.unitId equals u.unitId where u.isActive==1
+
+                                             join i in entity.items on IU.itemId equals i.itemId
+                                             orderby i.name
+                                             select new ItemSalePurModel()
+                                             {
+                                                 itemUnitId = IU.itemUnitId,
+                                                 
+                                                 unitId = IU.unitId,
+                                                 itemId = IU.itemId,
+                                                 createDate = IU.createDate,
+                                                 createUserId = IU.createUserId,
+                                                 defaultPurchase = IU.defaultPurchase,
+                                                 defaultSale = IU.defaultSale,
+                                                 price = IU.price,
+                                                 taxes = i.taxes,
+                                                 updateDate = IU.updateDate,
+                                                 updateUserId = IU.updateUserId,
+                                                 unitName = u.name,
+                                                 isActive=IU.isActive,
+                                             }) .ToList();
+
+                        var itemsofferslist = (from off in entity.offers
+
+                                               join itof in entity.itemsOffers on off.offerId equals itof.offerId // itemsOffers and offers 
+                                               join iu in entity.itemsUnits on itof.iuId equals iu.itemUnitId
+                                               select new ItemSalePurModel()
+                                               {
+                                                   itemId = iu.itemId,
+                                                   itemUnitId = itof.iuId,
+                                                   offerName = off.name,
+                                                   offerId = off.offerId,
+                                                   discountValue = off.discountValue,
+                                                   isNew = 0,
+                                                   isOffer = 1,
+                                                   isActiveOffer = off.isActive,
+                                                   startDate = off.startDate,
+                                                   endDate = off.endDate,
+                                                   unitId = iu.unitId,
+                                                   itemCount = itof.quantity,
+                                                   price = iu.price,
+                                                   discountType = off.discountType,
+                                                   desPrice = iu.price,
+                                                   defaultSale = iu.defaultSale,
+                                                   used = itof.used,
+
+                                               }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.itemCount > IO.used).Distinct().ToList();
+
+                        foreach (var row in itemUnitsList)
+                        {
+                             row.priceTax = row.price + Calc.percentValue(row.price, row.taxes);
+                            decimal? totaldis = 0;
+                            foreach (var itofflist in itemsofferslist)
+                            {
+                                if (row.itemUnitId == itofflist.itemUnitId)
+                                {
+                                    row.isOffer = 1;
+                                    row.offerId = itofflist.offerId;
+                                    row.price = itofflist.price;
+                                    row.priceTax = row.price + (row.price * row.taxes / 100);
+                                    row.discountType = itofflist.discountType;
+                                    row.discountValue = itofflist.discountValue;
+                                    if (itofflist.used == null)
+                                        itofflist.used = 0;
+
+                                    //if (iunlist.itemCount >= (itofflist.itemCount - itofflist.used))
+                                    //    iunlist.itemCount = (itofflist.itemCount - itofflist.used);
+
+                                    if (row.discountType == "1") // value
+                                    {
+
+                                        totaldis = totaldis + row.discountValue;
+                                    }
+                                    else if (row.discountType == "2") // percent
+                                    {
+
+                                        totaldis = totaldis + Calc.percentValue(row.price, row.discountValue);
+
+                                    }
+                                }
+                            }
+                            row.priceTax = row.priceTax - totaldis;
+                        }
                         return TokenManager.GenerateToken(itemUnitsList);
                     }
                 }
@@ -1061,9 +1168,9 @@ namespace POS_Server.Controllers
                 if (c.Type == "branchId")
                     branchId = int.Parse(c.Value);
             }
-            try
-            {
-                using (incposdbEntities entity = new incposdbEntities())
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
                         var itemUnitsList = (from  u in entity.itemsUnits where u.isActive == 1
                                          join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
@@ -1076,14 +1183,15 @@ namespace POS_Server.Controllers
                                                            join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
                                                            where il.quantity>0
                                                            select ux.itemId).FirstOrDefault()
-                                         select new ItemUnitModel()
+                                         select new ItemSalePurModel()
                                          {
                                              itemId = u.itemId,
                                              barcode = u.barcode,
-                                             mainUnit = u.units.name,
+                                             unitName = u.units.name,
                                              itemUnitId = u.itemUnitId,
                                              price = u.price ,
                                              taxes = u.items.taxes,
+                                             
                                          }).ToList();
 
 
@@ -1107,13 +1215,15 @@ namespace POS_Server.Controllers
                                                    startDate = off.startDate,
                                                    endDate = off.endDate,
                                                    unitId = iu.unitId,
-
+                                                   used = itof.used,
                                                    price = iu.price,
                                                    discountType = off.discountType,
                                                    desPrice = iu.price,
                                                    defaultSale = iu.defaultSale,
+                                                   itemCount = itof.quantity,
+                                                   
 
-                                               }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1).Distinct().ToList();
+                                               }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1 && IO.itemCount > IO.used).Distinct().ToList();
 
 
                         foreach (var iunlist in itemUnitsList)
@@ -1121,6 +1231,7 @@ namespace POS_Server.Controllers
                             // end is new
                             decimal? totaldis = 0;
                     iunlist.price = (decimal) iunlist.price + Calc.percentValue(iunlist.price, iunlist.taxes);
+                    iunlist.priceTax = (decimal) iunlist.price + Calc.percentValue(iunlist.price, iunlist.taxes);
                             foreach (var itofflist in itemsofferslist)
                             {
 
@@ -1141,9 +1252,23 @@ namespace POS_Server.Controllers
                                         iunlist.unitName = un.name;
                                     }
                                     iunlist.price = itofflist.price;
-                                    iunlist.price = iunlist.price + (iunlist.price * iunlist.taxes / 100); 
+                                    iunlist.price = iunlist.price + (iunlist.price * iunlist.taxes / 100);
+                                    iunlist.discountType = itofflist.discountType;
+                                    iunlist.discountValue = itofflist.discountValue;
+                                    if (iunlist.discountType == "1") // value
+                                    {
+
+                                        totaldis = totaldis + iunlist.discountValue;
+                                    }
+                                    else if (iunlist.discountType == "2") // percent
+                                    {
+
+                                        totaldis = totaldis + Calc.percentValue(iunlist.price, iunlist.discountValue);
+
+                                    }
                                 }
                             }
+                            iunlist.priceTax = iunlist.priceTax - totaldis;
                         }
                         return TokenManager.GenerateToken(itemUnitsList);
                     }
@@ -1152,7 +1277,7 @@ namespace POS_Server.Controllers
             {
                 return TokenManager.GenerateToken("0");
             }
-             }
+        }
 
         }
 

@@ -51,6 +51,7 @@ namespace POS_Server.Models
         public Nullable<short> defaultPurchase { get; set; }
         public Nullable<int> used { get; set; }
         public string parentName { get; set; }
+        public string barcode { get; set; }
         public string minUnitName { get; set; }
         public string maxUnitName { get; set; }
     }

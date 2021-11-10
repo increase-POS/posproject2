@@ -3451,7 +3451,6 @@ else
                                         where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
                                         select new
                                         {
-
                                             //coupon
                                             Copname = C.name,
                                             CopcId = C.cId,
@@ -3528,10 +3527,6 @@ else
                                             //  I.invoiceId,
                                             //    JBB.name
                                         }).ToList();
-
-
-
-
 
 
                          return TokenManager.GenerateToken(invListm);
@@ -7761,7 +7756,7 @@ else
                                             //*createUserJob = jucc.job,
                                             cardName = jcrd.name,
                                             //*bondDeserveDate = jbbo.deserveDate,
-                                            //*bondIsRecieved = jbbo.isRecieved,
+                                           bondIsRecieved = jbbo.isRecieved,
                                             //*agentCompany = jaa.company,
                                             shippingCompanyId = C.shippingCompanyId,
                                             shippingCompanyName = C.shippingCompanies.name,
