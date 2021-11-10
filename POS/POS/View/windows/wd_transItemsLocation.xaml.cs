@@ -170,11 +170,12 @@ namespace POS.View.windows
             for(int i=0; i< orderList.Count; i++)
             {
                 strIds += orderList[i].itemUnitId.ToString() + ',';
-               
+                _Quantity.Add(0);
+
             }
             selectedItemsLocations = await itemLocationModel.getSpecificItemLocation(strIds, MainWindow.branchID.Value);
-            for(int i =0; i<selectedItemsLocations.Count; i++)
-                _Quantity.Add(0);
+            //for(int i =0; i<selectedItemsLocations.Count; i++)
+            //    _Quantity.Add(0);
             itemsLocations = new List<ItemLocation>();
 
             itemsLocations.AddRange( selectedItemsLocations);
@@ -235,7 +236,8 @@ namespace POS.View.windows
                     // ItemTransfer Item = orderList.ToList().Find(i => i.itemUnitId == row.itemUnitId);
                     var Item = orderList.ToList().Where(x => x.itemUnitId == row.itemUnitId).Select(x => x.quantity).Sum();
 
-                int itemIndex = selectedItemsLocations.ToList().FindIndex(i => i.itemUnitId == row.itemUnitId);
+               // int itemIndex = selectedItemsLocations.ToList().FindIndex(i => i.itemUnitId == row.itemUnitId);
+                int itemIndex = orderList.ToList().FindIndex(i => i.itemUnitId == row.itemUnitId);
                 if (cb != null)
                 {                  
                     if (cb.IsChecked == true)
@@ -245,8 +247,8 @@ namespace POS.View.windows
                         selectedItemsLocations[index].isSelected = true;
                       
                         long oldQuantity = _Quantity[itemIndex];
-                        if (_Quantity[itemIndex] != 0)
-                            _Quantity[itemIndex] -= (long) row.quantity;
+                        //if (_Quantity[itemIndex] != 0)
+                        //    _Quantity[itemIndex] -= (long) row.quantity;
                         _Quantity[itemIndex] += long.Parse(tb.Text);
                         if (_Quantity[itemIndex] > Item)
                         {

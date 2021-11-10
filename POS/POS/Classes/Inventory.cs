@@ -85,11 +85,12 @@ namespace POS.Classes
                 item = new Inventory();
             return item;
         }
-        public async Task<int> GetLastNumOfInv(string invCode)
+        public async Task<int> GetLastNumOfInv(string invCode, int branchId)
         {
             int LastNumOfInv = 0;
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("invCode", invCode.ToString());
+            parameters.Add("branchId", branchId.ToString());
             //#################
             IEnumerable<Claim> claims = await APIResult.getList("Inventory/GetLastNumOfInv", parameters);
 
@@ -167,9 +168,9 @@ namespace POS.Classes
             string method = "Inventory/Delete";
            return await APIResult.post(method, parameters);
         }
-        public async Task<string> generateInvNumber(string invCode)
+        public async Task<string> generateInvNumber(string invCode, int branchId)
         {         
-            int sequence = await GetLastNumOfInv(invCode); // in : inventory
+            int sequence = await GetLastNumOfInv(invCode, branchId); // in : inventory
             sequence++;
             string strSeq = sequence.ToString();
             if (sequence <= 999999)

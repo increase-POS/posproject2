@@ -476,8 +476,16 @@ namespace POS.View.Settings
             //txt_couponHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_adminChangePassword.Text = MainWindow.resourcemanager.GetString("trChangePassword");
             txt_adminChangePasswordHint.Text = MainWindow.resourcemanager.GetString("trChangePasswordHint");
-            txt_sms.Text = MainWindow.resourcemanager.GetString("trSms");
-            txt_smsHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
+
+            txt_userPath.Text = MainWindow.resourcemanager.GetString("trUserPath");
+            txt_userPathHint.Text = MainWindow.resourcemanager.GetString("trUserPath") + "...";
+
+            txt_errorsExport.Text = MainWindow.resourcemanager.GetString("trErrorsFile");
+
+            txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trPurchaseCost");
+            
+            //txt_sms.Text = MainWindow.resourcemanager.GetString("trSms");
+            //txt_smsHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             //txt_emails.Text = MainWindow.resourcemanager.GetString("trEmails");
             //txt_emailHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");

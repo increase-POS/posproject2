@@ -205,7 +205,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accuracy of numbers.
+        ///   Looks up a localized string similar to Decimals.
         /// </summary>
         internal static string trAccuracy {
             get {
@@ -1042,7 +1042,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Company Informations.
+        ///   Looks up a localized string similar to Company Info.
         /// </summary>
         internal static string trComInfo {
             get {
@@ -1402,7 +1402,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date form.
+        ///   Looks up a localized string similar to Date state.
         /// </summary>
         internal static string trDateForm {
             get {
@@ -3063,6 +3063,15 @@ namespace POS {
         internal static string trErrorSerialMoreItemCountToolTip {
             get {
                 return ResourceManager.GetString("trErrorSerialMoreItemCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errors file.
+        /// </summary>
+        internal static string trErrorsFile {
+            get {
+                return ResourceManager.GetString("trErrorsFile", resourceCulture);
             }
         }
         
@@ -5467,6 +5476,15 @@ namespace POS {
         internal static string trPurchaseBill {
             get {
                 return ResourceManager.GetString("trPurchaseBill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase cost.
+        /// </summary>
+        internal static string trPurchaseCost {
+            get {
+                return ResourceManager.GetString("trPurchaseCost", resourceCulture);
             }
         }
         

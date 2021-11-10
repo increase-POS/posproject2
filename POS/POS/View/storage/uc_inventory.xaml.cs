@@ -423,7 +423,7 @@ namespace POS.View.storage
                 inventory.createUserId = MainWindow.userLogin.userId;
             }
             if (invType == "n")
-                inventory.num = await inventory.generateInvNumber("in");
+                inventory.num = await inventory.generateInvNumber("in", MainWindow.branchID.Value);
             inventory.inventoryType = invType;
             inventory.updateUserId = MainWindow.userLogin.userId;
 
