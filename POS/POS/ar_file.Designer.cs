@@ -205,7 +205,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الأرقام بعد الفاصلة.
+        ///   Looks up a localized string similar to الأرقام العشرية.
         /// </summary>
         internal static string trAccuracy {
             get {
@@ -3049,6 +3049,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ملف الأخطاء.
+        /// </summary>
+        internal static string trErrorsFile {
+            get {
+                return ResourceManager.GetString("trErrorsFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ النهاية لا يمكن أن يكون قبل تاريخ البداية.
         /// </summary>
         internal static string trErrorStartBeforEndToolTip {
@@ -5431,6 +5440,15 @@ namespace POS {
         internal static string trPurchaseBill {
             get {
                 return ResourceManager.GetString("trPurchaseBill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تكلفة الشراء.
+        /// </summary>
+        internal static string trPurchaseCost {
+            get {
+                return ResourceManager.GetString("trPurchaseCost", resourceCulture);
             }
         }
         

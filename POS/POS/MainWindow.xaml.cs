@@ -105,6 +105,7 @@ namespace POS
         public static string docPapersize;
         public static Boolean go_out = false;
         static public PosSetting posSetting = new PosSetting();
+        internal static List<Pos> posList = new List<Pos>();
 
         static public List<Item> InvoiceGlobalItemsList = new List<Item>();
         static public List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
@@ -612,7 +613,6 @@ namespace POS
                 }
             }
         }
-
         async void loading_GlobalUnitsList()
         {
             try
@@ -624,6 +624,23 @@ namespace POS
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_GlobalUnitsList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_POSList()
+        {
+            try
+            {
+                posList = await posLogIn.Get();
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_POSList"))
                 {
                     item.value = true;
                     break;
@@ -691,6 +708,7 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_getprintSitting", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_GlobalItemUnitsList", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_GlobalUnitsList", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_POSList", value = false });
 
 
                 loading_getUserPath();
@@ -706,6 +724,8 @@ namespace POS
                 loading_getprintSitting();
                 loading_GlobalItemUnitsList();
                 loading_GlobalUnitsList();
+                loading_POSList();
+
                 do
                 {
                     isDone = true;

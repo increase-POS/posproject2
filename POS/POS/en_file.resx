@@ -1477,7 +1477,7 @@
     <value>Sales Return</value>
   </data>
   <data name="trComInfo" xml:space="preserve">
-    <value>Company Informations</value>
+    <value>Company Info</value>
   </data>
   <data name="trDeliveryCost" xml:space="preserve">
     <value>Delivery cost</value>
@@ -1937,7 +1937,7 @@ Please add Email in setting</value>
     <value>Pos cann't be empty</value>
   </data>
   <data name="trDateForm" xml:space="preserve">
-    <value>Date form</value>
+    <value>Date state</value>
   </data>
   <data name="trEmptyDateFormat" xml:space="preserve">
     <value>Date format cann't be empty</value>
@@ -2318,7 +2318,7 @@ Please add Email in setting</value>
     <value>Can not send draft invoice</value>
   </data>
   <data name="trAccuracy" xml:space="preserve">
-    <value>Accuracy of numbers</value>
+    <value>Decimals</value>
   </data>
   <data name="trErrorMaxInvToolTip" xml:space="preserve">
     <value>Coupon cannot be used, the total is more than the maximum allowed</value>
@@ -2736,5 +2736,11 @@ Please add Email in setting</value>
   </data>
   <data name="trStorageCostPerDay" xml:space="preserve">
     <value>Storage Cost Per Day</value>
+  </data>
+  <data name="trErrorsFile" xml:space="preserve">
+    <value>Errors file</value>
+  </data>
+  <data name="trPurchaseCost" xml:space="preserve">
+    <value>Purchase cost</value>
   </data>
 </root>
