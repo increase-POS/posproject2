@@ -375,7 +375,7 @@
 	z M6.4,6.4l-3-3.9c-0.2-0.3-0.6,0-0.6,0.6v7.9c0,0.6,0.3,1,0.6,0.6l3-3.9C6.6,7.3,6.6,6.7,6.4,6.4z"/>
                                     </Button>
                                     <TextBox  Grid.Column="5" x:Name="tb_pageNumberSearch"  TextChanged="Tb_pageNumberSearch_TextChanged"   
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
+                        Padding="10,0,5,0" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="..."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" 

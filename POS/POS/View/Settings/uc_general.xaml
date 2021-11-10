@@ -66,7 +66,7 @@
                             <TextBlock x:Name="txt_language" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Language" FontSize="18" FontWeight="SemiBold"></TextBlock>
                             <!--#language  Edit-->
                             <Grid>
-                                <ComboBox Grid.Column="0" x:Name="cb_language" Padding="10,5,5,5"    TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Grid.Column="0" x:Name="cb_language" Padding="10,0,5,0"    TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                   BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}" 
@@ -134,7 +134,7 @@
                             <TextBlock x:Name="txt_region" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Region" FontSize="18" FontWeight="SemiBold"></TextBlock>
                             <!--#region  Edit-->
                             <Grid>
-                                <ComboBox Grid.Column="0" x:Name="cb_region" Padding="10,5,5,5"   TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Grid.Column="0" x:Name="cb_region" Padding="10,0,5,0"   TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                   BorderThickness="0"  
@@ -203,11 +203,11 @@
                         <StackPanel Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="top" Margin="5,20,0,0" HorizontalAlignment="Left">
                             <TextBlock x:Name="txt_currency" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Currency" FontSize="18"></TextBlock>
                             <!--#region  Edit-->
-                            <ComboBox Grid.Column="0" x:Name="cb_currency" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                            <ComboBox Grid.Column="0" x:Name="cb_currency" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    Visibility="Collapsed"
                                   BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
-                            <TextBlock Grid.Column="0" x:Name="tb_currency" Padding="10,5,5,5"  TextBlock.Foreground="#4E4E4E"
+                            <TextBlock Grid.Column="0" x:Name="tb_currency" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                     TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"     FontFamily="{StaticResource Font-cairo-light}"  >
                                 <TextBlock.ToolTip>
@@ -365,7 +365,7 @@
                             <!--Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      materialDesign:HintAssist.Hint="dateForm..."-->
                             <Grid>
-                                <ComboBox Grid.Column="0" x:Name="cb_dateForm" Padding="10,5,5,5"    TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Grid.Column="0" x:Name="cb_dateForm" Padding="10,0,5,0"    TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                      
@@ -886,7 +886,7 @@
                         <StackPanel Grid.Column="1"   Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="5,20,0,0" HorizontalAlignment="Left"  >
                             <TextBlock x:Name="txt_accuracy" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Accuracy of numbers" FontSize="18" FontWeight="SemiBold" ></TextBlock>
                             <Grid>
-                                <ComboBox Grid.Column="0" x:Name="cb_accuracy" Padding="10,5,5,5"    TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Grid.Column="0" x:Name="cb_accuracy" Padding="10,0,5,0"    TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                   BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}" >
@@ -995,7 +995,7 @@
                         <StackPanel Grid.Column="1"   Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="5,20,0,0" HorizontalAlignment="Left"  >
                             <TextBlock x:Name="txt_backup" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Backup/Restore" FontSize="18" FontWeight="SemiBold" ></TextBlock>
                             <Grid>
-                                <ComboBox Grid.Column="0" x:Name="cb_backup" Padding="10,5,5,5"    TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Grid.Column="0" x:Name="cb_backup" Padding="10,0,5,0"    TextBlock.Foreground="#4E4E4E"
                                   TabIndex="3"  TextBlock.FontSize="12" Margin="10,10,0,0" VerticalAlignment="Center"   
                                   Background="#f8f8f8"   BorderBrush="#737373"    
                                   BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}" />

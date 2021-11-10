@@ -598,7 +598,7 @@
 
                             <DatePicker  x:Name="dp_startDate" 
                                                          BorderBrush="#737373"  BorderThickness="0" 
-                                                                      Style="{StaticResource MaterialDesignDatePicker}" 
+                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
 
                                                          Text="{Binding startDate, Mode=OneWay}"
                                                          TextBlock.Foreground="#4E4E4E" 
@@ -629,7 +629,7 @@
 
 
                             <DatePicker  x:Name="dp_endDate"  
-                                                                      Style="{StaticResource MaterialDesignDatePicker}" 
+                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
 
                                                          BorderBrush="#737373"  BorderThickness="0" 
                                                          TextBlock.Foreground="#4E4E4E"

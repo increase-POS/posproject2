@@ -98,7 +98,7 @@
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  Height="40"     Margin="5"
                                   Grid.Row="4" Grid.Column="1"       />
-        <PasswordBox  x:Name="pb_userPassword" Padding="10,5,5,5"   
+        <PasswordBox  x:Name="pb_userPassword" Padding="10,0,5,0"   
                                   Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="User Password"    
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"

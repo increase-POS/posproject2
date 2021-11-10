@@ -87,9 +87,10 @@
                                BorderBrush="#737373"  BorderThickness="0" 
                                     TextBlock.Foreground="#4E4E4E" 
                                  PreviewTextInput="OnlyInt"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
+                                                 Grid.Row="2" Padding="10,0,5,0"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  materialDesign:HintAssist.Hint="Start date..."  
+                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                     Width="125"
                             Grid.Column="1"  Height="40"   Margin="5,5" >
@@ -104,8 +105,9 @@
                     <DatePicker Width="125" x:Name="dp_endSearchDate"  
                                BorderBrush="#737373"  BorderThickness="0" 
                                     TextBlock.Foreground="#4E4E4E"
-                                                 Grid.Row="2" Padding="10,5,5,5"  
+                                                 Grid.Row="2" Padding="10,0,5,0"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                  materialDesign:HintAssist.Hint="End date..."  
                                Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
   

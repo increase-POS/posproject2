@@ -70,7 +70,7 @@
                 </Grid.RowDefinitions>
                     <Grid   Width="225"  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
                         <TextBox   Width="225"  x:Name="txb_search"  TextChanged="Txb_search_TextChanged"
-                        Padding="10,5,5,5" BorderBrush="{x:Null}"
+                        Padding="10,0,5,0" BorderBrush="{x:Null}"
                           materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
                  Foreground="#4e4e4e" TextBlock.FontSize="14"
                      HorizontalAlignment="Left" VerticalAlignment="Center" 

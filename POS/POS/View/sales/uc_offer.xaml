@@ -595,11 +595,11 @@
 
                             <DatePicker  x:Name="dp_startDate" 
                                          Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                                     materialDesign:HintAssist.Hint="Start date..."  
                                                      BorderBrush="#737373"  BorderThickness="0" 
                                                      TextBlock.Foreground="#4E4E4E" Text="{Binding test, Mode=OneWay}"
                                                      Grid.Row="2" Padding="10,0,5,0"  
                                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                     materialDesign:HintAssist.Hint="Start date..."  
                                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
                                                      
                                                   Height="40"   Margin="10,5,0,5"                                      
