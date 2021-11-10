@@ -421,6 +421,26 @@ namespace POS.Classes
             }
             return item;
         }
+
+        public async Task<Invoice> GetByInvoiceId(int itemId)
+        {
+            Invoice item = new Invoice();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+            parameters.Add("itemId", itemId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/GetByInvoiceId", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = JsonConvert.DeserializeObject<Invoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
+                }
+            }
+            return item;
+        }
         public async Task<Invoice> getById(int invoiceId)
         {
             Invoice item = new Invoice();

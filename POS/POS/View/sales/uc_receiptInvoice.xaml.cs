@@ -3750,9 +3750,9 @@ namespace POS.View
 
             prInvoice = new Invoice();
             if (prinvoiceId != 0)
-                prInvoice = await invoiceModel.getById(prinvoiceId);
+                prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
             else
-                prInvoice = await invoiceModel.getById(invoice.invoiceId);
+                prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
 
             if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -3883,6 +3883,7 @@ namespace POS.View
                 #region
                 if (invoice.invoiceId > 0)
                 {
+                    prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
                     Window.GetWindow(this).Opacity = 0.2;
 
                     List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -3896,43 +3897,42 @@ namespace POS.View
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
                     //////////////////////////////////
 
-                    if (invoice.invoiceId > 0)
-                    {
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                  
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         itemscount = invoiceItems.Count();
-                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
+                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice);
 
                         User employ = new User();
-                        employ = await userModel.getUserById((int)invoice.updateUserId);
-                        invoice.uuserName = employ.name;
-                        invoice.uuserLast = employ.lastname;
+                        employ = await userModel.getUserById((int)prInvoice.updateUserId);
+                    prInvoice.uuserName = employ.name;
+                    prInvoice.uuserLast = employ.lastname;
 
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                        if (invoice.agentId != null)
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                        if (prInvoice.agentId != null)
                         {
                             Agent agentinv = new Agent();
-                            agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+                            agentinv = customers.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
 
-                            invoice.agentCode = agentinv.code;
-                            //new lines
-                            invoice.agentName = agentinv.name;
-                            invoice.agentCompany = agentinv.company;
+                        prInvoice.agentCode = agentinv.code;
+                        //new lines
+                        prInvoice.agentName = agentinv.name;
+                        prInvoice.agentCompany = agentinv.company;
                         }
                         else
                         {
-                            invoice.agentCode = "-";
-                            invoice.agentName = "-";
-                            invoice.agentCompany = "-";
+                        prInvoice.agentCode = "-";
+                        prInvoice.agentName = "-";
+                        prInvoice.agentCompany = "-";
                         }
                         //branch name
                         Branch branch = new Branch();
-                        branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                        branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
                         if (branch.branchId > 0)
                         {
-                            invoice.branchName = branch.name;
+                        prInvoice.branchName = branch.name;
                         }
 
-                        invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         ReportCls.checkLang();
                         foreach (var i in invoiceItems)
                         {
@@ -3941,16 +3941,16 @@ namespace POS.View
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
-                        paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+                        paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
 
-                        if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb") && MainWindow.salePaperSize == "A4")
+                        if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb") && MainWindow.salePaperSize == "A4")
                         {
                             CashTransfer cachModel = new CashTransfer();
                             List<PayedInvclass> payedList = new List<PayedInvclass>();
-                            payedList = await cachModel.GetPayedByInvId(invoice.invoiceId);
+                            payedList = await cachModel.GetPayedByInvId(prInvoice.invoiceId);
                             decimal sump = payedList.Sum(x => x.cash).Value;
-                            decimal deservd = (decimal)invoice.totalNet - sump;
+                            decimal deservd = (decimal)prInvoice.totalNet - sump;
                             paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                             paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
@@ -3964,7 +3964,7 @@ namespace POS.View
                         rep.SetParameters(paramarr);
                         rep.Refresh();
 
-                        if (invoice.invType == "s" && MainWindow.salePaperSize!= "A4")
+                        if (prInvoice.invType == "s" && MainWindow.salePaperSize!= "A4")
                         {
                             LocalReportExtensions.customExportToPDF(rep, pdfpath, width, height);
                         }
@@ -3972,7 +3972,7 @@ namespace POS.View
                         {
                             LocalReportExtensions.ExportToPDF(rep, pdfpath);
                         }
-                    }
+                 
 
                     wd_previewPdf w = new wd_previewPdf();
                     w.pdfPath = pdfpath;
@@ -3993,24 +3993,7 @@ namespace POS.View
                 }
                 #endregion
 
-                #region
-                //Window.GetWindow(this).Opacity = 0.2;
-                ///////////////////////
-                //string pdfpath = "";
-                //pdfpath = @"\Thumb\report\temp.pdf";
-                //pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                //BuildReport();
-                //LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                /////////////////////
-                //wd_previewPdf w = new wd_previewPdf();
-                //w.pdfPath = pdfpath;
-                //if (!string.IsNullOrEmpty(w.pdfPath))
-                //{
-                //    w.ShowDialog();
-                //    w.wb_pdfWebViewer.Dispose();
-                //}
-                //Window.GetWindow(this).Opacity = 1;
-                #endregion
+             
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -4054,9 +4037,9 @@ namespace POS.View
             {
                 prInvoice = new Invoice();
                 if (prinvoiceId != 0)
-                    prInvoice = await invoiceModel.getById(prinvoiceId);
+                    prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
                 else
-                    prInvoice = await invoiceModel.getById(invoice.invoiceId);
+                    prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
 
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
