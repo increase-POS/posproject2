@@ -239,7 +239,6 @@ namespace POS.View.windows
                     Properties.Settings.Default.APIUri = Global.APIUri;
                     Properties.Settings.Default.posId = res.ToString();
                     Properties.Settings.Default.Save();
-                    restartApplication();
                 }
 
             }

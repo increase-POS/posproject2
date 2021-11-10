@@ -3,6 +3,7 @@ using POS.Classes;
 using POS.View.setup;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -130,7 +131,6 @@ namespace POS.View.windows
             {
                 grid_main.Children.Clear();
                 posGeneralInstance = uc_FirstPosGeneralSettings.Instance;
-                MessageBox.Show("pos");
                 grid_main.Children.Add(uc_FirstPosGeneralSettings.Instance);
             }
             else if (index == 2)
@@ -170,7 +170,6 @@ namespace POS.View.windows
                         // if (string.IsNullOrWhiteSpace(uc_serverConfig.Instance.serverUri))
                         if (string.IsNullOrWhiteSpace(serverConfigInstance.serverUri))
                         {
-                            System.Windows.Forms.MessageBox.Show("serveruri");
                             item.value = "";
                             isValid = false;
                             break;
@@ -264,6 +263,7 @@ namespace POS.View.windows
                             bool wrongPasswordLength = SectionData.chkPasswordLength(item.value);
                             if (wrongPasswordLength)
                             {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: wd_setupFirstPos.resourcemanager.GetString("trErrorPasswordLengthToolTip"), animation: ToasterAnimation.FadeIn);
                                 isValid = false;
                                 break;
                             }
@@ -395,7 +395,7 @@ namespace POS.View.windows
                 }
 
             }
-            isValid = true;
+          
             if (isValid)
             {
                 if (pageIndex == 2)
@@ -437,7 +437,7 @@ namespace POS.View.windows
                         Properties.Settings.Default.APIUri = Global.APIUri;
                         Properties.Settings.Default.posId = res.ToString();
                         Properties.Settings.Default.Save();
-                        restartApplication();
+
                     }
 
                 }

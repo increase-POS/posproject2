@@ -350,15 +350,10 @@ namespace POS.View.sales
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 tb_moneyIcon.Text = MainWindow.Currency;
-                //tb_discountCouponMoneyIcon.Text = MainWindow.Currency;
-                
-
-
 
                 translate();
                 configureDiscountType();
-                setNotifications();
-                setTimer();
+               
 
                 #region loading
                 loadingList = new List<keyValueBool>();
@@ -421,7 +416,8 @@ namespace POS.View.sales
                     tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
                     sp_tax.Visibility = Visibility.Visible;
                 }
-
+                setNotifications();
+                setTimer();
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
