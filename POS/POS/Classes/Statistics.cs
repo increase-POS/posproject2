@@ -3351,7 +3351,9 @@ namespace POS.Classes
 
                 invShippingCompanyId = obj.FirstOrDefault().invShippingCompanyId,
                 shipUserId = obj.FirstOrDefault().shipUserId ,
-                invAgentId = obj.FirstOrDefault().invAgentId
+                invAgentId = obj.FirstOrDefault().invAgentId ,
+                bondIsRecieved = obj.FirstOrDefault().bondIsRecieved
+
             }).ToList();
             decimal rowtotal = 0;
 
@@ -3365,13 +3367,15 @@ namespace POS.Classes
                     invnum += strrow + " ";
                 }
                 row.invNumber = invnum;
-                if ((row.transType == "d")&&(row.side == "bnd"))
+                if (row.transType == "d")
                 {
-                    rowtotal += (decimal)row.cash;
+                    if (!((row.processType == "doc")&&(row.Description1 == "Receipt")))
+                        rowtotal += (decimal)row.cash;
                 }
-                else
+                else if (row.transType == "p")
                 {// p
-                    rowtotal -= (decimal)row.cash;
+                    if (!((row.processType == "doc") && (row.Description1 == "Receipt")))
+                        rowtotal -= (decimal)row.cash;
                 }
                 row.cashTotal = rowtotal;
 
