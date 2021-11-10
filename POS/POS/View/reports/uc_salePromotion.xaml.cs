@@ -895,7 +895,7 @@ namespace POS.View.reports
             {
                 names.Clear();
                 temp = temp.Where(j => (selectedOfferId.Count != 0 ? stackedButton.Contains((int)j.OofferId) : true));
-                var result1 = temp.GroupBy(s => new { s.OofferId }).Select(s => new
+                var result1 = temp.GroupBy(s => new { s.OofferId , s.ITitemUnitId}).Select(s => new
                 {
                     offerId = s.FirstOrDefault().OofferId,
                     offerName = s.FirstOrDefault().Oname,
@@ -904,12 +904,13 @@ namespace POS.View.reports
                 }
              );
 
-                var name = temp.GroupBy(s => s.itemId).Select(s => new
+                var name = result1.GroupBy(s =>  s.offerId).Select(s => new
                 {
-                    uUserName = s.FirstOrDefault().Oname
+                    uUserName = s.FirstOrDefault().offerName ,
+                    offerTotalValue = s.Sum(x => x.offerTotalValue)
                 });
                 names.AddRange(name.Select(nn => nn.uUserName));
-                pTemp = result1.Select(x => (decimal)x.offerTotalValue);
+                pTemp = name.Select(x => (decimal)x.offerTotalValue);
             }
 
             SeriesCollection rowChartData = new SeriesCollection();

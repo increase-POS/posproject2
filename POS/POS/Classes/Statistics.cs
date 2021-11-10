@@ -3336,7 +3336,6 @@ namespace POS.Classes
                 shippingCompanyName = obj.FirstOrDefault().shippingCompanyName,
                 userAcc = obj.FirstOrDefault().userAcc,
 
-
                 cashTransId = obj.FirstOrDefault().cashTransId,
                 transType = obj.FirstOrDefault().transType,
                 desc = obj.FirstOrDefault().desc,
@@ -3349,6 +3348,10 @@ namespace POS.Classes
                 invNumber = "",
                 invType = obj.FirstOrDefault().invType,
                 totalNet = obj.FirstOrDefault().totalNet,
+
+                invShippingCompanyId = obj.FirstOrDefault().invShippingCompanyId,
+                shipUserId = obj.FirstOrDefault().shipUserId ,
+                invAgentId = obj.FirstOrDefault().invAgentId
             }).ToList();
             decimal rowtotal = 0;
 
@@ -3362,7 +3365,7 @@ namespace POS.Classes
                     invnum += strrow + " ";
                 }
                 row.invNumber = invnum;
-                if (row.transType == "d")
+                if ((row.transType == "d")&&(row.side == "bnd"))
                 {
                     rowtotal += (decimal)row.cash;
                 }

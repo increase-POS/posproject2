@@ -889,7 +889,16 @@ namespace POS.View.accounts
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
             cashes = await cashModel.GetCashTransferAsync("p", "all");
-            cashes = cashes.Where(x => x.processType != "balance");
+            cashes = cashes.Where(x => (x.processType != "balance"));
+            //if (selectedTab == 1)
+            //{
+            //    temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+            //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+            //}
+            //else if (selectedTab == 3)
+            //{
+            //    temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+            //}
             return cashes;
 
         }

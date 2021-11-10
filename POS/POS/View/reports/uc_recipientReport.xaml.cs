@@ -166,7 +166,7 @@ namespace POS.View.reports
                        && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
                        && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
             }
-            if (selectedTab == 3)
+            else if (selectedTab == 3)
             {
                 if(selectedItem5 != null)
                     result = payments.Where(x => (
@@ -179,8 +179,6 @@ namespace POS.View.reports
             recLst = result.ToList();
             return result.ToList();
         }
-    
-       
 
         private void Chk_allVendors_Checked(object sender, RoutedEventArgs e)
         {
@@ -209,6 +207,7 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 cb_vendors.IsEnabled = true;
 
                 if (sender != null)
@@ -594,6 +593,15 @@ namespace POS.View.reports
         private void fillEvents(string side)
         {
             temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side);
+            if (selectedTab == 1)
+            {
+                temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+            }
+            else if (selectedTab == 3)
+            {
+                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+            }
             dgPayments.ItemsSource = temp;
             txt_count.Text = dgPayments.Items.Count.ToString();
 
@@ -775,7 +783,6 @@ namespace POS.View.reports
                 card.Add(resultList.ToList().Skip(i).FirstOrDefault().cardTotal);
                 doc.Add(resultList.ToList().Skip(i).FirstOrDefault().docTotal);
                 cheque.Add(resultList.ToList().Skip(i).FirstOrDefault().chequeTotal);
-                balance.Add(resultList.ToList().Skip(i).FirstOrDefault().balanceTotal);
                 invoice.Add(resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal);
 
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
@@ -789,7 +796,6 @@ namespace POS.View.reports
                     cardSum = cardSum + resultList.ToList().Skip(i).FirstOrDefault().cardTotal;
                     docSum = docSum + resultList.ToList().Skip(i).FirstOrDefault().docTotal;
                     chequeSum = chequeSum + resultList.ToList().Skip(i).FirstOrDefault().chequeTotal;
-                    balanceSum = balanceSum + resultList.ToList().Skip(i).FirstOrDefault().balanceTotal;
                     invoiceSum = invoiceSum + resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal;
                 }
                 if (!((cashSum == 0) && (cardSum == 0) && (docSum == 0) && (chequeSum == 0) && (chequeSum == 0) && (balanceSum == 0) && (invoiceSum == 0)))
@@ -798,7 +804,6 @@ namespace POS.View.reports
                     card.Add(cardSum);
                     doc.Add(docSum);
                     cheque.Add(chequeSum);
-                    balance.Add(balanceSum);
                     invoice.Add(invoiceSum);
 
                     axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
@@ -831,13 +836,6 @@ namespace POS.View.reports
              Values = cheque.AsChartValues(),
              DataLabels = true,
              Title = MainWindow.resourcemanager.GetString("trCheque")
-         });
-            columnChartData.Add(
-         new StackedColumnSeries
-         {
-             Values = balance.AsChartValues(),
-             DataLabels = true,
-             Title = MainWindow.resourcemanager.GetString("trCredit")
          });
             columnChartData.Add(
          new StackedColumnSeries
@@ -902,7 +900,6 @@ namespace POS.View.reports
             List<decimal> card = new List<decimal>();
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
-            List<decimal> balance = new List<decimal>();
             List<decimal> invoice = new List<decimal>();
 
             if (endYear - startYear <= 1)
@@ -924,7 +921,6 @@ namespace POS.View.reports
                         card.Add(drawCard);
                         doc.Add(drawDoc);
                         cheque.Add(drawCheque);
-                        balance.Add(drawBalance);
                         invoice.Add(drawInvoice);
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
 
@@ -950,14 +946,12 @@ namespace POS.View.reports
                     var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Select(c => c.cash.Value).Sum();
                     var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "doc").Select(c => c.cash.Value).Sum();
                     var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cheque").Select(c => c.cash.Value).Sum();
-                    var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "balance").Select(c => c.cash.Value).Sum();
                     var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "inv").Select(c => c.cash.Value).Sum();
 
                     cash.Add(drawCash);
                     card.Add(drawCard);
                     doc.Add(drawDoc);
                     cheque.Add(drawCheque);
-                    balance.Add(drawBalance);
                     invoice.Add(drawInvoice);
                     MyAxis.Labels.Add(year.ToString());
                 }
@@ -991,13 +985,6 @@ namespace POS.View.reports
             rowChartData.Add(
             new LineSeries
             {
-                Values = balance.AsChartValues(),
-                Title = MainWindow.resourcemanager.GetString("trCredit")
-
-            });
-            rowChartData.Add(
-            new LineSeries
-            {
                 Values = invoice.AsChartValues(),
                 Title = MainWindow.resourcemanager.GetString("trInv")
 
@@ -1007,60 +994,39 @@ namespace POS.View.reports
         }
 
         private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {
+        {//refresh
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 txt_search.Text = "";
-                //if (selectedTab == 0)
-                //{
-                //    cb_vendors.SelectedItem = null;
-                //    cb_vendorPayType.SelectedItem = null;
-                //    cb_vendorAccountant.SelectedItem = null;
-                //    chk_allVendors.IsChecked = false;
-                //    chk_allVendorsAccountant.IsChecked = false;
-                //    chk_allVendorsPaymentType.IsChecked = false;
-                //    dp_vendorEndDate.SelectedDate = null;
-                //    dp_vendorStartDate.SelectedDate = null;
-                //    fillVendorsEvents();
-                //}
-                //else if (selectedTab == 1)
-                //{
-                //    cb_customer.SelectedItem = null;
-                //    cb_customerPayType.SelectedItem = null;
-                //    cb_customerAccountant.SelectedItem = null;
-                //    chk_allCustomers.IsChecked = false;
-                //    chk_allCustomersAccountant.IsChecked = false;
-                //    chk_allCustomersPaymentType.IsChecked = false;
-                //    dp_customerEndDate.SelectedDate = null;
-                //    dp_customerStartDate.SelectedDate = null;
-                //    fillCustomersEvents();
-                //}
-                //else if (selectedTab == 2)
-                //{
-                //    cb_users.SelectedItem = null;
-                //    cb_userPayType.SelectedItem = null;
-                //    cb_userAccountant.SelectedItem = null;
-                //    chk_allUsers.IsChecked = false;
-                //    chk_allUsersAccountant.IsChecked = false;
-                //    chk_allUsersPaymentType.IsChecked = false;
-                //    dp_userEndDate.SelectedDate = null;
-                //    dp_userStartDate.SelectedDate = null;
-                //    fillUserEvents();
-                //}
-                //else if (selectedTab == 3)
-                //{
-                //    cb_shipping.SelectedItem = null;
-                //    cb_shippingPayType.SelectedItem = null;
-                //    cb_shippingAccountant.SelectedItem = null;
-                //    chk_allShippings.IsChecked = false;
-                //    chk_allShippingsAccountant.IsChecked = false;
-                //    chk_allShippingsPaymentType.IsChecked = false;
-                //    dp_shippingEndDate.SelectedDate = null;
-                //    dp_shippingStartDate.SelectedDate = null;
-                //    fillShippingEvents();
-                //}
+
+                cb_vendors.SelectedItem = null;
+                cb_vendorPayType.SelectedItem = null;
+                cb_vendorAccountant.SelectedItem = null;
+                chk_allVendors.IsChecked = false;
+                chk_allVendorsAccountant.IsChecked = false;
+                chk_allVendorsPaymentType.IsChecked = false;
+                dp_vendorEndDate.SelectedDate = null;
+                dp_vendorStartDate.SelectedDate = null;
+
+                if (selectedTab == 0)
+                {
+                    fillEvents("v");
+                }
+                else if (selectedTab == 1)
+                {
+                    fillEvents("c");
+                }
+                else if (selectedTab == 2)
+                {
+                    fillEvents("u");
+                }
+                else if (selectedTab == 3)
+                {
+                    fillEvents("sh");
+                }
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1074,54 +1040,62 @@ namespace POS.View.reports
         }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        {//search
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //if (selectedTab == 0)
-                //{
-                //    var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
-                //    dgPayments.ItemsSource = temp.Where(obj => (
-                //    obj.transNum.Contains(txt_search.Text) ||
-                //    obj.processType.Contains(txt_search.Text) ||
-                //    obj.updateUserAcc.Contains(txt_search.Text) ||
-                //    obj.agentCompany.Contains(txt_search.Text) ||
-                //    obj.agentName.Contains(txt_search.Text)
-                //    ));
-                //}
-                //else if (selectedTab == 1)
-                //{
-                //    var temp = fillList(payments, cb_customer, cb_customerPayType, cb_customerAccountant, dp_customerStartDate, dp_customerEndDate).Where(x => x.side == "c" || x.side == "b");
 
-                //    dgPayments.ItemsSource = temp.Where(obj => (
-                //        obj.transNum.Contains(txt_search.Text) ||
-                //        obj.processType.Contains(txt_search.Text) ||
-                //        obj.updateUserAcc.Contains(txt_search.Text) ||
-                //        obj.agentCompany.Contains(txt_search.Text) ||
-                //        obj.agentName.Contains(txt_search.Text)
-                //        ));
-                //}
-                //else if (selectedTab == 2)
-                //{
-                //    var temp = fillList(payments, cb_users, cb_userPayType, cb_userAccountant, dp_userStartDate, dp_userEndDate).Where(x => x.side == "u");
-                //    dgPayments.ItemsSource = temp.Where(obj => (
-                //       obj.transNum.Contains(txt_search.Text) ||
-                //       obj.processType.Contains(txt_search.Text) ||
-                //       obj.updateUserAcc.Contains(txt_search.Text) ||
-                //       obj.userAcc.Contains(txt_search.Text)
-                //       ));
-                //}
-                //else if (selectedTab == 6)
-                //{
-                //    var temp = fillList(payments, cb_shipping, cb_shippingPayType, cb_shippingAccountant, dp_shippingStartDate, dp_shippingEndDate).Where(x => x.side == "sh");
-                //    dgPayments.ItemsSource = temp.Where(obj => (
-                //       obj.transNum.Contains(txt_search.Text) ||
-                //       obj.processType.Contains(txt_search.Text) ||
-                //       obj.updateUserAcc.Contains(txt_search.Text) ||
-                //       obj.shippingCompanyName.Contains(txt_search.Text)
-                //       ));
-                //}
+                if (selectedTab == 0)
+                {
+                    dgPayments.ItemsSource = recLst.Where(obj => (
+                    obj.side == "v" 
+                    &&
+                    (obj.transNum.Contains(txt_search.Text) ||
+                    obj.processType.Contains(txt_search.Text) ||
+                    obj.updateUserAcc.Contains(txt_search.Text) ||
+                    obj.agentCompany.Contains(txt_search.Text) ||
+                    obj.agentName.Contains(txt_search.Text)
+                    )));
+                }
+                if (selectedTab == 1)
+                {
+                    dgPayments.ItemsSource = recLst.Where(obj => (
+                    obj.side == "c"
+                    &&
+                    (obj.transNum.Contains(txt_search.Text) ||
+                    obj.processType.Contains(txt_search.Text) ||
+                    obj.updateUserAcc.Contains(txt_search.Text) 
+                    //||
+                    //(obj.agentCompany == null ? obj.agentCompany.Contains(txt_search.Text) : true)
+                    //||
+                    //obj.agentName.Contains(txt_search.Text)
+                    )));
+            }
+                else if (selectedTab == 2)
+                {
+                    dgPayments.ItemsSource = recLst.Where(obj => (
+                        obj.side == "u"
+                        &&
+                        (
+                        obj.transNum.Contains(txt_search.Text) ||
+                        obj.processType.Contains(txt_search.Text) ||
+                        obj.updateUserAcc.Contains(txt_search.Text) ||
+                        obj.userAcc.Contains(txt_search.Text)
+                        )));
+                }
+                else if (selectedTab == 3)
+                {
+                    dgPayments.ItemsSource = recLst.Where(obj => (
+                     obj.side == "sh"
+                        &&
+                        (
+                       obj.transNum.Contains(txt_search.Text) ||
+                       obj.processType.Contains(txt_search.Text) ||
+                       obj.updateUserAcc.Contains(txt_search.Text) ||
+                       obj.shippingCompanyName.Contains(txt_search.Text)
+                       )));
+                }
 
                 txt_count.Text = dgPayments.Items.Count.ToString();
 

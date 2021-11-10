@@ -728,13 +728,13 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                    //IEnumerable<CashTransferSts> temp ;
-                    //if(selectedTab == 0)
-                    //    temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
-                    //else
-                    //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                IEnumerable<CashTransferSts> tempSearch;
+                if (selectedTab == 0)
+                    tempSearch = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+                else
+                    tempSearch = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
 
-                    dgPayments.ItemsSource = bankLst.Where(obj => (
+                dgPayments.ItemsSource = tempSearch.Where(obj => (
                     obj.transNum.Contains(txt_search.Text) ||
                     obj.bankName.Contains(txt_search.Text) ||
                     obj.updateUserAcc.Contains(txt_search.Text) ||

@@ -740,7 +740,17 @@ namespace POS.View.reports
 
         private void fillEvents(string side)
         {
-            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side);
+            temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side)
+                .Where(p => p.processType != "balance");
+            if (selectedTab == 1)
+            {
+                temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+            }
+            else if (selectedTab == 3)
+            {
+                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+            }
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             //charts
@@ -924,7 +934,6 @@ namespace POS.View.reports
             List<decimal> card = new List<decimal>();
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
-            List<decimal> balance = new List<decimal>();
             List<decimal> invoice = new List<decimal>();
 
             int xCount = 6;
@@ -936,7 +945,6 @@ namespace POS.View.reports
                 card.Add(resultList.ToList().Skip(i).FirstOrDefault().cardTotal);
                 doc.Add(resultList.ToList().Skip(i).FirstOrDefault().docTotal);
                 cheque.Add(resultList.ToList().Skip(i).FirstOrDefault().chequeTotal);
-                balance.Add(resultList.ToList().Skip(i).FirstOrDefault().balanceTotal);
                 invoice.Add(resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal);
 
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
@@ -950,7 +958,6 @@ namespace POS.View.reports
                     cardSum    = cardSum    + resultList.ToList().Skip(i).FirstOrDefault().cardTotal;
                     docSum     = docSum     + resultList.ToList().Skip(i).FirstOrDefault().docTotal;
                     chequeSum  = chequeSum  + resultList.ToList().Skip(i).FirstOrDefault().chequeTotal;
-                    balanceSum = balanceSum + resultList.ToList().Skip(i).FirstOrDefault().balanceTotal;
                     invoiceSum = invoiceSum + resultList.ToList().Skip(i).FirstOrDefault().invoiceTotal;
                 }
                 if (!((cashSum == 0) && (cardSum == 0) && (docSum == 0) && (chequeSum == 0) && (chequeSum == 0) && (balanceSum == 0) && (invoiceSum == 0)))
@@ -959,7 +966,6 @@ namespace POS.View.reports
                     card.Add(cardSum);
                     doc.Add(docSum);
                     cheque.Add(chequeSum);
-                    balance.Add(balanceSum);
                     invoice.Add(invoiceSum);
 
                     axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
@@ -993,13 +999,7 @@ namespace POS.View.reports
              DataLabels = true,
              Title = MainWindow.resourcemanager.GetString("trCheque")
          });
-            columnChartData.Add(
-         new StackedColumnSeries
-         {
-             Values = balance.AsChartValues(),
-             DataLabels = true,
-             Title = MainWindow.resourcemanager.GetString("trCredit")
-         });
+            
             columnChartData.Add(
          new StackedColumnSeries
          {
@@ -1070,7 +1070,6 @@ namespace POS.View.reports
             List<decimal> card = new List<decimal>();
             List<decimal> doc = new List<decimal>();
             List<decimal> cheque = new List<decimal>();
-            List<decimal> balance = new List<decimal>();
             List<decimal> invoice = new List<decimal>();
 
             if (endYear - startYear <= 1)
@@ -1085,14 +1084,12 @@ namespace POS.View.reports
                         var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "card").Select(c => c.cash.Value).Sum();
                         var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "doc").Select(c => c.cash.Value).Sum();
                         var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "cheque").Select(c => c.cash.Value).Sum();
-                        var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "balance").Select(c => c.cash.Value).Sum();
                         var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.processType == "inv").Select(c => c.cash.Value).Sum();
 
                         cash.Add(drawCash);
                         card.Add(drawCard);
                         doc.Add(drawDoc);
                         cheque.Add(drawCheque);
-                        balance.Add(drawBalance);
                         invoice.Add(drawInvoice);
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
 
@@ -1118,14 +1115,12 @@ namespace POS.View.reports
                     var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Select(c => c.cash.Value).Sum();
                     var drawDoc = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "doc").Select(c => c.cash.Value).Sum();
                     var drawCheque = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cheque").Select(c => c.cash.Value).Sum();
-                    var drawBalance = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "balance").Select(c => c.cash.Value).Sum();
                     var drawInvoice = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "inv").Select(c => c.cash.Value).Sum();
 
                     cash.Add(drawCash);
                     card.Add(drawCard);
                     doc.Add(drawDoc);
                     cheque.Add(drawCheque);
-                    balance.Add(drawBalance);
                     invoice.Add(drawInvoice);
                     MyAxis.Labels.Add(year.ToString());
                 }
@@ -1156,13 +1151,7 @@ namespace POS.View.reports
                 Title = MainWindow.resourcemanager.GetString("trCheque")
 
             });
-            rowChartData.Add(
-            new LineSeries
-            {
-                Values = balance.AsChartValues(),
-                Title = MainWindow.resourcemanager.GetString("trCredit")
-
-            });
+          
             rowChartData.Add(
             new LineSeries
             {
@@ -1213,27 +1202,56 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                    //var temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == "v" || x.side == "b");
-                    dgPayments.ItemsSource = payLst.Where(obj => (
-                    obj.transNum.Contains(txt_search.Text) ||
-                    obj.processType.Contains(txt_search.Text) ||
-                    obj.updateUserAcc.Contains(txt_search.Text) ||
-                    obj.agentCompany.Contains(txt_search.Text) ||
-                    obj.agentName.Contains(txt_search.Text)
+                if (selectedTab == 0)
+                {
+                    payLst = payLst.Where(p => p.side=="v").ToList();
+                }
+                else if (selectedTab == 1)
+                {
+                    payLst = payLst.Where(p => p.side == "c").ToList();
+                }
+                else if (selectedTab == 2)
+                {
+                    payLst = payLst.Where(p => p.side == "u").ToList();
+                }
+                else if (selectedTab == 3)
+                {
+                    payLst = payLst.Where(p => p.side == "s").ToList();
+                }
+                else if (selectedTab == 4)
+                {
+                    payLst = payLst.Where(p => p.side == "e").ToList();
+                }
+                else if (selectedTab == 5)
+                {
+                    payLst = payLst.Where(p => p.side == "m").ToList();
+                }
+                else if (selectedTab == 6)
+                {
+                    payLst = payLst.Where(p => p.side == "sh").ToList();
+                }
+                dgPayments.ItemsSource = payLst.Where(obj => (
+                    obj.transNum.Contains(txt_search.Text) 
+                    ||
+                    //obj.processType.Contains(txt_search.Text) ||
+                    obj.updateUserAcc.Contains(txt_search.Text) 
+                    //||
+                    //obj.agentCompany.Contains(txt_search.Text) ||
+                    //obj.agentName.Contains(txt_search.Text)
                     ));
 
                 txt_count.Text = dgPayments.Items.Count.ToString();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+        }
             catch (Exception ex)
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
-            }
         }
+    }
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
