@@ -972,10 +972,12 @@ namespace POS.View
                     int s = await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
                     
                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    if(invType =="p")
+                        invoiceModel.saveAvgPurchasePrice(invoiceItems);
                 }
                 else
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
+                
             }
             clearInvoice();
             _InvoiceType = "pd";
@@ -1104,9 +1106,11 @@ namespace POS.View
                                 }
                                     #endregion
                                 }
+                           
                                 clearInvoice();
                                 await refreshDraftNotification();
-                            }
+                            
+                        }
 
                             if (invoice.invoiceId == 0)
                             {

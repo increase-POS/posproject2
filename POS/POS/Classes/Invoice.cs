@@ -708,6 +708,14 @@ namespace POS.Classes
             parameters.Add("invoiceId", invoiceId.ToString());
            return await APIResult.post(method, parameters);
         }
+        public async void saveAvgPurchasePrice(List<ItemTransfer> invoiceItems)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Invoices/saveAvgPrice";
+            var myContent = JsonConvert.SerializeObject(invoiceItems);
+            parameters.Add("itemTransferObject", myContent);
+            await APIResult.post(method, parameters);
+        }
         public async Task<int> saveInvoiceCoupons(List<CouponInvoice> invoiceCoupons, int invoiceId, string invType)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
