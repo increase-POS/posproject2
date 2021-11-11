@@ -676,8 +676,8 @@ namespace POS.View.accounts
                 SectionData.defaultDatePickerStyle(dp_deservecDate);
 
 
-                dp_startSearchDate.SelectedDate = DateTime.Now;
-                dp_endSearchDate.SelectedDate = DateTime.Now;
+                dp_startSearchDate.SelectedDate = DateTime.Now.Date;
+                dp_endSearchDate.SelectedDate = DateTime.Now.Date;
 
                 sDate = dp_startSearchDate.SelectedDate.Value;
                 eDate = dp_endSearchDate.SelectedDate.Value;
