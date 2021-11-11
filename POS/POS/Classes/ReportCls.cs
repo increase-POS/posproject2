@@ -9,7 +9,7 @@ using Microsoft.Reporting.WinForms;
 using System.Resources;
 using System.Reflection;
 using System.Globalization;
-
+using System.Collections;
 namespace POS.Classes
 {
     class ReportCls
@@ -1089,6 +1089,115 @@ namespace POS.Classes
             return query;
 
         }
+
+
+        /////////
+        ///
+
+
+        public bool encodefile(string source, string dest)
+        {
+            try
+            {
+              
+                byte[] arr = File.ReadAllBytes(source);
+              
+                arr = Encrypt(arr);
+
+                File.WriteAllBytes(dest, arr);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+   
+
+        public static byte[] Encrypt(byte[] ordinary)
+        {
+            BitArray bits = ToBits(ordinary);
+            BitArray LHH = SubBits(bits, 0, bits.Length / 2);
+            BitArray RHH = SubBits(bits, bits.Length / 2, bits.Length / 2);
+            BitArray XorH = LHH.Xor(RHH);
+            RHH = RHH.Not();
+            XorH = XorH.Not();
+            BitArray encr = ConcateBits(XorH, RHH);
+            byte[] b = new byte[encr.Length / 8];
+            encr.CopyTo(b, 0);
+            return b;
+        }
+
+
+        private static BitArray ToBits(byte[] Bytes)
+        {
+            BitArray bits = new BitArray(Bytes);
+            return bits;
+        }
+        private static BitArray SubBits(BitArray Bits, int Start, int Length)
+        {
+            BitArray half = new BitArray(Length);
+            for (int i = 0; i < half.Length; i++)
+                half[i] = Bits[i + Start];
+            return half;
+        }
+        private static BitArray ConcateBits(BitArray LHH, BitArray RHH)
+        {
+            BitArray bits = new BitArray(LHH.Length + RHH.Length);
+            for (int i = 0; i < LHH.Length; i++)
+                bits[i] = LHH[i];
+            for (int i = 0; i < RHH.Length; i++)
+                bits[i + LHH.Length] = RHH[i];
+            return bits;
+        }
+        public void DelFile(string fileName)
+        {
+          
+                bool inuse = false;
+
+                inuse = IsFileInUse(fileName);
+                if (inuse == false)
+                {
+                    File.Delete(fileName);
+                }
+
+         
+           
+
+
+
+        }
+
+        private bool IsFileInUse(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                //throw new ArgumentException("'path' cannot be null or empty.", "path");
+                return true;
+            }
+
+
+            try
+            {
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.ReadWrite)) { }
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        //////////
+
+
+
+
+
     }
 }
 

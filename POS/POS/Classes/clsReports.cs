@@ -30,6 +30,18 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
 
         }
+        public static void HeaderNoLogo(List<ReportParameter> paramarr)
+        {
+
+            ReportCls rep = new ReportCls();
+            paramarr.Add(new ReportParameter("companyName", MainWindow.companyName));
+            paramarr.Add(new ReportParameter("Fax", MainWindow.Fax));
+            paramarr.Add(new ReportParameter("Tel", MainWindow.Mobile));
+            paramarr.Add(new ReportParameter("Address", MainWindow.Address));
+            paramarr.Add(new ReportParameter("Email", MainWindow.Email));
+       
+
+        }
         public static void bankdg(List<ReportParameter> paramarr)
         {
 
@@ -301,6 +313,13 @@ namespace POS.Classes
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+        }
+        public static void ErrorsReport(IEnumerable<ErrorClass> Query, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetError", Query));
         }
 
         public static void couponReport(IEnumerable<Coupon> CouponQuery2, LocalReport rep, string reppath, List<ReportParameter> paramarr)
