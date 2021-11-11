@@ -871,14 +871,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="27136">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="netoaster.dll" size="26624">
       <assemblyIdentity name="netoaster" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>olL5if/nJHyOhiJK+IocBQ1S4l/OXSz+yPAtlBFSEdc=</dsig:DigestValue>
+        <dsig:DigestValue>MQa4oxxCuGR2ccoknb16WXhvbhrgB4Lx8R7QMpz+jxo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15198216">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15199240">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Ueh7ZXmPYTNXDCkCPqhj+3Z1AwA0RyAyrRyq3ZpRVOs=</dsig:DigestValue>
+        <dsig:DigestValue>w5Sl4m58cZ+RV9BhrV4i+TA7sY6QAyLP4rLm5dZhDp4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1156,6 +1156,132 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>WCgyCn5wlbXytLToBLPuXM5Q+s9/H4TzZRCapbuJH5Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\BankAccReport.rdlc" size="385477">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Q6XkaVyeNlLJjq/z7YHz5Rv0fwwifUgBCP81SSlA+uk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\BankDoc.rdlc" size="205117">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>r0wBNGP5Vuouk3mpz29yyqrMu6yH+QEMLecPukH+Rgo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\BankDocA4.rdlc" size="246383">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Q90nbG8C9ScfSr1tUViA5IwBIJH6gbeRfkuwfvpKZaM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\BondAccReport.rdlc" size="397084">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>p0wD/QVu2hh+Y61IuzV6fo0oln6AjcplE31BkvGLijM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\BondDoc.rdlc" size="201565">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>O19u/FGimy2jprSPQWHEvAV1KzdwkAFqGYj75klAQsA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\BondDocA4.rdlc" size="240138">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2yLdnT6gCYaaCgQ3wLoWrQNW5d+kmbRQWv9qLfmrJao=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\OrderAccReport.rdlc" size="394622">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0O6mLc0T/uNqC6THqNo0V/HXbZw6Q2Tw+mu/NbhZ4is=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\PayAccReport.rdlc" size="393218">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QT4FBfOwK9sKX+5xSQTKW88Ui+2AQeexdTPnX5yylf4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\PayReport.rdlc" size="194816">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KvdLRvnEl5Zu+45bEB7hwD9Jqa2L9ZvQJ/XZPp4BItw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\PayReportA4.rdlc" size="230588">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>aRThGhN7HcUCqEox3I6nmShh6bje6THgaK1sGfk8rP4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\PosAccReport.rdlc" size="389492">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tlZ9dBTuyWeQkWcED0oT/Xh/YR6Mljl4ABEinoOTNB8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\ReceiptAccReport.rdlc" size="393218">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>80SBjMzaFZxeOEIsG87xtv36bNPnp9EBmThIiQY04sc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\ReciveReport.rdlc" size="194829">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>t0/Imo717Y8GzSnT79ZaOXN7XLK8g+/+wrj8+k9foN4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Reports\Account\En\ReciveReportA4.rdlc" size="230453">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>H2FYyKT9eWqxn4y/kh3uyYcrjoKbW1S+ME8N7wQMgQo=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\Catalog\Ar\ArCategoryReport.rdlc" size="383582">

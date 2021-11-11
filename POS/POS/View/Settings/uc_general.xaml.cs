@@ -1010,61 +1010,75 @@ namespace POS.View.Settings
 
         private async void Btn_saveErrorsExport_Click(object sender, RoutedEventArgs e)
         {
-            saveFileDialog.Filter = "File|*.er;";
-            if (saveFileDialog.ShowDialog() == true)
+            try
             {
-                string DestPath = saveFileDialog.FileName;
-                ReportCls rc = new ReportCls();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            string pdfpath = "";
-            pdfpath = @"\Thumb\report\temp1.pdf";
-            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-   addpath = @"\Reports\image\error.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-            List<ErrorClass> eList = new List<ErrorClass>();
-            ErrorClass errorModel = new ErrorClass();
-            eList=await errorModel.Get();
-
-            clsReports.ErrorsReport(eList, rep, reppath);
-          //  clsReports.setReportLanguage(paramarr);
-            clsReports.HeaderNoLogo(paramarr);
-
-            rep.SetParameters(paramarr);
-
-            rep.Refresh();
-                bool res = false;
-
- LocalReportExtensions.ExportToExcel(rep, pdfpath);
-                res= rc.encodefile(pdfpath, DestPath);
-                rc.DelFile(pdfpath);
-              //  rc.decodefile(DestPath,@"D:\error.xls");
-                if (res)
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
- MessageBox.Show("Saved");
+                    saveFileDialog.Filter = "File|*.er;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string DestPath = saveFileDialog.FileName;
+                        ReportCls rc = new ReportCls();
+
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                        string addpath;
+                        bool isArabic = ReportCls.checkLang();
+                        string pdfpath = "";
+                        pdfpath = @"\Thumb\report\temp1.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                        addpath = @"\Reports\image\error.rdlc";
+                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+                        List<ErrorClass> eList = new List<ErrorClass>();
+                        ErrorClass errorModel = new ErrorClass();
+                        eList = await errorModel.Get();
+
+                        clsReports.ErrorsReport(eList, rep, reppath);
+                        //  clsReports.setReportLanguage(paramarr);
+                        clsReports.HeaderNoLogo(paramarr);
+
+                        rep.SetParameters(paramarr);
+
+                        rep.Refresh();
+                        bool res = false;
+
+                        LocalReportExtensions.ExportToExcel(rep, pdfpath);
+                        res = rc.encodefile(pdfpath, DestPath);
+                        rc.DelFile(pdfpath);
+                        //  rc.decodefile(DestPath,@"D:\error.xls");
+                        if (res)
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        }
+
+                        //saveFileDialog.Filter = "File|*.er;";
+                        //if (saveFileDialog.ShowDialog() == true)
+                        //{
+                        //    string filepath = saveFileDialog.FileName;
+
+                    }
                 }
                 else
-                {
-                    MessageBox.Show("Not Saved");
-                }
-               
-                //saveFileDialog.Filter = "File|*.er;";
-                //if (saveFileDialog.ShowDialog() == true)
-                //{
-                //    string filepath = saveFileDialog.FileName;
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
-
-
-
-
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Btn_saveAccuracy_Click(object sender, RoutedEventArgs e)

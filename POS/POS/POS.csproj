@@ -1366,30 +1366,30 @@
     <Content Include="Reports\Account\Ar\ArReciveReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Reports\Account\En\BankAccReport.rdlc">
+    <Content Include="Reports\Account\En\BankAccReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\BondAccReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\BondAccReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\OrderAccReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\OrderAccReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\PayAccReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\PayAccReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\PayReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\PayReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\PosAccReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\PosAccReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\ReceiptAccReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\ReceiptAccReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\ReciveReport.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\ReciveReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
+    </Content>
     <Content Include="Reports\Purchase\Ar\ArInvPurOrderReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1686,24 +1686,24 @@
     <Content Include="Reports\Account\Ar\ArReciveReportA4.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Reports\Account\En\BankDoc.rdlc">
+    <Content Include="Reports\Account\En\BankDoc.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\BankDocA4.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\BankDocA4.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\BondDoc.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\BondDoc.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\BondDocA4.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\BondDocA4.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\PayReportA4.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\PayReportA4.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
-    <EntityDeploy Include="Reports\Account\En\ReciveReportA4.rdlc">
+    </Content>
+    <Content Include="Reports\Account\En\ReciveReportA4.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EntityDeploy>
+    </Content>
     <Content Include="Reports\Catalog\Ar\ArCategoryReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

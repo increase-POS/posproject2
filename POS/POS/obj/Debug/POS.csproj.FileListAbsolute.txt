@@ -3021,7 +3021,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_accountProfits.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupFirstPos.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_setupFirstPos.baml
 D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_accountFund.g.cs
@@ -3788,3 +3787,17 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Sale\QT\Ar\ArPur
 E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Sale\QT\Ar\ArPurSts.rdlc
 E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Sale\QT\Ar\ArPurUserSts.rdlc
 E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Sale\QT\Ar\ArPurVendorSts.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BankAccReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BondAccReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\OrderAccReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\PayAccReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\PayReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\PosAccReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\ReceiptAccReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\ReciveReport.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BankDoc.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BankDocA4.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BondDoc.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BondDocA4.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\PayReportA4.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\ReciveReportA4.rdlc
