@@ -1657,8 +1657,12 @@ var strP = TokenManager.GetPrincipal(token);
                 }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && x.shipUserId == null && typesList.Contains(x.invType)
-                                        && x.deserved > 0 && x.branchCreatorId == branchId)
+                    //var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && x.shipUserId == null && typesList.Contains(x.invType)
+                    //                    && x.deserved > 0 && x.branchCreatorId == branchId )
+                    var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && typesList.Contains(x.invType)
+                                        && x.deserved > 0 && x.branchCreatorId == branchId &&
+                                           (x.shippingCompanyId == null && x.shipUserId == null && x.agentId != null) ||
+                                           (x.shippingCompanyId != null && x.shipUserId != null && x.agentId != null))
                                         select new InvoiceModel()
                                         {
                                             invoiceId = b.invoiceId,
@@ -1814,9 +1818,12 @@ var strP = TokenManager.GetPrincipal(token);
                 }
                 using (incposdbEntities entity = new incposdbEntities())
                 {
+                    //var invoicesList = (from b in entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType)
+                    //                    && x.deserved > 0 && x.branchCreatorId == branchId)
                     var invoicesList = (from b in entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType)
-                                        && x.deserved > 0 && x.branchCreatorId == branchId)
-                                        select new InvoiceModel()
+                                      && x.deserved > 0 && x.branchCreatorId == branchId &&
+                                         x.shippingCompanyId != null && x.shipUserId == null && x.agentId != null)
+                    select new InvoiceModel()
                                         {
                                             invoiceId = b.invoiceId,
                                             invNumber = b.invNumber,

@@ -3452,28 +3452,28 @@ else
                                         select new
                                         {
                                             //coupon
-                                            Copname = C.name,
+                                            Copname = C.name,//*
                                             CopcId = C.cId,
-                                            Copcode = C.code,
+                                            Copcode = C.code,//*
 
                                             CopisActive = C.isActive,
-                                            CopdiscountType = C.discountType,
-                                            CopdiscountValue = C.discountValue,
+                                            CopdiscountType = C.discountType,//*
+                                            CopdiscountValue = C.discountValue,//*
                                             CopstartDate = C.startDate,
                                             CopendDate = C.endDate,
-                                            Copnotes = C.notes,
+                                            //Copnotes = C.notes,
                                             Copquantity = C.quantity,
-                                            CopremainQ = C.remainQ,
-                                            CopinvMin = C.invMin,
-                                            CopinvMax = C.invMax,
+                                            //CopremainQ = C.remainQ,
+                                            //CopinvMin = C.invMin,
+                                            //CopinvMax = C.invMax,
                                             CopcreateDate = C.createDate,
                                             CopupdateDate = C.updateDate,
                                             CopcreateUserId = C.createUserId,
                                             CopupdateUserId = C.updateUserId,
-                                            Copbarcode = C.barcode,
+                                            //Copbarcode = C.barcode,
 
                                             I.invoiceId,
-                                            I.invNumber,
+                                            I.invNumber,//*
                                             I.agentId,
                                             I.posId,
                                             I.invType,
@@ -3486,13 +3486,13 @@ else
                                             I.invoiceMainId,
                                             I.invCase,
                                             I.invTime,
-                                            I.notes,
-                                            I.vendorInvNum,
-                                            I.vendorInvDate,
+                                            //I.notes,
+                                            //I.vendorInvNum,
+                                            //I.vendorInvDate,
                                             I.createUserId,
                                             I.updateDate,
                                             I.updateUserId,
-                                            I.branchId,
+                                            //I.branchId,
                                             discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
                                             couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
 
@@ -3509,18 +3509,18 @@ else
                                             //  branchName = JBB.name,
 
                                             //  branchType = JBB.type,
-                                            posName = JPP.name,
-                                            posCode = JPP.code,
-                                            agentName = JAA.name,
-                                            agentCode = JAA.code,
-                                            agentType = JAA.type,
-                                            cuserName = JUU.name,
-                                            cuserLast = JUU.lastname,
+                                            //posName = JPP.name,
+                                            //posCode = JPP.code,
+                                            //agentName = JAA.name,
+                                            //agentCode = JAA.code,
+                                            //agentType = JAA.type,
+                                            //cuserName = JUU.name,
+                                            //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
-                                            uuserName = JUPUS.name,
-                                            uuserLast = JUPUS.lastname,
+                                            //uuserName = JUPUS.name,
+                                            //uuserLast = JUPUS.lastname,
                                             uUserAccName = JUPUS.username,
-                                            agentCompany = JAA.company,
+                                            //agentCompany = JAA.company,
 
                                             //username
 
@@ -4156,25 +4156,25 @@ else
                                         from JAA in JA.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
                                         where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-                                      
+  
                                         select new
                                         {
                                             // offer
 
-                                            Oname = O.name,
+                                            Oname = O.name,//*
                                             OofferId = O.offerId,
 
                                             //Oquantity = IUO.quantity,
-                                            Ocode = O.code,
+                                            Ocode = O.code,//*
                                             OisActive = O.isActive,
-                                            OdiscountType = O.discountType,
-                                            OdiscountValue = O.discountValue,
+                                            OdiscountType = O.discountType,//*
+                                            OdiscountValue = O.discountValue,//*
                                             OstartDate = O.startDate,
                                             OendDate = O.endDate,
-                                            //OcreateDate = O.createDate,
-                                            //OupdateDate = O.updateDate,
-                                            //OcreateUserId = O.createUserId,
-                                            //OupdateUserId = O.updateUserId,
+                                            OcreateDate = O.createDate,
+                                            OupdateDate = O.updateDate,
+                                            OcreateUserId = O.createUserId,
+                                            OupdateUserId = O.updateUserId,
                                             //Onotes = O.notes,
 
                                             //itemtransfer
@@ -4185,15 +4185,15 @@ else
 
                                             ITitemId = IU.itemId,
                                             ITunitId = IU.unitId,
-                                            ITquantity = IT.quantity,
+                                            ITquantity = IT.quantity,//*
 
                                          
-                                            ITnotes = IT.notes,
+                                            //ITnotes = IT.notes,
                                             ITprice = IT.price,
                                             ITbarcode = IU.barcode,
 
                                             I.invoiceId,
-                                            I.invNumber,
+                                            I.invNumber,//*
                                             I.agentId,
                                             I.posId,
                                             I.invType,
@@ -4206,7 +4206,7 @@ else
                                             I.invoiceMainId,
                                             I.invCase,
                                             I.invTime,
-                                            I.notes,
+                                            //I.notes,
                                             I.vendorInvNum,
                                             I.vendorInvDate,
                                             I.createUserId,
@@ -4239,7 +4239,7 @@ else
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
 
-                                            subTotal = (IT.price * IT.quantity),
+                                            subTotal = (IT.price * IT.quantity),//*
                                             // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
                                             offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * ( IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
 
@@ -4372,10 +4372,10 @@ else
 
                                             IUL.itemsLocId,
                                             IUL.locationId,
-                                            IUL.quantity,
+                                            quantity = IUL.quantity,
 
-                                            IUL.startDate,
-                                            IUL.endDate,
+                                            startDate = IUL.startDate,
+                                            endDate = IUL.endDate,
 
                                             //IULnote = IUL.note,
                                             IU.storageCostId,
@@ -4796,7 +4796,7 @@ else
 
                                             IU.itemId,
                                             IU.unitId,
-                                            //IT.quantity,
+                                            quantity = IT.quantity,
 
                                             // createDate = IT.createDate,
                                             //updateDate = IT.updateDate,
@@ -6060,8 +6060,9 @@ else
 
                                         select new
                                         {
-                                           
-                                            causeDestroy = IT.inventoryItemLocation.cause,
+
+                                            // causeDestroy = IT.inventoryItemLocation.cause,
+                                            causeDestroy = IT.inventoryItemLocation.fallCause,
                                             userdestroy = duu.username,
                                             //I.userId,
                                             itemName = ITEM.name,
@@ -6324,11 +6325,11 @@ else
                                             /*
                                              inventoryType
                                           */
-                                            //inventoryNum = IT.inventoryItemLocation.Inventory.num,
-                                            //IT.inventoryItemLocation.Inventory.inventoryType,
-                                            //inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
+                                            inventoryNum = IT.inventoryItemLocation.Inventory.num,
+                                            inventoryType = IT.inventoryItemLocation.Inventory.inventoryType,
+                                            inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
                                             //   itemCount
-                                            //causeFalls = IT.inventoryItemLocation.fallCause,
+                                            causeFalls = IT.inventoryItemLocation.fallCause,
                                             //userFalls = duu.username,
                                             //I.userId,
                                             itemName = ITEM.name,
@@ -6344,7 +6345,7 @@ else
 
                                             //I.invoiceId,
                                             //I.invNumber,
-
+                                            /*causeFalls inventoryNum  inventoryType inventoryDate*/
                                             //I.posId,
                                             //I.invType,
                                             //I.total,
@@ -7711,7 +7712,7 @@ else
                                         from jbbo in jbo.DefaultIfEmpty()
                                         from jshh in jsh.DefaultIfEmpty()
                                         from jinvv in jinv.DefaultIfEmpty()//yasmine
-                                        where (C.processType != "balance" &&(C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh"))//( C.transType == "p" && C.side==Side)
+                                        where (C.processType != "balance" &&(C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh" || C.side == "bnd"))//( C.transType == "p" && C.side==Side)
 
                                         //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 

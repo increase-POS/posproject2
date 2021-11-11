@@ -43,6 +43,7 @@ namespace POS_Server
         public Nullable<int> updateUserId { get; set; }
         public Nullable<int> minUnitId { get; set; }
         public Nullable<int> maxUnitId { get; set; }
+        public Nullable<decimal> avgPurchasePrice { get; set; }
     
         public virtual categories categories { get; set; }
         public virtual units units { get; set; }

@@ -45,6 +45,7 @@
     <Property Name="fax" Type="nvarchar" MaxLength="100" />
     <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="3" />
     <Property Name="isLimited" Type="bit" Nullable="false" />
+    <Property Name="isCash" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="banks">
     <Key>
@@ -424,6 +425,8 @@
     <Property Name="manualDiscountType" Type="nvarchar" MaxLength="10" />
     <Property Name="isActive" Type="bit" Nullable="false" />
     <Property Name="invoiceProfit" Type="decimal" Precision="20" Scale="3" />
+    <Property Name="cashReturn" Type="decimal" Precision="20" Scale="3" Nullable="false" />
+    <Property Name="printedcount" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -461,6 +464,7 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="minUnitId" Type="int" />
     <Property Name="maxUnitId" Type="int" />
+    <Property Name="avgPurchasePrice" Type="decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemsLocations">
     <Key>

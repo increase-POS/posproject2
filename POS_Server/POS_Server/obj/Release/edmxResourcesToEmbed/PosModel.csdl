@@ -60,6 +60,7 @@
     <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
     <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
     <NavigationProperty Name="Points1" Relationship="Self.FK_Points_agents" FromRole="agents" ToRole="Points" />
+    <Property Name="isCash" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="banks">
     <Key>
@@ -546,6 +547,8 @@
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
     <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="cashReturn" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
+    <Property Name="printedcount" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -599,6 +602,7 @@
     <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsUnits_items" FromRole="items" ToRole="itemsUnits" />
     <NavigationProperty Name="serials" Relationship="Self.FK_serials_items" FromRole="items" ToRole="serials" />
     <NavigationProperty Name="servicesCosts" Relationship="Self.FK_servicesCosts_items" FromRole="items" ToRole="servicesCosts" />
+    <Property Name="avgPurchasePrice" Type="Decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemsLocations">
     <Key>

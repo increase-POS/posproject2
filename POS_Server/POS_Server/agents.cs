@@ -47,6 +47,7 @@ namespace POS_Server
         public string fax { get; set; }
         public Nullable<decimal> maxDeserve { get; set; }
         public bool isLimited { get; set; }
+        public bool isCash { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agentMemberships> agentMemberships { get; set; }

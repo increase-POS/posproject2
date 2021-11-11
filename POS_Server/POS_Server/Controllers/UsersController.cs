@@ -37,7 +37,7 @@ var strP = TokenManager.GetPrincipal(token);
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var usersList = entity.users.Where(u => u.isActive == 1)
+                    var usersList = entity.users.Where(u => u.isActive == 1 && u.userId!=1)
                     .Select(u => new UserModel
                     {
                         userId = u.userId,
@@ -227,7 +227,7 @@ var strP = TokenManager.GetPrincipal(token);
                             usersList[i].canDelete = canDelete;
                         }
                     }
-                    return TokenManager.GenerateToken(usersList);
+                    return TokenManager.GenerateToken(usersList.Where(u =>  u.userId != 1));
                 }
             }
         }
@@ -373,7 +373,7 @@ var strP = TokenManager.GetPrincipal(token);
                 List<UserModel> users = new List<UserModel>();
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var usersList = (from u in entity.users.Where(us => us.isActive == 1)
+                    var usersList = (from u in entity.users.Where(us => us.isActive == 1 && us.userId != 1)
                                      join bu in entity.branchesUsers on u.userId equals bu.userId
                                      where bu.branchId == branchId
                                      select new UserModel

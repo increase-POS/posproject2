@@ -50,6 +50,7 @@
           <Property Name="fax" Type="nvarchar" MaxLength="100" />
           <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="3" />
           <Property Name="isLimited" Type="bit" Nullable="false" />
+          <Property Name="isCash" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -429,6 +430,8 @@
           <Property Name="manualDiscountType" Type="nvarchar" MaxLength="10" />
           <Property Name="isActive" Type="bit" Nullable="false" />
           <Property Name="invoiceProfit" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="cashReturn" Type="decimal" Precision="20" Scale="3" Nullable="false" />
+          <Property Name="printedcount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -466,6 +469,7 @@
           <Property Name="updateUserId" Type="int" />
           <Property Name="minUnitId" Type="int" />
           <Property Name="maxUnitId" Type="int" />
+          <Property Name="avgPurchasePrice" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsLocations">
           <Key>
@@ -4439,6 +4443,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
           <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
           <NavigationProperty Name="Points1" Relationship="Self.FK_Points_agents" FromRole="agents" ToRole="Points" />
+          <Property Name="isCash" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -4925,6 +4930,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
           <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
           <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="cashReturn" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
+          <Property Name="printedcount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -4978,6 +4985,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsUnits_items" FromRole="items" ToRole="itemsUnits" />
           <NavigationProperty Name="serials" Relationship="Self.FK_serials_items" FromRole="items" ToRole="serials" />
           <NavigationProperty Name="servicesCosts" Relationship="Self.FK_servicesCosts_items" FromRole="items" ToRole="servicesCosts" />
+          <Property Name="avgPurchasePrice" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsLocations">
           <Key>
@@ -9188,6 +9196,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="agents">
             <EntityTypeMapping TypeName="incposdbModel.agents">
               <MappingFragment StoreEntitySet="agents">
+                <ScalarProperty Name="isCash" ColumnName="isCash" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
                 <ScalarProperty Name="pointId" ColumnName="pointId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9576,6 +9585,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="invoices">
             <EntityTypeMapping TypeName="incposdbModel.invoices">
               <MappingFragment StoreEntitySet="invoices">
+                <ScalarProperty Name="printedcount" ColumnName="printedcount" />
+                <ScalarProperty Name="cashReturn" ColumnName="cashReturn" />
                 <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="invNumber" ColumnName="invNumber" />
@@ -9633,6 +9644,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="items">
             <EntityTypeMapping TypeName="incposdbModel.items">
               <MappingFragment StoreEntitySet="items">
+                <ScalarProperty Name="avgPurchasePrice" ColumnName="avgPurchasePrice" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
