@@ -92,14 +92,14 @@ namespace POS.View.reports
               
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
-            if (sender != null)
-                SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -140,7 +140,7 @@ namespace POS.View.reports
 
         async Task<IEnumerable<ItemTransferInvoice>> RefreshItemTransferInvoiceList()
         {
-            itemTrasferInvoices = await statisticsModel.Getdailyinvoice(MainWindow.branchID.Value , MainWindow.userID.Value, dp_invoiceDate.SelectedDate.Value.Date);
+            itemTrasferInvoices = await statisticsModel.Getdailyinvoice(MainWindow.branchID.Value, MainWindow.userID.Value, SectionData.DateTodbString(dp_invoiceDate.SelectedDate.Value.Date));
             return itemTrasferInvoices;
 
         }
@@ -312,12 +312,13 @@ namespace POS.View.reports
             }
         }
         private async void RefreshView_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {//select date
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                await RefreshItemTransferInvoiceList();
                 await Search();
                 fillBranches();
 

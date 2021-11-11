@@ -46,8 +46,6 @@ namespace POS.View.reports
         Statistics statisticModel = new Statistics();
 
         List<Branch> comboBranches;
-        Branch branchModel = new Branch();
-
 
         // report
         ReportCls reportclass = new ReportCls();
@@ -1130,11 +1128,11 @@ namespace POS.View.reports
                 if (selectedStocktakingTab == 0)
                     dgStock.ItemsSource = stockTakingLst
                         .Where(obj => (
-                    obj.branchName.ToLower().Contains(txt_search.Text)
-                    ||
-                    obj.ItemUnits.ToLower().Contains(txt_search.Text)
+                    obj.branchName != null ? obj.branchName.ToLower().Contains(txt_search.Text) : true
                     //||
-                    //obj.inventoryNum != null ? obj.inventoryNum.ToString().ToLower().Contains(txt_search.Text) : false
+                    //obj.ItemUnits.ToLower().Contains(txt_search.Text)
+                    ||
+                    obj.inventoryNum != null ? obj.inventoryNum.ToString().ToLower().Contains(txt_search.Text) : true
                     //||
                     //obj.diffPercentage != null ? obj.diffPercentage.ToString().ToLower().Contains(txt_search.Text) : true
                     //||
@@ -1146,11 +1144,11 @@ namespace POS.View.reports
                 else if(selectedStocktakingTab == 1)
                     dgStock.ItemsSource = shortFallsLst
                         .Where(obj => (
-                    obj.branchName.ToLower().Contains(txt_search.Text)
+                    obj.branchName != null ? obj.branchName.ToLower().Contains(txt_search.Text) : true
                     ||
-                    obj.ItemUnits.ToLower().Contains(txt_search.Text)
-                    //||
-                    //obj.inventoryNum != null ? obj.inventoryNum.ToString().ToLower().Contains(txt_search.Text)  : false
+                    obj.ItemUnits != null ? obj.ItemUnits.ToLower().Contains(txt_search.Text) : true
+                    ||
+                    obj.inventoryNum != null ? obj.inventoryNum.ToString().ToLower().Contains(txt_search.Text)  : true
                     //||
                     //obj.causeFalls.ToString().ToLower().Contains(txt_search.Text)
                     //||

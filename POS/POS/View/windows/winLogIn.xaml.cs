@@ -223,7 +223,6 @@ namespace POS.View.windows
                       
                         showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
 
-
                     }
                     else
                     {
@@ -293,7 +292,7 @@ namespace POS.View.windows
                             if (cbxRemmemberMe.IsChecked.Value)
                             {
                                 Properties.Settings.Default.userName = txtUserName.Text;
-                                Properties.Settings.Default.password = txtPassword.Password;
+                                //Properties.Settings.Default.password = txtPassword.Password;
                                 Properties.Settings.Default.Lang = lang;
                                 Properties.Settings.Default.menuIsOpen = menuIsOpen;
                             }
