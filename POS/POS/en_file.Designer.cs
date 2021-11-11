@@ -2923,6 +2923,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error file download.
+        /// </summary>
+        internal static string trErrorFileDownload {
+            get {
+                return ResourceManager.GetString("trErrorFileDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deserved date cannot be earlier than invoice date.
         /// </summary>
         internal static string trErrorInvDateAfterDeserveToolTip {

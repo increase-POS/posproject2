@@ -2743,4 +2743,7 @@ Please add Email in setting</value>
   <data name="trPurchaseCost" xml:space="preserve">
     <value>Purchase cost</value>
   </data>
+  <data name="trErrorFileDownload" xml:space="preserve">
+    <value>Error file download</value>
+  </data>
 </root>
