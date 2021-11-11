@@ -2675,7 +2675,7 @@ Please add Email in setting</value>
     <value>Multiple payment</value>
   </data>
   <data name="trPayment1" xml:space="preserve">
-    <value>Payment1</value>
+    <value>Payment</value>
   </data>
   <data name="trPaymentMethods" xml:space="preserve">
     <value>Payment Methods</value>

@@ -104,7 +104,7 @@ namespace POS.View.Settings
                 }
             }
         }
-        async void loading_fillLanguages()
+        async Task loading_fillLanguages()
         {
             try
             {
@@ -260,13 +260,13 @@ namespace POS.View.Settings
                     loadingList = new List<keyValueBool>();
                     bool isDone = true;
                     loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
-                    loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
+                    //loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
                     loading_fillRegions();
-                    loading_fillLanguages();
+                    //loading_fillLanguages();
                     loading_fillCurrencies();
                     loading_getDefaultTax();
                     loading_getDefaultDateForm();
@@ -296,6 +296,8 @@ namespace POS.View.Settings
                         }
                     }
                     while (!isDone);
+                    await loading_fillLanguages();
+
                     fillBackup();
                     firstLoading = false;
                 }

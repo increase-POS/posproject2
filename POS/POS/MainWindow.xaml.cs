@@ -1300,7 +1300,7 @@ namespace POS
                 #region  mainWindow
                 if (tag == "home")
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trHome");
-                if (tag == "catalog")
+                else if (tag == "catalog")
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trCatalog");
                 else if (tag == "storage")
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trStore");
@@ -1373,7 +1373,7 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStorageCost");
                 #endregion
                 #region  purchase
-                if (tag == "payInvoice")
+                else if (tag == "payInvoice")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
                 else if (tag == "purchaseOrder")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
@@ -1381,7 +1381,7 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
                 #endregion
                 #region  sales
-                if (tag == "reciptInvoice")
+                else if (tag == "reciptInvoice")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
                 else if (tag == "coupon")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCoupon");
@@ -1401,7 +1401,7 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
                 #endregion
                 #region  sectionData
-                if (tag == "suppliers")
+                else if (tag == "suppliers")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSuppliers");
                 else if (tag == "customers")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCustomers");
@@ -1421,7 +1421,7 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trShippingCompanies");
                 #endregion
                 #region  settings
-                if (tag == "general")
+                else if (tag == "general")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trGeneral");
                 else if (tag == "reportsSettings")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trReports");
@@ -1433,7 +1433,7 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmailTemplates");
                 #endregion
                 #region  report
-                if (tag == "reports")
+                else if (tag == "reports")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trReports");
                 else if (tag == "storageReports")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStorage");
@@ -1453,7 +1453,7 @@ namespace POS
 
                 #region  report
 
-                if (tag == "invoice")
+                 if (tag == "invoice")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
                 else if (tag == "order")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
@@ -1462,7 +1462,7 @@ namespace POS
 
 
                 #region  storageReports
-                if (tag == "stock")
+                else if (tag == "stock")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trStock");
                 else if (tag == "external")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trExternal");
@@ -1476,7 +1476,7 @@ namespace POS
                 #endregion
 
                 #region  salesReports
-                if (tag == "promotion")
+                else if (tag == "promotion")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trPromotion");
                 else if (tag == "quotation")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trQuotations");
@@ -1486,7 +1486,7 @@ namespace POS
                 #endregion
 
                 #region  accountsReports
-                if (tag == "payments")
+                else if (tag == "payments")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trPayments");
                 else if (tag == "recipient")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trRecipientTooltip");

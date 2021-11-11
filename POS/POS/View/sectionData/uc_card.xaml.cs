@@ -157,13 +157,8 @@ namespace POS.View.sectionData
 
                 translate();
                 #endregion
-
-
-                this.Dispatcher.Invoke(() =>
-                {
+               
                     Tb_search_TextChanged(null, null);
-                });
-                MainWindow mw = new MainWindow();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 Keyboard.Focus(tb_name);
