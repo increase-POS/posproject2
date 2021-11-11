@@ -218,7 +218,7 @@ namespace POS.View.storage
             dg_itemsStorage.Columns[0].Header = MainWindow.resourcemanager.GetString("trItemUnit");
             dg_itemsStorage.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             dg_itemsStorage.Columns[2].Header = MainWindow.resourcemanager.GetString("trQuantity");
-            dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trSartDate");
+            dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trStartDate");
             dg_itemsStorage.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
             dg_itemsStorage.Columns[5].Header = MainWindow.resourcemanager.GetString("trNote");
             dg_itemsStorage.Columns[6].Header = MainWindow.resourcemanager.GetString("trOrderNum");

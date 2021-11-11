@@ -345,10 +345,6 @@ namespace POS.View
                 await fillProperties();
                 await fillBarcodeList();
                 await fillStorageCost();
-                // fill parent items
-                //cb_parentItem.ItemsSource = items.ToList();
-                //cb_parentItem.SelectedValuePath = "itemId";
-                //cb_parentItem.DisplayMemberPath = "name";
                 await fillParentItemCombo();
                 cb_parentItem.SelectedIndex = -1;
                 cb_categorie.SelectedIndex = -1;
@@ -1683,6 +1679,7 @@ namespace POS.View
         private async Task fillUnits()
         {
             units = await unitModel.Get();
+            units = units.Skip(1).ToList();
             cb_minUnit.ItemsSource = units.ToList();
             cb_minUnit.SelectedValuePath = "unitId";
             cb_minUnit.DisplayMemberPath = "name";
@@ -1698,7 +1695,7 @@ namespace POS.View
         private async Task fillSmallUnits(int itemId, int unitId)
         {
             List<Unit> units = await unitModel.getSmallUnits(itemId, unitId);
-            cb_unit.ItemsSource = units.ToList();
+            cb_unit.ItemsSource = units.Where(x => x.name != "package" ).ToList();
             cb_unit.SelectedValuePath = "unitId";
             cb_unit.DisplayMemberPath = "name";
         }
