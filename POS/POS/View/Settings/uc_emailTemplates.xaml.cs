@@ -114,10 +114,7 @@ namespace POS.View.Settings
 
                 dg_setValues.ItemsSource = setQuery;
 
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

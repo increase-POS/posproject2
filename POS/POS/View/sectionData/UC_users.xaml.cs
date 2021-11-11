@@ -337,10 +337,7 @@ namespace POS.View
                 await fillJobCombo();
                 await fillCountries();
                 await fillCity();
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

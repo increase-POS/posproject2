@@ -486,7 +486,7 @@ namespace POS.View.Settings
             txt_userPathHint.Text = MainWindow.resourcemanager.GetString("trUserPath") + "...";
 
             txt_errorsExport.Text = MainWindow.resourcemanager.GetString("trErrorsFile");
-
+            txt_errorsExportHint.Text = MainWindow.resourcemanager.GetString("trErrorFileDownload") + "..."; 
             txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trPurchaseCost");
             
             //txt_sms.Text = MainWindow.resourcemanager.GetString("trSms");

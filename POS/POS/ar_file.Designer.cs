@@ -2905,6 +2905,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تحميل ملف الأخطاء.
+        /// </summary>
+        internal static string trErrorFileDownload {
+            get {
+                return ResourceManager.GetString("trErrorFileDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن أن يكون تاريخ الاستحقاق قبل تاريخ الفاتورة.
         /// </summary>
         internal static string trErrorInvDateAfterDeserveToolTip {

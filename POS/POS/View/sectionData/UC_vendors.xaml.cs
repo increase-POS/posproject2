@@ -290,10 +290,7 @@ namespace POS.View
                 translate();
                 #endregion
 
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
 
                await fillCountries();
 

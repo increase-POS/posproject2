@@ -2728,4 +2728,7 @@
   <data name="trPurchaseCost" xml:space="preserve">
     <value>تكلفة الشراء</value>
   </data>
+  <data name="trErrorFileDownload" xml:space="preserve">
+    <value>تحميل ملف الأخطاء</value>
+  </data>
 </root>

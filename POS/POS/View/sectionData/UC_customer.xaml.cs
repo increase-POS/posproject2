@@ -405,10 +405,7 @@ namespace POS.View
                 translate();
                 #endregion
 
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
                 if (citynum == null)
                 await RefreshCity();
                 await fillCountries();

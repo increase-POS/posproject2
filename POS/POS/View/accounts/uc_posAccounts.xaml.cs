@@ -208,10 +208,7 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucposAccounts);
                 await RefreshCashesList();
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
@@ -230,10 +227,7 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucposAccounts);
                 await RefreshCashesList();
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
             }
@@ -934,10 +928,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucposAccounts);
 
                 await RefreshCashesList();
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
             }

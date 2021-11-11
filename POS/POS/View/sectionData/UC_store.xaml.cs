@@ -685,10 +685,7 @@ namespace POS.View
 
                 btn_stores.IsEnabled = false;
 
-                this.Dispatcher.Invoke(() =>
-            {
                 Tb_search_TextChanged(null, null);
-            });
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 Keyboard.Focus(tb_code);

@@ -461,9 +461,9 @@ namespace POS.View.reports
                 temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
                                        (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
             }
-            else if(selectedTab == 3)
+            else if (selectedTab == 3)
             {
-                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null );
+                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null);
             }
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();

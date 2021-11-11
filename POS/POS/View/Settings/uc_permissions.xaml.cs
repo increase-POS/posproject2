@@ -132,10 +132,7 @@ namespace POS.View.Settings
                 translate();
 
 
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_searchGroup_TextChanged(null, null);
-                });
 
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_permissions.Items);
@@ -702,11 +699,11 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 this.Dispatcher.Invoke(() =>
-{
-Thread t1 = new Thread(FN_ExportToExcel);
-t1.SetApartmentState(ApartmentState.STA);
-t1.Start();
-});
+                    {
+                    Thread t1 = new Thread(FN_ExportToExcel);
+                    t1.SetApartmentState(ApartmentState.STA);
+                    t1.Start();
+                    });
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

@@ -158,10 +158,7 @@ namespace POS.View
 
                 SectionData.clearValidate(tb_x, p_errorX);
 
-                this.Dispatcher.Invoke(() =>
-                {
                     Tb_search_TextChanged(null, null);
-                });
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
