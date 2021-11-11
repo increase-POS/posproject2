@@ -76,7 +76,7 @@ namespace POS.View.windows
             //load
             try
             {
-                pageIndex = 0;
+                pageIndex = 1;
                 resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
 
 
@@ -91,7 +91,7 @@ namespace POS.View.windows
 
                 #endregion
 
-                CallPage(0, btn_next.Tag.ToString());
+                CallPage(1, btn_next.Tag.ToString());
 
             }
             catch (Exception ex)
@@ -239,7 +239,9 @@ namespace POS.View.windows
                     Properties.Settings.Default.APIUri = Global.APIUri;
                     Properties.Settings.Default.posId = res.ToString();
                     Properties.Settings.Default.Save();
-                }
+                        this.Close();
+                        return;
+                    }
 
             }
             if (pageIndex < 1)
