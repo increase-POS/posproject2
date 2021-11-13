@@ -98,6 +98,7 @@ namespace POS.View.windows
                 list.Add(new keyValueString { key = "userName", value = "" });
                 list.Add(new keyValueString { key = "userPassword", value = "" });
                 list.Add(new keyValueString { key = "branchName", value = "" });
+                list.Add(new keyValueString { key = "branchCode", value = "" });
                 list.Add(new keyValueString { key = "branchMobile", value = "" });
                 list.Add(new keyValueString { key = "posName", value = "" });
 
@@ -282,6 +283,18 @@ namespace POS.View.windows
                             item.value = posGeneralInstance.branchName;
 
                     }
+                    else if (item.key.Equals("branchCode"))
+                    {
+                        if (string.IsNullOrWhiteSpace(posGeneralInstance.branchCode))
+                        {
+                            item.value = "";
+                            isValid = false;
+                            break;
+                        }
+                        else
+                            item.value = posGeneralInstance.branchCode;
+
+                    }
                     else if (item.key.Equals("branchMobile"))
                     {
                         if (string.IsNullOrWhiteSpace(posGeneralInstance.branchMobile))
@@ -408,6 +421,7 @@ namespace POS.View.windows
                     string password = Md5Encription.MD5Hash("Inc-m" + posGeneralInstance.userPassword);
                     // branch INFO
                     string branchName = posGeneralInstance.branchName;
+                    string branchCode = posGeneralInstance.branchCode;
                     string branchMobile = posGeneralInstance.branchMobile;
                     // pos INFO
                     string posName = posGeneralInstance.posName;
@@ -423,7 +437,7 @@ namespace POS.View.windows
                     company.Add(new SetValues { name = "com_phone", value = comInfoInstance.phone });
                     company.Add(new SetValues { name = "com_fax", value = comInfoInstance.fax });
                     Global.APIUri = url + "/api/";
-                    int res = await setupConfiguration.setConfiguration(activationkey, deviceCode, countryId, userName, password, branchName, branchMobile, posName, company);
+                    int res = await setupConfiguration.setConfiguration(activationkey, deviceCode, countryId, userName, password, branchName, branchCode, branchMobile, posName, company);
                     if (res == -2 || res == -3) // invalid or resrved activation key
                     {
                         serverConfigInstance.activationkey = "";
