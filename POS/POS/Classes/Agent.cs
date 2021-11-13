@@ -42,6 +42,7 @@ namespace POS.Classes
         public string notes { get; set; }
         public int isActive { get; set; }
         public string fax { get; set; }
+        public string payType { get; set; }
         public decimal maxDeserve { get; set; }
         public Boolean canDelete { get; set; }
 

@@ -352,6 +352,8 @@ namespace POS.View
                 cb_minUnit.SelectedIndex = 0;
                 cb_maxUnit.SelectedIndex = 0;
 
+                if (MainWindow.tax == 0)
+                    tb_taxes.Visibility = Visibility.Collapsed;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_code.Focus();
@@ -726,7 +728,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        /*
         async void Btn_deleteService_Click(object sender, RoutedEventArgs e)
         {
 
@@ -747,8 +749,8 @@ namespace POS.View
 
                         await refreshServicesGrid(item.itemId);
 
-                        tb_serviceName.Clear();
-                        tb_costVal.Clear();
+                        //tb_serviceName.Clear();
+                        //tb_costVal.Clear();
                     }
                     tb_barcode.Focus();
                 }
@@ -764,7 +766,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        */
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)
         {//delete
 
@@ -907,6 +909,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        /*
 
         private void validateServiceValues()
         {
@@ -956,6 +959,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        */
         private void validateSerialValues()
         {
 
@@ -1074,6 +1078,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        /*
         async void Btn_updateService_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1106,7 +1111,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        */
 
         #endregion
 
@@ -1461,10 +1466,10 @@ namespace POS.View
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorBarcode, tt_errorBarcode, "trErrorEmptyBarcodeToolTip");
                     else if ((sender as TextBox).Name == "tb_serial")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorSerial, tt_errorSerial, "trEmptyCodeToolTip");
-                    else if ((sender as TextBox).Name == "tb_serviceName")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorServiceName, tt_errorServiceName, "trEmptyNameToolTip");
-                    else if ((sender as TextBox).Name == "tb_costVal")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorCostVal, tt_errorCostVal, "trEmptyValueToolTip");
+                    //else if ((sender as TextBox).Name == "tb_serviceName")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorServiceName, tt_errorServiceName, "trEmptyNameToolTip");
+                    //else if ((sender as TextBox).Name == "tb_costVal")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorCostVal, tt_errorCostVal, "trEmptyValueToolTip");
                 }
                 else if (name == "ComboBox")
                 {
@@ -1763,8 +1768,8 @@ namespace POS.View
                 cb_value.SelectedIndex = -1;
                 tb_serial.Text = "";
                 tb_serial.Clear();
-                tb_serviceName.Clear();
-                tb_costVal.Clear();
+                //tb_serviceName.Clear();
+                //tb_costVal.Clear();
                 tb_barcode.Focus();
 
                 itemProp = new ItemsProp();
@@ -1829,6 +1834,7 @@ namespace POS.View
             // dg_unit.ItemsSource = new List<ItemUnit>();
             dg_unit.ItemsSource = itemUnits.ToList();
         }
+        /*
         async Task refreshServicesGrid(int itemId)
         {
             services = await serviceModel.GetItemServices(item.itemId);
@@ -1836,6 +1842,7 @@ namespace POS.View
             dg_service.ItemsSource = services.ToList();
 
         }
+        */
         #endregion
 
         #region SelectionChanged
@@ -1974,6 +1981,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        /*
         private void dg_services_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -2004,6 +2012,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        */
         private async void Cb_parentItem_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -2110,7 +2119,7 @@ namespace POS.View
             {
                 if (cb_itemType.SelectedIndex == 2)
                 {
-                    grid_service.Visibility = Visibility.Collapsed;
+                    //grid_service.Visibility = Visibility.Collapsed;
                     grid_serial.Visibility = Visibility.Visible;
                     //line_topService.Visibility = Visibility.Collapsed;
                     gd_minMaxUnit.Visibility = Visibility.Visible;
@@ -2120,7 +2129,7 @@ namespace POS.View
                 else if (cb_itemType.SelectedIndex == 3)
                 {
                     grid_serial.Visibility = Visibility.Collapsed;
-                    grid_service.Visibility = Visibility.Visible;
+                    //grid_service.Visibility = Visibility.Visible;
                     //line_topService.Visibility = Visibility.Collapsed;
                     gd_minMaxUnit.Visibility = Visibility.Collapsed;
                     gd_countUnit.Visibility = Visibility.Collapsed;
@@ -2128,7 +2137,7 @@ namespace POS.View
                 else
                 {
                     grid_serial.Visibility = Visibility.Collapsed;
-                    grid_service.Visibility = Visibility.Collapsed;
+                    //grid_service.Visibility = Visibility.Collapsed;
                     //line_topService.Visibility = Visibility.Visible;
                     gd_minMaxUnit.Visibility = Visibility.Visible;
                     gd_countUnit.Visibility = Visibility.Visible;
@@ -2139,8 +2148,8 @@ namespace POS.View
                     case 0: selectedType = "n"; break;
                     case 1: selectedType = "d"; break;
                     case 2: selectedType = "sn"; break;
-                    case 3: selectedType = "sr"; break;
-                    case 4: selectedType = "p"; break;
+                    //case 3: selectedType = "sr"; break;
+                    //case 4: selectedType = "p"; break;
                 }
                 tb_barcode.Focus();
             }
@@ -2267,7 +2276,7 @@ namespace POS.View
                     await refreshPropertiesGrid(item.itemId);
                     await refreshSerials(item.itemId);
                     await refreshItemUnitsGrid(item.itemId);
-                    await refreshServicesGrid(item.itemId);
+                    //await refreshServicesGrid(item.itemId);
 
                 }
                 if (item != null)
@@ -2421,7 +2430,7 @@ namespace POS.View
                 await refreshPropertiesGrid(item.itemId);
                 await refreshSerials(item.itemId);
                 await refreshItemUnitsGrid(item.itemId);
-                await refreshServicesGrid(item.itemId);
+                //await refreshServicesGrid(item.itemId);
 
                 tb_code.Text = item.code;
                 tb_name.Text = item.name;

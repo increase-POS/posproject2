@@ -750,7 +750,7 @@
                                 </Path.ToolTip>
                             </Path>
 
-                            <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}"
+                            <TextBox x:Name="tb_taxes"  Text="{Binding taxes, Mode=OneWay}" Visibility="Collapsed"
                                      Grid.Row="6" Padding="10,0,5,0" MaxLength="20" 
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
@@ -759,7 +759,7 @@
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                     BorderBrush="#f8f8f8" LostFocus="Tb_taxes_LostFocus"
                                     Height="40"   Margin="10,5,10,5" TextChanged="Tb_textBox_TextChanged" />
-                            <Path x:Name="p_errorTaxes" Grid.Row="6" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            <Path x:Name="p_errorTaxes" Grid.Row="6" Fill="#E81123" Stretch="Fill"  Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -1170,7 +1170,7 @@
 
                             </Grid>
                             <!--////////////////////////// Sub Property >>>> Servive /////////////////////////////////-->
-                            <Grid Grid.Row="2" x:Name="grid_service" Visibility="Collapsed" >
+                            <!--<Grid Grid.Row="2" x:Name="grid_service" Visibility="Collapsed" >
 
                                 <Grid.RowDefinitions >
                                     <RowDefinition Height="auto"/>
@@ -1214,7 +1214,7 @@
                                                 </Style>
                                             </DataGridTextColumn.ElementStyle>
                                         </DataGridTextColumn>
-                                        <!--Binding="{Binding Path=costVal}"-->
+                                        --><!--Binding="{Binding Path=costVal}"--><!--
                                         <DataGridTextColumn Width="*"  Header="Cost value"  Binding="{Binding Path =costVal,Converter={StaticResource accuracyConverter }}">
                                             <DataGridTextColumn.ElementStyle>
                                                 <Style TargetType="{x:Type TextBlock}">
@@ -1324,7 +1324,7 @@
                                         </StackPanel>
                                     </Button>
                                 </Grid>
-                            </Grid>
+                            </Grid>-->
 
 
                         </Grid>

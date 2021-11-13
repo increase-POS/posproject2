@@ -78,7 +78,8 @@ namespace POS.View
 
         Agent agentModel = new Agent();
         List<Agent> vendors;
-
+        List<Agent> vendorsL;
+        
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
@@ -374,7 +375,8 @@ namespace POS.View
 
 
 
-
+                if (MainWindow.tax == 0)
+                    sp_tax.Visibility = Visibility.Collapsed;
                 setTimer();
                 configureDiscountType();
                 setNotifications();
@@ -684,7 +686,11 @@ namespace POS.View
                 w.type = "v";
                 w.ShowDialog();
                 Window.GetWindow(this).Opacity = 1;
-                await RefrishVendors();
+                if (w.isOk == true)
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    await RefrishVendors();
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -734,10 +740,10 @@ namespace POS.View
        
         async Task RefrishVendors()
         {
-            var vendorsL = await agentModel.GetAgentsActive("v");
+            vendorsL = await agentModel.GetAgentsActive("v");
             var agent = new Agent();
             agent.agentId = 0;
-            agent.name = "---";
+            agent.name = "-";
             vendorsL.Insert(0, agent);
            // vendors.ToList().AddRange(vendorsL.ToArray());
             cb_vendor.ItemsSource = vendorsL;
@@ -1760,7 +1766,7 @@ namespace POS.View
         {
             try
             {
-                cb_vendor.ItemsSource = vendors.Where(x => x.name.Contains(cb_vendor.Text));
+                cb_vendor.ItemsSource = vendorsL.Where(x => x.name.Contains(cb_vendor.Text));
 
             }
             catch (Exception ex)

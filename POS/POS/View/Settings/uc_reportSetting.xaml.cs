@@ -182,7 +182,10 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
         private void Btn_printerSetting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -233,5 +236,7 @@ namespace POS.View.Settings
                 }
             }
         }
+
+        
     }
 }

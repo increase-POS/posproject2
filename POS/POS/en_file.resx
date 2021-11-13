@@ -2749,4 +2749,7 @@ Please add Email in setting</value>
   <data name="trSelectCreditCard" xml:space="preserve">
     <value>Select credit card</value>
   </data>
+  <data name="trTheRemine" xml:space="preserve">
+    <value>The remine</value>
+  </data>
 </root>

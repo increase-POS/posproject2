@@ -2734,4 +2734,7 @@
   <data name="trSelectCreditCard" xml:space="preserve">
     <value>اختر بطاقة ائتمان</value>
   </data>
+  <data name="trTheRemine" xml:space="preserve">
+    <value>الباقي</value>
+  </data>
 </root>

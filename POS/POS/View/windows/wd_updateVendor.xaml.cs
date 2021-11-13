@@ -59,6 +59,7 @@ namespace POS.View.windows
         bool isImgPressed = false;
 
         ImageBrush brush = new ImageBrush();
+        public bool isOk = false;
 
         private void translate()
         {
@@ -508,14 +509,15 @@ namespace POS.View.windows
                         agent.fax = faxStr;
 
                         int s = await agentModel.save(agent);
-
-                        if (s>0)
+                        if (s > 0)
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            //Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            isOk = true;
                             this.Close();
                         }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        //else
+                            //Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
 
                         if (isImgPressed)
                         {
@@ -523,10 +525,10 @@ namespace POS.View.windows
                             string b = await agentModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + agentId.ToString()), agentId);
                             agent.image = b;
                             isImgPressed = false;
-                            if (b.Equals(""))
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
+                            //if (b.Equals(""))
+                            //Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
                         }
-
+                     
                     }
                 }
                 if (sender != null)

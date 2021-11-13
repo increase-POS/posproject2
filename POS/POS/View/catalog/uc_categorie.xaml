@@ -690,7 +690,7 @@
 
 
 
-                        <TextBox x:Name="tb_taxes" Grid.Row="4" Text="{Binding taxes, Mode=OneWay}"
+                        <TextBox x:Name="tb_taxes" Grid.Row="4" Text="{Binding taxes, Mode=OneWay}" Visibility="Collapsed"
                                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                               Padding="10,0,5,0" MaxLength="15" 
                                              PreviewTextInput="NumberValidationTextBox"

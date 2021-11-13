@@ -815,7 +815,6 @@ namespace POS
             //Canvas.SetTop(bdrMain, position.X);
             ////bdrMain.Margin = new Thickness(0, 70, position.X, 0);
             #endregion
-
             #region notifications location
             var thickness = bdrMain.Margin;
             bdrMain.Margin = new Thickness(0, 70, thickness.Right + stp_userName.ActualWidth, 0);
@@ -1416,7 +1415,7 @@ namespace POS
                 else if (tag == "banks")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trBanks");
                 else if (tag == "cards")
-                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCard");
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPayment1");
                 else if (tag == "shippingCompany")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trShippingCompanies");
                 #endregion

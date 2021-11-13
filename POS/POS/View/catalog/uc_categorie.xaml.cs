@@ -179,6 +179,9 @@ namespace POS.View
 
               await  fillCategories();
 
+                if (MainWindow.tax == 0)
+                    tb_taxes.Visibility = Visibility.Collapsed;
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 Keyboard.Focus(tb_categoryCode);

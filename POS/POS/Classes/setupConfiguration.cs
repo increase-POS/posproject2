@@ -39,7 +39,7 @@ namespace POS.Classes
             return valid;
         }
         public async static Task<int> setConfiguration(string activationCode, string deviceCode,int countryId,
-                                                       string userName, string password, string branchName, string branchMobile,
+                                                       string userName, string password, string branchName,string branchCode, string branchMobile,
                                                        string posName, List<SetValues> company)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -52,6 +52,7 @@ namespace POS.Classes
             parameters.Add("userName", userName);
             parameters.Add("password", password);
             parameters.Add("branchName", branchName);
+            parameters.Add("branchCode", branchCode);
             parameters.Add("branchMobile", branchMobile);
             parameters.Add("posName", posName);
             return await APIResult.post(method, parameters);

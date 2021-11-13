@@ -3801,3 +3801,4 @@ E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BondDoc.rdlc
 E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\BondDocA4.rdlc
 E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\PayReportA4.rdlc
 E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\Account\En\ReciveReportA4.rdlc
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache

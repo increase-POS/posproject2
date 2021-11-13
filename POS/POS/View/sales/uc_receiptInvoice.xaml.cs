@@ -192,7 +192,7 @@ namespace POS.View
             txt_ordersWait.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             txt_payment.Text = MainWindow.resourcemanager.GetString("trPayment");
-            txt_theRestTitle.Text = MainWindow.resourcemanager.GetString("trTheRest");
+            txt_theRestTitle.Text = MainWindow.resourcemanager.GetString("trTheRemine");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
@@ -950,8 +950,12 @@ namespace POS.View
                     w.agent.agentId = 0;
                     w.type = "c";
                     w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
+                if (w.isOk == true)
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                     await RefrishCustomers();
+                }
+                Window.GetWindow(this).Opacity = 1;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

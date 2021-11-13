@@ -7039,6 +7039,15 @@ namespace POS {
         /// <summary>
         ///   Looks up a localized string similar to الباقي.
         /// </summary>
+        internal static string trTheRemine {
+            get {
+                return ResourceManager.GetString("trTheRemine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الباقي.
+        /// </summary>
         internal static string trTheRest {
             get {
                 return ResourceManager.GetString("trTheRest", resourceCulture);

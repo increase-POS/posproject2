@@ -363,9 +363,9 @@
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                           BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                           BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center" MaxLength="15"
+                     HorizontalAlignment="Left" VerticalAlignment="Center"  
                   Height="40" Width="195"  Margin="5,5,0,5"  TabIndex="6" PreviewKeyDown="tb_phone_PreviewKeyDown">
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_phone" Content="Phone"
@@ -440,7 +440,7 @@
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                                     BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"
                                      Height="40"  Margin="0,5,2,5" Grid.Column="2" Width="195"
                                      TabIndex="9" PreviewKeyDown="tb_fax_PreviewKeyDown">
                             <TextBox.ToolTip>
