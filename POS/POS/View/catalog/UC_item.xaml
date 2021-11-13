@@ -15,6 +15,7 @@
     <Grid x:Name="grid_main" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
+            <ColumnDefinition Width="auto" ></ColumnDefinition>
             <ColumnDefinition  Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
 
@@ -487,8 +488,9 @@
             </Border>
         </Grid>
         <!--#endregion-->
+        <GridSplitter Grid.Column="1" Background="Transparent" Width="5" HorizontalAlignment="Stretch" />
 
-        <Border Grid.Column="1" Background="White" Margin="0,15,10,15" CornerRadius="7"  Width="auto">
+        <Border Grid.Column="2" Background="White" Margin="0,15,10,15" CornerRadius="7"  Width="auto">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
@@ -738,12 +740,6 @@
                                 <ListBoxItem>
                                     Have Serial number
                                 </ListBoxItem>
-                                <ListBoxItem>
-                                    Service
-                                </ListBoxItem>
-                                <ListBoxItem>
-                                    Package items
-                                </ListBoxItem>
                             </ComboBox>
                             <Path x:Name="p_errorType" Grid.Row="5" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -759,7 +755,7 @@
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                      PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
-                                    BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
+                                    BorderThickness="1"  materialDesign:HintAssist.Hint="Tax..."  
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                     BorderBrush="#f8f8f8" LostFocus="Tb_taxes_LostFocus"
                                     Height="40"   Margin="10,5,10,5" TextChanged="Tb_textBox_TextChanged" />
