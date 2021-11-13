@@ -1168,7 +1168,7 @@ namespace POS.View
             for (int i = 0; i < billDetails.Count; i++)
             {
                 int availableAmount = await itemLocationModel.getAmountInBranch(billDetails[i].itemUnitId, MainWindow.branchID.Value);
-                if(billDetails[i].offerId != 0)
+                if(billDetails[i].offerId != 0 && billDetails[i].offerId != null)
                 {
                     int remainAmount = await offer.getRemain((int)billDetails[i].offerId, billDetails[i].itemUnitId);
                     if ((availableAmount < billDetails[i].Count || remainAmount < billDetails[i].Count))
