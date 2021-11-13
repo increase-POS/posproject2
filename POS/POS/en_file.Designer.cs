@@ -6335,6 +6335,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select credit card.
+        /// </summary>
+        internal static string trSelectCreditCard {
+            get {
+                return ResourceManager.GetString("trSelectCreditCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected Branchs/Stores.
         /// </summary>
         internal static string trSelectedBranchs_Stores {

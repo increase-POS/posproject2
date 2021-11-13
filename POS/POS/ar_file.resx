@@ -2731,4 +2731,7 @@
   <data name="trErrorFileDownload" xml:space="preserve">
     <value>تحميل ملف الأخطاء</value>
   </data>
+  <data name="trSelectCreditCard" xml:space="preserve">
+    <value>اختر بطاقة ائتمان</value>
+  </data>
 </root>
