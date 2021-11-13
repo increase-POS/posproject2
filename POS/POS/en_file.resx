@@ -2746,4 +2746,7 @@ Please add Email in setting</value>
   <data name="trErrorFileDownload" xml:space="preserve">
     <value>Error file download</value>
   </data>
+  <data name="trSelectCreditCard" xml:space="preserve">
+    <value>Select credit card</value>
+  </data>
 </root>

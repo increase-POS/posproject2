@@ -42,6 +42,7 @@ namespace POS.View.setup
         public string userName { get; set; }
         public string userPassword { get; set; }
         public string branchName { get; set; }
+        public string branchCode { get; set; }
         public string branchMobile { get; set; }
         public string posName { get; set; }
 
@@ -110,6 +111,10 @@ namespace POS.View.setup
                 {
                     branchName = tb_branchName.Text;
                 }
+                 else if (textBox.Name.Equals("tb_branchCode"))
+                {
+                    branchCode = tb_branchCode.Text;
+                }
                 else if (textBox.Name.Equals("tb_posName"))
                 {
                     posName = tb_posName.Text;
@@ -156,6 +161,8 @@ namespace POS.View.setup
                     SectionData.validateEmptyTextBox_setupFirstPos(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyError");
                 else if ((sender as TextBox).Name == "tb_branchName")
                     SectionData.validateEmptyTextBox_setupFirstPos(tb_branchName, p_errorBranchName, tt_errorBranchName, "trEmptyError");
+                 else if ((sender as TextBox).Name == "tb_branchCode")
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_branchCode, p_errorBranchCode, tt_errorBranchCode, "trEmptyError");
                 else if ((sender as TextBox).Name == "tb_posName")
                     SectionData.validateEmptyTextBox_setupFirstPos(tb_posName, p_errorPosName, tt_errorPosName, "trEmptyError");
                 else if ((sender as TextBox).Name == "tb_mobile" )

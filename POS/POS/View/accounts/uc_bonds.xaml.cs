@@ -46,8 +46,7 @@ namespace POS.View.accounts
 
         IEnumerable<Agent> agents;
         IEnumerable<User> users;
-        //IEnumerable<CashTransfer> cashes;
-        //IEnumerable<CashTransfer> cashQuery;
+       
         IEnumerable<Bonds> bondsQuery;
         IEnumerable<Bonds> bondsQueryExcel;
         string searchText = "";
@@ -80,22 +79,22 @@ namespace POS.View.accounts
 
         private async void Dg_bonds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucBonds);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_ucBonds);
 
                 #region clear validate
                 SectionData.clearValidate(tb_number, p_errorNumber);
                 SectionData.clearValidate(tb_amount, p_errorAmount);
-
+                SectionData.clearValidate(tb_chequeProcessNum, p_chequeProcessNum);
                 SectionData.clearValidate(tb_depositor, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                SectionData.clearValidate(tb_processNum, p_errorCard);
+                SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
                 #endregion
@@ -153,7 +152,6 @@ namespace POS.View.accounts
                         else
                         {
                             tb_depositor.Visibility = Visibility.Visible;
-
                             cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
                             cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                             cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
@@ -168,7 +166,6 @@ namespace POS.View.accounts
                                     else if (bond.cttransType == "d")
                                         tb_depositor.Text = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
                                     break;
-
                             }
 
                         }
@@ -178,32 +175,52 @@ namespace POS.View.accounts
                             // cashbondsQuery
                             CashTransfer ca = new CashTransfer();
                             ca = cashbondsQuery.Where(c => c.bondId == bond.bondId).FirstOrDefault();
+                            //List<CashTransfer> ca1 = new List<CashTransfer>();////////////////////?????????
+                            //ca1 = cashbondsQuery.Where(c => c.bondId == bond.bondId).ToList();////?????????
                             cb_paymentProcessType.SelectedValue = ca.processType;
                             if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                                //cb_card.SelectedValue = ca.cardId;
-                            _SelectedCard =(int) ca.cardId;
+                            {
+                                _SelectedCard = (int)ca.cardId;
+                                Card card = new Card();
+                                card = await card.getById(_SelectedCard);
+                                txt_card.Text = card.name;
+                                tb_processNum.Text = ca.docNum;
+                            }
+                            else if(cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
+                            {
+                                tb_chequeProcessNum.Text = ca.docNum;
+                            }
+                            else
+                            {
+                                _SelectedCard = -1;
+                                tb_processNum.Clear();
+                                tb_chequeProcessNum.Clear();
+                                gd_card.Visibility = Visibility.Collapsed;
+                                tb_chequeProcessNum.Visibility = Visibility.Collapsed;
+                            }
                         }
                         else
                         {
                             cb_paymentProcessType.SelectedIndex = -1;
-                            //cb_card.SelectedIndex = -1;
                             _SelectedCard = -1;
-                            //cb_card.Visibility = Visibility.Collapsed;
+                            tb_processNum.Clear();
+                            tb_chequeProcessNum.Clear();
                             gd_card.Visibility = Visibility.Collapsed;
+                            tb_chequeProcessNum.Visibility = Visibility.Collapsed;
                         }
 
                     }
 
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucBonds);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucBonds);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         private async void Btn_pay_Click(object sender, RoutedEventArgs e)
@@ -218,13 +235,25 @@ namespace POS.View.accounts
                     //chk empty payment type
                     SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                     //chk empty card 
-                    //if (cb_card.IsVisible)
                     if (gd_card.IsVisible)
-                        //SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                    {
                         SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
+                        SectionData.showTextBoxValidate(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
+                    }
                     else
-                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                    {
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                    }
+                    //chk cheque num
+                    if (tb_chequeProcessNum.IsVisible)
+                    {
+                        SectionData.showTextBoxValidate(tb_chequeProcessNum, p_chequeProcessNum, tt_chequeProcessNum, "trEmptyProcessNumToolTip");
+                    }
+                    else
+                    {
+                        SectionData.clearValidate(tb_chequeProcessNum, p_chequeProcessNum);
+                    }
                     //chk empty payment type
                     SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                     //chk enough money
@@ -240,7 +269,11 @@ namespace POS.View.accounts
                     #region pay
 
                     if ((!cb_paymentProcessType.Text.Equals("")) &&
-                        (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible)) &&
+                        
+                        (((gd_card.IsVisible) && (!txt_card.Text.Equals("")) && (!tb_processNum.Text.Equals(""))) || (!gd_card.IsVisible)) &&
+
+                        ((!tb_processNum.Text.Equals("")) || (!tb_processNum.IsVisible)) &&
+                        
                         enoughMoney)
                     {
                         //update bond
@@ -260,9 +293,11 @@ namespace POS.View.accounts
                             cash.notes = tb_note.Text;
                             cash.createUserId = MainWindow.userID;
                             cash.side = "bnd";
-                            //cash.docNum = tb_number.Text;
+                            if (gd_card.IsVisible)
+                                cash.docNum = tb_processNum.Text;
+                            else if (tb_chequeProcessNum.IsVisible)
+                                cash.docNum = tb_chequeProcessNum.Text;
                             cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-                            cash.docNum = tb_processNum.Text;
                             cash.bondId = bond.bondId;
 
                             if (cb_depositorV.IsVisible)
@@ -475,8 +510,8 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
             }
@@ -489,7 +524,10 @@ namespace POS.View.accounts
         {
             if (name == "TextBox")
             {
-
+                if ((sender as TextBox).Name == "tb_processNum")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
+                else if ((sender as TextBox).Name == "tb_chequeProcessNum")
+                    SectionData.validateEmptyTextBox((TextBox)sender, p_chequeProcessNum, tt_chequeProcessNum, "trEmptyProcessNumToolTip");
             }
             else if (name == "ComboBox")
             {
@@ -659,22 +697,12 @@ namespace POS.View.accounts
                 cb_paymentProcessType.ItemsSource = typelist;
                 #endregion
 
-
-                //#region fill card combo
-                //cards = await cardModel.GetAll();
-                //cb_card.ItemsSource = cards;
-                //cb_card.DisplayMemberPath = "name";
-                //cb_card.SelectedValuePath = "cardId";
-                //cb_card.SelectedIndex = -1;
-                //#endregion
                 #region fill card combo
                 cards = await cardModel.GetAll();
                 InitializeCardsPic(cards);
                 #endregion
 
-
                 SectionData.defaultDatePickerStyle(dp_deservecDate);
-
 
                 dp_startSearchDate.SelectedDate = DateTime.Now.Date;
                 dp_endSearchDate.SelectedDate = DateTime.Now.Date;
@@ -859,15 +887,14 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_deservecDate, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_chequeProcessNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
-
             dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             dg_bonds.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
             dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -910,26 +937,24 @@ namespace POS.View.accounts
                 {
 
                     case 0://cash
-                        //cb_card.Visibility = Visibility.Collapsed;
                         gd_card.Visibility = Visibility.Collapsed;
-                        //cb_card.SelectedIndex = -1;
+                        tb_chequeProcessNum.Visibility = Visibility.Collapsed;
                         _SelectedCard = -1;
-                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
                     case 1://cheque
-                        //cb_card.Visibility = Visibility.Collapsed;
+                        tb_chequeProcessNum.Visibility = Visibility.Visible;
                         gd_card.Visibility = Visibility.Collapsed;
-                        //cb_card.SelectedIndex = -1;
                         _SelectedCard = -1;
-                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
                     case 2://card
-                        //cb_card.Visibility = Visibility.Visible;
                         gd_card.Visibility = Visibility.Visible;
+                        tb_chequeProcessNum.Visibility = Visibility.Collapsed;
                         break;
                 }
 
@@ -998,8 +1023,6 @@ buildbondDocReport();
             cb_depositorC.SelectedValuePath = "agentId";
         }
 
-
-
         private async Task fillUsers()
         {
             users = await userModel.GetUsersActive();
@@ -1008,12 +1031,11 @@ buildbondDocReport();
             cb_depositorU.DisplayMemberPath = "username";
             cb_depositorU.SelectedValuePath = "userId";
         }
+
         public void getBondData(List<ReportParameter> paramarr)
         {
-         
             if (bond != null)
             {
-
                 string pay = "";
                 string name = "";
                 string processType = "";
@@ -1023,23 +1045,17 @@ buildbondDocReport();
                 if (bond.isRecieved == 1)
                 {
                     pay = MainWindow.resourcemanagerreport.GetString("trPaid");
-                   
                 }
                 else
                 {
                     pay = MainWindow.resourcemanagerreport.GetString("trPay");
-
                 }
               
                 if (bond.ctside.Equals("v") || bond.ctside.Equals("c"))
                 {
                    // int gid =(int) bond.ctagentId;
-
                     name = bond.ctagentName;
-
                    // name = agents.Where(x => x.agentId == gid).FirstOrDefault().name;
-
-
                 }
 
                 else if (bond.ctside.Equals("u"))
@@ -1049,10 +1065,8 @@ buildbondDocReport();
                 }
                 else
                 {
-
                     switch (bond.ctside)
                     {
-
                         case "s": name = MainWindow.resourcemanager.GetString("trSalary"); break;
                         case "e": name = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
                         case "m":
@@ -1061,9 +1075,7 @@ buildbondDocReport();
                             else if (bond.cttransType == "d")
                                 name = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
                             break;
-
                     }
-
                 }
 
                 if (bond.isRecieved == 1)
@@ -1073,18 +1085,14 @@ buildbondDocReport();
                     caprocesstype = ca.processType;
                     switch (ca.processType)
                     {
-
                         case "cash": processType = MainWindow.resourcemanagerreport.GetString("trCash"); break;
                         case "cheque": processType = MainWindow.resourcemanagerreport.GetString("trCheque"); break;
                         case "card": processType = MainWindow.resourcemanagerreport.GetString("trCreditCard"); break;
-
-
                     }
 
                     if (ca.processType=="card")
                     {
                         cardname = cards.Where(c => c.cardId == ca.cardId).FirstOrDefault().name;
-                     
                     }
                    
                 }
@@ -1112,7 +1120,6 @@ buildbondDocReport();
                 paramarr.Add(new ReportParameter("transType", bond.type));
                 paramarr.Add(new ReportParameter("type", caprocesstype));
                 paramarr.Add(new ReportParameter("user_name", updateusername));
-              
                 paramarr.Add(new ReportParameter("date", reportclass.DateToString(bond.updateDate)));
                 paramarr.Add(new ReportParameter("currency", MainWindow.Currency));
                 paramarr.Add(new ReportParameter("amount_in_words", reportclass.ConvertAmountToWords(bond.amount)));
@@ -1443,6 +1450,8 @@ buildbondDocReport();
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        
 
         private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {//only english and digits
