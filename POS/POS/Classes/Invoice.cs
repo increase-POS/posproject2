@@ -41,7 +41,7 @@ namespace POS.Classes
         public string barcode { get; set; }    
         public string itemType { get; set; }
         public bool isActive { get; set; }
-        
+        public string cause { get; set; }
 
 
     }

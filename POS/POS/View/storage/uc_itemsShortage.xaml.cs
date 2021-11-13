@@ -359,8 +359,9 @@ namespace POS.View.storage
                             invItemLoc.fallCause = tb_reasonOfShortage.Text;
                             #region add invoice
 
-                            decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
-                            price = Math.Round(price, 2);
+                            //decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
+                            //price = Math.Round(price, 2);
+                            decimal price = (decimal)invItemLoc.avgPurchasePrice;
                             decimal total = price * int.Parse(tb_amount.Text);
 
                             invoiceModel.invNumber = await invoiceModel.generateInvNumber("sh", branchModel.code, MainWindow.branchID.Value);

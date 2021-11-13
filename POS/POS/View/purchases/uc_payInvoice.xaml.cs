@@ -734,13 +734,13 @@ namespace POS.View
        
         async Task RefrishVendors()
         {
-            var vendors = await agentModel.GetAgentsActive("v");
+            var vendorsL = await agentModel.GetAgentsActive("v");
             var agent = new Agent();
-            //agent.agentId = 0;
-            //agent.name = "---";
-            //vendors.Insert(0,agent);
-            //vendors.ToList().AddRange(vendorsL.ToArray());
-            cb_vendor.ItemsSource = vendors;
+            agent.agentId = 0;
+            agent.name = "---";
+            vendorsL.Insert(0, agent);
+           // vendors.ToList().AddRange(vendorsL.ToArray());
+            cb_vendor.ItemsSource = vendorsL;
             cb_vendor.DisplayMemberPath = "name";
             cb_vendor.SelectedValuePath = "agentId";
         }
@@ -860,8 +860,8 @@ namespace POS.View
                 {
                     if ((sender as ComboBox).Name == "cb_branch")
                         SectionData.validateEmptyComboBox((ComboBox)sender, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-                    if ((sender as ComboBox).Name == "cb_vendor")
-                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
+                    //if ((sender as ComboBox).Name == "cb_vendor")
+                    //    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
                 }
                 else
                 {
@@ -915,7 +915,7 @@ namespace POS.View
                 invoice.totalNet = decimal.Parse(tb_total.Text);
                 invoice.paid = 0;
                 invoice.deserved = invoice.totalNet;
-                if (cb_vendor.SelectedIndex != -1)
+                if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex != 0)
                     invoice.agentId = (int)cb_vendor.SelectedValue;
 
                 if (cb_branch.SelectedIndex != -1 && cb_branch.SelectedIndex != 0)
@@ -1007,15 +1007,18 @@ namespace POS.View
         {
             //bool isValid = true;
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
-            if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
-                exp_vendor.IsExpanded = true;
-            if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
-                exp_vendor.IsExpanded = true;
-            if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
-                exp_vendor.IsExpanded = true;
+            //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+            //    exp_vendor.IsExpanded = true;
+            if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex != 0)
+            {
+                if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
+                    exp_vendor.IsExpanded = true;
+                if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
+                    exp_vendor.IsExpanded = true;
 
-            if (decimal.Parse(tb_total.Text) == 0)
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+                if (decimal.Parse(tb_total.Text) == 0)
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+            }
 
             //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
             //return isValid;
@@ -1029,14 +1032,13 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
 
-                {
-                   
+                {                 
                         //check mandatory inputs
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if ( !tb_invoiceNumber.Equals("") && billDetails.Count > 0 && cb_vendor.SelectedIndex !=-1 
-                            && !tb.Text.Trim().Equals("") && decimal.Parse(tb_total.Text) > 0 && valid)
+                        if ( ((!tb_invoiceNumber.Text.Equals("") && !tb.Text.Trim().Equals("") && cb_vendor.SelectedIndex >0) || cb_vendor.SelectedIndex <1 ) 
+                        && billDetails.Count > 0  && decimal.Parse(tb_total.Text) > 0 && valid)
                         {                          
                             if (_InvoiceType == "pbd") //pbd means purchase bounse draft
                             {
@@ -1191,11 +1193,25 @@ namespace POS.View
                     bool valid = validateItemUnits();
                 if (billDetails.Count > 0 && valid)
                 {
-                    await addInvoice(_InvoiceType, "pi");                 
-                    clearInvoice();
-                        _InvoiceType = "pd";
-                        refreshDraftNotification();
-                    
+                        #region Accept
+                        MainWindow.mainWindow.Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = "Do you want save pay invoice in drafts?";
+                        w.ShowDialog();
+                        MainWindow.mainWindow.Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                        {
+                            await addInvoice(_InvoiceType, "pi");
+                            clearInvoice();
+                            _InvoiceType = "pd";
+                            refreshDraftNotification();
+                        } 
+                        else
+                        {
+                            clearInvoice();
+                            _InvoiceType = "pd";
+                        }
                 }
                 else if (billDetails.Count == 0)
                 {
@@ -2950,13 +2966,7 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                clearInvoice();
-                _InvoiceType = "pd";
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                clearVendor();
             }
             catch (Exception ex)
             {
@@ -2965,7 +2975,17 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void clearVendor()
+        {
+            cb_vendor.SelectedIndex = -1;
+            cb_vendor.Text = "";
+            dp_desrvedDate.SelectedDate = null;
+            dp_desrvedDate.Text = "";
+            tb_invoiceNumber.Text = "";
+            dp_invoiceDate.SelectedDate = null;
+            dp_invoiceDate.Text = "";
+            tb_note.Text = "";
+        }
 
         private void Tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {

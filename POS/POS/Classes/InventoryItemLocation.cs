@@ -44,6 +44,7 @@ namespace POS.Classes
         public string itemType { get; set; }
         public string cause { get; set; }
         public string fallCause { get; set; }
+        public Nullable<decimal> avgPurchasePrice { get; set; }
 
         public async Task<List<InventoryItemLocation>> GetAll(int itemId)
         {

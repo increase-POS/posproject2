@@ -381,18 +381,16 @@ namespace POS.View.storage
                                     serialNum += ",";
                             }
                         }
-                        decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
-                        price = Math.Round(price, 2);
-                        decimal total = price * int.Parse(tb_amount.Text);
+                        // decimal price = await invoiceModel.GetAvgItemPrice(itemUnitId, itemId);
+                        decimal price = 0;
+                        decimal total = 0;
 
                         #region invoice Object
                         invoiceModel.invNumber = await invoiceModel.generateInvNumber("ds", branchModel.code, MainWindow.branchID.Value);
                         invoiceModel.branchCreatorId = MainWindow.branchID.Value;
                         invoiceModel.posId = MainWindow.posID.Value;
                         invoiceModel.createUserId = MainWindow.userID.Value;
-                        invoiceModel.invType = "d"; // destroy
-                        invoiceModel.total = total;
-                        invoiceModel.totalNet = total;
+                        invoiceModel.invType = "d"; // destroy                      
                         invoiceModel.paid = 0;
                         invoiceModel.deserved = invoiceModel.totalNet;
                         invoiceModel.notes = tb_notes.Text;
@@ -413,11 +411,15 @@ namespace POS.View.storage
                         };
                         #endregion
                         if (invItemLoc.id != 0)
-                        {  
+                        {
+                            price = (decimal)invItemLoc.avgPurchasePrice;
+                            total = price * int.Parse(tb_amount.Text);
+                            invoiceModel.total = total;
+                            invoiceModel.totalNet = total;
                             //int amount = await itemLocationModel.getAmountByItemLocId((int)invItemLoc.itemLocationId);
                             //if (amount >= invItemLoc.amountDestroyed)
                             //{
-                                orderList.Add(new ItemTransfer()
+                            orderList.Add(new ItemTransfer()
                                 {
                                     itemName = invItemLoc.itemName,
                                     itemId = invItemLoc.itemId,
@@ -455,6 +457,12 @@ namespace POS.View.storage
                         }
                         else
                         {
+                           var avgPrice = items.Where(x => x.itemId == (int)cb_item.SelectedValue).Select(x => x.avgPurchasePrice).Single();
+                            if (avgPrice != null)
+                                price = (decimal)avgPrice;
+                            total = price * int.Parse(tb_amount.Text);
+                            invoiceModel.total = total;
+                            invoiceModel.totalNet = total;
                             orderList.Add(new ItemTransfer()
                             {
                                 itemName = cb_item.SelectedItem.ToString(),
@@ -464,6 +472,7 @@ namespace POS.View.storage
                                 quantity = long.Parse(tb_amount.Text),
                                 itemSerial = serialNum,
                                 price = price,
+                                cause = tb_reasonOfDestroy.Text,
                                 invoiceId=0,
                                 createUserId = MainWindow.userID,
                             });

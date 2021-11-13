@@ -785,7 +785,7 @@ namespace POS.Classes
             //    return 0;
             //}
         }
-        public async Task<int> recieptInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
+        public async Task recieptInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             string method = "ItemsLocations/receiptInvoice";
@@ -801,7 +801,7 @@ namespace POS.Classes
             parameters.Add("branchId", branchId.ToString());
             parameters.Add("objectName", objectName);
 
-           return await APIResult.post(method, parameters);
+           await APIResult.post(method, parameters);
 
 
             //// ... Use HttpClient.
