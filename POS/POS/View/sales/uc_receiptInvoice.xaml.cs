@@ -1139,7 +1139,7 @@ namespace POS.View
                     {
                         remain = getCusAvailableBlnc(customer);                   
                         float customerBalance = customer.balance;
-                        if (remain > customer.maxDeserve)
+                        if (remain > customer.maxDeserve && customer.maxDeserve > 0)
                         {
                             valid = false;
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxDeservedExceeded"), animation: ToasterAnimation.FadeIn);
@@ -1540,14 +1540,17 @@ namespace POS.View
                         {
                             Window.GetWindow(this).Opacity = 0.2;
                             wd_multiplePayment w = new wd_multiplePayment();
-                            if (cb_customer.SelectedValue != null)
+                        w.isPurchase = false;
+                        if (cb_customer.SelectedValue != null)
                             //w.invoice.agentId = (int)cb_customer.SelectedValue;
 
                             {
                                 Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
                                 if (customer != null)
                                 {
-                                   decimal remain = getCusAvailableBlnc(customer);
+                                decimal remain = 0;
+                                if (customer.maxDeserve != 0)
+                                   remain = getCusAvailableBlnc(customer);
                                     w.hasCredit = true;
                                     w.creditValue = remain;                                   
                                 }

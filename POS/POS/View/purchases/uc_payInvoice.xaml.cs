@@ -28,6 +28,8 @@ using Microsoft.Win32;
 using System.Globalization;
 using System.Windows.Threading;
 using System.Threading;
+using System.Windows.Resources;
+
 
 namespace POS.View
 {
@@ -89,6 +91,9 @@ namespace POS.View
         List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
+        Pos pos = new Pos();
+        Card cardModel = new Card();
+        IEnumerable<Card> cards;
         //  Bill bill;
         private static DispatcherTimer timer;
         CashTransfer cashTransfer = new CashTransfer();
@@ -96,6 +101,8 @@ namespace POS.View
         static private int _SelectedBranch = -1;
         static private int _SelectedVendor = -1;
         static private int _SelectedDiscountType = -1;
+        static private string _SelectedPaymentType = "cash";
+        static private int _SelectedCard = -1;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -218,8 +225,12 @@ namespace POS.View
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
-                if (w.isOk  )
+                if (w.isOk)
+                {
                     await addInvoice(_InvoiceType, "pi");
+                    clearInvoice();
+                    _InvoiceType = "pd";
+                }
             }
             clearInvoice();
            
@@ -348,11 +359,12 @@ namespace POS.View
                 loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
 
 
-
+                pos = MainWindow.posLogIn;
                 loading_RefrishItems();
                 loading_fillBranchesWithoutCurrent();
                 loading_refrishVendors();
                 loading_fillBarcodeList();
+                loading_fillCardCombo();
                 do
                 {
                     isDone = true;
@@ -379,6 +391,7 @@ namespace POS.View
                     sp_tax.Visibility = Visibility.Collapsed;
                 setTimer();
                 configureDiscountType();
+                configurProcessType();
                 setNotifications();
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
@@ -455,6 +468,137 @@ namespace POS.View
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void configurProcessType()
+        {
+            cb_paymentProcessType.DisplayMemberPath = "Text";
+            cb_paymentProcessType.SelectedValuePath = "Value";
+
+            var typelist = new[] {
+            new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
+            new { Text = MainWindow.resourcemanager.GetString("trCredit") , Value = "balance" },
+            new { Text = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods") , Value = "card" },
+            new { Text = MainWindow.resourcemanager.GetString("trMultiplePayment") , Value = "multiple" },
+                };
+
+           cb_paymentProcessType.ItemsSource = typelist;
+           cb_paymentProcessType.SelectedIndex = 0;
+        }
+        async void loading_fillCardCombo()
+        {
+            try
+            {
+                #region fill card combo
+                cards = await cardModel.GetAll();
+                InitializeCardsPic(cards);
+                #endregion
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillCardCombo"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        void InitializeCardsPic(IEnumerable<Card> cards)
+        {
+            #region cardImageLoad
+            dkp_cards.Children.Clear();
+            int userCount = 0;
+            foreach (var item in cards)
+            {
+                #region Button
+                Button button = new Button();
+                //button.DataContext = item.name;
+                button.DataContext = item;
+                button.Tag = item.cardId;
+                button.Padding = new Thickness(0, 0, 0, 0);
+                button.Margin = new Thickness(2.5, 5, 2.5, 5);
+                button.Background = null;
+                button.BorderBrush = null;
+                button.Height = 35;
+                button.Width = 35;
+                button.Click += card_Click;
+                //Grid.SetColumn(button, 4);
+                #region grid
+                Grid grid = new Grid();
+                #region 
+                Ellipse ellipse = new Ellipse();
+                //ellipse.Margin = new Thickness(-5, 0, -5, 0);
+                ellipse.StrokeThickness = 1;
+                ellipse.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                ellipse.Height = 35;
+                ellipse.Width = 35;
+                ellipse.FlowDirection = FlowDirection.LeftToRight;
+                ellipse.ToolTip = item.name;
+                userImageLoad(ellipse, item.image);
+                Grid.SetColumn(ellipse, userCount);
+                grid.Children.Add(ellipse);
+                #endregion
+                #endregion
+                button.Content = grid;
+                #endregion
+                dkp_cards.Children.Add(button);
+
+            }
+            #endregion
+        }
+        ImageBrush brush = new ImageBrush();
+        async void userImageLoad(Ellipse ellipse, string image)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(image))
+                {
+                    clearImg(ellipse);
+
+                    byte[] imageBuffer = await cardModel.downloadImage(image); // read this as BLOB from your DB
+                    var bitmapImage = new BitmapImage();
+                    using (var memoryStream = new System.IO.MemoryStream(imageBuffer))
+                    {
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                    }
+                    ellipse.Fill = new ImageBrush(bitmapImage);
+                }
+                else
+                {
+                    clearImg(ellipse);
+                }
+            }
+            catch
+            {
+                clearImg(ellipse);
+            }
+        }
+        void card_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            _SelectedCard = int.Parse(button.Tag.ToString());
+            //txt_card.Text = button.DataContext.ToString();
+            Card card = button.DataContext as Card;
+            txt_card.Text = card.name;
+            if (card.hasProcessNum.Value)
+                tb_processNum.Visibility = Visibility.Visible;
+            else
+                tb_processNum.Visibility = Visibility.Collapsed;
+
+            //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
+        }
+        private void clearImg(Ellipse ellipse)
+        {
+            Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
+            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+            brush.ImageSource = temp;
+            ellipse.Fill = brush;
         }
         private void ParentWin_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -698,6 +842,92 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 100 && cb_paymentProcessType.SelectedIndex != -1)
+                {
+                    _SelectedPaymentType = cb_paymentProcessType.SelectedValue.ToString();
+                }
+                else
+                {
+                    cb_paymentProcessType.SelectedValue = _SelectedPaymentType;
+                }
+
+                switch (cb_paymentProcessType.SelectedIndex)
+                {
+                    case 0://cash
+                        //gd_theRest.Visibility = Visibility.Visible;
+                        //tb_cashPaid.Text = txt_theRest.Text = "0";
+                        //gd_card.Visibility = Visibility.Collapsed;
+                        //tb_processNum.Clear();
+                        //cb_card.SelectedIndex = -1;
+                        _SelectedCard = -1;
+                        //txt_card.Text = "";
+                        dp_desrvedDate.IsEnabled = false;
+                       // SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        //SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        //SectionData.clearValidate(tb_processNum, p_errorCard);
+                        break;
+                    case 1:// balance
+                        //gd_theRest.Visibility = Visibility.Collapsed;
+                        //tb_cashPaid.Text = txt_theRest.Text = "0";
+                        //gd_card.Visibility = Visibility.Collapsed;
+                        dp_desrvedDate.IsEnabled = true;
+                        //tb_processNum.Clear();
+                        //cb_card.SelectedIndex = -1;
+                        _SelectedCard = -1;
+                        //txt_card.Text = "";
+                        //SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        //SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        //SectionData.clearValidate(tb_processNum, p_errorCard);
+                        break;
+                    case 2://card
+                        //gd_theRest.Visibility = Visibility.Collapsed;
+                        //tb_cashPaid.Text = txt_theRest.Text = "0";
+                        dp_desrvedDate.IsEnabled = false;
+                        //gd_card.Visibility = Visibility.Visible;
+                       // SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        break;
+                    case 3://multiple
+                        //gd_theRest.Visibility = Visibility.Collapsed;
+                        //tb_cashPaid.Text = txt_theRest.Text = "0";
+                        //gd_card.Visibility = Visibility.Collapsed;
+                        //tb_processNum.Clear();
+                        _SelectedCard = -1;
+                        //txt_card.Text = "";
+                        dp_desrvedDate.IsEnabled = false;
+                        //SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        //SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        //SectionData.clearValidate(tb_processNum, p_errorCard);
+                        break;
+
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void PreventSpaces(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -950,12 +1180,12 @@ namespace POS.View
                 invoice.invoiceId = invoiceId;
                 if (invoiceId != 0)
                 {
-                    if (invType == "pw" || invType =="p")
-                    {
-                        await invoice.recordPosCashTransfer(invoice, "pi");
-                        if(invoice.agentId != null)
-                            await invoice.recordCashTransfer(invoice, "pi");
-                    }
+                    //if (invType == "pw" || invType =="p")
+                    //{
+                    //    await invoice.recordPosCashTransfer(invoice, "pi");
+                    //    if(invoice.agentId != null)
+                    //        await invoice.recordCashTransfer(invoice, "pi");
+                    //}
                     //else if (invType == "pb")
                     //    await invoice.recordCashTransfer(invoice,"pb");
 
@@ -985,8 +1215,7 @@ namespace POS.View
                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 
             }
-            clearInvoice();
-            _InvoiceType = "pd";
+          
         }
         private void dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -1015,17 +1244,20 @@ namespace POS.View
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
             //    exp_vendor.IsExpanded = true;
+            if(cb_paymentProcessType.SelectedValue.ToString() == "balance")
+            {
+                if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+                    exp_vendor.IsExpanded = true;
+            }
             if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex != 0)
             {
                 if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
                     exp_vendor.IsExpanded = true;
                 if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
-                    exp_vendor.IsExpanded = true;
-
-                if (decimal.Parse(tb_total.Text) == 0)
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+                    exp_vendor.IsExpanded = true;         
             }
-
+            if (decimal.Parse(tb_total.Text) == 0)
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
             //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
             //return isValid;
         }
@@ -1043,11 +1275,16 @@ namespace POS.View
                         validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if ( ((!tb_invoiceNumber.Text.Equals("") && !tb.Text.Trim().Equals("") && cb_vendor.SelectedIndex >0) || cb_vendor.SelectedIndex <1 ) 
-                        && billDetails.Count > 0  && decimal.Parse(tb_total.Text) > 0 && valid)
-                        {                          
-                            if (_InvoiceType == "pbd") //pbd means purchase bounse draft
-                            {
+                        if ( ((!tb_invoiceNumber.Text.Equals("") && !tb.Text.Trim().Equals("") && cb_vendor.SelectedIndex > 0) || cb_vendor.SelectedIndex <1 ) 
+                        && billDetails.Count > 0  && decimal.Parse(tb_total.Text) > 0 
+                        && ((cb_paymentProcessType.SelectedValue.ToString().Equals("balance") && cb_vendor.SelectedIndex > 0) || !cb_paymentProcessType.SelectedValue.ToString().Equals("balance"))
+                        && valid)
+                    {
+                        bool multipleValid = true;
+                        List<CashTransfer> listPayments = new List<CashTransfer>();
+ 
+                        if (_InvoiceType == "pbd") //pbd means purchase bounse draft
+                        {
                                 #region notification Object
                                 Notification not = new Notification()
                                 {
@@ -1060,26 +1297,29 @@ namespace POS.View
                                 await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice",MainWindow.loginBranch.name);
                                 #endregion
                                 await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce
+                            clearInvoice();
+                            _InvoiceType = "pd";
+                        }
+                           
+                        else//pw  waiting purchase invoice
+                        {
+                            if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                            {
+                                Window.GetWindow(this).Opacity = 0.2;
+                                wd_multiplePayment w = new wd_multiplePayment();
+                                w.hasCredit = true;
+                                w.isPurchase = true;
+                                w.invoice.invType = _InvoiceType;
+                                w.invoice.totalNet = decimal.Parse(tb_total.Text);
+                                w.cards = cards;
+                                w.ShowDialog();
+                                Window.GetWindow(this).Opacity = 1;
+                                multipleValid = w.isOk;
+                                listPayments = w.listPayments;
                             }
-                            //else if (_InvoiceType == "po")//po  purchase order
-                            //{
-                            //    #region notification Object
-                            //    Notification not = new Notification()
-                            //    {
-                            //        title = "trPurchaseInvoiceAlertTilte",
-                            //        ncontent = "trPurchaseInvoiceAlertContent",
-                            //        msgType = "alert",
-                            //        createUserId = MainWindow.userID.Value,
-                            //        updateUserId = MainWindow.userID.Value,
-                            //    };
-                            //    await not.Save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", cb_branch.Text);
-                            //    #endregion
-                            //    await addInvoice("pw", "pi");
-                            //}
-                            else//pw  waiting purchase invoice
-                            {                               
-                                
-                                if(cb_branch.SelectedIndex == -1 || cb_branch.SelectedIndex == 0) // reciept invoice directly
+                            if (multipleValid)
+                            {
+                                if (cb_branch.SelectedIndex == -1 || cb_branch.SelectedIndex == 0) // reciept invoice directly
                                 {
                                     await addInvoice("p", "pi");
                                     #region notification Object
@@ -1098,25 +1338,65 @@ namespace POS.View
                                 }
                                 else
                                 {
-                                    await addInvoice("pw", "pi");
-                                #region notification Object
-                                if ((int)cb_branch.SelectedIndex != -1 && (int)cb_branch.SelectedIndex != 0)
-                                {
-                                    Notification not = new Notification()
+                                    await addInvoice("pw", "pi");                                 
+                                    #region notification Object
+                                    if ((int)cb_branch.SelectedIndex != -1 && (int)cb_branch.SelectedIndex != 0)
                                     {
-                                        title = "trPurchaseInvoiceAlertTilte",
-                                        ncontent = "trPurchaseInvoiceAlertContent",
-                                        msgType = "alert",
-                                        createUserId = MainWindow.userID.Value,
-                                        updateUserId = MainWindow.userID.Value,
-                                    };
-                                    await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", MainWindow.loginBranch.name);
-                                }
+                                        Notification not = new Notification()
+                                        {
+                                            title = "trPurchaseInvoiceAlertTilte",
+                                            ncontent = "trPurchaseInvoiceAlertContent",
+                                            msgType = "alert",
+                                            createUserId = MainWindow.userID.Value,
+                                            updateUserId = MainWindow.userID.Value,
+                                        };
+                                        await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", MainWindow.loginBranch.name);
+                                    }
                                     #endregion
                                 }
-                           
+                                ///// cash Transfer
+                                #region
+                                await invoice.recordPosCashTransfer(invoice, "pi");
+                                if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                                {
+                                    foreach (var item in listPayments)
+                                    {
+                                        item.transType = "p"; //pull
+                                        item.posId = MainWindow.posID;
+                                        item.agentId = invoice.agentId;
+                                        item.invId = invoice.invoiceId;
+                                        item.transNum = await cashTransfer.generateCashNumber("pv");
+                                        item.side = "v"; // vendor
+                                        item.createUserId = MainWindow.userID;
+                                        await saveConfiguredCashTrans(item);
+                                    }
+                                    await invoice.saveInvoice(invoice);
+                                }
+                                else
+                                {
+                                    CashTransfer cashTrasnfer = new CashTransfer();
+                                    cashTrasnfer.transType = "p"; //pull
+                                    cashTrasnfer.posId = MainWindow.posID;
+                                    cashTrasnfer.agentId = invoice.agentId;
+                                    cashTrasnfer.invId = invoice.invoiceId;
+                                    cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv");
+                                    cashTrasnfer.cash = invoice.totalNet;
+                                    cashTrasnfer.side = "c"; // customer
+                                    cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                                    cashTrasnfer.createUserId = MainWindow.userID;
+                                    await saveCashTransfer(cashTransfer);
+                                }
+
+                                
+                                //if (invoice.agentId != null)
+                                //    await invoice.recordCashTransfer(invoice, "pi");
+                                #endregion
+                                /////
                                 clearInvoice();
                                 await refreshDraftNotification();
+                                clearInvoice();
+                                _InvoiceType = "pd";
+                            }
                             
                         }
 
@@ -1171,7 +1451,86 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private async Task saveConfiguredCashTrans(CashTransfer cashTransfer)
+        {
+            switch (cashTransfer.processType)
+            {
+                case "cash":// cash: update pos balance  
+                    if (pos.balance > 0)
+                    {
+                        if (pos.balance >= cashTransfer.cash)
+                        {
+                            pos.balance -= cashTransfer.cash;
+                            invoice.paid = cashTransfer.cash;
+                        }
+                        else
+                        {
+                            invoice.paid =  pos.balance;
+                            cashTransfer.cash = pos.balance;
+                            invoice.deserved -= pos.balance;
+                            pos.balance = 0;
+                        }
+                        await pos.save(pos);
+                        await cashTransfer.Save(cashTransfer); //add cash transfer  
+                        await invoice.saveInvoice(invoice);
+                    }  
+                    break;
+                case "balance":// balance: update customer balance
+                    await invoice.recordConfiguredAgentCash(invoice, "pi", cashTransfer);
+                    invoice.paid += cashTransfer.cash;
+                    invoice.deserved -= cashTransfer.cash;
+                    await invoice.saveInvoice(invoice);
+                    break;
+                case "card": // card                 
+                    await cashTransfer.Save(cashTransfer); //add cash transfer 
+                    invoice.paid += cashTransfer.cash;
+                    invoice.deserved -= cashTransfer.cash;
+                    await invoice.saveInvoice(invoice);
+                    break;
+            }
+        }
+        private async Task saveCashTransfer(CashTransfer cashTransfer)
+        {
+            switch (cb_paymentProcessType.SelectedIndex)
+            {
+                case 0:// cash: update pos balance
+                    if (pos.balance > 0)
+                    {
+                        if (pos.balance >= invoice.totalNet)
+                        {
+                            pos.balance -= invoice.totalNet;
+                            invoice.paid = cashTransfer.cash= invoice.totalNet;                        
+                            invoice.deserved = 0;
+                        }
+                        else
+                        {
+                            invoice.paid = cashTransfer.cash = pos.balance;
+                            invoice.deserved -= pos.balance;                           
+                            pos.balance = 0;
+                        }
+                        await pos.save(pos);
+                        await cashTransfer.Save(cashTransfer); //add cash transfer  
+                        await invoice.saveInvoice(invoice);
+                    }
+                    break;
+                case 1:// balance: update customer balance                
+                        await invoice.recordCashTransfer(invoice, "pi");
+                    break;
+                case 2: // card
+                    cashTransfer.cash = invoice.totalNet;
+                    await cashTransfer.Save(cashTransfer); //add cash transfer  
+                    invoice.paid = invoice.totalNet;
+                    invoice.deserved = 0;
+                    await invoice.saveInvoice(invoice);
+                    break;
+            }
+        }
+        private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {//only english and digits
+            Regex regex = new Regex("^[a-zA-Z0-9. -_?]*$");
+            if (!regex.IsMatch(e.Text))
+                e.Handled = true;
+        }
         private bool validateItemUnits()
         {
             bool valid = true;
