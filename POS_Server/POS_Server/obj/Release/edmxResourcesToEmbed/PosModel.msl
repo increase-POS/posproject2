@@ -23,7 +23,6 @@
     <EntitySetMapping Name="agents">
       <EntityTypeMapping TypeName="incposdbModel.agents">
         <MappingFragment StoreEntitySet="agents">
-          <ScalarProperty Name="isCash" ColumnName="isCash" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
           <ScalarProperty Name="pointId" ColumnName="pointId" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -47,6 +46,7 @@
           <ScalarProperty Name="fax" ColumnName="fax" />
           <ScalarProperty Name="maxDeserve" ColumnName="maxDeserve" />
           <ScalarProperty Name="isLimited" ColumnName="isLimited" />
+          <ScalarProperty Name="payType" ColumnName="payType" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -139,7 +139,6 @@
     <EntitySetMapping Name="cards">
       <EntityTypeMapping TypeName="incposdbModel.cards">
         <MappingFragment StoreEntitySet="cards">
-          <ScalarProperty Name="hasProcessNum" ColumnName="hasProcessNum" />
           <ScalarProperty Name="cardId" ColumnName="cardId" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="notes" ColumnName="notes" />
@@ -149,6 +148,7 @@
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="image" ColumnName="image" />
+          <ScalarProperty Name="hasProcessNum" ColumnName="hasProcessNum" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -412,9 +412,6 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="incposdbModel.invoices">
         <MappingFragment StoreEntitySet="invoices">
-          <ScalarProperty Name="printedcount" ColumnName="printedcount" />
-          <ScalarProperty Name="cashReturn" ColumnName="cashReturn" />
-          <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
           <ScalarProperty Name="invNumber" ColumnName="invNumber" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -450,6 +447,9 @@
           <ScalarProperty Name="manualDiscountValue" ColumnName="manualDiscountValue" />
           <ScalarProperty Name="manualDiscountType" ColumnName="manualDiscountType" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
+          <ScalarProperty Name="cashReturn" ColumnName="cashReturn" />
+          <ScalarProperty Name="printedcount" ColumnName="printedcount" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -471,7 +471,6 @@
     <EntitySetMapping Name="items">
       <EntityTypeMapping TypeName="incposdbModel.items">
         <MappingFragment StoreEntitySet="items">
-          <ScalarProperty Name="avgPurchasePrice" ColumnName="avgPurchasePrice" />
           <ScalarProperty Name="itemId" ColumnName="itemId" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -490,6 +489,7 @@
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="minUnitId" ColumnName="minUnitId" />
           <ScalarProperty Name="maxUnitId" ColumnName="maxUnitId" />
+          <ScalarProperty Name="avgPurchasePrice" ColumnName="avgPurchasePrice" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -526,7 +526,6 @@
     <EntitySetMapping Name="itemsOffers">
       <EntityTypeMapping TypeName="incposdbModel.itemsOffers">
         <MappingFragment StoreEntitySet="itemsOffers">
-          <ScalarProperty Name="used" ColumnName="used" />
           <ScalarProperty Name="ioId" ColumnName="ioId" />
           <ScalarProperty Name="iuId" ColumnName="iuId" />
           <ScalarProperty Name="offerId" ColumnName="offerId" />
@@ -535,6 +534,7 @@
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
+          <ScalarProperty Name="used" ColumnName="used" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -554,8 +554,6 @@
     <EntitySetMapping Name="itemsTransfer">
       <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
         <MappingFragment StoreEntitySet="itemsTransfer">
-          <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
-          <ScalarProperty Name="profit" ColumnName="profit" />
           <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -571,6 +569,9 @@
           <ScalarProperty Name="itemSerial" ColumnName="itemSerial" />
           <ScalarProperty Name="inventoryItemLocId" ColumnName="inventoryItemLocId" />
           <ScalarProperty Name="offerId" ColumnName="offerId" />
+          <ScalarProperty Name="profit" ColumnName="profit" />
+          <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
+          <ScalarProperty Name="cause" ColumnName="cause" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -829,15 +830,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="posSerials">
+      <EntityTypeMapping TypeName="incposdbModel.posSerials">
+        <MappingFragment StoreEntitySet="posSerials">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="posSerial" ColumnName="posSerial" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="posSetting">
       <EntityTypeMapping TypeName="incposdbModel.posSetting">
         <MappingFragment StoreEntitySet="posSetting">
-          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
-          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
-          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-          <ScalarProperty Name="createDate" ColumnName="createDate" />
-          <ScalarProperty Name="posSerialId" ColumnName="posSerialId" />
-          <ScalarProperty Name="posDeviceCode" ColumnName="posDeviceCode" />
           <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="saleInvPrinterId" ColumnName="saleInvPrinterId" />
@@ -845,6 +849,12 @@
           <ScalarProperty Name="saleInvPapersizeId" ColumnName="saleInvPapersizeId" />
           <ScalarProperty Name="posSerial" ColumnName="posSerial" />
           <ScalarProperty Name="docPapersizeId" ColumnName="docPapersizeId" />
+          <ScalarProperty Name="posDeviceCode" ColumnName="posDeviceCode" />
+          <ScalarProperty Name="posSerialId" ColumnName="posSerialId" />
+          <ScalarProperty Name="createDate" ColumnName="createDate" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+          <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+          <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -871,6 +881,31 @@
           <ScalarProperty Name="updateDate" ColumnName="updateDate" />
           <ScalarProperty Name="createUserId" ColumnName="createUserId" />
           <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProgramDetails">
+      <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
+        <MappingFragment StoreEntitySet="ProgramDetails">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="programName" ColumnName="programName" />
+          <ScalarProperty Name="branchCount" ColumnName="branchCount" />
+          <ScalarProperty Name="posCount" ColumnName="posCount" />
+          <ScalarProperty Name="userCount" ColumnName="userCount" />
+          <ScalarProperty Name="vendorCount" ColumnName="vendorCount" />
+          <ScalarProperty Name="customerCount" ColumnName="customerCount" />
+          <ScalarProperty Name="itemCount" ColumnName="itemCount" />
+          <ScalarProperty Name="saleinvCount" ColumnName="saleinvCount" />
+          <ScalarProperty Name="programIncId" ColumnName="programIncId" />
+          <ScalarProperty Name="versionIncId" ColumnName="versionIncId" />
+          <ScalarProperty Name="versionName" ColumnName="versionName" />
+          <ScalarProperty Name="storeCount" ColumnName="storeCount" />
+          <ScalarProperty Name="packageSaleCode" ColumnName="packageSaleCode" />
+          <ScalarProperty Name="customerServerCode" ColumnName="customerServerCode" />
+          <ScalarProperty Name="expireDate" ColumnName="expireDate" />
+          <ScalarProperty Name="isOnlineServer" ColumnName="isOnlineServer" />
+          <ScalarProperty Name="packageNumber" ColumnName="packageNumber" />
+          <ScalarProperty Name="updateDate" ColumnName="updateDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1022,17 +1057,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="incposdbModel.sysdiagrams">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="sysEmails">
       <EntityTypeMapping TypeName="incposdbModel.sysEmails">
         <MappingFragment StoreEntitySet="sysEmails">
@@ -1123,39 +1147,6 @@
           <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="ProgramDetails">
-      <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
-        <MappingFragment StoreEntitySet="ProgramDetails">
-          <ScalarProperty Name="packageNumber" ColumnName="packageNumber" />
-          <ScalarProperty Name="isOnlineServer" ColumnName="isOnlineServer" />
-          <ScalarProperty Name="expireDate" ColumnName="expireDate" />
-          <ScalarProperty Name="customerServerCode" ColumnName="customerServerCode" />
-          <ScalarProperty Name="packageSaleCode" ColumnName="packageSaleCode" />
-          <ScalarProperty Name="id" ColumnName="id" />
-          <ScalarProperty Name="programName" ColumnName="programName" />
-          <ScalarProperty Name="branchCount" ColumnName="branchCount" />
-          <ScalarProperty Name="posCount" ColumnName="posCount" />
-          <ScalarProperty Name="userCount" ColumnName="userCount" />
-          <ScalarProperty Name="vendorCount" ColumnName="vendorCount" />
-          <ScalarProperty Name="customerCount" ColumnName="customerCount" />
-          <ScalarProperty Name="itemCount" ColumnName="itemCount" />
-          <ScalarProperty Name="saleinvCount" ColumnName="saleinvCount" />
-          <ScalarProperty Name="programIncId" ColumnName="programIncId" />
-          <ScalarProperty Name="versionIncId" ColumnName="versionIncId" />
-          <ScalarProperty Name="versionName" ColumnName="versionName" />
-          <ScalarProperty Name="storeCount" ColumnName="storeCount" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="posSerials">
-      <EntityTypeMapping TypeName="incposdbModel.posSerials">
-        <MappingFragment StoreEntitySet="posSerials">
-          <ScalarProperty Name="notes" ColumnName="notes" />
-          <ScalarProperty Name="posSerial" ColumnName="posSerial" />
-          <ScalarProperty Name="id" ColumnName="id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

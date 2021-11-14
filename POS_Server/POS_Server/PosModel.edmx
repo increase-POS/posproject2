@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -50,7 +50,7 @@
           <Property Name="fax" Type="nvarchar" MaxLength="100" />
           <Property Name="maxDeserve" Type="decimal" Precision="20" Scale="3" />
           <Property Name="isLimited" Type="bit" Nullable="false" />
-          <Property Name="isCash" Type="bit" Nullable="false" />
+          <Property Name="payType" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -546,6 +546,7 @@
           <Property Name="offerId" Type="int" />
           <Property Name="profit" Type="decimal" Precision="20" Scale="3" />
           <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="cause" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -837,20 +838,11 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ProgramDetails">
           <Key>
-            <PropertyRef Name="branchCount" />
-            <PropertyRef Name="posCount" />
-            <PropertyRef Name="userCount" />
-            <PropertyRef Name="vendorCount" />
-            <PropertyRef Name="customerCount" />
-            <PropertyRef Name="itemCount" />
-            <PropertyRef Name="saleinvCount" />
-            <PropertyRef Name="storeCount" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="programName" Type="nvarchar" MaxLength="500" />
           <Property Name="branchCount" Type="int" Nullable="false" />
           <Property Name="posCount" Type="int" Nullable="false" />
@@ -868,6 +860,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="expireDate" Type="datetime2" Precision="7" />
           <Property Name="isOnlineServer" Type="bit" />
           <Property Name="packageNumber" Type="nvarchar" MaxLength="500" />
+          <Property Name="updateDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -1006,16 +999,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="sysEmails">
           <Key>
@@ -3544,6 +3527,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySet Name="posSetting" EntityType="Self.posSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="posUsers" EntityType="Self.posUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="printers" EntityType="Self.printers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgramDetails" EntityType="Self.ProgramDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="properties" EntityType="Self.properties" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="propertiesItems" EntityType="Self.propertiesItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sections" EntityType="Self.sections" Schema="dbo" store:Type="Tables" />
@@ -3554,34 +3538,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userSetValues" EntityType="Self.userSetValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usersLogs" EntityType="Self.usersLogs" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ProgramDetails" EntityType="Self.ProgramDetails" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ProgramDetails].[id] AS [id], 
-    [ProgramDetails].[programName] AS [programName], 
-    [ProgramDetails].[branchCount] AS [branchCount], 
-    [ProgramDetails].[posCount] AS [posCount], 
-    [ProgramDetails].[userCount] AS [userCount], 
-    [ProgramDetails].[vendorCount] AS [vendorCount], 
-    [ProgramDetails].[customerCount] AS [customerCount], 
-    [ProgramDetails].[itemCount] AS [itemCount], 
-    [ProgramDetails].[saleinvCount] AS [saleinvCount], 
-    [ProgramDetails].[programIncId] AS [programIncId], 
-    [ProgramDetails].[versionIncId] AS [versionIncId], 
-    [ProgramDetails].[versionName] AS [versionName], 
-    [ProgramDetails].[storeCount] AS [storeCount], 
-    [ProgramDetails].[packageSaleCode] AS [packageSaleCode], 
-    [ProgramDetails].[customerServerCode] AS [customerServerCode], 
-    [ProgramDetails].[expireDate] AS [expireDate], 
-    [ProgramDetails].[isOnlineServer] AS [isOnlineServer], 
-    [ProgramDetails].[packageNumber] AS [packageNumber]
-    FROM [dbo].[ProgramDetails] AS [ProgramDetails]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_agentMemberships_agents" Association="Self.FK_agentMemberships_agents">
             <End Role="agents" EntitySet="agents" />
             <End Role="agentMemberships" EntitySet="agentMemberships" />
@@ -4379,7 +4340,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4435,6 +4397,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="fax" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="maxDeserve" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="isLimited" Type="Boolean" Nullable="false" />
+          <Property Name="payType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_agents" FromRole="agents" ToRole="agentMemberships" />
           <NavigationProperty Name="Points" Relationship="Self.FK_agents_Points" FromRole="agents" ToRole="Points" />
           <NavigationProperty Name="users" Relationship="Self.FK_agents_users" FromRole="agents" ToRole="users" />
@@ -4443,7 +4406,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="invoices" Relationship="Self.FK_invoices_agents" FromRole="agents" ToRole="invoices" />
           <NavigationProperty Name="medalAgent" Relationship="Self.FK_medalAgent_agents" FromRole="agents" ToRole="medalAgent" />
           <NavigationProperty Name="Points1" Relationship="Self.FK_Points_agents" FromRole="agents" ToRole="Points" />
-          <Property Name="isCash" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="banks">
           <Key>
@@ -4563,10 +4525,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="isActive" Type="Byte" />
           <Property Name="image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="hasProcessNum" Type="Boolean" />
           <NavigationProperty Name="users" Relationship="Self.FK_cards_users" FromRole="cards" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_cards_users1" FromRole="cards" ToRole="users" />
           <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_cards" FromRole="cards" ToRole="cashTransfer" />
-          <Property Name="hasProcessNum" Type="Boolean" />
         </EntityType>
         <EntityType Name="cashTransfer">
           <Key>
@@ -4909,6 +4871,9 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="manualDiscountValue" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
           <Property Name="manualDiscountType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="cashReturn" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
+          <Property Name="printedcount" Type="Int32" Nullable="false" />
           <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
           <NavigationProperty Name="branches" Relationship="Self.FK_invoices_branches" FromRole="invoices" ToRole="branches" />
           <NavigationProperty Name="branches1" Relationship="Self.FK_invoices_branches1" FromRole="invoices" ToRole="branches" />
@@ -4929,9 +4894,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
           <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
-          <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
-          <Property Name="cashReturn" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
-          <Property Name="printedcount" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -4972,6 +4934,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="minUnitId" Type="Int32" />
           <Property Name="maxUnitId" Type="Int32" />
+          <Property Name="avgPurchasePrice" Type="Decimal" Precision="20" Scale="3" />
           <NavigationProperty Name="categories" Relationship="Self.FK_items_categories" FromRole="items" ToRole="categories" />
           <NavigationProperty Name="units" Relationship="Self.FK_items_units" FromRole="items" ToRole="units" />
           <NavigationProperty Name="units1" Relationship="Self.FK_items_units1" FromRole="items" ToRole="units" />
@@ -4985,7 +4948,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsUnits_items" FromRole="items" ToRole="itemsUnits" />
           <NavigationProperty Name="serials" Relationship="Self.FK_serials_items" FromRole="items" ToRole="serials" />
           <NavigationProperty Name="servicesCosts" Relationship="Self.FK_servicesCosts_items" FromRole="items" ToRole="servicesCosts" />
-          <Property Name="avgPurchasePrice" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsLocations">
           <Key>
@@ -5038,11 +5000,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="quantity" Type="Int32" />
+          <Property Name="used" Type="Int32" />
           <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsOffers_itemsUnits" FromRole="itemsOffers" ToRole="itemsUnits" />
           <NavigationProperty Name="offers" Relationship="Self.FK_itemsOffers_offers" FromRole="itemsOffers" ToRole="offers" />
           <NavigationProperty Name="users" Relationship="Self.FK_itemsOffers_users" FromRole="itemsOffers" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_itemsOffers_users1" FromRole="itemsOffers" ToRole="users" />
-          <Property Name="used" Type="Int32" />
         </EntityType>
         <EntityType Name="itemsProp">
           <Key>
@@ -5079,6 +5041,9 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="itemSerial" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="inventoryItemLocId" Type="Int32" />
           <Property Name="offerId" Type="Int32" />
+          <Property Name="profit" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="cause" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_itemsTransfer_inventoryItemLocation" FromRole="itemsTransfer" ToRole="inventoryItemLocation" />
           <NavigationProperty Name="invoiceOrder" Relationship="Self.FK_invoiceOrder_itemsTransfer" FromRole="itemsTransfer" ToRole="invoiceOrder" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
@@ -5087,8 +5052,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="offers" Relationship="Self.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
           <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
-          <Property Name="profit" Type="Decimal" Precision="20" Scale="3" />
-          <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -5404,6 +5367,15 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
         </EntityType>
+        <EntityType Name="posSerials">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="posSerial" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
+        </EntityType>
         <EntityType Name="posSetting">
           <Key>
             <PropertyRef Name="posSettingId" />
@@ -5415,19 +5387,19 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="saleInvPapersizeId" Type="Int32" />
           <Property Name="posSerial" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="docPapersizeId" Type="Int32" />
-          <NavigationProperty Name="paperSize" Relationship="Self.FK_posSetting_paperSize" FromRole="posSetting" ToRole="paperSize" />
-          <NavigationProperty Name="pos" Relationship="Self.FK_posSetting_pos" FromRole="posSetting" ToRole="pos" />
-          <NavigationProperty Name="printers" Relationship="Self.FK_posSetting_printers" FromRole="posSetting" ToRole="printers" />
-          <NavigationProperty Name="printers1" Relationship="Self.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
           <Property Name="posDeviceCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="posSerialId" Type="Int32" />
           <Property Name="createDate" Type="DateTime" Precision="7" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
-          <NavigationProperty Name="posSerials" Relationship="incposdbModel.FK_posSetting_posSerials" FromRole="posSetting" ToRole="posSerials" />
-          <NavigationProperty Name="users" Relationship="incposdbModel.FK_posSetting_users" FromRole="posSetting" ToRole="users" />
-          <NavigationProperty Name="users1" Relationship="incposdbModel.FK_posSetting_users1" FromRole="posSetting" ToRole="users" />
+          <NavigationProperty Name="paperSize" Relationship="Self.FK_posSetting_paperSize" FromRole="posSetting" ToRole="paperSize" />
+          <NavigationProperty Name="pos" Relationship="Self.FK_posSetting_pos" FromRole="posSetting" ToRole="pos" />
+          <NavigationProperty Name="posSerials" Relationship="Self.FK_posSetting_posSerials" FromRole="posSetting" ToRole="posSerials" />
+          <NavigationProperty Name="printers" Relationship="Self.FK_posSetting_printers" FromRole="posSetting" ToRole="printers" />
+          <NavigationProperty Name="printers1" Relationship="Self.FK_posSetting_printers1" FromRole="posSetting" ToRole="printers" />
+          <NavigationProperty Name="users" Relationship="Self.FK_posSetting_users" FromRole="posSetting" ToRole="users" />
+          <NavigationProperty Name="users1" Relationship="Self.FK_posSetting_users1" FromRole="posSetting" ToRole="users" />
         </EntityType>
         <EntityType Name="posUsers">
           <Key>
@@ -5460,6 +5432,30 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="posSetting1" Relationship="Self.FK_posSetting_printers1" FromRole="printers" ToRole="posSetting" />
           <NavigationProperty Name="users" Relationship="Self.FK_printers_users" FromRole="printers" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_printers_users1" FromRole="printers" ToRole="users" />
+        </EntityType>
+        <EntityType Name="ProgramDetails">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="programName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="branchCount" Type="Int32" Nullable="false" />
+          <Property Name="posCount" Type="Int32" Nullable="false" />
+          <Property Name="userCount" Type="Int32" Nullable="false" />
+          <Property Name="vendorCount" Type="Int32" Nullable="false" />
+          <Property Name="customerCount" Type="Int32" Nullable="false" />
+          <Property Name="itemCount" Type="Int32" Nullable="false" />
+          <Property Name="saleinvCount" Type="Int32" Nullable="false" />
+          <Property Name="programIncId" Type="Int32" />
+          <Property Name="versionIncId" Type="Int32" />
+          <Property Name="versionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="storeCount" Type="Int32" Nullable="false" />
+          <Property Name="packageSaleCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="customerServerCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="expireDate" Type="DateTime" Precision="7" />
+          <Property Name="isOnlineServer" Type="Boolean" />
+          <Property Name="packageNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="updateDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -5622,16 +5618,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
           <NavigationProperty Name="memberships" Relationship="Self.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="sysEmails">
           <Key>
             <PropertyRef Name="emailId" />
@@ -5675,8 +5661,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="items1" Relationship="Self.FK_items_units1" FromRole="units" ToRole="items" />
           <NavigationProperty Name="itemsMaterials" Relationship="Self.FK_itemsMaterials_units" FromRole="units" ToRole="itemsMaterials" />
           <NavigationProperty Name="itemsUnits" Relationship="Self.FK_itemsUnits_units" FromRole="units" ToRole="itemsUnits" />
-          <NavigationProperty Name="users" Relationship="Self.FK_units_users" FromRole="units" ToRole="users" />
-          <NavigationProperty Name="users1" Relationship="Self.FK_units_users1" FromRole="units" ToRole="users" />
         </EntityType>
         <EntityType Name="users">
           <Key>
@@ -5791,6 +5775,8 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="Points1" Relationship="Self.FK_Points_users1" FromRole="users" ToRole="Points" />
           <NavigationProperty Name="pos" Relationship="Self.FK_pos_users" FromRole="users" ToRole="pos" />
           <NavigationProperty Name="pos1" Relationship="Self.FK_pos_users1" FromRole="users" ToRole="pos" />
+          <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_users" FromRole="users" ToRole="posSetting" />
+          <NavigationProperty Name="posSetting1" Relationship="Self.FK_posSetting_users1" FromRole="users" ToRole="posSetting" />
           <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_users" FromRole="users" ToRole="posUsers" />
           <NavigationProperty Name="posUsers1" Relationship="Self.FK_posUsers_users1" FromRole="users" ToRole="posUsers" />
           <NavigationProperty Name="posUsers2" Relationship="Self.FK_posUsers_users2" FromRole="users" ToRole="posUsers" />
@@ -5806,14 +5792,10 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <NavigationProperty Name="servicesCosts1" Relationship="Self.FK_servicesCosts_users1" FromRole="users" ToRole="servicesCosts" />
           <NavigationProperty Name="sysEmails" Relationship="Self.FK_sysEmails_users" FromRole="users" ToRole="sysEmails" />
           <NavigationProperty Name="sysEmails1" Relationship="Self.FK_sysEmails_users1" FromRole="users" ToRole="sysEmails" />
-          <NavigationProperty Name="units" Relationship="Self.FK_units_users" FromRole="users" ToRole="units" />
-          <NavigationProperty Name="units1" Relationship="Self.FK_units_users1" FromRole="users" ToRole="units" />
           <NavigationProperty Name="userSetValues" Relationship="Self.FK_userSetValues_users" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
-          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_users" FromRole="users" ToRole="posSetting" />
-          <NavigationProperty Name="posSetting1" Relationship="incposdbModel.FK_posSetting_users1" FromRole="users" ToRole="posSetting" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -5843,36 +5825,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <Property Name="userId" Type="Int32" />
           <NavigationProperty Name="pos" Relationship="Self.FK_usersLogs_pos" FromRole="usersLogs" ToRole="pos" />
           <NavigationProperty Name="users" Relationship="Self.FK_usersLogs_users" FromRole="usersLogs" ToRole="users" />
-        </EntityType>
-        <EntityType Name="ProgramDetails">
-          <Key>
-            <PropertyRef Name="branchCount" />
-            <PropertyRef Name="posCount" />
-            <PropertyRef Name="userCount" />
-            <PropertyRef Name="vendorCount" />
-            <PropertyRef Name="customerCount" />
-            <PropertyRef Name="itemCount" />
-            <PropertyRef Name="saleinvCount" />
-            <PropertyRef Name="storeCount" />
-          </Key>
-          <Property Name="id" Type="Int32" />
-          <Property Name="programName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="branchCount" Type="Int32" Nullable="false" />
-          <Property Name="posCount" Type="Int32" Nullable="false" />
-          <Property Name="userCount" Type="Int32" Nullable="false" />
-          <Property Name="vendorCount" Type="Int32" Nullable="false" />
-          <Property Name="customerCount" Type="Int32" Nullable="false" />
-          <Property Name="itemCount" Type="Int32" Nullable="false" />
-          <Property Name="saleinvCount" Type="Int32" Nullable="false" />
-          <Property Name="programIncId" Type="Int32" />
-          <Property Name="versionIncId" Type="Int32" />
-          <Property Name="versionName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="storeCount" Type="Int32" Nullable="false" />
-          <Property Name="packageSaleCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="customerServerCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="expireDate" Type="DateTime" Precision="7" />
-          <Property Name="isOnlineServer" Type="Boolean" />
-          <Property Name="packageNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_agentMemberships_agents">
           <End Role="agents" Type="Self.agents" Multiplicity="0..1" />
@@ -7938,6 +7890,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_posSetting_posSerials">
+          <End Role="posSerials" Type="Self.posSerials" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="posSerials">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="posSerialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_posSetting_printers">
           <End Role="printers" Type="Self.printers" Multiplicity="0..1" />
           <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
@@ -7959,6 +7923,30 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Principal>
             <Dependent Role="posSetting">
               <PropertyRef Name="reportPrinterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_users">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_posSetting_users1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="posSetting" Type="Self.posSetting" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="posSetting">
+              <PropertyRef Name="updateUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -8178,30 +8166,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_units_users">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="units" Type="Self.units" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="units">
-              <PropertyRef Name="createUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_units_users1">
-          <End Role="users" Type="Self.users" Multiplicity="0..1" />
-          <End Role="units" Type="Self.units" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="units">
-              <PropertyRef Name="updateUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_userSetValues_users">
           <End Role="users" Type="Self.users" Multiplicity="0..1" />
           <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
@@ -8297,9 +8261,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySet Name="paperSize" EntityType="Self.paperSize" />
           <EntitySet Name="Points" EntityType="Self.Points" />
           <EntitySet Name="pos" EntityType="Self.pos" />
+          <EntitySet Name="posSerials" EntityType="Self.posSerials" />
           <EntitySet Name="posSetting" EntityType="Self.posSetting" />
           <EntitySet Name="posUsers" EntityType="Self.posUsers" />
           <EntitySet Name="printers" EntityType="Self.printers" />
+          <EntitySet Name="ProgramDetails" EntityType="Self.ProgramDetails" />
           <EntitySet Name="properties" EntityType="Self.properties" />
           <EntitySet Name="propertiesItems" EntityType="Self.propertiesItems" />
           <EntitySet Name="sections" EntityType="Self.sections" />
@@ -8310,13 +8276,11 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" />
           <EntitySet Name="storageCost" EntityType="Self.storageCost" />
           <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="sysEmails" EntityType="Self.sysEmails" />
           <EntitySet Name="units" EntityType="Self.units" />
           <EntitySet Name="users" EntityType="Self.users" />
           <EntitySet Name="userSetValues" EntityType="Self.userSetValues" />
           <EntitySet Name="usersLogs" EntityType="Self.usersLogs" />
-          <EntitySet Name="ProgramDetails" EntityType="Self.ProgramDetails" />
           <AssociationSet Name="FK_agentMemberships_agents" Association="Self.FK_agentMemberships_agents">
             <End Role="agents" EntitySet="agents" />
             <End Role="agentMemberships" EntitySet="agentMemberships" />
@@ -9005,12 +8969,24 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="pos" EntitySet="pos" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
+          <AssociationSet Name="FK_posSetting_posSerials" Association="Self.FK_posSetting_posSerials">
+            <End Role="posSerials" EntitySet="posSerials" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
           <AssociationSet Name="FK_posSetting_printers" Association="Self.FK_posSetting_printers">
             <End Role="printers" EntitySet="printers" />
             <End Role="posSetting" EntitySet="posSetting" />
           </AssociationSet>
           <AssociationSet Name="FK_posSetting_printers1" Association="Self.FK_posSetting_printers1">
             <End Role="printers" EntitySet="printers" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_users" Association="Self.FK_posSetting_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="posSetting" EntitySet="posSetting" />
+          </AssociationSet>
+          <AssociationSet Name="FK_posSetting_users1" Association="Self.FK_posSetting_users1">
+            <End Role="users" EntitySet="users" />
             <End Role="posSetting" EntitySet="posSetting" />
           </AssociationSet>
           <AssociationSet Name="FK_posUsers_users" Association="Self.FK_posUsers_users">
@@ -9085,14 +9061,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="users" EntitySet="users" />
             <End Role="sysEmails" EntitySet="sysEmails" />
           </AssociationSet>
-          <AssociationSet Name="FK_units_users" Association="Self.FK_units_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="units" EntitySet="units" />
-          </AssociationSet>
-          <AssociationSet Name="FK_units_users1" Association="Self.FK_units_users1">
-            <End Role="users" EntitySet="users" />
-            <End Role="units" EntitySet="units" />
-          </AssociationSet>
           <AssociationSet Name="FK_userSetValues_users" Association="Self.FK_userSetValues_users">
             <End Role="users" EntitySet="users" />
             <End Role="userSetValues" EntitySet="userSetValues" />
@@ -9109,65 +9077,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
             <End Role="users" EntitySet="users" />
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
-          <EntitySet Name="posSerials" EntityType="incposdbModel.posSerials" />
-          <AssociationSet Name="FK_posSetting_posSerials" Association="incposdbModel.FK_posSetting_posSerials">
-            <End Role="posSerials" EntitySet="posSerials" />
-            <End Role="posSetting" EntitySet="posSetting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_posSetting_users" Association="incposdbModel.FK_posSetting_users">
-            <End Role="users" EntitySet="users" />
-            <End Role="posSetting" EntitySet="posSetting" />
-          </AssociationSet>
-          <AssociationSet Name="FK_posSetting_users1" Association="incposdbModel.FK_posSetting_users1">
-            <End Role="users" EntitySet="users" />
-            <End Role="posSetting" EntitySet="posSetting" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="posSerials">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="posSerial" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="posSetting" Relationship="incposdbModel.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
-        </EntityType>
-        <Association Name="FK_posSetting_posSerials">
-          <End Type="incposdbModel.posSerials" Role="posSerials" Multiplicity="0..1" />
-          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="posSerials">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="posSetting">
-              <PropertyRef Name="posSerialId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_posSetting_users">
-          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="posSetting">
-              <PropertyRef Name="createUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_posSetting_users1">
-          <End Type="incposdbModel.users" Role="users" Multiplicity="0..1" />
-          <End Type="incposdbModel.posSetting" Role="posSetting" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="users">
-              <PropertyRef Name="userId" />
-            </Principal>
-            <Dependent Role="posSetting">
-              <PropertyRef Name="updateUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -9196,7 +9106,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="agents">
             <EntityTypeMapping TypeName="incposdbModel.agents">
               <MappingFragment StoreEntitySet="agents">
-                <ScalarProperty Name="isCash" ColumnName="isCash" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
                 <ScalarProperty Name="pointId" ColumnName="pointId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9220,6 +9129,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="fax" ColumnName="fax" />
                 <ScalarProperty Name="maxDeserve" ColumnName="maxDeserve" />
                 <ScalarProperty Name="isLimited" ColumnName="isLimited" />
+                <ScalarProperty Name="payType" ColumnName="payType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9312,7 +9222,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="cards">
             <EntityTypeMapping TypeName="incposdbModel.cards">
               <MappingFragment StoreEntitySet="cards">
-                <ScalarProperty Name="hasProcessNum" ColumnName="hasProcessNum" />
                 <ScalarProperty Name="cardId" ColumnName="cardId" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="notes" ColumnName="notes" />
@@ -9322,6 +9231,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="image" ColumnName="image" />
+                <ScalarProperty Name="hasProcessNum" ColumnName="hasProcessNum" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9585,9 +9495,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="invoices">
             <EntityTypeMapping TypeName="incposdbModel.invoices">
               <MappingFragment StoreEntitySet="invoices">
-                <ScalarProperty Name="printedcount" ColumnName="printedcount" />
-                <ScalarProperty Name="cashReturn" ColumnName="cashReturn" />
-                <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="invNumber" ColumnName="invNumber" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -9623,6 +9530,9 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="manualDiscountValue" ColumnName="manualDiscountValue" />
                 <ScalarProperty Name="manualDiscountType" ColumnName="manualDiscountType" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
+                <ScalarProperty Name="cashReturn" ColumnName="cashReturn" />
+                <ScalarProperty Name="printedcount" ColumnName="printedcount" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9644,7 +9554,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="items">
             <EntityTypeMapping TypeName="incposdbModel.items">
               <MappingFragment StoreEntitySet="items">
-                <ScalarProperty Name="avgPurchasePrice" ColumnName="avgPurchasePrice" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9663,6 +9572,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="minUnitId" ColumnName="minUnitId" />
                 <ScalarProperty Name="maxUnitId" ColumnName="maxUnitId" />
+                <ScalarProperty Name="avgPurchasePrice" ColumnName="avgPurchasePrice" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9699,7 +9609,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="itemsOffers">
             <EntityTypeMapping TypeName="incposdbModel.itemsOffers">
               <MappingFragment StoreEntitySet="itemsOffers">
-                <ScalarProperty Name="used" ColumnName="used" />
                 <ScalarProperty Name="ioId" ColumnName="ioId" />
                 <ScalarProperty Name="iuId" ColumnName="iuId" />
                 <ScalarProperty Name="offerId" ColumnName="offerId" />
@@ -9708,6 +9617,7 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="used" ColumnName="used" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -9727,8 +9637,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
           <EntitySetMapping Name="itemsTransfer">
             <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
               <MappingFragment StoreEntitySet="itemsTransfer">
-                <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
-                <ScalarProperty Name="profit" ColumnName="profit" />
                 <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -9744,6 +9652,9 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="itemSerial" ColumnName="itemSerial" />
                 <ScalarProperty Name="inventoryItemLocId" ColumnName="inventoryItemLocId" />
                 <ScalarProperty Name="offerId" ColumnName="offerId" />
+                <ScalarProperty Name="profit" ColumnName="profit" />
+                <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
+                <ScalarProperty Name="cause" ColumnName="cause" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10002,15 +9913,18 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="posSerials">
+            <EntityTypeMapping TypeName="incposdbModel.posSerials">
+              <MappingFragment StoreEntitySet="posSerials">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="posSerial" ColumnName="posSerial" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="posSetting">
             <EntityTypeMapping TypeName="incposdbModel.posSetting">
               <MappingFragment StoreEntitySet="posSetting">
-                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
-                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
-                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
-                <ScalarProperty Name="createDate" ColumnName="createDate" />
-                <ScalarProperty Name="posSerialId" ColumnName="posSerialId" />
-                <ScalarProperty Name="posDeviceCode" ColumnName="posDeviceCode" />
                 <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="saleInvPrinterId" ColumnName="saleInvPrinterId" />
@@ -10018,6 +9932,12 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="saleInvPapersizeId" ColumnName="saleInvPapersizeId" />
                 <ScalarProperty Name="posSerial" ColumnName="posSerial" />
                 <ScalarProperty Name="docPapersizeId" ColumnName="docPapersizeId" />
+                <ScalarProperty Name="posDeviceCode" ColumnName="posDeviceCode" />
+                <ScalarProperty Name="posSerialId" ColumnName="posSerialId" />
+                <ScalarProperty Name="createDate" ColumnName="createDate" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="createUserId" ColumnName="createUserId" />
+                <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10044,6 +9964,31 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgramDetails">
+            <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
+              <MappingFragment StoreEntitySet="ProgramDetails">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="programName" ColumnName="programName" />
+                <ScalarProperty Name="branchCount" ColumnName="branchCount" />
+                <ScalarProperty Name="posCount" ColumnName="posCount" />
+                <ScalarProperty Name="userCount" ColumnName="userCount" />
+                <ScalarProperty Name="vendorCount" ColumnName="vendorCount" />
+                <ScalarProperty Name="customerCount" ColumnName="customerCount" />
+                <ScalarProperty Name="itemCount" ColumnName="itemCount" />
+                <ScalarProperty Name="saleinvCount" ColumnName="saleinvCount" />
+                <ScalarProperty Name="programIncId" ColumnName="programIncId" />
+                <ScalarProperty Name="versionIncId" ColumnName="versionIncId" />
+                <ScalarProperty Name="versionName" ColumnName="versionName" />
+                <ScalarProperty Name="storeCount" ColumnName="storeCount" />
+                <ScalarProperty Name="packageSaleCode" ColumnName="packageSaleCode" />
+                <ScalarProperty Name="customerServerCode" ColumnName="customerServerCode" />
+                <ScalarProperty Name="expireDate" ColumnName="expireDate" />
+                <ScalarProperty Name="isOnlineServer" ColumnName="isOnlineServer" />
+                <ScalarProperty Name="packageNumber" ColumnName="packageNumber" />
+                <ScalarProperty Name="updateDate" ColumnName="updateDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -10195,17 +10140,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="incposdbModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="sysEmails">
             <EntityTypeMapping TypeName="incposdbModel.sysEmails">
               <MappingFragment StoreEntitySet="sysEmails">
@@ -10296,39 +10230,6 @@ warning 6002: The table/view 'incposdbtest.dbo.ProgramDetails' does not have a p
                 <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProgramDetails">
-            <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
-              <MappingFragment StoreEntitySet="ProgramDetails">
-                <ScalarProperty Name="packageNumber" ColumnName="packageNumber" />
-                <ScalarProperty Name="isOnlineServer" ColumnName="isOnlineServer" />
-                <ScalarProperty Name="expireDate" ColumnName="expireDate" />
-                <ScalarProperty Name="customerServerCode" ColumnName="customerServerCode" />
-                <ScalarProperty Name="packageSaleCode" ColumnName="packageSaleCode" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="programName" ColumnName="programName" />
-                <ScalarProperty Name="branchCount" ColumnName="branchCount" />
-                <ScalarProperty Name="posCount" ColumnName="posCount" />
-                <ScalarProperty Name="userCount" ColumnName="userCount" />
-                <ScalarProperty Name="vendorCount" ColumnName="vendorCount" />
-                <ScalarProperty Name="customerCount" ColumnName="customerCount" />
-                <ScalarProperty Name="itemCount" ColumnName="itemCount" />
-                <ScalarProperty Name="saleinvCount" ColumnName="saleinvCount" />
-                <ScalarProperty Name="programIncId" ColumnName="programIncId" />
-                <ScalarProperty Name="versionIncId" ColumnName="versionIncId" />
-                <ScalarProperty Name="versionName" ColumnName="versionName" />
-                <ScalarProperty Name="storeCount" ColumnName="storeCount" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="posSerials">
-            <EntityTypeMapping TypeName="incposdbModel.posSerials">
-              <MappingFragment StoreEntitySet="posSerials">
-                <ScalarProperty Name="notes" ColumnName="notes" />
-                <ScalarProperty Name="posSerial" ColumnName="posSerial" />
-                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

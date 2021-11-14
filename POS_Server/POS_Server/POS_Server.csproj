@@ -96,6 +96,7 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.12.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.12.2\lib\net472\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -267,6 +268,7 @@
     </Compile>
     <Compile Include="Classes\Calculate.cs" />
     <Compile Include="Classes\ProgramInfo.cs" />
+    <Compile Include="Controllers\ActivateController.cs" />
     <Compile Include="Controllers\AgentController.cs" />
     <Compile Include="Controllers\BackupController.cs" />
     <Compile Include="Controllers\BranchesUsersController.cs" />
@@ -408,6 +410,7 @@
     <Compile Include="memberships.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivateModel.cs" />
     <Compile Include="Models\BackupModel.cs" />
     <Compile Include="Models\BranchesUsersModel.cs" />
     <Compile Include="Models\AgentMembershipsModel.cs" />
@@ -462,6 +465,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\itemsPropModel.cs" />
+    <Compile Include="Models\VM\APIResult.cs" />
     <Compile Include="Models\VM\ResponseVM.cs" />
     <Compile Include="Models\VM\TokenManager.cs" />
     <Compile Include="notification.cs">
@@ -547,9 +551,6 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="subscriptionFees.cs">
-      <DependentUpon>PosModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagrams.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysEmails.cs">

@@ -1063,6 +1063,8 @@ namespace POS_Server.Controllers
                     var item = entity.items.Find(itemId);
                     int maxUnitId = (int)item.maxUnitId;
                     int maxQuantity = (int)item.max;
+                    if (maxQuantity == 0)
+                        return false;
                     var maxUnit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == maxUnitId).FirstOrDefault();
                     if (maxUnit == null)
                         isExcedded = false;
@@ -1636,30 +1638,23 @@ namespace POS_Server.Controllers
         [Route("transferAmountbetweenUnits")]
         public string transferAmountbetweenUnits(string token)
         {
-
             //int locationId, int itemLocId,int toItemUnitId,int fromQuantity, int toQuantity, int userId
             string message = "";
 
-
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
             else
             {
-
-
                 int locationId = 0;
                 int itemLocId = 0;
                 int toItemUnitId = 0;
                 int fromQuantity = 0;
                 int toQuantity = 0;
                 int userId = 0;
-
-
 
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
@@ -1697,20 +1692,12 @@ namespace POS_Server.Controllers
 
 
                 }
-
-
-
-
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         decreaseItemLocationQuantity(itemLocId, fromQuantity, userId, "", "");
                         increaseItemQuantity(toItemUnitId, locationId, toQuantity, userId);
-
-
-
-
                     }
                     //  return Ok(1);
                     return TokenManager.GenerateToken("1");
@@ -3413,10 +3400,6 @@ namespace POS_Server.Controllers
 
         public void decreaseItemLocationQuantity(int itemLocId, int quantity, int userId, string objectName, string notificationObj)
         {
-
-            //int itemLocId, int quantity, int userId, string objectName, string notificationObj
-
-
             using (incposdbEntities entity = new incposdbEntities())
             {
                 itemsLocations itemL = new itemsLocations();
@@ -3453,6 +3436,8 @@ namespace POS_Server.Controllers
                     var item = entity.items.Find(itemId);
                     int minUnitId = (int)item.minUnitId;
                     int minQuantity = (int)item.min;
+                    if (minQuantity == 0)
+                        return false;
                     var minUnit = entity.itemsUnits.Where(x => x.itemId == itemId && x.unitId == minUnitId).FirstOrDefault();
                     if (minUnit == null)
                         isExcedded = false;

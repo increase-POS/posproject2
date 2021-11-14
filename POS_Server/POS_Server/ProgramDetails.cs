@@ -14,7 +14,7 @@ namespace POS_Server
     
     public partial class ProgramDetails
     {
-        public Nullable<int> id { get; set; }
+        public int id { get; set; }
         public string programName { get; set; }
         public int branchCount { get; set; }
         public int posCount { get; set; }
@@ -32,5 +32,6 @@ namespace POS_Server
         public Nullable<System.DateTime> expireDate { get; set; }
         public Nullable<bool> isOnlineServer { get; set; }
         public string packageNumber { get; set; }
+        public Nullable<System.DateTime> updateDate { get; set; }
     }
 }

@@ -33,6 +33,6 @@ namespace POS_Server.Models
         public string itemType { get; set; }
 
         public Nullable<int> inventoryItemLocId { get; set; }
-
+        public string cause { get; set; }
     }
 }

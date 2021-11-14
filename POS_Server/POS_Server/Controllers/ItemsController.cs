@@ -253,6 +253,7 @@ var strP = TokenManager.GetPrincipal(token);
                                          createUserId = I.createUserId,
                                          updateUserId = I.updateUserId,
                                          isNew = 0,
+                                         avgPurchasePrice = I.avgPurchasePrice,
 
                                      }).Where(x => x.isActive == 1).Distinct()
                                 .ToList();

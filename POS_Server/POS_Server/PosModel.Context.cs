@@ -71,9 +71,11 @@ namespace POS_Server
         public virtual DbSet<paperSize> paperSize { get; set; }
         public virtual DbSet<Points> Points { get; set; }
         public virtual DbSet<pos> pos { get; set; }
+        public virtual DbSet<posSerials> posSerials { get; set; }
         public virtual DbSet<posSetting> posSetting { get; set; }
         public virtual DbSet<posUsers> posUsers { get; set; }
         public virtual DbSet<printers> printers { get; set; }
+        public virtual DbSet<ProgramDetails> ProgramDetails { get; set; }
         public virtual DbSet<properties> properties { get; set; }
         public virtual DbSet<propertiesItems> propertiesItems { get; set; }
         public virtual DbSet<sections> sections { get; set; }
@@ -84,13 +86,10 @@ namespace POS_Server
         public virtual DbSet<shippingCompanies> shippingCompanies { get; set; }
         public virtual DbSet<storageCost> storageCost { get; set; }
         public virtual DbSet<subscriptionFees> subscriptionFees { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<sysEmails> sysEmails { get; set; }
         public virtual DbSet<units> units { get; set; }
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<userSetValues> userSetValues { get; set; }
         public virtual DbSet<usersLogs> usersLogs { get; set; }
-        public virtual DbSet<ProgramDetails> ProgramDetails { get; set; }
-        public virtual DbSet<posSerials> posSerials { get; set; }
     }
 }

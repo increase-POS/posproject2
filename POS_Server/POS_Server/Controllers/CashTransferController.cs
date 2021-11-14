@@ -337,6 +337,125 @@ namespace POS_Server.Controllers
             //           return NotFound();
         }
 
+        [HttpPost]
+        [Route("GetCashBond")]
+        public string GetCashBond(string token)
+        {
+            //string type, string side
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string type = "";
+                string side = "";
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                    else if (c.Type == "side")
+                    {
+                        side = c.Value;
+                    }
+
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        List<CashTransferModel> cachlist = (from C in entity.cashTransfer
+                                                            join b in entity.banks on C.bankId equals b.bankId into jb
+                                                            join a in entity.agents on C.agentId equals a.agentId into ja
+                                                            join p in entity.pos on C.posId equals p.posId into jp
+                                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                            join u in entity.users on C.userId equals u.userId into ju
+                                                            join uc in entity.users on C.createUserId equals uc.userId into juc
+                                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                                            join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                                            from jbb in jb.DefaultIfEmpty()
+                                                            from jaa in ja.DefaultIfEmpty()
+                                                            from jpp in jp.DefaultIfEmpty()
+                                                            from juu in ju.DefaultIfEmpty()
+                                                            from jpcc in jpcr.DefaultIfEmpty()
+                                                            from jucc in juc.DefaultIfEmpty()
+                                                            from jcrd in jcr.DefaultIfEmpty()
+                                                            from jbbo in jbo.DefaultIfEmpty()
+                                                            from jssh in jsh.DefaultIfEmpty()
+                                                            select new CashTransferModel()
+                                                            {
+                                                                cashTransId = C.cashTransId,
+                                                                transType = C.transType,
+                                                                posId = C.posId,
+                                                                userId = C.userId,
+                                                                agentId = C.agentId,
+                                                                invId = C.invId,
+                                                                transNum = C.transNum,
+                                                                createDate = C.createDate,
+                                                                updateDate = C.updateDate,
+                                                                cash = C.cash,
+                                                                updateUserId = C.updateUserId,
+                                                                createUserId = C.createUserId,
+                                                                notes = C.notes,
+                                                                posIdCreator = C.posIdCreator,
+                                                                isConfirm = C.isConfirm,
+                                                                cashTransIdSource = C.cashTransIdSource,
+                                                                side = C.side,
+
+                                                                docName = C.docName,
+                                                                docNum = C.docNum,
+                                                                docImage = C.docImage,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
+                                                                agentName = jaa.name,
+                                                                usersName = juu.name,// side =u
+
+                                                                posName = jpp.name,
+                                                                posCreatorName = jpcc.name,
+                                                                processType = C.processType,
+                                                                cardId = C.cardId,
+                                                                bondId = C.bondId,
+                                                                usersLName = juu.lastname,// side =u
+                                                                createUserName = jucc.name,
+                                                                createUserLName = jucc.lastname,
+                                                                createUserJob = jucc.job,
+                                                                cardName = jcrd.name,
+                                                                bondDeserveDate = jbbo.deserveDate,
+                                                                bondIsRecieved = jbbo.isRecieved,
+                                                                shippingCompanyId = C.shippingCompanyId,
+                                                                shippingCompanyName = jssh.name
+
+                                                            }).Where(C => ((type == "all") ? true : C.transType == type) && ((side == "all") ? true : C.side == side)).ToList();
+
+
+
+                        return TokenManager.GenerateToken(cachlist);
+
+
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+            }
+
+
+        }
 
         [HttpPost]
         [Route("GetPayedByInvId")]

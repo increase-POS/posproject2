@@ -6061,8 +6061,8 @@ else
                                         select new
                                         {
 
-                                            // causeDestroy = IT.inventoryItemLocation.cause,
-                                            causeDestroy = IT.inventoryItemLocation.fallCause,
+                                            causeDestroy = IT.inventoryItemLocation.cause,
+                                            //causeDestroy = IT.inventoryItemLocation.fallCause,
                                             userdestroy = duu.username,
                                             //I.userId,
                                             itemName = ITEM.name,

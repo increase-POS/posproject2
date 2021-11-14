@@ -43,7 +43,5 @@ namespace POS_Server
         public virtual ICollection<itemsMaterials> itemsMaterials { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<itemsUnits> itemsUnits { get; set; }
-        public virtual users users { get; set; }
-        public virtual users users1 { get; set; }
     }
 }

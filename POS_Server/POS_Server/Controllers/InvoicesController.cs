@@ -2484,13 +2484,14 @@ var strP = TokenManager.GetPrincipal(token);
                 using (incposdbEntities entity = new incposdbEntities())
                     {
                         var set = entity.setting.Where(x => x.name == "Pur_inv_avg_count").FirstOrDefault();
-                
-                        var setvalue = entity.setValues.Where(x => x.settingId == (int)set.settingId).Select(x => x.value).Single();
+                        string invoiceNum = "0";
+                    if(set != null)
+                        invoiceNum = entity.setValues.Where(x => x.settingId == (int)set.settingId).Select(x => x.value).Single();
                 foreach (itemsTransfer item in newObject)
                         {
                             var itemId = entity.itemsUnits.Where(x => x.itemUnitId == (int)item.itemUnitId).Select(x => x.itemId).Single();
                   
-                    decimal price = GetAvgPrice((int)item.itemUnitId,(int)itemId,int.Parse(setvalue));
+                    decimal price = GetAvgPrice((int)item.itemUnitId,(int)itemId,int.Parse(invoiceNum));
                         var itemO = entity.items.Find(itemId);
                             itemO.avgPurchasePrice = price;
                            

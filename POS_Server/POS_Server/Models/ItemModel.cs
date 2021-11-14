@@ -27,7 +27,9 @@ namespace POS_Server.Models
         public Nullable<int> minUnitId { get; set; }
         public Nullable<int> maxUnitId { get; set; }
         public Boolean canDelete { get; set; }
+
         public Nullable<int> itemCount { get; set; }
+        public Nullable<decimal> avgPurchasePrice { get; set; }
 
         // new units and offers an is new
         //units
@@ -49,5 +51,6 @@ namespace POS_Server.Models
         public string parentName { get; set; }
         public string minUnitName { get; set; }
         public string maxUnitName { get; set; }
+        public bool canUpdate { get; set; }
     }
 }
