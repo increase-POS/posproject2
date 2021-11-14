@@ -330,6 +330,7 @@ namespace POS.View
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
+                exp_payment.IsExpanded = true;
 
                 dp_desrvedDate.SelectedDateChanged += this.dp_SelectedDateChanged;
                 dp_invoiceDate.SelectedDateChanged += this.dp_SelectedDateChanged;
@@ -3527,6 +3528,11 @@ namespace POS.View
         private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             _IsFocused = true;
+        }
+
+        private void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

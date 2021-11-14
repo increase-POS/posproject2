@@ -406,7 +406,7 @@ namespace POS.View
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
                 tb_moneyIcontheResst.Text = MainWindow.Currency;
-
+                exp_payment.IsExpanded = true;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -4925,6 +4925,11 @@ namespace POS.View
         private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
         {
                 _IsFocused = true;
+        }
+
+        private void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

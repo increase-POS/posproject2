@@ -293,6 +293,8 @@
     <Compile Include="converters\agentCompanyConverter.cs" />
     <Compile Include="converters\agentNameConverter.cs" />
     <Compile Include="converters\agentTypeConverter.cs" />
+    <Compile Include="converters\BooleanReverseConverter.cs" />
+    <Compile Include="converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />

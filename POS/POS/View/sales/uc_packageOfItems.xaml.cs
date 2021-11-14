@@ -174,7 +174,8 @@ namespace POS.View
                 }
                 translate();
                 #endregion
-
+                if (MainWindow.tax == 0)
+                    tb_taxes.Visibility = Visibility.Collapsed;
                 await fillCategories();
 
                 generateBarcode();

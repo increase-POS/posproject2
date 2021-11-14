@@ -164,56 +164,16 @@ namespace POS.View.windows
                 else if(isPurchase)
                 {
                     cashTrasnfer = new CashTransfer();
-                    //try
-                    //{
-                    //    cashTrasnfer.cash = decimal.Parse(tb_cash.Text);
-                    //}
-                    //catch
-                    //{
-                    //    cashTrasnfer.cash = 0;
-                    //}
-                    //if (cashTrasnfer.cash > 0)
-                    //{
-                    //    if (cashTrasnfer.cash + invoice.paid <= invoice.totalNet)
-                    //    {
-                    //        cashTrasnfer.agentId = invoice.agentId;
-                    //        cashTrasnfer.invId = invoice.invoiceId;
-                    //        cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                    //        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                    //        {
-                    //            //s = cb_paymentProcessType.Text + " : " + cashTrasnfer.cash;
-                    //            s = validateDuplicate(cashTrasnfer.cash.Value);
-                    //        }
-                    //        else if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                    //        {
-                    //            cashTrasnfer.cardId = _SelectedCard;
-                    //            cashTrasnfer.docNum = tb_processNum.Text;
 
-                    //            s = txt_card.Text + " : " + cashTrasnfer.cash;
-                    //        }
+                    ///////////////////////////////////////////////////
+                    cashTrasnfer.agentId = invoice.agentId;
+                    cashTrasnfer.invId = invoice.invoiceId;
+                    cashTrasnfer.processType = "balance";
+                    cashTrasnfer.cash = invoice.totalNet - invoice.paid;
+                    listPayments.Add(cashTrasnfer);
 
-
-                    //        lst_payments.Items.Add(s);
-                    //        listPayments.Add(cashTrasnfer);
-                    //        invoice.paid += cashTrasnfer.cash;
-                    //        txt_sum.Text = invoice.paid.ToString();
-
-
-                    //        if (invoice.paid == invoice.totalNet)
-                    //            txt_sum.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush;
-                    //        else
-                    //            txt_sum.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
-
-                    //        tb_cash.Text = (invoice.totalNet - invoice.paid).ToString();
-                    //    }
-                    //    else
-                    //    {
-                    //        p_errorCash.Visibility = Visibility.Visible;
-                    //        tt_errorCash.Content = MainWindow.resourcemanager.GetString("trAmountGreaterInvoiceValue");
-                    //        tb_cash.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#15FF0000"));
-                    //    }
-                    //}
-
+                    //lst_payments.Items.Add(s);
+                    ///////////////////////////////////////////////////
                     isOk = true;
                     this.Close();
                 }
