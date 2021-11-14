@@ -309,6 +309,7 @@ var strP = TokenManager.GetPrincipal(token);
                 string userName = "";
                 string password = "";
                 string branchName = "";
+                string branchCode = "";
                 string branchMobile = "";
                 string posName = "";
                 List<setValuesModel> newObject = null;
@@ -349,6 +350,10 @@ var strP = TokenManager.GetPrincipal(token);
                     else if (c.Type == "branchName")
                     {
                         branchName = c.Value;
+                    }
+                    else if (c.Type == "branchCode")
+                    {
+                        branchCode = c.Value;
                     }
                     else if (c.Type == "posName")
                     {
@@ -406,6 +411,7 @@ var strP = TokenManager.GetPrincipal(token);
                                 #region update branch
                                 var branch = entity.branches.Find(2);
                                 branch.name = branchName;
+                                branch.code = branchCode;
                                 branch.mobile = branchMobile;
                                 #endregion
                                 #region company info

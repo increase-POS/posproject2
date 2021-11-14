@@ -36,6 +36,6 @@ namespace POS_Server.Models
         public string fallCause { get; set; }
 
         public bool isFalls { get; set; }
-
+        public Nullable<decimal> avgPurchasePrice { get; set; }
     }
 }

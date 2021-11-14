@@ -84,8 +84,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetItemToDestroy")]
         public string GetItemToDestroy(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -134,6 +134,7 @@ var strP = TokenManager.GetPrincipal(token);
                                     itemType = u.items.type,
                                     inventoryDate = c.Inventory.createDate,
                                     inventoryNum = c.Inventory.num,
+                                    avgPurchasePrice = u.items.avgPurchasePrice,
                                 })
                        .ToList().OrderBy(x => x.location).ToList();
                      
@@ -145,8 +146,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetShortageItem")]
         public string GetShortageItem(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -196,6 +197,7 @@ var strP = TokenManager.GetPrincipal(token);
                                     itemType = u.items.type,
                                     inventoryDate = c.Inventory.createDate,
                                     inventoryNum = c.Inventory.num,
+                                    avgPurchasePrice = u.items.avgPurchasePrice,
                                 })
                        .ToList().OrderBy(x => x.location).ToList();
                      
@@ -342,9 +344,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("distroyItem")]
         public string distroyItem(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);

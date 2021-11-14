@@ -30,9 +30,9 @@ namespace POS_Server
     
         public virtual paperSize paperSize { get; set; }
         public virtual pos pos { get; set; }
+        public virtual posSerials posSerials { get; set; }
         public virtual printers printers { get; set; }
         public virtual printers printers1 { get; set; }
-        public virtual posSerials posSerials { get; set; }
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }
     }

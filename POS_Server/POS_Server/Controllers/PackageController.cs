@@ -132,65 +132,36 @@ namespace POS_Server.Controllers
         }
 
 
-        //
-        //[HttpPost]
-        //[Route("GetPackwithNames")]
-        //public IHttpActionResult GetPackwithNames()
-        //{
-        //    var re = Request;
-        //    var headers = re.Headers;
-        //    string token = "";
+        public List<int> canNotUpdatePack()
+        {
+
+            List<int> listg = new List<int>();
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+
+                var list = (from iu in entity.itemsUnits
+                            join it in entity.items on iu.itemId equals it.itemId
+                            join iuloc in entity.itemsLocations on iu.itemUnitId equals iuloc.itemUnitId
+
+                            where it.type == "p"
+                            select new
+                            {
+                                //piuId = iu.itemUnitId,
+                                //itemsLocId= iuloc.itemsLocId,
+                                it.itemId,
+                                //unitId=   iu.unitId,
+                                //type=it.type,
+                            }
 
 
-        //    if (headers.Contains("APIKey"))
-        //    {
-        //        token = headers.GetValues("APIKey").First();
-        //    }
-        //    Validation validation = new Validation();
-        //    bool valid = validation.CheckApiKey(token);
 
-        //    if (valid) // APIKey is valid
-        //    {
-        //        using (incposdbEntities entity = new incposdbEntities())
-        //        {
-        //            var List = (from S in entity.packages
-        //                        join CIU in entity.itemsUnits on S.childIUId equals CIU.itemUnitId
-        //                        join PIU in entity.itemsUnits on S.parentIUId equals PIU.itemUnitId
+                                           ).ToList();
+                listg = list.GroupBy(g => g.itemId).Select(x => x.First().itemId).ToList();
 
-        //                        select new PackageModel()
-        //                        {
-        //                            packageId = S.packageId,
-        //                            parentIUId = S.parentIUId,
-        //                            childIUId = S.childIUId,
-        //                            quantity = S.quantity,
-        //                            isActive = S.isActive,
-        //                            notes = S.notes,
-        //                            createUserId = S.createUserId,
-        //                            updateUserId = S.updateUserId,
-        //                            createDate = S.createDate,
-        //                            updateDate = S.updateDate,
-        //                            // parent
-        //                            pitemId=PIU.itemId,
-        //                            pitemName=PIU.items.name,
-        //                            punitId=PIU.unitId,
-        //                            punitName=PIU.units.name,
-        //                            // child
-        //                            citemId = CIU.itemId,
-        //                            citemName = CIU.items.name,
-        //                            cunitId = CIU.unitId,
-        //                           cunitName = CIU.units.name,
-
-        //                        }).ToList();
-
-        //            if (List == null)
-        //                return NotFound();
-        //            else
-        //                return Ok(List);
-        //        }
-        //    }
-        //    //else
-        //    return NotFound();
-        //}
+            }
+            return listg;
+        }
 
 
 
@@ -212,9 +183,11 @@ namespace POS_Server.Controllers
 
                 try
                 {
+                    List<int> noUpdateList = new List<int>();
                     using (incposdbEntities entity = new incposdbEntities())
                     {
 
+                        noUpdateList = canNotUpdatePack();
                         var List = (from I in entity.items
                                     join C in entity.categories on I.categoryId equals C.categoryId into JC
 
@@ -245,7 +218,7 @@ namespace POS_Server.Controllers
                                         categoryName = CC.name,
 
                                         canDelete = true,
-
+                                        canUpdate = noUpdateList.Contains(I.itemId) ? false : true,
 
 
                                     }).ToList();
