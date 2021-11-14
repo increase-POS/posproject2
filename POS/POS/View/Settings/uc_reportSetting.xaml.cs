@@ -237,6 +237,24 @@ namespace POS.View.Settings
             }
         }
 
-        
+        private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+
+        }
+
+        private void Tb_PreventSpaces(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
