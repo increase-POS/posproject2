@@ -93,7 +93,7 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                SectionData.clearValidate(tb_processNum, p_errorCard);
+                SectionData.clearValidate(tb_processNum, p_errorProcessNum);
                 SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
@@ -171,12 +171,10 @@ namespace POS.View.accounts
                         }
                         if (bond.isRecieved == 1)
                         {
-                            cashbondsQuery = await cashModel.GetCashTransferAsync("all", "bnd");
-                            // cashbondsQuery
+                            //cashbondsQuery = await cashModel.GetCashTransferAsync("all", "bnd");
+                            cashbondsQuery = await cashModel.GetCashBond("all", "bnd");
                             CashTransfer ca = new CashTransfer();
                             ca = cashbondsQuery.Where(c => c.bondId == bond.bondId).FirstOrDefault();
-                            //List<CashTransfer> ca1 = new List<CashTransfer>();////////////////////?????????
-                            //ca1 = cashbondsQuery.Where(c => c.bondId == bond.bondId).ToList();////?????????
                             cb_paymentProcessType.SelectedValue = ca.processType;
                             if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                             {
@@ -197,6 +195,7 @@ namespace POS.View.accounts
                                 tb_chequeProcessNum.Clear();
                                 gd_card.Visibility = Visibility.Collapsed;
                                 tb_chequeProcessNum.Visibility = Visibility.Collapsed;
+                                p_chequeProcessNum.Visibility = Visibility.Collapsed;
                             }
                         }
                         else
@@ -298,6 +297,7 @@ namespace POS.View.accounts
                             else if (tb_chequeProcessNum.IsVisible)
                                 cash.docNum = tb_chequeProcessNum.Text;
                             cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+
                             cash.bondId = bond.bondId;
 
                             if (cb_depositorV.IsVisible)
@@ -490,12 +490,15 @@ namespace POS.View.accounts
                 tb_amount.Clear();
                 tb_note.Clear();
                 btn_image.IsEnabled = false;
+                tb_chequeProcessNum.Clear();
+                tb_processNum.Clear();
+                gd_card.Visibility = Visibility.Collapsed;
+                p_chequeProcessNum.Visibility = Visibility.Collapsed;
 
                 cb_depositorV.SelectedIndex = -1;
                 cb_depositorC.SelectedIndex = -1;
                 cb_depositorU.SelectedIndex = -1;
                 cb_paymentProcessType.SelectedIndex = -1;
-                //cb_card.SelectedIndex = -1;
                 _SelectedCard =  -1;
                 dp_deservecDate.SelectedDate = null;
 
@@ -511,6 +514,7 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
                 SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                SectionData.clearValidate(tb_chequeProcessNum, p_chequeProcessNum);
                 SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
@@ -920,7 +924,11 @@ namespace POS.View.accounts
         }
         async Task<IEnumerable<Bonds>> RefreshBondsList()
         {
-            bonds = await bondModel.GetAll();
+            try
+            {
+                bonds = await bondModel.GetAll();
+            }
+            catch { }
             return bonds;
         }
 

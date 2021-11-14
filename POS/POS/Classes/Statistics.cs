@@ -3331,12 +3331,12 @@ namespace POS.Classes
                 row.invNumber = invnum;
                 if (row.transType == "d")
                 {
-                    if (!((row.processType == "doc")&&(row.Description1 == "Receipt")))
+                    //if (!((row.processType == "doc")&&(row.Description1 == "Receipt")))
                         rowtotal += (decimal)row.cash;
                 }
                 else if (row.transType == "p")
                 {// p
-                    if (!((row.processType == "doc") && (row.Description1 == "Receipt")))
+                    //if (!((row.processType == "doc") && (row.Description1 == "Receipt")))
                         rowtotal -= (decimal)row.cash;
                 }
                 row.cashTotal = rowtotal;

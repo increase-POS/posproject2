@@ -838,7 +838,11 @@ namespace POS.View.accounts
         }
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
-            cashes = await cashModel.GetCashTransferForPosAsync("all", "p");
+            try
+            {
+                cashes = await cashModel.GetCashTransferForPosAsync("all", "p");
+            }
+            catch { }
             return cashes;
         }
         void RefreshCashView()

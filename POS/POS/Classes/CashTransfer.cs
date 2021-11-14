@@ -199,6 +199,27 @@ namespace POS.Classes
             //}
 
         }
+        public async Task<List<CashTransfer>> GetCashBond(string type, string side)
+        {
+            // string type, string side
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type", type.ToString());
+            parameters.Add("side", side.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetCashBond", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+        }
 
         public async Task<CashTransfer> GetByInvId(int invId)
         {

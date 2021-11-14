@@ -155,6 +155,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 #region translate
@@ -258,6 +259,7 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         void InitializeCardsPic(IEnumerable<Card> cards)
         {
             #region cardImageLoad
@@ -830,6 +832,9 @@ namespace POS.View.accounts
                 cb_paymentProcessType.SelectedIndex = -1;
                 _SelectedCard = -1;
                 gd_card.Visibility = Visibility.Collapsed;
+                p_errorDocCard.Visibility = Visibility.Collapsed;
+                p_errorDocNum.Visibility = Visibility.Collapsed;
+                p_errorDocNumCheque.Visibility = Visibility.Collapsed;
                 tb_docNum.Clear();
                 tb_docNumCheque.Clear();
                 tb_docNumCard.Clear();
@@ -850,6 +855,7 @@ namespace POS.View.accounts
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
                 SectionData.clearValidate(tb_cash, p_errorCash);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
+                SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                 //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                 SectionData.clearComboBoxValidate(cb_depositTo, p_errorDepositTo);
                 SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
@@ -888,17 +894,22 @@ namespace POS.View.accounts
 
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
-            cashes = await cashModel.GetCashTransferAsync("p", "all");
-            cashes = cashes.Where(x => (x.processType != "balance"));
-            //if (selectedTab == 1)
-            //{
-            //    temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-            //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
-            //}
-            //else if (selectedTab == 3)
-            //{
-            //    temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
-            //}
+            try
+            {
+                //cashes = await cashModel.GetCashTransferAsync("p", "all");
+                cashes = await cashModel.GetCashBond("p", "all");
+                cashes = cashes.Where(x => (x.processType != "balance"));
+                //if (selectedTab == 1)
+                //{
+                //    temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+                //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+                //}
+                //else if (selectedTab == 3)
+                //{
+                //    temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+                //}
+            }
+            catch { }
             return cashes;
 
         }
