@@ -596,6 +596,7 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
 
 
                             </Grid.RowDefinitions>
@@ -797,7 +798,24 @@
                                 <TextBlock  Text="More Information" Foreground="#737373"  FontSize="10" VerticalAlignment="Center" x:Name="txt_moreInformation" Margin="5"/>
                                 <Separator Background="#999999"  Margin="5"  VerticalAlignment="Center" />
                             </DockPanel>
-                            <DockPanel Grid.Row="8"  Margin="10,5,10,5">
+
+                            <ComboBox x:Name="cb_payType"  Grid.Row="8" SelectedValue="{Binding payType, Mode=OneWay}"
+                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                  materialDesign:HintAssist.Hint="Default pay Type..."  
+                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  TextBlock.FontSize="12"   Background="#f8f8f8"
+                                  Grid.Column="0" Height="40"   Margin="10,5,10,5"
+                                  BorderBrush="#737373" BorderThickness="0"  />
+                            <Path Fill="#E81123" x:Name="p_errorDepositTo" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Row="8"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15" 
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                <Path.ToolTip>
+                                    <ToolTip x:Name="tt_errorDepositTo" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                </Path.ToolTip>
+                            </Path>
+
+                            <DockPanel Grid.Row="9"  Margin="10,5,10,5">
                                 <TextBlock   x:Name="txt_isCredit"
                                    Margin="0,0,5,0" Text="Credit" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
@@ -821,15 +839,15 @@
 
 
 
-                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                            <!--<Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>
                                     <ToolTip  x:Name="tt_error_details"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                 </Path.ToolTip>
-                            </Path>
-                            <TextBox x:Name="tb_notes" Grid.Row="9" Text="{Binding notes, Mode=OneWay}" Padding="10,0,5,0" 
+                            </Path>-->
+                            <TextBox x:Name="tb_notes" Grid.Row="10" Text="{Binding notes, Mode=OneWay}" Padding="10,0,5,0" 
                                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Note..."    
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
@@ -837,18 +855,10 @@
        
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                   Height="auto" MinHeight="65" Margin="10,5,10,5" 
-                                     TabIndex="13">
-                                <!--<TextBox.ToolTip>
-                                    <ToolTip x:Name="tt_notes" Content="Notes"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                                </TextBox.ToolTip>-->
-                            </TextBox>
+                                     TabIndex="13"/>
 
                             <Path Fill="#E81123" Stretch="Fill" Margin="15,12,15,5"
-                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
+                              HorizontalAlignment="Right" Grid.Row="10"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                 <Path.ToolTip>

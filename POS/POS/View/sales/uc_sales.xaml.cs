@@ -53,7 +53,6 @@ namespace POS.View
             btn_offer.Content = MainWindow.resourcemanager.GetString("trOffer");
             btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");
 
-            btn_package.Content = MainWindow.resourcemanager.GetString("trPackage");
             btn_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
             btn_salesOrders.Content = MainWindow.resourcemanager.GetString("trOrders");
             btn_membership.Content = MainWindow.resourcemanager.GetString("trMembership");
@@ -145,8 +144,6 @@ namespace POS.View
             btn_offer.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_offer.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_package.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_package.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             btn_quotation.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_quotation.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -229,21 +226,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_package_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                refreashBachgroundClick(btn_package);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(uc_packageOfItems.Instance);
-                Button button = sender as Button;
-                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+       
 
         private void Btn_quotations_Click(object sender, RoutedEventArgs e)
         {

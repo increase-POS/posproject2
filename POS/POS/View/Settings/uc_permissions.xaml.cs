@@ -896,12 +896,16 @@ namespace POS.View.Settings
             {
                 path_categories.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_item.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_package.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_service.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_properties.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_units.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_storageCost.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
-                txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_categories.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_item.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+                txt_package.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_service.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_properties.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_units.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_storageCost.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -943,7 +947,6 @@ namespace POS.View.Settings
                 path_reciptInvoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_coupon.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_offer.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                path_package.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             //path_medals.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_salesStatistic.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -953,7 +956,6 @@ namespace POS.View.Settings
                 txt_reciptInvoice.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_coupon.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_offer.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
-                txt_package.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
                 txt_quotation.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             //txt_medals.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_salesStatistic.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -1070,7 +1072,9 @@ namespace POS.View.Settings
                 txt_categories.Text = MainWindow.resourcemanager.GetString("trCategories");
                 txt_properties.Text = MainWindow.resourcemanager.GetString("trProperties");
                 txt_item.Text = MainWindow.resourcemanager.GetString("trItems");
-                txt_units.Text = MainWindow.resourcemanager.GetString("trUnits");
+            txt_package.Text = MainWindow.resourcemanager.GetString("trPackage");
+            txt_service.Text = MainWindow.resourcemanager.GetString("trService");
+            txt_units.Text = MainWindow.resourcemanager.GetString("trUnits");
             txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
 
             txt_locations.Text = MainWindow.resourcemanager.GetString("trLocation");
@@ -1101,7 +1105,7 @@ namespace POS.View.Settings
             txt_reciptInvoice.Text = MainWindow.resourcemanager.GetString("trInvoice");
                 txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
                 txt_offer.Text = MainWindow.resourcemanager.GetString("trOffer");
-            txt_package.Text = MainWindow.resourcemanager.GetString("trPackage");
+            
             txt_quotation.Text = MainWindow.resourcemanager.GetString("trQuotations");
             txt_salesOrders.Text = MainWindow.resourcemanager.GetString("trOrders");
 

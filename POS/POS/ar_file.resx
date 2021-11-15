@@ -2737,4 +2737,10 @@
   <data name="trTheRemine" xml:space="preserve">
     <value>الباقي</value>
   </data>
+  <data name="trCost" xml:space="preserve">
+    <value>التكلفة</value>
+  </data>
+  <data name="trDefaultPayType" xml:space="preserve">
+    <value>طريقة الدفع الافتراضية</value>
+  </data>
 </root>

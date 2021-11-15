@@ -597,7 +597,7 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="col_num"         Width="*" Header="Num"         Binding="{Binding transNum}"/>
+                        <DataGridTextColumn x:Name="col_num"         Width="*" Header="Num"        Binding="{Binding transNum}"/>
                         <DataGridTextColumn x:Name="col_date"        Width="*" Header="Date"        Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter}}"/>
                         <DataGridTextColumn x:Name="col_proccesType" Width="*" Header="Description" Binding="{Binding Description1}"/>
                         <DataGridTextColumn                          Width="*" Header="Payment"     Binding="{Binding Description,Converter={StaticResource processTypeConverter}}"/>
@@ -606,12 +606,10 @@
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Description1}" Value="Payment receipt">
+                                <DataTrigger Binding="{Binding isRecieved}" Value="0">
                                     <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Description1}" Value="إيصال دفع">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
+                                 
                             </Style.Triggers>
                         </Style>
                     </DataGrid.RowStyle>

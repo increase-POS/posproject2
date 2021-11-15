@@ -11,11 +11,7 @@ namespace POS.converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is Boolean && (bool)value)
-            {
-                return !(bool)value;
-            }
-            return value;
+            return !(bool) value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

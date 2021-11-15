@@ -354,6 +354,9 @@
     <Compile Include="View\accounts\uc_subscriptions.xaml.cs">
       <DependentUpon>uc_subscriptions.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\catalog\uc_serviceItem.xaml.cs">
+      <DependentUpon>uc_serviceItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\catalog\uc_storageCost.xaml.cs">
       <DependentUpon>uc_storageCost.xaml</DependentUpon>
     </Compile>
@@ -556,7 +559,7 @@
     <Compile Include="View\sales\uc_offer.xaml.cs">
       <DependentUpon>uc_offer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\sales\uc_packageOfItems.xaml.cs">
+    <Compile Include="View\catalog\uc_packageOfItems.xaml.cs">
       <DependentUpon>uc_packageOfItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\purchases\uc_payInvoice.xaml.cs">
@@ -798,6 +801,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\accounts\uc_subscriptions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\catalog\uc_serviceItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1073,7 +1080,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\sales\uc_packageOfItems.xaml">
+    <Page Include="View\catalog\uc_packageOfItems.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

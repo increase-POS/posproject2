@@ -1186,6 +1186,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to التكلفة.
+        /// </summary>
+        internal static string trCost {
+            get {
+                return ResourceManager.GetString("trCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العدد.
         /// </summary>
         internal static string trCount {
@@ -1434,6 +1443,15 @@ namespace POS {
         internal static string trDays {
             get {
                 return ResourceManager.GetString("trDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طريقة الدفع الافتراضية.
+        /// </summary>
+        internal static string trDefaultPayType {
+            get {
+                return ResourceManager.GetString("trDefaultPayType", resourceCulture);
             }
         }
         

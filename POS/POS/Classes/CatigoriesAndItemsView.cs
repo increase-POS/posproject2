@@ -1,6 +1,7 @@
 ﻿using POS.Classes;
 using POS.controlTemplate;
 using POS.View;
+using POS.View.catalog;
 using POS.View.storage;
 using POS.View.windows;
 using System;
@@ -30,6 +31,7 @@ namespace POS.Classes
         public uc_itemsDestroy ucItemsDestroy;
         public uc_receiptOfPurchaseInvoice ucreceiptOfPurchaseInvoice;
         public uc_packageOfItems ucPackageOfItems;
+        public uc_serviceItem ucServiceItem;
         public UC_users ucUsers;
         public UC_vendors ucVendors;
         public UC_Customer ucCustomer;
@@ -45,6 +47,7 @@ namespace POS.Classes
         private int _idItemsDestroy;
         private int _idReceiptOfPurchaseInvoice;
         private int _idPackageOfItems;
+        private int _idServiceItem;
         private int _idUsers;
         private int _idCustomer;
         private int _idVendors;
@@ -110,6 +113,14 @@ namespace POS.Classes
             get => _idPackageOfItems; set
             {
                 _idPackageOfItems = value;
+                INotifyPropertyChangedIdCatigorieItems();
+            }
+        }
+        public int idServiceItem
+        {
+            get => _idServiceItem; set
+            {
+                _idServiceItem = value;
                 INotifyPropertyChangedIdCatigorieItems();
             }
         }
@@ -186,6 +197,11 @@ namespace POS.Classes
                 await ucPackageOfItems.ChangeCategoryIdEvent(idCatigories);
 
             }
+            else if (ucServiceItem != null)
+            {
+                await ucServiceItem.ChangeCategoryIdEvent(idCatigories);
+
+            }
             else if (wdItems != null)
             {
                 await wdItems.ChangeCategoryIdEvent(idCatigories);
@@ -224,6 +240,11 @@ namespace POS.Classes
             else if (ucPackageOfItems != null)
             {
                 await ucPackageOfItems.ChangeItemIdEvent(idItem);
+
+            }
+            else if (ucServiceItem != null)
+            {
+                await ucServiceItem.ChangeItemIdEvent(idItem);
 
             }
             else if (ucUsers != null)
