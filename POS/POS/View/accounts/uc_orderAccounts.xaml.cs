@@ -144,7 +144,7 @@ namespace POS.View.accounts
                 new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
                 new { Text = MainWindow.resourcemanager.GetString("trDocument")   , Value = "doc" },
                 new { Text = MainWindow.resourcemanager.GetString("trCheque")     , Value = "cheque" },
-                new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" }
+                new { Text = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods") , Value = "card" }
                  };
                 cb_paymentProcessType.DisplayMemberPath = "Text";
                 cb_paymentProcessType.SelectedValuePath = "Value";

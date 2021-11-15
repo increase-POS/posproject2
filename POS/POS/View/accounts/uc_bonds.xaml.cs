@@ -694,7 +694,7 @@ namespace POS.View.accounts
                 var typelist = new[] {
                 new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
                 new { Text = MainWindow.resourcemanager.GetString("trCheque")     , Value = "cheque" },
-                new { Text = MainWindow.resourcemanager.GetString("trCreditCard") , Value = "card" },
+                new { Text = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods") , Value = "card" },
                  };
                 cb_paymentProcessType.DisplayMemberPath = "Text";
                 cb_paymentProcessType.SelectedValuePath = "Value";
@@ -1095,7 +1095,7 @@ buildbondDocReport();
                     {
                         case "cash": processType = MainWindow.resourcemanagerreport.GetString("trCash"); break;
                         case "cheque": processType = MainWindow.resourcemanagerreport.GetString("trCheque"); break;
-                        case "card": processType = MainWindow.resourcemanagerreport.GetString("trCreditCard"); break;
+                        case "card": processType = MainWindow.resourcemanagerreport.GetString("trAnotherPaymentMethods"); break;
                     }
 
                     if (ca.processType=="card")

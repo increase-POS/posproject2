@@ -1,4 +1,4 @@
-﻿E:\GitHub\posproject2\POS\POS\obj\Debug\GeneratedInternalTypeHelper.g.cs
+﻿
 FE:\GitHub\posproject2\POS\POS\App.xaml;;
 FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_rectangleCard.xaml;;
 FE:\GitHub\posproject2\POS\POS\controlTemplate\UC_squareCard.xaml;;
@@ -11,6 +11,7 @@ FE:\GitHub\posproject2\POS\POS\View\accounts\uc_paymentsAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_posAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_receivedAccounts.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\accounts\uc_subscriptions.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\catalog\uc_serviceItem.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\catalog\uc_storageCost.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\catalog\win_lvcCatalog.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\purchases\uc_purchaseOrder.xaml;;
@@ -79,7 +80,7 @@ FE:\GitHub\posproject2\POS\POS\View\home\uc_home.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\catalog\UC_item.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\storage\uc_locations.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\sales\uc_offer.xaml;;
-FE:\GitHub\posproject2\POS\POS\View\sales\uc_packageOfItems.xaml;;
+FE:\GitHub\posproject2\POS\POS\View\catalog\uc_packageOfItems.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\purchases\uc_payInvoice.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\catalog\UC_porperty.xaml;;
 FE:\GitHub\posproject2\POS\POS\View\sectionData\UC_pos.xaml;;

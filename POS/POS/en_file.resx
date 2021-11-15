@@ -2752,4 +2752,10 @@ Please add Email in setting</value>
   <data name="trTheRemine" xml:space="preserve">
     <value>The remine</value>
   </data>
+  <data name="trCost" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="trDefaultPayType" xml:space="preserve">
+    <value>Default pay type</value>
+  </data>
 </root>

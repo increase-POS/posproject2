@@ -637,7 +637,7 @@ namespace POS.View.reports
                     case "doc": s = MainWindow.resourcemanager.GetString("trDocument"); break;
                     case "cheque": s = MainWindow.resourcemanager.GetString("trCheque"); break;
                     case "balance": s = MainWindow.resourcemanager.GetString("trCredit"); break;
-                    case "card": s = MainWindow.resourcemanager.GetString("trCreditCard"); break;
+                    case "card": s = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods"); break;
                     case "inv": s = MainWindow.resourcemanager.GetString("trInv"); break;
                 }
                 titles[t] = s;
@@ -821,7 +821,7 @@ namespace POS.View.reports
             {
                 Values = card.AsChartValues(),
                 DataLabels = true,
-                Title = MainWindow.resourcemanager.GetString("trCreditCard")
+                Title = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods")
             });
             columnChartData.Add(
             new StackedColumnSeries
@@ -966,7 +966,7 @@ namespace POS.View.reports
          new LineSeries
          {
              Values = card.AsChartValues(),
-             Title = MainWindow.resourcemanager.GetString("trCreditCard")
+             Title = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods")
          });
             rowChartData.Add(
         new LineSeries

@@ -29,28 +29,27 @@ using System.Windows.Media.Animation;
 using Zen.Barcode;
 using POS.View.windows;
 using Microsoft.Reporting.WinForms;
-using POS.View.sales;
 
-namespace POS.View
+namespace POS.View.catalog
 {
     /// <summary>
-    /// Interaction logic for uc_packageOfItems.xaml
+    /// Interaction logic for uc_serviceItem.xaml
     /// </summary>
-    public partial class uc_packageOfItems : UserControl
+    public partial class uc_serviceItem : UserControl
     {
-        string basicsPermission = "package_basics";
-        string itemsPermission = "package_items";
-        private static uc_packageOfItems _instance;
-        public static uc_packageOfItems Instance
+        
+        string basicsPermission = "service_basics";
+        private static uc_serviceItem _instance;
+        public static uc_serviceItem Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_packageOfItems();
+                    _instance = new uc_serviceItem();
                 return _instance;
             }
         }
-        public uc_packageOfItems()
+        public uc_serviceItem()
         {
             try
             {
@@ -90,44 +89,25 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         Category categoryModel = new Category();
         List<Category> categories;
         static private int _InternalCounter = 0;
         List<ItemUnit> barcodesList;
         ItemUnit itemUnitModel = new ItemUnit();
-
         // item object
         Item item = new Item();
         // item unit object
         ItemUnit itemUnit = new ItemUnit();
         OpenFileDialog openFileDialog = new OpenFileDialog();
-
         Item itemModel = new Item();
         Unit unitModel = new Unit();
-        Property propertyModel = new Property();
-        PropertiesItems propItemsModel = new PropertiesItems();
-        ItemsProp itemsPropModel = new ItemsProp();
-        Serial serialModel = new Serial();
-        Service serviceModel = new Service();
         IEnumerable<Category> categoriesQuery;
         IEnumerable<Item> items;
         IEnumerable<Item> itemsQuery;
         Category category = new Category();
-        // item object
-        //item property value object
         ItemsProp itemProp = new ItemsProp();
-        // serial object
-        Serial serial = new Serial();
-        // item unit object
-        // service object
-        Service service = new Service();
-        //string selectedType = "";
-
         ImageBrush brush = new ImageBrush();
-
         DataGrid dt = new DataGrid();
-
         List<int> categoryIds = new List<int>();
         List<string> categoryNames = new List<string>();
         //List<Property> properties;
@@ -142,9 +122,10 @@ namespace POS.View
         int? categoryParentId = 0;
         public string txtItemSearch;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
-
         List<int> unitIds = new List<int>();
         List<string> unitNames = new List<string>();
+        int unitServiceId = 0;
+
         // report
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -156,10 +137,10 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
-                btn_items.IsEnabled = false;
+                //btn_items.IsEnabled = false;
 
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
-                catigoriesAndItemsView.ucPackageOfItems = this;
+                catigoriesAndItemsView.ucServiceItem = this;
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -185,8 +166,8 @@ namespace POS.View
                 SectionData.clearValidate(tb_code, p_errorCode);
 
                 units = await unitModel.Get();
-                var uQuery = units.Where(u => u.name == "package").FirstOrDefault();
-                unitpackageId = uQuery.unitId;
+                var uQuery = units.Where(u => u.name == "service").FirstOrDefault();
+                unitServiceId = uQuery.unitId;
 
                 await RefrishCategoriesCard();
                 Txb_searchitems_TextChanged(null, null);
@@ -227,7 +208,6 @@ namespace POS.View
             //generate bitmap
             img_barcode.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(serial_bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
-
         private void btn_clear_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -236,7 +216,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 //clear
-                btn_items.IsEnabled = false;
+                //btn_items.IsEnabled = false;
 
                 tb_code.Clear();
                 tb_name.Clear();
@@ -245,6 +225,7 @@ namespace POS.View
                 tb_taxes.Clear();
                 item = new Item();
                 tb_price.Clear();
+                tb_cost.Clear();
                 // set random barcode on image
                 generateBarcode();
                 //itemUnit = new ItemUnit();
@@ -254,6 +235,7 @@ namespace POS.View
                 SectionData.clearComboBoxValidate(cb_categorie, p_errorCategorie);
                 SectionData.clearValidate(tb_taxes, p_errorTaxes);
                 SectionData.clearValidate(tb_price, p_errorPrice);
+                SectionData.clearValidate(tb_cost, p_errorPrice);
 
                 clearImg();
 
@@ -267,7 +249,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void clearImg()
         {
             //clear img
@@ -277,7 +258,6 @@ namespace POS.View
             brush.ImageSource = temp;
             img_item.Background = brush;
         }
-
         static public string generateRandomBarcode()
         {
             var now = DateTime.Now;
@@ -296,10 +276,9 @@ namespace POS.View
             cb_categorie.SelectedValuePath = "categoryId";
             cb_categorie.DisplayMemberPath = "name";
         }
-
         private void translate()
         {
-            txt_package.Text = MainWindow.resourcemanager.GetString("trPackage");
+            txt_service.Text = MainWindow.resourcemanager.GetString("trService");
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trBaseInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_searchitems, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
@@ -311,10 +290,12 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxesHint"));
 
             txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarCode");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cost, MainWindow.resourcemanager.GetString("trCost"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPrice"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
 
-            btn_items.Content = MainWindow.resourcemanager.GetString("trItems");
+            //btn_items.Content = MainWindow.resourcemanager.GetString("trItems");
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -337,7 +318,6 @@ namespace POS.View
             tt_grid.Content = MainWindow.resourcemanager.GetString("trViewGrid");
             tt_items.Content = MainWindow.resourcemanager.GetString("trViewItems");
         }
-
         private void tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
@@ -357,7 +337,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void tb_upperLimit_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -370,7 +349,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void tb_barcode_Generate(object sender, KeyEventArgs e)
         {
             try
@@ -406,7 +384,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         #region Categor and Item
 
         #region Refrish Y
@@ -453,7 +430,7 @@ namespace POS.View
             if (category.categoryId == 0)
                 items = await packageModel.GetPackages();
             else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            items = items.Where(x => x.type == "p");
+            items = items.Where(x => x.type == "sr");
             return items;
         }
 
@@ -506,22 +483,24 @@ namespace POS.View
                 }
                 if (item != null)
                 {
-                    btn_items.IsEnabled = true;
+                    //btn_items.IsEnabled = true;
                     cb_categorie.SelectedValue = item.categoryId;
                     List<ItemUnit> itemUnits = new List<ItemUnit>();
                     itemUnits = await itemUnitModel.Getall();
-                    var uQuery = itemUnits.Where(iu => iu.itemId == item.itemId && iu.unitId == unitpackageId).FirstOrDefault();
+                    var uQuery = itemUnits.Where(iu => iu.itemId == item.itemId && iu.unitId == unitServiceId).FirstOrDefault();
                     if (uQuery != null)
                     {
                         itemUnitId = uQuery.itemUnitId;
                         tb_taxes.Text = SectionData.DecTostring(item.taxes);
                         //tb_price.Text = uQuery.price.ToString();
                         tb_price.Text = SectionData.DecTostring(uQuery.price);
+                        //tb_cost.Text = SectionData.DecTostring(uQuery.avgPurchasePrice);
                         tb_barcode.Text = uQuery.barcode;
                     }
                     else
                     {
                         tb_price.Text = "";
+                        tb_cost.Text = "";
                         tb_barcode.Text = "";
                     }
                     getImg();
@@ -591,21 +570,23 @@ namespace POS.View
             if (item != null)
             {
                 this.DataContext = item;
-                btn_items.IsEnabled = true;
+                //btn_items.IsEnabled = true;
                 cb_categorie.SelectedValue = item.categoryId;
                 List<ItemUnit> itemUnits = new List<ItemUnit>();
                 itemUnits = await itemUnitModel.Getall();
-                var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitpackageId).FirstOrDefault();
+                var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitServiceId).FirstOrDefault();
                 if (uQuery != null)
                 {
                     itemUnitId = uQuery.itemUnitId;
                     //tb_price.Text = uQuery.price.ToString();
                     tb_price.Text = SectionData.DecTostring(uQuery.price);
+                    //tb_cost.Text = SectionData.DecTostring(uQuery.avgPurchasePrice);
                     tb_barcode.Text = uQuery.barcode;
                 }
                 else
                 {
                     tb_price.Text = "";
+                    tb_cost.Text = "";
                     tb_barcode.Text = "";
                 }
                 getImg();
@@ -1043,7 +1024,7 @@ namespace POS.View
         #endregion
         #region Excel
 
-        public void ExcelPackage()
+        public void ExcelService()
         {
 
             BuildReport();
@@ -1064,12 +1045,12 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     Thread t1 = new Thread(() =>
                     {
-                        ExcelPackage();
+                        ExcelService();
 
                     });
                     t1.Start();
@@ -1107,7 +1088,6 @@ namespace POS.View
             ExportToExcel.Export(DTForExcel);
         }
         #endregion
-
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1133,7 +1113,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
             try
@@ -1142,7 +1121,7 @@ namespace POS.View
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
                 var txb = sender as TextBox;
-                if ((sender as TextBox).Name == "tb_taxes" || (sender as TextBox).Name == "tb_price")
+                if ((sender as TextBox).Name == "tb_taxes" || (sender as TextBox).Name == "tb_price"|| (sender as TextBox).Name == "tb_cost")
                     SectionData.InputJustNumber(ref txb);
             }
             catch (Exception ex)
@@ -1150,7 +1129,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
@@ -1163,7 +1141,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
             try
@@ -1175,7 +1152,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void validateEmpty(string name, object sender)
         {
             try
@@ -1190,6 +1166,8 @@ namespace POS.View
                     //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
                     else if ((sender as TextBox).Name == "tb_price")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorPrice, tt_errorPrice, "trEmptyPrice");
+                    else if ((sender as TextBox).Name == "tb_cost")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorPrice, tt_errorPrice, "trEmptyError");
                 }
                 else if (name == "ComboBox")
                 {
@@ -1202,7 +1180,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             try
@@ -1220,7 +1197,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_EnglishAndDigits_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             try
@@ -1236,7 +1212,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        int unitpackageId = 0;
         private async void Btn_add_Click(object sender, RoutedEventArgs e)
         {//add
             try
@@ -1258,6 +1233,10 @@ namespace POS.View
                     if (tb_price.Text != "")
                         price = decimal.Parse(tb_price.Text);
 
+                    decimal cost = 0;
+                    if (tb_cost.Text != "")
+                        cost = decimal.Parse(tb_cost.Text);
+
                     if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) &&
                         //(!tb_taxes.Text.Equals("")) && 
                         (!tb_price.Text.Equals("")) &&
@@ -1268,9 +1247,10 @@ namespace POS.View
                         item.code = tb_code.Text;
                         item.name = tb_name.Text;
                         item.details = tb_details.Text;
-                        item.type = "p";
+                        item.type = "sr";
                         item.image = "";
                         item.taxes = tax;
+                        item.avgPurchasePrice = cost;
                         item.min = 0;
                         item.max = 0;
                         item.minUnitId = 1;
@@ -1296,7 +1276,8 @@ namespace POS.View
                         //itemunit record
                         itemUnit = new ItemUnit();
                         itemUnit.itemId = itemId;
-                        itemUnit.unitId = unitpackageId;
+                        itemUnit.unitId = unitServiceId;
+                        //itemUnit.avgPurchasePrice = cost;
                         itemUnit.price = price;
                         itemUnit.defaultPurchase = 1;
                         itemUnit.defaultSale = 1;
@@ -1306,7 +1287,7 @@ namespace POS.View
                         itemUnit.barcode = tb_barcode.Text;
                         itemUnit.createUserId = MainWindow.userID;
 
-                      int s = await itemUnitModel.saveItemUnit(itemUnit);
+                        int s = await itemUnitModel.saveItemUnit(itemUnit);
 
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
@@ -1350,6 +1331,10 @@ namespace POS.View
                     if (tb_price.Text != "")
                         price = decimal.Parse(tb_price.Text);
 
+                      decimal cost = 0;
+                    if (tb_cost.Text != "")
+                        cost = decimal.Parse(tb_cost.Text);
+
                     if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) &&
                         //(!tb_taxes.Text.Equals("")) && 
                         (!tb_price.Text.Equals("")) &&
@@ -1358,9 +1343,10 @@ namespace POS.View
                         item.code = tb_code.Text;
                         item.name = tb_name.Text;
                         item.details = tb_details.Text;
-                        item.type = "p";
+                        item.type = "sr";
                         item.image = "";
                         item.taxes = tax;
+                        item.avgPurchasePrice = cost;
                         //item.isActive = 1;
                         item.categoryId = Convert.ToInt32(cb_categorie.SelectedValue);
                         item.createUserId = MainWindow.userID;
@@ -1381,23 +1367,24 @@ namespace POS.View
 
                         List<ItemUnit> itemUnits = new List<ItemUnit>();
                         itemUnits = await itemUnitModel.Getall();
-                        var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitpackageId).FirstOrDefault();
+                        var uQuery = itemUnits.Where(iu => iu.itemId == itemId && iu.unitId == unitServiceId).FirstOrDefault();
                         int itemUnitId = 0;
                         if (uQuery != null)
                         {
                             itemUnitId = uQuery.itemUnitId;
-                            itemUnit= uQuery;
+                            itemUnit = uQuery;
                         }
 
                         //itemunit record
                         itemUnit.itemUnitId = itemUnitId;
                         itemUnit.itemId = itemId;
-                        itemUnit.unitId = unitpackageId;
+                        itemUnit.unitId = unitServiceId;
+                        //itemUnit.avgPurchasePrice = cost;
                         itemUnit.price = price;
                         itemUnit.barcode = tb_barcode.Text;
                         itemUnit.updateUserId = MainWindow.userID;
 
-                       int s = await itemUnitModel.saveItemUnit(itemUnit);
+                        int s = await itemUnitModel.saveItemUnit(itemUnit);
 
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
@@ -1467,7 +1454,7 @@ namespace POS.View
 
                                 else if (b == -1)
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
-                                else  
+                                else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }
@@ -1507,7 +1494,6 @@ namespace POS.View
             await RefrishItems();
             Txb_searchitems_TextChanged(null, null);
         }
-
         private async Task<Boolean> checkCodeAvailabiltiy(string code)
         {
             List<Item> items = await itemModel.GetAllItems();
@@ -1530,7 +1516,6 @@ namespace POS.View
             }
 
         }
-
         private void validateEmptyEntries()
         {
             //chk empty code
@@ -1543,8 +1528,8 @@ namespace POS.View
             //SectionData.validateEmptyTextBox(tb_taxes, p_errorTaxes, tt_errorTaxes, "trEmptyTax");
             //chk empty price
             SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trEmptyPrice");
+            SectionData.validateEmptyTextBox(tb_cost, p_errorCost, tt_errorCost, "trEmptyError");
         }
-
         private void Img_item_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1569,46 +1554,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-     
-        private void Btn_items_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                //items
-                if (MainWindow.groupObject.HasPermissionAction(itemsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-                    SectionData.clearValidate(tb_code, p_errorCode);
-
-                    Window.GetWindow(this).Opacity = 0.2;
-
-                    wd_itemsUnitList w = new wd_itemsUnitList();
-
-                    w.itemId = item.itemId;
-                    w.itemUnitId = itemUnitId;
-                    w.CallerName = "";
-                    w.ShowDialog();
-                    if (w.isActive)
-                    {
-
-                    }
-
-                    Window.GetWindow(this).Opacity = 1;
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -1633,7 +1578,7 @@ namespace POS.View
 
             rep.Refresh();
         }
-        public void pdfpackage()
+        public void pdfService()
         {
 
             BuildReport();
@@ -1649,7 +1594,6 @@ namespace POS.View
                 }
             });
         }
-
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -1662,7 +1606,7 @@ namespace POS.View
                     /////////////////////////////////////
                     Thread t1 = new Thread(() =>
                     {
-                        pdfpackage();
+                        pdfService();
                     });
                     t1.Start();
                     //////////////////////////////////////
@@ -1679,8 +1623,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        public void printpackage()
+        public void printService()
         {
             BuildReport();
 
@@ -1701,7 +1644,7 @@ namespace POS.View
                     /////////////////////////////////////
                     Thread t1 = new Thread(() =>
                     {
-                        printpackage();
+                        printService();
                     });
                     t1.Start();
                     //////////////////////////////////////
@@ -1720,7 +1663,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_pieChart_Click(object sender, RoutedEventArgs e)
         {//pie
             try
@@ -1732,7 +1674,7 @@ namespace POS.View
                 {
                     #region
                     Window.GetWindow(this).Opacity = 0.2;
-                    win_lvcSales win = new win_lvcSales(itemsQuery, 3);
+                    win_lvcCatalog win = new win_lvcCatalog(itemsQuery, 3);
                     win.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
                     #endregion
@@ -1749,7 +1691,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {//preview
             try

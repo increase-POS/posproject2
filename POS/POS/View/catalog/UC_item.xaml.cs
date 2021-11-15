@@ -1684,7 +1684,7 @@ namespace POS.View
         private async Task fillUnits()
         {
             units = await unitModel.Get();
-            units = units.Skip(1).ToList();
+            units = units.Where(u => u.name != "package" && u.name != "service").ToList();
             cb_minUnit.ItemsSource = units.ToList();
             cb_minUnit.SelectedValuePath = "unitId";
             cb_minUnit.DisplayMemberPath = "name";
@@ -1700,7 +1700,7 @@ namespace POS.View
         private async Task fillSmallUnits(int itemId, int unitId)
         {
             List<Unit> units = await unitModel.getSmallUnits(itemId, unitId);
-            cb_unit.ItemsSource = units.Where(x => x.name != "package" ).ToList();
+            cb_unit.ItemsSource = units.Where(x => x.name != "package" && x.name != "service").ToList();
             cb_unit.SelectedValuePath = "unitId";
             cb_unit.DisplayMemberPath = "name";
         }

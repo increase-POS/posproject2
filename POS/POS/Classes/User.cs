@@ -40,6 +40,7 @@ namespace POS.Classes
         public short? isActive { get; set; }
         public string notes { get; set; }
         public byte? isOnline { get; set; }
+        public bool? isAdmin { get; set; }
         public string role { get; set; }
         public Boolean canDelete { get; set; }
         public string image { get; set; }

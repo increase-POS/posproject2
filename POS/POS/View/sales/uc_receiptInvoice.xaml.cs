@@ -45,6 +45,7 @@ namespace POS.View
         string executeOrderPermission = "reciptInvoice_executeOrder";
         string quotationPermission = "reciptInvoice_quotation";
         string sendEmailPermission = "reciptInvoice_sendEmail";
+        string printCountPermission = "reciptInvoice_printCount";
 
         private static uc_receiptInvoice _instance;
         public static uc_receiptInvoice Instance

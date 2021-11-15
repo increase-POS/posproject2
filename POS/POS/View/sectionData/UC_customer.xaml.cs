@@ -191,8 +191,9 @@ namespace POS.View
                 tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
                 tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
                 txt_deleteButton.Text = MainWindow.resourcemanager.GetString("trDelete");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_payType, MainWindow.resourcemanager.GetString("trDefaultPayType"));
 
-                dg_customer.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
+            dg_customer.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
                 dg_customer.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
                 dg_customer.Columns[2].Header = MainWindow.resourcemanager.GetString("trCompany");
                 dg_customer.Columns[3].Header = MainWindow.resourcemanager.GetString("trMobile");
@@ -300,6 +301,12 @@ namespace POS.View
                     decimal maxDeserveValue = 0;
                     if (!tb_upperLimit.Text.Equals(""))
                         maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+                    //payType
+                    string payType = "";
+                    if (cb_payType.SelectedIndex != -1)
+                        payType = cb_payType.SelectedValue.ToString();
+
                     #endregion
 
                     if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
@@ -320,6 +327,7 @@ namespace POS.View
                             agent.type = "c";
                             agent.accType = "";
                             agent.balance = 0;
+                            agent.payType = payType;
                             agent.isLimited =(bool) tgl_hasCredit.IsChecked;
 
                             agent.createUserId = MainWindow.userID;
@@ -410,7 +418,7 @@ namespace POS.View
                 await RefreshCity();
                 await fillCountries();
                 await fillCity();
-
+                SectionData.FillDefaultPayType(cb_payType);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 Keyboard.Focus(tb_name);
@@ -422,7 +430,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+       
         private async void Btn_update_Click(object sender, RoutedEventArgs e)
         {//update
             try
@@ -453,6 +461,11 @@ namespace POS.View
                     decimal maxDeserveValue = 0;
                     if (!tb_upperLimit.Text.Equals(""))
                         maxDeserveValue = decimal.Parse(tb_upperLimit.Text);
+
+                    //payType
+                    string payType = "";
+                    if (cb_payType.SelectedIndex != -1)
+                        payType = cb_payType.SelectedValue.ToString();
                     #endregion
 
                     if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
@@ -472,6 +485,7 @@ namespace POS.View
                             agent.updateUserId = MainWindow.userID;
                             agent.notes = tb_notes.Text;
                             agent.fax = faxStr;
+                            agent.payType = payType;
                             agent.maxDeserve = maxDeserveValue;
                             agent.isLimited = (bool)tgl_hasCredit.IsChecked;
 

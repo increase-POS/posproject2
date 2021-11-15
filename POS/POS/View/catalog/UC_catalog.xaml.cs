@@ -52,6 +52,8 @@ namespace POS.View
             btn_categories.Content = MainWindow.resourcemanager.GetString("trCategories");
             btn_properties.Content = MainWindow.resourcemanager.GetString("trProperties");
             btn_item.Content = MainWindow.resourcemanager.GetString("trItems");
+            btn_service.Content = MainWindow.resourcemanager.GetString("trService");
+            btn_package.Content = MainWindow.resourcemanager.GetString("trPackage");
             btn_units.Content = MainWindow.resourcemanager.GetString("trUnits");
             btn_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
         }
@@ -127,10 +129,14 @@ namespace POS.View
             btn_item.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_item.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_service.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_service.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_package.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_package.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
             btn_properties.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_properties.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
-
-
 
             btn_units.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_units.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -182,7 +188,36 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void Btn_service_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                refreashBachgroundClick(btn_service);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_serviceItem.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Btn_package_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                refreashBachgroundClick(btn_package);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_packageOfItems.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void Btn_properties_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -261,5 +296,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+       
     }
 }

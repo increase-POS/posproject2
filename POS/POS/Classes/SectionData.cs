@@ -851,7 +851,8 @@ namespace POS.Classes
         }
         static public bool isAdminPermision()
         {
-            if (MainWindow.userLogin.userId == 1 || MainWindow.userLogin.userId == 2)
+            //if (MainWindow.userLogin.userId == 1 || MainWindow.userLogin.userId == 2)
+            if (MainWindow.userLogin.isAdmin == true)
                 return true;
             return false;
         }
@@ -932,7 +933,22 @@ namespace POS.Classes
             combo.DisplayMemberPath = "name";
             combo.SelectedIndex = -1;
         }
-
+        static public void FillDefaultPayType(ComboBox cmb)
+        {
+            #region fill process type
+            var typelist = new[] {
+                new { Text = MainWindow.resourcemanager.GetString("trCash")       , Value = "cash" },
+                new { Text = MainWindow.resourcemanager.GetString("trCredit") , Value = "balance" },
+                new { Text = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods") , Value = "card" },
+                new { Text = MainWindow.resourcemanager.GetString("trMultiplePayment") , Value = "multiple" }, 
+                //new { Text = MainWindow.resourcemanager.GetString("trDocument")   , Value = "doc" },
+                //new { Text = MainWindow.resourcemanager.GetString("trCheque")     , Value = "cheque" },
+                 };
+            cmb.DisplayMemberPath = "Text";
+            cmb.SelectedValuePath = "Value";
+            cmb.ItemsSource = typelist;
+            #endregion
+        }
         /// <summary>
         /// لمنع  الصفر بالبداية
         /// </summary>

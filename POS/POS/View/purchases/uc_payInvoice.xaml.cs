@@ -44,6 +44,7 @@ namespace POS.View
         string sendEmailPermission = "payInvoice_sendEmail";
         string openOrderPermission = "payInvoice_openOrder";
         string initializeShortagePermission = "payInvoice_initializeShortage";
+        string printCountPermission = "payInvoice_printCount";
 
         private static uc_payInvoice _instance;
         public static uc_payInvoice Instance
