@@ -103,6 +103,7 @@ namespace POS
         public static string salePaperSize;
         public static string rep_print_count;
         public static string docPapersize;
+        public static string Allow_print_inv_count;
         public static Boolean go_out = false;
         static public PosSetting posSetting = new PosSetting();
         internal static List<Pos> posList = new List<Pos>();
@@ -141,7 +142,7 @@ namespace POS
             pur_copy_count = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault().value;
 
             rep_print_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
-
+            Allow_print_inv_count = printList.Where(X => X.name == "Allow_print_inv_count").FirstOrDefault().value;
         }
         public static async Task GetReportlang()
         {

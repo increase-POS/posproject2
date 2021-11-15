@@ -146,7 +146,8 @@ namespace POS.Classes
        public Nullable<decimal> paidD { get; set; }
        public Nullable<decimal> deservedD { get; set; }
        public Nullable<decimal> discountValueD { get; set; }
-
+        public int printedcount { get; set; }
+        public bool isOrginal { get; set; }
 
         //*************************************************
         //------------------------------------------------------
@@ -1123,5 +1124,19 @@ namespace POS.Classes
             }
             return invoice;
         }
+
+
+        public async Task<int> updateprintstat(int id, int countstep, bool isOrginal, bool updateOrginalstate)
+        {
+        
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Invoices/updateprintstat";
+            parameters.Add("id", id.ToString());
+            parameters.Add("countstep", countstep.ToString());
+            parameters.Add("isOrginal", isOrginal.ToString());
+            parameters.Add("updateOrginalstate", updateOrginalstate.ToString());
+            return await APIResult.post(method, parameters);
+        }
+        //updateprintstat
     }
 }
