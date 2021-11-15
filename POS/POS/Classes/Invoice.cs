@@ -99,6 +99,7 @@ namespace POS.Classes
         public Nullable<int> branchId { get; set; }
         public Nullable<int> itemsCount { get; set; }
         public Nullable<decimal> tax { get; set; }
+        public Nullable<decimal> cashReturn { get; set; }
         public Nullable<int> taxtype { get; set; }
         public Nullable<int> posId { get; set; }
         public Nullable<byte> isApproved { get; set; }

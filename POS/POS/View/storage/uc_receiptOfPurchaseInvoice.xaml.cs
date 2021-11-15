@@ -88,7 +88,7 @@ namespace POS.View.storage
         //for bill details
         static private int _SequenceNum = 0;
         static private int _invoiceId;
-        static private string _InvoiceType = "pbw"; // purchase bounce wait
+        static private string _InvoiceType = "is"; // immidatlly in storage
         static private decimal _Sum = 0;
         static private decimal _Count = 0;
         //tglItemState
@@ -194,6 +194,7 @@ namespace POS.View.storage
 
                 translate();
                 //tb_barcode.Focus();
+                loading_fillBarcodeList();
                 setNotifications();
                 setTimer();
                 controls = new List<Control>();
@@ -378,7 +379,29 @@ namespace POS.View.storage
         {
             vendors = await agentModel.GetAgentsActive("v");
         }
-        private  void HandleKeyPress(object sender, KeyEventArgs e)
+        async Task fillBarcodeList()
+        {
+            barcodesList = await itemUnitModel.getAllBarcodes();
+        }
+        async void loading_fillBarcodeList()
+        {
+            try
+            {
+                await fillBarcodeList();
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_fillBarcodeList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
 
             try
@@ -412,7 +435,7 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
-            /*
+  
             try
             {
                 if (sender != null)
@@ -463,28 +486,9 @@ namespace POS.View.storage
 
                 if (e.Key.ToString() == "Return" && _BarcodeStr != "")
                 {
-                    await dealWithBarcode(_BarcodeStr);
-                    if (_Sender != null)
-                    {
-                        DatePicker dt = _Sender as DatePicker;
-                        TextBox tb = _Sender as TextBox;
-                        if (tb != null)
-                        {
-                            if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" || tb.Name == "tb_barcode")// remove barcode from text box
-                            {
-                                string tbString = tb.Text;
-                                string newStr = "";
-                                int startIndex = tbString.IndexOf(_BarcodeStr);
-                                if (startIndex != -1)
-                                    newStr = tbString.Remove(startIndex, _BarcodeStr.Length);
-
-                                tb.Text = newStr;
-                            }
-                        }
-                    }
+                    await dealWithBarcode(_BarcodeStr);                 
                     tb_barcode.Text = _BarcodeStr;
                     _BarcodeStr = "";
-
                     e.Handled = true;
                 }
                 _Sender = null;
@@ -497,7 +501,6 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
-            */
         }
         public Control CheckActiveControl()
         {
@@ -544,43 +547,55 @@ namespace POS.View.storage
             barcode = barcode.ToLower();
             switch (prefix)
             {
-                case "pi":// this barcode for invoice
+                case "is":// this barcode for invoice
                     clearInvoice();
                     invoice = await invoiceModel.GetInvoicesByNum(barcode, MainWindow.branchID.Value);
-                    _InvoiceType = invoice.invType;
-                    if (_InvoiceType.Equals("p") || _InvoiceType.Equals("pw"))
-                    {
-                        // set title to bill
-                        if (_InvoiceType == "p")
-                        {
-                            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
-                            _InvoiceType = "pbw";
-                        }
-                        else if (_InvoiceType == "pw")
-                        {
-                            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
-                            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                            _InvoiceType = "p";
-                        }
-
-
-                        await fillInvoiceInputs(invoice);
-                    }
+                   // _InvoiceType = invoice.invType;
+                    await fillInvoiceInputs(invoice);
                     break;
-                case "pb":// this barcode for bounce invoice
-                    clearInvoice();
-                    invoice = await invoiceModel.GetInvoicesByNum(barcode, MainWindow.branchID.Value);
-                    _InvoiceType = invoice.invType;
-                    if (_InvoiceType == "pbw")
+                default: // if barcode for item
+                         // get item matches barcode
+                    if (barcodesList != null)
                     {
-                        txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                        txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                        ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == barcode.Trim());
+
+                        // get item matches the barcode
+                        if (unit1 != null)
+                        {
+                            int itemId = (int)unit1.itemId;
+                            if (unit1.itemId != 0)
+                            {
+                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId && p.OrderId == 0).FirstOrDefault());
+
+                                if (index == -1)//item doesn't exist in bill
+                                {
+                                    // get item units
+                                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                    //get item from list
+                                    item = items.ToList().Find(i => i.itemId == itemId);
+
+                                    int count = 1;
+                                    decimal price = 0; //?????
+                                    decimal total = count * price;
+                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
+                                }
+                                else // item exist prevoiusly in list
+                                {
+                                    billDetails[index].Count++;
+                                    billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                                    _Sum += billDetails[index].Price;
+
+                                }
+                                refreshTotalValue();
+                                refrishBillDetails();
+                            }
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorItemNotFoundToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
                     }
-
-                    break;
-
-                default:
                     break;
             }
 
@@ -1000,6 +1015,7 @@ namespace POS.View.storage
             if (total != 0)
                 tb_total.Text = SectionData.DecTostring(total);
             else tb_total.Text = "0";
+            tb_count.Text = _SequenceNum.ToString();
 
         }
         private async void Tb_barcode_KeyDown(object sender, KeyEventArgs e)
@@ -1138,7 +1154,6 @@ namespace POS.View.storage
         {
             // increase sequence for each read
             _SequenceNum++;
-
             billDetails.Add(new BillDetails()
             {
                 ID = _SequenceNum,
@@ -1152,7 +1167,6 @@ namespace POS.View.storage
             });
             _Sum += total;
         }
-
 
         #endregion
 
@@ -1244,7 +1258,6 @@ namespace POS.View.storage
             }
 
             tb_count.Text = _Count.ToString();
-            //tb_barcode.Focus();
             tb_barcode.Focus();
 
             refrishBillDetails();
@@ -1379,88 +1392,10 @@ namespace POS.View.storage
                 if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
                     e.Cancel = true;
         }
-        /*
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             try
             {
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
-
-                TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
-                var columnName = e.Column.Header.ToString();
-
-                BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
-
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds < 100)
-                {
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
-                        t.Text = billDetails[index].Count.ToString();
-                }
-                else
-                {
-                    int oldCount = 0;
-                    long newCount = 0;
-
-                    //"tb_amont"
-                    if (columnName == MainWindow.resourcemanager.GetString("trQuantity"))
-                        newCount = int.Parse(t.Text);
-                    else
-                        newCount = row.Count;
-                    if (newCount < 0)
-                    {
-                        newCount = 0;
-                        t.Text = "0";
-                    }
-                    oldCount = row.Count;
-
-                    if (_InvoiceType == "pbw")
-                    {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                        if (newCount > item.quantity)
-                        {
-                            // return old value 
-                            t.Text = item.quantity.ToString();
-
-                            newCount = (long)item.quantity;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                        }
-                    }
-                    _Count -= oldCount;
-                    _Count += newCount;
-                    tb_count.Text = _Count.ToString();
-
-                    // update item in billdetails           
-                    billDetails[index].Count = (int)newCount;
-                }
-
-                //refrishDataGridItems();
-                //refrishBillDetails();
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-        */
-        private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            try
-            {
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
-                //if (invoice.invoiceId == 0 && e.Column.DisplayIndex == 3)
-                //{
-
-                //}
-                //else
-                //{
                 TextBox t = e.EditingElement as TextBox;  // Assumes columns are all TextBoxes
                 var columnName = e.Column.Header.ToString();
 
@@ -1475,84 +1410,10 @@ namespace POS.View.storage
                     else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                         t.Text = SectionData.DecTostring(billDetails[index].Price);
 
-                }
-                else
-                {
-                    int oldCount = 0;
-                    long newCount = 0;
-                    decimal oldPrice = 0;
-                    decimal newPrice = 0;
-
-                    //"tb_amont"
-                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
-                    {
-                        if (!t.Text.Equals(""))
-                            newCount = int.Parse(t.Text);
-                        else
-                            newCount = 0;
-                        if (newCount < 0)
-                        {
-                            newCount = 0;
-                            t.Text = "0";
-                        }
-                    }
-                    else
-                        newCount = row.Count;
-
-                    oldCount = row.Count;
-
-                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw" || row.OrderId != 0)
-                    {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
-                        if (newCount > item.quantity)
-                        {
-                            // return old value 
-                            t.Text = item.quantity.ToString();
-
-                            newCount = (long)item.quantity;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                        }
-                    }
-
-                    if (columnName == MainWindow.resourcemanager.GetString("trPrice") && !t.Text.Equals(""))
-                        newPrice = decimal.Parse(t.Text);
-                    else
-                        newPrice = row.Price;
-
-                    oldPrice = row.Price;
-
-                    // old total for changed item
-                    decimal total = oldPrice * oldCount;
-                    _Sum -= total;
-
-                    // new total for changed item
-                    total = newCount * newPrice;
-                    _Sum += total;
-
-                    //refresh total cell
-                    TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                    tb.Text = SectionData.DecTostring(total);
-
-                    //  refresh sum and total text box
-                    refreshTotalValue();
-
-                    _Count -= oldCount;
-                    _Count += newCount;
-
-                    // update item in billdetails           
-                    billDetails[index].Count = (int)newCount;
-                    billDetails[index].Price = newPrice;
-                    billDetails[index].Total = total;
-                }
-                //refrishDataGridItems();
-                //}
-                //if (sender != null)
-                //SectionData.EndAwait(grid_main);
+                }               
             }
             catch (Exception ex)
             {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

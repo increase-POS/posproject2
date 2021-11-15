@@ -1330,6 +1330,14 @@ namespace POS.View
 
                 invoice.paid = 0;
                 invoice.deserved = invoice.totalNet;
+                try
+                {
+                    invoice.cashReturn = decimal.Parse(txt_theRest.Text);
+                }
+                catch
+                {
+                    invoice.cashReturn = 0;
+                }
                 invoice.createUserId = MainWindow.userID;
                 invoice.updateUserId = MainWindow.userID;
 
@@ -1393,40 +1401,7 @@ namespace POS.View
                         #endregion
                         await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // update item quantity in DB
                         await invoice.recordPosCashTransfer(invoice, "si");                                                                                                         //if (paid > 0)
-                                                                                                                                                                                    //{
-                                                                                                                                                                                    //switch (cb_paymentProcessType.SelectedIndex)
-                                                                                                                                                                                    //{
-                                                                                                                                                                                    //    case 0:// cash: update pos balance
-                                                                                                                                                                                    //        pos.balance += invoice.totalNet;
-                                                                                                                                                                                    //        await pos.save(pos);
-                                                                                                                                                                                    //        // cach transfer model
-                                                                                                                                                                                    //        CashTransfer cashTrasnfer = new CashTransfer();
-                                                                                                                                                                                    //        cashTrasnfer.transType = "d"; //deposit
-                                                                                                                                                                                    //        cashTrasnfer.posId = MainWindow.posID;
-                                                                                                                                                                                    //        cashTrasnfer.agentId = invoice.agentId;
-                                                                                                                                                                                    //        cashTrasnfer.invId = invoiceId;
-                                                                                                                                                                                    //        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("dc");
-                                                                                                                                                                                    //        cashTrasnfer.cash = invoice.totalNet;
-                                                                                                                                                                                    //        cashTrasnfer.side = "c"; // customer
-                                                                                                                                                                                    //        cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                                                                                                                                                                                    //        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                                                                                                                                                                                    //        {
-                                                                                                                                                                                    //            cashTrasnfer.cardId = _SelectedCard;
-                                                                                                                                                                                    //            cashTrasnfer.docNum = tb_processNum.Text;
-                                                                                                                                                                                    //        }
-                                                                                                                                                                                    //        cashTrasnfer.createUserId = MainWindow.userID;
-                                                                                                                                                                                    //        await cashTrasnfer.Save(cashTrasnfer); //add cash transfer  
-                                                                                                                                                                                    //        invoice.paid = invoice.totalNet;
-                                                                                                                                                                                    //        invoice.deserved = 0;
-                                                                                                                                                                                    //       await invoice.saveInvoice(invoice);
-                                                                                                                                                                                    //        break;
-                                                                                                                                                                                    //    case 1:// balance: update customer balance
-                                                                                                                                                                                    //        if (cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
-                                                                                                                                                                                    //            await invoice.recordCompanyCashTransfer(invoice, "si");
-                                                                                                                                                                                    //        else
-                                                                                                                                                                                    //            await invoice.recordCashTransfer(invoice, "si");
-                                                                                                                                                                                    //        break;
-                                                                                                                                                                                    //}
+                                                                                                                                                                                    //                                                                                                                                                             //}
                     }
                     else if (invType == "sb")
                     {
@@ -2127,6 +2102,10 @@ namespace POS.View
                 else
                     tb_total.Text = "0";
             }
+            if (invoice.cashReturn != 0 && invoice.cashReturn != null)
+                txt_theRest.Text = SectionData.DecTostring((decimal)invoice.cashReturn);
+            else
+                txt_theRest.Text = "0";
             cb_company.SelectedValue = invoice.shippingCompanyId;
             cb_user.SelectedValue = invoice.shipUserId;
             tb_note.Text = invoice.notes;
@@ -2160,7 +2139,8 @@ namespace POS.View
                         case "cash":
 
                             gd_theRest.Visibility = Visibility.Visible;
-                            tb_cashPaid.Text = txt_theRest.Text = "0";
+                            tb_cashPaid.Text =  "0";
+                            //tb_cashPaid.Text = txt_theRest.Text = "0";
                             gd_card.Visibility = Visibility.Collapsed;
                             _SelectedCard = -1;
                             txt_card.Text = "";

@@ -455,7 +455,7 @@
                                         </Path.ToolTip>
                                     </Path>
                                 </Grid>
-                                <Grid Grid.Row="6" x:Name="gd_theRest" Visibility="Collapsed">
+                                <Grid Grid.Row="6" x:Name="gd_theRest" Visibility="Visible">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="auto"/>

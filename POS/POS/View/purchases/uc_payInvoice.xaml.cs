@@ -1394,19 +1394,18 @@ namespace POS.View
                                 //    await invoice.recordCashTransfer(invoice, "pi");
                                 #endregion
                                 /////
-                                clearInvoice();
-                                await refreshDraftNotification();
+                               
                                 clearInvoice();
                                 _InvoiceType = "pd";
+                                await refreshDraftNotification();
                             }
                             
                         }
-
-                            if (invoice.invoiceId == 0)
-                            {
-                                clearInvoice();
-                                _InvoiceType = "pd";
-                            }
+                            //if (invoice.invoiceId == 0)
+                            //{
+                            //    clearInvoice();
+                            //    _InvoiceType = "pd";
+                            //}
                             //
                             prInvoice = await invoiceModel.getById(prInvoiceId);
                             ///////////////////////////////////////
