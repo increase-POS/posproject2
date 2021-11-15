@@ -31,26 +31,7 @@ namespace POS_Server.Controllers
             }
             else
             {
-                // bool canDelete = false;
-
-                //int mainBranchId = 0;
-                //int userId = 0;
-
-                //IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
-                //foreach (Claim c in claims)
-                //{
-                //    if (c.Type == "mainBranchId")
-                //    {
-                //        mainBranchId = int.Parse(c.Value);
-                //    }
-                //    else if (c.Type == "userId")
-                //    {
-                //        userId = int.Parse(c.Value);
-                //    }
-
-                //}
-
-                //bool canDelete = false;
+               
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -73,6 +54,25 @@ namespace POS_Server.Controllers
 
 
                                     }).ToList();
+
+                        var list = (from iu in entity.itemsUnits
+                                    join it in entity.items on iu.itemId equals it.itemId
+                                    join iuloc in entity.itemsLocations on iu.itemUnitId equals iuloc.itemUnitId
+
+                                    where it.type=="p"
+                                    select new
+                                    {
+                                        piuId=iu.itemUnitId,
+                                        iuloc.itemsLocId,
+                                        it.itemId,
+                                        iu.unitId,
+
+                                    }
+
+
+                                  //  select()
+                                    ).ToList();
+
 
 
                         return TokenManager.GenerateToken(List);
@@ -132,9 +132,70 @@ namespace POS_Server.Controllers
         }
 
 
+        //
+        //[HttpPost]
+        //[Route("GetPackwithNames")]
+        //public IHttpActionResult GetPackwithNames()
+        //{
+        //    var re = Request;
+        //    var headers = re.Headers;
+        //    string token = "";
+
+
+        //    if (headers.Contains("APIKey"))
+        //    {
+        //        token = headers.GetValues("APIKey").First();
+        //    }
+        //    Validation validation = new Validation();
+        //    bool valid = validation.CheckApiKey(token);
+
+        //    if (valid) // APIKey is valid
+        //    {
+        //        using (incposdbEntities entity = new incposdbEntities())
+        //        {
+        //            var List = (from S in entity.packages
+        //                        join CIU in entity.itemsUnits on S.childIUId equals CIU.itemUnitId
+        //                        join PIU in entity.itemsUnits on S.parentIUId equals PIU.itemUnitId
+
+        //                        select new PackageModel()
+        //                        {
+        //                            packageId = S.packageId,
+        //                            parentIUId = S.parentIUId,
+        //                            childIUId = S.childIUId,
+        //                            quantity = S.quantity,
+        //                            isActive = S.isActive,
+        //                            notes = S.notes,
+        //                            createUserId = S.createUserId,
+        //                            updateUserId = S.updateUserId,
+        //                            createDate = S.createDate,
+        //                            updateDate = S.updateDate,
+        //                            // parent
+        //                            pitemId=PIU.itemId,
+        //                            pitemName=PIU.items.name,
+        //                            punitId=PIU.unitId,
+        //                            punitName=PIU.units.name,
+        //                            // child
+        //                            citemId = CIU.itemId,
+        //                            citemName = CIU.items.name,
+        //                            cunitId = CIU.unitId,
+        //                           cunitName = CIU.units.name,
+
+        //                        }).ToList();
+
+        //            if (List == null)
+        //                return NotFound();
+        //            else
+        //                return Ok(List);
+        //        }
+        //    }
+        //    //else
+        //    return NotFound();
+        //}
+
+
         public List<int> canNotUpdatePack()
         {
-
+            
             List<int> listg = new List<int>();
 
             using (incposdbEntities entity = new incposdbEntities())
@@ -150,21 +211,17 @@ namespace POS_Server.Controllers
                                 //piuId = iu.itemUnitId,
                                 //itemsLocId= iuloc.itemsLocId,
                                 it.itemId,
+                                iuloc.quantity,
                                 //unitId=   iu.unitId,
                                 //type=it.type,
-                            }
+                            }).ToList();
 
-
-
-                                           ).ToList();
-                listg = list.GroupBy(g => g.itemId).Select(x => x.First().itemId).ToList();
+              listg = list.GroupBy(g => g.itemId).Where(q=>q.Sum(s => s.quantity)>0).Select(x =>  
+                    x.First().itemId ).ToList();
 
             }
             return listg;
         }
-
-
-
         [HttpPost]
         [Route("GetPackages")]
         public string GetPackages(string token)
@@ -184,15 +241,15 @@ namespace POS_Server.Controllers
                 try
                 {
                     List<int> noUpdateList = new List<int>();
+
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-
                         noUpdateList = canNotUpdatePack();
                         var List = (from I in entity.items
                                     join C in entity.categories on I.categoryId equals C.categoryId into JC
 
                                     from CC in JC.DefaultIfEmpty()
-                                    where I.type == "p"
+                                    where I.type == "p" 
 
                                     select new ItemModel()
                                     {
@@ -218,7 +275,7 @@ namespace POS_Server.Controllers
                                         categoryName = CC.name,
 
                                         canDelete = true,
-                                        canUpdate = noUpdateList.Contains(I.itemId) ? false : true,
+                                        canUpdate= noUpdateList.Contains(I.itemId)?false:true,
 
 
                                     }).ToList();
