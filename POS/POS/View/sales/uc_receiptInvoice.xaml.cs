@@ -3643,8 +3643,15 @@ namespace POS.View
             else
                 prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
 
+            if (int.Parse(MainWindow.Allow_print_inv_count) <= prInvoice.printedcount)
+            {
+                MessageBox.Show("You have exceeded the limit");
 
-            if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+            }
+            else
+            {
+
+                if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                          || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
                          || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
             {
@@ -3713,97 +3720,97 @@ namespace POS.View
 
                     rep.Refresh();
 
-                  
+
 
                     saveFileDialog.Filter = "PDF|*.pdf;";
-                    bool? savdialog=false;
+                    bool? savdialog = false;
                     this.Dispatcher.Invoke(() =>
                     {
-                       savdialog = saveFileDialog.ShowDialog();
+                        savdialog = saveFileDialog.ShowDialog();
 
                     });
-                   
 
-                        if (savdialog==true)
+
+                    if (savdialog == true)
+                    {
+
+                        string filepath = saveFileDialog.FileName;
+
+                        //copy count
+                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
                         {
-                          
-                            string filepath = saveFileDialog.FileName;
 
-                            //copy count
-                            if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
-                            {
-
-                                paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
-
-                              
-                                    //if (i > 1)
-                                    //{
-                                    //    // update paramarr->isOrginal
-                                    //    foreach (var item in paramarr.Where(x => x.Name == "isOrginal").ToList())
-                                    //    {
-                                    //        StringCollection myCol = new StringCollection();
-                                    //        myCol.Add(prInvoice.isOrginal.ToString());
-                                    //        item.Values = myCol;
+                            paramarr.Add(new ReportParameter("isOrginal",false.ToString()));
 
 
-                                    //    }
-                                    //    //end update
-
-                                    //}
-                                    rep.SetParameters(paramarr);
-
-                                    rep.Refresh();
-
-                                    if (int.Parse(MainWindow.Allow_print_inv_count) > prInvoice.printedcount)
-                                    {
-
-                                        this.Dispatcher.Invoke(() =>
-                                        {
-                                            LocalReportExtensions.ExportToPDF(rep, filepath);
-
-                                        });
+                            //if (i > 1)
+                            //{
+                            //    // update paramarr->isOrginal
+                            //    foreach (var item in paramarr.Where(x => x.Name == "isOrginal").ToList())
+                            //    {
+                            //        StringCollection myCol = new StringCollection();
+                            //        myCol.Add(prInvoice.isOrginal.ToString());
+                            //        item.Values = myCol;
 
 
-                                        int res = 0;
-                                        
-                                            res = await  invoiceModel.updateprintstat(prInvoice.invoiceId, 1, false, true);
+                            //    }
+                            //    //end update
 
-                                       
+                            //}
+                            rep.SetParameters(paramarr);
 
-                                        prInvoice.printedcount = prInvoice.printedcount + 1;
+                            rep.Refresh();
 
-                                        prInvoice.isOrginal = false;
-
-
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("You have exceeded the limit");
-                                    }
-
-                                
-                            }
-                            else
+                            if (int.Parse(MainWindow.Allow_print_inv_count) > prInvoice.printedcount)
                             {
 
                                 this.Dispatcher.Invoke(() =>
                                 {
-
                                     LocalReportExtensions.ExportToPDF(rep, filepath);
-
 
                                 });
 
-                            }
-                            // end copy count
 
+                                int res = 0;
+
+                                res = await invoiceModel.updateprintstat(prInvoice.invoiceId, 1, false, true);
+
+
+
+                                prInvoice.printedcount = prInvoice.printedcount + 1;
+
+                                prInvoice.isOrginal = false;
+
+
+                            }
+                            else
+                            {
+                                MessageBox.Show("You have exceeded the limit");
+                            }
 
 
                         }
-                  
+                        else
+                        {
+
+                            this.Dispatcher.Invoke(() =>
+                            {
+
+                                LocalReportExtensions.ExportToPDF(rep, filepath);
+
+
+                            });
+
+                        }
+                        // end copy count
+
+
+
+                    }
+
 
                 }
-
+            }
             }
         }
         public async void multiplePaytable(List<ReportParameter> paramarr)
@@ -4134,11 +4141,11 @@ namespace POS.View
                     if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
                     {
 
-                        paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
+                     //   paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
 
+                            paramarr.Add(new ReportParameter("isOrginal",false.ToString()));
 
-
-                        rep.SetParameters(paramarr);
+                            rep.SetParameters(paramarr);
 
                         rep.Refresh();
 
@@ -5142,8 +5149,29 @@ namespace POS.View
             _IsFocused = true;
         }
 
-        private void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        private async void Btn_printCount_Click(object sender, RoutedEventArgs e)
         {
+            int result = 0;
+
+            if (invoice.invoiceId > 0)
+            {
+                result = await invoiceModel.updateprintstat(invoice.invoiceId, -1, true, true);
+
+
+            if (result > 0)
+                {
+                    MessageBox.Show("Done");
+                }
+                else
+                {
+                    MessageBox.Show("Error");
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Please Choose Invoice");
+            }
 
         }
     }
