@@ -62,6 +62,7 @@ var strP = TokenManager.GetPrincipal(token);
                         image = u.image,
                         balance = u.balance,
                         balanceType = u.balanceType,
+                        isAdmin= u.isAdmin,
                     })
                     .ToList();
 
@@ -69,6 +70,7 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
         [HttpPost]
         [Route("Getloginuser")]
         public string Getloginuser(string token)
@@ -76,7 +78,7 @@ var strP = TokenManager.GetPrincipal(token);
             token = TokenManager.readToken(HttpContext.Current.Request);
             List<UserModel> usersList = new List<UserModel>();
             UserModel user = new UserModel();
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -97,11 +99,12 @@ var strP = TokenManager.GetPrincipal(token);
                         password = c.Value;
                     }
                 }
+
                 UserModel emptyuser = new UserModel();
 
                 emptyuser.createDate = DateTime.Now;
                 emptyuser.updateDate = DateTime.Now;
-                emptyuser.username = user.username;
+                //emptyuser.username = userName;
                 emptyuser.createUserId = 0;
                 emptyuser.updateUserId = 0;
                 emptyuser.userId = 0;
@@ -110,63 +113,73 @@ var strP = TokenManager.GetPrincipal(token);
                 emptyuser.canDelete = false;
                 emptyuser.balance = 0;
                 emptyuser.balanceType = 0;
-
-
-                using (incposdbEntities entity = new incposdbEntities())
+                try
                 {
-                    usersList = entity.users.Where(u => u.isActive == 1 && u.username == userName)
-                    .Select(u => new UserModel
+
+                    using (incposdbEntities entity = new incposdbEntities())
                     {
-                        userId = u.userId,
-                        username = u.username,
-                        password = u.password,
-                        name = u.name,
-                        lastname = u.lastname,
-                        fullName = u.name + " " + u.lastname,
-                        job = u.job,
-                        workHours = u.workHours,
-                        createDate = u.createDate,
-                        updateDate = u.updateDate,
-                        createUserId = u.createUserId,
-                        updateUserId = u.updateUserId,
-                        phone = u.phone,
-                        mobile = u.mobile,
-                        email = u.email,
-                        notes = u.notes,
-                        address = u.address,
-                        isActive = u.isActive,
-                        isOnline = u.isOnline,
-                        image = u.image,
-                        balance = u.balance,
-                        balanceType = u.balanceType,
-                    })
-                    .ToList();
-                    if (usersList == null)
-                    {
-                        user = emptyuser;
-                        // rong user
-                        return TokenManager.GenerateToken(user);
-                    }
-                    else
-                    {
-                        user = usersList.Where(i => i.username == userName).FirstOrDefault();
-                        if (user.password.Equals(password))
+                        usersList = entity.users.Where(u => u.isActive == 1 && u.username == userName)
+                        .Select(u => new UserModel
                         {
-                            // correct username and pasword
+                            userId = u.userId,
+                            username = u.username,
+                            password = u.password,
+                            name = u.name,
+                            lastname = u.lastname,
+                            fullName = u.name + " " + u.lastname,
+                            job = u.job,
+                            workHours = u.workHours,
+                            createDate = u.createDate,
+                            updateDate = u.updateDate,
+                            createUserId = u.createUserId,
+                            updateUserId = u.updateUserId,
+                            phone = u.phone,
+                            mobile = u.mobile,
+                            email = u.email,
+                            notes = u.notes,
+                            address = u.address,
+                            isActive = u.isActive,
+                            isOnline = u.isOnline,
+                            image = u.image,
+                            balance = u.balance,
+                            balanceType = u.balanceType,
+                            isAdmin = u.isAdmin,
+                        })
+                        .ToList();
+
+                        if (usersList == null || usersList.Count <= 0)
+                        {
+                            user = emptyuser;
+                            // rong user
                             return TokenManager.GenerateToken(user);
                         }
                         else
                         {
-                            // rong pass return just username
-                            user = emptyuser;
-                            user.username = userName;
-                            return TokenManager.GenerateToken(user);
+                            user = usersList.Where(i => i.username == userName).FirstOrDefault();
+                            if (user.password.Equals(password))
+                            {
+                                // correct username and pasword
+                                return TokenManager.GenerateToken(user);
+                            }
+                            else
+                            {
+                                // rong pass return just username
+                                user = emptyuser;
+                                user.username = userName;
+                                return TokenManager.GenerateToken(user);
 
+                            }
                         }
                     }
+
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken(emptyuser);
                 }
             }
         }
+
         // return all users active and inactive
         [HttpPost]
         [Route("Get")]
@@ -207,6 +220,7 @@ var strP = TokenManager.GetPrincipal(token);
                         image = u.image,
                         balance = u.balance,
                         balanceType = u.balanceType,
+                        isAdmin = u.isAdmin,
 
                     })
                     .ToList();
@@ -280,6 +294,7 @@ var strP = TokenManager.GetPrincipal(token);
                        u.isActive,
                        u.balance,
                        u.balanceType,
+                     u.isAdmin,
                    })
                    .FirstOrDefault();
                     return TokenManager.GenerateToken(user);
@@ -385,6 +400,7 @@ var strP = TokenManager.GetPrincipal(token);
                                          fullName = u.name + " " + u.lastname,
                                          balance = u.balance,
                                          balanceType = u.balanceType,
+                                         isAdmin=  u.isAdmin,
                                      }).ToList();
 
                     foreach (UserModel user in usersList)
@@ -453,6 +469,8 @@ var strP = TokenManager.GetPrincipal(token);
                         var catEntity = entity.Set<categoryuser>();
                         if (newObject.userId == 0)
                         {
+                            userObj.isAdmin = false;
+
                             ProgramInfo programInfo = new ProgramInfo();
                             int userMaxCount = programInfo.getUserCount();
                             int usersCount = entity.users.Count();
@@ -515,6 +533,7 @@ var strP = TokenManager.GetPrincipal(token);
                             userObj.balance = newObject.balance;
                             userObj.balanceType = newObject.balanceType;
                             userObj.isOnline = newObject.isOnline;
+                            
                             entity.SaveChanges().ToString();
                             message = userObj.userId.ToString();
                             return TokenManager.GenerateToken(message);

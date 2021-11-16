@@ -49,7 +49,7 @@ namespace POS_Server.Models
         public string manualDiscountType { get; set; }
         public string createrUserName { get; set; }
         public bool isActive { get; set; }
-        
+        public decimal cashReturn { get; set; }
     }
 
     public class CouponInvoiceModel

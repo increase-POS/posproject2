@@ -270,6 +270,7 @@
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users1" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_userSetValues_users2" ManuallyRouted="false" />
         <AssociationConnector Association="incposdbModel.FK_usersLogs_users" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="incposdbModel.sysdiagrams" Width="1.5" PointX="3.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

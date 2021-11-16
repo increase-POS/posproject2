@@ -73,7 +73,8 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        maxDeserve = p.maxDeserve,
                        fax = p.fax,
                        isLimited = p.isLimited,
-                   })
+                       payType = p.payType
+                    })
                    .ToList();
                     if (agentsList.Count > 0)
                     {
@@ -143,6 +144,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                        p.isActive,
                        p.createDate,
                        p.isLimited,
+                       p.payType
                    })
                    .ToList();
 
@@ -177,7 +179,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenMana
                     {
                         var agent = entity.agents
                        .Where(p => p.agentId == agentId)
-                       .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance, p.balanceType, p.code, p.company, p.createDate, p.createUserId, p.email, p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax, p.isActive, p.updateDate, p.updateUserId, p.isLimited })
+                       .Select(p => new { p.agentId, p.name, p.accType, p.address, p.balance, p.balanceType, p.code, p.company, p.createDate, p.createUserId, p.email, p.mobile, p.notes, p.phone, p.type, p.image, p.maxDeserve, p.fax, p.isActive, p.updateDate, p.updateUserId, p.isLimited , p.payType})
                        .FirstOrDefault();
                     return TokenManager.GenerateToken(agent);
                     }
@@ -263,6 +265,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                             agent.balance = agentObj.balance;
                             agent.balanceType = agentObj.balanceType;
                             agent.isLimited = agentObj.isLimited;
+                            agent.payType = agentObj.payType;
                         }
                         entity.SaveChanges();
                         message = agent.agentId.ToString();

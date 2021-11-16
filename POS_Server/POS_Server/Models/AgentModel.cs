@@ -30,5 +30,6 @@ namespace POS_Server.Models
         public string fax { get; set; }
         public Boolean canDelete { get; set; }
         public bool isLimited { get; set; }
+        public string payType { get; set; }
     }
 }

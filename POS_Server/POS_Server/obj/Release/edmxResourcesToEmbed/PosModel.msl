@@ -412,6 +412,7 @@
     <EntitySetMapping Name="invoices">
       <EntityTypeMapping TypeName="incposdbModel.invoices">
         <MappingFragment StoreEntitySet="invoices">
+          <ScalarProperty Name="isOrginal" ColumnName="isOrginal" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
           <ScalarProperty Name="invNumber" ColumnName="invNumber" />
           <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -1099,6 +1100,7 @@
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="incposdbModel.users">
         <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
           <ScalarProperty Name="userId" ColumnName="userId" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="password" ColumnName="password" />
@@ -1147,6 +1149,17 @@
           <ScalarProperty Name="sOutDate" ColumnName="sOutDate" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="incposdbModel.sysdiagrams">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

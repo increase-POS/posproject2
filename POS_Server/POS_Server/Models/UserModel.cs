@@ -27,5 +27,6 @@ namespace POS_Server.Models
         public string image { get; set; }
         public Nullable<decimal> balance { get; set; }
         public Nullable<byte> balanceType { get; set; }
+        public Nullable<bool> isAdmin { get; set; }
     }
 }

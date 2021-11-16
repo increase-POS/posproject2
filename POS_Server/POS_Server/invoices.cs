@@ -65,6 +65,7 @@ namespace POS_Server
         public Nullable<decimal> invoiceProfit { get; set; }
         public decimal cashReturn { get; set; }
         public int printedcount { get; set; }
+        public bool isOrginal { get; set; }
     
         public virtual agents agents { get; set; }
         public virtual branches branches { get; set; }

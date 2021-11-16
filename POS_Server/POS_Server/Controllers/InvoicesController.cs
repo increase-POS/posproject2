@@ -185,6 +185,8 @@ var strP = TokenManager.GetPrincipal(token);
                         b.shippingCompanyId,
                         b.shipUserId,
                         b.userId,
+                        b.printedcount,
+                        b.isOrginal,
                     })
                     .FirstOrDefault();
 
@@ -307,6 +309,7 @@ var strP = TokenManager.GetPrincipal(token);
                         b.shippingCompanyId,
                         b.shipUserId,
                         b.userId,
+                        b.cashReturn,
                     })
                     .FirstOrDefault();
 
@@ -511,6 +514,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                 userId = b.userId,
                                                 manualDiscountType = b.manualDiscountType,
                                                 manualDiscountValue = b.manualDiscountValue,
+                                                cashReturn = b.cashReturn,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -671,6 +675,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
+                                            cashReturn = b.cashReturn,
                                         })
                     .ToList();
 
@@ -788,6 +793,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
+                                            cashReturn = b.cashReturn,
                                         })
                     .ToList();
 
@@ -1039,6 +1045,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
+                                            cashReturn = b.cashReturn,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1122,6 +1129,8 @@ var strP = TokenManager.GetPrincipal(token);
                                             branchName = x.name,
                                             branchCreatorId = b.branchCreatorId,
                                             userId = b.userId,
+                                            cashReturn = b.cashReturn,
+                                            
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -2037,6 +2046,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                 userId = b.userId,
                                                 manualDiscountType = b.manualDiscountType,
                                                 manualDiscountValue = b.manualDiscountValue,
+                                                cashReturn = b.cashReturn,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -2234,9 +2244,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2265,11 +2275,14 @@ var strP = TokenManager.GetPrincipal(token);
                         var invoiceEntity = entity.Set<invoices>();
                         if (newObject.invoiceId == 0)
                         {
+                            if (newObject.cashReturn == null)
+                                newObject.cashReturn = 0;
                             newObject.invDate = DateTime.Now;
                             newObject.invTime = DateTime.Now.TimeOfDay;
                             newObject.updateDate = DateTime.Now;
                             newObject.updateUserId = newObject.createUserId;
                             newObject.isActive = true;
+                            newObject.isOrginal = true;
                             tmpInvoice = invoiceEntity.Add(newObject);
                             entity.SaveChanges();
                             message = tmpInvoice.invoiceId.ToString();
@@ -2307,6 +2320,7 @@ var strP = TokenManager.GetPrincipal(token);
                             tmpInvoice.userId = newObject.userId;
                             tmpInvoice.manualDiscountType = newObject.manualDiscountType;
                             tmpInvoice.manualDiscountValue = newObject.manualDiscountValue;
+                            tmpInvoice.cashReturn = newObject.cashReturn;
                             entity.SaveChanges();
                             message = tmpInvoice.invoiceId.ToString();
                             return TokenManager.GenerateToken(message);
@@ -2321,6 +2335,94 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
+        [HttpPost]
+        [Route("updateprintstat")]
+        public string updateprintstat(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int id = 0;
+                int countstep = 0;
+                bool isOrginal = false;
+                bool updateOrginalstate = false;
+
+                string invoiceObject = "";
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "id")
+                    {
+                        id = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "countstep")
+                    {
+                        countstep = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "isOrginal")
+                    {
+                        isOrginal = bool.Parse(c.Value);
+                    }
+                    else if (c.Type == "updateOrginalstate")
+                    {
+                        updateOrginalstate = bool.Parse(c.Value);
+                    }
+                }
+
+                try
+                {
+
+                    invoices tmpInvoice;
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        // var invoiceEntity = entity.Set<invoices>();
+                        if (id == 0)
+                        {
+
+                            return TokenManager.GenerateToken("0");
+
+                        }
+                        else
+                        {
+
+                            tmpInvoice = entity.invoices.Where(p => p.invoiceId == id).FirstOrDefault();
+                            int res = tmpInvoice.printedcount + countstep;
+                            if (res < 0)
+                            {
+                                res = 0;
+                            }
+                            tmpInvoice.printedcount = res;
+                            if (updateOrginalstate)
+                            {
+                                tmpInvoice.isOrginal = isOrginal;
+                            }
+
+
+                            entity.SaveChanges();
+                            message = tmpInvoice.invoiceId.ToString();
+                            return TokenManager.GenerateToken(message);
+                        }
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    message = "0";
+                    // return TokenManager.GenerateToken(message);
+                    return TokenManager.GenerateToken(ex.ToString());
+                }
+            }
+        }
+
+
         [HttpPost]
         [Route("delete")]
         public string delete(string token)

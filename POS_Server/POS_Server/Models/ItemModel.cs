@@ -52,5 +52,6 @@ namespace POS_Server.Models
         public string minUnitName { get; set; }
         public string maxUnitName { get; set; }
         public bool canUpdate { get; set; }
+
     }
 }

@@ -427,6 +427,7 @@
     <Property Name="invoiceProfit" Type="decimal" Precision="20" Scale="3" />
     <Property Name="cashReturn" Type="decimal" Precision="20" Scale="3" Nullable="false" />
     <Property Name="printedcount" Type="int" Nullable="false" />
+    <Property Name="isOrginal" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -995,6 +996,16 @@
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="sysEmails">
     <Key>
       <PropertyRef Name="emailId" />
@@ -1059,6 +1070,7 @@
     <Property Name="groupId" Type="int" />
     <Property Name="balance" Type="decimal" Precision="20" Scale="3" />
     <Property Name="balanceType" Type="tinyint" />
+    <Property Name="isAdmin" Type="bit" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -3533,6 +3545,7 @@
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />

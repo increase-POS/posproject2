@@ -148,6 +148,7 @@ namespace POS_Server
         public Nullable<int> groupId { get; set; }
         public Nullable<decimal> balance { get; set; }
         public Nullable<byte> balanceType { get; set; }
+        public Nullable<bool> isAdmin { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<agentMemberships> agentMemberships { get; set; }

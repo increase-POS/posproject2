@@ -199,7 +199,7 @@ var strP = TokenManager.GetPrincipal(token);
             //{
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var users = (from u in entity.users.Where(x => x.isActive == 1 && x.userId != 1 && x.userId !=2)
+                    var users = (from u in entity.users.Where(x => x.isActive == 1 && x.isAdmin == false)
                                  join b in entity.branchesUsers on u.userId equals b.userId
                                  where b.branchId == branchId
                                  select new UserModel()
@@ -267,11 +267,16 @@ var strP = TokenManager.GetPrincipal(token);
                             notUserEntity.Add(notUser);
                         }
                     }
-
+                var admins = (from u in entity.users.Where(x => x.isActive == 1 && x.isAdmin == true)
+                              select new UserModel()
+                              { userId = u.userId }
+                              ).ToList();
+                foreach (UserModel user in admins)
+                {
                     notUser = new notificationUser()
                     {
                         notId = not.notId,
-                        userId = 1,
+                        userId = user.userId,
                         isRead = false,
                         createDate = DateTime.Now,
                         updateDate = DateTime.Now,
@@ -279,20 +284,9 @@ var strP = TokenManager.GetPrincipal(token);
                         updateUserId = Object.createUserId,
                     };
                     notUserEntity.Add(notUser);
-                    notUser = new notificationUser()
-                    {
-                        notId = not.notId,
-                        userId = 2,
-                        isRead = false,
-                        createDate = DateTime.Now,
-                        updateDate = DateTime.Now,
-                        createUserId = Object.createUserId,
-                        updateUserId = Object.createUserId,
-                    };
-                    notUserEntity.Add(notUser);
+                }                  
                     entity.SaveChanges();
-                }
-           
+                }           
         }
        
     }
