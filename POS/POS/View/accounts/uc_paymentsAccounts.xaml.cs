@@ -397,11 +397,14 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
 
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
+
                 if (grid_document.IsVisible)
                 {
                     TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
                     SectionData.clearValidate(dpDate, p_errorDocDate);
                 }
+
+                #region clear validate
                 SectionData.clearValidate(tb_cash, p_errorCash);
                 SectionData.clearComboBoxValidate(cb_depositTo, p_errorDepositTo);
                 SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
@@ -410,6 +413,9 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
                 SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
+                SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                #endregion
 
                 if (dg_paymentsAccounts.SelectedIndex != -1)
                 {
@@ -856,7 +862,6 @@ namespace POS.View.accounts
                 SectionData.clearValidate(tb_cash, p_errorCash);
                 SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
                 SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                 SectionData.clearComboBoxValidate(cb_depositTo, p_errorDepositTo);
                 SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                 SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
@@ -1104,7 +1109,7 @@ namespace POS.View.accounts
                         _SelectedCard = -1;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
@@ -1118,7 +1123,7 @@ namespace POS.View.accounts
                         _SelectedCard = -1;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
@@ -1131,7 +1136,7 @@ namespace POS.View.accounts
                         _SelectedCard = -1;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                        //SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 

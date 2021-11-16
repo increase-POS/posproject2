@@ -79,10 +79,10 @@ namespace POS.View.accounts
 
         private async void Dg_bonds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_ucBonds);
+            try
+            {
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_ucBonds);
 
                 #region clear validate
                 SectionData.clearValidate(tb_number, p_errorNumber);
@@ -94,6 +94,7 @@ namespace POS.View.accounts
                 SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
                 SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                SectionData.clearValidate(tb_chequeProcessNum, p_errorProcessNum);
                 SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
@@ -211,15 +212,15 @@ namespace POS.View.accounts
                     }
 
                 }
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_ucBonds);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_ucBonds);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_ucBonds);
+            }
+            catch (Exception ex)
+            {
+                //if (sender != null)
+                    //SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Btn_pay_Click(object sender, RoutedEventArgs e)
@@ -287,7 +288,8 @@ namespace POS.View.accounts
 
                             cash.transType = bond.type;
                             cash.posId = MainWindow.posID.Value;
-                            cash.transNum = await cashModel.generateDocNumber(bond.type + "bnd");
+                            //cash.transNum = await cashModel.generateDocNumber(bond.type + "bnd");
+                            cash.transNum = bond.number;
                             cash.cash = decimal.Parse(tb_amount.Text);
                             cash.notes = tb_note.Text;
                             cash.createUserId = MainWindow.userID;
@@ -949,6 +951,7 @@ namespace POS.View.accounts
                         tb_chequeProcessNum.Visibility = Visibility.Collapsed;
                         _SelectedCard = -1;
                         SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+                        SectionData.clearValidate(tb_chequeProcessNum, p_chequeProcessNum);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         break;
 
@@ -963,6 +966,7 @@ namespace POS.View.accounts
                     case 2://card
                         gd_card.Visibility = Visibility.Visible;
                         tb_chequeProcessNum.Visibility = Visibility.Collapsed;
+                        SectionData.clearValidate(tb_chequeProcessNum, p_chequeProcessNum);
                         break;
                 }
 

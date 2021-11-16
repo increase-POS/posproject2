@@ -169,7 +169,7 @@ namespace POS.View.reports
                 }
             }
         }
-        List<CashTransferSts> stateLst;
+
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox date)
         {
             var selectedItem1 = vendor.SelectedItem as VendorCombo;
@@ -195,7 +195,6 @@ namespace POS.View.reports
                              && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
             }
 
-            stateLst = result.ToList();
             return result.ToList();
         }
 
@@ -455,16 +454,16 @@ namespace POS.View.reports
         IEnumerable<CashTransferSts> temp = null;
         private void fillEvents()
         {
-            temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
-            if (selectedTab == 1)
-            {
-                temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
-            }
-            else if (selectedTab == 3)
-            {
-                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null);
-            }
+            temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab);
+            //if (selectedTab == 1)
+            //{
+            //    temp = temp.Where(t => (((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+            //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) && t.processType != "doc") || t.processType == "doc");
+            //}
+            //else if (selectedTab == 3)
+            //{
+            //    temp = temp.Where(t => ((t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null) && t.processType != "doc") || t.processType == "doc");
+            //}
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
@@ -679,7 +678,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
               
-                temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate));
+                temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab);
 
                 t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||

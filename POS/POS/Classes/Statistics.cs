@@ -3271,9 +3271,19 @@ namespace POS.Classes
         #endregion
 
 
-        public List<CashTransferSts> getstate(List<CashTransferSts> list)
+        public List<CashTransferSts> getstate(List<CashTransferSts> list , int tab)
         {
             List<CashTransferSts> list2 = new List<CashTransferSts>();
+            IEnumerable<CashTransferSts> temp = list;
+            if (tab == 1)
+            {
+                temp = list.Where(t => (((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) && t.processType != "doc") || t.processType == "doc");
+            }
+            else if (tab == 3)
+            {
+                temp = list.Where(t => ((t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null) && t.processType != "doc") || t.processType == "doc");
+            }
             list2 = list.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
             {
                 bondNumber = obj.FirstOrDefault().bondNumber,
@@ -3307,7 +3317,8 @@ namespace POS.Classes
                 side = obj.FirstOrDefault().side,
                 processType = obj.FirstOrDefault().processType,
 
-                invNumber = "",
+                //invNumber = "",
+                invNumber = obj.FirstOrDefault().invNumber,
                 invType = obj.FirstOrDefault().invType,
                 totalNet = obj.FirstOrDefault().totalNet,
 
@@ -3321,22 +3332,24 @@ namespace POS.Classes
 
             foreach (CashTransferSts row in list2)
             {
-                string invnum = "";
-                List<string> invnumlist = new List<string>();
-                invnumlist = list.Where(x => x.transNum == row.transNum).Select(y => y.invNumber).ToList();
-                foreach (string strrow in invnumlist)
-                {
-                    invnum += strrow + " ";
-                }
-                row.invNumber = invnum;
+                //string invnum = "";
+                //List<string> invnumlist = new List<string>();
+                //invnumlist = list.Where(x => x.transNum == row.transNum).Select(y => y.invNumber).ToList();
+                //foreach (string strrow in invnumlist)
+                //{
+                //    invnum += strrow + " ";
+                //}
+                //row.invNumber = invnum;
                 if (row.transType == "d")
                 {
                     //if (!((row.processType == "doc")&&(row.Description1 == "Receipt")))
+                    if(row.bondIsRecieved == 1)
                         rowtotal += (decimal)row.cash;
                 }
                 else if (row.transType == "p")
                 {// p
                     //if (!((row.processType == "doc") && (row.Description1 == "Receipt")))
+                    if (row.bondIsRecieved == 1)
                         rowtotal -= (decimal)row.cash;
                 }
                 row.cashTotal = rowtotal;

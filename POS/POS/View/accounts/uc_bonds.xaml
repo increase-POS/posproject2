@@ -147,14 +147,10 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Number" Binding="{Binding Path=number}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="Deposit From"    Binding="{Binding side,Converter={StaticResource depositorTypeConverter }}"  Visibility="Collapsed" />-->
+                        <DataGridTextColumn Width="*"  Header="Number"          Binding="{Binding Path=number}"/>
                         <DataGridTextColumn Width="*"  Header="Depositor"       Binding="{Binding Path=.,Converter={StaticResource depositorBondeConverter }}" />
-                        <!--<DataGridTextColumn Width="*"  Header="Depositor"       Binding="{Binding Path=ctside}" />-->
-                        <DataGridTextColumn Width="*"   Header="Process Type"   Binding="{Binding Path =type,Converter={StaticResource transTypeConverter }}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path=amount}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Process Type"    Binding="{Binding Path =type,Converter={StaticResource transTypeConverter }}"/>
                         <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path =amount,Converter={StaticResource accuracyConverter }}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="Deserve Date"    Binding="{Binding Path=deserveDate}"/>-->
                         <DataGridTextColumn Width="*"  Header="Deserve Date"    Binding="{Binding Path=deserveDate,Converter={StaticResource dateFrameConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>
