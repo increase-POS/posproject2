@@ -453,6 +453,11 @@ namespace POS.View
                     bdr_shortageInvoice.Visibility = Visibility.Collapsed;
                 }
 
+                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                    btn_printCount.Visibility = Visibility.Visible;
+                else
+                    btn_printCount.Visibility = Visibility.Collapsed;
+
                 #endregion
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
@@ -2148,6 +2153,12 @@ namespace POS.View
                 if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
                 {
                     _SelectedVendor = (int)cb_vendor.SelectedValue;
+                    var v = vendorsL.Where(x => x.agentId == _SelectedVendor).FirstOrDefault();
+                    if (v.payType != null)
+                        cb_paymentProcessType.SelectedValue = v.payType;
+                    else
+                        cb_paymentProcessType.SelectedIndex = 0;
+
                 }
                 else
                 {
@@ -3538,7 +3549,25 @@ namespace POS.View
 
         private void Btn_printCount_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+
+                /// write your code Here
+
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

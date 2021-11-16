@@ -993,15 +993,15 @@ namespace POS.View.accounts
                     #region
                     if (bond.isRecieved==1)
                     {
-buildbondDocReport();
+                    buildbondDocReport();
                  LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                    
                     }
                     else
                     {
-                        MessageBox.Show("bond not recieved");
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBondNotRecieved"), animation: ToasterAnimation.FadeIn);
                     }
-            #endregion
+                    #endregion
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1340,7 +1340,7 @@ buildbondDocReport();
                     }
                     else
                     {
-                        MessageBox.Show("bond not recieved");
+                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBondNotRecieved"), animation: ToasterAnimation.FadeIn);
                     }
                     #endregion
                 }
@@ -1389,7 +1389,7 @@ buildbondDocReport();
                     }
                     else
                     {
-                        MessageBox.Show("bond not recieved");
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBondNotRecieved"), animation: ToasterAnimation.FadeIn);
                     }
 
                     #endregion

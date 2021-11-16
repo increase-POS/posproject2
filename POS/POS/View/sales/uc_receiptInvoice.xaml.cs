@@ -469,7 +469,6 @@ namespace POS.View
                         //}
                         //MessageBox.Show(s);
                         await Task.Delay(0500);
-                        //MessageBox.Show("do");
                     }
                 }
                 while (!isDone);
@@ -510,6 +509,8 @@ namespace POS.View
                 //    bdr_payments.Visibility = Visibility.Collapsed;
                 //}
 
+             
+
                 if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one"))
                     md_ordersWait.Visibility = Visibility.Visible;
                 else
@@ -530,6 +531,12 @@ namespace POS.View
                 //    btn_emailMessage.Visibility = Visibility.Collapsed;
                 //    bdr_emailMessage.Visibility = Visibility.Collapsed;
                 //}
+
+                
+                     if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                    btn_printCount.Visibility = Visibility.Visible;
+                else
+                    btn_printCount.Visibility = Visibility.Collapsed;
 
                 #endregion
                 #region print - pdf - send email
@@ -2562,7 +2569,11 @@ namespace POS.View
                 if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
                 {
                     _SelectedCustomer = (int)cb_customer.SelectedValue;
-
+                    var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
+                    if (c.payType != null)
+                        cb_paymentProcessType.SelectedValue = c.payType;
+                    else
+                        cb_paymentProcessType.SelectedIndex = 0;
                 }
                 else
                 {
@@ -3645,7 +3656,7 @@ namespace POS.View
 
             if (int.Parse(MainWindow.Allow_print_inv_count) <= prInvoice.printedcount)
             {
-                MessageBox.Show("You have exceeded the limit");
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
 
             }
             else
@@ -3785,11 +3796,12 @@ namespace POS.View
                             }
                             else
                             {
-                                MessageBox.Show("You have exceeded the limit");
+                                
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                                }
+
+
                             }
-
-
-                        }
                         else
                         {
 
@@ -3971,7 +3983,7 @@ namespace POS.View
                             }
                             else
                             {
-                                MessageBox.Show("You have exceeded the limit");
+                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
                             }
 
                         }
@@ -4051,7 +4063,7 @@ namespace POS.View
                     prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
                     if (int.Parse(MainWindow.Allow_print_inv_count) <= prInvoice.printedcount)
                     {
-                        MessageBox.Show("You have exceeded the limit");
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
 
                     }
                     else { 
@@ -4176,11 +4188,11 @@ namespace POS.View
                         }
                         else
                         {
-                            MessageBox.Show("You have exceeded the limit");
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                            }
+
+
                         }
-
-
-                    }
                     else
                     {
 
@@ -4649,7 +4661,6 @@ namespace POS.View
             else
                 tb_processNum.Visibility = Visibility.Collapsed;
 
-            //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
         }
 
         ImageBrush brush = new ImageBrush();
@@ -5151,7 +5162,12 @@ namespace POS.View
 
         private async void Btn_printCount_Click(object sender, RoutedEventArgs e)
         {
-            int result = 0;
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int result = 0;
 
             if (invoice.invoiceId > 0)
             {
@@ -5160,19 +5176,27 @@ namespace POS.View
 
             if (result > 0)
                 {
-                    MessageBox.Show("Done");
-                }
-                else
+                   Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
                 {
-                    MessageBox.Show("Error");
-                }
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
 
-            }
+                }
             else
             {
-                MessageBox.Show("Please Choose Invoice");
+               Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
-
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

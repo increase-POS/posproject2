@@ -1434,8 +1434,9 @@ namespace POS.View
             }
             else
             {
-                MessageBox.Show("Code is empty");
-               // SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
+                //MessageBox.Show("Code is empty");
+              Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBarcodeEmpty"), animation: ToasterAnimation.FadeIn);
+                // SectionData.validateEmptyTextBox((TextBox)sender, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
             }
         }
     }

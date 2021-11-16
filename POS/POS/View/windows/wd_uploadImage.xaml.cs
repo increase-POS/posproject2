@@ -466,7 +466,6 @@ namespace POS.View.windows
             System.Drawing.Image img = System.Drawing.Image.FromFile(imagepath);
             Width = (int)img.PhysicalDimension.Width + 100;
             Height = (int)img.PhysicalDimension.Height + 100;
-            //  MessageBox.Show("Width: " + img.PhysicalDimension.Width.ToString() + ", Height: " + img.PhysicalDimension.Height.ToString());
 
             addpath = @"\Reports\image\image.rdlc";
 

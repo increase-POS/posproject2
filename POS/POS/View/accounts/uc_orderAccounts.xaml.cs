@@ -1093,7 +1093,6 @@ namespace POS.View.accounts
                     else
                     {
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                        MessageBox.Show("warning");
                     }
                     }
                     #endregion
