@@ -77,7 +77,7 @@ namespace POS.View.windows
 
                 // get it from invoice
                 loading_fillCardCombo();
-
+              
                 //////////////////////////
                 //invoice.agentId
                 //////////////////////////
@@ -156,22 +156,36 @@ namespace POS.View.windows
         {
             try
             {
-                if (!isPurchase && invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid) || (hasCredit == true && creditValue ==0))
+                if (!isPurchase && 
+               (invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid) || (hasCredit == true && creditValue ==0)))
                 {
+                    if (invoice.totalNet - invoice.paid > 0)
+                    {
+                        cashTrasnfer = new CashTransfer();
+
+                        ///////////////////////////////////////////////////
+                        cashTrasnfer.agentId = invoice.agentId;
+                        cashTrasnfer.invId = invoice.invoiceId;
+                        cashTrasnfer.processType = "balance";
+                        cashTrasnfer.cash = invoice.totalNet - invoice.paid;
+                        listPayments.Add(cashTrasnfer);
+                    }
                     isOk = true;
                     this.Close();
                 }
-                else if(isPurchase)
+                else if(isPurchase && hasCredit == true)
                 {
-                    cashTrasnfer = new CashTransfer();
+                    if (invoice.totalNet - invoice.paid > 0)
+                    {
+                        cashTrasnfer = new CashTransfer();
 
-                    ///////////////////////////////////////////////////
-                    cashTrasnfer.agentId = invoice.agentId;
-                    cashTrasnfer.invId = invoice.invoiceId;
-                    cashTrasnfer.processType = "balance";
-                    cashTrasnfer.cash = invoice.totalNet - invoice.paid;
-                    listPayments.Add(cashTrasnfer);
-
+                        ///////////////////////////////////////////////////
+                        cashTrasnfer.agentId = invoice.agentId;
+                        cashTrasnfer.invId = invoice.invoiceId;
+                        cashTrasnfer.processType = "balance";
+                        cashTrasnfer.cash = invoice.totalNet - invoice.paid;
+                        listPayments.Add(cashTrasnfer);
+                    }
                     //lst_payments.Items.Add(s);
                     ///////////////////////////////////////////////////
                     isOk = true;
