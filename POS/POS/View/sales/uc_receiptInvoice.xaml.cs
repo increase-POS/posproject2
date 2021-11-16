@@ -3656,9 +3656,12 @@ namespace POS.View
 
             if (int.Parse(MainWindow.Allow_print_inv_count) <= prInvoice.printedcount)
             {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                this.Dispatcher.Invoke(() =>
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
 
-            }
+                });
+                }
             else
             {
 
@@ -3796,8 +3799,12 @@ namespace POS.View
                             }
                             else
                             {
-                                
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+
+                                    });
+
                                 }
 
 
@@ -3983,7 +3990,11 @@ namespace POS.View
                             }
                             else
                             {
-                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                                });
+
                             }
 
                         }
