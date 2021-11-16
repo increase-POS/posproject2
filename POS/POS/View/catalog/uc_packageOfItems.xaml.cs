@@ -724,7 +724,7 @@ namespace POS.View
                 //search
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    if (items is null)
+                    //if (items is null)
                         await RefrishItems();
                     txtItemSearch = txb_searchitems.Text.ToLower();
                     pageIndex = 1;

@@ -2216,7 +2216,7 @@ namespace POS.View
             else
                 items = allItems;
 
-            items = items.Where(x => x.type != "p").ToList();
+            items = items.Where(x => x.type != "p" && x.type != "sr").ToList();
 
             return items;
 
