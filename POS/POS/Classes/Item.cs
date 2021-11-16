@@ -396,10 +396,46 @@ namespace POS.Classes
             }
         }
 
-        
+
         #endregion
 
 
-        
+        //service
+
+        public async Task<List<Item>> GetAllSrItems()
+        {
+            List<Item> items = new List<Item>();
+
+            IEnumerable<Claim> claims = await APIResult.getList("items/GetAllSrItems");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Item>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+
+
+        public async Task<List<Item>> GetSrItemsInCategoryAndSub(int categoryId)
+        {
+            List<Item> items = new List<Item>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("categoryId", categoryId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("items/GetSrItemsInCategoryAndSub", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Item>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+
     }
 }
