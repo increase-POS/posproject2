@@ -30,6 +30,13 @@
       </ConnectionProperties>
       <rd:DataSourceID>3f5ea02d-4bcd-42cb-a8fb-e3f519330c34</rd:DataSourceID>
     </DataSource>
+    <DataSource Name="POSClasses4">
+      <ConnectionProperties>
+        <DataProvider>System.Data.DataSet</DataProvider>
+        <ConnectString>/* Local Connection */</ConnectString>
+      </ConnectionProperties>
+      <rd:DataSourceID>b1871456-779f-4f17-812c-99ca2d5dd16b</rd:DataSourceID>
+    </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSetItemTransfer">
@@ -118,6 +125,44 @@
     <ReportSection>
       <Body>
         <ReportItems>
+          <Textbox Name="Textbox35">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>نسخة</Value>
+                    <Style>
+                      <FontSize>60pt</FontSize>
+                      <FontWeight>Light</FontWeight>
+                      <Color>Gainsboro</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox30</rd:DefaultName>
+            <Top>0.39959cm</Top>
+            <Left>0.48282cm</Left>
+            <Height>2.74926cm</Height>
+            <Width>4.73436cm</Width>
+            <Visibility>
+              <Hidden>=iif(Parameters!isOrginal.Value = "True" Or Parameters!isOrginal.Value = "true" Or  Parameters!isOrginal.Value = "1"  ,True,False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
           <Textbox Name="Textbox33">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -141,6 +186,7 @@
             <Left>0.48282cm</Left>
             <Height>2.19762cm</Height>
             <Width>4.73436cm</Width>
+            <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>=Parameters!watermark.Value = "0"</Hidden>
             </Visibility>
@@ -581,7 +627,7 @@
             <Left>0.20991cm</Left>
             <Height>1.2cm</Height>
             <Width>5.29295cm</Width>
-            <ZIndex>1</ZIndex>
+            <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -613,7 +659,7 @@
             <Left>3.68635cm</Left>
             <Height>0.42693cm</Height>
             <Width>1.76099cm</Width>
-            <ZIndex>2</ZIndex>
+            <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -655,7 +701,7 @@
             <Left>0.20991cm</Left>
             <Height>0.42693cm</Height>
             <Width>1.66981cm</Width>
-            <ZIndex>3</ZIndex>
+            <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -691,7 +737,7 @@
             <Left>3.70046cm</Left>
             <Height>0.55755cm</Height>
             <Width>1.74688cm</Width>
-            <ZIndex>4</ZIndex>
+            <ZIndex>5</ZIndex>
             <Visibility>
               <Hidden>=Parameters!tax.Value = 0</Hidden>
             </Visibility>
@@ -744,7 +790,7 @@
             <Left>0.20991cm</Left>
             <Height>0.55755cm</Height>
             <Width>2.51718cm</Width>
-            <ZIndex>5</ZIndex>
+            <ZIndex>6</ZIndex>
             <Visibility>
               <Hidden>=Parameters!discountType.Value = 2</Hidden>
             </Visibility>
@@ -783,7 +829,7 @@
             <Left>3.8117cm</Left>
             <Height>0.50364cm</Height>
             <Width>1.64975cm</Width>
-            <ZIndex>6</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -833,7 +879,7 @@
             <Left>0.20991cm</Left>
             <Height>0.50364cm</Height>
             <Width>2.04599cm</Width>
-            <ZIndex>7</ZIndex>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -869,7 +915,7 @@
             <Left>3.70046cm</Left>
             <Height>0.50299cm</Height>
             <Width>1.76099cm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -885,7 +931,7 @@
             <Left>0.20991cm</Left>
             <Height>0cm</Height>
             <Width>5.29297cm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>10</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -898,7 +944,7 @@
             <Left>0.20991cm</Left>
             <Height>0cm</Height>
             <Width>5.29297cm</Width>
-            <ZIndex>10</ZIndex>
+            <ZIndex>11</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -911,7 +957,7 @@
             <Left>0.0857cm</Left>
             <Height>0cm</Height>
             <Width>5.5cm</Width>
-            <ZIndex>11</ZIndex>
+            <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
@@ -927,7 +973,7 @@
             <Left>0.6793cm</Left>
             <Height>0.81184cm</Height>
             <Width>4.34421cm</Width>
-            <ZIndex>12</ZIndex>
+            <ZIndex>13</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -960,7 +1006,7 @@
             <Left>1.49815in</Left>
             <Height>0.25in</Height>
             <Width>0.64951in</Width>
-            <ZIndex>13</ZIndex>
+            <ZIndex>14</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -996,7 +1042,7 @@
             <Left>0.84572in</Left>
             <Height>0.25in</Height>
             <Width>0.65243in</Width>
-            <ZIndex>14</ZIndex>
+            <ZIndex>15</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1045,7 +1091,7 @@
             <Left>0.08012in</Left>
             <Height>0.25in</Height>
             <Width>2.08385in</Width>
-            <ZIndex>15</ZIndex>
+            <ZIndex>16</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1081,7 +1127,7 @@
             <Left>0.26744in</Left>
             <Height>0.25in</Height>
             <Width>1.71032in</Width>
-            <ZIndex>16</ZIndex>
+            <ZIndex>17</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1121,7 +1167,7 @@
             <Left>0.08012in</Left>
             <Height>0.33074in</Height>
             <Width>2.08385in</Width>
-            <ZIndex>17</ZIndex>
+            <ZIndex>18</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1163,7 +1209,7 @@
             <Left>0.20991cm</Left>
             <Height>0.50299cm</Height>
             <Width>2.51718cm</Width>
-            <ZIndex>18</ZIndex>
+            <ZIndex>19</ZIndex>
             <Visibility>
               <Hidden>=Parameters!tax.Value = 0</Hidden>
             </Visibility>
@@ -1208,7 +1254,7 @@
             <Left>0.20991cm</Left>
             <Height>0.55755cm</Height>
             <Width>2.51718cm</Width>
-            <ZIndex>19</ZIndex>
+            <ZIndex>20</ZIndex>
             <Visibility>
               <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
             </Visibility>
@@ -1223,7 +1269,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>9.34681cm</Height>
+        <Height>9.07507cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
