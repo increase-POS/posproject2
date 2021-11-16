@@ -214,9 +214,8 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
+                //this.DataContext = new Agent();
                 agent.agentId = 0;
-
                 tb_code.Text = "";
                 tb_address.Clear();
                 tb_fax.Clear();
@@ -225,9 +224,9 @@ namespace POS.View
                 tb_name.Clear();
                 tb_notes.Clear();
                 tb_mobile.Clear();
-                tb_upperLimit.Clear();
+                tb_upperLimit.Text = "0";
                 tb_phone.Clear();
-
+                cb_payType.SelectedIndex = -1;
                 cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
                 cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
                 cb_areaFax.SelectedValue = MainWindow.Region.countryId;

@@ -617,7 +617,7 @@
                                     <ColumnDefinition Width="auto"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox Grid.Column="0" x:Name="cb_areaMobile" Padding="10,0,5,0"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E" TabIndex="3"  TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
+                                <ComboBox Grid.Column="0" x:Name="cb_areaMobile" Padding="10,10,5,0"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E" TabIndex="3"  TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
                                 <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" TextChanged="tb_mobile_TextChanged" PreviewKeyDown="tb_mobile_PreviewKeyDown"  >
                                     <!--<TextBox.ToolTip>
                                         <ToolTip x:Name="tt_mobile" Content="Mobile"  Placement="left"   HorizontalOffset="35"  PlacementRectangle="50,0,0,0"    VerticalOffset="20"/>
@@ -637,7 +637,7 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox x:Name="cb_areaPhone" Padding="10,0,5,0" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox x:Name="cb_areaPhone" Padding="10,10,5,0" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"  Grid.Column="0" Height="40"
                            TextBlock.FontSize="12" Margin="5,5,0,5"
                   
@@ -647,7 +647,7 @@
                             FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2" SelectionChanged="Cb_areaPhone_SelectionChanged"  />
 
-                                <ComboBox Visibility="Collapsed" x:Name="cb_areaPhoneLocal" Padding="10,0,5,0" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Visibility="Collapsed" x:Name="cb_areaPhoneLocal" Padding="10,10,5,0" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="5,5,5,5"
                   
@@ -689,7 +689,7 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox x:Name="cb_areaFax" Padding="10,0,5,0" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox x:Name="cb_areaFax" Padding="10,10,5,0" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"  Grid.Column="0"
                            TextBlock.FontSize="12" Margin="5,5,0,5"
                     
@@ -698,7 +698,7 @@
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"   
                              Grid.Row="2" SelectionChanged="Cb_areaFax_SelectionChanged"  />
-                                <ComboBox Visibility="Collapsed" x:Name="cb_areaFaxLocal" Padding="10,0,5,0" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox Visibility="Collapsed" x:Name="cb_areaFaxLocal" Padding="10,10,5,0" TextBlock.Foreground="#4E4E4E"
                             SelectedIndex="0"
                            TextBlock.FontSize="12" Margin="5,5,5,5"
                      HorizontalAlignment="Center" VerticalAlignment="Center" 

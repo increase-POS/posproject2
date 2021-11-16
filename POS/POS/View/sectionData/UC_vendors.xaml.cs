@@ -194,6 +194,7 @@ namespace POS.View
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_payType, MainWindow.resourcemanager.GetString("trDefaultPayType"));
 
             dg_vendor.Columns[0].Header = MainWindow.resourcemanager.GetString("trCode");
             dg_vendor.Columns[1].Header = MainWindow.resourcemanager.GetString("trName");
@@ -223,6 +224,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                //this.DataContext = new Agent();
                 agent.agentId = 0;
 
                 tb_code.Text = "";
@@ -234,6 +236,7 @@ namespace POS.View
                 tb_notes.Clear();
                 tb_mobile.Clear();
                 tb_phone.Clear();
+                cb_payType.SelectedIndex = -1;
                 cb_areaMobile.SelectedValue = MainWindow.Region.countryId;
                 cb_areaPhone.SelectedValue = MainWindow.Region.countryId;
                 cb_areaFax.SelectedValue = MainWindow.Region.countryId;
@@ -296,6 +299,7 @@ namespace POS.View
 
                 await fillCity();
 
+                SectionData.FillDefaultPayType(cb_payType);
 
                 //default img
                 Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
@@ -348,6 +352,10 @@ namespace POS.View
                     #endregion
 
                     decimal maxDeserveValue = 0;
+                    //payType
+                    string payType = "";
+                    if (cb_payType.SelectedIndex != -1)
+                        payType = cb_payType.SelectedValue.ToString();
 
                     if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                     {
@@ -366,6 +374,7 @@ namespace POS.View
                             agent.mobile = cb_areaMobile.Text + "-" + tb_mobile.Text;
                             agent.image = "";
                             agent.type = "v";
+                            agent.payType = payType;
                             agent.accType = "";
                             agent.balance = 0;
                             agent.createUserId = MainWindow.userID;
@@ -445,7 +454,10 @@ namespace POS.View
 
                     decimal maxDeserveValue = 0;
                     #endregion
-
+                    //payType
+                    string payType = "";
+                    if (cb_payType.SelectedIndex != -1)
+                        payType = cb_payType.SelectedValue.ToString();
                     if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                     {
                         if (emailError)
@@ -462,6 +474,7 @@ namespace POS.View
                             agent.updateUserId = MainWindow.userID;
                             agent.notes = tb_notes.Text;
                             agent.fax = faxStr;
+                            agent.payType = payType;
                             agent.maxDeserve = maxDeserveValue;
 
                             int s = await agentModel.save(agent);
