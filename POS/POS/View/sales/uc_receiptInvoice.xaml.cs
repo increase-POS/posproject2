@@ -3705,7 +3705,7 @@ namespace POS.View
 
 
 
-                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice, 0);
+                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice, 1);
                     ReportCls.checkLang();
                     Branch branch = new Branch();
                     branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
