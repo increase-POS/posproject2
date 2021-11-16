@@ -599,7 +599,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ComboBox x:Name="cb_areaMobile" Padding="10,0,5,0" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox x:Name="cb_areaMobile" Padding="10,10,5,0" TextBlock.Foreground="#4E4E4E"
                                       TabIndex="3" SelectedIndex="0"
                                       TextBlock.FontSize="12" Margin="5,5,0,5"
                                       Height="40" Width="60"  
@@ -644,7 +644,7 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <ComboBox x:Name="cb_areaPhone" Padding="10,11,5,5" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox x:Name="cb_areaPhone" Padding="10,10,5,5" TextBlock.Foreground="#4E4E4E"
                                       SelectedIndex="0"  Grid.Column="0" TabIndex="5"
                                       TextBlock.FontSize="12" Margin="5,5,0,5"
                                     
@@ -653,7 +653,7 @@
                                       BorderBrush="#737373"       BorderThickness="0" 
                                       FontFamily="{StaticResource Font-cairo-light}"   
                                       Grid.Row="2" SelectionChanged="Cb_areaPhone_SelectionChanged"/>
-                                <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" TextBlock.Foreground="#4E4E4E"
+                                <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,10,5,5" TextBlock.Foreground="#4E4E4E"
                                       SelectedIndex="0"  TabIndex="6"
                                       TextBlock.FontSize="12" Margin="5,5,0,5" Visibility="Collapsed"
                                       HorizontalAlignment="Center" VerticalAlignment="Center" 

@@ -527,7 +527,7 @@
                                 <ColumnDefinition Width="auto"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_area" Padding="10,11,5,5" 
+                            <ComboBox x:Name="cb_area" Padding="10,10,5,5" 
                                          TextBlock.Foreground="#4E4E4E"
                                       TabIndex="4"
                                       TextBlock.FontSize="12" Margin="5,5,5,5"
@@ -573,7 +573,7 @@
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="cb_areaPhone" Padding="10,11,5,5" 
+                            <ComboBox x:Name="cb_areaPhone" Padding="10,10,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
                                       Grid.Column="0" 
                                       TextBlock.FontSize="12" Margin="5,5,5,5"
@@ -581,7 +581,7 @@
                                       Background="#f8f8f8" 
                                       BorderBrush="#737373"       BorderThickness="0" 
                                       FontFamily="{StaticResource Font-cairo-light}" SelectionChanged="Cb_areaPhone_SelectionChanged"  />
-                            <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,11,5,5" 
+                            <ComboBox x:Name="cb_areaPhoneLocal" Padding="15,10,5,5" 
                                       TextBlock.Foreground="#4E4E4E"
                                       TabIndex="7"
                                       Visibility="Collapsed"
