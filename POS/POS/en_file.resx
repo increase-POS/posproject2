@@ -2758,4 +2758,7 @@ Please add Email in setting</value>
   <data name="trDefaultPayType" xml:space="preserve">
     <value>Default pay type</value>
   </data>
+  <data name="trDirectEntry" xml:space="preserve">
+    <value>Direct Entry</value>
+  </data>
 </root>

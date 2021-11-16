@@ -1744,6 +1744,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Entry.
+        /// </summary>
+        internal static string trDirectEntry {
+            get {
+                return ResourceManager.GetString("trDirectEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Discount.
         /// </summary>
         internal static string trDiscount {

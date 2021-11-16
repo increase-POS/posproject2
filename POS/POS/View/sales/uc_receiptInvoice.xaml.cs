@@ -1091,7 +1091,11 @@ namespace POS.View
                         break;
                 }
             }
-
+            if (decimal.Parse(tb_total.Text) == 0)
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+                return false;
+            }
             // check amount
             if (_InvoiceType == "sd" || _InvoiceType == "or")
                 available = await checkItemsAmounts();
