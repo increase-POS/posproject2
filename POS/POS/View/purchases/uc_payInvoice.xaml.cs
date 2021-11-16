@@ -905,7 +905,7 @@ namespace POS.View
                         //tb_processNum.Clear();
                         _SelectedCard = -1;
                         //txt_card.Text = "";
-                        dp_desrvedDate.IsEnabled = false;
+                        dp_desrvedDate.IsEnabled = true;
                         //SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         //SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                         //SectionData.clearValidate(tb_processNum, p_errorCard);
@@ -1153,6 +1153,7 @@ namespace POS.View
                 invoice.totalNet = decimal.Parse(tb_total.Text);
                 invoice.paid = 0;
                 invoice.deserved = invoice.totalNet;
+                //invoice.cashReturn = 0;
                 if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex != 0)
                     invoice.agentId = (int)cb_vendor.SelectedValue;
 
@@ -1309,7 +1310,10 @@ namespace POS.View
                             {
                                 Window.GetWindow(this).Opacity = 0.2;
                                 wd_multiplePayment w = new wd_multiplePayment();
-                                w.hasCredit = true;
+                                if (cb_vendor.SelectedIndex > 0)
+                                    w.hasCredit = true;
+                                else
+                                    w.hasCredit = false;
                                 w.isPurchase = true;
                                 w.invoice.invType = _InvoiceType;
                                 w.invoice.totalNet = decimal.Parse(tb_total.Text);
@@ -1372,7 +1376,7 @@ namespace POS.View
                                         item.createUserId = MainWindow.userID;
                                         await saveConfiguredCashTrans(item);
                                     }
-                                    await invoice.saveInvoice(invoice);
+                                    //await invoice.saveInvoice(invoice);
                                 }
                                 else
                                 {
@@ -1463,6 +1467,7 @@ namespace POS.View
                         {
                             pos.balance -= cashTransfer.cash;
                             invoice.paid = cashTransfer.cash;
+                            invoice.deserved -= cashTransfer.cash;
                         }
                         else
                         {
