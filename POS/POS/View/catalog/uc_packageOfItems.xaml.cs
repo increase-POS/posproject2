@@ -1258,7 +1258,7 @@ namespace POS.View
                         item.createUserId = MainWindow.userID;
 
                         int res = await itemModel.saveItem(item);
-                        if (!res.Equals("0"))
+                        if (res >0)
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1289,10 +1289,11 @@ namespace POS.View
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
                         btn_clear_Click(null, null);
+                        tb_code.Focus();
+                        SectionData.clearValidate(tb_code, p_errorCode);
                     }
 
-                    tb_code.Focus();
-                    SectionData.clearValidate(tb_code, p_errorCode);
+                
 
                 }
                 else

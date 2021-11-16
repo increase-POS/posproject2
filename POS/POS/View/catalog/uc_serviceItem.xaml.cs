@@ -424,13 +424,12 @@ namespace POS.View.catalog
         /// Item
         /// </summary>
         /// <returns></returns>
-        Package packageModel = new Package();
         async Task<IEnumerable<Item>> RefrishItems()
         {
             if (category.categoryId == 0)
-                items = await packageModel.GetPackages();
-            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-            items = items.Where(x => x.type == "sr");
+                items = await item.GetAllSrItems();
+            else items = await itemModel.GetSrItemsInCategoryAndSub(category.categoryId);
+            //items = items.Where(x => x.type == "sr");
             return items;
         }
 
@@ -1260,7 +1259,7 @@ namespace POS.View.catalog
                         item.createUserId = MainWindow.userID;
 
                         int res = await itemModel.saveItem(item);
-                        if (!res.Equals("0"))
+                        if (res>0)
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1292,10 +1291,11 @@ namespace POS.View.catalog
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
                         btn_clear_Click(null, null);
+                        tb_code.Focus();
+                        SectionData.clearValidate(tb_code, p_errorCode);
                     }
 
-                    tb_code.Focus();
-                    SectionData.clearValidate(tb_code, p_errorCode);
+                    
 
                 }
                 else
