@@ -1141,7 +1141,7 @@ namespace POS.View.Settings
             dg_permissions.Columns[5].Header = MainWindow.resourcemanager.GetString("trReports");
 
 
-            txt_header.Text = MainWindow.resourcemanager.GetString("");
+            txt_header.Text = MainWindow.resourcemanager.GetString("trPermission");
             txt_groupDetails.Text = MainWindow.resourcemanager.GetString("trDetails");
             txt_groups.Text = MainWindow.resourcemanager.GetString("trGroups");
  
