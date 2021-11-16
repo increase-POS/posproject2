@@ -583,6 +583,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barcode is empty.
+        /// </summary>
+        internal static string trBarcodeEmpty {
+            get {
+                return ResourceManager.GetString("trBarcodeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Barcode....
         /// </summary>
         internal static string trBarcodeHint {
@@ -624,6 +633,15 @@ namespace POS {
         internal static string trBondesCount {
             get {
                 return ResourceManager.GetString("trBondesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bond not recieved.
+        /// </summary>
+        internal static string trBondNotRecieved {
+            get {
+                return ResourceManager.GetString("trBondNotRecieved", resourceCulture);
             }
         }
         
@@ -7942,6 +7960,15 @@ namespace POS {
         internal static string trYHint {
             get {
                 return ResourceManager.GetString("trYHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have exceeded the limit.
+        /// </summary>
+        internal static string trYouExceedLimit {
+            get {
+                return ResourceManager.GetString("trYouExceedLimit", resourceCulture);
             }
         }
         

@@ -2761,4 +2761,13 @@ Please add Email in setting</value>
   <data name="trDirectEntry" xml:space="preserve">
     <value>Direct Entry</value>
   </data>
+  <data name="trBarcodeEmpty" xml:space="preserve">
+    <value>Barcode is empty</value>
+  </data>
+  <data name="trBondNotRecieved" xml:space="preserve">
+    <value>Bond not recieved</value>
+  </data>
+  <data name="trYouExceedLimit" xml:space="preserve">
+    <value>You have exceeded the limit</value>
+  </data>
 </root>

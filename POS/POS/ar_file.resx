@@ -2746,4 +2746,13 @@
   <data name="trDirectEntry" xml:space="preserve">
     <value>إدخال مباشر</value>
   </data>
+  <data name="trBarcodeEmpty" xml:space="preserve">
+    <value>الباركود فارغ</value>
+  </data>
+  <data name="trBondNotRecieved" xml:space="preserve">
+    <value>السند غير مستلم</value>
+  </data>
+  <data name="trYouExceedLimit" xml:space="preserve">
+    <value>لقد تجاوزت الحد</value>
+  </data>
 </root>
