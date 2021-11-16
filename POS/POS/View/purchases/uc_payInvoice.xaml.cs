@@ -1416,7 +1416,7 @@ namespace POS.View
                             //    _InvoiceType = "pd";
                             //}
                             //
-                            prInvoice = await invoiceModel.getById(prInvoiceId);
+                            prInvoice = await invoiceModel.GetByInvoiceId(prInvoiceId);
                             ///////////////////////////////////////
 
                             if (prInvoice.invType == "pw")
@@ -2994,7 +2994,7 @@ namespace POS.View
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
-                prInvoice = await invoiceModel.getById(prInvoiceId);
+                prInvoice = await invoiceModel.GetByInvoiceId(prInvoiceId);
                 //
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                              || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -3061,7 +3061,7 @@ namespace POS.View
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
-                prInvoice = await invoiceModel.getById(prInvoiceId);
+                prInvoice = await invoiceModel.GetByInvoiceId(prInvoiceId);
 
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -3185,7 +3185,7 @@ namespace POS.View
             if (prInvoiceId > 0)
             {
                 prInvoice = new Invoice();
-                prInvoice = await invoiceModel.getById(prInvoiceId);
+                prInvoice = await invoiceModel.GetByInvoiceId(prInvoiceId);
 
                 List<ReportParameter> paramarr = new List<ReportParameter>();
 

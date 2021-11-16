@@ -2391,7 +2391,7 @@ SectionData.isAdminPermision())
         {
 
             prInvoice = new Invoice();
-            prInvoice = await invoiceModel.getById(invoice.invoiceId);
+            prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
 
             if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"

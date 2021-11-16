@@ -1227,7 +1227,7 @@ namespace POS.View.storage
             if (invoice.invoiceMainId == null)
                 generatedInvoice = await invoice.getgeneratedInvoice(invoice.invoiceId);
             else
-                generatedInvoice = await invoice.getById((int)invoice.invoiceMainId);
+                generatedInvoice = await invoice.GetByInvoiceId((int)invoice.invoiceMainId);
             _Count = invoice.itemsCount.Value;
             tb_count.Text = _Count.ToString();
 
