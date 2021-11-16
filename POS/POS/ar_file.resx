@@ -2743,4 +2743,7 @@
   <data name="trDefaultPayType" xml:space="preserve">
     <value>طريقة الدفع الافتراضية</value>
   </data>
+  <data name="trDirectEntry" xml:space="preserve">
+    <value>إدخال مباشر</value>
+  </data>
 </root>
