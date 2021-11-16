@@ -78,9 +78,9 @@ namespace POS.View.storage
 
         Agent agentModel = new Agent();
         IEnumerable<Agent> vendors;
-
+        int prInvoiceId;
         //Branch branchModel = new Branch();
-       // IEnumerable<Branch> branches;
+        // IEnumerable<Branch> branches;
         // for barcode
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
@@ -88,7 +88,7 @@ namespace POS.View.storage
         //for bill details
         static private int _SequenceNum = 0;
         static private int _invoiceId;
-        static private string _InvoiceType = "is"; // immidatlly in storage
+        static private string _InvoiceType = "isd"; // immidiatlly in storage
         static private decimal _Sum = 0;
         static private decimal _Count = 0;
         //tglItemState
@@ -109,27 +109,19 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-
-            //dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
-            //dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
-            //dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
-
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQTR");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
-            //dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
 
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturnInvoices");
+            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDirectEntry");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
-
         }
         #region loading
         List<keyValueBool> loadingList;
@@ -228,7 +220,6 @@ namespace POS.View.storage
                     sp_tax.Visibility = Visibility.Collapsed;
                 FindControl(this.grid_main, controls);
 
-                //await RefrishBranches();
                 #region datagridChange
                 //CollectionView myCollectionView = (CollectionView)CollectionViewSource.GetDefaultView(dg_billDetails.Items);
                 //((INotifyCollectionChanged)myCollectionView).CollectionChanged += new NotifyCollectionChangedEventHandler(DataGrid_CollectionChanged);
@@ -265,7 +256,7 @@ namespace POS.View.storage
             timer.Tick += timer_Tick;
             timer.Start();
         }
-         void timer_Tick(object sendert, EventArgs et)
+        void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
@@ -341,7 +332,6 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 clearInvoice();
 
@@ -352,7 +342,6 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                //SectionData.ExceptionMessage(ex, this);
             }
         }
         #region bill
@@ -388,7 +377,6 @@ namespace POS.View.storage
             try
             {
                 await fillBarcodeList();
-
             }
             catch (Exception)
             { }
@@ -403,7 +391,6 @@ namespace POS.View.storage
         }
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
-
             try
             {
                 if (!_IsFocused)
@@ -598,17 +585,12 @@ namespace POS.View.storage
                     }
                     break;
             }
-
-            //tb_barcode.Clear();
         }
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
             try
             {
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
-
                 for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                     if (vis is DataGridRow)
                     {
@@ -619,21 +601,19 @@ namespace POS.View.storage
                         billDetails.RemoveAt(index);
 
                         ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
-                        data.Remove(row);
-
-                        // calculate new total
-                        // refreshTotalValue();
+                        data.Remove(row);                     
                     }
                 _SequenceNum = 0;
-
+                _Sum = 0;
                 for (int i = 0; i < billDetails.Count; i++)
                 {
                     _SequenceNum++;
                     billDetails[i].ID = _SequenceNum;
+                    _Sum += billDetails[i].Total;
+                    _Count = _SequenceNum;
                 }
-                //refrishBillDetails();
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
+                // calculate new total
+                refreshTotalValue();
             }
             catch (Exception ex)
             {
@@ -668,6 +648,7 @@ namespace POS.View.storage
 
                     if (w.ShowDialog() == true)
                     {
+                        btn_items.IsEnabled = false;
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
@@ -728,13 +709,17 @@ namespace POS.View.storage
           
             _SequenceNum = 0;
             _Count = 0;
-            _InvoiceType = "pbw";
+            _Sum = 0;
+            // _InvoiceType = "pbw";
+            _InvoiceType = "isd";
             invoice = new Invoice();
-            //txt_branch.Text = "";
             txt_branch.Text = "_____________";
             txt_invNumber.Text = "";
             billDetails.Clear();
-            tb_count.Text = "";
+            tb_count.Text = "0";
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
+            btn_items.IsEnabled = true;
             refrishBillDetails();
             inputEditable();
             btn_next.Visibility = Visibility.Collapsed;
@@ -855,41 +840,29 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                /*
-                if (billDetails.Count > 0 && (_InvoiceType == "pd" || _InvoiceType == "pbd"))
+
+                if (billDetails.Count > 0 && _InvoiceType == "isd" )
                 {
-                    bool valid = validateItemUnits();
-                    if (billDetails.Count > 0 && valid)
+
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
                     {
-                        #region Accept
-                        MainWindow.mainWindow.Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        w.contentText = "Do you want save pay invoice in drafts?";
-                        w.ShowDialog();
-                        MainWindow.mainWindow.Opacity = 1;
-                        #endregion
-                        if (w.isOk)
-                        {
-                            await addInvoice(_InvoiceType, "pi");
-                            clearInvoice();
-                            _InvoiceType = "pd";
-                            refreshDraftNotification();
-                        }
-                        else
-                        {
-                            clearInvoice();
-                            _InvoiceType = "pd";
-                        }
-                    }
-                    else if (billDetails.Count == 0)
-                    {
+                        await addInvoice(_InvoiceType);
                         clearInvoice();
-                        _InvoiceType = "pd";
                     }
+                    else
+                        clearInvoice();
                 }
                 else
                     clearInvoice();
-                */
+
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -906,10 +879,10 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                /*
+
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
-                string invoiceType = "pd ,pbd";
+                string invoiceType = "isd";
                 int duration = 2;
                 w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
@@ -926,27 +899,12 @@ namespace POS.View.storage
                         _invoiceId = invoice.invoiceId;
                         await fillInvoiceInputs(invoice);
                         setNotifications();
-                        refreshDocCount(invoice.invoiceId);
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
-                        navigateBtnActivate();
-                        md_payments.Badge = "";
-                        if (_InvoiceType == "pd")// set title to bill
-                        {
-                            mainInvoiceItems = invoiceItems;
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
-                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                        }
-                        if (_InvoiceType == "pbd")
-                        {
-                            mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
-                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
-
-                        }
+                        navigateBtnActivate();                       
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
-                */
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -994,9 +952,6 @@ namespace POS.View.storage
         }
         private void refreshTotalValue()
         {
-
-
-
             decimal total = _Sum;
             decimal taxValue = 0;
             decimal taxInputVal = 0;
@@ -1191,6 +1146,7 @@ namespace POS.View.storage
 
                     if (w.ShowDialog() == true)
                     {
+                        btn_items.IsEnabled = false;
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
@@ -1226,10 +1182,14 @@ namespace POS.View.storage
         {
             txt_branch.Text = invoice.branchName;
             txt_invNumber.Text = invoice.invNumber;
-
+            if (invoice.total != null)
+                _Sum = (decimal)invoice.total;
+            else
+                _Sum = 0;
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
-            inputEditable();
+            refreshTotalValue();
+            inputEditable();          
         }
         private async Task buildInvoiceDetails(int invoiceId)
         {
@@ -1410,7 +1370,66 @@ namespace POS.View.storage
                     else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                         t.Text = SectionData.DecTostring(billDetails[index].Price);
 
-                }               
+                }   
+                else
+                {
+                    int oldCount = 0;
+                    long newCount = 0;
+                    decimal newPrice = 0;
+                    decimal oldPrice = 0;
+                    //"tb_amont"
+                    if (columnName == MainWindow.resourcemanager.GetString("trQTR"))
+                        newCount = int.Parse(t.Text);
+                    else
+                        newCount = row.Count;
+                    if (newCount < 0)
+                    {
+                        newCount = 0;
+                        t.Text = "0";
+                    }
+                    oldCount = row.Count;
+
+                    if (_InvoiceType == "pbw")
+                    {
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                        if (newCount > item.quantity)
+                        {
+                            // return old value 
+                            t.Text = item.quantity.ToString();
+
+                            newCount = (long)item.quantity;
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+                    _Count -= oldCount;
+                    _Count += newCount;
+                    tb_count.Text = _Count.ToString();
+
+
+                    if (columnName == MainWindow.resourcemanager.GetString("trPrice") && !t.Text.Equals(""))
+                        newPrice = decimal.Parse(t.Text);
+                    else
+                        newPrice = row.Price;
+
+                    oldPrice = row.Price;
+
+                    // old total for changed item
+                    decimal total = oldPrice * oldCount;
+                    _Sum -= total;
+
+                    // new total for changed item
+                    total = newCount * newPrice;
+                    _Sum += total;
+                    //refresh total cell
+                    TextBlock tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                    tb.Text = SectionData.DecTostring(total);
+                    //  refresh sum and total text box
+                    refreshTotalValue();
+                    // update item in billdetails           
+                    billDetails[index].Count = (int)newCount;
+                    billDetails[index].Price = newPrice;
+                    billDetails[index].Total = total;
+                }
             }
             catch (Exception ex)
             {
@@ -1437,6 +1456,22 @@ namespace POS.View.storage
                         await receiptInvoice();
                     else if (_InvoiceType == "pbw")
                         await returnInvoice("pb");
+                    else if (_InvoiceType == "isd" || _InvoiceType == "is")
+                    {
+                       await addInvoice("is");
+                        #region notification Object
+                        Notification not = new Notification()
+                        {
+                            title = "trExceedMaxLimitAlertTilte",
+                            ncontent = "trExceedMaxLimitAlertContent",
+                            msgType = "alert",
+                            createUserId = MainWindow.userID.Value,
+                            updateUserId = MainWindow.userID.Value,
+                        };
+                        #endregion
+                        await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
+                        clearInvoice();
+                    }
                 }
 
                 //clearInvoice();
@@ -1450,7 +1485,59 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async Task addInvoice(string invType)
+        {
 
+           if(invType == "isd" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("isd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+            else 
+                invoice.invNumber = await invoice.generateInvNumber("is", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+
+
+            invoice.branchCreatorId = MainWindow.branchID.Value;
+            invoice.branchId = MainWindow.branchID.Value;
+            invoice.posId = MainWindow.posID.Value;
+            invoice.invType = invType;
+                
+            invoice.total = _Sum;
+            invoice.totalNet = decimal.Parse(tb_total.Text);
+            invoice.paid = 0;
+            invoice.deserved = invoice.totalNet;
+            invoice.createUserId = MainWindow.userID.Value;
+            invoice.cashReturn = 0;
+            // save invoice in DB
+            int invoiceId = await invoiceModel.saveInvoice(invoice);
+            prInvoiceId = invoiceId;
+            invoice.invoiceId = invoiceId;
+            if (invoiceId != 0)
+            {
+                // add invoice details
+                invoiceItems = new List<ItemTransfer>();
+                ItemTransfer itemT;
+                for (int i = 0; i < billDetails.Count; i++)
+                {
+                    itemT = new ItemTransfer();
+
+                    itemT.invoiceId = invoiceId;
+                    itemT.quantity = billDetails[i].Count;
+                    itemT.price = billDetails[i].Price;
+                    itemT.itemUnitId = billDetails[i].itemUnitId;
+                    itemT.createUserId = MainWindow.userID;
+                    itemT.invoiceId = billDetails[i].OrderId;
+
+                    invoiceItems.Add(itemT);
+                }
+                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                if (invType == "is")
+                    invoiceModel.saveAvgPurchasePrice(invoiceItems);
+            }
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+
+        }
         private async Task returnInvoice(string type)
         {
 

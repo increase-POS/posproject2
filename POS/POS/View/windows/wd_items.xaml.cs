@@ -281,6 +281,11 @@ namespace POS.View.windows
                 defaultPurchase = 0;
                 defaultSale = 0;
             }
+            else if (CardType.Equals("movement"))
+            {
+                defaultPurchase = -1;
+                defaultSale = -1;
+            }
             items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase,branchId);
             MainWindow.InvoiceGlobalItemsList = items.ToList();
             if (defaultSale == 1)

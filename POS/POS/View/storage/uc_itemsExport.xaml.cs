@@ -887,7 +887,7 @@ namespace POS.View.storage
 
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_items w = new wd_items();
-                w.CardType = "purchase";
+                w.CardType = "movement";
                 w.ShowDialog();
                 if (w.isActive)
                 {
