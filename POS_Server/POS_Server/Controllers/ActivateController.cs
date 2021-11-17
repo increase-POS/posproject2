@@ -99,7 +99,7 @@ namespace POS_Server.Controllers
                         {
 
                             tmpObject.updateDate =DateTime.Now;
-                            tmpObject.programName = newObject.programName;
+        tmpObject.programName = newObject.programName;
                             tmpObject.branchCount = newObject.branchCount;
                             tmpObject.posCount = newObject.posCount;
                             tmpObject.userCount = newObject.userCount;
@@ -292,37 +292,65 @@ namespace POS_Server.Controllers
                 try
                 {
                 int conres=  await  checkIncServerConn();
-                    // check con to increase server
-                  //  return TokenManager.GenerateToken(conres.ToString());
-                    sendDetailItem = await GetSerialsAndDetails(skey, serverId);
-                    //update server detail
-                    // return TokenManager.GenerateToken(sendDetailItem);
-                    sendDetailItem.packageSend.customerServerCode = serverId;
-                    sendDetailItem.packageSend.packageSaleCode = skey;
 
-                    tempres = SaveProgDetails(sendDetailItem.packageSend);
-                    //    return TokenManager.GenerateToken(res1);
-                    //update serials 
-                    if (tempres >= 0)
+                    // check con to increase server
+                    if (conres > 0)
                     {
-                        res += 1;
-                        tempres = 0;
-                        tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
-                    }
-                    if (tempres >= 0)
-                    {
-                        res += 1;
+
+
+                        //  return TokenManager.GenerateToken(conres.ToString());
+
+                        sendDetailItem = await GetSerialsAndDetails(skey, serverId);
+                        //update server detail
+                        // return TokenManager.GenerateToken(sendDetailItem);
+                        if (sendDetailItem.packageSend.posCount == -2)
+                        {
+                            // serial is booked
+                            res = -2;
+
+                        } else if(sendDetailItem.packageSend.posCount == -3)
+                        {
+                            //serial not found
+                            res = -3;
+                        }
+                        else
+                        {
+                            sendDetailItem.packageSend.customerServerCode = serverId;
+                            sendDetailItem.packageSend.packageSaleCode = skey;
+
+                            tempres = SaveProgDetails(sendDetailItem.packageSend);
+                            //    return TokenManager.GenerateToken(res1);
+                            //update serials 
+                            if (tempres >= 0)
+                            {
+                                res += 1;
+                                tempres = 0;
+                                tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+                            }
+                            if (tempres >= 0)
+                            {
+                                res += 1;
+                            }
+                            else
+                            {
+                                // activation error
+                                res = 0;
+                            }
+                        }
+                   
                     }
                     else
                     {
-                        res = 0;
+                        // connection error
+                        res = -1;
                     }
-
                     return TokenManager.GenerateToken(res);
                 }
                 catch (Exception ex)
                 {
-                    return TokenManager.GenerateToken(-1);
+                    // connection error
+                  return TokenManager.GenerateToken(-1);
+                  //  return TokenManager.GenerateToken(ex.ToString());
                 }
 
             }

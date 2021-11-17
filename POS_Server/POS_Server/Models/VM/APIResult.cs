@@ -24,7 +24,7 @@ namespace POS_Server.Models
     {
         //public string Message { get; set; }
         //public string Status { get; set; }
-        public static string APIUri = "https://localhost:443/api/";
+        public static string APIUri = "https://141.95.1.58:443/api/";
        
         //var pathCheck = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\temp"), );
         private static string Secret = "EREMN05OPLoDvbTTa/QkqLNMI7cPLguaRyHzyg7n5qNBVjQmtBhz4SzYh4NBVCXi3KJHlSXKP+oi2+bXr6CUYTR==";
