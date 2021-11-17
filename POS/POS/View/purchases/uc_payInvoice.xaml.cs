@@ -1246,7 +1246,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void validateInvoiceValues()
+        private bool validateInvoiceValues()
         {
             //bool isValid = true;
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
@@ -1256,18 +1256,30 @@ namespace POS.View
             {
                 if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
                     exp_vendor.IsExpanded = true;
+                if (cb_vendor.SelectedIndex < 1)
+                    return false;
             }
-            if (cb_vendor.SelectedIndex != -1 && cb_vendor.SelectedIndex != 0)
+            if (cb_vendor.SelectedIndex > 0)
             {
                 if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
                     exp_vendor.IsExpanded = true;
+                if (tb_invoiceNumber.Text.Equals(""))
+                    return false;
+            }
+            if (cb_vendor.SelectedIndex > 0 && cb_paymentProcessType.SelectedValue.ToString() != "cash")
+            {
                 if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
-                    exp_vendor.IsExpanded = true;         
+                    exp_vendor.IsExpanded = true;
+                if (dp_desrvedDate.Text.Equals(""))
+                    return false;
             }
             if (decimal.Parse(tb_total.Text) == 0)
+            {
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
-            //SectionData.validateSmalThanDateNowDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate");
-            //return isValid;
+                return false;
+            }
+           
+            return true;
         }
       
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -1280,13 +1292,14 @@ namespace POS.View
 
                 {                 
                         //check mandatory inputs
-                        validateInvoiceValues();
+                        bool validate = validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        if ( ((!tb_invoiceNumber.Text.Equals("") && !tb.Text.Trim().Equals("") && cb_vendor.SelectedIndex > 0) || cb_vendor.SelectedIndex <1 ) 
-                        && billDetails.Count > 0  && decimal.Parse(tb_total.Text) > 0 
-                        && ((cb_paymentProcessType.SelectedValue.ToString().Equals("balance") && cb_vendor.SelectedIndex > 0) || !cb_paymentProcessType.SelectedValue.ToString().Equals("balance"))
-                        && valid)
+                        //if ( ((!tb_invoiceNumber.Text.Equals("") && !tb.Text.Trim().Equals("") && cb_vendor.SelectedIndex > 0) || cb_vendor.SelectedIndex <1 ) 
+                        //&& billDetails.Count > 0  && decimal.Parse(tb_total.Text) > 0 
+                        //&& ((cb_paymentProcessType.SelectedValue.ToString().Equals("balance") && cb_vendor.SelectedIndex > 0) || !cb_paymentProcessType.SelectedValue.ToString().Equals("balance"))
+                        //&& valid)
+                        if(valid && validate)
                     {
                         bool multipleValid = true;
                         List<CashTransfer> listPayments = new List<CashTransfer>();
@@ -1330,83 +1343,90 @@ namespace POS.View
                             }
                             if (multipleValid)
                             {
-                                if (cb_branch.SelectedIndex == -1 || cb_branch.SelectedIndex == 0) // reciept invoice directly
-                                {
-                                    await addInvoice("p", "pi");
-                                    #region notification Object
-                                    Notification not = new Notification()
-                                    {
-                                        title = "trExceedMaxLimitAlertTilte",
-                                        ncontent = "trExceedMaxLimitAlertContent",
-                                        msgType = "alert",
-                                        //createDate = DateTime.Now,
-                                        // updateDate = DateTime.Now,
-                                        createUserId = MainWindow.userID.Value,
-                                        updateUserId = MainWindow.userID.Value,
-                                    };
-                                    #endregion
-                                    await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
-                                }
+                                if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < invoice.totalNet)
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+
                                 else
                                 {
-                                    await addInvoice("pw", "pi");                                 
-                                    #region notification Object
-                                    if ((int)cb_branch.SelectedIndex != -1 && (int)cb_branch.SelectedIndex != 0)
+                                    if (cb_branch.SelectedIndex == -1 || cb_branch.SelectedIndex == 0) // reciept invoice directly
                                     {
+                                        await addInvoice("p", "pi");
+                                        #region notification Object
                                         Notification not = new Notification()
                                         {
-                                            title = "trPurchaseInvoiceAlertTilte",
-                                            ncontent = "trPurchaseInvoiceAlertContent",
+                                            title = "trExceedMaxLimitAlertTilte",
+                                            ncontent = "trExceedMaxLimitAlertContent",
                                             msgType = "alert",
+                                            //createDate = DateTime.Now,
+                                            // updateDate = DateTime.Now,
                                             createUserId = MainWindow.userID.Value,
                                             updateUserId = MainWindow.userID.Value,
                                         };
-                                        await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", MainWindow.loginBranch.name);
+                                        #endregion
+                                        await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
                                     }
-                                    #endregion
-                                }
-                                ///// cash Transfer
-                                #region
-                                await invoice.recordPosCashTransfer(invoice, "pi");
-                                if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
-                                {
-                                    foreach (var item in listPayments)
+                                    else
                                     {
-                                        item.transType = "p"; //pull
-                                        item.posId = MainWindow.posID;
-                                        item.agentId = invoice.agentId;
-                                        item.invId = invoice.invoiceId;
-                                        item.transNum = await cashTransfer.generateCashNumber("pv");
-                                        item.side = "v"; // vendor
-                                        item.createUserId = MainWindow.userID;
-                                        await saveConfiguredCashTrans(item);
+                                        await addInvoice("pw", "pi");
+                                        #region notification Object
+                                        if ((int)cb_branch.SelectedIndex != -1 && (int)cb_branch.SelectedIndex != 0)
+                                        {
+                                            Notification not = new Notification()
+                                            {
+                                                title = "trPurchaseInvoiceAlertTilte",
+                                                ncontent = "trPurchaseInvoiceAlertContent",
+                                                msgType = "alert",
+                                                createUserId = MainWindow.userID.Value,
+                                                updateUserId = MainWindow.userID.Value,
+                                            };
+                                            await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseInvoice", MainWindow.loginBranch.name);
+                                        }
+                                        #endregion
                                     }
-                                    //await invoice.saveInvoice(invoice);
-                                }
-                                else
-                                {
-                                    CashTransfer cashTrasnfer = new CashTransfer();
-                                    cashTrasnfer.transType = "p"; //pull
-                                    cashTrasnfer.posId = MainWindow.posID;
-                                    cashTrasnfer.agentId = invoice.agentId;
-                                    cashTrasnfer.invId = invoice.invoiceId;
-                                    cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv");
-                                    cashTrasnfer.cash = invoice.totalNet;
-                                    cashTrasnfer.side = "c"; // customer
-                                    cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
-                                    cashTrasnfer.createUserId = MainWindow.userID;
-                                    await saveCashTransfer(cashTransfer);
-                                }
 
-                                
-                                //if (invoice.agentId != null)
-                                //    await invoice.recordCashTransfer(invoice, "pi");
-                                #endregion
-                                /////
-                               
-                                clearInvoice();
-                                _InvoiceType = "pd";
-                                await refreshDraftNotification();
+                                    ///// cash Transfer
+                                    #region
+                                    await invoice.recordPosCashTransfer(invoice, "pi");
+                                    if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                                    {
+                                        foreach (var item in listPayments)
+                                        {
+                                            item.transType = "p"; //pull
+                                            item.posId = MainWindow.posID;
+                                            item.agentId = invoice.agentId;
+                                            item.invId = invoice.invoiceId;
+                                            item.transNum = await cashTransfer.generateCashNumber("pv");
+                                            item.side = "v"; // vendor
+                                            item.createUserId = MainWindow.userID;
+                                            await saveConfiguredCashTrans(item);
+                                        }
+                                        //await invoice.saveInvoice(invoice);
+                                    }
+                                    else
+                                    {
+                                        CashTransfer cashTrasnfer = new CashTransfer();
+                                        cashTrasnfer.transType = "p"; //pull
+                                        cashTrasnfer.posId = MainWindow.posID;
+                                        cashTrasnfer.agentId = invoice.agentId;
+                                        cashTrasnfer.invId = invoice.invoiceId;
+                                        cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv");
+                                        cashTrasnfer.cash = invoice.totalNet;
+                                        cashTrasnfer.side = "c"; // customer
+                                        cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
+                                        cashTrasnfer.createUserId = MainWindow.userID;
+                                        await saveCashTransfer(cashTrasnfer);
+                                    }
+
+
+                                    //if (invoice.agentId != null)
+                                    //    await invoice.recordCashTransfer(invoice, "pi");
+                                    #endregion
+                                    /////
+
+                                    clearInvoice();
+                                    _InvoiceType = "pd";
+                                    await refreshDraftNotification();
+                                }
                             }
                             
                         }
@@ -1466,6 +1486,7 @@ namespace POS.View
             switch (cashTransfer.processType)
             {
                 case "cash":// cash: update pos balance  
+                    pos = MainWindow.posLogIn;
                     if (pos.balance > 0)
                     {
                         if (pos.balance >= cashTransfer.cash)
@@ -1502,9 +1523,10 @@ namespace POS.View
         }
         private async Task saveCashTransfer(CashTransfer cashTransfer)
         {
-            switch (cb_paymentProcessType.SelectedIndex)
+            switch (cb_paymentProcessType.SelectedValue)
             {
-                case 0:// cash: update pos balance
+                case "cash":// cash: update pos balance
+                    pos = MainWindow.posLogIn;
                     if (pos.balance > 0)
                     {
                         if (pos.balance >= invoice.totalNet)
@@ -1524,10 +1546,10 @@ namespace POS.View
                         await invoice.saveInvoice(invoice);
                     }
                     break;
-                case 1:// balance: update customer balance                
-                        await invoice.recordCashTransfer(invoice, "pi");
+                case "balance":// balance: update vendor balance                
+                    await invoice.recordCashTransfer(invoice, "pi");
                     break;
-                case 2: // card
+                case "card":
                     cashTransfer.cash = invoice.totalNet;
                     await cashTransfer.Save(cashTransfer); //add cash transfer  
                     invoice.paid = invoice.totalNet;
@@ -2267,9 +2289,11 @@ namespace POS.View
             dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
+                dg_billDetails.IsEnabled = false;
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
+                dg_billDetails.IsEnabled = true;
             }
             DataGrid_CollectionChanged(dg_billDetails, null);
             //tb_sum.Text = _Sum.ToString();
