@@ -94,7 +94,7 @@
 
                             <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                               HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Width="20" Height="20"
+                         VerticalAlignment="Center" Width="30" Height="30"
                                                          TabIndex="16">
                                 <materialDesign:PackIcon.ToolTip>
                                     <ToolTip x:Name="tt_clear" Content="clear"
