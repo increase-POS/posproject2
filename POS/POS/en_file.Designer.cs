@@ -2293,6 +2293,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item cost can not be empty.
+        /// </summary>
+        internal static string trEmptyItemCost {
+            get {
+                return ResourceManager.GetString("trEmptyItemCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Job can npt be empty.
         /// </summary>
         internal static string trEmptyJobToolTip {
@@ -3855,6 +3864,15 @@ namespace POS {
         internal static string trItem {
             get {
                 return ResourceManager.GetString("trItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item cost.
+        /// </summary>
+        internal static string trItemCost {
+            get {
+                return ResourceManager.GetString("trItemCost", resourceCulture);
             }
         }
         

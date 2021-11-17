@@ -973,19 +973,23 @@ namespace POS.Classes
                 //Message
                 if (ex.HResult == -2146233088)
                     Toaster.ShowError(window as Window, message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
-                else
+                else if(ex.HResult != -2147467261)
                     Toaster.ShowError(window as Window, message: ex.HResult + " || " + ex.Message, animation: ToasterAnimation.FadeIn);
 
-                ErrorClass errorClass = new ErrorClass();
-                errorClass.num = ex.HResult.ToString();
-                errorClass.msg = ex.Message;
-                errorClass.stackTrace = ex.StackTrace;
-                errorClass.targetSite = ex.TargetSite.ToString();
-                errorClass.posId = MainWindow.posID;
-                errorClass.branchId = MainWindow.branchID;
-                errorClass.createUserId = MainWindow.userLogin.userId;
-                await errorClass.save(errorClass);
-
+                //- 2146233088     An error occurred while sending the request.
+                //-2147467261    Void MoveNext()
+                if (ex.HResult != -2146233088 &&   ex.HResult != -2147467261)
+                { 
+                    ErrorClass errorClass = new ErrorClass();
+                    errorClass.num = ex.HResult.ToString();
+                    errorClass.msg = ex.Message;
+                    errorClass.stackTrace = ex.StackTrace;
+                    errorClass.targetSite = ex.TargetSite.ToString();
+                    errorClass.posId = MainWindow.posID;
+                    errorClass.branchId = MainWindow.branchID;
+                    errorClass.createUserId = MainWindow.userLogin.userId;
+                    await errorClass.save(errorClass);
+                }
             }
             catch
             {

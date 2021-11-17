@@ -2770,4 +2770,10 @@ Please add Email in setting</value>
   <data name="trYouExceedLimit" xml:space="preserve">
     <value>You have exceeded the limit</value>
   </data>
+  <data name="trEmptyItemCost" xml:space="preserve">
+    <value>Item cost can not be empty</value>
+  </data>
+  <data name="trItemCost" xml:space="preserve">
+    <value>Item cost</value>
+  </data>
 </root>

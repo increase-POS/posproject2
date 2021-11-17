@@ -376,27 +376,31 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
-                if (bonds is null)
-                    await RefreshBondsList();
-                this.Dispatcher.Invoke(() =>
+                try
                 {
-                    searchText = tb_search.Text.ToLower();
+                    if (bonds is null)
+                        await RefreshBondsList();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        searchText = tb_search.Text.ToLower();
 
-                    bondsQuery = bonds.Where(s => (
-                    s.number.ToLower().Contains(searchText)
-                    ||
-                    s.amount.ToString().ToLower().Contains(searchText)
-                    || s.type.ToString().ToLower().Contains(searchText)
-                    )
-                    && s.updateDate.Value.Date >= sDate
-                    && s.updateDate.Value.Date <= eDate
-                    && s.isRecieved == tgl_bondState
-                    );
+                        bondsQuery = bonds.Where(s => (
+                        s.number.ToLower().Contains(searchText)
+                        ||
+                        s.amount.ToString().ToLower().Contains(searchText)
+                        || s.type.ToString().ToLower().Contains(searchText)
+                        )
+                        && s.updateDate.Value.Date >= sDate
+                        && s.updateDate.Value.Date <= eDate
+                        && s.isRecieved == tgl_bondState
+                        );
 
-                });
+                    });
 
-                bondsQueryExcel = bondsQuery.ToList();
-                RefreshBondView();
+                    bondsQueryExcel = bondsQuery.ToList();
+                    RefreshBondView();
+                }
+                catch { }
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
             }
@@ -704,8 +708,12 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill card combo
-                cards = await cardModel.GetAll();
-                InitializeCardsPic(cards);
+                try
+                {
+                    cards = await cardModel.GetAll();
+                    InitializeCardsPic(cards);
+                }
+                catch { }
                 #endregion
 
                 SectionData.defaultDatePickerStyle(dp_deservecDate);
@@ -722,9 +730,7 @@ namespace POS.View.accounts
                 btn_pay.IsEnabled = false;
                 btn_image.IsEnabled = false;
 
-                await RefreshBondsList();
                 Tb_search_TextChanged(null, null);
-
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
@@ -926,11 +932,7 @@ namespace POS.View.accounts
         }
         async Task<IEnumerable<Bonds>> RefreshBondsList()
         {
-            try
-            {
-                bonds = await bondModel.GetAll();
-            }
-            catch { }
+            bonds = await bondModel.GetAll();
             return bonds;
         }
 
@@ -1019,29 +1021,41 @@ namespace POS.View.accounts
 
         private async Task fillVendors()
         {
-            agents = await agentModel.GetAgentsActive("v");
+            try
+            {
+                agents = await agentModel.GetAgentsActive("v");
 
-            cb_depositorV.ItemsSource = agents;
-            cb_depositorV.DisplayMemberPath = "name";
-            cb_depositorV.SelectedValuePath = "agentId";
+                cb_depositorV.ItemsSource = agents;
+                cb_depositorV.DisplayMemberPath = "name";
+                cb_depositorV.SelectedValuePath = "agentId";
+            }
+            catch { }
         }
 
         private async Task fillCustomers()
         {
-            agents = await agentModel.GetAgentsActive("c");
+            try
+            {
+                agents = await agentModel.GetAgentsActive("c");
 
-            cb_depositorC.ItemsSource = agents;
-            cb_depositorC.DisplayMemberPath = "name";
-            cb_depositorC.SelectedValuePath = "agentId";
+                cb_depositorC.ItemsSource = agents;
+                cb_depositorC.DisplayMemberPath = "name";
+                cb_depositorC.SelectedValuePath = "agentId";
+            }
+            catch { }
         }
 
         private async Task fillUsers()
         {
-            users = await userModel.GetUsersActive();
+            try
+            {
+                users = await userModel.GetUsersActive();
 
-            cb_depositorU.ItemsSource = users;
-            cb_depositorU.DisplayMemberPath = "username";
-            cb_depositorU.SelectedValuePath = "userId";
+                cb_depositorU.ItemsSource = users;
+                cb_depositorU.DisplayMemberPath = "username";
+                cb_depositorU.SelectedValuePath = "userId";
+            }
+            catch { }
         }
 
         public void getBondData(List<ReportParameter> paramarr)

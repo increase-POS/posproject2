@@ -2293,6 +2293,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to كلفة العنصر لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyItemCost {
+            get {
+                return ResourceManager.GetString("trEmptyItemCost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العمل لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyJobToolTip {
@@ -3837,6 +3846,15 @@ namespace POS {
         internal static string trItem {
             get {
                 return ResourceManager.GetString("trItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to كلفة العنصر.
+        /// </summary>
+        internal static string trItemCost {
+            get {
+                return ResourceManager.GetString("trItemCost", resourceCulture);
             }
         }
         
