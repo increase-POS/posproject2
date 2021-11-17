@@ -91,20 +91,25 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucOrderAccounts);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 //SectionData.fillBranches(cb_branch, "bs");/////permissions
 
                 #region fill branch combo1
-                branches = await branchModel.GetBranchesActive("b");
-            cb_branch.ItemsSource = branches;
-            cb_branch.DisplayMemberPath = "name";
-            cb_branch.SelectedValuePath = "branchId";
-            cb_branch.SelectedValue = MainWindow.branchID.Value;
-                if (MainWindow.groupObject.HasPermissionAction(BranchesPermission, MainWindow.groupObjects, "one"))
-                    cb_branch.IsEnabled = true; 
-                else
-                    cb_branch.IsEnabled = false;
+                try
+                {
+                    branches = await branchModel.GetBranchesActive("b");
+                    cb_branch.ItemsSource = branches;
+                    cb_branch.DisplayMemberPath = "name";
+                    cb_branch.SelectedValuePath = "branchId";
+                    cb_branch.SelectedValue = MainWindow.branchID.Value;
+                    if (MainWindow.groupObject.HasPermissionAction(BranchesPermission, MainWindow.groupObjects, "one"))
+                        cb_branch.IsEnabled = true;
+                    else
+                        cb_branch.IsEnabled = false;
+                }
+                catch { }
                 #endregion
 
                 #region translate
@@ -152,32 +157,44 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill card combo
-                cards = await cardModel.GetAll();
-                cb_card.ItemsSource = cards;
-                cb_card.DisplayMemberPath = "name";
-                cb_card.SelectedValuePath = "cardId";
-                cb_card.SelectedIndex = -1;
+                try
+                {
+                    cards = await cardModel.GetAll();
+                    cb_card.ItemsSource = cards;
+                    cb_card.DisplayMemberPath = "name";
+                    cb_card.SelectedValuePath = "cardId";
+                    cb_card.SelectedIndex = -1;
+                }
+                catch { }
                 #endregion
 
                 #region fill agent combo
                 List<Agent> agents = new List<Agent>();
                 List<Agent> customers = new List<Agent>();
-                customers = await agentModel.GetAgentsActive("c");
-                agents = await agentModel.GetAgentsActive("v");
-                agents.AddRange(customers);
-                
-                cb_customer.ItemsSource = customers;
-                cb_customer.DisplayMemberPath = "name";
-                cb_customer.SelectedValuePath = "agentId";
-                cb_customer.SelectedIndex = -1;
+                try
+                {
+                    customers = await agentModel.GetAgentsActive("c");
+                    agents = await agentModel.GetAgentsActive("v");
+                    agents.AddRange(customers);
+
+                    cb_customer.ItemsSource = customers;
+                    cb_customer.DisplayMemberPath = "name";
+                    cb_customer.SelectedValuePath = "agentId";
+                    cb_customer.SelectedIndex = -1;
+                }
+                catch { }
                 #endregion
 
                 #region fill salesman combo
-                users = await userModel.GetUsersActive();
-                cb_salesMan.ItemsSource = users;
-                cb_salesMan.DisplayMemberPath = "username";
-                cb_salesMan.SelectedValuePath = "userId";
-                cb_salesMan.SelectedIndex = -1;
+                try
+                {
+                    users = await userModel.GetUsersActive();
+                    cb_salesMan.ItemsSource = users;
+                    cb_salesMan.DisplayMemberPath = "username";
+                    cb_salesMan.SelectedValuePath = "userId";
+                    cb_salesMan.SelectedIndex = -1;
+                }
+                catch { }
                 #endregion
 
                 #region fill status combo
@@ -190,7 +207,6 @@ namespace POS.View.accounts
                 cb_state.ItemsSource = statuslist;
                 #endregion
 
-                await RefreshInvoiceList();
                 Tb_search_TextChanged(null, null);
 
                 if (sender != null)
@@ -397,6 +413,8 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucOrderAccounts);
 
+                try
+                { 
                 if (invoices is null)
                     await RefreshInvoiceList();
                 this.Dispatcher.Invoke(() =>
@@ -416,6 +434,8 @@ namespace POS.View.accounts
 
                 invoiceQueryExcel = invoiceQuery.ToList();
                 RefreshInvoiceView();
+                }
+                catch { }
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucOrderAccounts);

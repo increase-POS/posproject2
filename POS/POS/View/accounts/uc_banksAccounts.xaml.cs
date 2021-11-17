@@ -129,6 +129,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBankAccounts);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 btn_add.IsEnabled = true;
                 dp_endSearchDate.SelectedDate = DateTime.Now;
@@ -146,20 +147,28 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill users combo
-                users = await userModel.GetUsersActive();
-                cb_user.ItemsSource = users;
-                cb_user.DisplayMemberPath = "username";
-                cb_user.SelectedValuePath = "userId";
-                cb_user.SelectedIndex = -1;
+                try
+                {
+                    users = await userModel.GetUsersActive();
+                    cb_user.ItemsSource = users;
+                    cb_user.DisplayMemberPath = "username";
+                    cb_user.SelectedValuePath = "userId";
+                    cb_user.SelectedIndex = -1;
+                }
+                catch { }
                 #endregion
 
                 #region fill banks combo
-                banks = await bankModel.Get();
-                banksQuery = banks.Where(s => s.isActive == 1);
-                cb_bank.ItemsSource = banksQuery;
-                cb_bank.DisplayMemberPath = "name";
-                cb_bank.SelectedValuePath = "bankId";
-                cb_bank.SelectedIndex = -1;
+                try
+                {
+                    banks = await bankModel.Get();
+                    banksQuery = banks.Where(s => s.isActive == 1);
+                    cb_bank.ItemsSource = banksQuery;
+                    cb_bank.DisplayMemberPath = "name";
+                    cb_bank.SelectedValuePath = "bankId";
+                    cb_bank.SelectedIndex = -1;
+                }
+                catch { }
                 #endregion
 
                 #region translate
@@ -199,8 +208,8 @@ namespace POS.View.accounts
 
                 btn_image.IsEnabled = false;
 
-                await RefreshCashesList();
                 Tb_search_TextChanged(null, null);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
             }
@@ -322,23 +331,28 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBankAccounts);
 
-                if (cashes is null)
-                    await RefreshCashesList();
-
-                this.Dispatcher.Invoke(() =>
+                try
                 {
-                    searchText = tb_search.Text.ToLower();
-                    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                    || s.cash.ToString().ToLower().Contains(searchText)
-                    || s.bankName.ToLower().Contains(searchText)
-                    || s.docNum.Contains(searchText)
-                    )
-                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                    );
-                });
-                RefreshCashView();
-                cashesQueryExcel = cashesQuery.ToList();
+                    if (cashes is null)
+                        await RefreshCashesList();
+
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        searchText = tb_search.Text.ToLower();
+                        cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                        || s.cash.ToString().ToLower().Contains(searchText)
+                        || s.bankName.ToLower().Contains(searchText)
+                        || s.docNum.Contains(searchText)
+                        )
+                        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                        );
+                    });
+                    RefreshCashView();
+                    cashesQueryExcel = cashesQuery.ToList();
+                }
+                catch { }
+
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBankAccounts);
             }

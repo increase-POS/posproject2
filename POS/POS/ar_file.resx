@@ -2755,4 +2755,10 @@
   <data name="trYouExceedLimit" xml:space="preserve">
     <value>لقد تجاوزت الحد</value>
   </data>
+  <data name="trEmptyItemCost" xml:space="preserve">
+    <value>كلفة العنصر لا يمكن أن تكون فارغة</value>
+  </data>
+  <data name="trItemCost" xml:space="preserve">
+    <value>كلفة العنصر</value>
+  </data>
 </root>

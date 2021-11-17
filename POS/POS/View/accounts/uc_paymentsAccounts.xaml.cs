@@ -237,8 +237,12 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill card combo
-                cards = await cardModel.GetAll();
-                InitializeCardsPic(cards);
+                try
+                {
+                    cards = await cardModel.GetAll();
+                    InitializeCardsPic(cards);
+                }
+                catch { }
                 #endregion
 
                 dp_startSearchDate.SelectedDateChanged += this.dp_SelectedStartDateChanged;
@@ -246,7 +250,6 @@ namespace POS.View.accounts
 
                 btn_image.IsEnabled = false;
 
-                await RefreshCashesList();
                 await Search();
 
                 if (sender != null)
@@ -514,7 +517,9 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucPaymentsAccounts);
+
                 await Search();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
             }
@@ -619,17 +624,6 @@ namespace POS.View.accounts
 
                     #region save
 
-                    //if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
-                    //     (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
-                    //     (((cb_recipientC.IsVisible) && (!cb_recipientC.Text.Equals(""))) || (!cb_recipientC.IsVisible)) &&
-                    //     (((cb_recipientU.IsVisible) && (!cb_recipientU.Text.Equals(""))) || (!cb_recipientU.IsVisible)) &&
-                    //     (((cb_recipientSh.IsVisible) && (!cb_recipientSh.Text.Equals(""))) || (!cb_recipientSh.IsVisible)) &&
-                    //     (((tb_docNumCheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!tb_docNumCheque.IsVisible)) &&
-                    //     (((dp_docDate.IsVisible) && (!dp_docDate.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-                    //     (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible)) &&
-                    //     (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                    //      enoughMoney
-                    //     )
                         if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
                        (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
                        (((cb_recipientC.IsVisible) && (!cb_recipientC.Text.Equals(""))) || (!cb_recipientC.IsVisible)) &&
@@ -899,22 +893,18 @@ namespace POS.View.accounts
 
         async Task<IEnumerable<CashTransfer>> RefreshCashesList()
         {
-            try
-            {
-                //cashes = await cashModel.GetCashTransferAsync("p", "all");
-                cashes = await cashModel.GetCashBond("p", "all");
-                cashes = cashes.Where(x => (x.processType != "balance"));
-                //if (selectedTab == 1)
-                //{
-                //    temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
-                //}
-                //else if (selectedTab == 3)
-                //{
-                //    temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
-                //}
-            }
-            catch { }
+            //cashes = await cashModel.GetCashTransferAsync("p", "all");
+            cashes = await cashModel.GetCashBond("p", "all");
+            cashes = cashes.Where(x => (x.processType != "balance"));
+            //if (selectedTab == 1)
+            //{
+            //    temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+            //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+            //}
+            //else if (selectedTab == 3)
+            //{
+            //    temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+            //}
             return cashes;
 
         }
@@ -927,26 +917,30 @@ namespace POS.View.accounts
         }
         async Task Search()
         {
-
-            if (cashes is null)
-                await RefreshCashesList();
-
-
-            searchText = tb_search.Text.ToLower();
-            cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-            || s.cash.ToString().ToLower().Contains(searchText)
-            )
-            && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
-            && s.transType == "p"
-            && s.processType != "inv"
-            && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-            && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-            );
+            try
+            {
+                if (cashes is null)
+                    await RefreshCashesList();
 
 
-            cashesQueryExcel = cashesQuery.ToList();
-            RefreshCashView();
+                searchText = tb_search.Text.ToLower();
+                cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                || s.cash.ToString().ToLower().Contains(searchText)
+                )
+                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
+                && s.transType == "p"
+                && s.processType != "inv"
+                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                );
+
+
+                cashesQueryExcel = cashesQuery.ToList();
+                RefreshCashView();
+            }
+            catch { }
         }
+
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
             try
@@ -1262,38 +1256,54 @@ namespace POS.View.accounts
 
         private async Task fillVendors()
         {
-            agents = await agentModel.GetAgentsActive("v");
+            try
+            {
+                agents = await agentModel.GetAgentsActive("v");
 
-            cb_recipientV.ItemsSource = agents;
-            cb_recipientV.DisplayMemberPath = "name";
-            cb_recipientV.SelectedValuePath = "agentId";
+                cb_recipientV.ItemsSource = agents;
+                cb_recipientV.DisplayMemberPath = "name";
+                cb_recipientV.SelectedValuePath = "agentId";
+            }
+            catch { }
         }
 
         private async Task fillCustomers()
         {
-            agents = await agentModel.GetAgentsActive("c");
+            try
+            {
+                agents = await agentModel.GetAgentsActive("c");
 
-            cb_recipientC.ItemsSource = agents;
-            cb_recipientC.DisplayMemberPath = "name";
-            cb_recipientC.SelectedValuePath = "agentId";
+                cb_recipientC.ItemsSource = agents;
+                cb_recipientC.DisplayMemberPath = "name";
+                cb_recipientC.SelectedValuePath = "agentId";
+            }
+            catch { }
         }
 
         private async Task fillUsers()
         {
-            users = await userModel.GetUsersActive();
+            try
+            {
+                users = await userModel.GetUsersActive();
 
-            cb_recipientU.ItemsSource = users;
-            cb_recipientU.DisplayMemberPath = "username";
-            cb_recipientU.SelectedValuePath = "userId";
+                cb_recipientU.ItemsSource = users;
+                cb_recipientU.DisplayMemberPath = "username";
+                cb_recipientU.SelectedValuePath = "userId";
+            }
+            catch { }
         }
 
         private async Task fillShippingCompanies()
         {
-            shCompanies = await shCompanyModel.Get();
+            try
+            {
+                shCompanies = await shCompanyModel.Get();
 
-            cb_recipientSh.ItemsSource = shCompanies;
-            cb_recipientSh.DisplayMemberPath = "name";
-            cb_recipientSh.SelectedValuePath = "shippingCompanyId";
+                cb_recipientSh.ItemsSource = shCompanies;
+                cb_recipientSh.DisplayMemberPath = "name";
+                cb_recipientSh.SelectedValuePath = "shippingCompanyId";
+            }
+            catch { }
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)

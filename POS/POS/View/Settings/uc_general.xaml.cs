@@ -36,6 +36,7 @@ namespace POS.View.Settings
         static SettingCls set = new SettingCls();
         static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
+        static SetValues itemCost = new SetValues();
         static SetValues accuracy = new SetValues();
         static SetValues dateForm = new SetValues();
         static SetValues cost = new SetValues();
@@ -43,7 +44,7 @@ namespace POS.View.Settings
         static UserSetValues usValue = new UserSetValues();
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
-        static int taxId = 0, costId = 0, dateFormId, accuracyId;
+        static int taxId = 0, costId = 0, dateFormId, accuracyId , itemCostId = 0;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
 
@@ -170,6 +171,27 @@ namespace POS.View.Settings
                 }
             }
         }
+        async void loading_getDefaultItemCost()
+        {
+            try
+            {
+                #region get default item cost
+                await getDefaultItemCost();
+                if (itemCost != null)
+                    tb_itemsCost.Text = itemCost.value;
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultItemCost"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
         async void loading_getDefaultDateForm()
         {
             try
@@ -263,12 +285,14 @@ namespace POS.View.Settings
                     //loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultItemCost", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
                     loading_fillRegions();
                     //loading_fillLanguages();
                     loading_fillCurrencies();
                     loading_getDefaultTax();
+                    loading_getDefaultItemCost();
                     loading_getDefaultDateForm();
                     loading_fillAccuracy();
                     do
@@ -402,6 +426,15 @@ namespace POS.View.Settings
             tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
             return tax;
         }
+        public static async Task<SetValues> getDefaultItemCost()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            set = settingsCls.Where(s => s.name == "item_cost").FirstOrDefault<SettingCls>();
+            itemCostId = set.settingId;
+            itemCost = settingsValues.Where(i => i.settingId == itemCostId).FirstOrDefault();
+            return itemCost;
+        }
 
         public static async Task<SetValues> getDefaultDateForm()
         {
@@ -470,6 +503,7 @@ namespace POS.View.Settings
             txt_language.Text = MainWindow.resourcemanager.GetString("trLanguage");
             txt_currency.Text = MainWindow.resourcemanager.GetString("trCurrency");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trItemCost");
             txt_dateForm.Text = MainWindow.resourcemanager.GetString("trDateForm");
             txt_accuracy.Text = MainWindow.resourcemanager.GetString("trAccuracy");
             //txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
@@ -502,6 +536,7 @@ namespace POS.View.Settings
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
             tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
+            tt_itemsCost.Content = MainWindow.resourcemanager.GetString("trItemCost");
             tt_dateForm.Content = MainWindow.resourcemanager.GetString("trDateForm");
             tt_accuracy.Content = MainWindow.resourcemanager.GetString("trAccuracy");
             //tt_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
@@ -1003,8 +1038,48 @@ namespace POS.View.Settings
             }
         }
 
-        private void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)
+        {//save purchase cost
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    SectionData.validateEmptyTextBox(tb_itemsCost, p_errorItemsCost, tt_errorItemsCost, "trEmptyItemCost");
+                    if (!tb_itemsCost.Text.Equals(""))
+                    {
+                        if (itemCost == null)
+                            itemCost = new SetValues();
+                        itemCost.value = tb_itemsCost.Text;
+                        itemCost.isSystem = 1;
+                        itemCost.settingId = itemCostId;
+                        // string s = await valueModel.Save(tax);
+                        int s = await valueModel.Save(itemCost);
+                        if (!s.Equals(0))
+                        {
+                            //update item cost in main window
+                            MainWindow.itemCost = int.Parse(itemCost.value);
+
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        }
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
 

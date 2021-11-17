@@ -67,6 +67,7 @@ namespace POS
         bool isHome = false;
         internal static int? isInvTax;
         internal static decimal? tax;
+        internal static int? itemCost;
         internal static string dateFormat;
         internal static string accuracy;
         internal static decimal? StorageCost;
@@ -111,9 +112,6 @@ namespace POS
         static public List<Item> InvoiceGlobalItemsList = new List<Item>();
         static public List<ItemUnit> InvoiceGlobalItemUnitsList = new List<ItemUnit>();
         static public List<Item> InvoiceGlobalSaleUnitsList = new List<Item>();
-
-
-
 
 
         static public ItemUnit GlobalItemUnit = new ItemUnit();
@@ -274,6 +272,26 @@ namespace POS
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_getTax"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        async void loading_getItemCost()
+        {
+            //get item cost
+            try
+            {
+                itemCost = int.Parse(await getDefaultItemCost());
+            }
+            catch
+            {
+                itemCost = 0;
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getItemCost"))
                 {
                     item.value = true;
                     break;
@@ -698,6 +716,7 @@ namespace POS
                 bool isDone = true;
                 loadingList.Add(new keyValueBool { key = "loading_getUserPath", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getTax", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getItemCost", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getDateForm", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getRegionAndCurrency", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getStorageCost", value = false });
@@ -714,6 +733,7 @@ namespace POS
 
                 loading_getUserPath();
                 loading_getTax();
+                loading_getItemCost();
                 loading_getDateForm();
                 loading_getRegionAndCurrency();
                 loading_getStorageCost();
@@ -1630,6 +1650,14 @@ namespace POS
         async Task<string> getDefaultTax()
         {
             v = await uc_general.getDefaultTax();
+            if (v != null)
+                return v.value;
+            else
+                return "";
+        }
+        async Task<string> getDefaultItemCost()
+        {
+            v = await uc_general.getDefaultItemCost();
             if (v != null)
                 return v.value;
             else
