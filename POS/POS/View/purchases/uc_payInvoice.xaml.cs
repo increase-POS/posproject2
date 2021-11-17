@@ -3835,18 +3835,34 @@ namespace POS.View
             _IsFocused = true;
         }
 
-        private void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        private async void Btn_printCount_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                int result = 0;
 
-                /// write your code Here
+                if (invoice.invoiceId > 0)
+                {
+                    result = await invoiceModel.updateprintstat(invoice.invoiceId, -1, true, true);
 
 
+                    if (result > 0)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
 
+                }
+                else
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
