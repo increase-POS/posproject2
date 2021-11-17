@@ -3277,8 +3277,8 @@ namespace POS.Classes
             IEnumerable<CashTransferSts> temp = list;
             if (tab == 1)
             {
-                temp = list.Where(t => (((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) && t.processType != "doc") || t.processType == "doc");
+                temp = list.Where(t => ((((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) && t.processType != "doc") || t.processType == "doc"));
             }
             else if (tab == 3)
             {
@@ -3286,10 +3286,16 @@ namespace POS.Classes
             }
             list2 = list.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
             {
+                bondIsRecieved = obj.FirstOrDefault().bondIsRecieved,
+                // processType = obj.FirstOrDefault().processType,
+                processType = (obj.FirstOrDefault().processType == "doc" && obj.FirstOrDefault().bondIsRecieved == 1)
+                ? list.Where(x => x.bondId == obj.FirstOrDefault().bondId && x.side == "bnd").FirstOrDefault().processType
+                : obj.FirstOrDefault().processType,
+
                 bondNumber = obj.FirstOrDefault().bondNumber,
                 userId = obj.FirstOrDefault().userId,
                 agentId = obj.FirstOrDefault().agentId,
-
+                bondId =obj.FirstOrDefault().bondId,
                 transNum = obj.FirstOrDefault().transNum,
                 updateDate = obj.FirstOrDefault().updateDate,
 
@@ -3301,7 +3307,15 @@ namespace POS.Classes
 
                 updateUserName = obj.FirstOrDefault().updateUserName,
                 updateUserAcc = obj.FirstOrDefault().updateUserAcc,
-                cardName = obj.FirstOrDefault().cardName,
+              //  cardName = obj.FirstOrDefault().cardName,
+              // get pay type from other trans row of bond
+                cardName =(obj.FirstOrDefault().processType == "doc" && obj.FirstOrDefault().bondIsRecieved == 1)
+                ? list.Where(x=>x.bondId== obj.FirstOrDefault().bondId && x.side=="bnd").FirstOrDefault().cardName
+                
+                : obj.FirstOrDefault().cardName,
+
+
+
                 bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
                 docNum = obj.FirstOrDefault().docNum,
                 shippingCompanyId = obj.FirstOrDefault().shippingCompanyId,
@@ -3315,7 +3329,7 @@ namespace POS.Classes
                 cash = obj.Sum(x => x.cash),
                 cashTotal = 0,
                 side = obj.FirstOrDefault().side,
-                processType = obj.FirstOrDefault().processType,
+                
 
                 //invNumber = "",
                 invNumber = obj.FirstOrDefault().invNumber,
@@ -3325,13 +3339,15 @@ namespace POS.Classes
                 invShippingCompanyId = obj.FirstOrDefault().invShippingCompanyId,
                 shipUserId = obj.FirstOrDefault().shipUserId ,
                 invAgentId = obj.FirstOrDefault().invAgentId ,
-                bondIsRecieved = obj.FirstOrDefault().bondIsRecieved
+             
 
-            }).ToList();
+            }).Where(t=> !(t.side == "bnd" && t.bondIsRecieved == 1)).ToList();
             decimal rowtotal = 0;
 
+            //!(t.processType == "doc" && t.bondIsRecieved != 1)&& 
             foreach (CashTransferSts row in list2)
             {
+
                 //string invnum = "";
                 //List<string> invnumlist = new List<string>();
                 //invnumlist = list.Where(x => x.transNum == row.transNum).Select(y => y.invNumber).ToList();
@@ -3340,16 +3356,18 @@ namespace POS.Classes
                 //    invnum += strrow + " ";
                 //}
                 //row.invNumber = invnum;
-                if (row.transType == "d")
-                {
+            if (row.transType == "d" && !(row.processType == "doc" && row.bondIsRecieved != 1))
+                //    if (row.transType == "d")
+                    {
                     //if (!((row.processType == "doc")&&(row.Description1 == "Receipt")))
-                    if(row.bondIsRecieved == 1)
+                  //  if(row.bondIsRecieved == 1)
                         rowtotal += (decimal)row.cash;
                 }
-                else if (row.transType == "p")
+            else if (row.transType == "p" && !(row.processType == "doc" && row.bondIsRecieved != 1))
+             //   else if (row.transType == "p" )
                 {// p
                     //if (!((row.processType == "doc") && (row.Description1 == "Receipt")))
-                    if (row.bondIsRecieved == 1)
+                  //  if (row.bondIsRecieved == 1)
                         rowtotal -= (decimal)row.cash;
                 }
                 row.cashTotal = rowtotal;
