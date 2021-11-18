@@ -37,6 +37,7 @@ namespace POS.View.Settings
         static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
         static SetValues itemCost = new SetValues();
+        static SetValues printCount = new SetValues();
         static SetValues accuracy = new SetValues();
         static SetValues dateForm = new SetValues();
         static SetValues cost = new SetValues();
@@ -44,13 +45,16 @@ namespace POS.View.Settings
         static UserSetValues usValue = new UserSetValues();
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
-        static int taxId = 0, costId = 0, dateFormId, accuracyId , itemCostId = 0;
+        static int taxId = 0, costId = 0, dateFormId, accuracyId , itemCostId = 0 , printCountId = 0;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ReportCls reportclass = new ReportCls();
+
+        static List<SettingCls> settingsCls = new List<SettingCls>();
+        static List<SetValues> settingsValues = new List<SetValues>();
 
         LocalReport rep = new LocalReport();
         private static uc_general _instance;
@@ -74,8 +78,6 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
 
         #region loading
         bool firstLoading = true;
@@ -259,7 +261,11 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
+                settingsCls = await setModel.GetAll();
+                settingsValues = await valueModel.GetAll();
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -367,16 +373,7 @@ namespace POS.View.Settings
             }
         }
 
-        public static async Task<SetValues> getDefaultAccuracy()
-        {
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
-            set = settingsCls.Where(s => s.name == "accuracy").FirstOrDefault<SettingCls>();
-            accuracyId = set.settingId;
-            accuracy = settingsValues.Where(i => i.settingId == accuracyId).FirstOrDefault();
-            return accuracy;
-        }
-
+       
         private void fillAccuracy()
         {
             var list = new[] {
@@ -400,10 +397,17 @@ namespace POS.View.Settings
             cb_backup.ItemsSource = typelist;
             cb_backup.SelectedIndex = 0;
         }
+
+        public static async Task<SetValues> getDefaultAccuracy()
+        {
+            set = settingsCls.Where(s => s.name == "accuracy").FirstOrDefault<SettingCls>();
+            accuracyId = set.settingId;
+            accuracy = settingsValues.Where(i => i.settingId == accuracyId).FirstOrDefault();
+            return accuracy;
+        }
+
         public static async Task<SetValues> getDefaultCost()
         {
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "storage_cost").FirstOrDefault<SettingCls>();
             costId = set.settingId;
             cost = settingsValues.Where(i => i.settingId == costId).FirstOrDefault();
@@ -419,8 +423,6 @@ namespace POS.View.Settings
         }
         public static async Task<SetValues> getDefaultTax()
         {
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
             taxId = set.settingId;
             tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
@@ -428,18 +430,22 @@ namespace POS.View.Settings
         }
         public static async Task<SetValues> getDefaultItemCost()
         {
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "item_cost").FirstOrDefault<SettingCls>();
             itemCostId = set.settingId;
             itemCost = settingsValues.Where(i => i.settingId == itemCostId).FirstOrDefault();
             return itemCost;
         }
 
+        public static async Task<SetValues> getDefaultPrintCount()
+        {
+            set = settingsCls.Where(s => s.name == "Allow_print_inv_count").FirstOrDefault<SettingCls>();
+            printCountId = set.settingId;
+            printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
+            return printCount;
+        }
+
         public static async Task<SetValues> getDefaultDateForm()
         {
-            List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "dateForm").FirstOrDefault<SettingCls>();
             dateFormId = set.settingId;
             dateForm = settingsValues.Where(i => i.settingId == dateFormId).FirstOrDefault();
@@ -591,8 +597,6 @@ namespace POS.View.Settings
         {//save language
             try
             {
-
-
                 if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     SectionData.validateEmptyComboBox(cb_language, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
@@ -695,7 +699,7 @@ namespace POS.View.Settings
                         tax.value = tb_tax.Text;
                         tax.isSystem = 1;
                         tax.settingId = taxId;
-                        // string s = await valueModel.Save(tax);
+                        
                         int s = await valueModel.Save(tax);
                         if (!s.Equals(0))
                         {
@@ -815,15 +819,15 @@ namespace POS.View.Settings
 
 
         private void validateEmpty(string name, object sender)
-        {
+        {//validate
             try
             {
                 if (name == "TextBox")
                 {
                     if ((sender as TextBox).Name == "tb_tax")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
-                    //else if ((sender as TextBox).Name == "tb_storageCost")
-                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
+                    else if ((sender as TextBox).Name == "tb_itemsCost")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorItemsCost, tt_errorItemsCost, "trEmptyItemCost");
 
                 }
                 else if (name == "ComboBox")
@@ -1054,8 +1058,9 @@ namespace POS.View.Settings
                             itemCost = new SetValues();
                         itemCost.value = tb_itemsCost.Text;
                         itemCost.isSystem = 1;
+                        itemCost.isDefault = 1;
                         itemCost.settingId = itemCostId;
-                        // string s = await valueModel.Save(tax);
+                       
                         int s = await valueModel.Save(itemCost);
                         if (!s.Equals(0))
                         {

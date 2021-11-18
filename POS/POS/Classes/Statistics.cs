@@ -111,6 +111,7 @@ namespace POS.Classes
         public Nullable<byte> shippingCompaniesBType { get; set; }
         private string description;
         private string description1;
+        private string description3;
         public string bondNumber { get; set; }
         public Nullable<int> fromposId { get; set; }
         public string fromposName { get; set; }
@@ -186,6 +187,8 @@ namespace POS.Classes
 
         public Nullable<int> shippingCompanyId { get; set; }//
         public string shippingCompanyName { get; set; }//
+        public string invAgentName { get; set; }
+        public string invShippingCompanyName { get; set; }
         public string userAcc { get; set; }
 
 
@@ -215,28 +218,35 @@ namespace POS.Classes
         public string Description
         {
             get => processType == "cash" ? description = MainWindow.resourcemanager.GetString("trCash")//
-                 //: processType == "card" ? description = cardName + " Num : " + docNum
                  : processType == "card" ? description = cardName + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + docNum
-                 //: processType == "doc" ? description = "Bond" + " Num : " + bondNumber
                  : processType == "doc" ? description = MainWindow.resourcemanager.GetString("trBond") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + bondNumber
-                 //: processType == "cheque" ? description = "Cheque" + " Num : " + docNum
                  : processType == "cheque" ? description = MainWindow.resourcemanager.GetString("trCheque") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + docNum
                  : processType == "inv" ? description = MainWindow.resourcemanager.GetString("trInv")//yasmine
-                 //: "balance";
                  : MainWindow.resourcemanager.GetString("trCredit");
 
             set => description = value;
         }
         public string Description1
         {//
-            get => //description1 = (transType == "p" && processType != "inv") ? description1 = "ايصال دفع"
+            get =>
                 description1 = (transType == "p" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trPaymentReceipt")
-                //: description1 = (transType == "d" && processType != "inv") ? description1 = "ايصال قبض"
                 : description1 = (transType == "d" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trReceipt")
-                //: invId > 0 && processType == "inv" ? description1 = "فاتورة رقم" + invNumber
-                : invId > 0 && processType == "inv" ? description1 = MainWindow.resourcemanager.GetString("tr_Invoice")+ " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + invNumber
+                : invId > 0 && processType == "inv" ? description1 = MainWindow.resourcemanager.GetString("tr_Invoice") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + invNumber
                 : ""
                 ; set => description1 = value;
+        }
+        public string Description2
+        {//
+            get; set;
+        }
+        public string Description3
+        {
+            get => bondId > 0 ?
+                description3 = MainWindow.resourcemanager.GetString("trBond") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + bondNumber
+                 :
+                processType;
+
+            set => description3 = value;
         }
     }
 
@@ -2538,6 +2548,14 @@ namespace POS.Classes
             return iulist;
 
         }
+        public List<VendorCombo> getCustomerForStatementCombo(List<CashTransferSts> ITInvoice, string x)
+        {
+            List<VendorCombo> iulist = new List<VendorCombo>();
+
+            iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.invAgentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().invAgentId, VendorName = g.FirstOrDefault().invAgentName }).ToList();
+            return iulist;
+
+        }
         public List<VendorCombo> getUserAcc(List<CashTransferSts> ITInvoice, string x)
         {
             List<VendorCombo> iulist = new List<VendorCombo>();
@@ -2611,6 +2629,14 @@ namespace POS.Classes
             List<ShippingCombo> iulist = new List<ShippingCombo>();
 
             iulist = ITInvoice.Where(g => g.shippingCompanyId != null).GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId, ShippingName = g.FirstOrDefault().shippingCompanyName }).ToList();
+            return iulist;
+
+        }
+        public List<ShippingCombo> getShippingForStatementCombo(List<CashTransferSts> ITInvoice)
+        {
+            List<ShippingCombo> iulist = new List<ShippingCombo>();
+
+            iulist = ITInvoice.Where(g => g.invShippingCompanyId != null && g.shipUserId == null).GroupBy(g => g.invShippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().invShippingCompanyId, ShippingName = g.FirstOrDefault().invShippingCompanyName }).ToList();
             return iulist;
 
         }
@@ -3278,16 +3304,16 @@ namespace POS.Classes
             if (tab == 1)
             {
                 temp = list.Where(t => ((((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) && t.processType != "doc") || t.processType == "doc"));
+                                          (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null))))) ;
             }
             else if (tab == 3)
             {
-                temp = list.Where(t => ((t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null) && t.processType != "doc") || t.processType == "doc");
+                temp = list.Where(t => ((t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null)));
             }
-            list2 = list.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
+            list2 = temp.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
             {
                 bondIsRecieved = obj.FirstOrDefault().bondIsRecieved,
-                // processType = obj.FirstOrDefault().processType,
+                //processType = obj.FirstOrDefault().processType,
                 processType = (obj.FirstOrDefault().processType == "doc" && obj.FirstOrDefault().bondIsRecieved == 1)
                 ? list.Where(x => x.bondId == obj.FirstOrDefault().bondId && x.side == "bnd").FirstOrDefault().processType
                 : obj.FirstOrDefault().processType,
@@ -3307,14 +3333,12 @@ namespace POS.Classes
 
                 updateUserName = obj.FirstOrDefault().updateUserName,
                 updateUserAcc = obj.FirstOrDefault().updateUserAcc,
-              //  cardName = obj.FirstOrDefault().cardName,
-              // get pay type from other trans row of bond
+                //  cardName = obj.FirstOrDefault().cardName,
+                // get pay type from other trans row of bond
                 cardName =(obj.FirstOrDefault().processType == "doc" && obj.FirstOrDefault().bondIsRecieved == 1)
                 ? list.Where(x=>x.bondId== obj.FirstOrDefault().bondId && x.side=="bnd").FirstOrDefault().cardName
                 
                 : obj.FirstOrDefault().cardName,
-
-
 
                 bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
                 docNum = obj.FirstOrDefault().docNum,
@@ -3329,7 +3353,6 @@ namespace POS.Classes
                 cash = obj.Sum(x => x.cash),
                 cashTotal = 0,
                 side = obj.FirstOrDefault().side,
-                
 
                 //invNumber = "",
                 invNumber = obj.FirstOrDefault().invNumber,
@@ -3337,9 +3360,18 @@ namespace POS.Classes
                 totalNet = obj.FirstOrDefault().totalNet,
 
                 invShippingCompanyId = obj.FirstOrDefault().invShippingCompanyId,
+                invShippingCompanyName = obj.FirstOrDefault().invShippingCompanyName,
                 shipUserId = obj.FirstOrDefault().shipUserId ,
                 invAgentId = obj.FirstOrDefault().invAgentId ,
-             
+                invAgentName = obj.FirstOrDefault().invAgentName,
+
+                Description = obj.FirstOrDefault().Description,
+
+                Description1 = obj.FirstOrDefault().Description1,
+
+                Description3 = obj.FirstOrDefault().Description3,
+
+               
 
             }).Where(t=> !(t.side == "bnd" && t.bondIsRecieved == 1)).ToList();
             decimal rowtotal = 0;
@@ -3347,6 +3379,12 @@ namespace POS.Classes
             //!(t.processType == "doc" && t.bondIsRecieved != 1)&& 
             foreach (CashTransferSts row in list2)
             {
+                row.Description2 = row.bondId > 0
+               ? (row.bondIsRecieved == 0 ?
+                   MainWindow.resourcemanager.GetString("trBondNotRecieved") :
+                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + row.processType)
+                  :
+                  row.Description1;
 
                 //string invnum = "";
                 //List<string> invnumlist = new List<string>();

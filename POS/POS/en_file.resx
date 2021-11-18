@@ -2776,4 +2776,13 @@ Please add Email in setting</value>
   <data name="trItemCost" xml:space="preserve">
     <value>Item cost</value>
   </data>
+  <data name="trEmptyPrintCount" xml:space="preserve">
+    <value>Number of copies can not be empty</value>
+  </data>
+  <data name="trPrintCount" xml:space="preserve">
+    <value>Prints count</value>
+  </data>
+  <data name="trBondRecieved" xml:space="preserve">
+    <value>Bond is received</value>
+  </data>
 </root>

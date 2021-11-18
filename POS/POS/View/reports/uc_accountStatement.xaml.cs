@@ -191,7 +191,7 @@ namespace POS.View.reports
             if (selectedTab == 3)
             {
                 result = payments.Where(x => (
-                                (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem2.ShippingId : false)
+                                (vendor.SelectedItem != null ? x.invShippingCompanyId == selectedItem2.ShippingId : false)
                              && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
             }
 
@@ -328,10 +328,10 @@ namespace POS.View.reports
 
         private void Btn_customer_Click(object sender, RoutedEventArgs e)
         {//customers
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trCustomerHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
@@ -353,18 +353,18 @@ namespace POS.View.reports
 
                 chk_allVendors.IsChecked = true;
                 fillDateCombo(cb_vendorsDate);
-                customerCombo = statisticModel.getVendorCombo(statement, "c");
+                customerCombo = statisticModel.getCustomerForStatementCombo(statement, "c");
                 fillVendorCombo(customerCombo, cb_vendors);
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_user_Click(object sender, RoutedEventArgs e)
@@ -435,7 +435,7 @@ namespace POS.View.reports
 
                 chk_allVendors.IsChecked = true;
                 fillDateCombo(cb_vendorsDate);
-                ShippingCombo = statisticModel.getShippingCombo(statement);
+                ShippingCombo = statisticModel.getShippingForStatementCombo(statement);
                 fillShippingCombo(ShippingCombo, cb_vendors);
 
                 if (sender != null)
@@ -455,15 +455,7 @@ namespace POS.View.reports
         private void fillEvents()
         {
             temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab);
-            //if (selectedTab == 1)
-            //{
-            //    temp = temp.Where(t => (((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-            //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) && t.processType != "doc") || t.processType == "doc");
-            //}
-            //else if (selectedTab == 3)
-            //{
-            //    temp = temp.Where(t => ((t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null) && t.processType != "doc") || t.processType == "doc");
-            //}
+
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();

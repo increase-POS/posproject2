@@ -140,6 +140,7 @@ namespace POS
             pur_copy_count = printList.Where(X => X.name == "pur_copy_count").FirstOrDefault().value;
 
             rep_print_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
+
             Allow_print_inv_count = printList.Where(X => X.name == "Allow_print_inv_count").FirstOrDefault().value;
         }
         public static async Task GetReportlang()
@@ -292,6 +293,27 @@ namespace POS
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_getItemCost"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+        async void loading_getPrintCount()
+        {
+            //get print count
+            try
+            {
+                Allow_print_inv_count = await getDefaultPrintCount();
+            }
+            catch
+            {
+                Allow_print_inv_count = "1";
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getPrintCount"))
                 {
                     item.value = true;
                     break;
@@ -674,8 +696,6 @@ namespace POS
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
-                
-
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
@@ -710,7 +730,9 @@ namespace POS
 
 
                 #endregion
+
                 translate();
+
                 #region loading
                 loadingList = new List<keyValueBool>();
                 bool isDone = true;
@@ -729,7 +751,7 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_GlobalItemUnitsList", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_GlobalUnitsList", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_POSList", value = false });
-
+                loadingList.Add(new keyValueBool { key = "loading_getPrintCount", value = false });
 
                 loading_getUserPath();
                 loading_getTax();
@@ -746,7 +768,7 @@ namespace POS
                 loading_GlobalItemUnitsList();
                 loading_GlobalUnitsList();
                 loading_POSList();
-
+                loading_getPrintCount();
                 do
                 {
                     isDone = true;
@@ -778,7 +800,6 @@ namespace POS
                 setNotifications();
                 setTimer();
                 #endregion
-
 
                 permission();
 
@@ -1658,6 +1679,14 @@ namespace POS
         async Task<string> getDefaultItemCost()
         {
             v = await uc_general.getDefaultItemCost();
+            if (v != null)
+                return v.value;
+            else
+                return "";
+        }
+        async Task<string> getDefaultPrintCount()
+        {
+            v = await uc_general.getDefaultPrintCount();
             if (v != null)
                 return v.value;
             else

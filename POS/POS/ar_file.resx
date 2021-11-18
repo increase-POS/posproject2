@@ -2761,4 +2761,13 @@
   <data name="trItemCost" xml:space="preserve">
     <value>كلفة العنصر</value>
   </data>
+  <data name="trEmptyPrintCount" xml:space="preserve">
+    <value>عدد النسخ لا يمكن أن يكون فارغ</value>
+  </data>
+  <data name="trPrintCount" xml:space="preserve">
+    <value>عدد الطباعات</value>
+  </data>
+  <data name="trBondRecieved" xml:space="preserve">
+    <value>السند مستلم</value>
+  </data>
 </root>

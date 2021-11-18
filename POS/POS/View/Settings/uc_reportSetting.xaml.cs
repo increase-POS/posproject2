@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,7 +45,11 @@ namespace POS.View.Settings
         SetValues setvalueModel = new SetValues();
         List<SetValues> replangList = new List<SetValues>();
         SetValues replangrow = new SetValues();
-
+        static SettingCls setModel = new SettingCls();
+        static SettingCls set = new SettingCls();
+        static SetValues valueModel = new SetValues();
+        static SetValues printCount = new SetValues();
+        static int printCountId = 0;
         public class Replang
         {
             public int langId { get; set; }
@@ -89,8 +94,7 @@ namespace POS.View.Settings
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            //load
+        {//load
             try
             {
                 if (sender != null)
@@ -110,12 +114,17 @@ namespace POS.View.Settings
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
-                //translate();
+                translate();
                 #endregion
+
                 ///naji code
                 ///
-        await  fillRepLang();
-
+                await  fillRepLang();
+                #region get default print count
+                await getDefaultPrintCount();
+                if (printCount != null)
+                    tb_printCount.Text = printCount.value;
+                #endregion
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -128,7 +137,21 @@ namespace POS.View.Settings
             }
         }
 
-
+        private void translate()
+        {
+            txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
+            tt_printCount.Content = MainWindow.resourcemanager.GetString("trPrintCount");
+        }
+        
+        public static async Task<SetValues> getDefaultPrintCount()
+        {
+            List<SettingCls> settingsCls = await setModel.GetAll();
+            List<SetValues> settingsValues = await valueModel.GetAll();
+            set = settingsCls.Where(s => s.name == "Allow_print_inv_count").FirstOrDefault<SettingCls>();
+            printCountId = set.settingId;
+            printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
+            return printCount;
+        }
         private void Btn_systmSetting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -182,9 +205,47 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_printCount_Click(object sender, RoutedEventArgs e)
-        {
 
+       
+        private async void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        {//save print count
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                SectionData.validateEmptyTextBox(tb_printCount, p_errorPrintCount, tt_errorPrintCount, "trEmptyPrintCount");
+                if (!tb_printCount.Text.Equals(""))
+                {
+                   
+                    if (printCount == null)
+                        printCount = new SetValues();
+                    printCount.value = tb_printCount.Text;
+                    printCount.isSystem = 1;
+                    printCount.isDefault = 1;
+                    printCount.settingId = printCountId;
+
+                    int s = await valueModel.Save(printCount);
+                    if (!s.Equals(0))
+                    {
+                        //update tax in main window
+                        MainWindow.Allow_print_inv_count = printCount.value;
+
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private void Btn_printerSetting_Click(object sender, RoutedEventArgs e)
         {
@@ -228,33 +289,120 @@ namespace POS.View.Settings
                 await fillRepLang();
                 if (msg > 0)
                 {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
                 }
                 else
                 {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
             }
         }
 
-        private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Tb_digit_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-
+            Regex regex = new Regex("[^1-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
         {
-
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
-
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
+
+        private void validateEmpty(string name, object sender)
+        {//validate
+            try
+            {
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_printCount")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorPrintCount, tt_errorPrintCount, "trEmptyPrintCount");
+                }
+                else if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_reportlang")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_errorReportlang, tt_errorReportlang, "trEmptyLanguage");
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        #region Numeric
+
+        private int _numValue = 0;
+
+        public int NumValue
+        {
+            get { return _numValue; }
+            set
+            {
+                _numValue = value;
+                tb_printCount.Text = value.ToString();
+            }
+        }
+        private void cmdUp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                NumValue++;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void cmdDown_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if(NumValue > 1)
+                    NumValue--;
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        #endregion
+
+       
     }
 }

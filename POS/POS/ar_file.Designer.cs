@@ -646,6 +646,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to السند مستلم.
+        /// </summary>
+        internal static string trBondRecieved {
+            get {
+                return ResourceManager.GetString("trBondRecieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to السندات.
         /// </summary>
         internal static string trBonds {
@@ -2388,6 +2397,15 @@ namespace POS {
         internal static string trEmptyPrice {
             get {
                 return ResourceManager.GetString("trEmptyPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عدد النسخ لا يمكن أن يكون فارغ.
+        /// </summary>
+        internal static string trEmptyPrintCount {
+            get {
+                return ResourceManager.GetString("trEmptyPrintCount", resourceCulture);
             }
         }
         
@@ -5386,6 +5404,15 @@ namespace POS {
         internal static string trPrintBarcode {
             get {
                 return ResourceManager.GetString("trPrintBarcode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عدد الطباعات.
+        /// </summary>
+        internal static string trPrintCount {
+            get {
+                return ResourceManager.GetString("trPrintCount", resourceCulture);
             }
         }
         
