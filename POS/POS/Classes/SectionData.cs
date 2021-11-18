@@ -1168,6 +1168,10 @@ namespace POS.Classes
                 _str = MainWindow.resourcemanager.GetString("trCategories");
             else if (str == "item")
                 _str = MainWindow.resourcemanager.GetString("trItems");
+            else if (str == "service")
+                _str = MainWindow.resourcemanager.GetString("trService");
+            else if (str == "package")
+                _str = MainWindow.resourcemanager.GetString("trPackage");
             else if (str == "properties")
                 _str = MainWindow.resourcemanager.GetString("trProperties");
             else if (str == "units")
@@ -1190,8 +1194,7 @@ namespace POS.Classes
                 _str = MainWindow.resourcemanager.GetString("trCoupon");
             else if (str == "offer")
                 _str = MainWindow.resourcemanager.GetString("trOffer");
-            else if (str == "package")
-                _str = MainWindow.resourcemanager.GetString("trPackage");
+           
             else if (str == "quotation")
                 _str = MainWindow.resourcemanager.GetString("trQuotations");
             else if (str == "salesOrders")

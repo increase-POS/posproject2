@@ -1121,7 +1121,7 @@ namespace POS.View
         {
 
             SectionData.validateEmptyComboBox(cb_selectUnit, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
-            SectionData.validateEmptyComboBox(cb_storageCost, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
+            //SectionData.validateEmptyComboBox(cb_storageCost, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
             SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
             SectionData.validateEmptyComboBox(cb_unit, p_errorUnit, tt_errorUnit, "trErrorEmptyUnitToolTip");
             SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trErrorEmptyPriceToolTip");
@@ -1140,8 +1140,8 @@ namespace POS.View
                 {
                     //check mandatory values
                     validateUnitValues();
-
-                    if ((cb_selectUnit.SelectedIndex != -1 && cb_storageCost.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                    //cb_storageCost.SelectedIndex != -1 &&
+                    if ((cb_selectUnit.SelectedIndex != -1 &&  !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                         || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
                     {
                         if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
@@ -1250,8 +1250,8 @@ namespace POS.View
                 {
                     //check mandatory values
                     validateUnitValues();
-
-                    if ((cb_selectUnit.SelectedIndex != -1 && cb_storageCost.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                    //cb_storageCost.SelectedIndex != -1 &&
+                    if ((cb_selectUnit.SelectedIndex != -1 &&  !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
                         || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
                     {
                         if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)

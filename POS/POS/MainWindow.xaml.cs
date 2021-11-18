@@ -1406,6 +1406,10 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCategories");
                 else if (tag == "item")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trItems");
+                else if (tag == "service")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trService");
+                else if (tag == "package")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPackage");
                 else if (tag == "properties")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trProperties");
                 else if (tag == "units")
@@ -1428,8 +1432,6 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trCoupon");
                 else if (tag == "offer")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trOffer");
-                else if (tag == "package")
-                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPackage");
                 else if (tag == "quotation")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trQuotations");
                 else if (tag == "salesOrders")
