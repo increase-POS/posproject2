@@ -36,7 +36,8 @@ namespace POS.View.storage
         string reciptPermission = "reciptOfInvoice_recipt";
         string returnPermission = "reciptOfInvoice_return";
         string reportsPermission = "reciptOfInvoice_reports";
-        private static uc_receiptOfPurchaseInvoice _instance;
+        string inputsPermission = "reciptOfInvoice_inputs";
+        private static uc_receiptOfPurchaseInvoice _instance; 
         public static uc_receiptOfPurchaseInvoice Instance
         {
             get
@@ -236,6 +237,19 @@ namespace POS.View.storage
                     md_returnsCount.Visibility = Visibility.Visible;
                 else
                     md_returnsCount.Visibility = Visibility.Collapsed;
+
+                if (MainWindow.groupObject.HasPermissionAction(inputsPermission, MainWindow.groupObjects, "one"))
+                {
+                    md_draft.Visibility = Visibility.Visible;
+                    btn_newDraft.Visibility = Visibility.Visible;
+                    btn_items.IsEnabled = true;
+                }
+                else
+                {
+                    md_draft.Visibility = Visibility.Collapsed;
+                    btn_newDraft.Visibility = Visibility.Collapsed;
+                    btn_items.IsEnabled = false;
+                }
                 #endregion
 
                 if (sender != null)
