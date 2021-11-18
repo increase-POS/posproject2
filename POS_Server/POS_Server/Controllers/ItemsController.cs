@@ -1382,6 +1382,104 @@ var strP = TokenManager.GetPrincipal(token);
                                 }
                                 iunlist.priceTax = iunlist.priceTax - totaldis;
                             }
+                            searchPredicate = searchPredicate.And(x => x.type == "sr");
+                            var serviceItems = (from I in entity.items.Where(searchPredicate)
+                                             join u in entity.itemsUnits on I.itemId equals u.itemId
+                                             select new ItemSalePurModel()
+                                             {
+                                                 itemId = I.itemId,
+                                                 name = I.name,
+                                                 code = I.code,
+                                                 categoryId = I.categoryId,
+                                                 categoryName = I.categories.name,
+                                                 max = I.max,
+                                                 maxUnitId = I.maxUnitId,
+                                                 minUnitId = I.minUnitId,
+                                                 min = I.min,
+                                                 parentId = I.parentId,
+                                                 isActive = I.isActive,
+                                                 image = I.image,
+                                                 type = I.type,
+                                                 details = I.details,
+                                                 taxes = I.taxes,
+                                                 createDate = I.createDate,
+                                                 updateDate = I.updateDate,
+                                                 createUserId = I.createUserId,
+                                                 updateUserId = I.updateUserId,
+                                                 isNew = 0,
+                                                 price = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultSale == 1).Select(iu => iu.price).FirstOrDefault(),
+                                                 itemUnitId = I.itemsUnits.Where(iu => iu.itemId == I.itemId && iu.defaultSale == 1).Select(iu => iu.itemUnitId).FirstOrDefault(),
+
+
+                                             }).DistinctBy(x => x.itemId)
+                                     .ToList();
+                            foreach (var iunlist in serviceItems)
+                            {
+                                iunlist.itemCount = 0;
+                                iunlist.priceTax = iunlist.price + Calc.percentValue(iunlist.price, iunlist.taxes);
+
+                                // get set is new
+                                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+
+                                int res = DateTime.Compare((DateTime)iunlist.createDate, cmpdate);
+                                if (res >= 0)
+                                {
+                                    iunlist.isNew = 1;
+                                }
+                                // end is new
+                                decimal? totaldis = 0;
+
+                                foreach (var itofflist in itemsofferslist)
+                                {
+                                    if (iunlist.itemId == itofflist.itemId)
+                                    {
+                                        // get unit name of item that has the offer
+                                        using (incposdbEntities entitydb = new incposdbEntities())
+                                        { // put it in item
+                                            var un = entitydb.units
+                                             .Where(a => a.unitId == itofflist.unitId)
+                                                .Select(u => new
+                                                {
+                                                    u.name,
+                                                    u.unitId
+                                                }).FirstOrDefault();
+                                            iunlist.unitName = un.name;
+                                        }
+
+                                        iunlist.offerName = iunlist.offerName + "- " + itofflist.offerName;
+                                        iunlist.isOffer = 1;
+                                        iunlist.startDate = itofflist.startDate;
+                                        iunlist.endDate = itofflist.endDate;
+                                        iunlist.itemUnitId = itofflist.itemUnitId;
+                                        iunlist.offerId = itofflist.offerId;
+                                        iunlist.isActiveOffer = itofflist.isActiveOffer;
+
+                                        iunlist.price = itofflist.price;
+                                        iunlist.priceTax = iunlist.price + (iunlist.price * iunlist.taxes / 100);
+                                        iunlist.discountType = itofflist.discountType;
+                                        iunlist.discountValue = itofflist.discountValue;
+                                        if (itofflist.used == null)
+                                            itofflist.used = 0;
+
+                                        if (iunlist.itemCount >= (itofflist.itemCount - itofflist.used))
+                                            iunlist.itemCount = (itofflist.itemCount - itofflist.used);
+
+                                        if (iunlist.discountType == "1") // value
+                                        {
+
+                                            totaldis = totaldis + iunlist.discountValue;
+                                        }
+                                        else if (iunlist.discountType == "2") // percent
+                                        {
+
+                                            totaldis = totaldis + Calc.percentValue(iunlist.price, iunlist.discountValue);
+
+                                        }
+                                    }
+                                }
+                                iunlist.priceTax = iunlist.priceTax - totaldis;
+                            }
+                            itemsList.AddRange(serviceItems.ToArray());
                             return  TokenManager.GenerateToken(itemsList) ;
                         }
                         #endregion

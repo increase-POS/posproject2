@@ -2678,107 +2678,48 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("GetCountByInvId")]
-        public string GetCountByInvId(string token
-)
+        public string GetCountByInvId(string token)
         {
-
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
             else
             {
-
                 int invId = 0;
-
-
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
-                    if (c.Type == "invId")
+                    if (c.Type == "invoiceId")
                     {
                         invId = int.Parse(c.Value);
                     }
-
-
                 }
-
-                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
                 try
                 {
-
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-
                         int cachtrans = entity.cashTransfer.Where(C => C.invId == invId && C.processType != "inv").ToList().Count();
-
                         return TokenManager.GenerateToken(cachtrans);
-
                     }
-
-
-
-
                 }
                 catch
                 {
                     return TokenManager.GenerateToken("0");
                 }
-
-
-
             }
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid)
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-
-            //        int cachtrans = entity.cashTransfer.Where(C => C.invId == invId && C.processType != "inv").ToList().Count();
-
-            //        if (cachtrans == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(cachtrans);
-
-            //    }
-            //}
-            //else
-            //    return NotFound();
         }
-        /// <summary>
-        /// /////////////
-        /// </summary>
-        /// <param name="agentId"></param>
-        /// <param name="amount"></param>
-        /// <param name="payType">{pay,feed}</param>
-        /// <param name="cashTransfer"></param>
-        /// <returns></returns>
+
         [HttpPost]
         [Route("payByAmount")]
         public string payByAmount(string token)
         {
-
             //int agentId, decimal amount, string payType, string cashTransfer 
             string message = "";
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2840,7 +2781,11 @@ namespace POS_Server.Controllers
                         //    cashTransfer cashTr = JsonConvert.DeserializeObject<cashTransfer>(cashTransfer, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
                         using (incposdbEntities entity = new incposdbEntities())
                         {
-                            var invList = (from b in entity.invoices.Where(x => x.agentId == agentId && typesList.Contains(x.invType) && x.deserved > 0)
+                            //var invList = (from b in entity.invoices.Where(x => x.agentId == agentId && typesList.Contains(x.invType) && x.deserved > 0)
+                            var invList = (from b in entity.invoices.Where(x => x.agentId == agentId && typesList.Contains(x.invType) && x.deserved > 0 &&
+                                                                         ((x.shippingCompanyId == null && x.shipUserId == null && x.agentId != null) ||
+                                                                          (x.shippingCompanyId != null && x.shipUserId != null && x.agentId != null)))
+
                                            select new InvoiceModel()
                                            {
                                                invoiceId = b.invoiceId,
@@ -4015,7 +3960,10 @@ namespace POS_Server.Controllers
                         }
                         using (incposdbEntities entity = new incposdbEntities())
                         {
-                            var invList = (from b in entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType) && x.deserved > 0)
+                            //var invList = (from b in entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType) && x.deserved > 0)
+                            var invList = (from b in entity.invoices.Where(x => x.shippingCompanyId == shippingCompanyId && typesList.Contains(x.invType) && x.deserved > 0 &&
+                                                                                x.shippingCompanyId != null && x.shipUserId == null && x.agentId != null)
+
                                            select new InvoiceModel()
                                            {
                                                invoiceId = b.invoiceId,

@@ -801,7 +801,6 @@ C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Serve
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.dll
 C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.pdb
-C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache
 D:\Project\ser\POS_Server\POS_Server\bin\POS_Server.xml
 D:\Project\ser\POS_Server\POS_Server\bin\Microsoft.IdentityModel.JsonWebTokens.dll
 D:\Project\ser\POS_Server\POS_Server\bin\Microsoft.IdentityModel.Logging.dll
@@ -820,3 +819,4 @@ D:\Project\ser\POS_Server\POS_Server\bin\Microsoft.Owin.Security.xml
 D:\Project\ser\POS_Server\POS_Server\bin\Microsoft.Owin.Security.OAuth.xml
 D:\Project\ser\POS_Server\POS_Server\bin\System.IdentityModel.Tokens.Jwt.xml
 D:\Project\ser\POS_Server\POS_Server\bin\System.Web.Http.Owin.xml
+C:\Users\Administrator\Documents\POS-ServerTest\POS_Server\obj\Release\POS_Server.csproj.AssemblyReference.cache

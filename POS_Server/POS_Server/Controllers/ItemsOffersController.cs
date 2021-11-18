@@ -140,7 +140,7 @@ namespace POS_Server.Controllers
 
                                         newitofrow.createUserId = userId;
                                         newitofrow.updateUserId = userId;
-                                        newitofrow.used = 0;
+                                        
                                     }
                                     else
                                     {
@@ -148,7 +148,7 @@ namespace POS_Server.Controllers
                                         newitofrow.updateUserId = userId;
 
                                     }
-
+                                    newitofrow.used = 0;
                                 }
                                 entity.itemsOffers.AddRange(newObject);
                             }

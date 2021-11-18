@@ -484,16 +484,6 @@
         <member name="M:POS_Server.Controllers.CashTransferController.GetbySourcId(System.String)">
             
         </member>
-        <member name="M:POS_Server.Controllers.CashTransferController.payByAmount(System.String)">
-            <summary>
-            /////////////
-            </summary>
-            <param name="agentId"></param>
-            <param name="amount"></param>
-            <param name="payType">{pay,feed}</param>
-            <param name="cashTransfer"></param>
-            <returns></returns>
-        </member>
         <!-- Badly formed XML comment ignored for member "M:POS_Server.Controllers.CashTransferController.payUserByAmount(System.String)" -->
         <!-- Badly formed XML comment ignored for member "M:POS_Server.Controllers.CashTransferController.payShippingCompanyByAmount(System.String)" -->
         <member name="M:POS_Server.Controllers.CashTransferController.payListOfInvoices(System.String)">

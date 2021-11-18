@@ -1669,9 +1669,9 @@ var strP = TokenManager.GetPrincipal(token);
                     //var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && x.shipUserId == null && typesList.Contains(x.invType)
                     //                    && x.deserved > 0 && x.branchCreatorId == branchId )
                     var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && typesList.Contains(x.invType)
-                                        && x.deserved > 0 && x.branchCreatorId == branchId &&
-                                           (x.shippingCompanyId == null && x.shipUserId == null && x.agentId != null) ||
-                                           (x.shippingCompanyId != null && x.shipUserId != null && x.agentId != null))
+                                                 && x.deserved > 0 && x.branchCreatorId == branchId &&
+                                           ((x.shippingCompanyId == null && x.shipUserId == null && x.agentId != null) ||
+                                           (x.shippingCompanyId != null && x.shipUserId != null && x.agentId != null)))
                                         select new InvoiceModel()
                                         {
                                             invoiceId = b.invoiceId,

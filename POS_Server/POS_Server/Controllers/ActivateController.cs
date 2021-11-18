@@ -262,6 +262,8 @@ namespace POS_Server.Controllers
             }
         }
 
+       
+
         [HttpPost]
         [Route("Sendserverkey")]
         public async Task<string> Sendserverkey(string token)
@@ -274,7 +276,7 @@ namespace POS_Server.Controllers
             }
             else
             {
-
+                string res1 = "";
                 string skey = "";
                 string serverId = "";
                 SendDetail sendDetailItem = new SendDetail();
@@ -288,17 +290,21 @@ namespace POS_Server.Controllers
                         skey = c.Value;
                     }
                 }
-                serverId = ServerID();
-                try
+ try
                 {
-                int conres=  await  checkIncServerConn();
+                  //  return TokenManager.GenerateToken("1212".ToString());
+                    //serverId = ServerID();
+                    serverId = "server13213ascas";
+
+
+                    int conres=  await  checkIncServerConn();
 
                     // check con to increase server
                     if (conres > 0)
                     {
 
 
-                        //  return TokenManager.GenerateToken(conres.ToString());
+                       // return TokenManager.GenerateToken(conres.ToString());
 
                         sendDetailItem = await GetSerialsAndDetails(skey, serverId);
                         //update server detail
@@ -349,8 +355,8 @@ namespace POS_Server.Controllers
                 catch (Exception ex)
                 {
                     // connection error
-                  return TokenManager.GenerateToken(-1);
-                  //  return TokenManager.GenerateToken(ex.ToString());
+                 // return TokenManager.GenerateToken(-1);
+                  return TokenManager.GenerateToken(ex.ToString());
                 }
 
             }
@@ -380,6 +386,6 @@ namespace POS_Server.Controllers
 
         }
 
-
+      
     }
 }

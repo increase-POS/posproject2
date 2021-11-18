@@ -26,7 +26,7 @@ namespace POS_Server.Controllers
             List<branches> branchesList = new List<branches>();
             branchesList = branchc.BrListByBranchandUser(mainBranchId, userId);
             List<int> bridlist = new List<int>();
-           // Calculate calc = new Calculate();
+            // Calculate calc = new Calculate();
             bridlist.AddRange(branchesList.Select(x => x.branchId).ToList());
             return bridlist;
         }
@@ -343,14 +343,14 @@ namespace POS_Server.Controllers
         //  فواتير المشتريات بكل انواعها بكل فرع
         [HttpPost]
         [Route("GetPurinv")]
-      public string   GetPurinv(string token)
+        public string GetPurinv(string token)
         {
             //int mainBranchId, int userId
 
 
-          
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -466,7 +466,7 @@ namespace POS_Server.Controllers
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -615,16 +615,16 @@ namespace POS_Server.Controllers
 
         [HttpPost]
         [Route("GetPuritem")]
-      public string   GetPuritem(string token)
+        public string GetPuritem(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -761,7 +761,7 @@ namespace POS_Server.Controllers
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -948,16 +948,16 @@ namespace POS_Server.Controllers
         //عدد العناصر في كل فاتورة
         [HttpPost]
         [Route("GetPuritemcount")]
-      public string   GetPuritemcount(string token)
+        public string GetPuritemcount(string token)
         {
 
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1066,7 +1066,7 @@ namespace POS_Server.Controllers
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -1986,17 +1986,17 @@ else
         // فواتير المبيعات مع العناصر
         [HttpPost]
         [Route("GetSaleitem")]
-      public string   GetSaleitem(string token)
+        public string GetSaleitem(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2136,7 +2136,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -2287,17 +2287,17 @@ else
         //عدد العناصر في كل فاتورة
         [HttpPost]
         [Route("GetSaleitemcount")]
-      public string   GetSaleitemcount(string token)
+        public string GetSaleitemcount(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2337,7 +2337,7 @@ else
                                         join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
                                         join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
                                         join P in entity.pos on I.posId equals P.posId into JP
-                                        
+
                                         //   from JBB in JB
                                         from JPP in JP.DefaultIfEmpty()
                                         from JUU in JU.DefaultIfEmpty()
@@ -2410,7 +2410,7 @@ else
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
 
-                                            
+
 
 
 
@@ -2423,7 +2423,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -2561,17 +2561,17 @@ else
 
         [HttpPost]
         [Route("Getorderitemcount")]
-      public string   Getorderitemcount(string token)
+        public string Getorderitemcount(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2697,7 +2697,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -2833,16 +2833,16 @@ else
 
         [HttpPost]
         [Route("GetPurorderitemcount")]
-      public string   GetPurorderitemcount(string token)
+        public string GetPurorderitemcount(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2968,7 +2968,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -3108,17 +3108,17 @@ else
 
         [HttpPost]
         [Route("GetQtitemcount")]
-      public string   GetQtitemcount(string token)
+        public string GetQtitemcount(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -3244,7 +3244,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -3390,16 +3390,16 @@ else
 
         [HttpPost]
         [Route("GetSalecoupon")]
-      public string   GetSalecoupon(string token)
+        public string GetSalecoupon(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -3529,7 +3529,7 @@ else
                                         }).ToList();
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -3677,17 +3677,17 @@ else
         // فواتير المبيعات مع العناصر
         [HttpPost]
         [Route("GetSaleOffer")]
-      public string   GetSaleOffer(string token)
+        public string GetSaleOffer(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -3881,7 +3881,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -4131,7 +4131,7 @@ else
                                         from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
                                         from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                     
+
                                         join ITEM in entity.items on IU.itemId equals ITEM.itemId
                                         join UNIT in entity.units on IU.unitId equals UNIT.unitId
                                         //    join B in entity.branches on I.branchId equals B.branchId into JB
@@ -4139,14 +4139,14 @@ else
                                         join A in entity.agents on I.agentId equals A.agentId into JA
                                         join U in entity.users on I.createUserId equals U.userId into JU
                                         join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                    
+
                                         join P in entity.pos on I.posId equals P.posId into JP
-                                     
+
                                         join O in entity.offers on IT.offerId equals O.offerId
 
                                         //join ITOF in entity.itemsTransfer on ITO.itemTransId equals ITOF.itemsTransId 
                                         //   from  IUO in entity.itemsOffers.Where(X=> X.offerId == O.offerId).Distinct()
-                                        where (IT.offerId!=null)
+                                        where (IT.offerId != null)
 
                                         // from JBB in JB
                                         from JPP in JP.DefaultIfEmpty()
@@ -4156,7 +4156,7 @@ else
                                         from JAA in JA.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
                                         where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-  
+
                                         select new
                                         {
                                             // offer
@@ -4187,7 +4187,7 @@ else
                                             ITunitId = IU.unitId,
                                             ITquantity = IT.quantity,//*
 
-                                         
+
                                             //ITnotes = IT.notes,
                                             ITprice = IT.price,
                                             ITbarcode = IU.barcode,
@@ -4241,7 +4241,7 @@ else
 
                                             subTotal = (IT.price * IT.quantity),//*
                                             // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
-                                            offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * ( IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
+                                            offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
 
                                         }).ToList();
 
@@ -4259,7 +4259,7 @@ else
 
             }
 
-           
+
         }
 
         #endregion
@@ -4270,15 +4270,15 @@ else
         // عرض الاصناف واماكن تخزينها
         [HttpPost]
         [Route("GetStorage")]
-      public string   GetStorage(string token)
+        public string GetStorage(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -4715,16 +4715,16 @@ else
         // حركة الاصناف الخارجية -مع العملاء والموردين
         [HttpPost]
         [Route("GetExternalMov")]
-      public string   GetExternalMov(string token)
+        public string GetExternalMov(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -4791,7 +4791,7 @@ else
 
                                             itemName = ITEM.name,
                                             unitName = UNIT.name,
-                                           // IT.itemsTransId,
+                                            // IT.itemsTransId,
                                             IT.itemUnitId,
 
                                             IU.itemId,
@@ -4809,12 +4809,12 @@ else
                                             //CreateuserLName = ITCUSER.lastname,
                                             //CreateuserAccName = ITCUSER.username,
 
-                                           // UpdateuserName = ITUPUSER.name,
-                                           // UpdateuserLName = ITUPUSER.lastname,
-                                           // UpdateuserAccName = ITUPUSER.username,
+                                            // UpdateuserName = ITUPUSER.name,
+                                            // UpdateuserLName = ITUPUSER.lastname,
+                                            // UpdateuserAccName = ITUPUSER.username,
                                             I.invoiceId,
                                             I.invNumber,
-                                            
+
                                             //I.posId,
                                             I.invType,
                                             //I.total,
@@ -4828,7 +4828,7 @@ else
                                             //I.invTime,
                                             //I.notes,
                                             //I.vendorInvNum,
-                                           // I.vendorInvDate,
+                                            // I.vendorInvDate,
                                             //I.createUserId,
                                             //I.updateDate,
                                             //I.updateUserId,
@@ -4838,7 +4838,7 @@ else
                                             //I.tax,
                                             //I.name,
                                             I.isApproved,
-                                            
+
                                             //
                                             I.branchCreatorId,
                                             branchCreatorName = JBCC.name,
@@ -4868,7 +4868,7 @@ else
                                             //uuserLast = JUPUS.lastname,
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
-                                            
+
                                             //username
 
                                             //  I.invoiceId,
@@ -4881,7 +4881,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -5047,16 +5047,16 @@ else
         // حركة الاصناف الداخلية -بين الفروع والمخازن
         [HttpPost]
         [Route("GetInternalMov")]
-      public string   GetInternalMov(string token)
+        public string GetInternalMov(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -5244,14 +5244,14 @@ else
                                            (i => i.invoiceId == I.invoiceMainId)
                                            .FirstOrDefault().branchId)
                                            : null,
-                                           invopr=I.invoiceMainId==null?I.invoiceId:I.invoiceMainId,
+                                            invopr = I.invoiceMainId == null ? I.invoiceId : I.invoiceMainId,
                                         }).ToList();
 
 
-                        var list = invListm.GroupBy(g => new{ g.invopr,g.itemUnitId}).SelectMany(grouping => grouping.Take(1)).ToList();
+                        var list = invListm.GroupBy(g => new { g.invopr, g.itemUnitId }).SelectMany(grouping => grouping.Take(1)).ToList();
 
-                       // cashopr = C.cashTransIdSource == null ? C.cashTransId : C.cashTransIdSource,
-                       //var list = cachlist.GroupBy(g => g.cashopr).SelectMany(grouping => grouping.Take(1)).ToList();
+                        // cashopr = C.cashTransIdSource == null ? C.cashTransId : C.cashTransIdSource,
+                        //var list = cachlist.GroupBy(g => g.cashopr).SelectMany(grouping => grouping.Take(1)).ToList();
 
 
                         return TokenManager.GenerateToken(list);
@@ -5466,16 +5466,16 @@ else
         // عناصر الجرد
         [HttpPost]
         [Route("GetInventory")]
-      public string   GetInventory(string token)
+        public string GetInventory(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -5562,7 +5562,7 @@ else
                                         inventoryDate = c.Inventory.createDate,
                                         inventoryNum = c.Inventory.num,
                                         c.Inventory.inventoryType,
-                                      // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
+                                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
                                         //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
                                     }).ToList();
 
@@ -5591,7 +5591,7 @@ else
 
 
                         return TokenManager.GenerateToken(list2);
-                     
+
 
                     }
 
@@ -5699,16 +5699,16 @@ else
         //
         [HttpPost]
         [Route("GetInventoryItems")]
-      public string   GetInventoryItems(string token)
+        public string GetInventoryItems(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -5849,7 +5849,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(list2);
+                        return TokenManager.GenerateToken(list2);
 
                     }
 
@@ -5997,16 +5997,16 @@ else
         // العناصر التالفة
         [HttpPost]
         [Route("GetDesItems")]
-      public string   GetDesItems(string token)
+        public string GetDesItems(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -6086,7 +6086,7 @@ else
                                             //I.paid,
                                             //I.deserved,
 
-                                          
+
                                             //I.deservedDate,
                                             //I.invDate,
                                             //I.invoiceMainId,
@@ -6122,7 +6122,7 @@ else
                                             //uuserName = JUPUS.name,
                                             //uuserLast = JUPUS.lastname,
                                             //uUserAccName = JUPUS.username,
-                                           
+
 
                                         }).ToList();
 
@@ -6130,7 +6130,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -6259,16 +6259,16 @@ else
         // العناصر الناقصة
         [HttpPost]
         [Route("GetFallsItems")]
-      public string   GetFallsItems(string token)
+        public string GetFallsItems(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -6375,7 +6375,7 @@ else
                                             //I.branchCreatorId,
 
                                             //
-                                          
+
                                             branchName = JBCC.name,
                                             branchId = I.branchCreatorId,
 
@@ -6396,7 +6396,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -6533,16 +6533,16 @@ else
         //المدفوعات
         [HttpPost]
         [Route("GetPayments")]
-      public string   GetPayments(string token)
+        public string GetPayments(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -6803,16 +6803,16 @@ else
         //bank all
         [HttpPost]
         [Route("GetBankTrans")]
-      public string   GetBankTrans(string token)
+        public string GetBankTrans(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -7072,16 +7072,16 @@ else
         // المقبوضات
         [HttpPost]
         [Route("GetReceipt")]
-      public string   GetReceipt(string token)
+        public string GetReceipt(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -7308,16 +7308,16 @@ else
         // pos
         [HttpPost]
         [Route("GetPosTrans")]
-      public string   GetPosTrans(string token)
+        public string GetPosTrans(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -7393,7 +7393,7 @@ else
                                             posIdCreator = C.posIdCreator,
                                             isConfirm = C.isConfirm,
                                             cashTransIdSource = C.cashTransIdSource,
-                                            cashopr= C.cashTransIdSource==null ? C.cashTransId: C.cashTransIdSource,
+                                            cashopr = C.cashTransIdSource == null ? C.cashTransId : C.cashTransIdSource,
                                             //*side = C.side,
 
                                             //*docName = C.docName,
@@ -7475,7 +7475,7 @@ else
 
                                         }).ToList();
 
-                       var list = cachlist.GroupBy(g => g.cashopr).SelectMany(grouping => grouping.Take(1)).ToList();
+                        var list = cachlist.GroupBy(g => g.cashopr).SelectMany(grouping => grouping.Take(1)).ToList();
 
 
                         return TokenManager.GenerateToken(list);
@@ -7650,16 +7650,16 @@ else
         //كشف حساب
         [HttpPost]
         [Route("GetStatement")]
-      public string   GetStatement(string token)
+        public string GetStatement(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -7712,7 +7712,7 @@ else
                                         from jbbo in jbo.DefaultIfEmpty()
                                         from jshh in jsh.DefaultIfEmpty()
                                         from jinvv in jinv.DefaultIfEmpty()//yasmine
-                                        where (C.processType != "balance" &&(C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh" || C.side == "bnd"))//( C.transType == "p" && C.side==Side)
+                                        where (C.processType != "balance" && (C.side == "c" || C.side == "v" || C.side == "b" || C.side == "u" || C.side == "sh" || C.side == "bnd"))//( C.transType == "p" && C.side==Side)
 
                                         //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 
@@ -7748,8 +7748,8 @@ else
                                             posName = jpp.name,
                                             //*posCreatorName = jpcc.name,
                                             processType = C.processType,
-                                            //*cardId = C.cardId,
-                                            //*bondId = C.bondId,
+                                            cardId = C.cardId,
+                                            bondId = C.bondId,
                                             usersLName = juu.lastname,// side =u
                                             updateUserName = jucc.name,
                                             updateUserLName = jucc.lastname,
@@ -7757,7 +7757,7 @@ else
                                             //*createUserJob = jucc.job,
                                             cardName = jcrd.name,
                                             //*bondDeserveDate = jbbo.deserveDate,
-                                           bondIsRecieved = jbbo.isRecieved,
+                                            bondIsRecieved = jbbo.isRecieved,
                                             //*agentCompany = jaa.company,
                                             shippingCompanyId = C.shippingCompanyId,
                                             shippingCompanyName = C.shippingCompanies.name,
@@ -7773,9 +7773,14 @@ else
                                             invNumber = jinvv.invNumber,//yasmine
                                             bondNumber = jbbo.number,//yasmine
 
-                                       invShippingCompanyId = jinvv.shippingCompanyId,
+                                            invShippingCompanyId = jinvv.shippingCompanyId,
+                                            // invShippingCompanyName = jinvv.name,
                                             jinvv.shipUserId,
                                             invAgentId = jinvv.agentId,
+
+                                            invAgentName = jinvv.agents.name,
+                                            invShippingCompanyName = jinvv.shippingCompanies.name,
+
 
                                         }).ToList();
                         /*
@@ -8073,16 +8078,16 @@ else
         // يومية الصندوق
         [HttpPost]
         [Route("GetBalance")]
-      public string   GetBalance(string token)
+        public string GetBalance(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -8223,16 +8228,16 @@ else
 
         [HttpPost]
         [Route("Getdailyinvoice")]
-      public string   Getdailyinvoice(string token)//,DateTime? date
+        public string Getdailyinvoice(string token)//,DateTime? date
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId(int mainBranchId, int userId, DateTime? date
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -8241,7 +8246,7 @@ else
             {
                 int mainBranchId = 0;
                 int userId = 0;
-                DateTime? date=new DateTime?();
+                DateTime? date = new DateTime?();
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -8369,7 +8374,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -8518,16 +8523,16 @@ else
         // يومية فواتير المشتريات العامة في قسم التقارير
         [HttpPost]
         [Route("GetPurdailyinvoice")]
-      public string   GetPurdailyinvoice(string token)//,DateTime? date
+        public string GetPurdailyinvoice(string token)//,DateTime? date
         {
             // public ResponseVM GetPurinv(string token)(int mainBranchId, int userId, DateTime? date)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -8665,7 +8670,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -8815,17 +8820,17 @@ else
         //  يومية الفواتير الخاصة بمستخدم
         [HttpPost]
         [Route("GetUserdailyinvoice")]
-      public string   GetUserdailyinvoice(string token)
+        public string GetUserdailyinvoice(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -8948,7 +8953,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 
@@ -9082,17 +9087,17 @@ else
         // يومية الصندوق
         [HttpPost]
         [Route("GetDailyStatement")]
-      public string   GetDailyStatement(string token)
+        public string GetDailyStatement(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -9388,17 +9393,17 @@ else
         // يومية الصندوق الخاصة بالمستخدم
         [HttpPost]
         [Route("GetUserDailyStatement")]
-      public string   GetUserDailyStatement(string token)
+        public string GetUserDailyStatement(string token)
         {
 
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -9693,19 +9698,19 @@ else
         }
 
         // الارباح
-    
+
         [HttpPost]
         [Route("GetProfit")]
-      public string   GetProfit(string token)
+        public string GetProfit(string token)
         {
             // public ResponseVM GetPurinv(string token)
 
             //int mainBranchId, int userId
-           
-            
-            
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -9759,7 +9764,7 @@ else
                                                                          // from JIMM in JIM.DefaultIfEmpty()
                                                                      from JAA in JA.DefaultIfEmpty()
                                                                      from JBCC in JBC.DefaultIfEmpty()
-                                                                     where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" )
+                                                                     where (brIds.Contains(JBCC.branchId)) && (I.invType == "s")
 
                                                                      select new ItemUnitInvoiceProfitModel
                                                                      {
@@ -9868,7 +9873,7 @@ else
 
 
 
-                         return TokenManager.GenerateToken(invListm);
+                        return TokenManager.GenerateToken(invListm);
 
                     }
 

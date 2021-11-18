@@ -966,7 +966,6 @@ namespace POS_Server.Controllers
         public string receiptInvoice(string token)
         {
             string message = "";
-
             token = TokenManager.readToken(HttpContext.Current.Request); 
             var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
@@ -999,7 +998,6 @@ namespace POS_Server.Controllers
                         objectName = c.Value;
                     else if (c.Type == "notificationObj")
                         notificationObj = c.Value;
-
                 }
 
                 if (newObject != null)
@@ -1015,19 +1013,18 @@ namespace POS_Server.Controllers
                             {
                                 var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
                                 var itemV = entity.items.Find(itemId);
-
+                           
                                 if (item.invoiceId == 0 || item.invoiceId == null)
                                     increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
                                 else//for order
                                     increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, (int)item.invoiceId, userId);
-                                if(item.offerId != 0)
+                                if(item.offerId != 0 && item.offerId != null)
                                 {
                                     int offerId = (int)item.offerId;
                                     int itemUnitId = (int)item.itemUnitId;
                                     var offer = entity.itemsOffers.Where(x => x.iuId == itemUnitId && x.offerId == offerId).FirstOrDefault();
                                     offer.used -= (int)item.quantity;
-                                entity.SaveChanges();
-                                return offer.used.ToString();
+                                    entity.SaveChanges();
                                 }
                                 bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId, branchId, userId);
                                 if (isExcedded == true) //add notification
@@ -1035,7 +1032,7 @@ namespace POS_Server.Controllers
                                     notificationController.addNotifications(objectName, notificationObj, branchId, itemV.name);
                                 }
                             }
-                       
+
                         }
                         return TokenManager.GenerateToken("1");
                 }
