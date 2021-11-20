@@ -23,7 +23,8 @@ namespace POS_Server.Controllers
         public string ServerID()
         {
             string deviceCode = "";
-            deviceCode = GetMotherBoardID() + "-" + GetHDDSerialNo();
+            // deviceCode = GetMotherBoardID() + "-" + GetHDDSerialNo();
+            deviceCode =  GetHDDSerialNo();
             return deviceCode;
         }
         public static string GetMotherBoardID()
@@ -293,8 +294,8 @@ namespace POS_Server.Controllers
  try
                 {
                   //  return TokenManager.GenerateToken("1212".ToString());
-                    //serverId = ServerID();
-                    serverId = "server13213ascas";
+                   serverId = ServerID();
+                   // serverId = "server13213ascas";
 
 
                     int conres=  await  checkIncServerConn();

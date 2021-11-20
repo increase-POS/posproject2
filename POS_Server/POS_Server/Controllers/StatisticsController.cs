@@ -4782,7 +4782,7 @@ else
                                         where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
 
-                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
+                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb" || I.invType == "is")// exw
 
                                         select new
                                         {
@@ -4857,10 +4857,16 @@ else
 
 
                                             //   agentType = JAA.type,
-                                            agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                            ? "c" : JAA.type,
-                                            agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                            ? 0 : I.agentId,
+                                            //agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            //? "c" : JAA.type,
+                                            agentType = I.invType == "is" ? "":
+                                                                            ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                                                            ? "c" : JAA.type,
+                                            //agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                            //? 0 : I.agentId,
+                                            agentId = I.invType == "is" ? 0 :
+                                                                          ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
+                                                                          ? 0 : I.agentId,
                                             //cuserName = JUU.name,
                                             //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
@@ -7757,7 +7763,8 @@ else
                                             //*createUserJob = jucc.job,
                                             cardName = jcrd.name,
                                             //*bondDeserveDate = jbbo.deserveDate,
-                                            bondIsRecieved = jbbo.isRecieved,
+                                            bondIsRecieved = jbbo.isRecieved ,
+
                                             //*agentCompany = jaa.company,
                                             shippingCompanyId = C.shippingCompanyId,
                                             shippingCompanyName = C.shippingCompanies.name,
@@ -7776,9 +7783,13 @@ else
                                             invShippingCompanyId = jinvv.shippingCompanyId,
                                             // invShippingCompanyName = jinvv.name,
                                             jinvv.shipUserId,
-                                            invAgentId = jinvv.agentId,
 
-                                            invAgentName = jinvv.agents.name,
+                                            //invAgentId = jinvv.agentId,
+                                            //invAgentName = jinvv.agents.name,
+
+                                            invAgentId = C.invId==null? C.agentId: jinvv.agentId,
+                                            invAgentName = C.invId == null ? jaa.name : jinvv.agents.name,
+
                                             invShippingCompanyName = jinvv.shippingCompanies.name,
 
 
