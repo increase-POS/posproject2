@@ -459,7 +459,7 @@ namespace POS.View.reports
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
-            //bond????????
+           
             if (cashTotal > 0)
             {
                 txt_total.Text = SectionData.DecTostring(cashTotal);

@@ -105,6 +105,10 @@ namespace POS.converters
                 case "exw":
                     value = MainWindow.resourcemanager.GetString("trExportOrder");
                     break;
+                // إدخال مباشر
+                case "is":
+                    value = MainWindow.resourcemanager.GetString("trDirectEntry");
+                    break;
                 default: break;
             }
             return value;

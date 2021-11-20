@@ -112,6 +112,7 @@ namespace POS.Classes
         private string description;
         private string description1;
         private string description3;
+        private string bIsReceived;
         public string bondNumber { get; set; }
         public Nullable<int> fromposId { get; set; }
         public string fromposName { get; set; }
@@ -236,7 +237,7 @@ namespace POS.Classes
                 ; set => description1 = value;
         }
         public string Description2
-        {//
+        {
             get; set;
         }
         public string Description3
@@ -248,7 +249,13 @@ namespace POS.Classes
 
             set => description3 = value;
         }
+
+        public string BIsReceived
+        {
+            get; set;
+        }
     }
+   
 
     public class Storage
     {
@@ -547,8 +554,12 @@ namespace POS.Classes
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
         private string agentTypeAgent;
-        //public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = "Vendor" + "-" + agentName : agentTypeAgent = "Customer" + "-" + agentName; set => agentTypeAgent = value; }
-        public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + agentName : agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + agentName; set => agentTypeAgent = value; }
+        //public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + agentName : agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + agentName; set => agentTypeAgent = value; }
+        public string AgentTypeAgent { get => agentType == "" ? "-":
+                                                              agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + agentName : 
+                                                                                 agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + agentName;
+                                       set => agentTypeAgent = value; }
+
         public int countPb { get; set; }
         public int countD { get; set; }
         public Nullable<decimal> totalPb { get; set; }
@@ -3382,9 +3393,16 @@ namespace POS.Classes
                 row.Description2 = row.bondId > 0
                ? (row.bondIsRecieved == 0 ?
                    MainWindow.resourcemanager.GetString("trBondNotRecieved") :
-                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + row.processType)
+                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + getProcessType(row.processType))
                   :
                   row.Description1;
+
+                row.BIsReceived = row.bondId > 0
+               ? ((row.bondIsRecieved == 0 && row.transType == "d") || (row.bondIsRecieved == 0 && row.transType == "p") ?
+                   "0" :
+                   "1")
+                  :
+                  "2";
 
                 //string invnum = "";
                 //List<string> invnumlist = new List<string>();
@@ -3394,7 +3412,7 @@ namespace POS.Classes
                 //    invnum += strrow + " ";
                 //}
                 //row.invNumber = invnum;
-            if (row.transType == "d" && !(row.processType == "doc" && row.bondIsRecieved != 1))
+                if (row.transType == "d" && !(row.processType == "doc" && row.bondIsRecieved != 1))
                 //    if (row.transType == "d")
                     {
                     //if (!((row.processType == "doc")&&(row.Description1 == "Receipt")))
@@ -3423,6 +3441,20 @@ namespace POS.Classes
             return list2;
 
 
+        }
+
+        private string getProcessType(string value)
+        {
+            switch (value)
+            {
+                case "cash": return MainWindow.resourcemanager.GetString("trCash");
+                case "doc": return MainWindow.resourcemanager.GetString("trDocument");
+                case "cheque": return MainWindow.resourcemanager.GetString("trCheque");
+                case "balance": return MainWindow.resourcemanager.GetString("trCredit");
+                case "card": return MainWindow.resourcemanager.GetString("trAnotherPaymentMethods");
+                case "inv": return MainWindow.resourcemanager.GetString("trInv");
+                default: return value;
+            }
         }
 
     }

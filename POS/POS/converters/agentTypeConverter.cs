@@ -19,6 +19,7 @@ namespace POS.converters
                 //break;
                 case "c": return MainWindow.resourcemanager.GetString("trCustomer");
                 //break;
+                case "": return "-";
                 default: return "";
                     //break;
             }

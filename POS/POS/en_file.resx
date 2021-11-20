@@ -2765,7 +2765,7 @@ Please add Email in setting</value>
     <value>Barcode is empty</value>
   </data>
   <data name="trBondNotRecieved" xml:space="preserve">
-    <value>Bond not recieved</value>
+    <value>Bond is not recieved</value>
   </data>
   <data name="trYouExceedLimit" xml:space="preserve">
     <value>You have exceeded the limit</value>

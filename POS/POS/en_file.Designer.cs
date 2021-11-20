@@ -637,7 +637,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bond not recieved.
+        ///   Looks up a localized string similar to Bond is not recieved.
         /// </summary>
         internal static string trBondNotRecieved {
             get {

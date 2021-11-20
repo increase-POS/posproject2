@@ -396,7 +396,8 @@ namespace POS.View.reports
         private void fillComboExternalInvType()
         {
             var temp = cb_externalInvoicesBranches.SelectedItem as Branch;
-            cb_externalInvoicesInvoiceType.SelectedValuePath = "InvoiceId";
+            //cb_externalInvoicesInvoiceType.SelectedValuePath = "InvoiceId";
+            cb_externalInvoicesInvoiceType.SelectedValuePath = "InvoiceType";
             cb_externalInvoicesInvoiceType.DisplayMemberPath = "InvoiceType";
             if (temp == null)
             {
@@ -534,6 +535,10 @@ namespace POS.View.reports
                 case "exw":
                     value = MainWindow.resourcemanager.GetString("trExportOrder");
                     break;
+                // إدخال مباشر
+                case "is":
+                    value = MainWindow.resourcemanager.GetString("trDirectEntry");
+                    break;
                 default: break;
             }
 
@@ -562,7 +567,7 @@ namespace POS.View.reports
             else if (temp != null && temp1 == null)
             {
                 cb_externalInvoicesInvoice.ItemsSource = comboExternalInvoiceInvoice
-                      .Where(x => x.InvoiceType == temp.InvoiceType)
+                      .Where(x => getInvoiceType(x.InvoiceType) == temp.InvoiceType)
                     .GroupBy(x => x.InvoiceId)
                     .Select(g => new InvCombo
                     {
@@ -1969,6 +1974,11 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void selectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fillEventsCall(sender);
         }
     }
 }
