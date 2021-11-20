@@ -617,8 +617,10 @@ namespace POS.View.catalog
             dg_storageCost.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
             dg_storageCost.Columns[1].Header = MainWindow.resourcemanager.GetString("trStorageCost");
 
+            txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trAdd");
-            tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
+            txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
+             tt_update_Button.Content = MainWindow.resourcemanager.GetString("trUpdate");
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");

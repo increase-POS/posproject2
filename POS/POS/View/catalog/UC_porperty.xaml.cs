@@ -243,6 +243,7 @@ namespace POS.View
                 }
                 if (propertyItem != null)
                 {
+
                     tb_valueName.Text = propertyItem.propertyItemName;
                     if (propertyItem.propertyItemId != 0)
                     {
@@ -673,10 +674,11 @@ namespace POS.View
                     if (!tb_valueName.Text.Equals(""))
                     {
                         propertyItem.name = tb_valueName.Text;
+                        propertyItem.propertyItemName = tb_valueName.Text;
                         propertyItem.updateUserId = MainWindow.userID;
 
                         int res = await propertiesItemsModel.save(propertyItem);
-
+              //          tb_valueName.Text = propertyItem.name;
                         if (res>0)
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
                         else

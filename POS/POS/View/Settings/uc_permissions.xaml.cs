@@ -205,7 +205,7 @@ namespace POS.View.Settings
                         group.updateUserId = MainWindow.userID;
                         group.isActive = 1;
                         int s = await groupModel.Save(group);
-                        if (!s.Equals(0))
+                        if (s>0)
                         {
                             await addObjects(s);
                             group.groupId = s;
