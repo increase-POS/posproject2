@@ -587,7 +587,8 @@
                      Name="dgPayments" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"
-                            AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                             AlternationCount="2">
+                    <!--AlternatingRowBackground="#f3f3f3"-->
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -603,16 +604,15 @@
                         <!--<DataGridTextColumn                          Width="*" Header="Payment"     Binding="{Binding Description,Converter={StaticResource processTypeConverter}}"/>-->
                         <DataGridTextColumn                          Width="*" Header="Payment"     Binding="{Binding Description3,Converter={StaticResource processTypeConverter}}"/>
                         <DataGridTextColumn x:Name="col_amount"      Width="*" Header="Amount"      Binding="{Binding cash,Converter={StaticResource accuracyConverter}}"/>
-                        <DataGridTextColumn                          Width="*" Header="isReceived"  Binding="{Binding BIsReceived}"/>
-
+                        <!--<DataGridTextColumn                          Width="*" Header="isReceived"  Binding="{Binding BIsReceived}"/>-->
                     </DataGrid.Columns>
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Style.Triggers>
+                                <Trigger Property="AlternationIndex" Value="1">
+                                    <Setter Property="Background" Value="#f3f3f3"/>
+                                </Trigger>
                                 <DataTrigger Binding="{Binding BIsReceived}" Value="0">
-                                    <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Description2}" Value="السند غير مستلم">
                                     <Setter Property="Background" Value="{StaticResource lightRed}"></Setter>
                                 </DataTrigger>
                             </Style.Triggers>

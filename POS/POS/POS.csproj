@@ -1922,7 +1922,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="pic\increase-logo.png" />
-    <Resource Include="pic\profilePhotos.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="pic\no-image-icon-125x125.png" />
