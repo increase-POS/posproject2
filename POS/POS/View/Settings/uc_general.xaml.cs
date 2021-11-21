@@ -512,32 +512,14 @@ namespace POS.View.Settings
             txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trItemCost");
             txt_dateForm.Text = MainWindow.resourcemanager.GetString("trDateForm");
             txt_accuracy.Text = MainWindow.resourcemanager.GetString("trAccuracy");
-            //txt_notification.Text = MainWindow.resourcemanager.GetString("trNotification");
-            //txt_storageCost.Text = MainWindow.resourcemanager.GetString("trStorageCost");
-            //txt_notifhint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            //txtOffers.Text = MainWindow.resourcemanager.GetString("trOffer");
-            //txt_offerHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            //txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
-            //txt_couponHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_adminChangePassword.Text = MainWindow.resourcemanager.GetString("trChangePassword");
             txt_adminChangePasswordHint.Text = MainWindow.resourcemanager.GetString("trChangePasswordHint");
-
             txt_userPath.Text = MainWindow.resourcemanager.GetString("trUserPath");
             txt_userPathHint.Text = MainWindow.resourcemanager.GetString("trUserPath") + "...";
-
             txt_errorsExport.Text = MainWindow.resourcemanager.GetString("trErrorsFile");
             txt_errorsExportHint.Text = MainWindow.resourcemanager.GetString("trErrorFileDownload") + "..."; 
             txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trPurchaseCost");
-            
-            //txt_sms.Text = MainWindow.resourcemanager.GetString("trSms");
-            //txt_smsHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            //txt_emails.Text = MainWindow.resourcemanager.GetString("trEmails");
-            //txt_emailHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
             txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
-            //txt_backupHint.Text = MainWindow.resourcemanager.GetString("trSettingHint");
-            //txt_dashBoard.Text = MainWindow.resourcemanager.GetString("trDashBoard");
-            //txt_dashHint.Text = MainWindow.resourcemanager.GetString("trDashHint");
-
             tt_region.Content = MainWindow.resourcemanager.GetString("trRegion");
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
@@ -545,7 +527,6 @@ namespace POS.View.Settings
             tt_itemsCost.Content = MainWindow.resourcemanager.GetString("trItemCost");
             tt_dateForm.Content = MainWindow.resourcemanager.GetString("trDateForm");
             tt_accuracy.Content = MainWindow.resourcemanager.GetString("trAccuracy");
-            //tt_storageCost.Content = MainWindow.resourcemanager.GetString("trStorageCost");
         }
 
         private async void Btn_saveRegion_Click(object sender, RoutedEventArgs e)

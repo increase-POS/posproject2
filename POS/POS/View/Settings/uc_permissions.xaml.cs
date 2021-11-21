@@ -207,11 +207,16 @@ namespace POS.View.Settings
                         int s = await groupModel.Save(group);
                         if (s>0)
                         {
-                            await addObjects(s);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            Btn_clear_Click(null, null);
+
+                            //await addObjects(s);
                             group.groupId = s;
                         }
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                       
 
                         await RefreshGroupList();
                         Tb_searchGroup_TextChanged(null, null);
@@ -237,7 +242,7 @@ namespace POS.View.Settings
 
 
         #region groupObjects
-
+        /*
         async Task addObjects(int groupId)
         {
             if (objects is null)
@@ -295,8 +300,46 @@ namespace POS.View.Settings
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
         }
+        */
+        /*
+        void addObjects(int groupId)
+        {
 
+            IEnumerable<Object> objects = await objectModel.GetAll();
+            groupObjectsList = new List<GroupObject>();
+            foreach (var item in objects)
+            {
+                groupObject = new GroupObject();
+                groupObject.groupId = groupId;
+                groupObject.objectId = item.objectId;
+                if (item.objectType == "one" || item.objectType == "alert")
+                {
+                    groupObject.showOb = 0;
+                    groupObject.addOb = 2;
+                    groupObject.updateOb = 2;
+                    groupObject.deleteOb = 2;
+                    groupObject.reportOb = 2;
+                }
+                else
+                {
+                    groupObject.showOb = 0;
+                    groupObject.addOb = 0;
+                    groupObject.updateOb = 0;
+                    groupObject.deleteOb = 0;
+                    groupObject.reportOb = 0;
+                }
+                groupObject.levelOb = 0;
+                groupObject.notes = "";
+                groupObject.createUserId = MainWindow.userID;
+                groupObject.updateUserId = MainWindow.userID;
+                groupObject.isActive = 1;
+                groupObjectsList.Add(groupObject);
+            }
+            await groupObject.AddGroupObjectList(groupObjectsList);
 
+         
+        }
+        */
         void RefreshGroupObjectsView()
         {
             dg_permissions.ItemsSource = groupObjectsQuery;
