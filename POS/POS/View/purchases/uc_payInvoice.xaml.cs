@@ -331,7 +331,7 @@ namespace POS.View
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
-                exp_payment.IsExpanded = true;
+                //exp_payment.IsExpanded = true;
 
                 dp_desrvedDate.SelectedDateChanged += this.dp_SelectedDateChanged;
                 dp_invoiceDate.SelectedDateChanged += this.dp_SelectedDateChanged;

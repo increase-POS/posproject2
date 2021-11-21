@@ -407,7 +407,7 @@ namespace POS.View
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
                 tb_moneyIcontheResst.Text = MainWindow.Currency;
-                exp_payment.IsExpanded = true;
+                //exp_payment.IsExpanded = true;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
