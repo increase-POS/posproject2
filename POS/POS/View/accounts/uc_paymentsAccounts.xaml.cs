@@ -895,16 +895,49 @@ namespace POS.View.accounts
         {
             //cashes = await cashModel.GetCashTransferAsync("p", "all");
             cashes = await cashModel.GetCashBond("p", "all");
-            cashes = cashes.Where(x => (x.processType != "balance"));
-            //if (selectedTab == 1)
-            //{
-            //    temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-            //                           (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
-            //}
-            //else if (selectedTab == 3)
-            //{
-            //    temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
-            //}
+            cashes = cashes.Where(x => (x.processType != "balance")).GroupBy(x => x.transNum).Select(x => new CashTransfer
+               {
+                cashTransId = x.FirstOrDefault().cashTransId,
+                transType = x.FirstOrDefault().transType,
+                posId = x.FirstOrDefault().posId,
+                userId = x.FirstOrDefault().userId,
+                agentId = x.FirstOrDefault().agentId,
+                invId = x.FirstOrDefault().invId,
+                transNum = x.FirstOrDefault().transNum,
+                createDate = x.FirstOrDefault().createDate,
+                updateDate = x.FirstOrDefault().updateDate,
+                cash = x.Sum(g => g.cash),
+                updateUserId = x.FirstOrDefault().updateUserId,
+                createUserId = x.FirstOrDefault().createUserId,
+                notes = x.FirstOrDefault().notes,
+                posIdCreator = x.FirstOrDefault().posIdCreator,
+                isConfirm = x.FirstOrDefault().isConfirm,
+                cashTransIdSource = x.FirstOrDefault().cashTransIdSource,
+                side = x.FirstOrDefault().side,
+                docName = x.FirstOrDefault().docName,
+                docNum = x.FirstOrDefault().docNum,
+                docImage = x.FirstOrDefault().docImage,
+                bankId = x.FirstOrDefault().bankId,
+                bankName = x.FirstOrDefault().bankName,
+                agentName = x.FirstOrDefault().agentName,
+                usersName = x.FirstOrDefault().usersName,// side =u
+                posName = x.FirstOrDefault().posName,
+                posCreatorName = x.FirstOrDefault().posCreatorName,
+                processType = x.FirstOrDefault().processType,
+                cardId = x.FirstOrDefault().cardId,
+                bondId = x.FirstOrDefault().bondId,
+                usersLName = x.FirstOrDefault().usersLName,// side =u
+                createUserName = x.FirstOrDefault().createUserName,
+                createUserLName = x.FirstOrDefault().createUserLName,
+                createUserJob = x.FirstOrDefault().createUserJob,
+                cardName = x.FirstOrDefault().cardName,
+                bondDeserveDate = x.FirstOrDefault().bondDeserveDate,
+                bondIsRecieved = x.FirstOrDefault().bondIsRecieved,
+                shippingCompanyId = x.FirstOrDefault().shippingCompanyId,
+                shippingCompanyName = x.FirstOrDefault().shippingCompanyName
+
+            });
+           
             return cashes;
 
         }
@@ -922,7 +955,6 @@ namespace POS.View.accounts
                 if (cashes is null)
                     await RefreshCashesList();
 
-
                 searchText = tb_search.Text.ToLower();
                 cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
                 || s.cash.ToString().ToLower().Contains(searchText)
@@ -933,7 +965,6 @@ namespace POS.View.accounts
                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
                 );
-
 
                 cashesQueryExcel = cashesQuery.ToList();
                 RefreshCashView();
@@ -1258,7 +1289,8 @@ namespace POS.View.accounts
         {
             try
             {
-                agents = await agentModel.GetAgentsActive("v");
+                //agents = await agentModel.GetAgentsActive("v");
+                agents = await agentModel.GetActiveForAccount("v", "p");
 
                 cb_recipientV.ItemsSource = agents;
                 cb_recipientV.DisplayMemberPath = "name";
@@ -1271,7 +1303,8 @@ namespace POS.View.accounts
         {
             try
             {
-                agents = await agentModel.GetAgentsActive("c");
+                //agents = await agentModel.GetAgentsActive("c");
+                agents = await agentModel.GetActiveForAccount("c" , "p");
 
                 cb_recipientC.ItemsSource = agents;
                 cb_recipientC.DisplayMemberPath = "name";
@@ -1284,7 +1317,8 @@ namespace POS.View.accounts
         {
             try
             {
-                users = await userModel.GetUsersActive();
+                //users = await userModel.GetUsersActive();
+                users = await userModel.GetActiveForAccount("p");
 
                 cb_recipientU.ItemsSource = users;
                 cb_recipientU.DisplayMemberPath = "username";
@@ -1296,8 +1330,9 @@ namespace POS.View.accounts
         private async Task fillShippingCompanies()
         {
             try
-            {
-                shCompanies = await shCompanyModel.Get();
+            {//
+                //shCompanies = await shCompanyModel.Get();
+                shCompanies = await shCompanyModel.GetForAccount("p");
 
                 cb_recipientSh.ItemsSource = shCompanies;
                 cb_recipientSh.DisplayMemberPath = "name";

@@ -66,6 +66,7 @@ namespace POS.Classes
             }
             return items;
         }
+        
         public async Task<List<Agent>> GetAgentsActive(string type)
         {
             List<Agent> items = new List<Agent>();
@@ -86,6 +87,29 @@ namespace POS.Classes
             }
             return items;
         }
+
+        public async Task<List<Agent>> GetActiveForAccount(string type , string payType)
+        {
+            List<Agent> items = new List<Agent>();
+
+            //  to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type"   , type.ToString());
+            parameters.Add("payType", payType.ToString());
+
+
+            IEnumerable<Claim> claims = await APIResult.getList("Agent/GetActiveForAccount", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Agent>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+
         public async Task<Agent> getAgentById(int agentId)
         {
             Agent agent = new Agent();

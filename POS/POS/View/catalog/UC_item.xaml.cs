@@ -1741,6 +1741,17 @@ namespace POS.View
                 cb_minUnit.SelectedIndex = -1;
                 cb_maxUnit.SelectedIndex = -1;
 
+                SectionData.clearValidate(tb_code , p_errorCode);
+                SectionData.clearValidate(tb_name , p_errorName);
+                SectionData.clearValidate(tb_taxes, p_errorTaxes);
+                SectionData.clearValidate(tb_min  , p_errorMin);
+                SectionData.clearValidate(tb_max  , p_errorMax);
+                SectionData.clearComboBoxValidate(cb_parentItem , p_errorParentItem);
+                SectionData.clearComboBoxValidate(cb_itemType   , p_errorType);
+                SectionData.clearComboBoxValidate(cb_categorie  , p_errorCategorie);
+                SectionData.clearComboBoxValidate(cb_minUnit    , p_errorMinUnit);
+                SectionData.clearComboBoxValidate(cb_maxUnit    , p_errorMaxUnit);
+
                 //clear img
                 Uri resourceUri = new Uri("/pic/no-image-icon-125x125.png", UriKind.Relative);
                 StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);

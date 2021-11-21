@@ -49,6 +49,24 @@ namespace POS.Classes
             }
             return items;
         }
+
+        public async Task<List<ShippingCompanies>> GetForAccount(string payType)
+        {
+            List<ShippingCompanies> items = new List<ShippingCompanies>();
+            //  to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("payType", payType.ToString());
+
+            IEnumerable<Claim> claims = await APIResult.getList("ShippingCompanies/GetForAccount", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<ShippingCompanies>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
         public async Task<ShippingCompanies> GetByID(int itemId)
         {
             ShippingCompanies item = new ShippingCompanies();

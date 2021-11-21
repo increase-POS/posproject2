@@ -270,7 +270,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucReceivedAccounts);
-                await RefreshCashesList();
+
                 Tb_search_TextChanged(null, null);
 
                 if (sender != null)
@@ -289,7 +289,7 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucReceivedAccounts);
-                await RefreshCashesList();
+
                 Tb_search_TextChanged(null, null);
 
                 if (sender != null)
@@ -320,31 +320,12 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDateCheque, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
             dg_receivedAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor");
             dg_receivedAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-
-            //tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //tt_depositFrom.Content = MainWindow.resourcemanager.GetString("trDepositTo");
-            //tt_depositorV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_depositorC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_depositorU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_depositorSh.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_docNumCheque.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_docDateCheque.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
-            //tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-            //tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_docNumCard.Content = MainWindow.resourcemanager.GetString("trProcessNumTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -975,7 +956,50 @@ namespace POS.View.accounts
         {
             //cashes = await cashModel.GetCashTransferAsync("d", "all");
             cashes = await cashModel.GetCashBond("d", "all");
-            cashes = cashes.Where(x => x.processType != "balance");
+            //cashes = cashes.Where(x => x.processType != "balance");
+            cashes = cashes.Where(x => (x.processType != "balance")).GroupBy(x => x.transNum).Select(x => new CashTransfer
+            {
+                cashTransId = x.FirstOrDefault().cashTransId,
+                transType = x.FirstOrDefault().transType,
+                posId = x.FirstOrDefault().posId,
+                userId = x.FirstOrDefault().userId,
+                agentId = x.FirstOrDefault().agentId,
+                invId = x.FirstOrDefault().invId,
+                transNum = x.FirstOrDefault().transNum,
+                createDate = x.FirstOrDefault().createDate,
+                updateDate = x.FirstOrDefault().updateDate,
+                cash = x.Sum(g => g.cash),
+                updateUserId = x.FirstOrDefault().updateUserId,
+                createUserId = x.FirstOrDefault().createUserId,
+                notes = x.FirstOrDefault().notes,
+                posIdCreator = x.FirstOrDefault().posIdCreator,
+                isConfirm = x.FirstOrDefault().isConfirm,
+                cashTransIdSource = x.FirstOrDefault().cashTransIdSource,
+                side = x.FirstOrDefault().side,
+                docName = x.FirstOrDefault().docName,
+                docNum = x.FirstOrDefault().docNum,
+                docImage = x.FirstOrDefault().docImage,
+                bankId = x.FirstOrDefault().bankId,
+                bankName = x.FirstOrDefault().bankName,
+                agentName = x.FirstOrDefault().agentName,
+                usersName = x.FirstOrDefault().usersName,// side =u
+                posName = x.FirstOrDefault().posName,
+                posCreatorName = x.FirstOrDefault().posCreatorName,
+                processType = x.FirstOrDefault().processType,
+                cardId = x.FirstOrDefault().cardId,
+                bondId = x.FirstOrDefault().bondId,
+                usersLName = x.FirstOrDefault().usersLName,// side =u
+                createUserName = x.FirstOrDefault().createUserName,
+                createUserLName = x.FirstOrDefault().createUserLName,
+                createUserJob = x.FirstOrDefault().createUserJob,
+                cardName = x.FirstOrDefault().cardName,
+                bondDeserveDate = x.FirstOrDefault().bondDeserveDate,
+                bondIsRecieved = x.FirstOrDefault().bondIsRecieved,
+                shippingCompanyId = x.FirstOrDefault().shippingCompanyId,
+                shippingCompanyName = x.FirstOrDefault().shippingCompanyName
+
+
+            });
             return cashes;
         }
 
@@ -1241,7 +1265,8 @@ namespace POS.View.accounts
         {
             try
             {
-                agents = await agentModel.GetAgentsActive("v");
+                //agents = await agentModel.GetAgentsActive("v");
+                agents = await agentModel.GetActiveForAccount("v" , "d");
 
                 cb_depositorV.ItemsSource = agents;
                 cb_depositorV.DisplayMemberPath = "name";
@@ -1254,7 +1279,8 @@ namespace POS.View.accounts
         {
             try
             {
-                agents = await agentModel.GetAgentsActive("c");
+                //agents = await agentModel.GetAgentsActive("c");
+                agents = await agentModel.GetActiveForAccount("c" , "d");
 
                 cb_depositorC.ItemsSource = agents;
                 cb_depositorC.DisplayMemberPath = "name";
@@ -1267,7 +1293,8 @@ namespace POS.View.accounts
         {
             try
             {
-                users = await userModel.GetUsersActive();
+                //users = await userModel.GetUsersActive();
+                users = await userModel.GetActiveForAccount("d");
 
                 cb_depositorU.ItemsSource = users;
                 cb_depositorU.DisplayMemberPath = "username";
@@ -1280,7 +1307,8 @@ namespace POS.View.accounts
         {
             try
             {
-                shCompanies = await shCompanyModel.Get();
+                //shCompanies = await shCompanyModel.Get();
+                shCompanies = await shCompanyModel.GetForAccount("d");
 
                 cb_depositorSh.ItemsSource = shCompanies;
                 cb_depositorSh.DisplayMemberPath = "name";

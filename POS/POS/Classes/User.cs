@@ -92,6 +92,23 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<List<User>> GetActiveForAccount(string payType)
+        {
+            List<User> items = new List<User>();
+            //  to pass parameters (optional)
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("payType", payType.ToString());
+
+            IEnumerable<Claim> claims = await APIResult.getList("Users/GetActiveForAccount", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
         public async Task<User> Getloginuser(string userName, string password)
         {
             User user = new User();
