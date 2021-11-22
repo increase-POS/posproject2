@@ -1,4 +1,3 @@
-
     <div class="rigth-check" style="width: 100%; float: left; padding: 10px;">
       <img src=cid:image-2  alt="" style="width: 150px; height: auto; text-align: center; display: block; margin: auto;">
       <p style="text-align: center; font-family:'Open Sans',sans-serif; font-size: 26px; font-weight: bold; color: #47484b; margin-bottom: 5px;">[[thankstitle]]</p>
@@ -24,7 +23,3 @@
       <p style="text-align: center; font-family:'Open Sans',sans-serif; font-size: 14px; color: #47484b; margin: auto; width: 80%; margin-bottom: 30px;">[[invoicenote]]</p>
 	  
     </div>
-	
-	
-	
-	
