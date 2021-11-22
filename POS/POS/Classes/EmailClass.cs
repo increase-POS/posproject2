@@ -390,15 +390,22 @@ namespace POS.Classes
 
         }
 
-        public EmailClass fillSaleTempData(Invoice invoice, List<ItemTransfer> invoiceItems, SysEmails email, Agent toAgent, List<SetValues> setvlist)
+        public EmailClass fillSaleTempData(Invoice invoice, List<ItemTransfer> invoiceItems, List<PayedInvclass> mailpayedList, SysEmails email, Agent toAgent, List<SetValues> setvlist)
         {
+
             string invheader = "";
             string invfooter = "";
             string invbody = "";
             string invitemtable = "";
             string invitemrow = "";
+            string paytable = "";
+            string payrow = "";
 
+
+            //payrow.tmp
+            //    paytable.tmp
             EmailClass mailtosend = new EmailClass();
+            ReportCls reportclass = new ReportCls();
 
             mailtosend.from = email.email;
             mailtosend.smtpclient = email.smtpClient;
@@ -410,7 +417,9 @@ namespace POS.Classes
 
 
 
-
+            string cashTr = "";
+            string sumP = "";
+            string deservedcash = "";
 
             // data
             ReportCls repm = new ReportCls();
@@ -427,6 +436,12 @@ namespace POS.Classes
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemrow.tmp");
+
+                    paytable = repm.ReadFile(@"EmailTemplates\saletemplate\ar\paytable.tmp");
+                    payrow = repm.ReadFile(@"EmailTemplates\saletemplate\ar\payrow.tmp");
+
+
+
                 }
                 else if (invoice.invType == "or")
                 {
@@ -455,6 +470,9 @@ namespace POS.Classes
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\en\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemrow.tmp");
+
+                    paytable = repm.ReadFile(@"EmailTemplates\saletemplate\en\paytable.tmp");
+                    payrow = repm.ReadFile(@"EmailTemplates\saletemplate\en\payrow.tmp");
                 }
                 else if (invoice.invType == "or")
                 {
@@ -473,6 +491,9 @@ namespace POS.Classes
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\en\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\saletemplate\en\invitemrow.tmp");
+
+                    paytable = repm.ReadFile(@"EmailTemplates\saletemplate\en\paytable.tmp");
+                    payrow = repm.ReadFile(@"EmailTemplates\saletemplate\en\payrow.tmp");
                 }
             }
 
@@ -506,6 +527,44 @@ namespace POS.Classes
 
             if (invoice.invoiceId > 0)
             {
+
+                if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb"))
+                {
+                    decimal sump = mailpayedList.Sum(x => x.cash).Value;
+                    decimal deservd = (decimal)invoice.totalNet - sump;
+
+                    cashTr = MainWindow.resourcemanagerreport.GetString("trCashType");
+                   
+                    sumP = reportclass.DecTostring(sump);
+                    deservedcash = reportclass.DecTostring(deservd);
+                    invbody = invbody.Replace("[[payedsum]]", sumP);
+                    invbody = invbody.Replace("[[deservedcash]]", deservedcash);
+                    //  paytable
+                    // foreach
+                    string datapayrows = "";
+                    string paymethod = "";
+                    payrow = payrow.Replace("[[currency]]", MainWindow.Currency);
+                    foreach (PayedInvclass row in mailpayedList)
+                    {
+                        string rowhtml = payrow;
+                      
+                        rowhtml = rowhtml.Replace("[[cashpayrow]]", reportclass.DecTostring(row.cash));
+
+                        paymethod = row.processType == "cash" ? cashTr : row.cardName;
+                        rowhtml = rowhtml.Replace("[[paymethodrow]]",paymethod);
+                     
+
+                        datapayrows += rowhtml;
+
+                    }
+                    paytable = paytable.Replace("[[payrow]]", datapayrows);
+
+                    // end foreach
+                    invbody = invbody.Replace("[[paytable]]", paytable);
+
+
+                }
+
                 invbody = invbody.Replace("[[invoicecode]]", invoice.invNumber);
                 invbody = invbody.Replace("[[invoicedate]]", repm.DateToString(invoice.invDate));
                 //invbody = invbody.Replace("[[invoicetotal]]", invoice.total.ToString());
@@ -515,25 +574,25 @@ namespace POS.Classes
                 {
                     if (isArabic)
                     {
-                        invbody = invbody.Replace("[[invoicediscount]]", "% "+ repm.DecTostring(invoice.discountValue) );
+                        invbody = invbody.Replace("[[invoicediscount]]", "% " + repm.DecTostring(invoice.discountValue));
                     }
                     else
                     {
                         invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue) + " %");
                     }
-                
+
                 }
                 else
                 {
                     if (isArabic)
                     {
-                        invbody = invbody.Replace("[[invoicediscount]]", MainWindow.Currency+" "+ repm.DecTostring(invoice.discountValue) );
+                        invbody = invbody.Replace("[[invoicediscount]]", MainWindow.Currency + " " + repm.DecTostring(invoice.discountValue));
                     }
                     else
                     {
                         invbody = invbody.Replace("[[invoicediscount]]", repm.DecTostring(invoice.discountValue) + " " + MainWindow.Currency);
                     }
-                   
+
                 }
 
                 //invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
@@ -594,7 +653,7 @@ namespace POS.Classes
             invfooter = invfooter.Replace("[[year]]", DateTime.Now.Year.ToString());
 
 
-         
+
             //  invitemtable
             // foreach
             string datarows = "";
@@ -615,8 +674,10 @@ namespace POS.Classes
             }
             invitemtable = invitemtable.Replace("[[invitemrow]]", datarows);
             // end foreach
-            invbody = invbody.Replace("[[invitemtable]]", invitemtable);
 
+
+            invbody = invbody.Replace("[[invitemtable]]", invitemtable);
+       
             string mailbody = invheader + invbody + invfooter;
 
 

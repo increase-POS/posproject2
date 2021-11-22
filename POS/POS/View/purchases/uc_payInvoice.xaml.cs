@@ -3416,9 +3416,10 @@ namespace POS.View
                                             {
                                                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
                                             }
-                                            
-                                            mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, email, toAgent, setvlist);
-                                            string pdfpath = await SavePurpdf(); 
+                                              string pdfpath = await SavePurpdf();
+                                            List<PayedInvclass> mailpayedList = new List<PayedInvclass>();
+                                            mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems,mailpayedList, email, toAgent, setvlist);
+                                          
                                             //SavePurpdf();
                                             //string pdfpath = emailpdfpath;
                                             mailtosend.AddAttachTolist(pdfpath);
