@@ -375,6 +375,7 @@
                         </StackPanel>
                     </Button>
                     <!--<Border  DockPanel.Dock="Right"   Margin="10,10"    CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />-->
+                <Border x:Name="bdr_printCount" Visibility="Collapsed" DockPanel.Dock="Right"   Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="2" BorderThickness="0" Background="#377EB8" />
                 <Button Grid.Column="1" DockPanel.Dock="Right" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_printCount" Click="Btn_printCount_Click" Visibility="Collapsed"  >
                     <StackPanel>

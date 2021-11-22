@@ -566,7 +566,7 @@
                         Background="#4E4E4E" BorderBrush="{x:Null}"
                     Margin="1,1"    Content="Delete" Click="Btn_delete_Click" />
                     <Button x:Name="btn_confirm" Grid.Row="1" Grid.ColumnSpan="3" TabIndex="10"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                          Background="#4E4E4E" BorderBrush="{x:Null}" IsEnabled="False"
                     Margin="1,1"    Content="Confirm" Click="Btn_confirm_Click" />
 
                 </Grid>

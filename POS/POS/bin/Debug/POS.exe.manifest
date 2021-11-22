@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15353352">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="15357448">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>F9H7UjWHzKaG0MW4vTJia+KROcBlFZqIg5x9KBTTh/E=</dsig:DigestValue>
+        <dsig:DigestValue>K/Wjs0Qj7TPeqP6d1zG58guLia8iCworMFkn3ayuY/k=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1464,22 +1464,22 @@
       <dsig:DigestValue>oW9zQ+WUI7Yf0mWNo4XylcyFAg8DLrgtmV2aQRdSdO0=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Reports\Sale\Ar\LargeSaleReport.rdlc" size="461107">
+  <file name="Reports\Sale\Ar\LargeSaleReport.rdlc" size="477056">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>l9MCYyXM1U75t2DCUOLM7hbt0mN9fCNbJmj1Fktdi7Q=</dsig:DigestValue>
+      <dsig:DigestValue>KIJ/bE5S8g/w95EOgyuL1DCTAjth1Ev49GGpcWnJBzU=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Reports\Sale\Ar\MediumSaleReport.rdlc" size="460889">
+  <file name="Reports\Sale\Ar\MediumSaleReport.rdlc" size="476839">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>SaVNxQXGDkOXEk6w7unfG/hk826KDKB+JDu8l1S6keo=</dsig:DigestValue>
+      <dsig:DigestValue>DwbuP40f7DSDJMGj7zBXgyxr4u363zd9B1opQFDQ0HA=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\Sale\Ar\OfferReport.rdlc" size="393425">
@@ -1500,13 +1500,13 @@
       <dsig:DigestValue>6OlfXqqdLzDBm42/JFSPx1UNYM72qdqFpR2G15nUvOA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Reports\Sale\Ar\SmallSaleReport.rdlc" size="460135">
+  <file name="Reports\Sale\Ar\SmallSaleReport.rdlc" size="475002">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>pYmbGfYmw+CnmrQtYKptU8uAO4PB1ShzZvWjgCSDRCg=</dsig:DigestValue>
+      <dsig:DigestValue>/sfCAfVsQDT/Qh/HvsPCEKF67uyZ8b8civlFgKRtszY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\Sale\coupon\coupExport.rdlc" size="4212">
@@ -1569,25 +1569,25 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>peF2thUNXeXSL1iXUk3buytNzkzCQDB3GlqYdqioFYI=</dsig:DigestValue>
+      <dsig:DigestValue>6RVStxaasaSDxCrUhCVPn1qsjeX3jPMDOqDyYNxJqfw=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Reports\Sale\En\LargeSaleReport.rdlc" size="460071">
+  <file name="Reports\Sale\En\LargeSaleReport.rdlc" size="475726">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>xcVKCne1Ut21AJvMWEH8ta41o8rQaYDk1gW9aDZuT2o=</dsig:DigestValue>
+      <dsig:DigestValue>WJeBa4lZJO58OlSXNj8/FipvtqGTgZV5XIamA+r42LA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Reports\Sale\En\MediumSaleReport.rdlc" size="460307">
+  <file name="Reports\Sale\En\MediumSaleReport.rdlc" size="475955">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>sCsEYlqu7fEYJ0NxpaPr0TD4PGCFnfu1ERAvvPk200I=</dsig:DigestValue>
+      <dsig:DigestValue>u2M1Gp1VD5eFaGnNQobiA3TxnRiQ6IW8Q7dJnE70hp4=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\Sale\En\OfferReport.rdlc" size="384291">
@@ -1608,13 +1608,13 @@
       <dsig:DigestValue>oSVIXqoYGih5+tqxfbzVioKIxKykpxdzGmRna+aOc6Y=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Reports\Sale\En\SmallSaleReport.rdlc" size="459755">
+  <file name="Reports\Sale\En\SmallSaleReport.rdlc" size="475059">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>x3kf5s01TVw0lyqHRuw3w/+DBqG1FTo7yP0Llu9rVBM=</dsig:DigestValue>
+      <dsig:DigestValue>QVl5jR9378n5nEFKP5rXWT38X9UoC/koTOWDcoTVoJw=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\SectionData\Ar\ArBankReport.rdlc" size="390866">
