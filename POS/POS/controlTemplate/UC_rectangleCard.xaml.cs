@@ -175,6 +175,7 @@ namespace POS.controlTemplate
             #endregion
             if (cardViewitem.item.isNew == 1)
             {
+                /*
                 #region Path Star
                 //string dataStar = "";
                 Path pathStar = new Path();
@@ -182,14 +183,65 @@ namespace POS.controlTemplate
                 pathStar.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                 pathStar.Stretch = Stretch.Fill;
                 Grid.SetColumnSpan(pathStar, 2);
-                pathStar.Height = pathStar.Width = 18;
+                pathStar.Height = 18;
+                pathStar.Width = 54;
                 pathStar.VerticalAlignment = VerticalAlignment.Bottom;
                 pathStar.HorizontalAlignment = HorizontalAlignment.Right;
-                pathStar.Margin = new Thickness(5);
-                pathStar.Data = App.Current.Resources["StarIconGeometry"] as Geometry;
+                pathStar.FlowDirection = FlowDirection.LeftToRight;
+                pathStar.Margin = new Thickness(7.5);
+                pathStar.Data = App.Current.Resources["NewIconGeometry"] as Geometry;
                 #endregion
                 gridContainer.Children.Add(pathStar);
+                */
+                #region Path newLabel
+                Path pathNewLabel = new Path();
+                Grid.SetRowSpan(pathNewLabel, 4);
+                pathNewLabel.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D20707"));
+                pathNewLabel.Stretch = Stretch.Fill;
+                Grid.SetColumnSpan(pathNewLabel, 2);
+                //pathStar.Height = 18;
+                //pathStar.Width = 54;
+                //pathNewLabel.VerticalAlignment = VerticalAlignment.Bottom;
+                //pathNewLabel.HorizontalAlignment = HorizontalAlignment.Right;
+                pathNewLabel.FlowDirection = FlowDirection.LeftToRight;
+                //pathNewLabel.Margin = new Thickness(7.5);
+                pathNewLabel.Data = App.Current.Resources["newBlock"] as Geometry;
+                 pathNewLabel.Width = gridContainer.Width / 6.5;
+                pathNewLabel.Height = pathNewLabel.Width / 3;
+                #region Text
+                Path pathNewLabelText = new Path();
+                Grid.SetRowSpan(pathNewLabelText, 4);
+                pathNewLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
+                pathNewLabelText.Stretch = Stretch.Fill;
+                Grid.SetColumnSpan(pathNewLabelText, 2);
+                
+                //pathNewLabelText.VerticalAlignment = VerticalAlignment.Bottom;
+                //pathNewLabelText.HorizontalAlignment = HorizontalAlignment.Right;
+                pathNewLabelText.FlowDirection = FlowDirection.LeftToRight;
+                //pathNewLabelText.Margin = new Thickness(7.5);
+                //pathNewLabelText.Margin = new Thickness(0, 0, 12.5, 10);
+                pathNewLabelText.Data = App.Current.Resources["newText"] as Geometry;
+                //pathStar.Height = 18;
+                //pathStar.Width = 54;
+                pathNewLabelText.Width = gridContainer.Width / 10;
+                pathNewLabelText.Height = pathNewLabelText.Width /3;
+                #endregion
+                #endregion
 
+                Grid gridNewContainer = new Grid();
+                Grid.SetRowSpan(gridNewContainer, 4);
+                Grid.SetColumnSpan(gridNewContainer, 2);
+                gridNewContainer.VerticalAlignment = VerticalAlignment.Bottom;
+                gridNewContainer.HorizontalAlignment = HorizontalAlignment.Right;
+                gridNewContainer.Margin = new Thickness(7.5);
+
+                gridNewContainer.Children.Add(pathNewLabel);
+                gridNewContainer.Children.Add(pathNewLabelText);
+
+                gridContainer.Children.Add(gridNewContainer);
+
+                //gridContainer.Children.Add(pathNewLabel);
+                //gridContainer.Children.Add(pathNewLabelText);
             }
             if (cardViewitem.item.isOffer == 1)
             {

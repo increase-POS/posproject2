@@ -454,9 +454,15 @@ namespace POS.View
                 }
 
                 if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                {
                     btn_printCount.Visibility = Visibility.Visible;
+                    bdr_printCount.Visibility = Visibility.Visible;
+                }
                 else
+                {
                     btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                }
 
                 #endregion
                 #region print - pdf - send email
@@ -799,12 +805,12 @@ namespace POS.View
             if (paymentsCount == 0)
             {
                 bdr_payments.Visibility = Visibility.Collapsed;
-                btn_payments.Visibility = Visibility.Collapsed;
+                md_payments.Visibility = Visibility.Collapsed;
             }
             else if(MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
             {
                 bdr_payments.Visibility = Visibility.Visible;
-                btn_payments.Visibility = Visibility.Visible;
+                md_payments.Visibility = Visibility.Visible;
                 int previouseCount = 0;
                 if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
 

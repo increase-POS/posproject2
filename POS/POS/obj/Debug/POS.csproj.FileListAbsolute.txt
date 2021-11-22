@@ -3803,3 +3803,4 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_packageOfItems.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_packageOfItems.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_serviceItem.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_serviceItem.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
