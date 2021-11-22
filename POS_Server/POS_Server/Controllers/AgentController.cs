@@ -155,6 +155,100 @@ token = TokenManager.readToken(HttpContext.Current.Request);
         }
 
         [HttpPost]
+        [Route("GetActiveForAccount")]
+        public string GetActiveForAccount(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            string type = "";
+            string payType = "";
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                    if (c.Type == "payType")
+                    {
+                        payType = c.Value;
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+
+                    var agentsList = entity.agents
+                   .Where(p => p.type == type && (p.isActive == 1 || 
+                                                 (p.isActive == 0 && payType == "p" && p.balanceType == 0) || 
+                                                 (p.isActive == 0 && payType == "d" && p.balanceType == 1)))
+                   .Select(p => new
+                   {
+                       p.agentId,
+                       p.name,
+                       p.code,
+                       p.company,
+                       p.address,
+                       p.email,
+                       p.phone,
+                       p.mobile,
+                       p.image,
+                       p.type,
+                       p.accType,
+                       p.balance,
+                       p.balanceType,
+                       p.notes,
+                       p.maxDeserve,
+                       p.fax,
+                       p.isActive,
+                       p.createDate,
+                       p.isLimited,
+                       p.payType
+                   })
+                   .ToList();
+
+                    //var agentsList2 = (from a in entity.agents.Where(a => a.type == type && a.isActive == 0)
+                    //                   join i in entity.invoices.Where(i => i.deserved > 0) on a.agentId equals i.agentId into ai
+                    //                   from aii in ai.DefaultIfEmpty()
+                    //                   select new 
+                    //                   {
+                    //                       agentId = a.agentId,
+                    //                       name = a.name,
+                    //                       code = a.code,
+                    //                       company = a.company,
+                    //                       address = a.address,
+                    //                       email = a.email,
+                    //                       phone = a.phone,
+                    //                       mobile = a.mobile,
+                    //                       image = a.image,
+                    //                       type = a.type,
+                    //                       accType = a.accType,
+                    //                       balance = a.balance,
+                    //                       balanceType = a.balanceType,
+                    //                       notes = a.notes,
+                    //                       maxDeserve = a.maxDeserve,
+                    //                       fax = a.fax,
+                    //                       isActive = a.isActive,
+                    //                       createDate = a.createDate,
+                    //                       isLimited = a.isLimited,
+                    //                       payType = a.payType,
+
+                    //                   }).ToList();
+                    //agentsList.AddRange(agentsList2);
+
+                    return TokenManager.GenerateToken(agentsList);
+
+                }
+            }
+        }
+
+        [HttpPost]
         [Route("GetAgentByID")]
         public string GetAgentByID(string token)
         {

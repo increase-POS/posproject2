@@ -72,6 +72,66 @@ var strP = TokenManager.GetPrincipal(token);
         }
 
         [HttpPost]
+        [Route("GetActiveForAccount")]
+        public string GetActiveForAccount(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            string payType = "";
+            Boolean canDelete = false;
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "payType")
+                    {
+                        payType = c.Value;
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var usersList = entity.users.Where(u => u.userId != 1 && (u.isActive == 1 ||
+                                                 (u.isActive == 0 && payType == "p" && u.balanceType == 0) ||
+                                                 (u.isActive == 0 && payType == "d" && u.balanceType == 1)))
+                    .Select(u => new UserModel
+                    {
+                        userId = u.userId,
+                        username = u.username,
+                        password = u.password,
+                        name = u.name,
+                        lastname = u.lastname,
+                        fullName = u.name + " " + u.lastname,
+                        job = u.job,
+                        workHours = u.workHours,
+                        createDate = u.createDate,
+                        updateDate = u.updateDate,
+                        createUserId = u.createUserId,
+                        updateUserId = u.updateUserId,
+                        phone = u.phone,
+                        mobile = u.mobile,
+                        email = u.email,
+                        notes = u.notes,
+                        address = u.address,
+                        isActive = u.isActive,
+                        isOnline = u.isOnline,
+                        image = u.image,
+                        balance = u.balance,
+                        balanceType = u.balanceType,
+                        isAdmin = u.isAdmin,
+                    })
+                    .ToList();
+
+                    return TokenManager.GenerateToken(usersList);
+                }
+            }
+        }
+
+        [HttpPost]
         [Route("Getloginuser")]
         public string Getloginuser(string token)
         {
@@ -179,6 +239,7 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
 
         // return all users active and inactive
         [HttpPost]

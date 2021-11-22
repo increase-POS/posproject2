@@ -18,6 +18,7 @@ namespace POS_Server.Controllers
     public class GroupController : ApiController
     {
         // GET api/<controller> get all Group
+
         [HttpPost]
         [Route("Get")]
         public string Get(string token)
@@ -352,6 +353,97 @@ namespace POS_Server.Controllers
             //else
             //    return NotFound();
         }
+        public string addObjects(int groupId)
+        {
+
+            string message = "";
+            List<objects> ListObjects = new List<objects>();
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<objects> Listtmp = entity.objects.ToList();
+
+                    ListObjects= Listtmp.Select(c => new objects
+                               {
+                                   objectId = c.objectId,
+                                   name = c.name,
+                                   note = c.note,
+                                   createDate = c.createDate,
+                                   updateDate = c.updateDate,
+                                   createUserId = c.createUserId,
+                                   updateUserId = c.updateUserId,
+                                   parentObjectId = c.parentObjectId,
+                                   objectType = c.objectType,
+                               })
+                               .ToList();
+                }
+            }
+            catch
+            {
+                message = "0";
+                return message;
+                //return ex.ToString();
+            }
+         groupObject   groupObjectitem = new groupObject();
+            List<  groupObject > groupObjectsList = new List<groupObject>();
+            foreach (var item in ListObjects)
+            {
+                groupObjectitem = new groupObject();
+                groupObjectitem.groupId = groupId;
+                groupObjectitem.objectId = item.objectId;
+                if (item.objectType == "one" || item.objectType == "alert")
+                {
+                    groupObjectitem.showOb = 0;
+                    groupObjectitem.addOb = 2;
+                    groupObjectitem.updateOb = 2;
+                    groupObjectitem.deleteOb = 2;
+                    groupObjectitem.reportOb = 2;
+                }
+                else
+                {
+                    groupObjectitem.showOb = 0;
+                    groupObjectitem.addOb = 0;
+                    groupObjectitem.updateOb = 0;
+                    groupObjectitem.deleteOb = 0;
+                    groupObjectitem.reportOb = 0;
+                }
+                groupObjectitem.levelOb = 0;
+                groupObjectitem.notes = "";
+               // groupObjectitem.createUserId = MainWindow.userID;
+               // groupObjectitem.updateUserId = MainWindow.userID;
+                groupObjectitem.isActive = 1;
+                groupObjectsList.Add(groupObjectitem);
+            }
+          
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                if (groupObjectsList.Count > 0)
+                {
+                    for (int i = 0; i < groupObjectsList.Count; i++)
+                    {
+                        groupObjectsList[i].createDate = DateTime.Now;
+                        groupObjectsList[i].updateDate = DateTime.Now;
+                        entity.groupObject.Add(groupObjectsList[i]);
+                        try
+                        {
+                            message = entity.SaveChanges().ToString();
+
+                        }
+                        catch
+                        {
+
+                            message = "0";
+                            return message;
+                            //return ex.ToString();
+                        }
+                    }
+               
+                }
+           
+            }
+   return  message;
+        }
 
         // add or update 
         [HttpPost]
@@ -361,8 +453,6 @@ namespace POS_Server.Controllers
 
             //string Object
             string message = "";
-
-
 
           token = TokenManager.readToken(HttpContext.Current.Request); 
  var strP = TokenManager.GetPrincipal(token);
@@ -388,11 +478,6 @@ namespace POS_Server.Controllers
                 if (newObject != null)
                 {
 
-
-          
-
-
-                 
                         try
                         {
 
@@ -411,6 +496,7 @@ namespace POS_Server.Controllers
                                 var sEntity = entity.Set<groups>();
                                 if (newObject.groupId == 0 || newObject.groupId == null)
                                 {
+
                                     newObject.createDate = DateTime.Now;
                                     newObject.updateDate = DateTime.Now;
                                     newObject.updateUserId = newObject.createUserId;
@@ -419,8 +505,19 @@ namespace POS_Server.Controllers
 
                                     entity.groups.Add(newObject);
 
-                                    entity.SaveChanges();
+                                entity.SaveChanges();
+                                int gid = newObject.groupId;
                                     message = newObject.groupId.ToString();
+
+
+
+                         string res =    addObjects(gid);
+                               // return TokenManager.GenerateToken(res);
+
+                                if (res == "0")
+                                {
+                                    return TokenManager.GenerateToken("0");
+                                }
                                 }
                                 else
                                 {
@@ -450,6 +547,7 @@ namespace POS_Server.Controllers
                     {
                         message = "0";
                         return TokenManager.GenerateToken(message);
+                        //   return TokenManager.GenerateToken(ex.ToString());
                     }
 
 

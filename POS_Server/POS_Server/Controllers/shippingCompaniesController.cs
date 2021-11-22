@@ -79,6 +79,65 @@ var strP = TokenManager.GetPrincipal(token);
             }
         }
 
+        [HttpPost]
+        [Route("GetForAccount")]
+        public string GetForAccount(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            Boolean canDelete = false;
+            string payType = "";
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "payType")
+                    {
+                        payType = c.Value;
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var usersList = entity.shippingCompanies.Where(s => s.isActive == 1 ||
+                                                 (s.isActive == 0 && payType == "p" && s.balanceType == 0) ||
+                                                 (s.isActive == 0 && payType == "d" && s.balanceType == 1))
+                    .Select(S => new ShippingCompaniesModel
+                    {
+                        shippingCompanyId = S.shippingCompanyId,
+                        name = S.name,
+                        RealDeliveryCost = S.RealDeliveryCost,
+                        deliveryCost = S.deliveryCost,
+                        deliveryType = S.deliveryType,
+                        notes = S.notes,
+                        isActive = S.isActive,
+                        createDate = S.createDate,
+                        updateDate = S.updateDate,
+                        createUserId = S.createUserId,
+                        updateUserId = S.updateUserId,
+                        balance = S.balance,
+                        balanceType = S.balanceType,
+
+                        email = S.email,
+                        phone = S.phone,
+                        mobile = S.mobile,
+                        fax = S.fax,
+                        address = S.address
+                    })
+                    .ToList();
+
+                    return TokenManager.GenerateToken(usersList);
+                }
+            }
+        }
+
+
         // GET api/<controller>
         [HttpPost]
         [Route("GetByID")]
