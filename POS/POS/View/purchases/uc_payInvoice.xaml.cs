@@ -1259,7 +1259,11 @@ namespace POS.View
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
             //    exp_vendor.IsExpanded = true;
-            if(cb_paymentProcessType.SelectedValue.ToString() == "balance")
+            if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < invoice.totalNet)
+            {       Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                return false;
+            }
+            if (cb_paymentProcessType.SelectedValue.ToString() == "balance")
             {
                 if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
                     exp_vendor.IsExpanded = true;
