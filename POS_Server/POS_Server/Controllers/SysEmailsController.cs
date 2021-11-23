@@ -289,9 +289,6 @@ namespace POS_Server.Controllers
         {
             // public ResponseVM GetPurinv(string token)int branchId,string side
 
-           
-            
-            
           token = TokenManager.readToken(HttpContext.Current.Request); 
  var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
@@ -316,7 +313,7 @@ namespace POS_Server.Controllers
 
 
                 }
-
+                sysEmails emptyrow = null;
                 // DateTime cmpdate = DateTime.Now.AddDays(newdays);
                 try
                 {
@@ -377,7 +374,7 @@ namespace POS_Server.Controllers
                          }).FirstOrDefault();
                             if (row2 == null)
                             {
-                                return TokenManager.GenerateToken("0");
+                                return TokenManager.GenerateToken(emptyrow);
                             }
                             else
                             {
@@ -396,93 +393,12 @@ namespace POS_Server.Controllers
                 }
                 catch
                 {
-                    return TokenManager.GenerateToken("0");
+                    return TokenManager.GenerateToken(emptyrow);
                 }
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid)
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            // return email with same branch and side or 
-            //        // return email with same side and isMajor
-            //        var row = entity.sysEmails
-            //       .Where(u => u.branchId == branchId && u.side==side)
-            //       .Select(S => new
-            //       {
-            //           S.emailId,
-            //           S.name,
-            //           S.email,
-            //           S.password,
-            //           S.port,
-            //           S.isSSL,
-            //           S.smtpClient,
-            //           S.side,
-            //           S.notes,
-            //           S.branchId,
-            //           S.isMajor,
-            //           S.isActive,
-            //           S.createDate,
-            //           S.updateDate,
-            //           S.createUserId,
-            //           S.updateUserId,
-
-
-            //       })
-            //       .FirstOrDefault();
-
-            //        if (row == null)
-            //        {
-            //            var row2 = entity.sysEmails
-            //         .Where(u =>  u.side == side && u.isMajor==true)
-            //         .Select(S => new
-            //         {
-            //             S.emailId,
-            //             S.name,
-            //             S.email,
-            //             S.password,
-            //             S.port,
-            //             S.isSSL,
-            //             S.smtpClient,
-            //             S.side,
-            //             S.notes,
-            //             S.branchId,
-            //             S.isMajor,
-            //             S.isActive,
-            //             S.createDate,
-            //             S.updateDate,
-            //             S.createUserId,
-            //             S.updateUserId,
-            //         }).FirstOrDefault();
-
-            //            if (row2 == null)
-            //            {
-            //                return NotFound();
-            //            }
-            //            else
-            //            {
-
-            //                return Ok(row2);
-            //            }
-            //        }
-
-            //        else
-            //            return Ok(row);
-            //    }
-            //}
-            //else
-            //    return NotFound();
+           
         }
 
         // add or update location
