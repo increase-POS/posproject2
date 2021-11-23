@@ -1457,20 +1457,20 @@ namespace POS.View
                             {
                                 if (MainWindow.print_on_save_pur == "1")
                                 {
-                                        //Thread t1 = new Thread(() =>
-                                        //{
-                                        printPurInvoice();
-                                        //});
-                                        //t1.Start();
-                                    }
+                                    //Thread t1 = new Thread(() =>
+                                    //{
+                                    printPurInvoice();
+                                    //});
+                                    //t1.Start();
+                                }
                                 if (MainWindow.email_on_save_pur == "1")
                                 {
-                                        //Thread t2 = new Thread(() =>
-                                        //{
-                                        sendPurEmail();
-                                        //});
-                                        //t2.Start();
-                                    }
+                                    //Thread t2 = new Thread(() =>
+                                    //{
+                                    sendPurEmail();
+                                    //});
+                                    //t2.Start();
+                                }
                             });
                             t.Start();
 
@@ -3406,7 +3406,10 @@ namespace POS.View
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
                 || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCanNotSendDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                    Dispatcher.Invoke(new Action(() =>
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCanNotSendDraftInvoice"), animation: ToasterAnimation.FadeIn);
+                    }));
                 }
                 else
                 {
@@ -3445,30 +3448,53 @@ namespace POS.View
                                 prInvoice.agentName = "-";
                                 prInvoice.agentCompany = "-";
                             }
-                            if (toAgent == null || toAgent.email==null)
+                            if (toAgent == null)
                             {
                                 //edit warning message to customer
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
-
+                                Dispatcher.Invoke(new Action(() =>
+                                {
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                }));
                             }
                             else
                             {
                                 //  int? itemcount = invoiceItems.Count();
                                 if (email.emailId == 0)
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+                                {
+                                    Dispatcher.Invoke(new Action(() =>
+                                    {
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
+                                    }));
+                                }
                                 else
                                 {
                                     if (prInvoice.invoiceId == 0)
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
+                                    {
+                                        Dispatcher.Invoke(new Action(() =>
+                                        {
+                                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
+                                        }));
+                                    }
                                     else
                                     {
                                         if (invoiceItems == null || invoiceItems.Count() == 0)
-                                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+                                        {
+                                            Dispatcher.Invoke(new Action(() =>
+                                            {
+                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
+                                            }));
+                                        }
                                         else
                                         {
 
-                                            if (toAgent.email.Trim() == "")
-                                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                            if (toAgent.email.Trim() == "" || toAgent.email.Trim() == null)
+                                            {
+                                                Dispatcher.Invoke(new Action(() =>
+                                                {
+                                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                                }));
+                                            }
+
                                             else
                                             {
                                                 SetValues setvmodel = new SetValues();
@@ -3499,16 +3525,22 @@ namespace POS.View
                                                 this.Dispatcher.Invoke(new Action(() =>
                                                 {
                                                     msg = mailtosend.Sendmail();// temp comment
-                                                if (msg == "Failure sending mail.")
+                                                    if (msg == "Failure sending mail.")
                                                     {
-                                                    // msg = "No Internet connection";
+                                                        // msg = "No Internet connection";
 
-                                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
+                                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoConnection"), animation: ToasterAnimation.FadeIn);
                                                     }
                                                     else if (msg == "mailsent")
+                                                    {
                                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailSent"), animation: ToasterAnimation.FadeIn);
+
+                                                    }
                                                     else
+                                                    {
                                                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMailNotSent"), animation: ToasterAnimation.FadeIn);
+
+                                                    }
                                                 }));
 
                                             }

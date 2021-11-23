@@ -528,7 +528,7 @@ namespace POS.Classes
             if (invoice.invoiceId > 0)
             {
 
-                if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb"|| invoice.invType == "p" || invoice.invType == "pw" ||))
+                if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb"|| invoice.invType == "p" || invoice.invType == "pw" ))
                 {
                     decimal sump = mailpayedList.Sum(x => x.cash).Value;
                     decimal deservd = (decimal)invoice.totalNet - sump;
