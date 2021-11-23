@@ -129,6 +129,7 @@ namespace POS.View
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         int prInvoiceId;
         Invoice prInvoice = new Invoice();
+        List<PayedInvclass> mailpayedList = new List<PayedInvclass>();
         //bool isClose = false;
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -2864,6 +2865,27 @@ namespace POS.View
             }
         }
 
+        public async void multiplePaytable(List<ReportParameter> paramarr)
+        {
+            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
+            {
+                CashTransfer cachModel = new CashTransfer();
+                List<PayedInvclass> payedList = new List<PayedInvclass>();
+                payedList = await cachModel.GetPayedByInvId(prInvoice.invoiceId);
+                mailpayedList = payedList;
+                decimal sump = payedList.Sum(x => x.cash).Value;
+                decimal deservd = (decimal)prInvoice.totalNet - sump;
+                paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
+
+                paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
+                paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring(deservd)));
+                rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+
+
+            }
+        }
+
+
         public async void pdfPurInvoice()
         {
             if (invoice.invoiceId > 0)
@@ -2937,6 +2959,8 @@ namespace POS.View
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
                             paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
+
+                            multiplePaytable(paramarr);
 
                             rep.SetParameters(paramarr);
                             rep.Refresh();
@@ -3111,12 +3135,28 @@ namespace POS.View
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
                         paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
+                      
+                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
+                        {
+                            CashTransfer cachModel = new CashTransfer();
+                            List<PayedInvclass> payedList = new List<PayedInvclass>();
+                            payedList = await cachModel.GetPayedByInvId(prInvoice.invoiceId);
+                            decimal sump = payedList.Sum(x => x.cash).Value;
+                            decimal deservd = (decimal)prInvoice.totalNet - sump;
+                            paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
+
+                            paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
+                            paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring(deservd)));
+                            rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+
+
+                        }
 
                         rep.SetParameters(paramarr);
                         rep.Refresh();
 
                         //copy count
-                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
+                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pw")
                         {
 
                             //   paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
@@ -3258,13 +3298,13 @@ namespace POS.View
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
                         paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
-
+                        multiplePaytable(paramarr);
                         rep.SetParameters(paramarr);
                         rep.Refresh();
 
 
                         //copy count
-                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
+                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb" || prInvoice.invType == "pw")
                         {
 
                             paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
