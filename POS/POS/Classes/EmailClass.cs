@@ -431,7 +431,7 @@ namespace POS.Classes
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
 
-                if (invoice.invType == "s" || invoice.invType == "pw")
+                if (invoice.invType == "s" || invoice.invType == "pw" || invoice.invType == "p")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invitemtable.tmp");
