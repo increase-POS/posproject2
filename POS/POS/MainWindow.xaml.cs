@@ -194,8 +194,6 @@ namespace POS
 
                 mainWindow = this;
                 windowFlowDirection();
-
-
             }
             catch (Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
@@ -696,6 +694,9 @@ namespace POS
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
+
+                uc_general.settingsCls = await setModel.GetAll();
+                uc_general.settingsValues = await valueModel.GetAll();
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type

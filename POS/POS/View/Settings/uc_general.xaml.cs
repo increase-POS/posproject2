@@ -53,8 +53,8 @@ namespace POS.View.Settings
         SaveFileDialog saveFileDialog = new SaveFileDialog();
         ReportCls reportclass = new ReportCls();
 
-        static List<SettingCls> settingsCls = new List<SettingCls>();
-        static List<SetValues> settingsValues = new List<SetValues>();
+        public static List<SettingCls> settingsCls = new List<SettingCls>();
+        public static List<SetValues> settingsValues = new List<SetValues>();
 
         LocalReport rep = new LocalReport();
         private static uc_general _instance;
@@ -211,6 +211,7 @@ namespace POS.View.Settings
                 cb_dateForm.SelectedValuePath = "Value";
                 cb_dateForm.ItemsSource = typelist;
                 #endregion
+
                 #region get default date form
                 await getDefaultDateForm();
                 if (dateForm != null)
@@ -400,6 +401,8 @@ namespace POS.View.Settings
 
         public static async Task<SetValues> getDefaultAccuracy()
         {
+            //settingsCls = await setModel.GetAll();
+            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "accuracy").FirstOrDefault<SettingCls>();
             accuracyId = set.settingId;
             accuracy = settingsValues.Where(i => i.settingId == accuracyId).FirstOrDefault();
@@ -408,6 +411,8 @@ namespace POS.View.Settings
 
         public static async Task<SetValues> getDefaultCost()
         {
+            //settingsCls = await setModel.GetAll();
+            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "storage_cost").FirstOrDefault<SettingCls>();
             costId = set.settingId;
             cost = settingsValues.Where(i => i.settingId == costId).FirstOrDefault();
@@ -423,6 +428,8 @@ namespace POS.View.Settings
         }
         public static async Task<SetValues> getDefaultTax()
         {
+            //settingsCls = await setModel.GetAll();
+            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
             taxId = set.settingId;
             tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
@@ -430,6 +437,8 @@ namespace POS.View.Settings
         }
         public static async Task<SetValues> getDefaultItemCost()
         {
+            //settingsCls = await setModel.GetAll();
+            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "item_cost").FirstOrDefault<SettingCls>();
             itemCostId = set.settingId;
             itemCost = settingsValues.Where(i => i.settingId == itemCostId).FirstOrDefault();
@@ -438,6 +447,8 @@ namespace POS.View.Settings
 
         public static async Task<SetValues> getDefaultPrintCount()
         {
+            //settingsCls = await setModel.GetAll();
+            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "Allow_print_inv_count").FirstOrDefault<SettingCls>();
             printCountId = set.settingId;
             printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
@@ -446,6 +457,8 @@ namespace POS.View.Settings
 
         public static async Task<SetValues> getDefaultDateForm()
         {
+            //settingsCls = await setModel.GetAll();
+            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "dateForm").FirstOrDefault<SettingCls>();
             dateFormId = set.settingId;
             dateForm = settingsValues.Where(i => i.settingId == dateFormId).FirstOrDefault();
@@ -841,6 +854,7 @@ namespace POS.View.Settings
                     {
                         if (dateForm == null)
                             dateForm = new SetValues();
+
                         dateForm.value = cb_dateForm.SelectedValue.ToString();
                         dateForm.isSystem = 1;
                         dateForm.settingId = dateFormId;

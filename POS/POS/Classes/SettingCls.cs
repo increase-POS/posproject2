@@ -16,7 +16,7 @@ using System.Security.Claims;
 
 namespace POS.Classes
 {
-    class SettingCls
+    public class SettingCls
     {
         public int settingId { get; set; }
         public string name { get; set; }

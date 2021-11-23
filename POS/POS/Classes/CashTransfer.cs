@@ -896,7 +896,7 @@ namespace POS.Classes
 
 
 
-            string method = "Cashtransfer/payUserListOfInvoices";
+            string method = "Cashtransfer/payShippingCompanyListOfInvoices";
            return await APIResult.post(method, parameters);
 
             //string message = "";
