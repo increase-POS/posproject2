@@ -3629,7 +3629,24 @@ namespace POS.View
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
-                    multiplePaytable(paramarr);
+                 
+
+                    if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
+                    {
+                        CashTransfer cachModel = new CashTransfer();
+                        List<PayedInvclass> payedList = new List<PayedInvclass>();
+                        payedList = await cachModel.GetPayedByInvId(prInvoice.invoiceId);
+                        mailpayedList = payedList;
+                        decimal sump = payedList.Sum(x => x.cash).Value;
+                        decimal deservd = (decimal)prInvoice.totalNet - sump;
+                        paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
+
+                        paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
+                        paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring(deservd)));
+                        rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+
+
+                    }
                     rep.SetParameters(paramarr);
                     rep.Refresh();
                     this.Dispatcher.Invoke(new Action(() =>
