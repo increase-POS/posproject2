@@ -3409,7 +3409,7 @@ namespace POS.View
                 }
                 else
                 {
-                    if (prInvoice.invType == "pw")
+                    if (prInvoice.invType == "pw" || prInvoice.invType == "p")
                     {
                         invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         SysEmails email = new SysEmails();
@@ -3454,7 +3454,7 @@ namespace POS.View
 
 
                                             List<SetValues> setvlist = new List<SetValues>();
-                                            if (prInvoice.invType == "pw")
+                                            if (prInvoice.invType == "pw"|| prInvoice.invType == "p")
                                             {
                                                 setvlist = await setvmodel.GetBySetName("pur_email_temp");
                                             }
@@ -3467,7 +3467,7 @@ namespace POS.View
                                                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
                                             }
                                               string pdfpath = await SavePurpdf();
-                                            List<PayedInvclass> mailpayedList = new List<PayedInvclass>();
+                                         
                                             mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems,mailpayedList, email, toAgent, setvlist);
                                           
                                             //SavePurpdf();
@@ -3576,7 +3576,7 @@ namespace POS.View
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
-
+                    multiplePaytable(paramarr);
                     rep.SetParameters(paramarr);
                     rep.Refresh();
                     this.Dispatcher.Invoke(new Action(() =>
