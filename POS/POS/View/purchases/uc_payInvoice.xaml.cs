@@ -3791,7 +3791,8 @@ namespace POS.View
 
                         w.invId = invoice.invoiceId;
                         w.invPaid = invoice.paid.Value;
-                        w.invTotal = invoice.total.Value;
+                        w.invTotal = invoice.totalNet.Value;
+                       
                         w.title = MainWindow.resourcemanager.GetString("trPayments");
                         w.ShowDialog();
 
