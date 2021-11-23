@@ -4905,7 +4905,7 @@ namespace POS.View
 
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
-        {
+        {//payments
             try
             {
                 if (sender != null)
@@ -4918,6 +4918,8 @@ namespace POS.View
                         wd_cashTransfer w = new wd_cashTransfer();
 
                         w.invId = invoice.invoiceId;
+                        w.invPaid = invoice.paid.Value;
+                        w.invTotal = invoice.totalNet.Value;
                         w.title = MainWindow.resourcemanager.GetString("trReceived");
 
                         w.ShowDialog();

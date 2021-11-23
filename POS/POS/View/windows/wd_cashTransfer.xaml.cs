@@ -35,6 +35,8 @@ namespace POS.View.windows
         }
 
         public int invId;
+        public decimal invPaid;
+        public decimal invTotal;
         public string title;
         CashTransfer cashModel = new CashTransfer();
         IEnumerable<CashTransfer> cashes;
@@ -63,6 +65,7 @@ namespace POS.View.windows
                 #endregion
 
                 Txb_search_TextChanged(null, null);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -77,12 +80,14 @@ namespace POS.View.windows
         private void translate()
         {
             txt_accounts.Text = title;
+            txt_paid.Text = MainWindow.resourcemanager.GetString("trCashPaid");
+            txt_total.Text = MainWindow.resourcemanager.GetString("trOf") + MainWindow.resourcemanager.GetString("trTotal");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             dg_accounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            dg_accounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor/Recipient");
+            dg_accounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
             dg_accounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
             dg_accounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-            btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
+            btn_pay.Content = MainWindow.resourcemanager.GetString("trPay");
             btn_colse.ToolTip = MainWindow.resourcemanager.GetString("trClose");
         }
 
@@ -111,21 +116,20 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 if (cashes is null)
                     await RefreshCashesList();
+
                 this.Dispatcher.Invoke(() =>
                 {
                     searchText = txb_search.Text.ToLower();
                     cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                    || s.cash.ToString().ToLower().Contains(searchText)
-                    )
-                    && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
-                    && s.transType == "all"
-                    );
+                                                  || s.cash.ToString().ToLower().Contains(searchText)));
 
                 });
 
                 RefreshCashView();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -137,9 +141,11 @@ namespace POS.View.windows
             }
         }
 
-            void RefreshCashView()
+        void RefreshCashView()
         {
             dg_accounts.ItemsSource = cashesQuery;
+            tb_paid.Text = invPaid.ToString();
+            tb_total.Text = invTotal.ToString(); 
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
@@ -150,36 +156,9 @@ namespace POS.View.windows
                     SectionData.StartAwait(grid_main);
 
                 if (e.Key == Key.Return)
-            {
-                Btn_select_Click(null, null);
+                {
+                    Btn_pay_Click(null, null);
                 }
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Btn_select_Click(object sender, RoutedEventArgs e)
-        {//select
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-
-                //
-                //enter your code here
-                //
-
-
-
-
-
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -194,6 +173,28 @@ namespace POS.View.windows
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {//close
             this.Close();
+        }
+
+        private void Btn_pay_Click(object sender, RoutedEventArgs e)
+        {//pay
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                //
+                //enter your code here
+                //
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

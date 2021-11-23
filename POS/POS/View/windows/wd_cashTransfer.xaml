@@ -114,7 +114,7 @@
                 <Line Grid.Row="1" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
 
-                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
+                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="2"  IsReadOnly="True"  Background="White"
                            materialDesign:DataGridAssist.CornerRadius="5" 
                            x:Name="dg_accounts"
                            AutoGenerateColumns="False" 
@@ -129,19 +129,37 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn Width="*"   Header="Recipient"     Binding="{Binding Path=.,Converter={StaticResource depositorNameConverter }}"/>
+                        <DataGridTextColumn Width="*"   Header="Date"           Binding="{Binding Path=updateDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn Width="*"   Header="Process Type"   Binding="{Binding processType,Converter={StaticResource processTypeConverter }}"/>
-                        <!--Binding="{Binding Path=cash}"-->
-                        <DataGridTextColumn Width="*"   Header="Cash" Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
+                        <DataGridTextColumn Width="*"   Header="Cash"           Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Line Grid.Row="3" Grid.Column="0"  Grid.ColumnSpan="3" Stretch="Fill" Stroke="#DFDFDF"  X2="1"  Margin="1,1,1,1"
                           VerticalAlignment="Bottom"/>
 
+                <Border BorderThickness="0,1,0,0" BorderBrush="#E8E8E8" Background="White" Grid.Row="4" Margin="5,0,5,0">
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                                    Margin="0,0,0,10"  >
+                        <TextBlock Grid.Row="0"   x:Name="txt_paid" Foreground="#178DD2" FontWeight="Bold" FontSize="14"  
+                                   VerticalAlignment="Center" Text="Paid"
+                                   HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <TextBlock Grid.Row="0"   x:Name="tb_paid" Foreground="#4e4e4e" FontWeight="Bold" FontSize="14"  
+                                   VerticalAlignment="Center" Text="0"
+                                   HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <TextBlock Grid.Row="1" x:Name="txt_total" Grid.Column="1" Margin="10,5,5,5" 
+                                   Text="Of Total" Foreground="#178DD2"
+                                   HorizontalAlignment="Left" 
+                                   FontWeight="Bold" FontSize="14"/>
+                        <TextBlock Grid.Row="1" x:Name="tb_total" Grid.Column="1" Margin="10,5,5,5"
+                                   Text="0" Foreground="#4e4e4e"
+                                   HorizontalAlignment="Left" 
+                                   FontWeight="Bold" FontSize="14"/>
+                    </StackPanel>
 
-                <Button Content="Select" Grid.Row="5" Grid.ColumnSpan="5"
-                       Margin="10,2.5" x:Name="btn_select" Click="Btn_select_Click"
-                          Background="#178DD2" BorderBrush="{x:Null}"  />
+                </Border>
+                <Button Content="Pay" Grid.Row="5" Grid.ColumnSpan="4" Visibility="Collapsed"
+                       Margin="10,2.5" x:Name="btn_pay" 
+                          Background="#178DD2" BorderBrush="{x:Null}" Click="Btn_pay_Click"  />
             </Grid>
 
         </Border>

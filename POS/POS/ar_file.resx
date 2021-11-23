@@ -2770,4 +2770,7 @@
   <data name="trBondRecieved" xml:space="preserve">
     <value>السند مستلم</value>
   </data>
+  <data name="trOf" xml:space="preserve">
+    <value> من </value>
+  </data>
 </root>

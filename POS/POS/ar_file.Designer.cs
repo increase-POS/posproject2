@@ -4652,6 +4652,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  من .
+        /// </summary>
+        internal static string trOf {
+            get {
+                return ResourceManager.GetString("trOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العروض.
         /// </summary>
         internal static string trOffer {

@@ -60,11 +60,11 @@ namespace POS.View.reports
         {
             txt_paymentsInfo.Text = MainWindow.resourcemanager.GetString("trPayments");
             txt_paymentsHint.Text = MainWindow.resourcemanager.GetString("trVendorCustomerUserHint");
-            txt_recipientInfo.Text = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            txt_recipientInfo.Text = MainWindow.resourcemanager.GetString("trReceived");
             txt_recipientHint.Text = MainWindow.resourcemanager.GetString("trVendorCustomerUserHint");
-            txt_bankInfo.Text = MainWindow.resourcemanager.GetString("trBank");
+            txt_bankInfo.Text = MainWindow.resourcemanager.GetString("trBanks");
             txt_bankHint.Text = MainWindow.resourcemanager.GetString("trPaymentsRecipientHint");
-            txt_posInfo.Text = MainWindow.resourcemanager.GetString("trPOS");
+            txt_posInfo.Text = MainWindow.resourcemanager.GetString("trTransfers");
             txt_posHint.Text = MainWindow.resourcemanager.GetString("trFromToPosHint");
             txt_statementInfo.Text = MainWindow.resourcemanager.GetString("trAccountStatement");
             txt_statementHint.Text = MainWindow.resourcemanager.GetString("trVendorCustomerUserHint");

@@ -2785,4 +2785,7 @@ Please add Email in setting</value>
   <data name="trBondRecieved" xml:space="preserve">
     <value>Bond is received</value>
   </data>
+  <data name="trOf" xml:space="preserve">
+    <value> Of </value>
+  </data>
 </root>
