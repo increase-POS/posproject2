@@ -1134,13 +1134,13 @@
                   <TextRun>
                     <Value>To:</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Center</TextAlign>
+                  <TextAlign>Right</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
@@ -1148,7 +1148,7 @@
             <Top>2.92275cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.67938cm</Height>
-            <Width>1.27967cm</Width>
+            <Width>1.52515cm</Width>
             <ZIndex>13</ZIndex>
             <Style>
               <Border>
@@ -1169,7 +1169,7 @@
                   <TextRun>
                     <Value>=Parameters!agentName.Value</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1181,9 +1181,9 @@
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
             <Top>2.92275cm</Top>
-            <Left>3.20952cm</Left>
+            <Left>3.41972cm</Left>
             <Height>0.67938cm</Height>
-            <Width>6.67155cm</Width>
+            <Width>6.3661cm</Width>
             <ZIndex>14</ZIndex>
             <Style>
               <Border>
@@ -1205,6 +1205,7 @@
                     <Value>Invoice Code:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1213,10 +1214,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.88806cm</Top>
+            <Top>2.14206cm</Top>
             <Left>11.6061cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.86261cm</Width>
+            <Width>2.25946cm</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -1238,6 +1239,7 @@
                     <Value>Invoice Date:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1246,10 +1248,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.74382cm</Top>
+            <Top>2.96607cm</Top>
             <Left>11.6061cm</Left>
             <Height>0.6cm</Height>
-            <Width>2.79206cm</Width>
+            <Width>2.25946cm</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
@@ -1271,6 +1273,7 @@
                     <Value>=Parameters!invNumber.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1281,10 +1284,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.88805cm</Top>
-            <Left>14.46871cm</Left>
+            <Top>2.14205cm</Top>
+            <Left>14.00667cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.6615cm</Width>
+            <Width>5.12354cm</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>
@@ -1306,6 +1309,7 @@
                     <Value>=Parameters!invDate.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
@@ -1314,6 +1318,7 @@
                     <Value> - </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
@@ -1322,6 +1327,7 @@
                     <Value>=Parameters!invTime.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
@@ -1333,10 +1339,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ExecutionTime</rd:DefaultName>
-            <Top>2.74382cm</Top>
-            <Left>14.46871cm</Left>
+            <Top>2.96607cm</Top>
+            <Left>14.04195cm</Left>
             <Height>0.6cm</Height>
-            <Width>4.66764cm</Width>
+            <Width>5.0944cm</Width>
             <ZIndex>18</ZIndex>
             <Style>
               <Border>
@@ -1470,7 +1476,6 @@
                   <TextRun>
                     <Value>Branch:</Value>
                     <Style>
-                      <FontSize>11pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1481,10 +1486,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>1.99903cm</Top>
-            <Left>1.88954cm</Left>
+            <Top>2.09428cm</Top>
+            <Left>1.78874cm</Left>
             <Height>0.71113cm</Height>
-            <Width>1.66247cm</Width>
+            <Width>1.52514cm</Width>
             <ZIndex>22</ZIndex>
             <Style>
               <Border>
@@ -1516,10 +1521,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.99903cm</Top>
-            <Left>3.55201cm</Left>
+            <Top>2.09428cm</Top>
+            <Left>3.41972cm</Left>
             <Height>0.71113cm</Height>
-            <Width>5.77946cm</Width>
+            <Width>6.3661cm</Width>
             <ZIndex>23</ZIndex>
             <Style>
               <Border>
