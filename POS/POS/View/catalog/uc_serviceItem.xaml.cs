@@ -1562,15 +1562,15 @@ namespace POS.View.catalog
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\Sale\Ar\PackageReport.rdlc";
+                addpath = @"\Reports\Catalog\Ar\ServiceReport.rdlc";
             }
             else
-                addpath = @"\Reports\Sale\En\PackageReport.rdlc";
+                addpath = @"\Reports\Catalog\En\ServiceReport.rdlc";
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
 
-            clsReports.packageReport(itemsQuery, rep, reppath, paramarr);
+            clsReports.serviceReport(itemsQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

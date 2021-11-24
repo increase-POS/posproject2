@@ -2773,4 +2773,10 @@
   <data name="trOf" xml:space="preserve">
     <value> من </value>
   </data>
+  <data name="trTheService" xml:space="preserve">
+    <value>الخدمة</value>
+  </data>
+  <data name="trTheServices" xml:space="preserve">
+    <value>الخدمات</value>
+  </data>
 </root>

@@ -2788,4 +2788,10 @@ Please add Email in setting</value>
   <data name="trOf" xml:space="preserve">
     <value> Of </value>
   </data>
+  <data name="trTheService" xml:space="preserve">
+    <value>The Service</value>
+  </data>
+  <data name="trTheServices" xml:space="preserve">
+    <value>The Services</value>
+  </data>
 </root>

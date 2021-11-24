@@ -7199,6 +7199,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Service.
+        /// </summary>
+        internal static string trTheService {
+            get {
+                return ResourceManager.GetString("trTheService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Services.
+        /// </summary>
+        internal static string trTheServices {
+            get {
+                return ResourceManager.GetString("trTheServices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Shipping Company does not have email.
         /// </summary>
         internal static string trTheShippingCompaniesHasNoEmail {
