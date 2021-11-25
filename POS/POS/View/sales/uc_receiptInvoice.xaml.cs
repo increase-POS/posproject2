@@ -1201,7 +1201,7 @@ namespace POS.View
                         return available;
                     }
                 }
-                else if (availableAmount < billDetails[i].Count)
+                else if (availableAmount < billDetails[i].Count && billDetails[i].type != "sr")
                 {
                     available = false;
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableFromToolTip") + " " + billDetails[i].Product, animation: ToasterAnimation.FadeIn);
@@ -3401,7 +3401,7 @@ namespace POS.View
                     {
                         //validateAvailableAmount(row, newCount, index, tb );
                         int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
-                        if (availableAmount < newCount)
+                        if (availableAmount < newCount && row.type !="sr")
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
                             //newCount = newCount + availableAmount;
