@@ -152,7 +152,7 @@
             <rd:DefaultName>Textbox30</rd:DefaultName>
             <Top>1.04375cm</Top>
             <Left>3.52177cm</Left>
-            <Height>7.04134cm</Height>
+            <Height>6.81226cm</Height>
             <Width>13.95646cm</Width>
             <Visibility>
               <Hidden>=Parameters!watermark.Value="0"</Hidden>
@@ -665,7 +665,7 @@
             <Source>External</Source>
             <Value>=Parameters!barcodeimage.Value</Value>
             <Sizing>Fit</Sizing>
-            <Top>7.20268cm</Top>
+            <Top>5.61518cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.97083cm</Height>
             <Width>5.41158cm</Width>
@@ -721,7 +721,7 @@
                   <TextRun>
                     <Value>To:</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -732,7 +732,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>2.256cm</Top>
+            <Top>3.145cm</Top>
             <Left>1.78874cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.27967cm</Width>
@@ -756,7 +756,7 @@
                   <TextRun>
                     <Value>=Parameters!agentName.Value</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -767,10 +767,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>2.256cm</Top>
+            <Top>3.145cm</Top>
             <Left>3.24394cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.41463cm</Width>
+            <Width>6.02402cm</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -792,6 +792,7 @@
                     <Value>Invoice Code:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -800,10 +801,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.88806cm</Top>
+            <Top>2.20556cm</Top>
             <Left>11.6061cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.86261cm</Width>
+            <Width>2.25407cm</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -825,6 +826,7 @@
                     <Value>Invoice Date:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -833,10 +835,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>2.74382cm</Top>
+            <Top>3.06132cm</Top>
             <Left>11.6061cm</Left>
             <Height>0.6cm</Height>
-            <Width>2.79206cm</Width>
+            <Width>2.25407cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -858,6 +860,7 @@
                     <Value>=Parameters!invNumber.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -868,10 +871,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>1.88805cm</Top>
-            <Left>14.46871cm</Left>
+            <Top>2.20555cm</Top>
+            <Left>14.00128cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.6615cm</Width>
+            <Width>5.12893cm</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -893,6 +896,7 @@
                     <Value>=Parameters!invDate.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
@@ -901,6 +905,7 @@
                     <Value> - </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
@@ -909,6 +914,7 @@
                     <Value>=Parameters!invTime.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <Format>FormatDateTime(Parameters!invTime.Value)</Format>
                     </Style>
@@ -920,10 +926,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>ExecutionTime</rd:DefaultName>
-            <Top>2.74382cm</Top>
-            <Left>14.46871cm</Left>
+            <Top>3.06132cm</Top>
+            <Left>14.00128cm</Left>
             <Height>0.6cm</Height>
-            <Width>4.66764cm</Width>
+            <Width>5.13507cm</Width>
             <ZIndex>9</ZIndex>
             <Style>
               <Border>
@@ -955,7 +961,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>6.41747cm</Top>
+            <Top>7.05247cm</Top>
             <Left>4.01125cm</Left>
             <Height>0.67938cm</Height>
             <Width>6.8488cm</Width>
@@ -990,7 +996,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>6.41747cm</Top>
+            <Top>7.05247cm</Top>
             <Left>1.78875cm</Left>
             <Height>0.67938cm</Height>
             <Width>2.3792cm</Width>
@@ -1005,16 +1011,16 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="agentTitle6">
+          <Textbox Name="agentTitle7">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!branchName.Value</Value>
+                    <Value>Branch:</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>11pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -1025,10 +1031,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>5.63225cm</Top>
-            <Left>1.78875cm</Left>
-            <Height>0.67938cm</Height>
-            <Width>6.63713cm</Width>
+            <Top>2.23771cm</Top>
+            <Left>1.82603cm</Left>
+            <Height>0.71113cm</Height>
+            <Width>1.66247cm</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>
@@ -1040,8 +1046,43 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Textbox32">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!branchName.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>2.23771cm</Top>
+            <Left>3.4885cm</Left>
+            <Height>0.71113cm</Height>
+            <Width>5.77946cm</Width>
+            <ZIndex>13</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>8.99655cm</Height>
+        <Height>7.91706cm</Height>
         <Style>
           <Border>
             <Style>None</Style>

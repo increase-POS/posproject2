@@ -1755,9 +1755,6 @@
     <Content Include="Reports\Sale\coupon\coupExport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\Sale\En\coupExport.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Reports\Sale\En\dailySale.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

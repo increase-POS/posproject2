@@ -139,7 +139,6 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/sale/ar/dailysale.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/sale/ar/packagereport.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/sale/coupon/coupexport.rdlc")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/sale/en/coupexport.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/sale/en/dailysale.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/accounts/fund/ar/arfund.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/accounts/fund/en/fund.rdlc")]
