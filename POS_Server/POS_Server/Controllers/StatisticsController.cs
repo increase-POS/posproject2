@@ -9788,7 +9788,7 @@ else
                                                                          ITitemId = IU.itemId,
                                                                          ITunitId = IU.unitId,
                                                                          ITquantity = IT.quantity,
-
+                                                                         avgPurchasePrice= ITEM. avgPurchasePrice,
                                                                          // ITcreateDate = IT.createDate,
                                                                          ITupdateDate = IT.updateDate,
                                                                          //  ITcreateUserId = IT.createUserId,
@@ -9859,7 +9859,8 @@ else
                         foreach (ItemUnitInvoiceProfitModel row in invListm)
                         {
                             decimal unitpurchasePrice = 0;
-                            unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
+                            //   unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
+                            unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId,row.avgPurchasePrice);
                             row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
 
                             if (row.discountValue > 0)
@@ -9896,169 +9897,54 @@ else
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    InvoicesController invoice = new InvoicesController();
-            //    //  invoice.AvgItemPurPrice(1, 2);
-            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-            //    //  List<ItemTransferInvoiceModel> itemlist = new List<ItemTransferInvoiceModel>();
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        List<ItemUnitInvoiceProfitModel> invListm = (from IT in entity.itemsTransfer
-            //                                                   from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
-
-            //                                                   from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-            //                                                       //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-            //                                                   join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-            //                                                   join ITEM in entity.items on IU.itemId equals ITEM.itemId
-            //                                                   join UNIT in entity.units on IU.unitId equals UNIT.unitId
-            //                                                   //    join B in entity.branches on I.branchId equals B.branchId into JB
-            //                                                   join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-            //                                                   join A in entity.agents on I.agentId equals A.agentId into JA
-            //                                                   // join U in entity.users on I.createUserId equals U.userId into JU
-            //                                                   join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-            //                                                   // join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-            //                                                   join P in entity.pos on I.posId equals P.posId into JP
-
-            //                                                   // from JBB in JB
-            //                                                   from JPP in JP.DefaultIfEmpty()
-            //                                                       // from JUU in JU.DefaultIfEmpty()
-            //                                                   from JUPUS in JUPUSR.DefaultIfEmpty()
-            //                                                       // from JIMM in JIM.DefaultIfEmpty()
-            //                                                   from JAA in JA.DefaultIfEmpty()
-            //                                                   from JBCC in JBC.DefaultIfEmpty()
-            //                                                   where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb")
-
-            //                                                   select new ItemUnitInvoiceProfitModel
-            //                                                   {
-
-            //                                                       ITitemName = ITEM.name,
-            //                                                       ITunitName = UNIT.name,
-            //                                                       ITitemsTransId = IT.itemsTransId,
-            //                                                       ITitemUnitId = IT.itemUnitId,
-
-            //                                                       ITitemId = IU.itemId,
-            //                                                       ITunitId = IU.unitId,
-            //                                                       ITquantity = IT.quantity,
-
-            //                                                       // ITcreateDate = IT.createDate,
-            //                                                       ITupdateDate = IT.updateDate,
-            //                                                       //  ITcreateUserId = IT.createUserId,
-            //                                                       ITupdateUserId = IT.updateUserId,
-            //                                                       // ITnotes = IT.notes,
-            //                                                       ITprice = IT.price,
-            //                                                       ITbarcode = IU.barcode,
-            //                                                       //  ITCreateuserName = ITCUSER.name,
-            //                                                       // ITCreateuserLName = ITCUSER.lastname,
-            //                                                       //  ITCreateuserAccName = ITCUSER.username,
-
-
-            //                                                       invoiceId = I.invoiceId,
-            //                                                       invNumber = I.invNumber,
-            //                                                       agentId = I.agentId,
-            //                                                       posId = I.posId,
-            //                                                       invType = I.invType,
-            //                                                       total = I.total,
-            //                                                       totalNet = I.totalNet,
-            //                                                       //  I.paid,
-            //                                                       // I.deserved,
-            //                                                       //I.deservedDate,
-            //                                                       //  I.invDate,
-            //                                                       //  I.invoiceMainId,
-            //                                                       // I.invCase,
-            //                                                       //  I.invTime,
-            //                                                       // I.notes,
-            //                                                       //  I.vendorInvNum,
-            //                                                       // I.vendorInvDate,
-            //                                                       // I.createUserId,
-            //                                                       updateDate = I.updateDate,
-            //                                                       updateUserId = I.updateUserId,
-            //                                                       branchId = I.branchId,
-            //                                                       discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
-            //                                                       discountType = I.discountType,
-            //                                                       tax = I.tax,
-            //                                                       //  I.name,
-            //                                                       // I.isApproved,
-
-            //                                                       //
-            //                                                       branchCreatorId = I.branchCreatorId,
-            //                                                       branchCreatorName = JBCC.name,
-            //                                                       //
-            //                                                       //  branchName = JBB.name,
-
-            //                                                       //  branchType = JBB.type,
-            //                                                       posName = JPP.name,
-            //                                                       posCode = JPP.code,
-            //                                                       agentName = JAA.name,
-            //                                                       agentCode = JAA.code,
-            //                                                       agentType = JAA.type,
-            //                                                       //  cuserName = JUU.name,
-            //                                                       //  cuserLast = JUU.lastname,
-            //                                                       // cUserAccName = JUU.username,
-            //                                                       uuserName = JUPUS.name,
-            //                                                       uuserLast = JUPUS.lastname,
-            //                                                       uUserAccName = JUPUS.username,
-            //                                                       agentCompany = JAA.company,
-            //                                                       subTotal = ((IT.price-(ITEM.taxes *IU.price/100))* IT.quantity),
-            //                                                       //(ITEM.taxes *IU.price/100) = tax value
-            //                                                       //username
-
-            //                                                       //  I.invoiceId,
-            //                                                       //    JBB.name
-            //                                                   }).ToList();
-
-
-            //        foreach (ItemUnitInvoiceProfitModel row in invListm)
-            //        {
-            //            decimal unitpurchasePrice = 0;
-            //            unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
-            //            row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
-
-            //            if (row.discountValue > 0)
-            //            {
-            //                decimal ITdiscountpercent = 0;
-            //                ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.total;
-            //                decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
-            //                row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
-
-            //            }
-            //            else
-            //            {
-            //                row.subTotalNet = (decimal)row.subTotal;
-            //            }
-
-            //            row.itemunitProfit = row.subTotalNet - row.purchasePrice;
-
-
-
-            //        }
-
-
-
-            //        if (invListm == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(invListm);
-            //    }
-
-            //}
-
-            ////else
-            //return NotFound();
+           
         }
+        public decimal AvgPurPrice(int itemUnitId, int itemId,decimal? smallavgprice)
+        {
+          
+
+            decimal avgPrice = 0;
+            
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var itemUnits = (from i in entity.itemsUnits where (i.itemId == itemId) select (i.itemUnitId)).ToList();
+
+           
+
+                var smallestUnitId = (from iu in entity.itemsUnits
+                                      where (itemUnits.Contains((int)iu.itemUnitId) && iu.unitId == iu.subUnitId)
+                                      select iu.itemUnitId).FirstOrDefault();
+
+              
+                if (itemUnitId == smallestUnitId || smallestUnitId == null || smallestUnitId == 0)
+                    return ( decimal) smallavgprice;
+                else
+                {
+                    avgPrice = ((decimal)smallavgprice) * getUpperUnitValue(smallestUnitId, itemUnitId);
+                    return avgPrice;
+                }
+            }
 
 
+        }
+        private int getUpperUnitValue(int itemUnitId, int basicItemUnitId)
+        {
+            int unitValue = 0;
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+
+                var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
+                var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId && x.subUnitId != x.unitId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
+
+                if (upperUnit == null)
+                    return 1;
+                if (upperUnit.itemUnitId == basicItemUnitId)
+                    return (int)upperUnit.unitValue;
+                else
+                    unitValue *= getUpperUnitValue(upperUnit.itemUnitId, basicItemUnitId);
+                return unitValue;
+            }
+        }
         #endregion
 
     }

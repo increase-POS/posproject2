@@ -9,6 +9,7 @@ namespace POS_Server.Models
     {
 
         ///////////////
+        public Nullable<decimal> avgPurchasePrice { get; set; }
         public string ITitemName { get; set; }
         public string ITunitName { get; set; }
         public int ITitemsTransId { get; set; }
