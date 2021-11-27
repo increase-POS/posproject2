@@ -1339,6 +1339,36 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="EmailTemplates\images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\images\req1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\images\req2.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\agents\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\cards\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\items\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\report\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\setting\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Thumb\users\tmp.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="ar_file.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ar_file.Designer.cs</LastGenOutput>
@@ -1666,17 +1696,23 @@
     <Content Include="Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\Destructive\En\Des.rdlc" />
+    <Content Include="Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc" />
+    <Content Include="Reports\StatisticReport\Storage\Destructive\En\Des.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\En\Agent.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\En\Invoice.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\En\Item.rdlc" />
-    <EmbeddedResource Include="Reports\Store\Ar\ArDestroyReport.rdlc" />
-    <EmbeddedResource Include="Reports\Store\Ar\ArLocationReport.rdlc" />
-    <EmbeddedResource Include="Reports\Store\En\DestroyReport.rdlc" />
+    <Content Include="Reports\Store\Ar\ArDestroyReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArLocationReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\DestroyReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Reports\Account\Ar\ArBankDoc.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1893,16 +1929,218 @@
     <Content Include="Reports\StatisticReport\Sale\QT\Ar\ArPurVendorSts.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="EmailTemplates\ordertemplate\ar\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\ar\invfooter.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\ar\invheader.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\ar\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\ar\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\en\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\en\invfooter.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\en\invheader.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\en\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\ordertemplate\en\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\quotationtemplate\ar\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\quotationtemplate\ar\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\quotationtemplate\ar\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\quotationtemplate\en\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\quotationtemplate\en\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\quotationtemplate\en\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\reqtemplate\ar\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\reqtemplate\ar\invfooter.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\reqtemplate\ar\invheader.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\reqtemplate\en\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\reqtemplate\en\invfooter.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\reqtemplate\en\invheader.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saleordertemplate\ar\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saleordertemplate\ar\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saleordertemplate\ar\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saleordertemplate\en\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saleordertemplate\en\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saleordertemplate\en\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\ar\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\ar\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\ar\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\ar\payrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\ar\paytable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\ar\taxdiv.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\en\invbody.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\en\invitemrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\en\invitemtable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\en\payrow.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\en\paytable.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="EmailTemplates\saletemplate\en\taxdiv.tmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\Ar\ServiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Catalog\En\ServiceReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\image\error.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurPosSts.rdlc" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurSts.rdlc" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurUserSts.rdlc" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurVendorSts.rdlc" />
+    <Content Include="Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stock\En\Collect.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stock\En\Item.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stock\En\Location.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stocktaking\Ar\ArArchives.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stocktaking\Ar\ArShortfalls.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stocktaking\En\Archives.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Stocktaking\En\Shortfalls.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArInventory.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArItemsExportReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArReceiptPurchaseReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArSectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArShortageReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArStorageReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\Ar\ArStorageResReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\Inventory.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\ItemsExportReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\LocationReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\ReceiptPurchaseReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\SectionReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\ShortageReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\StorageReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Store\En\StorageResReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="fonts\cairo-font\cairo bold.ttf" />
     <Resource Include="fonts\cairo-font\cairo-light.ttf" />
     <Resource Include="fonts\barcodeFont.ttf" />
-    <None Include="EmailTemplates\temp3.tmp" />
-    <None Include="EmailTemplates\temp3table.tmp" />
     <Fakes Include="Fakes\LiveCharts.fakes" />
     <Resource Include="fonts\cairo-font\Cairo Regular 400.ttf" />
     <None Include="packages.config" />
@@ -1929,7 +2167,6 @@
   <ItemGroup>
     <Folder Include="Reports\StatisticReport\Storage\Internal\Ar\" />
     <Folder Include="Reports\StatisticReport\Storage\Internal\En\" />
-    <Folder Include="Thumb\report\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\netoaster\netoaster.csproj">
@@ -1940,7 +2177,9 @@
   <ItemGroup>
     <Resource Include="pic\increaseLogo.ico" />
     <Resource Include="pic\increase-login-bg.png" />
-    <Resource Include="EmailTemplates\images\image-2.gif" />
+    <Content Include="EmailTemplates\images\image-2.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="pic\increase-login-bg-rtl.png" />
     <Resource Include="pic\setup-bg.jpg" />
     <Content Include="SqlServerTypes\readme.htm" />

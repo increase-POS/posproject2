@@ -83,8 +83,8 @@ namespace POS.View.windows
 
                 bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
-                //MainWindow.posID = int.Parse(Properties.Settings.Default.posId);
-                //Global.APIUri = Properties.Settings.Default.APIUri;
+                MainWindow.posID = int.Parse(Properties.Settings.Default.posId);
+                Global.APIUri = Properties.Settings.Default.APIUri;
                 if (Properties.Settings.Default.userName != string.Empty)
                 {
                     txtUserName.Text = Properties.Settings.Default.userName;
