@@ -8,7 +8,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" Tag="banksReport"
              d:DesignHeight="450" d:DesignWidth="800"
-              Loaded="UserControl_Loaded">
+              Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
     <!--Main Grid-->
     <Grid Margin="0,15,15,15" x:Name="grid_main">
         <Grid.ColumnDefinitions>

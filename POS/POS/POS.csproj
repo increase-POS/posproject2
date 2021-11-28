@@ -307,6 +307,7 @@
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeNumberConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
+    <Compile Include="converters\itemTypeConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\LocationFreeZoneConverter.cs" />
     <Compile Include="converters\locationFreeZoneStorageReportConverter.cs" />

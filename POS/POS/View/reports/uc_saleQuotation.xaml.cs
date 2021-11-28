@@ -576,6 +576,10 @@ namespace POS.View.reports
             dgInvoice.ItemsSource = itemTransfers;
             txt_count.Text = dgInvoice.Items.Count.ToString();
 
+            //hide tax column if all values equal 0
+            if (!itemTransfers.Any(i => i.tax != 0))
+                col_tax.Visibility = Visibility.Hidden;
+
             ObservableCollection<int> selected = new ObservableCollection<int>();
             if (selectedTab == 0)
                 selected = selectedBranchId;
@@ -1516,7 +1520,10 @@ namespace POS.View.reports
             }
         }
 
-      
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 
 }

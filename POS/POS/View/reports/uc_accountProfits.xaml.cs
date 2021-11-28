@@ -1075,6 +1075,9 @@ namespace POS.View.reports
             rep.Refresh();
         }
 
-
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

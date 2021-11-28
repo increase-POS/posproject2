@@ -1175,5 +1175,10 @@ namespace POS.View.reports
             else if (selectedStocktakingTab == 1) Btn_shortfalls_Click(btn_shortfalls , null);
 
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

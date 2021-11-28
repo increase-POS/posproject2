@@ -782,5 +782,10 @@ namespace POS.View.reports
             }
 
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

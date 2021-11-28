@@ -583,6 +583,11 @@ namespace POS.View.purchases
         public void fillEvent()
         {
             reportQuery = filltoprint();
+
+            //hide tax column if all values equal 0
+            if (!reportQuery.Any(i => i.tax != 0))
+                col_tax.Visibility = Visibility.Hidden;
+
             dgInvoice.ItemsSource = reportQuery;
 
             txt_count.Text = dgInvoice.Items.Count.ToString();
@@ -1527,6 +1532,9 @@ namespace POS.View.purchases
             }
         }
 
-       
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

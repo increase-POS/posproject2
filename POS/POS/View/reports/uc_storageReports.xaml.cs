@@ -5962,6 +5962,11 @@ new StackedColumnSeries
 
             rep.Refresh();
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
 

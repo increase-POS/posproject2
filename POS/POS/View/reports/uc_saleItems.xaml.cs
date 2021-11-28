@@ -66,7 +66,14 @@ namespace POS.View.reports
       
         public uc_saleItems()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -88,6 +95,7 @@ namespace POS.View.reports
                 fillComboBranches(cb_collect);
                 fillComboItemsBranches(cb_ItemsBranches);
                 fillComboItems();
+                fillComboItemTypes();
 
                 chk_itemInvoice.IsChecked = true;
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_items.Tag.ToString());
@@ -123,10 +131,24 @@ namespace POS.View.reports
             cb_Items.DisplayMemberPath = "itemUnitName";
             cb_Items.ItemsSource = dynamicComboItem;
         }
+        
+        private void fillComboItemTypes()
+        {
+            var typelist = new[] {
+                new { Text = MainWindow.resourcemanager.GetString("trNormal")               , Value = "n" },//normal
+                new { Text = MainWindow.resourcemanager.GetString("trHaveExpirationDate")   , Value = "d" },//expired
+                new { Text = MainWindow.resourcemanager.GetString("trHaveSerialNumber")     , Value = "sn" },//serial
+                new { Text = MainWindow.resourcemanager.GetString("trService")              , Value = "sr" },//service
+                new { Text = MainWindow.resourcemanager.GetString("trPackage")              , Value = "p" },//package
+                 };
+            cb_Types.DisplayMemberPath = "Text";
+            cb_Types.SelectedValuePath = "Value";
+            cb_Types.ItemsSource = typelist;
+        }
 
         public void fillItemsEvent()
         {
-            temp = fillList(Items, cb_ItemsBranches, cb_Items, chk_itemInvoice, chk_itemReturn, dp_ItemStartDate, dp_ItemEndDate)
+            temp = fillList(Items, cb_ItemsBranches, cb_Items , chk_itemInvoice, chk_itemReturn, dp_ItemStartDate, dp_ItemEndDate)
                 .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
 
             dgInvoice.ItemsSource = temp;
@@ -201,6 +223,7 @@ namespace POS.View.reports
                 col_branch.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
                 col_unit.Visibility = Visibility.Visible;
+                col_type.Visibility = Visibility.Visible;
                 col_itQuantity.Visibility = Visibility.Visible;
                 col_price.Visibility = Visibility.Visible;
                 col_total.Visibility = Visibility.Visible;
@@ -497,6 +520,47 @@ namespace POS.View.reports
                     if (sender != null)
                         SectionData.EndAwait(grid_main);
                     SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Chk_allTypes_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_Types.SelectedItem = null;
+                cb_Types.IsEnabled = false;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Chk_allTypes_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_Types.IsEnabled = true;
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -867,10 +931,11 @@ namespace POS.View.reports
             var result = Invoices.Where(x => (
 
            ((chkReturn.IsChecked == true ? (x.invType == "sb") : false) || (chkInvoice.IsChecked == true ? (x.invType == "s") : false))
-                      && (cbBranch.SelectedItem != null ? x.branchCreatorId == selectedBranch.branchId : true)
-                      && (cb_Items.SelectedItem != null ? x.itemUnitId == selectedItemUnit.itemUnitId : true)
+                      && (cbBranch.SelectedItem != null  ? x.branchCreatorId == selectedBranch.branchId : true)
+                      && (cb_Items.SelectedItem != null  ? x.itemUnitId == selectedItemUnit.itemUnitId : true)
+                      && (cb_Types.SelectedItem != null  ? x.ITtype == cb_Types.SelectedValue.ToString() : true)
                       && (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
-                      && (endDate.SelectedDate != null ? x.invDate <= endDate.SelectedDate : true)));
+                      && (endDate.SelectedDate != null   ? x.invDate <= endDate.SelectedDate : true)));
 
             itemList = result.ToList();
             return result.ToList();
@@ -1256,6 +1321,7 @@ namespace POS.View.reports
         }
         #endregion
 
+        #region collect charts
         private void fillPieChartCollect()
         {
             List<string> titles = new List<string>();
@@ -1441,5 +1507,13 @@ namespace POS.View.reports
             rowChart.Series = rowChartData;
         }
 
+
+        #endregion
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            // Collect all generations of memory.
+            GC.Collect();
+        }
     }
 }

@@ -208,6 +208,10 @@ namespace POS.View.reports
 
         void RefreshIemTrasferInvoicesView()
         {
+            //hide tax column if all values equal 0
+            if (!itemTrasferInvoicesQuery.Any(i => i.tax != 0))
+                col_tax.Visibility = Visibility.Hidden;
+
             dgInvoice.ItemsSource = itemTrasferInvoicesQuery;
             txt_count.Text = itemTrasferInvoicesQuery.Count().ToString();
         }
@@ -845,6 +849,11 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
         }
     }
 }

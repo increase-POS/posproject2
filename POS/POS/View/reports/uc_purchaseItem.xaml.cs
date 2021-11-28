@@ -1494,6 +1494,11 @@ namespace POS.View.reports
         {
             selectionChangedCall(sender);
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
 

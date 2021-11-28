@@ -1980,6 +1980,11 @@ namespace POS.View.reports
         {
             fillEventsCall(sender);
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
 

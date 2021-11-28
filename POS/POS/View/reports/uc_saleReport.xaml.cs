@@ -671,6 +671,10 @@ namespace POS.View.reports
         {
             itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
 
+            //hide tax column if all values equal 0
+            if (!itemTransfers.Any(i => i.tax != 0))
+                col_tax.Visibility = Visibility.Hidden;
+
             dgInvoice.ItemsSource = itemTransfers;
             txt_count.Text = dgInvoice.Items.Count.ToString();
 
@@ -1631,6 +1635,9 @@ namespace POS.View.reports
             }
         }
 
-       
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
