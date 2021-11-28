@@ -416,6 +416,7 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
+
         public double? itemAvg { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public string causeFalls { get; set; }
@@ -499,6 +500,7 @@ namespace POS.Classes
         public Nullable<byte> isApproved { get; set; }
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreatorName { get; set; }
+        public string ITtype { get; set; }
         private string invTypeNumber;//number
         //public string InvTypeNumber { get => invTypeNumber = invType + "-" + invNumber; set => invTypeNumber = value; }
         public string InvTypeNumber
