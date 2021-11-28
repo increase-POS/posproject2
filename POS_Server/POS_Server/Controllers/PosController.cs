@@ -418,14 +418,8 @@ var strP = TokenManager.GetPrincipal(token);
                                 foreach (setValuesModel v in newObject)
                                 {
                                     var setId = entity.setting.Where(x => x.name == v.name).Select(x => x.settingId).Single();
-                                    var setValue = new setValues()
-                                    {
-                                        value = v.value,
-                                        isDefault = 1,
-                                        isSystem = 1,
-                                        settingId = setId,
-                                    };
-                                    entity.setValues.Add(setValue);
+                                    var setValue = entity.setValues.Where(x => x.settingId == setId).FirstOrDefault();
+                                    setValue.value = v.value;                                   
                                 }
                                 #endregion
                                 entity.SaveChanges();
