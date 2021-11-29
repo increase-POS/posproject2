@@ -10,10 +10,10 @@ namespace POS
     {
         public const string APIKey = "1234";
         //public static string APIUri = "http://localhost:44/api/";
-        //public static string APIUri = "http://localhost:44370/api/";
-        //public static string APIUri = "http://192.168.1.5:44370/api/";
-        //public static string APIUri = "http://192.168.1.7:44730/api/";
-        public static string APIUri = "http://141.95.1.58:44/api/";
+      
+        public static string APIUri = "http://192.168.1.5:44370/api/";
+
+        //public static string APIUri = "http://141.95.1.58:44/api/";
         //public static string APIUri = Properties.Settings.Default.APIUri;
 
         public static string ScannedImageLocation = "Thumb/Scan/scan.jpg";

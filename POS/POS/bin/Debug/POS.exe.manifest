@@ -878,7 +878,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>wjOUGnq87VvebA42BK/wXVYrUkoBVKNdLmhrZvoWO/k=</dsig:DigestValue>
+        <dsig:DigestValue>+vQkB04Lul1L3PbTYlnyHC20FACSU6k6g4IsjYETQt8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="13238792">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="13239304">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>gRmP4iitYvzPh/ejhiWFRXL6DLvOFpIoPxAgEMVcOGU=</dsig:DigestValue>
+        <dsig:DigestValue>CXrYmKcYcAR2cQQ7AVW2oNSrl3gpoGnXlq2xQkutAL8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1425,7 +1425,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>FZkjiulRQk4dP0/kTClSU3niest5W3/4ApDTq9a/MkY=</dsig:DigestValue>
+      <dsig:DigestValue>azUyxPzlEOi6iP8nMBQ/m2uOQV1MyAEuqaNJY5PyD9M=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\Account\Ar\ArBankAccReport.rdlc" size="394331">
