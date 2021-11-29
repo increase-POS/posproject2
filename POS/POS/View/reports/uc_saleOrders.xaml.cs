@@ -597,9 +597,9 @@ namespace POS.View.reports
         public void fillEvent()
         {
             itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
-
-            //hide tax column if all values equal 0
-            if (!itemTransfers.Any(i => i.tax != 0))
+            
+            //hide tax column if region tax equals to 0
+            if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
 
             dgInvoice.ItemsSource = itemTransfers;
@@ -966,8 +966,6 @@ namespace POS.View.reports
         }
 
         #endregion
-
-
 
         #region settings
         private void btn_settings_Click(object sender, RoutedEventArgs e)

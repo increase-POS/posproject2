@@ -461,5 +461,10 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

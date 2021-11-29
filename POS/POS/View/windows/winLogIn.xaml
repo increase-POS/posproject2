@@ -16,7 +16,7 @@
         BorderThickness="0"
         AllowsTransparency="True"
         Background="Transparent"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize" Unloaded="Window_Unloaded">
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
             <BeginStoryboard>

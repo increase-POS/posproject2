@@ -1245,5 +1245,10 @@ namespace POS.View.accounts
             }
 
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

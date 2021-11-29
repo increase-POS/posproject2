@@ -296,10 +296,8 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-
-
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-
+                GC.Collect();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -313,7 +311,6 @@ namespace POS.View
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 if (sender != null)

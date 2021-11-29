@@ -576,8 +576,8 @@ namespace POS.View.reports
             dgInvoice.ItemsSource = itemTransfers;
             txt_count.Text = dgInvoice.Items.Count.ToString();
 
-            //hide tax column if all values equal 0
-            if (!itemTransfers.Any(i => i.tax != 0))
+            //hide tax column if region tax equals to 0
+            if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
 
             ObservableCollection<int> selected = new ObservableCollection<int>();
@@ -726,7 +726,6 @@ namespace POS.View.reports
 
                 fillComboPos();
                 fillEvent();
-
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

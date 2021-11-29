@@ -1766,5 +1766,10 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }

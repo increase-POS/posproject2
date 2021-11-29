@@ -1477,7 +1477,10 @@ namespace POS.View.accounts
             }
         }
 
-        
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
 
         private void Tb_EnglishDigit_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {//only english and digits

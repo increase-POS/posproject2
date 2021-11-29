@@ -585,7 +585,7 @@ namespace POS.View.purchases
             reportQuery = filltoprint();
 
             //hide tax column if all values equal 0
-            if (!reportQuery.Any(i => i.tax != 0))
+            if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
 
             dgInvoice.ItemsSource = reportQuery;
@@ -682,13 +682,13 @@ namespace POS.View.purchases
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_branch);
                 path_branch.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                fillComboBranches();
-                fillEvent();
-
                 hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
+
+                fillComboBranches();
+                fillEvent();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -720,15 +720,15 @@ namespace POS.View.purchases
                 paint();
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_pos);
                 path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
-                fillComboPos();
-                fillEvent();
-
+               
                 hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
+
+                fillComboPos();
+                fillEvent();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -761,9 +761,6 @@ namespace POS.View.purchases
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_vendors);
                 path_vendors.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                fillComboVendors();
-                fillEvent();
-
                 hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_vendor.Visibility = Visibility.Visible;
@@ -772,6 +769,9 @@ namespace POS.View.purchases
                 col_count.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
                 col_tax.Visibility = Visibility.Visible;
+
+                fillComboVendors();
+                fillEvent();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -804,15 +804,15 @@ namespace POS.View.purchases
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_users);
                 path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                fillComboUsers();
-                fillEvent();
-
                 hideAllColumn();
                 col_branch.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
                 col_user.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
                 col_discount.Visibility = Visibility.Visible;
+
+                fillComboUsers();
+                fillEvent();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

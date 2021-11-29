@@ -208,8 +208,8 @@ namespace POS.View.reports
 
         void RefreshIemTrasferInvoicesView()
         {
-            //hide tax column if all values equal 0
-            if (!itemTrasferInvoicesQuery.Any(i => i.tax != 0))
+            //hide tax column if region tax equals to 0
+            if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
 
             dgInvoice.ItemsSource = itemTrasferInvoicesQuery;

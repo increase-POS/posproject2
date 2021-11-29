@@ -1891,6 +1891,7 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         private void clearImg()
         {
             Uri resourceUri = new Uri("pic/no-image-icon-90x90.png", UriKind.Relative);
@@ -2010,5 +2011,12 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
+
     }
 }

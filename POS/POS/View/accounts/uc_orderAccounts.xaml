@@ -7,7 +7,7 @@
              mc:Ignorable="d"  Tag="ordersAccounting"
              xmlns:converters="clr-namespace:POS.converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="675" d:DesignWidth="1000" Loaded="UserControl_Loaded" >
+             d:DesignHeight="675" d:DesignWidth="1000" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded" >
     <Grid x:Name="grid_ucOrderAccounts" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
