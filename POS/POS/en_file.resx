@@ -2794,4 +2794,19 @@ Please add Email in setting</value>
   <data name="trTheServices" xml:space="preserve">
     <value>The Services</value>
   </data>
+  <data name="trHaveExpirationDates" xml:space="preserve">
+    <value>Items with an expiration date</value>
+  </data>
+  <data name="trHaveSerialNumbers" xml:space="preserve">
+    <value>Items with serial number</value>
+  </data>
+  <data name="trNormals" xml:space="preserve">
+    <value>Normal Items</value>
+  </data>
+  <data name="trPackages" xml:space="preserve">
+    <value>Packages</value>
+  </data>
+  <data name="trServices" xml:space="preserve">
+    <value>Services</value>
+  </data>
 </root>

@@ -439,6 +439,20 @@ namespace POS.Classes
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetShipping", shippingCompanies));
         }
+        public static string itemTypeConverter(string value)
+        {
+            string s = "";
+            switch (value)
+            {
+                case "n": s = MainWindow.resourcemanagerreport.GetString("trNormals"); break;
+                case "d": s = MainWindow.resourcemanagerreport.GetString("trHaveExpirationDates"); break;
+                case "sn": s = MainWindow.resourcemanagerreport.GetString("trHaveSerialNumbers"); break;
+                case "sr": s = MainWindow.resourcemanagerreport.GetString("trServices"); break;
+                case "p": s = MainWindow.resourcemanagerreport.GetString("trPackages"); break;
+            }
+
+            return s;
+        }
         public static void PurStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
@@ -464,8 +478,14 @@ namespace POS.Classes
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
 
+        public static void saleitemStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
 
-      
+            itemTypeConv(paramarr);
+            PurStsReport(tempquery, rep, reppath);
+
+        }
+
         public static void SalePromoStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
@@ -486,6 +506,15 @@ Parameters!trValueDiscount.Value)
 
 
 
+        }
+
+        public static void itemTypeConv(List<ReportParameter> paramarr)
+        {
+            paramarr.Add(new ReportParameter("trNormal", MainWindow.resourcemanagerreport.GetString("trNormal")));
+            paramarr.Add(new ReportParameter("trHaveExpirationDate", MainWindow.resourcemanagerreport.GetString("trHaveExpirationDate")));
+            paramarr.Add(new ReportParameter("trHaveSerialNumber", MainWindow.resourcemanagerreport.GetString("trHaveSerialNumber")));
+            paramarr.Add(new ReportParameter("trService", MainWindow.resourcemanagerreport.GetString("trService")));
+            paramarr.Add(new ReportParameter("trPackage", MainWindow.resourcemanagerreport.GetString("trPackage")));
         }
         //clsReports.SaleInvoiceStsReport(itemTransfers, rep, reppath, paramarr);
 

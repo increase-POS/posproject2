@@ -1247,12 +1247,29 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string itemtype = "";
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedTab == 0)
                 {
-                    addpath = @"\Reports\StatisticReport\Sale\Item\Ar\ArItem.rdlc";
+
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        if (chk_allTypes.IsChecked == true || cb_Types.SelectedValue==null)
+                        {
+                            itemtype = "";
+                        }
+                        else
+                        {
+                            itemtype = clsReports.itemTypeConverter(cb_Types.SelectedValue.ToString());
+                        }
+                    });
+                  
+                  
+                       // cb_Types.
+                       addpath = @"\Reports\StatisticReport\Sale\Item\Ar\ArItem.rdlc";
+                  //  paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
                 }
                 else if (selectedTab == 1)
                 {
@@ -1264,6 +1281,18 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Item\En\EnItem.rdlc";
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        if (chk_allTypes.IsChecked == true || cb_Types.SelectedValue == null)
+                        {
+                            itemtype = "";
+                        }
+                        else
+                        {
+                            itemtype = clsReports.itemTypeConverter(cb_Types.SelectedValue.ToString());
+                        }
+                    });
+
                 }
                 else if (selectedTab == 1)
                 {
@@ -1273,10 +1302,11 @@ namespace POS.View.reports
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
-            clsReports.PurStsReport(temp, rep, reppath);
+            //cb_Types cb_Types.SelectedValue.ToString() itemtypeconverter //chk_allTypes
+            clsReports.saleitemStsReport(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
+            paramarr.Add(new ReportParameter("itemtype", itemtype));
 
             rep.SetParameters(paramarr);
 

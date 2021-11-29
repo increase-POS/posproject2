@@ -2779,4 +2779,19 @@
   <data name="trTheServices" xml:space="preserve">
     <value>الخدمات</value>
   </data>
+  <data name="trHaveExpirationDates" xml:space="preserve">
+    <value>أصناف ذات تاريخ انتهاء صلاحية</value>
+  </data>
+  <data name="trHaveSerialNumbers" xml:space="preserve">
+    <value>أصناف ذات رقم تسلسلي</value>
+  </data>
+  <data name="trNormals" xml:space="preserve">
+    <value>أصناف عادية</value>
+  </data>
+  <data name="trPackages" xml:space="preserve">
+    <value>حزم</value>
+  </data>
+  <data name="trServices" xml:space="preserve">
+    <value>خدمات</value>
+  </data>
 </root>

@@ -3517,11 +3517,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to أصناف ذات تاريخ انتهاء صلاحية.
+        /// </summary>
+        internal static string trHaveExpirationDates {
+            get {
+                return ResourceManager.GetString("trHaveExpirationDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم سيريال.
         /// </summary>
         internal static string trHaveSerialNumber {
             get {
                 return ResourceManager.GetString("trHaveSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to أصناف ذات رقم تسلسلي.
+        /// </summary>
+        internal static string trHaveSerialNumbers {
+            get {
+                return ResourceManager.GetString("trHaveSerialNumbers", resourceCulture);
             }
         }
         
@@ -4589,6 +4607,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to أصناف عادية.
+        /// </summary>
+        internal static string trNormals {
+            get {
+                return ResourceManager.GetString("trNormals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ملاحظات.
         /// </summary>
         internal static string trNote {
@@ -4828,6 +4855,15 @@ namespace POS {
         internal static string trPackageItems {
             get {
                 return ResourceManager.GetString("trPackageItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حزم.
+        /// </summary>
+        internal static string trPackages {
+            get {
+                return ResourceManager.GetString("trPackages", resourceCulture);
             }
         }
         
@@ -6628,6 +6664,15 @@ namespace POS {
         internal static string trService {
             get {
                 return ResourceManager.GetString("trService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خدمات.
+        /// </summary>
+        internal static string trServices {
+            get {
+                return ResourceManager.GetString("trServices", resourceCulture);
             }
         }
         
