@@ -157,40 +157,43 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>  
                                         <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                         <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-
-
-                                    <DockPanel  Grid.Column="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_itemInvoice" Content="Invoice" Margin="10,5,10,5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
-                                        <CheckBox x:Name="chk_itemReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
-                                        <CheckBox x:Name="chk_itemDrafs" Visibility="Collapsed"></CheckBox>
-                                    </DockPanel>
-                                    <ComboBox SelectionChanged="cb_Items_SelectionChanged" Name="cb_Items" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="Item ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allTypes" Grid.Row="2" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allTypes_Checked" Unchecked="Chk_allTypes_Unchecked"></CheckBox>
-                                    <ComboBox  Name="cb_Types" 
-                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                               materialDesign:HintAssist.Hint="Item Type...."
-                                               Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
-                                               BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                               Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="2" 
-                                               SelectionChanged="Cb_ItemsBranches_SelectionChanged"></ComboBox>
-                                    
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranchesItem" Checked="Chk_allBranchesItem_Checked" Unchecked="Chk_allBranchesItem_Unchecked" Grid.Row="0" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <ComboBox SelectionChanged="Cb_ItemsBranches_SelectionChanged" Name="cb_ItemsBranches"  Grid.Row="0"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Branches ...."
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
-                                    
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Checked="Chk_allItems_Checked" Unchecked="Chk_allItems_Unchecked" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
-                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranchesItem" Checked="Chk_allBranchesItem_Checked" Unchecked="Chk_allBranchesItem_Unchecked" Grid.Row="0" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+                                    <ComboBox Grid.Row="0" Grid.Column="2" SelectionChanged="cb_Items_SelectionChanged" Name="cb_Items" 
+                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      materialDesign:HintAssist.Hint="Item ...."
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
+                                    <CheckBox Grid.Row="0" Grid.Column="3" 
+                                              Background="{StaticResource MainColorBlue}" x:Name="chk_allItems" Checked="Chk_allItems_Checked" Unchecked="Chk_allItems_Unchecked"   Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
+
+
+                                    <DockPanel  Grid.Column="4" HorizontalAlignment="Right" LastChildFill="False">
+                                        <CheckBox x:Name="chk_itemInvoice" Content="Invoice" Margin="10,5,10,5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_itemReturn" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_itemDrafs" Visibility="Collapsed"></CheckBox>
+                                    </DockPanel>
+                                   
+                                    <ComboBox  Name="cb_Types" 
+                                               Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                               materialDesign:HintAssist.Hint="Item Type...."
+                                               Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
+                                               BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                               Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1" 
+                                               SelectionChanged="Cb_ItemsBranches_SelectionChanged"></ComboBox>
+                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allTypes" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allTypes_Checked" Unchecked="Chk_allTypes_Unchecked"></CheckBox>
+
+
+                                    <DockPanel  Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="4" HorizontalAlignment="Right" LastChildFill="False">
                                         <DatePicker SelectedDateFormat="Short"  Name="dp_ItemEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
                                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                 materialDesign:HintAssist.Hint="End Date..."></DatePicker>
