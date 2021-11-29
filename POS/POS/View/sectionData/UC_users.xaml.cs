@@ -486,7 +486,7 @@ namespace POS.View
                             user.updateUserId = MainWindow.userID.Value;
                             user.notes = tb_details.Text;
                             user.role = "";
-
+                          
                             int s = await userModel.save(user);
                             if (s == -1)// إظهار رسالة الترقية
                                 Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
