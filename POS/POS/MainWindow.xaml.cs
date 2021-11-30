@@ -61,7 +61,7 @@ namespace POS
         internal static User userLogin;
         internal static int? userLogInID;
         internal static Pos posLogIn = new Pos();
-        internal static int? posID = 1;
+        internal static int? posID = 3;
         internal static int? branchID;
         public static Branch loginBranch;
         bool isHome = false;

@@ -2059,6 +2059,7 @@
     <Content Include="Reports\image\error.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoice.datasource" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurPosSts.rdlc" />
     <None Include="Reports\StatisticReport\Sale\QT\En\EnPurSts.rdlc" />
