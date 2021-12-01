@@ -112,7 +112,7 @@ namespace POS.View
 
                 if (firstLoading)
                 {
-                    await SectionData.fillBranchesWithoutCurrent(cb_branch, MainWindow.branchID.Value, "bs");
+                    await SectionData.fillBranchesWithAll(cb_branch,  "bs");
                     //await SectionData.fillBranchesWithAll(cb_branch);
                     firstLoading = false;
                     cb_branch.SelectedValue = MainWindow.branchID;
