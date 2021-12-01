@@ -530,7 +530,7 @@ var strP = TokenManager.GetPrincipal(token);
                         var catEntity = entity.Set<categoryuser>();
                         if (newObject.userId == 0)
                         {
-                            userObj.isAdmin = false;
+                            newObject.isAdmin =false;
 
                             ProgramInfo programInfo = new ProgramInfo();
                             int userMaxCount = programInfo.getUserCount();
@@ -602,10 +602,11 @@ var strP = TokenManager.GetPrincipal(token);
                         }
                     }
                 }
-                catch
+                catch 
                 {
                     message = "0";
-                    return TokenManager.GenerateToken(message);
+                   return TokenManager.GenerateToken(message);
+                   // return TokenManager.GenerateToken(ex.ToString());
                 }
             }
         }

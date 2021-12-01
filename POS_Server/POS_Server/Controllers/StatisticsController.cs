@@ -432,7 +432,9 @@ namespace POS_Server.Controllers
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = ((I.discountType == "1" || I.discountType == null) || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -726,7 +728,9 @@ namespace POS_Server.Controllers
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -1037,7 +1041,9 @@ namespace POS_Server.Controllers
                                             I.tax,
                                             //I.name,
                                             //I.isApproved,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.branchCreatorId,
                                             branchCreatorName = JBCC.name,
                                             //
@@ -2061,6 +2067,8 @@ else
                                             ITitemsTransId = IT.itemsTransId,
                                             ITitemUnitId = IT.itemUnitId,
 
+                                            ITtype = ITEM.type,
+
                                             ITitemId = IU.itemId,
                                             ITunitId = IU.unitId,
                                             ITquantity = IT.quantity,
@@ -2100,7 +2108,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -2372,7 +2382,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -2646,7 +2658,10 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
+
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -2917,7 +2932,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -3193,7 +3210,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -3493,7 +3512,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             //I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
 
                                             I.discountType,
@@ -3814,7 +3835,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -4213,7 +4236,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -4833,7 +4858,9 @@ else
                                             //I.updateDate,
                                             //I.updateUserId,
                                             // I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             //I.discountType,
                                             //I.tax,
                                             //I.name,
@@ -8334,7 +8361,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -8631,7 +8660,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -8917,7 +8948,9 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             I.branchId,
-                                            discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? (I.discountValue / 100) : 0),
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                             I.discountType,
                                             I.tax,
                                             I.name,
@@ -9822,7 +9855,10 @@ else
                                                                          updateDate = I.updateDate,
                                                                          updateUserId = I.updateUserId,
                                                                          branchId = I.branchId,
-                                                                         discountValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),  //
+                                                                         //calc coupon + manual discount
+                                                                         discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         +( (I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
                                                                          discountType = I.discountType,
                                                                          tax = I.tax,
                                                                          //  I.name,

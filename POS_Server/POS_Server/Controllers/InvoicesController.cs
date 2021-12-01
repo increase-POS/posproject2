@@ -64,6 +64,9 @@ var strP = TokenManager.GetPrincipal(token);
                         b.shippingCompanyId,
                         b.shipUserId,
                         b.userId,
+                        b.manualDiscountType,
+
+                        b.manualDiscountValue,
                     })
                     .ToList();
                     return TokenManager.GenerateToken(banksList);
@@ -187,6 +190,9 @@ var strP = TokenManager.GetPrincipal(token);
                         b.userId,
                         b.printedcount,
                         b.isOrginal,
+                        b.manualDiscountType,
+
+                        b.manualDiscountValue,
                     })
                     .FirstOrDefault();
 
@@ -249,6 +255,9 @@ var strP = TokenManager.GetPrincipal(token);
                         b.shippingCompanyId,
                         b.shipUserId,
                         b.userId,
+                        b.manualDiscountType,
+
+                        b.manualDiscountValue,
                     })
                     .FirstOrDefault();
 
@@ -310,6 +319,9 @@ var strP = TokenManager.GetPrincipal(token);
                         b.shipUserId,
                         b.userId,
                         b.cashReturn,
+                        b.manualDiscountType,
+
+                        b.manualDiscountValue,
                     })
                     .FirstOrDefault();
 
@@ -385,6 +397,7 @@ var strP = TokenManager.GetPrincipal(token);
                                              userId = b.userId,
                                              manualDiscountType = b.manualDiscountType,
                                              manualDiscountValue = b.manualDiscountValue,
+
                                          })
 
                                .FirstOrDefault();
@@ -2231,7 +2244,9 @@ var strP = TokenManager.GetPrincipal(token);
                                         totalNetP = g.Where(t => t.I.invType == "p").Sum(S => S.I.totalNet),
                                         paid = g.Sum(S => S.I.paid),
                                         deserved = g.Sum(S => S.I.deserved),
-                                        discountValue = g.Sum(S => S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0)),
+                                        discountValue = g.Sum(S => (S.I.discountType == "1" ? S.I.discountValue : (S.I.discountType == "2" ? (S.I.discountValue / 100) : 0))
+                                         +((S.I.manualDiscountType == "1" || S.I.discountType == null) ? S.I.manualDiscountValue : (S.I.manualDiscountType == "2" ? ((S.I.manualDiscountValue / 100) * S.I.total) : 0))
+                                            ),
                                     }).ToList();
                      
                     return TokenManager.GenerateToken(invListm);
