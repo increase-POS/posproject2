@@ -851,9 +851,7 @@ namespace POS.View
 
         }
 
-        private void cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
+       
 
         private void tb_code_LostFocus(object sender, RoutedEventArgs e)
         {
