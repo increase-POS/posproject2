@@ -217,6 +217,11 @@ namespace POS.Classes
             List<MailimageClass> imgs = new List<MailimageClass>();
             MailimageClass img = new MailimageClass();
             bool isArabic = ReportCls.checkLang();
+
+            decimal disval = repm.calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
+            decimal manualdisval = repm.calcpercentval(invoice.manualDiscountType, invoice.manualDiscountValue, invoice.total);
+            invoice.discountValue = disval + manualdisval;
+            invoice.discountType = "1";
             if (isArabic)
             {
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
@@ -425,6 +430,13 @@ namespace POS.Classes
             ReportCls repm = new ReportCls();
             List<MailimageClass> imgs = new List<MailimageClass>();
             MailimageClass img = new MailimageClass();
+
+            
+            decimal disval = repm.calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
+            decimal manualdisval = repm.calcpercentval(invoice.manualDiscountType, invoice.manualDiscountValue, invoice.total);
+            invoice.discountValue = disval + manualdisval;
+            invoice.discountType = "1";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {

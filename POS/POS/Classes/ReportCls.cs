@@ -889,15 +889,20 @@ namespace POS.Classes
             checkLang();
 
             decimal disval = calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
-            decimal totalafterdis;
-            if (invoice.total != null)
-            {
-                totalafterdis = (decimal)invoice.total - disval;
-            }
-            else
-            {
-                totalafterdis = 0;
-            }
+            decimal manualdisval = calcpercentval(invoice.manualDiscountType, invoice.manualDiscountValue, invoice.total);
+            invoice.discountValue = disval + manualdisval;
+            invoice.discountType = "1";
+
+
+            //decimal totalafterdis;
+            //if (invoice.total != null)
+            //{
+            //    totalafterdis = (decimal)invoice.total - disval;
+            //}
+            //else
+            //{
+            //    totalafterdis = 0;
+            //}
             string userName = invoice.uuserName + " " + invoice.uuserLast;
             // string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
             //    : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
@@ -999,16 +1004,21 @@ namespace POS.Classes
             string userName = invoice.uuserName + " " + invoice.uuserLast;
 
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
+
             decimal disval = calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
-            decimal totalafterdis;
-            if (invoice.total != null)
-            {
-                totalafterdis = (decimal)invoice.total - disval;
-            }
-            else
-            {
-                totalafterdis = 0;
-            }
+          decimal manualdisval = calcpercentval(invoice.manualDiscountType, invoice.manualDiscountValue, invoice.total);
+            invoice.discountValue = disval+ manualdisval;
+            invoice.discountType ="1";
+
+          //  decimal totalafterdis;
+            //if (invoice.total != null)
+            //{
+            //    totalafterdis = (decimal)invoice.total - disval;
+            //}
+            //else
+            //{
+            //    totalafterdis = 0;
+            //}
 
             // discountType
             //  decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
