@@ -140,9 +140,10 @@ namespace POS.View.reports
         }
 
         IEnumerable<ItemUnitInvoiceProfit> profitsTemp = null;
+
         async Task Search()
         {
-            if (profits is null)
+            //if (profits is null)
                 await RefreshItemUnitInvoiceProfit();
 
             searchText = txt_search.Text.ToLower();
@@ -158,8 +159,16 @@ namespace POS.View.reports
                 profitsTemp = profitsTemp.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
 
             else
+            {
+                var quantities = profitsTemp.GroupBy(s => s.ITitemUnitId).Select(inv => new { ITquantity = inv.Sum(p => p.ITquantity.Value) }).ToList();
                 profitsTemp = profitsTemp.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
-
+                int index = 0;
+                foreach (var x in profitsTemp)
+                {
+                    x.ITquantity = quantities[index].ITquantity;
+                    index++;
+                }
+            }
             profitsQuery = profitsTemp
             .Where(s =>
             (
@@ -216,7 +225,7 @@ namespace POS.View.reports
             {
                 var profitsSum = profitsQuery.GroupBy(s => s.ITitemUnitId).Select(g => new
                 {
-                    itemProfit = g.Sum(p => p.itemunitProfit)
+                    itemProfit = g.Sum(p => p.itemunitProfit),
                 }).ToList();
 
                 int i = 0;
@@ -319,10 +328,8 @@ namespace POS.View.reports
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_invoice);
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
-                //await Search();
-
                 chk_allBranches.IsChecked = true;
-                //chk_allPos.IsChecked = true;
+              
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
                 if (sender != null)
