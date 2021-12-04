@@ -5759,6 +5759,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchases Report.
+        /// </summary>
+        internal static string trPurchasesReport {
+            get {
+                return ResourceManager.GetString("trPurchasesReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to QTY.
         /// </summary>
         internal static string trQTR {

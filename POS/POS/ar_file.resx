@@ -2794,4 +2794,7 @@
   <data name="trServices" xml:space="preserve">
     <value>خدمات</value>
   </data>
+  <data name="trPurchasesReport" xml:space="preserve">
+    <value>تقرير مشتريات</value>
+  </data>
 </root>

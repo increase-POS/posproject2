@@ -802,6 +802,10 @@ namespace POS.View.reports
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
+            string firstTitle = "purchaseItem";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
 
             string addpath = "";
             bool isArabic = ReportCls.checkLang();
@@ -810,10 +814,15 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Item\Ar\ArItem.rdlc";
+                    secondTitle = "items";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Item\Ar\ArMostPur.rdlc";
+                    secondTitle = "collect";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
 
 
@@ -824,10 +833,14 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Item\En\EnItem.rdlc";
+                    secondTitle = "items";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Item\En\EnMostPur.rdlc";
+                    secondTitle = "collect";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
 
             }
@@ -836,7 +849,8 @@ namespace POS.View.reports
 
             ReportCls.checkLang();
             //  getpuritemcount
-
+            Title = MainWindow.resourcemanagerreport.GetString("trPurchasesReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.PurStsReport(RepQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

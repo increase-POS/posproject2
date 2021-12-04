@@ -921,7 +921,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Quantity</Value>
+                                  <Value>QTY</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>

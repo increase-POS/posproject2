@@ -521,7 +521,7 @@ Parameters!trValueDiscount.Value)
         public static void SaleInvoiceStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
-
+            paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
             itemTransferInvTypeConv(paramarr);
 
         }
@@ -531,7 +531,7 @@ Parameters!trValueDiscount.Value)
 
             PurStsReport(tempquery, rep, reppath);
              string date=  SectionData.DateToString(tempquery.FirstOrDefault().updateDate);
-         
+            paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
             paramarr.Add(new ReportParameter("invDate", date));
             itemTransferInvTypeConv(paramarr);
 
@@ -555,8 +555,119 @@ Parameters!trValueDiscount.Value)
             itemTransferInvTypeConv(paramarr);
 
         }
+
+        public static string ReportTabTitle( string firstTitle, string secondTitle)
+        {
+            string trtext = "";
+            //////////////////////////////////////////////////////////////////////////////
+            if (firstTitle == "invoice")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trInvoices");
+            else if (firstTitle == "quotation")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trQuotations");
+            else if (firstTitle == "promotion")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trPromotion");
+            else if (firstTitle == "internal")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trInternal");
+            else if (firstTitle == "external")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trExternal");
+            else if (firstTitle == "banksReport")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trBanks");
+            else if (firstTitle == "destroied")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trDestructives");
+            else if (firstTitle == "usersReport")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trUsers");
+            else if (firstTitle == "storageReports")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trStorage");
+            else if (firstTitle == "stocktaking")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trStocktaking");
+            else if (firstTitle == "stock")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trStock");
+            else if (firstTitle == "saleOrders" || firstTitle == "purchaseOrders")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trOrders");
+            else if (firstTitle == "saleItems" || firstTitle == "purchaseItem")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trItems");
+            else if (firstTitle == "recipientReport")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trRecepient");
+            else if (firstTitle == "accountStatement")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trAccountStatement");
+            else if (firstTitle == "paymentsReport")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trPayments");
+            else if (firstTitle == "posReports")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trPOS");
+            else if (firstTitle == "dailySalesStatistic")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trDailySales");
+            else if (firstTitle == "accountProfits")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trProfits");
+            else if (firstTitle == "accountFund")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trCashBalance");
+
+            //////////////////////////////////////////////////////////////////////////////
+
+            if (secondTitle == "branch")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trBranches");
+            else if (secondTitle == "pos")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trPOS");
+            else if (secondTitle == "vendors" || secondTitle == "vendor")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trVendors");
+            else if (secondTitle == "customers" || secondTitle == "customer")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trCustomers");
+            else if (secondTitle == "users" || secondTitle == "user")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trUsers");
+            else if (secondTitle == "items" || secondTitle == "item")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trItems");
+            else if (secondTitle == "coupon")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trCoupon");
+            else if (secondTitle == "offers")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trOffer");
+            else if (secondTitle == "invoice")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("tr_Invoice");
+            else if (secondTitle == "order")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trOrders");
+            else if (secondTitle == "quotation")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trQuotations");
+            else if (secondTitle == "operator")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trOperator");
+            else if (secondTitle == "payments")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trPayments");
+            else if (secondTitle == "recipient")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trRecepient");
+            else if (secondTitle == "destroied")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trDestructives");
+            else if (secondTitle == "agent")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trCustomers");
+            else if (secondTitle == "stock")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trStock");
+            else if (secondTitle == "external")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trExternal");
+            else if (secondTitle == "internal")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trInternal");
+            else if (secondTitle == "stocktaking")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trStocktaking");
+            else if (secondTitle == "archives")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trArchive");
+            else if (secondTitle == "shortfalls")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trShortages");
+            else if (secondTitle == "location")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trLocation");
+            else if (secondTitle == "collect")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trCollect");
+            else if (secondTitle == "shipping")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trShipping");
+            else if (secondTitle == "salary")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trSalary");
+            else if (secondTitle == "generalExpenses")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trGeneralExpenses");
+            else if (secondTitle == "administrativePull")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trAdministrativePull");
+            //////////////////////////////////////////////////////////////////////////////
+
+            trtext = firstTitle + " / " + secondTitle;
+            return trtext;
+        }
         public static void PurInvStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
+           
+
             PurStsReport(tempquery, rep, reppath);
             itemTransferInvTypeConv(paramarr);
 

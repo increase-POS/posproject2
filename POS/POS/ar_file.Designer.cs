@@ -5723,6 +5723,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تقرير مشتريات.
+        /// </summary>
+        internal static string trPurchasesReport {
+            get {
+                return ResourceManager.GetString("trPurchasesReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الكمية.
         /// </summary>
         internal static string trQTR {

@@ -2809,4 +2809,7 @@ Please add Email in setting</value>
   <data name="trServices" xml:space="preserve">
     <value>Services</value>
   </data>
+  <data name="trPurchasesReport" xml:space="preserve">
+    <value>Purchases Report</value>
+  </data>
 </root>

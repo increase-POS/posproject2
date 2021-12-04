@@ -1235,57 +1235,86 @@ namespace POS.View.reports
         query = converter(filltoprint());
 
         string addpath = "";
-        bool isArabic = ReportCls.checkLang();
+            string firstTitle = "purchaseOrders";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+            bool isArabic = ReportCls.checkLang();
                 if (isArabic)
                 {
                     if (selectedTab == 0)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurSts.rdlc";
-                    }
+                    secondTitle = "branch";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
+                }
                     else if (selectedTab == 1)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurPosSts.rdlc";
-                    }
+                    secondTitle = "pos";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                     else if (selectedTab == 2)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurVendorSts.rdlc";
-                    }
+                    secondTitle = "vendors";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                     else if (selectedTab == 3)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurUserSts.rdlc";
-                    }
+                    secondTitle = "users";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                     else
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\Ar\ArPurItemSts.rdlc";
-                    }
+                    secondTitle = "items";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                 }
                 else
                 {
                     //english
                     if (selectedTab == 0)
-                    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc"; }
+                    { addpath = @"\Reports\StatisticReport\Purchase\En\EnPurSts.rdlc";
+                    secondTitle = "branch";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
+                }
                     else if (selectedTab == 1)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\En\EnPurPosSts.rdlc";
-                    }
+                    secondTitle = "pos";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                     else if (selectedTab == 2)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\En\EnPurVendorSts.rdlc";
-                    }
+                    secondTitle = "vendors";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                     else if (selectedTab == 3)
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\En\EnPurUserSts.rdlc";
-                    }
+                    secondTitle = "users";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                     else
                     {
                         addpath = @"\Reports\StatisticReport\Purchase\En\EnPurItemSts.rdlc";
-                    }
+                    secondTitle = "items";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                 }
 
                 string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            
+            Title = MainWindow.resourcemanagerreport.GetString("trPurchasesReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
             clsReports.PurOrderStsReport(query, rep, reppath, paramarr);
         
                 clsReports.setReportLanguage(paramarr);
