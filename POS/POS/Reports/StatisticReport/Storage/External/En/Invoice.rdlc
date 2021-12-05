@@ -678,7 +678,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>External</Value>
+                    <Value>=Parameters!trTitle.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>20pt</FontSize>
@@ -882,7 +882,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Quantity</Value>
+                                  <Value>QTY</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1197,7 +1197,6 @@ IIf(Fields!agentName.Value&lt;&gt;"",Fields!agentName.Value,"")</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1836,6 +1835,12 @@ IIf(Fields!agentName.Value&lt;&gt;"",Fields!agentName.Value,"")</Value>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="trTitle">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2016,6 +2021,11 @@ IIf(Fields!agentName.Value&lt;&gt;"",Fields!agentName.Value,"")</Value>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>10</RowIndex>
           <ParameterName>trExportOrder</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>trTitle</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

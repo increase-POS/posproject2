@@ -494,6 +494,48 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            //string firstTitle = "destroied";
+            //string secondTitle = "";
+            //string subTitle = "";
+            string Title = "";
+
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
+            
+            }
+            else
+            {
+                addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
+            }
+
+           // secondTitle = "destroied";
+          //  subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trStorageReport") + " / " + MainWindow.resourcemanagerreport.GetString("trDestructives");
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+
+            clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+
+        }
+
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -502,30 +544,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
+                BuildReport();
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -553,28 +572,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
+                BuildReport();
                 LocalReportExtensions.PrintToPrinter(rep);
                 #endregion
 
@@ -599,30 +597,8 @@ namespace POS.View.reports
                 #region
                 Thread t1 = new Thread(() =>
                 {
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
-                }
-                else
-                {
-                addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                    clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
-                    clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-                this.Dispatcher.Invoke(() =>
+                    BuildReport();
+                    this.Dispatcher.Invoke(() =>
                 {
                     saveFileDialog.Filter = "EXCEL|*.xls;";
                     if (saveFileDialog.ShowDialog() == true)
@@ -658,32 +634,12 @@ namespace POS.View.reports
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
+              
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc";
-                }
-                else
-                {
-                    addpath = @"\Reports\StatisticReport\Storage\Destructive\En\Des.rdlc";
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.itemTransferInvoiceDestroied(temp, rep, reppath, paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();

@@ -942,6 +942,11 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "stocktaking";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
@@ -949,10 +954,12 @@ namespace POS.View.reports
                 if (selectedStocktakingTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArArchives.rdlc";
+                    secondTitle = "archives";
                 }
                 else if (selectedStocktakingTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stocktaking\Ar\ArShortfalls.rdlc";
+                    secondTitle = "shortfalls";
                 }
             }
             else
@@ -960,15 +967,22 @@ namespace POS.View.reports
                 if (selectedStocktakingTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Archives.rdlc";
+                    secondTitle = "archives";
                 }
                 else if (selectedStocktakingTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stocktaking\En\Shortfalls.rdlc";
+                    secondTitle = "shortfalls";
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trStorageReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
             if (selectedStocktakingTab == 0)
             {
                  clsReports.StocktakingArchivesReport(RepInventory , rep, reppath, paramarr);

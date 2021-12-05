@@ -7010,6 +7010,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تقرير التخزين.
+        /// </summary>
+        internal static string trStorageReport {
+            get {
+                return ResourceManager.GetString("trStorageReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المخزن.
         /// </summary>
         internal static string trStore {

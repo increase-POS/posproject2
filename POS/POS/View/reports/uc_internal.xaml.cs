@@ -982,16 +982,23 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "internal";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc";
+                    secondTitle = "items";
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Internal\Ar\ArOperator.rdlc";
+                    secondTitle = "operator";
                 }
 
             }
@@ -1000,17 +1007,21 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Internal\En\Item.rdlc";
+                    secondTitle = "items";
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Internal\En\Operator.rdlc";
+                    secondTitle = "operator";
                 }
 
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-           
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trStorageReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.itemTransferInvoiceInternal(itemsTransferReport, rep, reppath, paramarr);
           
             clsReports.setReportLanguage(paramarr);

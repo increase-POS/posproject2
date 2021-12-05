@@ -7046,6 +7046,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Storage Report.
+        /// </summary>
+        internal static string trStorageReport {
+            get {
+                return ResourceManager.GetString("trStorageReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Store.
         /// </summary>
         internal static string trStore {

@@ -1473,20 +1473,27 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "stock";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedStockTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArItem.rdlc";
+                    secondTitle = "items";
                 }
                 else if (selectedStockTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArLocation.rdlc";
+                    secondTitle = "location";
                 }
                 else if (selectedStockTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc";
+                    secondTitle = "collect";
                 }
             }
             else
@@ -1494,19 +1501,25 @@ namespace POS.View.reports
                 if (selectedStockTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stock\En\Item.rdlc";
+                    secondTitle = "items";
                 }
                 else if (selectedStockTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stock\En\Location.rdlc";
+                    secondTitle = "location";
                 }
                 else if (selectedStockTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Storage\Stock\En\Collect.rdlc";
+                    secondTitle = "collect";
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trStorageReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
 
             clsReports.storageStock(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
