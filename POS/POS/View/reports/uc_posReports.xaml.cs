@@ -819,19 +819,30 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "transfers";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+
             }
             else
             {
                 addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
             }
+            secondTitle = "pos";
+
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.cashTransferStsPos(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

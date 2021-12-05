@@ -961,35 +961,51 @@ namespace POS.View.reports
             List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
 
             string addpath = "";
+
+            string firstTitle = "promotion";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                if (selectedTab == 5)
+                if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Promotion\Ar\ArCoupons.rdlc";
+                    secondTitle = "coupon";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Promotion\Ar\ArOffers.rdlc";
+                    secondTitle = "offers";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
             }
             else
             {
                 //english
-                if (selectedTab == 5)
+                if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Promotion\En\EnCoupons.rdlc";
+                    secondTitle = "coupon";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else 
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Promotion\En\EnOffers.rdlc";
+                    secondTitle = "offers";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
                 }
             }
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.SalePromoStsReport(itemTransfers, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

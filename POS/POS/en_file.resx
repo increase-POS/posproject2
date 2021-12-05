@@ -2812,4 +2812,19 @@ Please add Email in setting</value>
   <data name="trPurchasesReport" xml:space="preserve">
     <value>Purchases Report</value>
   </data>
+  <data name="trCoupons" xml:space="preserve">
+    <value>Coupons</value>
+  </data>
+  <data name="trQTReport" xml:space="preserve">
+    <value>Quotations</value>
+  </data>
+  <data name="trSalesReport" xml:space="preserve">
+    <value>Sales Report</value>
+  </data>
+  <data name="trThePromotion" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
+  <data name="trAccountantReport" xml:space="preserve">
+    <value>Accountant Report</value>
+  </data>
 </root>

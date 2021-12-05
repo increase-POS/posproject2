@@ -1041,16 +1041,24 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
+
+            string firstTitle = "accountProfits";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Profit\Ar\Profit.rdlc";
+                    secondTitle = "invoice";
                 }
                 else
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Profit\Ar\ProfitItem.rdlc";
+                    secondTitle = "items";
                 }
 
                 //Reports\StatisticReport\Sale\Daily\Ar
@@ -1060,16 +1068,22 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Profit\En\Profit.rdlc";
+                    secondTitle = "invoice";
                 }
                 else
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Profit\En\ProfitItem.rdlc";
+                    secondTitle = "items";
                 }
             }
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
             // IEnumerable<ItemUnitInvoiceProfit>
             clsReports.ProfitReport(profitsQuery, rep, reppath, paramarr);
             paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));

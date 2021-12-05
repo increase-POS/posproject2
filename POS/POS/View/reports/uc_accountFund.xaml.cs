@@ -440,16 +440,27 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "fund";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 addpath = @"\Reports\StatisticReport\Accounts\Fund\Ar\ArFund.rdlc";
+
             }
             else
             {
                 //english
                 addpath = @"\Reports\StatisticReport\Accounts\Fund\En\Fund.rdlc";
             }
+
+            secondTitle = "branch";
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 

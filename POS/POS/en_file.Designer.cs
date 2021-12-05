@@ -178,6 +178,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accountant Report.
+        /// </summary>
+        internal static string trAccountantReport {
+            get {
+                return ResourceManager.GetString("trAccountantReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Accounting.
         /// </summary>
         internal static string trAccounting {
@@ -1281,6 +1290,15 @@ namespace POS {
         internal static string trCouponNameHint {
             get {
                 return ResourceManager.GetString("trCouponNameHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Coupons.
+        /// </summary>
+        internal static string trCoupons {
+            get {
+                return ResourceManager.GetString("trCoupons", resourceCulture);
             }
         }
         
@@ -5777,6 +5795,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quotations.
+        /// </summary>
+        internal static string trQTReport {
+            get {
+                return ResourceManager.GetString("trQTReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantity.
         /// </summary>
         internal static string trQuantity {
@@ -6259,6 +6286,15 @@ namespace POS {
         internal static string trSalesOrders {
             get {
                 return ResourceManager.GetString("trSalesOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales Report.
+        /// </summary>
+        internal static string trSalesReport {
+            get {
+                return ResourceManager.GetString("trSalesReport", resourceCulture);
             }
         }
         
@@ -7204,6 +7240,15 @@ namespace POS {
         internal static string trTheCustomerHasNoEmail {
             get {
                 return ResourceManager.GetString("trTheCustomerHasNoEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promotion.
+        /// </summary>
+        internal static string trThePromotion {
+            get {
+                return ResourceManager.GetString("trThePromotion", resourceCulture);
             }
         }
         

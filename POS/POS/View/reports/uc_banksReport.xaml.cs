@@ -754,6 +754,65 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        private void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            string firstTitle = "banksReport";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
+                    secondTitle = "payments";
+                   
+
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
+  secondTitle = "recipient";
+
+                }
+
+            }
+            else
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
+                    secondTitle = "payments";
+
+                }
+                else if (selectedTab == 1)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
+                    secondTitle = "recipient";
+
+                }
+
+            }
+         
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+            clsReports.cashTransferStsBank(temp, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -762,46 +821,8 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-                    }
-
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-                    }
-
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
-
+                BuildReport();
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -830,43 +851,7 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-                    }
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-                    }
-
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-               
-                clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
+                BuildReport();
                 LocalReportExtensions.PrintToPrinter(rep);
                 #endregion
 
@@ -891,44 +876,7 @@ namespace POS.View.reports
                 #region
                 Thread t1 = new Thread(() =>
                 {
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath = "";
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        if (selectedTab == 0)
-                        {
-                            addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-                        }
-                        else if (selectedTab == 1)
-                        {
-                            addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-                        }
-                    }
-                    else
-                    {
-                        if (selectedTab == 0)
-                        {
-                            addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-                        }
-                        else if (selectedTab == 1)
-                        {
-                            addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-                        }
-
-                    }
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                  
-                    clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
+                    BuildReport();
                     this.Dispatcher.Invoke(() =>
                     {
                         saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -970,43 +918,7 @@ namespace POS.View.reports
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                string addpath = "";
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-                    }
-
-                }
-                else
-                {
-                    if (selectedTab == 0)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-                    }
-                    else if (selectedTab == 1)
-                    {
-                        addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-                    }
-
-                }
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-             
-                clsReports.cashTransferStsBank(temp, rep, reppath,paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-
-                rep.Refresh();
+                BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();

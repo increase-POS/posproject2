@@ -1290,24 +1290,39 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+
+            string firstTitle = "saleOrders";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\Ar\ArPurSts.rdlc";
+                    secondTitle = "branch";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\Ar\ArPurPosSts.rdlc";
+                    secondTitle = "pos";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\Ar\ArPurVendorSts.rdlc";
+                    secondTitle = "customers";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else 
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\Ar\ArPurUserSts.rdlc";
+                    secondTitle = "users";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
               
             }
@@ -1315,18 +1330,27 @@ namespace POS.View.reports
             {
                 //english
                 if (selectedTab == 0)
-                { addpath = @"\Reports\StatisticReport\Sale\Order\En\EnPurSts.rdlc"; }
+                { addpath = @"\Reports\StatisticReport\Sale\Order\En\EnPurSts.rdlc";
+                    secondTitle = "branch";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\En\EnPurPosSts.rdlc";
+                    secondTitle = "pos";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\En\EnPurVendorSts.rdlc";
+                    secondTitle = "customers";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                 else 
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Order\En\EnPurUserSts.rdlc";
+                    secondTitle = "users";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
                
 
@@ -1335,6 +1359,10 @@ namespace POS.View.reports
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+
+            Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
             clsReports.SaleInvoiceStsReport(itemTransfers, rep, reppath, paramarr);
          
             clsReports.setReportLanguage(paramarr);

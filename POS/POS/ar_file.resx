@@ -2797,4 +2797,19 @@
   <data name="trPurchasesReport" xml:space="preserve">
     <value>تقرير مشتريات</value>
   </data>
+  <data name="trCoupons" xml:space="preserve">
+    <value>الكوبونات</value>
+  </data>
+  <data name="trQTReport" xml:space="preserve">
+    <value>عروض الاسعار</value>
+  </data>
+  <data name="trSalesReport" xml:space="preserve">
+    <value>تقرير مبيعات</value>
+  </data>
+  <data name="trThePromotion" xml:space="preserve">
+    <value>الترويج</value>
+  </data>
+  <data name="trAccountantReport" xml:space="preserve">
+    <value>تقرير محاسبة</value>
+  </data>
 </root>

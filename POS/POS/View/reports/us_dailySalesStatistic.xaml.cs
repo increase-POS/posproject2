@@ -43,7 +43,7 @@ namespace POS.View.reports
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         private static us_dailySalesStatistic _instance;
-       
+
         public static us_dailySalesStatistic Instance
         {
             get
@@ -85,11 +85,11 @@ namespace POS.View.reports
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 translate();
-            #endregion
+                #endregion
 
                 dp_invoiceDate.SelectedDate = DateTime.Now;
                 chk_invoice.IsChecked = true;
-              
+
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
                 if (sender != null)
@@ -130,7 +130,7 @@ namespace POS.View.reports
             col_discount.Header = MainWindow.resourcemanager.GetString("trDiscount");
             col_tax.Header = MainWindow.resourcemanager.GetString("trTax");
             col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotal");
-            
+
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
@@ -153,10 +153,10 @@ namespace POS.View.reports
 
             searchText = txt_search.Text.ToLower();
             itemTrasferInvoicesQuery = itemTrasferInvoices
-                .Where(s => 
+                .Where(s =>
             (
             s.invNumber.ToLower().Contains(searchText)
-            || 
+            ||
             s.tax.ToString().ToLower().Contains(searchText)
             )
             &&
@@ -359,14 +359,14 @@ namespace POS.View.reports
         {
             List<string> titles = new List<string>();
             IEnumerable<int> x = null;
-            
+
             titles.Clear();
             var temp = itemTrasferInvoicesQuery;
             var titleTemp = temp.GroupBy(m => m.branchCreatorName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new { branchCreatorId = s.Key, count = s.Count() });
             x = result.Select(m => m.count);
-           
+
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < x.Count(); i++)
             {
@@ -392,14 +392,14 @@ namespace POS.View.reports
             IEnumerable<int> x = null;
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
-           
+
             var temp = itemTrasferInvoicesQuery;
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
             {
                 branchCreatorId = s.Key,
-                countS  = s.Where(m =>  m.invType == "s").Count(),
+                countS = s.Where(m => m.invType == "s").Count(),
                 countSb = s.Where(m => m.invType == "sb").Count(),
-                countSd = s.Where(m =>  m.invType == "sd").Count()
+                countSd = s.Where(m => m.invType == "sd").Count()
             });
             x = result.Select(m => m.countS);
             y = result.Select(m => m.countSb);
@@ -409,7 +409,7 @@ namespace POS.View.reports
                 uUserName = s.Key
             });
             names.AddRange(tempName.Select(nn => nn.uUserName));
-        
+
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<int> cS = new List<int>();
@@ -481,7 +481,7 @@ namespace POS.View.reports
                 uUserName = s.Key
             });
             names.AddRange(tempName.Select(nn => nn.uUserName));
-         
+
             SeriesCollection rowChartData = new SeriesCollection();
             List<decimal> purchase = new List<decimal>();
             List<decimal> returns = new List<decimal>();
@@ -548,8 +548,11 @@ namespace POS.View.reports
             cb_pos.SelectedValuePath = "posId";
             cb_pos.DisplayMemberPath = "posName";
             cb_pos.ItemsSource = itemTrasferInvoicesQuery.Where(t => t.branchCreatorId == bID)
-                                                         .Select(i => new { i.posName,
-                                                                            i.posId}).Distinct();
+                                                         .Select(i => new
+                                                         {
+                                                             i.posName,
+                                                             i.posId
+                                                         }).Distinct();
         }
 
         private void BuildReport()
@@ -557,16 +560,60 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath;
+            string firstTitle = "dailySalesStatistic";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc";
+
+            
+            
+                if (selectedTab == 0)
+                {
+                    secondTitle = "invoice";
+                }
+               else if (selectedTab == 1)
+                {
+                    secondTitle = "order";
+                }
+                else
+                {
+                    //  selectedTab == 2
+                    secondTitle = "quotation";
+
+                }
+                subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
             }
             else
+            {
                 addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc";
+                if (selectedTab == 0)
+                {
+                    secondTitle = "invoice";
+                }
+                else if (selectedTab == 1)
+                {
+                    secondTitle = "order";
+                }
+                else
+                {
+                    //  selectedTab == 2
+                    secondTitle = "quotation";
+
+                }
+                subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            }
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+
+            Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
 
             clsReports.SaledailyReport(itemTrasferInvoicesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
@@ -576,7 +623,7 @@ namespace POS.View.reports
 
             rep.Refresh();
         }
-       
+
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -794,8 +841,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                    await Search();
-              
+                await Search();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

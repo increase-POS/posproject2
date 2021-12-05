@@ -1262,36 +1262,48 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "paymentsReport";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArVendor.rdlc";
+                    secondTitle = "vendors";
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArCustomer.rdlc";
+                    secondTitle = "customers";
                 }
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArUser.rdlc";
+                    secondTitle = "users";
                 }
                 else if (selectedTab == 3)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArSalary.rdlc";
+                    secondTitle = "salary";
                 }
                 else if (selectedTab == 4)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArGeneralExpenses.rdlc";
+                    secondTitle = "generalExpenses";
                 }
                 else if (selectedTab == 5)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArAdministrativePull.rdlc";
+                    secondTitle = "administrativePull";
                 }
                 else if (selectedTab == 6)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\Ar\ArShipping.rdlc";
+                    secondTitle = "shipping";
                 }
             }
             else
@@ -1299,36 +1311,45 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Vendor.rdlc";
+                    secondTitle = "vendors";
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Customer.rdlc";
+                    secondTitle = "customers";
                 }
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\User.rdlc";
+                    secondTitle = "users";
                 }
                 else if (selectedTab == 3)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Salary.rdlc";
+                    secondTitle = "salary";
                 }
                 else if (selectedTab == 4)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\GeneralExpenses.rdlc";
+                    secondTitle = "generalExpenses";
                 }
                 else if (selectedTab == 5)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\AdministrativePull.rdlc";
+                    secondTitle = "administrativePull";
                 }
                 else if (selectedTab == 6)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Paymetns\En\Shipping.rdlc";
+                    secondTitle = "shipping";
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.cashTransferStsPayment(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

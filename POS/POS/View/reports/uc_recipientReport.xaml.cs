@@ -1118,24 +1118,32 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
+            string firstTitle = "recipientReport";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArVendor.rdlc";
+                    secondTitle = "vendors";
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArCustomer.rdlc";
+                    secondTitle = "customers";
                 }
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
+                    secondTitle = "users";
                 }
                 else if (selectedTab == 6)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
+                    secondTitle = "shipping";
                 }
             }
             else
@@ -1143,24 +1151,30 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Vendor.rdlc";
+                    secondTitle = "vendors";
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Customer.rdlc";
+                    secondTitle = "customers";
                 }
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
+                    secondTitle = "users";
                 }
                 else if (selectedTab == 6)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
+                    secondTitle = "shipping";
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.cashTransferStsRecipient(temp, rep, reppath,paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

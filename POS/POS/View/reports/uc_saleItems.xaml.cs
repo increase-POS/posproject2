@@ -1248,9 +1248,16 @@ namespace POS.View.reports
 
             string addpath = "";
             string itemtype = "";
+
+            string firstTitle = "saleItems";
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
+
                 if (selectedTab == 0)
                 {
 
@@ -1264,6 +1271,11 @@ namespace POS.View.reports
                         {
                             itemtype = clsReports.itemTypeConverter(cb_Types.SelectedValue.ToString());
                         }
+                        secondTitle = "items";
+                        subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
+                        Title = MainWindow.resourcemanagerreport.GetString("trSalesReport");
+                        paramarr.Add(new ReportParameter("trTitle", Title));
                     });
                   
                   
@@ -1274,6 +1286,11 @@ namespace POS.View.reports
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Item\Ar\ArBestSel.rdlc";
+                    secondTitle = "collect";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                    Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
+                    paramarr.Add(new ReportParameter("trTitle", Title));
+
                 }
             }
             else
@@ -1291,17 +1308,28 @@ namespace POS.View.reports
                         {
                             itemtype = clsReports.itemTypeConverter(cb_Types.SelectedValue.ToString());
                         }
+                        secondTitle = "items";
+                        subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                        Title = MainWindow.resourcemanagerreport.GetString("trSalesReport");
+                        paramarr.Add(new ReportParameter("trTitle", Title));
                     });
 
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Item\En\EnBestSel.rdlc";
+
+                    secondTitle = "collect";
+                    subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+                    Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
+                    paramarr.Add(new ReportParameter("trTitle", Title));
                 }
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+         
+
             //cb_Types cb_Types.SelectedValue.ToString() itemtypeconverter //chk_allTypes
             clsReports.saleitemStsReport(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);

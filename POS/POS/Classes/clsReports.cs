@@ -565,7 +565,7 @@ Parameters!trValueDiscount.Value)
             else if (firstTitle == "quotation")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trQuotations");
             else if (firstTitle == "promotion")
-                firstTitle = MainWindow.resourcemanagerreport.GetString("trPromotion");
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trThePromotion");
             else if (firstTitle == "internal")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trInternal");
             else if (firstTitle == "external")
@@ -600,7 +600,14 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trProfits");
             else if (firstTitle == "accountFund")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trCashBalance");
-
+            else if (firstTitle == "quotations")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trQTReport");
+            else if (firstTitle == "transfers")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trTransfers");
+            else if (firstTitle == "fund")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trCashBalance");
+            //trCashBalance
+            //trTransfers
             //////////////////////////////////////////////////////////////////////////////
 
             if (secondTitle == "branch")
@@ -616,15 +623,15 @@ Parameters!trValueDiscount.Value)
             else if (secondTitle == "items" || secondTitle == "item")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trItems");
             else if (secondTitle == "coupon")
-                secondTitle = MainWindow.resourcemanagerreport.GetString("trCoupon");
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trCoupons");
             else if (secondTitle == "offers")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trOffer");
             else if (secondTitle == "invoice")
-                secondTitle = MainWindow.resourcemanagerreport.GetString("tr_Invoice");
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trInvoices");
             else if (secondTitle == "order")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trOrders");
             else if (secondTitle == "quotation")
-                secondTitle = MainWindow.resourcemanagerreport.GetString("trQuotations");
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trQTReport");
             else if (secondTitle == "operator")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trOperator");
             else if (secondTitle == "payments")
