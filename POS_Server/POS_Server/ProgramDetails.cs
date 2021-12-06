@@ -33,5 +33,7 @@ namespace POS_Server
         public Nullable<bool> isOnlineServer { get; set; }
         public string packageNumber { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<bool> isLimitDate { get; set; }
+        public Nullable<bool> isLimitCount { get; set; }
     }
 }

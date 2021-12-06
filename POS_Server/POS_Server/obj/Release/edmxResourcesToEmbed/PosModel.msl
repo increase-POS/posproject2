@@ -888,6 +888,8 @@
     <EntitySetMapping Name="ProgramDetails">
       <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
         <MappingFragment StoreEntitySet="ProgramDetails">
+          <ScalarProperty Name="isLimitCount" ColumnName="isLimitCount" />
+          <ScalarProperty Name="isLimitDate" ColumnName="isLimitDate" />
           <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="programName" ColumnName="programName" />
           <ScalarProperty Name="branchCount" ColumnName="branchCount" />

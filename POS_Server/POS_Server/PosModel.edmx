@@ -862,6 +862,8 @@
           <Property Name="isOnlineServer" Type="bit" />
           <Property Name="packageNumber" Type="nvarchar" MaxLength="500" />
           <Property Name="updateDate" Type="datetime2" Precision="7" />
+          <Property Name="isLimitDate" Type="bit" />
+          <Property Name="isLimitCount" Type="bit" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -5469,6 +5471,8 @@
           <Property Name="isOnlineServer" Type="Boolean" />
           <Property Name="packageNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="updateDate" Type="DateTime" Precision="7" />
+          <Property Name="isLimitDate" Type="Boolean" />
+          <Property Name="isLimitCount" Type="Boolean" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -9996,6 +10000,8 @@
           <EntitySetMapping Name="ProgramDetails">
             <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
               <MappingFragment StoreEntitySet="ProgramDetails">
+                <ScalarProperty Name="isLimitCount" ColumnName="isLimitCount" />
+                <ScalarProperty Name="isLimitDate" ColumnName="isLimitDate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="programName" ColumnName="programName" />
                 <ScalarProperty Name="branchCount" ColumnName="branchCount" />

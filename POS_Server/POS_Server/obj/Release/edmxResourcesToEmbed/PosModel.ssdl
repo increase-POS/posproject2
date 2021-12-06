@@ -857,6 +857,8 @@
     <Property Name="isOnlineServer" Type="bit" />
     <Property Name="packageNumber" Type="nvarchar" MaxLength="500" />
     <Property Name="updateDate" Type="datetime2" Precision="7" />
+    <Property Name="isLimitDate" Type="bit" />
+    <Property Name="isLimitCount" Type="bit" />
   </EntityType>
   <EntityType Name="properties">
     <Key>

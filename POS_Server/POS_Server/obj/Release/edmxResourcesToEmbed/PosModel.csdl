@@ -1112,6 +1112,8 @@
     <Property Name="isOnlineServer" Type="Boolean" />
     <Property Name="packageNumber" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="updateDate" Type="DateTime" Precision="7" />
+    <Property Name="isLimitDate" Type="Boolean" />
+    <Property Name="isLimitCount" Type="Boolean" />
   </EntityType>
   <EntityType Name="properties">
     <Key>

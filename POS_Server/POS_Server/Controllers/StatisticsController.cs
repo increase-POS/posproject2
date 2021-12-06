@@ -4879,16 +4879,16 @@ else
                                             //posCode = JPP.code,
                                             //agentCode = JAA.code,
                                             //   agentName =  JAA.name,
-                                            agentName = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb")) ?
+                                            agentName = ((JAA.name == null || JAA.name == "" || I.agentId==null) && (I.invType == "s" || I.invType == "sb"|| I.invType == "p" || I.invType == "pb" || I.invType == "is")) ?
                                             "unknown" : JAA.name,
 
 
                                             //   agentType = JAA.type,
                                             //agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                             //? "c" : JAA.type,
-                                            agentType = I.invType == "is" ? "":
+                                            agentType = I.invType == "is" ? "is":(
                                                                             ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                                                            ? "c" : JAA.type,
+                                                                            ? "c" : JAA.type),
                                             //agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                             //? 0 : I.agentId,
                                             agentId = I.invType == "is" ? 0 :
@@ -7807,7 +7807,9 @@ else
                                             invNumber = jinvv.invNumber,//yasmine
                                             bondNumber = jbbo.number,//yasmine
 
-                                            invShippingCompanyId = jinvv.shippingCompanyId,
+                                            //invShippingCompanyId = jinvv.shippingCompanyId,
+                                            invShippingCompanyId = C.invId == null ? C.shippingCompanyId : jinvv.shippingCompanyId,
+                                            invShippingCompanyName = C.invId == null ? C.shippingCompanies.name : jinvv.shippingCompanies.name,
                                             // invShippingCompanyName = jinvv.name,
                                             jinvv.shipUserId,
 
@@ -7817,8 +7819,8 @@ else
                                             invAgentId = C.invId==null? C.agentId: jinvv.agentId,
                                             invAgentName = C.invId == null ? jaa.name : jinvv.agents.name,
 
-                                            invShippingCompanyName = jinvv.shippingCompanies.name,
-
+                                           // invShippingCompanyName = jinvv.shippingCompanies.name,
+                                         
 
                                         }).ToList();
                         /*
