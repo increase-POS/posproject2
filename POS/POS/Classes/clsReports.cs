@@ -848,9 +848,39 @@ Parameters!trValueDiscount.Value)
 
         }
 
+        public static string StsStatementPaymentConvert(string value)
+        {
+            string s = "";
+            switch (value)
+            {
+                case "cash":
+                    s = MainWindow.resourcemanagerreport.GetString("trCash");
+                break;
+                case "doc":
+                    s = MainWindow.resourcemanagerreport.GetString("trDocument");
+                break;
+                case "cheque":
+                    s = MainWindow.resourcemanagerreport.GetString("trCheque");
+                break;
+                case "balance":
+                    s = MainWindow.resourcemanagerreport.GetString("trCredit");
+                break;
+                case "card":
+                    s = MainWindow.resourcemanagerreport.GetString("trAnotherPaymentMethods");
+                break;
+                case "inv":
+                    s = MainWindow.resourcemanagerreport.GetString("trInv");
+                break;
+                default: s = value;
+                    break;
+
+
+            }
+            return s;
+        }
         public static void cashTransferStsStatement(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
-            cashTransferSts(cashTransfers, rep, reppath);
+            cashTransferStatSts(cashTransfers, rep, reppath);
 
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
 
@@ -881,10 +911,27 @@ Parameters!trValueDiscount.Value)
             {
                 r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
                 r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+
+
             }
             rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
         }
+        public static void cashTransferStatSts(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            foreach (CashTransferSts r in cashTransfers)
+            {
+                r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
+                r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+            
+                r.paymentreport = StsStatementPaymentConvert(r.Description3);
+             
 
+            }
+            rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
+        }
 
         public static void FundStsReport(IEnumerable<BalanceSTS> query, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {

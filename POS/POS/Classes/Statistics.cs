@@ -210,7 +210,7 @@ namespace POS.Classes
         public string docNum { get; set; }//
         public Nullable<int> bankId { get; set; }//
         public string processType { get; set; }//
-
+        public string paymentreport { get; set; }//
         public Nullable<int> cardId { get; set; }//
         public Nullable<int> bondId { get; set; }//
         public string invNumber { get; set; }//
