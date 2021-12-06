@@ -1286,7 +1286,7 @@ namespace POS.View.reports
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Item\Ar\ArBestSel.rdlc";
-                    secondTitle = "collect";
+                    secondTitle = "BestSeller";
                     subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                     Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
                     paramarr.Add(new ReportParameter("trTitle", Title));
@@ -1319,7 +1319,7 @@ namespace POS.View.reports
                 {
                     addpath = @"\Reports\StatisticReport\Sale\Item\En\EnBestSel.rdlc";
 
-                    secondTitle = "collect";
+                    secondTitle = "BestSeller";
                     subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                     Title = MainWindow.resourcemanagerreport.GetString("trSalesReport") + " / " + subTitle;
                     paramarr.Add(new ReportParameter("trTitle", Title));

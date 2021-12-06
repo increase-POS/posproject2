@@ -455,7 +455,7 @@ namespace POS.View.reports
         IEnumerable<CashTransferSts> temp = null;
         private void fillEvents()
         {
-            temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab);
+            temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab,statement);
 
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
@@ -671,7 +671,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
               
-                temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab);
+                temp = statisticModel.getstate(fillList(statement, cb_vendors, cb_vendorsDate),selectedTab,statement);
 
                 t = temp.Where(obj => obj.transNum.Contains(txt_search.Text) ||
                 obj.Description.Contains(txt_search.Text) ||

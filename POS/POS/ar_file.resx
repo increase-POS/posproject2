@@ -2815,4 +2815,7 @@
   <data name="trStorageReport" xml:space="preserve">
     <value>تقرير التخزين</value>
   </data>
+  <data name="trMostPurchased" xml:space="preserve">
+    <value>الأكثر شراء</value>
+  </data>
 </root>

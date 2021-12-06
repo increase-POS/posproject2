@@ -666,6 +666,10 @@ Parameters!trValueDiscount.Value)
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trGeneralExpenses");
             else if (secondTitle == "administrativePull")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trAdministrativePull");
+            else if (secondTitle == "BestSeller")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trBestSeller");
+            else if (secondTitle == "MostPurchased")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trMostPurchased");
             //////////////////////////////////////////////////////////////////////////////
 
             trtext = firstTitle + " / " + secondTitle;

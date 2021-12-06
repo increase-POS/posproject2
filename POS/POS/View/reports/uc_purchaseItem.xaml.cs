@@ -821,7 +821,7 @@ namespace POS.View.reports
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Item\Ar\ArMostPur.rdlc";
-                    secondTitle = "collect";
+                    secondTitle = "MostPurchased";
                     subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
 
@@ -839,7 +839,7 @@ namespace POS.View.reports
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Item\En\EnMostPur.rdlc";
-                    secondTitle = "collect";
+                    secondTitle = "MostPurchased";
                     subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
 

@@ -4435,6 +4435,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الأكثر شراء.
+        /// </summary>
+        internal static string trMostPurchased {
+            get {
+                return ResourceManager.GetString("trMostPurchased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to التنقلات.
         /// </summary>
         internal static string trMovements {

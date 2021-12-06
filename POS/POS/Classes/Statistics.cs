@@ -3321,7 +3321,7 @@ namespace POS.Classes
         #endregion
 
 
-        public List<CashTransferSts> getstate(List<CashTransferSts> list , int tab)
+        public List<CashTransferSts> getstate(List<CashTransferSts> list , int tab,List<CashTransferSts> listAll)
         {
             List<CashTransferSts> list2 = new List<CashTransferSts>();
             IEnumerable<CashTransferSts> temp = list;
@@ -3342,9 +3342,9 @@ namespace POS.Classes
                 bondIsRecieved = obj.FirstOrDefault().bondIsRecieved,
                 //processType = obj.FirstOrDefault().processType,
                 processType = (obj.FirstOrDefault().processType == "doc" && obj.FirstOrDefault().bondIsRecieved == 1)
-                ? list.Where(x => x.bondId == obj.FirstOrDefault().bondId && x.side == "bnd").FirstOrDefault().processType
+                ? (listAll.Where(x => x.bondId == obj.FirstOrDefault().bondId && x.side == "bnd").ToList().Count > 0
+                ? listAll.Where(x => x.bondId == obj.FirstOrDefault().bondId && x.side == "bnd").FirstOrDefault().processType : "-")
                 : obj.FirstOrDefault().processType,
-
                 bondNumber = obj.FirstOrDefault().bondNumber,
                 userId = obj.FirstOrDefault().userId,
                 agentId = obj.FirstOrDefault().agentId,
@@ -3363,8 +3363,8 @@ namespace POS.Classes
                 //  cardName = obj.FirstOrDefault().cardName,
                 // get pay type from other trans row of bond
                 cardName =(obj.FirstOrDefault().processType == "doc" && obj.FirstOrDefault().bondIsRecieved == 1)
-                ? list.Where(x=>x.bondId== obj.FirstOrDefault().bondId && x.side=="bnd").FirstOrDefault().cardName
-                
+                ? (listAll.Where(x => x.bondId == obj.FirstOrDefault().bondId && x.side == "bnd").ToList().Count > 0
+                ? listAll.Where(x=>x.bondId== obj.FirstOrDefault().bondId && x.side=="bnd").FirstOrDefault().cardName:"-")
                 : obj.FirstOrDefault().cardName,
 
                 bondDeserveDate = obj.FirstOrDefault().bondDeserveDate,
