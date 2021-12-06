@@ -547,6 +547,12 @@ namespace POS.Classes
         public string posName { get; set; }
         public string posCode { get; set; }
         public string agentName { get; set; }
+        private string agentTypeName;
+        public string AgentTypeName
+        {
+            get => agentName == "" ? MainWindow.resourcemanager.GetString("trUnknown") : agentTypeName = agentName;
+            set => agentTypeName = value;
+        }
         public string agentType { get; set; }
         public string agentCode { get; set; }
         public string cuserName { get; set; }
@@ -556,10 +562,9 @@ namespace POS.Classes
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
         private string agentTypeAgent;
-        //public string AgentTypeAgent { get => agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + agentName : agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + agentName; set => agentTypeAgent = value; }
         public string AgentTypeAgent { get => agentType == "" ? "-":
-                                                              agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + agentName : 
-                                                                                 agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + agentName;
+                                                              agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + AgentTypeName : 
+                                                                                 agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + AgentTypeName;
                                        set => agentTypeAgent = value; }
 
         public int countPb { get; set; }
@@ -3316,12 +3321,15 @@ namespace POS.Classes
             IEnumerable<CashTransferSts> temp = list;
             if (tab == 1)
             {
-                temp = list.Where(t => ((((t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                                          (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null))))) ;
+                temp = list.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
+                                          (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null)) ;
             }
             else if (tab == 3)
             {
-                temp = list.Where(t => ((t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null)));
+                temp = list.Where(t => (t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId != null)
+                                     ||
+                                     (t.invShippingCompanyId != null && t.shipUserId == null && t.invAgentId == null)
+                );
             }
             list2 = temp.OrderBy(X => X.updateDate).GroupBy(obj => obj.transNum).Select(obj => new CashTransferSts
             {
