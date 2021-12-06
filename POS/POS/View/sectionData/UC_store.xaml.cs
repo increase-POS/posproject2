@@ -1,5 +1,4 @@
-﻿
-using POS.Classes;
+﻿using POS.Classes;
 using netoaster;
 using System;
 using System.Collections.Generic;

@@ -11,6 +11,7 @@
     <Grid x:Name="grid_main">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.54*"/>
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
         <!--Right section-->
@@ -58,7 +59,7 @@
 
                     <StackPanel Margin="15,0,0,0"  Grid.Column="1" x:Name="grid_categoryControlPath" Orientation="Horizontal">
                     </StackPanel>
-                    <Border Grid.Row="1"  BorderThickness="15,0,15,0" BorderBrush="White" Grid.Column="1">
+                    <Border Grid.Row="1"  CornerRadius="7"  BorderThickness="15,0,15,0" BorderBrush="White" Grid.Column="1">
                         <ScrollViewer Grid.Row="1"  Grid.Column="1" VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto" Height="auto" 
                                           ScrollViewer.CanContentScroll="True">
 
@@ -515,7 +516,9 @@
             </Border>
         </Grid>
         <!--#endregion-->
-        <Border Grid.Column="1"  Margin="0,15,10,15" 
+        <GridSplitter Grid.Column="1" Background="Transparent" Width="5" HorizontalAlignment="Stretch" />
+
+        <Border Grid.Column="2"  Margin="0,15,10,15" 
                 CornerRadius="7" >
             <Grid >
                 <Grid.RowDefinitions>

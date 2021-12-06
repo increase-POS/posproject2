@@ -1589,6 +1589,9 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+
+
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();

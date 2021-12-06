@@ -970,6 +970,10 @@ namespace POS.View
             ExportToExcel.Export(DTForExcel);
 
         }
+
+
+
+
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
             try
@@ -1027,7 +1031,6 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -1083,7 +1086,6 @@ namespace POS.View
             }
 
         }
-
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try
