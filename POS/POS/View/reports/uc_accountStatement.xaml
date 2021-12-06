@@ -601,10 +601,8 @@
                         <DataGridTextColumn x:Name="col_num"         Width="*" Header="Num"         Binding="{Binding transNum}"/>
                         <DataGridTextColumn x:Name="col_date"        Width="*" Header="Date"        Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter}}"/>
                         <DataGridTextColumn x:Name="col_proccesType" Width="*" Header="Description" Binding="{Binding Description2}"/>
-                        <!--<DataGridTextColumn                          Width="*" Header="Payment"     Binding="{Binding Description,Converter={StaticResource processTypeConverter}}"/>-->
                         <DataGridTextColumn                          Width="*" Header="Payment"     Binding="{Binding Description3,Converter={StaticResource processTypeConverter}}"/>
                         <DataGridTextColumn x:Name="col_amount"      Width="*" Header="Amount"      Binding="{Binding cash,Converter={StaticResource accuracyConverter}}"/>
-                        <!--<DataGridTextColumn                          Width="*" Header="isReceived"  Binding="{Binding BIsReceived}"/>-->
                     </DataGrid.Columns>
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">

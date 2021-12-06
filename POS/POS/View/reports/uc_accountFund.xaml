@@ -372,9 +372,7 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <!--<DataGridTextColumn x:Name="col_branchCode"    Width="*" Header="Code"    Binding="{Binding branchCode}"/>-->
                         <DataGridTextColumn x:Name="col_branchName"    Width="*" Header="Branch"  Binding="{Binding Path=branchName}"/>
-                        <!--<DataGridTextColumn x:Name="col_posCode"       Width="*" Header="Code"    Binding="{Binding posCode}" />-->
                         <DataGridTextColumn x:Name="col_posName"       Width="*" Header="Pos"     Binding="{Binding posName}"/>
                         <DataGridTextColumn x:Name="col_posBalance"    Width="*" Header="Balance" Binding="{Binding balance ,Converter={StaticResource accuracyConverter}}" />
                     </DataGrid.Columns>

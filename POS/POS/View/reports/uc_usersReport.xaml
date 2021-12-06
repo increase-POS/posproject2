@@ -559,24 +559,15 @@
                         <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  >
                         </DataGridTextColumn>
                         <DataGridTextColumn Width="*" Header="Discount Type" Binding="{Binding discountType}"/>
-                        <!--<DataGridTextColumn Width="*" Header="Discount Value" Binding="{Binding discountValue}"/>-->
                         <DataGridTextColumn Width="*" Header="Discount Value" Binding="{Binding discountValue ,Converter={StaticResource accuracyConverter}}"/>
-
-                        <!--<DataGridTextColumn Width="*" Header="Total" Binding="{Binding totalNet}"/>-->
                         <DataGridTextColumn Width="*" Header="Total" Binding="{Binding totalNet ,Converter={StaticResource accuracyConverter}}"/>
-
-                        <!--<DataGridTextColumn Width="*" Header="Tax" Binding="{Binding tax}" Visibility="Hidden"/>-->
                         <DataGridTextColumn Width="*" Header="Tax" Binding="{Binding tax,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-
                         <DataGridTextColumn Width="*" Header="Count" Binding="{Binding countP}"/>
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Collapsed"/>
                         <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Vendor" Binding="{Binding agentName}" Visibility="Collapsed"/>
                         <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Collapsed"/>
-
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemsCount}" Visibility="Collapsed"/>
-
-
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

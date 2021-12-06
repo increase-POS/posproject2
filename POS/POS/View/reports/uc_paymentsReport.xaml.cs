@@ -744,12 +744,13 @@ namespace POS.View.reports
                 .Where(p => p.processType != "balance");
             if (selectedTab == 1)
             {
-                temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+                temp = temp.Where(t => (t.shippingCompanyId == null && t.userId == null && t.agentId != null) ||
+                                       (t.shippingCompanyId != null && t.userId != null && t.agentId != null));
             }
             else if (selectedTab == 3)
             {
-                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+                temp = temp.Where(t => (t.shippingCompanyId != null && t.userId != null && t.agentId == null) ||
+                                       (t.shippingCompanyId != null && t.userId == null && t.agentId == null));
             }
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
@@ -1460,10 +1461,9 @@ namespace POS.View.reports
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
 
-
-
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
                 BuildReport();
 
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);

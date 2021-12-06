@@ -368,9 +368,9 @@
                         <DataGridTextColumn x:Name="col_agentCompany" Width="*" Header="Company" Binding="{Binding agentCompany}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemUnitName1}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Items Quantity" Binding="{Binding count}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_count" Width="*" Header="QTY" Binding="{Binding count}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,Converter={StaticResource accuracyConverter}}"/>
-                        <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="QTY" Binding="{Binding ITquantity}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offers" Width="*" Header="Offer" Binding="{Binding Oname}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offersType" Width="*" Header="Type" Binding="{Binding OdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offersValue" Width="*" Header="Value" Binding="{Binding OdiscountValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>

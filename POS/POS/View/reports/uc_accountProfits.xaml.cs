@@ -118,7 +118,7 @@ namespace POS.View.reports
             col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_itemName.Header = MainWindow.resourcemanager.GetString("trItem");
             col_unitName.Header = MainWindow.resourcemanager.GetString("trUnit");
-            col_quantity.Header = MainWindow.resourcemanager.GetString("trQuantity");
+            col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
             col_invoiceProfit.Header = MainWindow.resourcemanager.GetString("trProfits");

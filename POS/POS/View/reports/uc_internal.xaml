@@ -438,7 +438,7 @@
                         <DataGridTextColumn x:Name="col_branchTo" Width="*" Header="To Brnach" Visibility="Hidden" Binding="{Binding importBranch}"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>
-                        <DataGridTextColumn x:Name="col_quantity" Width="*" Header="Quantity" Binding="{Binding quantity}"/>
+                        <DataGridTextColumn x:Name="col_quantity" Width="*" Header="QTY" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding Path=.,Converter={StaticResource invoiceTypeNumberConverter }}"/>
                        
                     </DataGrid.Columns>

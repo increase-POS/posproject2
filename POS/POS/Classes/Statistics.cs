@@ -547,12 +547,15 @@ namespace POS.Classes
         public string posName { get; set; }
         public string posCode { get; set; }
         public string agentName { get; set; }
+
         private string agentTypeName;
         public string AgentTypeName
         {
-            get => agentName == "" ? MainWindow.resourcemanager.GetString("trUnknown") : agentTypeName = agentName;
+            get => agentName == "unknown" ? agentTypeName = MainWindow.resourcemanager.GetString("trUnknown") : agentTypeName = agentName;
+            //get => agentTypeName = MainWindow.resourcemanager.GetString("trUnknown");
             set => agentTypeName = value;
         }
+
         public string agentType { get; set; }
         public string agentCode { get; set; }
         public string cuserName { get; set; }
@@ -562,10 +565,13 @@ namespace POS.Classes
         public string uuserLast { get; set; }
         public string uUserAccName { get; set; }
         private string agentTypeAgent;
-        public string AgentTypeAgent { get => agentType == "" ? "-":
-                                                              agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor") + "-" + AgentTypeName : 
-                                                                                 agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + AgentTypeName;
-                                       set => agentTypeAgent = value; }
+        public string AgentTypeAgent
+        {
+            get => agentType == "" ? "-":
+                                     agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor")   + "-" + AgentTypeName : 
+                                                        agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + AgentTypeName ;
+            set => agentTypeAgent = value;
+        }
 
         public int countPb { get; set; }
         public int countD { get; set; }

@@ -528,10 +528,10 @@ namespace POS.View.reports
 
         private async void Btn_shipping_Click(object sender, RoutedEventArgs e)
         {//shipping
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trShippingCompanyHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
@@ -576,15 +576,15 @@ namespace POS.View.reports
                 chk_allVendorsAccountant.IsChecked = true;
 
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         /*Fill Events*/
@@ -595,12 +595,13 @@ namespace POS.View.reports
             temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side);
             if (selectedTab == 1)
             {
-                temp = temp.Where(t => (t.invShippingCompanyId == null && t.shipUserId == null && t.invAgentId != null) ||
-                                       (t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId != null));
+                temp = temp.Where(t => (t.shippingCompanyId == null && t.userId == null && t.agentId != null) ||
+                                       (t.shippingCompanyId != null && t.userId != null && t.agentId != null));
             }
             else if (selectedTab == 3)
             {
-                temp = temp.Where(t => t.invShippingCompanyId != null && t.shipUserId != null && t.invAgentId == null);
+                temp = temp.Where(t => (t.shippingCompanyId != null && t.userId == null && t.agentId != null) ||
+                                       (t.shippingCompanyId != null && t.userId == null && t.agentId == null));
             }
             dgPayments.ItemsSource = temp;
             txt_count.Text = dgPayments.Items.Count.ToString();
@@ -1140,7 +1141,7 @@ namespace POS.View.reports
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArUser.rdlc";
                     secondTitle = "users";
                 }
-                else if (selectedTab == 6)
+                else if (selectedTab == 3)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
                     secondTitle = "shipping";
@@ -1163,7 +1164,7 @@ namespace POS.View.reports
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\User.rdlc";
                     secondTitle = "users";
                 }
-                else if (selectedTab == 6)
+                else if (selectedTab == 3)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
                     secondTitle = "shipping";
@@ -1286,8 +1287,6 @@ namespace POS.View.reports
                 #region
                 Window.GetWindow(this).Opacity = 0.2;
                 string pdfpath = "";
-
-
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);

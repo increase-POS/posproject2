@@ -191,7 +191,7 @@ namespace POS.View.reports
             if (selectedTab == 3)
             {
                 result = payments.Where(x => (
-                                (vendor.SelectedItem != null ? x.invShippingCompanyId == selectedItem2.ShippingId : false)
+                                (vendor.SelectedItem != null ? x.shippingCompanyId == selectedItem2.ShippingId : false)
                              && (date.SelectedItem != null ? x.updateDate.Value.Year == (int)selectedItem3 : true)));
             }
 
@@ -435,7 +435,8 @@ namespace POS.View.reports
 
                 chk_allVendors.IsChecked = true;
                 fillDateCombo(cb_vendorsDate);
-                ShippingCombo = statisticModel.getShippingForStatementCombo(statement);
+                //ShippingCombo = statisticModel.getShippingForStatementCombo(statement);
+                ShippingCombo = statisticModel.getShippingCombo(statement);
                 fillShippingCombo(ShippingCombo, cb_vendors);
 
                 if (sender != null)
@@ -938,7 +939,7 @@ namespace POS.View.reports
             }
             else
             {
-   addpath = @"\Reports\StatisticReport\Accounts\AccountStatement\En\AccStatement.rdlc";
+                addpath = @"\Reports\StatisticReport\Accounts\AccountStatement\En\AccStatement.rdlc";
             
             }
             if (selectedTab == 0)

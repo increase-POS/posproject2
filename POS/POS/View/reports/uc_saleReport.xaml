@@ -133,7 +133,7 @@
                             </Button>
                         </Border>
                         <Border x:Name="bdr_vendors" Grid.Column="2" Background="#4E4E4E" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="0,5,0,-1">
-                            <Button x:Name="btn_vendors"  Background="Transparent" Tag="vendors"
+                            <Button x:Name="btn_vendors"  Background="Transparent" Tag="customers"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Width="60" Click="btn_vendors_Click">
                                 <Button.Triggers>
@@ -346,17 +346,17 @@
                         <converters:discountTypeConverter x:Key="discountTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn x:Name="col_No" Width="*" Header="No." Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  />
-                        <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Customer" Binding="{Binding agentName}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_No" Width="*"           Header="No." Binding="{Binding invNumber}"/>
+                        <DataGridTextColumn x:Name="col_type" Width="*"         Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  />
+                        <DataGridTextColumn x:Name="col_branch" Width="*"       Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_pos" Width="*"          Header="Pos" Binding="{Binding posName}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_vendor" Width="*"       Header="Customer" Binding="{Binding agentName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_agentCompany" Width="*" Header="Company" Binding="{Binding agentCompany}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_user" Width="*" Header="User" Binding="{Binding uUserAccName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_count" Width="*" Header="Items Quantity" Binding="{Binding count}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_discount" Width="*" Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,Converter={StaticResource accuracyConverter}}"/>
-                        <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_user" Width="*"         Header="User" Binding="{Binding uUserAccName}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_count" Width="*"        Header="QTY" Binding="{Binding count}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_discount" Width="*"     Header="Discount Value" Visibility="Visible" Binding="{Binding discountValue,Converter={StaticResource accuracyConverter}}"/>
+                        <DataGridTextColumn x:Name="col_tax" Width="*"          Header="Tax" Binding="{Binding tax ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
+                        <DataGridTextColumn x:Name="col_totalNet" Width="*"     Header="Total" Binding="{Binding totalNet,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>

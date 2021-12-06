@@ -236,7 +236,7 @@
                         <DataGridTextColumn x:Name="col_destroiedNumber"     Width="*" Header="Number" Binding="{Binding invNumber}"/>
                         <DataGridTextColumn x:Name="col_destroiedDate"       Width="*" Header="Date" Binding="{Binding IupdateDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_destroiedItemsUnits" Width="*" Header="Items/Units" Binding="{Binding ItemUnits}"/>
-                        <DataGridTextColumn x:Name="col_destroiedAmount"     Width="*" Header="Quantity" Binding="{Binding quantity}"/>
+                        <DataGridTextColumn x:Name="col_destroiedAmount"     Width="*" Header="QTY" Binding="{Binding quantity}"/>
                         <DataGridTextColumn x:Name="col_destroiedReason"     Width="*" Header="Reason" Binding="{Binding causeDestroy}"/>
 
                     </DataGrid.Columns>

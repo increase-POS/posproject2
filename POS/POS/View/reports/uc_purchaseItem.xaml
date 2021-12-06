@@ -312,13 +312,13 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_number" Width="*" Header="No." Binding="{Binding invNumber}" />
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" />
-                        <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemName}" />
-                        <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding ITunitName}" />
-                        <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="Quantity" Binding="{Binding ITquantity}" />
-                        <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding ITprice , Converter={StaticResource accuracyConverter}}" />
-                        <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal , Converter={StaticResource accuracyConverter}}"/>
+                        <DataGridTextColumn x:Name="col_item" Width="*"   Header="Item" Binding="{Binding ITitemName}" />
+                        <DataGridTextColumn x:Name="col_unit" Width="*"   Header="Unit" Binding="{Binding ITunitName}" />
+                        <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="QTY" Binding="{Binding ITquantity}" />
+                        <DataGridTextColumn x:Name="col_price" Width="*"  Header="Price" Binding="{Binding ITprice , Converter={StaticResource accuracyConverter}}" />
+                        <DataGridTextColumn x:Name="col_total" Width="*"  Header="Total" Binding="{Binding subTotal , Converter={StaticResource accuracyConverter}}"/>
                         <DataGridTextColumn x:Name="col_invCount" Width="*" Header="Invoices" Binding="{Binding count}" Visibility="Collapsed"/>
-                        <DataGridTextColumn x:Name="col_avg" Width="*" Header="Items/Invoice" Binding="{Binding itemAvg,Converter={StaticResource accuracyConverter}}" Visibility="Collapsed"/>
+                        <DataGridTextColumn x:Name="col_avg" Width="*"    Header="Items/Invoice" Binding="{Binding itemAvg,Converter={StaticResource accuracyConverter}}" Visibility="Collapsed"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
