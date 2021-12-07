@@ -130,7 +130,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Cash"            />
+                        <!--<DataGridTextColumn Width="*"  Header="Cash"            />-->
                         <!--Binding="{Binding Path=RealDeliveryCost}"-->
                         <DataGridTextColumn Width="*"  Header="Real Delivery Cost" Binding="{Binding Path =RealDeliveryCost,Converter={StaticResource accuracyConverter }}" >
                             <DataGridTextColumn.ElementStyle>

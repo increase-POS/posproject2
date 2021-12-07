@@ -2818,4 +2818,10 @@
   <data name="trMostPurchased" xml:space="preserve">
     <value>الأكثر شراء</value>
   </data>
+  <data name="trBestBuys" xml:space="preserve">
+    <value>الأكثر شراء</value>
+  </data>
+  <data name="trBestSelling" xml:space="preserve">
+    <value>الأكثر مبيعاً</value>
+  </data>
 </root>

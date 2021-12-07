@@ -619,11 +619,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الأكثر شراء.
+        /// </summary>
+        internal static string trBestBuys {
+            get {
+                return ResourceManager.GetString("trBestBuys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الأكثر مبيعاً.
         /// </summary>
         internal static string trBestSeller {
             get {
                 return ResourceManager.GetString("trBestSeller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الأكثر مبيعاً.
+        /// </summary>
+        internal static string trBestSelling {
+            get {
+                return ResourceManager.GetString("trBestSelling", resourceCulture);
             }
         }
         

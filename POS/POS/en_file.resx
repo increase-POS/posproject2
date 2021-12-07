@@ -2830,4 +2830,10 @@ Please add Email in setting</value>
   <data name="trStorageReport" xml:space="preserve">
     <value>Storage Report</value>
   </data>
+  <data name="trBestBuys" xml:space="preserve">
+    <value>Best Buys</value>
+  </data>
+  <data name="trBestSelling" xml:space="preserve">
+    <value>Best Selling</value>
+  </data>
 </root>
