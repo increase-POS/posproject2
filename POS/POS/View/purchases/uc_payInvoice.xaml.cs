@@ -3141,7 +3141,7 @@ namespace POS.View
                         clsReports.Header(paramarr);
                         paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
 
-                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
+                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pd"))
                         {
                             CashTransfer cachModel = new CashTransfer();
                             List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -3157,16 +3157,35 @@ namespace POS.View
 
                         }
 
+                        if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+      || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+      || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                        {
+                            paramarr.Add(new ReportParameter("isOrginal", true.ToString()));
+                        }
+                        else
+                        {
+                            paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
+                        }
                         rep.SetParameters(paramarr);
                         rep.Refresh();
-
                         //copy count
-                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pw")
+                        if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pw")
                         {
 
-                            //   paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
+                              // paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
 
-                            paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
+                            // update paramarr->isOrginal
+                            foreach (var item in paramarr.Where(x => x.Name == "isOrginal").ToList())
+                            {
+                                StringCollection myCol = new StringCollection();
+                                myCol.Add(prInvoice.isOrginal.ToString());
+                                item.Values = myCol;
+
+
+                            }
+                            //end update
+
 
                             rep.SetParameters(paramarr);
 
@@ -3448,7 +3467,7 @@ namespace POS.View
                                 prInvoice.agentName = "-";
                                 prInvoice.agentCompany = "-";
                             }
-                            if (toAgent == null || toAgent.agentId==0)
+                            if (toAgent == null || toAgent.agentId == 0)
                             {
                                 //edit warning message to customer
                                 Dispatcher.Invoke(new Action(() =>
@@ -3629,7 +3648,7 @@ namespace POS.View
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
-                 
+
 
                     if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
                     {
@@ -3809,7 +3828,7 @@ namespace POS.View
                         w.invId = invoice.invoiceId;
                         w.invPaid = invoice.paid.Value;
                         w.invTotal = invoice.totalNet.Value;
-                       
+
                         w.title = MainWindow.resourcemanager.GetString("trPayments");
                         w.ShowDialog();
 

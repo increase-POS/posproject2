@@ -4168,7 +4168,16 @@ namespace POS.View
                         clsReports.Header(paramarr);
                         paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
-
+                        if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+     || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+     || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                        {
+                            paramarr.Add(new ReportParameter("isOrginal", true.ToString()));
+                        }
+                        else
+                        {
+                            paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
+                        }
                         if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb"))
                         {
                             CashTransfer cachModel = new CashTransfer();
@@ -4190,12 +4199,22 @@ namespace POS.View
                         rep.Refresh();
 
 
+                   
                         //copy count
                         if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
                         {
 
                             //   paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
+                            // update paramarr->isOrginal
+                            foreach (var item in paramarr.Where(x => x.Name == "isOrginal").ToList())
+                            {
+                                StringCollection myCol = new StringCollection();
+                                myCol.Add(prInvoice.isOrginal.ToString());
+                                item.Values = myCol;
 
+
+                            }
+                            //end update
                             paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
 
                             rep.SetParameters(paramarr);
