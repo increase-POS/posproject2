@@ -661,16 +661,16 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.37205cm</Width>
+                  <Width>5.33866cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.70108cm</Width>
+                  <Width>4.33009cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.39958cm</Width>
+                  <Width>2.87041cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.94764cm</Width>
+                  <Width>2.84181cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.89038cm</Width>
@@ -1276,7 +1276,7 @@
             <Top>2.07142cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.09897cm</Width>
+            <Width>27.05959cm</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!isTax.Value&lt;&gt;"0" or Parameters!isTax.Value&lt;&gt; 0,False,True)</Hidden>
@@ -1291,16 +1291,16 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.38616cm</Width>
+                  <Width>5.33866cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>4.68697cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.35725cm</Width>
+                  <Width>3.14558cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.84029cm</Width>
+                  <Width>4.09946cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.16907cm</Width>
@@ -1830,7 +1830,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSetITinvoice</DataSetName>
-            <Top>2.0861cm</Top>
+            <Top>1.4511cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
             <Width>27.09897cm</Width>

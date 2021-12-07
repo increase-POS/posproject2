@@ -661,7 +661,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>3.02268cm</Width>
+                  <Width>4.23974cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>4.80183cm</Width>
@@ -670,7 +670,7 @@
                   <Width>4.29129cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.30718cm</Width>
+                  <Width>4.0901cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.15604cm</Width>
@@ -1325,7 +1325,7 @@
             <Top>2.07142cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.09899cm</Width>
+            <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!isTax.Value&lt;&gt;"0" or Parameters!isTax.Value&lt;&gt; 0,False,True)</Hidden>
@@ -1340,16 +1340,16 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>3.03678cm</Width>
+                  <Width>4.4055cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.78844cm</Width>
+                  <Width>5.44448cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.63181cm</Width>
+                  <Width>5.10264cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.30647cm</Width>
+                  <Width>3.81088cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.17014cm</Width>
