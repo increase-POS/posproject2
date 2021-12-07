@@ -664,13 +664,10 @@
                   <Width>5.13934cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.34559cm</Width>
+                  <Width>7.19133cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.08642cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.36663cm</Width>
+                  <Width>4.61017cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.87042cm</Width>
@@ -679,7 +676,7 @@
                   <Width>2.92333cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.36724cm</Width>
+                  <Width>4.36438cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -707,41 +704,6 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox25</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BackgroundColor>WhiteSmoke</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox23">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Type</Value>
-                                  <Style>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox23</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -972,64 +934,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox24">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>= Switch(Fields!invType.Value="p",Parameters!trPurchaseInvoice.Value
-,Fields!invType.Value="pw",Parameters!trPurchaseInvoiceWaiting.Value
-,Fields!invType.Value="s",Parameters!trSalesInvoice.Value
-,Fields!invType.Value="sb",Parameters!trSalesReturnInvoice.Value
-,Fields!invType.Value="pb",Parameters!trPurchaseReturnInvoice.Value
-,Fields!invType.Value="pbw",Parameters!trPurchaseReturnInvoiceWaiting.Value
-,Fields!invType.Value="pd",Parameters!trDraftPurchaseBill.Value
-,Fields!invType.Value="sd",Parameters!trSalesDraft.Value
-,Fields!invType.Value="sbd",Parameters!trSalesReturnDraft.Value
-,Fields!invType.Value="pbd",Parameters!trPurchaseReturnDraft.Value
-,Fields!invType.Value="ord",Parameters!trSaleOrderDraft.Value
-,Fields!invType.Value="or",Parameters!trSaleOrder.Value
-,Fields!invType.Value="pod",Parameters!trPurchaceOrderDraft.Value
-,Fields!invType.Value="po",Parameters!trPurchaceOrder.Value
-,Fields!invType.Value="qd",Parameters!trQuotationsDraft.Value
-,Fields!invType.Value="q",Parameters!trQuotations.Value
-,Fields!invType.Value="d",Parameters!trDestructive.Value
-,Fields!invType.Value="sh",Parameters!trShortage.Value
-,Fields!invType.Value="imd",Parameters!trImportDraft.Value
-,Fields!invType.Value="im",Parameters!trImport.Value
-,Fields!invType.Value="imw",Parameters!trImportOrder.Value
-,Fields!invType.Value="exd",Parameters!trExportDraft.Value
-,Fields!invType.Value="ex",Parameters!trExport.Value
-,Fields!invType.Value="exw",Parameters!trExportOrder.Value
-)</Value>
-                                  <Style>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox24</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
                         <Textbox Name="invNumber1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1210,7 +1114,6 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
-                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -1229,6 +1132,9 @@
             <Height>1.2cm</Height>
             <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!isTax.Value&lt;&gt;"0" or Parameters!isTax.Value&lt;&gt; 0,False,True)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1242,19 +1148,16 @@
                   <Width>5.15815cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.3644cm</Width>
+                  <Width>8.37844cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.69273cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>3.38544cm</Width>
+                  <Width>4.12627cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.88923cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.60904cm</Width>
+                  <Width>6.54688cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1282,41 +1185,6 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox25</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BackgroundColor>WhiteSmoke</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox29">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Type</Value>
-                                  <Style>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox23</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1512,40 +1380,6 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox30">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Switch(Fields!invType.Value = "p", Parameters!trPurchaseInvoice.Value, Fields!invType.Value = "pw", Parameters!trPurchaseInvoiceWaiting.Value, Fields!invType.Value = "s", Parameters!trSalesInvoice.Value, Fields!invType.Value = "sb", Parameters!trSalesReturnInvoice.Value, Fields!invType.Value = "pb", Parameters!trPurchaseReturnInvoice.Value, Fields!invType.Value = "pbw", Parameters!trPurchaseReturnInvoiceWaiting.Value, Fields!invType.Value = "pd", Parameters!trDraftPurchaseBill.Value, Fields!invType.Value = "sd", Parameters!trSalesDraft.Value, Fields!invType.Value = "sbd", Parameters!trSalesReturnDraft.Value, Fields!invType.Value = "pbd", Parameters!trPurchaseReturnDraft.Value, Fields!invType.Value = "ord", Parameters!trSaleOrderDraft.Value, Fields!invType.Value = "or", Parameters!trSaleOrder.Value, Fields!invType.Value = "pod", Parameters!trPurchaceOrderDraft.Value, Fields!invType.Value = "po", Parameters!trPurchaceOrder.Value, Fields!invType.Value = "qd", Parameters!trQuotationsDraft.Value, Fields!invType.Value = "q", Parameters!trQuotations.Value, Fields!invType.Value = "d", Parameters!trDestructive.Value, Fields!invType.Value = "sh", Parameters!trShortage.Value, Fields!invType.Value = "imd", Parameters!trImportDraft.Value, Fields!invType.Value = "im", Parameters!trImport.Value, Fields!invType.Value = "imw", Parameters!trImportOrder.Value, Fields!invType.Value = "exd", Parameters!trExportDraft.Value, Fields!invType.Value = "ex", Parameters!trExport.Value, Fields!invType.Value = "exw", Parameters!trExportOrder.Value)</Value>
-                                  <Style>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox24</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
                         <Textbox Name="invNumber3">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1691,7 +1525,6 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
-                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -1708,7 +1541,7 @@
             <Top>2.0861cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.09899cm</Width>
+            <Width>27.09897cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!isTax.Value = "0" Or Parameters!isTax.Value = 0 Or Parameters!isTax.Value = "null", False,True)</Hidden>
