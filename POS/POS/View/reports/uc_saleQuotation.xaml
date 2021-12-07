@@ -361,7 +361,7 @@
                         <DataGridTextColumn x:Name="col_couponType" Width="*" Header="Type" Binding="{Binding CopdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_coupoValue" Width="*" Header="Value" Binding="{Binding CopdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_couponTotalValue" Width="*" Header="Total" Binding="{Binding couponTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}"  />
+                        <DataGridTextColumn x:Name="col_type" Width="*" Header="Type" Binding="{Binding Path=invType,Converter={StaticResource invoiceTypeConverter }}" Visibility="Hidden" />
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Branch" Binding="{Binding branchCreatorName}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_pos" Width="*" Header="Pos" Binding="{Binding posName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_vendor" Width="*" Header="Customer" Binding="{Binding agentName}" Visibility="Hidden"/>

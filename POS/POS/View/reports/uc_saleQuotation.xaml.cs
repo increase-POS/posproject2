@@ -679,7 +679,6 @@ namespace POS.View.reports
                 col_totalNet.Visibility = Visibility.Visible;
                 col_discount.Visibility = Visibility.Visible;
                 col_tax.Visibility = Visibility.Visible;
-                col_type.Visibility = Visibility.Visible;
 
                 fillComboBranches();
                 fillEvent();
@@ -722,7 +721,6 @@ namespace POS.View.reports
                 col_totalNet.Visibility = Visibility.Visible;
                 col_discount.Visibility = Visibility.Visible;
                 col_tax.Visibility = Visibility.Visible;
-                col_type.Visibility = Visibility.Visible;
 
                 fillComboPos();
                 fillEvent();
@@ -766,7 +764,6 @@ namespace POS.View.reports
                 col_count.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
                 col_tax.Visibility = Visibility.Visible;
-                col_type.Visibility = Visibility.Visible;
 
                 fillComboVendors();
                 fillEvent();
@@ -809,7 +806,6 @@ namespace POS.View.reports
                 col_user.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
                 col_tax.Visibility = Visibility.Visible;
-                col_type.Visibility = Visibility.Visible;
 
                 fillComboUsers();
                 fillEvent();
