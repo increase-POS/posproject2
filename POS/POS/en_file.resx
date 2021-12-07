@@ -2321,10 +2321,10 @@ Please add Email in setting</value>
     <value>Decimals</value>
   </data>
   <data name="trErrorMaxInvToolTip" xml:space="preserve">
-    <value>Coupon cannot be used, the total is more than the maximum allowed</value>
+    <value>Invoice total is more than the maximum amount allowed to use the coupon</value>
   </data>
   <data name="trErrorMinInvToolTip" xml:space="preserve">
-    <value>Coupon cannot be used, total is less than the minimum allowed</value>
+    <value>Invoice total is less than the minimum amount allowed to use the coupon</value>
   </data>
   <data name="trPopUpgrade" xml:space="preserve">
     <value>Please upgrade the application</value>

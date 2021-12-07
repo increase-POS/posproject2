@@ -880,11 +880,11 @@ namespace POS.View
                     case 0://cash
                         //gd_theRest.Visibility = Visibility.Visible;
                         //tb_cashPaid.Text = txt_theRest.Text = "0";
-                        //gd_card.Visibility = Visibility.Collapsed;
-                        //tb_processNum.Clear();
+                        gd_card.Visibility = Visibility.Collapsed;
+                        tb_processNum.Clear();
                         //cb_card.SelectedIndex = -1;
                         _SelectedCard = -1;
-                        //txt_card.Text = "";
+                        txt_card.Text = "";
                         dp_desrvedDate.IsEnabled = false;
                         // SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         //SectionData.clearTextBlockValidate(txt_card, p_errorCard);
@@ -893,9 +893,9 @@ namespace POS.View
                     case 1:// balance
                         //gd_theRest.Visibility = Visibility.Collapsed;
                         //tb_cashPaid.Text = txt_theRest.Text = "0";
-                        //gd_card.Visibility = Visibility.Collapsed;
+                        gd_card.Visibility = Visibility.Collapsed;
                         dp_desrvedDate.IsEnabled = true;
-                        //tb_processNum.Clear();
+                        tb_processNum.Clear();
                         //cb_card.SelectedIndex = -1;
                         _SelectedCard = -1;
                         //txt_card.Text = "";
@@ -907,16 +907,16 @@ namespace POS.View
                         //gd_theRest.Visibility = Visibility.Collapsed;
                         //tb_cashPaid.Text = txt_theRest.Text = "0";
                         dp_desrvedDate.IsEnabled = false;
-                        //gd_card.Visibility = Visibility.Visible;
+                        gd_card.Visibility = Visibility.Visible;
                         // SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         break;
                     case 3://multiple
                         //gd_theRest.Visibility = Visibility.Collapsed;
                         //tb_cashPaid.Text = txt_theRest.Text = "0";
-                        //gd_card.Visibility = Visibility.Collapsed;
-                        //tb_processNum.Clear();
+                        gd_card.Visibility = Visibility.Collapsed;
+                        tb_processNum.Clear();
                         _SelectedCard = -1;
-                        //txt_card.Text = "";
+                        txt_card.Text = "";
                         dp_desrvedDate.IsEnabled = true;
                         //SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         //SectionData.clearTextBlockValidate(txt_card, p_errorCard);

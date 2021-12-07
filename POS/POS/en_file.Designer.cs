@@ -3067,7 +3067,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Coupon cannot be used, the total is more than the maximum allowed.
+        ///   Looks up a localized string similar to Invoice total is more than the maximum amount allowed to use the coupon.
         /// </summary>
         internal static string trErrorMaxInvToolTip {
             get {
@@ -3076,7 +3076,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Coupon cannot be used, total is less than the minimum allowed.
+        ///   Looks up a localized string similar to Invoice total is less than the minimum amount allowed to use the coupon.
         /// </summary>
         internal static string trErrorMinInvToolTip {
             get {
