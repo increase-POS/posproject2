@@ -3448,7 +3448,7 @@ namespace POS.View
                                 prInvoice.agentName = "-";
                                 prInvoice.agentCompany = "-";
                             }
-                            if (toAgent == null)
+                            if (toAgent == null || toAgent.agentId==0)
                             {
                                 //edit warning message to customer
                                 Dispatcher.Invoke(new Action(() =>

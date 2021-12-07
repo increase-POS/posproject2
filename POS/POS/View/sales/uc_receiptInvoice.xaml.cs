@@ -4340,7 +4340,7 @@ namespace POS.View
                     email = await email.GetByBranchIdandSide((int)MainWindow.branchID, "sales");
                     Agent toAgent = new Agent();
                     toAgent = customers.Where(x => x.agentId == prInvoice.agentId).FirstOrDefault();
-                    if (toAgent == null)
+                    if (toAgent == null || toAgent.agentId == 0)
                     {
                         //edit warning message to customer
                         this.Dispatcher.Invoke(() =>
