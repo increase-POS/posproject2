@@ -1428,9 +1428,9 @@ namespace POS.Classes
             else if (secondTitle == "collect")
                 secondTitle = MainWindow.resourcemanager.GetString("trCollect");
             else if (secondTitle == "bestselling")
-                secondTitle = MainWindow.resourcemanager.GetString("trBestSelling");
+                secondTitle = MainWindow.resourcemanager.GetString("trBestSeller");
             else if (secondTitle == "bestbuys")
-                secondTitle = MainWindow.resourcemanager.GetString("trBestBuys");
+                secondTitle = MainWindow.resourcemanager.GetString("trMostPurchased");
             else if (secondTitle == "shipping")
                 secondTitle = MainWindow.resourcemanager.GetString("trShipping");
             else if (secondTitle == "salary")
