@@ -2656,25 +2656,25 @@ var strP = TokenManager.GetPrincipal(token);
 
                     if (totalNum != 0)
                         smallUnitPrice = price / totalNum;
+                return smallUnitPrice;
+                    //var smallestUnitId = (from iu in entity.itemsUnits
+                    //                      where (itemUnits.Contains((int)iu.itemUnitId) && iu.unitId == iu.subUnitId)
+                    //                      select iu.itemUnitId).FirstOrDefault();
 
-                    var smallestUnitId = (from iu in entity.itemsUnits
-                                          where (itemUnits.Contains((int)iu.itemUnitId) && iu.unitId == iu.subUnitId)
-                                          select iu.itemUnitId).FirstOrDefault();
-
-                    if (smallestUnitId == null || smallestUnitId == 0)
-                    {
-                        smallestUnitId = (from u in entity.itemsUnits
-                                          where !entity.itemsUnits.Any(y => u.subUnitId == y.unitId)
-                                          where (itemUnits.Contains((int)u.itemUnitId))
-                                          select u.itemUnitId).FirstOrDefault();
-                    }
-                    if (itemUnitId == smallestUnitId || smallestUnitId == null || smallestUnitId == 0)
-                        return smallUnitPrice;
-                    else
-                    {
-                        smallUnitPrice = smallUnitPrice * getUpperUnitValue(smallestUnitId, itemUnitId);
-                        return smallUnitPrice;
-                    }
+                    //if (smallestUnitId == null || smallestUnitId == 0)
+                    //{
+                    //    smallestUnitId = (from u in entity.itemsUnits
+                    //                      where !entity.itemsUnits.Any(y => u.subUnitId == y.unitId)
+                    //                      where (itemUnits.Contains((int)u.itemUnitId))
+                    //                      select u.itemUnitId).FirstOrDefault();
+                    //}
+                    //if (itemUnitId == smallestUnitId || smallestUnitId == null || smallestUnitId == 0)
+                    //    return smallUnitPrice;
+                    //else
+                    //{
+                    //    smallUnitPrice = smallUnitPrice * getUpperUnitValue(smallestUnitId, itemUnitId);
+                    //    return smallUnitPrice;
+                    //}
                 }
         }
 

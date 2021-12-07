@@ -3512,9 +3512,8 @@ else
                                             I.updateDate,
                                             I.updateUserId,
                                             //I.branchId,
-                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
-                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
-                                                                          ,
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0)),
+
                                             couponTotalValue = (C.discountType == 1 || C.discountType == null) ? C.discountValue : (C.discountType == 2 ? ((C.discountValue / 100) * I.total) : 0),
 
                                             I.discountType,
@@ -4807,7 +4806,7 @@ else
                                         where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
 
-                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb" || I.invType == "is")// exw
+                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb" )// exw
 
                                         select new
                                         {
@@ -4859,8 +4858,7 @@ else
                                             //I.updateUserId,
                                             // I.branchId,
                                             discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
-                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
-                                                                          ,
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0)),
                                             //I.discountType,
                                             //I.tax,
                                             //I.name,
@@ -4879,21 +4877,18 @@ else
                                             //posCode = JPP.code,
                                             //agentCode = JAA.code,
                                             //   agentName =  JAA.name,
-                                            agentName = ((JAA.name == null || JAA.name == "" || I.agentId==null) && (I.invType == "s" || I.invType == "sb"|| I.invType == "p" || I.invType == "pb" || I.invType == "is")) ?
-                                            "unknown" : JAA.name,
+                                            agentName = ((I.agentId==null|| I.agentId == 0) && (I.invType == "s" || I.invType == "sb"|| I.invType == "p" || I.invType == "pb" )) ?"unknown" : JAA.name,
 
 
                                             //   agentType = JAA.type,
                                             //agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                             //? "c" : JAA.type,
-                                            agentType = I.invType == "is" ? "is":(
-                                                                            ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                                                            ? "c" : JAA.type),
-                                            //agentId = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                            //? 0 : I.agentId,
-                                            agentId = I.invType == "is" ? 0 :
-                                                                          ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
-                                                                          ? 0 : I.agentId,
+                                            agentType = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb" ))? "c" :
+                                                                           ((I.agentId == null || I.agentId == 0) && (I.invType == "p" || I.invType == "pb"))? "v" : JAA.type ,
+                                         
+                                              
+                                            agentId = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb" || I.invType == "p" || I.invType == "pb"))  ? 0 : I.agentId,
+                                           
                                             //cuserName = JUU.name,
                                             //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
@@ -5075,6 +5070,149 @@ else
 
             ////else
             //return NotFound();
+        }
+
+        [HttpPost]
+        [Route("GetDirectInMov")]
+        public string GetDirectInMov(string token)
+        {
+            // public ResponseVM GetPurinv(string token)
+
+            //int mainBranchId, int userId
+
+
+
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int mainBranchId = 0;
+                int userId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var invListm = (from IT in entity.itemsTransfer
+                                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+
+                                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                        join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                        join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                        join B in entity.branches on I.branchId equals B.branchId into JB
+                                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                        join A in entity.agents on I.agentId equals A.agentId into JA
+                                        join U in entity.users on I.createUserId equals U.userId into JU
+                                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                        join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                        from JPP in entity.pos.Where(X => X.posId == I.posId)
+                                        join BP in entity.branches on JPP.branchId equals BP.branchId
+
+                                        from JBB in JB.DefaultIfEmpty()
+                                            //   from JPP into  JP.DefaultIfEmpty
+                                        from JUU in JU.DefaultIfEmpty()
+                                        from JUPUS in JUPUSR.DefaultIfEmpty()
+                                        from JIMM in JIM.DefaultIfEmpty()
+                                        from JAA in JA.DefaultIfEmpty()
+                                        from JBCC in JBC.DefaultIfEmpty()
+
+                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+
+
+                                        && ( I.invType == "is")// exw
+
+                                        select new
+                                        {
+                                            /*itemId-itemName-branchId-unitId-unitName-agentId-agentName
+                                              agentType-invType-invoiceId-invNumber*/
+
+                                            itemName = ITEM.name,
+                                            unitName = UNIT.name,
+                                       
+                                            IT.itemUnitId,
+
+                                            IU.itemId,
+                                            IU.unitId,
+                                            quantity = IT.quantity,
+
+                                      
+                                            I.invoiceId,
+                                            I.invNumber,
+
+                                            I.invType,
+                                        
+                                            discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
+                                                                          ,
+                                          
+                                            I.isApproved,
+
+                                            //
+                                            I.branchCreatorId,
+                                            branchCreatorName = JBCC.name,
+                                            //
+                                            branchName = JBB.name ,
+                                            branchId =  I.branchId,
+                                   
+
+                                            branchType = JBB.type,
+                                         
+                                            agentName = (I.agentId == null || I.agentId ==0 )? "unknown" : JAA.name,
+
+
+                                         
+                                            agentType = JAA.type,
+                                        
+                                            agentId = I.agentId==null?0: I.agentId,
+                                          
+                                            cUserAccName = JUU.username,
+                                        
+                                            uUserAccName = JUPUS.username,
+                                            agentCompany = JAA.company,
+
+                                        }).ToList();
+
+
+
+
+
+
+
+                        return TokenManager.GenerateToken(invListm);
+
+                    }
+
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+            }
+
+          
         }
 
         // حركة الاصناف الداخلية -بين الفروع والمخازن
