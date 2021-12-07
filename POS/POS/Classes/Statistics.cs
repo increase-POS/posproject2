@@ -1788,6 +1788,30 @@ namespace POS.Classes
             //}
         }
 
+        // حركة الادخال المباشر)
+        public async Task<List<ItemTransferInvoice>> GetDirectInMov(int mainBranchId, int userId)
+        {
+            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("mainBranchId", mainBranchId.ToString());
+            parameters.Add("userId", userId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetDirectInMov", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemTransferInvoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+
+        }
+
+
         //حركة الاصناف الداخلية بين الفروع
         public async Task<List<ItemTransferInvoice>> GetInternalMov(int mainBranchId, int userId)
         {
