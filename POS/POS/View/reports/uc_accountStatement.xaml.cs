@@ -200,6 +200,7 @@ namespace POS.View.reports
 
         /*Vendor*/
         /*********************************************************************************/
+        string selectedItem = "";
         private void Cb_vendors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
@@ -208,6 +209,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                selectedItem = cb_vendors.SelectedItem.ToString();
                 fillEvents();
 
                 if (sender != null)
@@ -353,7 +355,8 @@ namespace POS.View.reports
 
                 chk_allVendors.IsChecked = true;
                 fillDateCombo(cb_vendorsDate);
-                customerCombo = statisticModel.getCustomerForStatementCombo(statement, "c");
+                //customerCombo = statisticModel.getCustomerForStatementCombo(statement, "c");
+                customerCombo = statisticModel.getVendorCombo(statement, "c").Where(x => x.VendorId != null); ;
                 fillVendorCombo(customerCombo, cb_vendors);
 
                 if (sender != null)
@@ -460,8 +463,13 @@ namespace POS.View.reports
             dgPayments.ItemsSource = temp;
             txt_count.Text = temp.Count().ToString();
             decimal cashTotal = temp.Select(x => x.cashTotal).LastOrDefault();
-           
-            if (cashTotal > 0)
+          
+            //bool worthy = false;
+            //if (cashTotal >= 0) worthy = true;
+            //if(selectedItem.Equals(MainWindow.resourcemanager.GetString("trCashCustomer")))
+            //    worthy = true;
+            if (cashTotal >= 0)
+            //if (worthy)
             {
                 txt_total.Text = SectionData.DecTostring(cashTotal);
                 txt_for.Text = MainWindow.resourcemanager.GetString("trWorthy");
@@ -479,14 +487,14 @@ namespace POS.View.reports
 
                 repTrRequires = "trRequired";
                 tb_moneyIcon.Text = MainWindow.Currency;
-                if (cb_vendors.SelectedItem != null)
-                {
+                //if (cb_vendors.SelectedItem != null)
+                //{
                     bdr_email.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    bdr_email.Visibility = Visibility.Collapsed;
-                }
+                //}
+                //else
+                //{
+                //bdr_email.Visibility = Visibility.Collapsed;
+                //}
             }
             fillRowChart();
             fillColumnChart();

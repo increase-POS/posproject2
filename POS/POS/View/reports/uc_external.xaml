@@ -702,7 +702,14 @@ Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>
                         <DataGridTextColumn x:Name="col_quantity" Width="*" Header="QTY" Binding="{Binding quantity}"/>
-                        <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" Binding="{Binding AgentTypeAgent}"/>
+                        <DataGridTextColumn x:Name="col_agentTypeAgent" Visibility="Hidden" Width="*" Header="Agent Type-Name" >
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0}{1}">
+                                    <Binding Path="AgentTypeAgent" />
+                                    <Binding Path="AgentNameAgent" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
                         <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding InvTypeNumber}"/>
 
                     </DataGrid.Columns>

@@ -548,14 +548,7 @@ namespace POS.Classes
         public string posCode { get; set; }
         public string agentName { get; set; }
 
-        private string agentTypeName;
-        public string AgentTypeName
-        {
-            get => agentName == "unknown" ? agentTypeName = MainWindow.resourcemanager.GetString("trUnknown") : agentTypeName = agentName;
-            //get => agentTypeName = MainWindow.resourcemanager.GetString("trUnknown");
-            set => agentTypeName = value;
-        }
-
+      
         public string agentType { get; set; }
         public string agentCode { get; set; }
         public string cuserName { get; set; }
@@ -567,9 +560,19 @@ namespace POS.Classes
         private string agentTypeAgent;
         public string AgentTypeAgent
         {
-            get => agentType == "" ? "-":
-                                     agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor")   + "-" + AgentTypeName : 
-                                                        agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" + AgentTypeName ;
+            get =>  agentType == "v" ? agentTypeAgent = MainWindow.resourcemanager.GetString("trVendor")   + "-" 
+                                      : 
+                                       agentTypeAgent = MainWindow.resourcemanager.GetString("trCustomer") + "-" 
+                                       ;
+            set => agentTypeAgent = value;
+        }
+        private string agentNameAgent;
+        public string AgentNameAgent
+        {
+            get => agentName == "unknown" ? agentNameAgent = MainWindow.resourcemanager.GetString("trUnKnown") 
+                                      :
+                                       agentTypeAgent = agentName
+                                       ;
             set => agentTypeAgent = value;
         }
 
@@ -1787,30 +1790,6 @@ namespace POS.Classes
             //    return list;
             //}
         }
-
-        // حركة الادخال المباشر)
-        public async Task<List<ItemTransferInvoice>> GetDirectInMov(int mainBranchId, int userId)
-        {
-            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("mainBranchId", mainBranchId.ToString());
-            parameters.Add("userId", userId.ToString());
-
-            //#################
-            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetDirectInMov", parameters);
-
-            foreach (Claim c in claims)
-            {
-                if (c.Type == "scopes")
-                {
-                    list.Add(JsonConvert.DeserializeObject<ItemTransferInvoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
-                }
-            }
-            return list;
-
-
-        }
-
 
         //حركة الاصناف الداخلية بين الفروع
         public async Task<List<ItemTransferInvoice>> GetInternalMov(int mainBranchId, int userId)

@@ -183,7 +183,7 @@
                         Background="White" Height="auto">
                     <Border BorderThickness="15,0,15,0" x:Name="bdrMain" Height="auto" Background="Transparent">
                         <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto"  >
-                            <Grid Width="480" Height="117">
+                            <Grid  Height="117">
                                 <Grid Grid.Row="1" x:Name="grid_coupons" Margin="0,0,10,10"  Visibility="Visible">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"></RowDefinition>
@@ -193,34 +193,39 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>
+                                        <!--<ColumnDefinition Width="1.5*" MinWidth="200"></ColumnDefinition>-->
                                     </Grid.ColumnDefinitions>
 
-                                    <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_couponInvoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
-                                        <CheckBox x:Name="chk_couponReturn" IsEnabled="True" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
-                                        <CheckBox x:Name="chk_couponDrafs" IsEnabled="True" Content="Drafts" Checked="chk_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_Checked"></CheckBox>
+                                    <DockPanel Grid.ColumnSpan="2" LastChildFill="False">
+                                        <CheckBox x:Name="chk_couponInvoice" Content="Invoice" Margin="10" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_couponReturn" IsEnabled="True" Content="Return invoice" Margin="10" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_couponDrafs" IsEnabled="True" Content="Drafts" Checked="chk_Checked" Foreground="{StaticResource MainColorGrey}" Margin="10" Unchecked="chk_Checked"></CheckBox>
                                         <DatePicker SelectedDateFormat="Short"  Name="dp_couponEndDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="dp_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End Date..."></DatePicker>
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                    materialDesign:HintAssist.Hint="End Date..."></DatePicker>
                                         <DatePicker SelectedDateFormat="Short" SelectedDateChanged="dp_SelectedDateChanged" Name="dp_couponStartDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"    BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                    materialDesign:HintAssist.Hint="Start date..."  ></DatePicker>
                                     </DockPanel>
-                                   
-                                    <ComboBox SelectionChanged="cb_Coupons_SelectionChanged" Name="cb_Coupons" 
-                                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="Coupon ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
-                                    Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                    <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allCoupon" Click="chk_allCoupon_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" ></CheckBox>
-                                    <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">
+                                    <Grid Grid.Column="0" Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.5*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox SelectionChanged="cb_Coupons_SelectionChanged" Name="cb_Coupons" 
+                                              Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                              materialDesign:HintAssist.Hint="Coupon ...." Grid.Column="0" 
+                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                              Height="40" Margin="5,5,10,5" Padding="10,0,5,0" ></ComboBox>
+                                        <CheckBox  Grid.Column="1"  Background="{StaticResource MainColorBlue}" Margin="5" x:Name="chk_allCoupon" Click="chk_allCoupon_Click" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" ></CheckBox>
+                                    </Grid>
+                                    <DockPanel  Grid.Row="1" Grid.Column="1" LastChildFill="False">
                                         <materialDesign:TimePicker  SelectedTimeChanged="dt_SelectedTimeChanged" Name="dt_couponEndTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" Width="100" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="End time..."/>
+                                                                    Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                                    materialDesign:HintAssist.Hint="End time..."/>
                                         <materialDesign:TimePicker SelectedTimeChanged="dt_SelectedTimeChanged" Name="dt_couponStartTime" Margin="10,5,10,5" Padding="10,0,5,0" Height="40"  Width="100" MinWidth="100" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Start time..."/>
+                                                                   Style="{StaticResource MaterialDesignFloatingHintTimePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                                   materialDesign:HintAssist.Hint="Start time..."/>
 
                                     </DockPanel>
 
