@@ -1346,6 +1346,8 @@ namespace POS.Classes
                 firstTitle = MainWindow.resourcemanager.GetString("trInternal");
             else if (firstTitle == "external")
                 firstTitle = MainWindow.resourcemanager.GetString("trExternal");
+            else if (firstTitle == "direct")
+                firstTitle = MainWindow.resourcemanager.GetString("trDirectEntry");
             else if (firstTitle == "banksReport")
                 firstTitle = MainWindow.resourcemanager.GetString("trBanks");
             else if (firstTitle == "destroied")

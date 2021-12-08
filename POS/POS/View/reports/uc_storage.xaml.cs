@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,13 +45,11 @@ namespace POS.View.reports
         {
             try
             {
-                {
                 uc_stock uc = new uc_stock();
                 main.Children.Add(uc);
-                    Button button = sender as Button;
-                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
 
-                }
                 sc_main.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
@@ -60,14 +60,12 @@ namespace POS.View.reports
 
         private void Btn_external_Click(object sender, RoutedEventArgs e)
         {
-                try
-                {
-                    {
+            try
+            {
                 uc_external uc = new uc_external();
                 main.Children.Add(uc);
-                    Button button = sender as Button;
-                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
-                }
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
                 sc_main.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
@@ -78,68 +76,116 @@ namespace POS.View.reports
 
         private void Btn_internal_Click(object sender, RoutedEventArgs e)
         {
-                    try
-                    {
-                        {
+            try
+            {
                 uc_internal uc = new uc_internal();
                 main.Children.Add(uc);
-                    Button button = sender as Button;
-                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
-                }
-            sc_main.Visibility = Visibility.Collapsed;
-                    }
-                    catch (Exception ex)
-                    {
-                        SectionData.ExceptionMessage(ex, this);
-                    }
-                }
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                sc_main.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
+        private void Btn_direct_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                uc_direct uc = new uc_direct();
+                main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                sc_main.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void Btn_stocktaking_Click(object sender, RoutedEventArgs e)
         {
-                        try
-                        {
-                            {
+            try
+            {
                 uc_stocktaking uc = new uc_stocktaking();
                 main.Children.Add(uc);
-                    Button button = sender as Button;
-                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
-                }
-            sc_main.Visibility = Visibility.Collapsed;
-                        }
-                        catch (Exception ex)
-                        {
-                            SectionData.ExceptionMessage(ex, this);
-                        }
-                    }
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                sc_main.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private void Btn_destroied_Click(object sender, RoutedEventArgs e)
         {
-                            try
-                            {
-                                {
+            try
+            {
                 uc_destroied uc = new uc_destroied();
                 main.Children.Add(uc);
-                    Button button = sender as Button;
-                    MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
-                }
-            sc_main.Visibility = Visibility.Collapsed;
-                            }
-                            catch (Exception ex)
-                            {
-                                SectionData.ExceptionMessage(ex, this);
-                            }
-                        }
-
-     
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+                sc_main.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {//load
+            try
+            {
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void translate()
+        {
+            txt_stockInfo.Text = MainWindow.resourcemanager.GetString("trStock");
+            txt_stockHint.Text = MainWindow.resourcemanager.GetString("trItemLocationCollect");
+
+            txt_externalInfo.Text = MainWindow.resourcemanager.GetString("trExternal");
+            //txt_externalHint.Text = MainWindow.resourcemanager.GetString("trItems");
+
+            txt_internalInfo.Text = MainWindow.resourcemanager.GetString("trInternal");
+            //txt_internalHint.Text = MainWindow.resourcemanager.GetString("trItems");
+
+            txt_directInfo.Text = MainWindow.resourcemanager.GetString("trDirect");
+            //txt_directHint.Text = MainWindow.resourcemanager.GetString("trItems");
+
+            txt_stocktakingInfo.Text = MainWindow.resourcemanager.GetString("trStocktaking");
+            //txt_stocktakingHint.Text = MainWindow.resourcemanager.GetString("trItems");
+
+            txt_destroiedInfo.Text = MainWindow.resourcemanager.GetString("trDestructive");
+            //txt_destroiedHint.Text = MainWindow.resourcemanager.GetString("trItems");
+           
+        }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
         }
+
+       
     }
 }

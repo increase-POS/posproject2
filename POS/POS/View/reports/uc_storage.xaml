@@ -123,9 +123,9 @@
                                 <ColumnDefinition Width="40"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Path  Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
-                              HorizontalAlignment="Center" Grid.Column="0"  
-                         VerticalAlignment="Center" Height="60" Width="60"
-                              Data="M120.19,4.78a2,2,0,0,1,1.25.24,2,2,0,0,1,1.15,1.78l.29,39.55a2,2,0,0,1-.95,
+                                   HorizontalAlignment="Center" Grid.Column="0"  
+                                   VerticalAlignment="Center" Height="60" Width="60"
+                                   Data="M120.19,4.78a2,2,0,0,1,1.25.24,2,2,0,0,1,1.15,1.78l.29,39.55a2,2,0,0,1-.95,
                                       1.74L105.82,57.7a1.94,1.94,0,0,1-1.16.38l-.32,0L62.49,53.4a2,2,0,0,
                                       1-1.86-1.95V11.23A2,2,0,0,1,61.8,9.41l21-9.25a2,2,0,0,1,1-.14l36.32,4.76Zm-79,65.44L29.74,
                                       76.74l13.92,1.77,10.47-6.59-12.91-1.7Zm-14.81,10-.58,16.91-6.27-4.27-6.28,3.55,1.28-17.71L3.91
@@ -162,6 +162,55 @@
                             </Border>
                         </Grid>
                     </Border>
+
+                    <Border Background="White" CornerRadius="7"  Height="140"  Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
+                        <Grid x:Name="grid_direct">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                                <ColumnDefinition Width="40"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Path  Fill="#178DD2" Stretch="Fill" Margin="20,10,0,10" 
+                                   HorizontalAlignment="Center" Grid.Column="0"  
+                                   VerticalAlignment="Center" Height="60" Width="60"
+                                   Data="M120.19,4.78a2,2,0,0,1,1.25.24,2,2,0,0,1,1.15,1.78l.29,39.55a2,2,0,0,1-.95,
+                                      1.74L105.82,57.7a1.94,1.94,0,0,1-1.16.38l-.32,0L62.49,53.4a2,2,0,0,
+                                      1-1.86-1.95V11.23A2,2,0,0,1,61.8,9.41l21-9.25a2,2,0,0,1,1-.14l36.32,4.76Zm-79,65.44L29.74,
+                                      76.74l13.92,1.77,10.47-6.59-12.91-1.7Zm-14.81,10-.58,16.91-6.27-4.27-6.28,3.55,1.28-17.71L3.91
+                                      ,77.36v36.27l38.16,4.24V82.23l-15.66-2Zm-8.75-5L28.8,68.6l-5.53-.73L9.09,74.1l8.57,1.1ZM46,
+                                      81.66v35l12.37-7.38L58.09,74,46,81.66Zm-.79,40A2,2,0,0,1,44,122a1.72,1.72,0,0,1-.32,
+                                      0L1.86,117.33a2,2,0,0,1-1.86-2V75.15a1.94,1.94,0,0,1,1.17-1.82l21-9.25a2,2,0,0,1,1-.14L59.55,
+                                      68.7a2.21,2.21,0,0,1,2.41,2l.28,39.55A1.93,1.93,0,0,1,61.3,112l-16.11,9.61ZM74.3,
+                                      109.74l6.31-32.08L87,87.31c13.78-5.54,21.52-14.66,22.67-28.7,11.32,19.79,4.45,37.54-9.9,
+                                      47.93l6.53,9.84-32-6.64ZM50.71,10.44,44.4,42.51,38,32.87C24.22,38.4,16.48,47.52,15.33,61.57,
+                                      4,41.77,10.88,24,25.23,13.64L18.7,3.8l32,6.64ZM101.85,6.3,90.38,12.82l13.92,1.77L114.76,8,101.85,
+                                      6.3Zm-14.8,10-.58,16.92L80.19,29,73.92,32.5,75.2,14.8,64.54,13.44V49.71L102.7,
+                                      54V18.31l-15.65-2Zm-8.75-5,11.13-6.6L83.91,4,69.73,10.18l8.57,1.09Zm28.31,6.47v35L119,
+                                      45.32l-.25-35.22-12.12,7.64Z"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top"  Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
+                                <TextBlock x:Name="txt_directInfo" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Direct" FontSize="18"></TextBlock>
+                                <TextBlock x:Name="txt_directHint" Text="Items,Operator,..." FontSize="10" Margin="5,2,0,0"   Foreground="#949494"></TextBlock>
+                            </StackPanel>
+                            <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
+                                Background="White" HorizontalAlignment="Center">
+                                <Button Background="Transparent" BorderThickness="0" Tag="direct" x:Name="btn_direct" 
+                                        Padding="0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        Height="auto" Width="auto" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="Btn_direct_Click">
+                                    <Path       VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Height="25" Width="25"  
+                                Fill="#178DD2" Stretch="Fill" 
+                           Grid.Column="0"  
+                              Data="M25.2,150c0,22.8,5.7,43.5,16.8,62.7s26.4,34.2,45.3,45.6c19.2,11.1,39.9,16.8,62.7,16.8s43.5-5.7,62.7-16.8
+	c19.2-11.1,34.2-26.4,45.3-45.6c11.1-19.2,16.8-39.9,16.8-62.7s-5.7-43.5-16.8-62.7c-11.1-19.2-26.4-34.2-45.3-45.3
+	c-19.2-11.4-39.9-16.8-62.7-16.8S106.5,30.9,87.3,42S53.1,68.4,42,87.3C30.6,106.5,25.2,127.2,25.2,150z M108,99.6
+	c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5l16.5-16.8c2.1-2.1,4.5-3,7.2-3c2.7,0,5.1,0.9,7.2,3l72.9,74.4c2.1,2.1,3,4.5,3,7.5
+	s-0.9,5.4-3,7.5l-72.9,74.7c-2.1,2.1-4.5,3-7.2,3c-2.7,0-5.1-0.9-7.2-3L108,215.1c-2.1-2.1-3-4.5-3-7.5c0-2.7,0.9-5.4,3-7.5
+	l49.5-50.1L108,99.6z"/>
+                                </Button>
+                            </Border>
+                        </Grid>
+                    </Border>
+
                     <Border Background="White" Visibility="Visible" CornerRadius="7"  Height="140"  Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
                         <Grid x:Name="grid_stocktaking">
                             <Grid.ColumnDefinitions>
@@ -202,7 +251,6 @@
                         </Grid>
                     </Border>
 
-                    
                     <Border Background="White" CornerRadius="7"  Height="140"  Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
                         <Grid x:Name="grid_destroied">
                             <Grid.ColumnDefinitions>
