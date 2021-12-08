@@ -5157,7 +5157,7 @@ else
                                             IU.unitId,
                                             quantity = IT.quantity,
 
-                                      
+                                            I.updateDate,
                                             I.invoiceId,
                                             I.invNumber,
 
@@ -5191,6 +5191,7 @@ else
                                         
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
+
 
                                         }).ToList();
 
