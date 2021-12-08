@@ -1733,8 +1733,8 @@ namespace POS.View
                 cb_categorie.SelectedIndex = -1;
                 cb_itemType.SelectedIndex = -1;
                 tb_taxes.Clear();
-                tb_min.Clear();
-                tb_max.Clear();
+                tb_min.Text = "0";
+                tb_max.Text ="0";
                 cb_minUnit.SelectedIndex = -1;
                 cb_maxUnit.SelectedIndex = -1;
 

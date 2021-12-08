@@ -32,7 +32,7 @@ namespace POS.View.reports
 {
     public partial class uc_external
     {
-        List<Storage> storages;
+        //List<Storage> storages;
 
         List<ItemTransferInvoice> itemsTransfer;
 
@@ -41,8 +41,8 @@ namespace POS.View.reports
 
         Statistics statisticModel = new Statistics();
 
-        IEnumerable<itemCombo> comboItems;
-        IEnumerable<unitCombo> comboUnits;
+        //IEnumerable<itemCombo> comboItems;
+        //IEnumerable<unitCombo> comboUnits;
 
         private int selectedExternalTab = 0;
         List<ExternalitemCombo> comboExternalItemsItems;
@@ -69,12 +69,12 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
+                //storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                comboItems = statisticModel.getItemCombo(storages);
-                comboUnits = statisticModel.getUnitCombo(storages);
+                //comboItems = statisticModel.getItemCombo(storages);
+                //comboUnits = statisticModel.getUnitCombo(storages);
                 comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
                 comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
                 comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);

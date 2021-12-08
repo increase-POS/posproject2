@@ -32,7 +32,7 @@ namespace POS.View.reports
 {
     public partial class uc_internal : UserControl
     {
-        List<Storage> storages;
+        //List<Storage> storages;
 
         List<ItemTransferInvoice> itemsInternalTransfer;
         IEnumerable<ItemTransferInvoice> itemsTransferReport =new  List<ItemTransferInvoice>();
@@ -75,7 +75,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
+                //storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
 
@@ -546,7 +546,6 @@ namespace POS.View.reports
 
         List<ExternalitemCombo> comboInternalItemsItems;
         List<ExternalUnitCombo> comboInternalItemsUnits;
-        List<internalTypeCombo> comboInternalOperatorType;
 
         private void fillComboInternalItemsItems()
         {

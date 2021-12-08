@@ -563,9 +563,9 @@ namespace POS.View
                         SectionData.clearImg(img_customer);
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                SectionData.ExceptionMessage(ex, this);
+                SectionData.clearImg(img_customer);
             }
         }
         private async void Btn_delete_Click(object sender, RoutedEventArgs e)

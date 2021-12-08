@@ -4157,3 +4157,8 @@ D:\myproj\posproject2\POS\POS\bin\Debug\Reports\Store\En\ShortageReport.rdlc
 D:\myproj\posproject2\POS\POS\bin\Debug\Reports\Store\En\StorageReport.rdlc
 D:\myproj\posproject2\POS\POS\bin\Debug\Reports\Store\En\StorageResReport.rdlc
 D:\myproj\posproject2\POS\POS\bin\Debug\EmailTemplates\images\image-2.gif
+E:\GitHub\posproject2\POS\POS\bin\Debug\LiveCharts.0.9.7.0.Fakes.fakesconfig
+E:\GitHub\posproject2\POS\POS\bin\Debug\Microsoft.QualityTools.Testing.Fakes.dll
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojFakesResolveAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\RdlCompile.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\RdlCompile.compiled

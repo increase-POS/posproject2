@@ -3949,6 +3949,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item, Location, Collect....
+        /// </summary>
+        internal static string trItemLocationCollect {
+            get {
+                return ResourceManager.GetString("trItemLocationCollect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
         internal static string trItems {

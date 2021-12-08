@@ -2821,4 +2821,7 @@
   <data name="trLack" xml:space="preserve">
     <value>احتياجات</value>
   </data>
+  <data name="trItemLocationCollect" xml:space="preserve">
+    <value>عنصر, موقع, تجميع...</value>
+  </data>
 </root>

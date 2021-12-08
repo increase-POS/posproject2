@@ -1022,7 +1022,9 @@ namespace POS.View
 
         private async void getImg()
         {
-            
+            try
+            {
+
                 if (string.IsNullOrEmpty(user.image))
                 {
                     SectionData.clearImg(img_user);
@@ -1052,6 +1054,11 @@ namespace POS.View
                     else
                         SectionData.clearImg(img_user);
                 }
+            }
+            catch
+            {
+                SectionData.clearImg(img_user);
+            }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)

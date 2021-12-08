@@ -770,12 +770,17 @@ namespace POS.Classes
         }
         public static void clearImg(Button img)
         {
-            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            try
+            {
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
 
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            brush.ImageSource = temp;
-            img.Background = brush;
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                img.Background = brush;
+            }
+            catch
+            {}
         }
         public static decimal calcPercentage(decimal value, decimal percentage)
         {
@@ -1346,6 +1351,8 @@ namespace POS.Classes
                 firstTitle = MainWindow.resourcemanager.GetString("trInternal");
             else if (firstTitle == "external")
                 firstTitle = MainWindow.resourcemanager.GetString("trExternal");
+            else if (firstTitle == "direct")
+                firstTitle = MainWindow.resourcemanager.GetString("trDirectEntry");
             else if (firstTitle == "banksReport")
                 firstTitle = MainWindow.resourcemanager.GetString("trBanks");
             else if (firstTitle == "destroied")

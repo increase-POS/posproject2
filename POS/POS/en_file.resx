@@ -2836,4 +2836,7 @@ Please add Email in setting</value>
   <data name="trLack" xml:space="preserve">
     <value>Lack</value>
   </data>
+  <data name="trItemLocationCollect" xml:space="preserve">
+    <value>Item, Location, Collect...</value>
+  </data>
 </root>
