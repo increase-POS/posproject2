@@ -89,7 +89,7 @@ namespace POS.View.storage
         //for bill details
         static private int _SequenceNum = 0;
         static private int _invoiceId;
-        static private string _InvoiceType = "isd"; // immidiatlly in storage
+        static private string _InvoiceType = "isd"; // immidiatlly in storage draft
         static private decimal _Sum = 0;
         static private decimal _Count = 0;
         //tglItemState
@@ -347,8 +347,8 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                clearInvoice();
-
+                saveBeforeExit();
+                timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -357,6 +357,28 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
+        }
+        private async Task saveBeforeExit()
+        {
+            if (billDetails.Count > 0 && _InvoiceType == "isd")
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                {
+                    await addInvoice( "isd");
+                    clearInvoice();
+                    _InvoiceType = "isd";
+                }
+            }
+            clearInvoice();
+
         }
         #region bill
 
