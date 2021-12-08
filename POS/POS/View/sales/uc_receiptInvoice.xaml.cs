@@ -881,6 +881,7 @@ namespace POS.View
         private async Task fillShippingCompanies()
         {
             companies = await companyModel.Get();
+            companies = companies.Where(X => X.isActive == 1).ToList();
             cb_company.ItemsSource = companies;
             cb_company.DisplayMemberPath = "name";
             cb_company.SelectedValuePath = "shippingCompanyId";
