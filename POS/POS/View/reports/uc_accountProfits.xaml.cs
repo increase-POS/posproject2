@@ -166,6 +166,7 @@ namespace POS.View.reports
                 foreach (var x in profitsTemp)
                 {
                     x.ITquantity = quantities[index].ITquantity;
+         
                     index++;
                 }
             }
@@ -231,7 +232,8 @@ namespace POS.View.reports
                 int i = 0;
                 foreach (var x in profitsQuery)
                 {
-                    x.itemProfit = profitsSum[i].itemProfit;
+                    x.itemProfit = profitsSum[i].itemProfit * (decimal)x.ITquantity;
+                    // x.itemProfit = profitsSum[i].itemProfit ;
                     i++;
                 }
             }

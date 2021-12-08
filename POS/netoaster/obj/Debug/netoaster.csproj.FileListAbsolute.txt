@@ -173,3 +173,4 @@ D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csproj.GenerateResource.
 D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csproj.CoreCompileInputs.cache
 D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.dll
 D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.pdb
+D:\myproj\posproject2\POS\netoaster\obj\Debug\netoaster.csprojAssemblyReference.cache

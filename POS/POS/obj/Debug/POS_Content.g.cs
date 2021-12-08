@@ -125,6 +125,8 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/sale/en/enpurvendorsts.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/destructive/ar/ardes.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/destructive/en/des.rdlc")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/direct/ar/aritem.rdlc")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/direct/en/item.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/store/ar/ardestroyreport.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/store/ar/arlocationreport.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/store/en/destroyreport.rdlc")]

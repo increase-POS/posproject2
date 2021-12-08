@@ -705,10 +705,10 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.74246cm</Width>
+                  <Width>5.99575cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.86166cm</Width>
+                  <Width>6.69719cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>5.29859cm</Width>
@@ -717,7 +717,7 @@
                   <Width>4.29917cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.34667cm</Width>
+                  <Width>4.80827cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1134,7 +1134,7 @@ Parameters!trValueDiscount.Value)</Value>
             <Top>2.07142cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>23.54855cm</Width>
+            <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>

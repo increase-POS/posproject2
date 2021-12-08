@@ -763,7 +763,7 @@ namespace POS.View.reports
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
             string addpath = "";
-            string firstTitle = "external";
+            string firstTitle = "DirectEntry";
             string secondTitle = "";
             string subTitle = "";
             string Title = "";
@@ -771,18 +771,20 @@ namespace POS.View.reports
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc";
-                secondTitle = "invoice";
+                addpath = @"\Reports\StatisticReport\Storage\Direct\Ar\ArItem.rdlc";
+               
             }
             else
             {
-                addpath = @"\Reports\StatisticReport\Storage\External\En\Invoice.rdlc";
-                secondTitle = "invoice";
+                addpath = @"\Reports\StatisticReport\Storage\Direct\En\Item.rdlc";
+             
             }
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
+            secondTitle = "items";
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+
             Title = MainWindow.resourcemanagerreport.GetString("trStorageReport") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
 

@@ -388,6 +388,9 @@
     <Compile Include="View\reports\uc_destroied.xaml.cs">
       <DependentUpon>uc_destroied.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\uc_direct.xaml.cs">
+      <DependentUpon>uc_direct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\reports\uc_external.xaml.cs">
       <DependentUpon>uc_external.xaml</DependentUpon>
     </Compile>
@@ -846,6 +849,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\uc_destroied.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\reports\uc_direct.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1700,6 +1707,12 @@
     </Content>
     <Content Include="Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc" />
     <Content Include="Reports\StatisticReport\Storage\Destructive\En\Des.rdlc" />
+    <Content Include="Reports\StatisticReport\Storage\Direct\Ar\ArItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Direct\En\Item.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc" />

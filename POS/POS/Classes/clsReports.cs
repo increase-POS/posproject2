@@ -620,7 +620,9 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trTransfers");
             else if (firstTitle == "fund")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trCashBalance");
-            //trCashBalance
+            else if (firstTitle == "DirectEntry")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trDirectEntry");
+            //trCashBalance trDirectEntry
             //trTransfers
             //////////////////////////////////////////////////////////////////////////////
 
