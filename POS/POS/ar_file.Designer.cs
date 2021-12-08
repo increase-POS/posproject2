@@ -3931,6 +3931,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عنصر, موقع, تجميع....
+        /// </summary>
+        internal static string trItemLocationCollect {
+            get {
+                return ResourceManager.GetString("trItemLocationCollect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العناصر.
         /// </summary>
         internal static string trItems {
