@@ -2833,4 +2833,7 @@ Please add Email in setting</value>
   <data name="trMostPurchased" xml:space="preserve">
     <value>Most purchased</value>
   </data>
+  <data name="trLack" xml:space="preserve">
+    <value>Lack</value>
+  </data>
 </root>

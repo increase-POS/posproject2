@@ -1349,6 +1349,7 @@
     <Content Include="EmailTemplates\images\req2.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="pic\increase-logo100.png" />
     <Content Include="Thumb\agents\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

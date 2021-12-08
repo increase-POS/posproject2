@@ -978,40 +978,40 @@ namespace POS.View.sectionData
             try
             {
 
-             
-            if (string.IsNullOrEmpty(card.image))
-            {
-                SectionData.clearImg(img_card);
-            }
-            else
-            {
-                byte[] imageBuffer = await cardModel.downloadImage(card.image);
 
-                var bitmapImage = new BitmapImage();
-                if (imageBuffer != null)
+                if (string.IsNullOrEmpty(card.image))
                 {
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_card.Background = new ImageBrush(bitmapImage);
-                    // configure trmporary path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                    string tmpPath = System.IO.Path.Combine(dir, Global.TMPCardsFolder);
-                    tmpPath = System.IO.Path.Combine(tmpPath, card.image);
-                    openFileDialog.FileName = tmpPath;
+                    SectionData.clearImg(img_card);
                 }
                 else
-                    SectionData.clearImg(img_card);
+                {
+                    byte[] imageBuffer = await cardModel.downloadImage(card.image);
+
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
+                    {
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        img_card.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPCardsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, card.image);
+                        openFileDialog.FileName = tmpPath;
+                    }
+                    else
+                        SectionData.clearImg(img_card);
+                }
             }
-            }
-            catch (Exception ex)
+            catch 
             {
-                SectionData.ExceptionMessage(ex, this);
+                SectionData.clearImg(img_card);
             }
         }
 

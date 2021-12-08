@@ -4075,6 +4075,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lack.
+        /// </summary>
+        internal static string trLack {
+            get {
+                return ResourceManager.GetString("trLack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         internal static string trLanguage {
