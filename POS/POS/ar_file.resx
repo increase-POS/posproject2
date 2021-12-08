@@ -2818,4 +2818,7 @@
   <data name="trMostPurchased" xml:space="preserve">
     <value>الأكثر شراء</value>
   </data>
+  <data name="trLack" xml:space="preserve">
+    <value>احتياجات</value>
+  </data>
 </root>

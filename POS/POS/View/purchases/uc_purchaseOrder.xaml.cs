@@ -136,6 +136,7 @@ namespace POS.View.purchases
             //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQTR");
 
+            txt_shortageInvoice.Text = MainWindow.resourcemanager.GetString("trLack");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
             //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
