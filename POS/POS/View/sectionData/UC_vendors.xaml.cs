@@ -904,35 +904,41 @@ namespace POS.View
 
         private async Task getImg()
         {
-
-            if (agent.image.Equals(""))
+            try
             {
-                SectionData.clearImg(img_vendor);
-            }
-            else
-            {
-                byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
-
-                var bitmapImage = new BitmapImage();
-                if (imageBuffer != null)
+                if (agent.image.Equals(""))
                 {
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_vendor.Background = new ImageBrush(bitmapImage);
-                    // configure trmporary path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                    string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
-                    tmpPath = System.IO.Path.Combine(tmpPath, agent.image);
-                    openFileDialog.FileName = tmpPath;
+                    SectionData.clearImg(img_vendor);
                 }
                 else
-                    SectionData.clearImg(img_vendor);
+                {
+                    byte[] imageBuffer = await agentModel.downloadImage(agent.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
+                    {
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        img_vendor.Background = new ImageBrush(bitmapImage);
+                        // configure trmporary path
+                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
+                        tmpPath = System.IO.Path.Combine(tmpPath, agent.image);
+                        openFileDialog.FileName = tmpPath;
+                    }
+                    else
+                        SectionData.clearImg(img_vendor);
+                }
+            }
+            catch
+            {
+                SectionData.clearImg(img_vendor);
             }
 
         }

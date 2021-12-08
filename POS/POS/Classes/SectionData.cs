@@ -770,12 +770,17 @@ namespace POS.Classes
         }
         public static void clearImg(Button img)
         {
-            Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
-            StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
+            try
+            {
+                Uri resourceUri = new Uri("pic/no-image-icon-125x125.png", UriKind.Relative);
+                StreamResourceInfo streamInfo = Application.GetResourceStream(resourceUri);
 
-            BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
-            brush.ImageSource = temp;
-            img.Background = brush;
+                BitmapFrame temp = BitmapFrame.Create(streamInfo.Stream);
+                brush.ImageSource = temp;
+                img.Background = brush;
+            }
+            catch
+            {}
         }
         public static decimal calcPercentage(decimal value, decimal percentage)
         {
