@@ -1327,7 +1327,7 @@ namespace POS.View
                                 createUserId = MainWindow.userID.Value,
                                 updateUserId = MainWindow.userID.Value,
                             };
-                            await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ctreatePurchaseReturnInvoice", MainWindow.loginBranch.name);
+                            await not.save(not, (int)invoice.branchCreatorId, "storageAlerts_ctreatePurchaseReturnInvoice", MainWindow.loginBranch.name);
                             #endregion
                             await addInvoice("pbw", "pb"); // pbw means waiting purchase bounce
                             clearInvoice();
