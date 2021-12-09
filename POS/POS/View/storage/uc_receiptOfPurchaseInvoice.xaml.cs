@@ -290,8 +290,32 @@ namespace POS.View.storage
         }
         private void setNotifications()
         {
+            refreshDraftNotification();
              refreshInvoiceNotification();
              refreshReturnNotification();
+        }
+        private async void refreshDraftNotification()
+        {
+            string invoiceType = "isd";
+            int duration = 2;
+            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if ((_InvoiceType == "isd") && invoice.invoiceId != 0)
+                draftCount--;
+
+            int previouseCount = 0;
+            if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
+
+            if (draftCount != previouseCount)
+            {
+                if (draftCount > 9)
+                {
+                    draftCount = 9;
+                    md_draft.Badge = "+" + draftCount.ToString();
+                }
+                else if (draftCount == 0) md_draft.Badge = "";
+                else
+                    md_draft.Badge = draftCount.ToString();
+            }
         }
         private async void refreshInvoiceNotification()
         {
@@ -317,6 +341,8 @@ namespace POS.View.storage
         private async void refreshReturnNotification()
         {
             string invoiceType = "pbw";
+            if (invoice == null)
+                invoice = new Invoice();
             int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
             if (invoice.invType == "pbw")
                 returnsCount--;
@@ -1507,7 +1533,9 @@ namespace POS.View.storage
                         #endregion
                         await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
                         clearInvoice();
+                        refreshDraftNotification();
                     }
+                    
                 }
 
                 //clearInvoice();
