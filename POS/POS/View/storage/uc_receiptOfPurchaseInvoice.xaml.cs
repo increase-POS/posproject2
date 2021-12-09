@@ -1246,6 +1246,20 @@ namespace POS.View.storage
 
         private async Task fillInvoiceInputs(Invoice invoice)
         {
+           if(_InvoiceType == "isd")
+            {
+                tb_sum.Visibility = Visibility.Visible;
+                txt_sum.Visibility = Visibility.Visible;
+                txt_total.Visibility = Visibility.Visible;
+                tb_total.Visibility = Visibility.Visible;
+            }
+           else
+            {
+                tb_sum.Visibility = Visibility.Collapsed;
+                txt_sum.Visibility = Visibility.Collapsed;
+                txt_total.Visibility = Visibility.Collapsed;
+                tb_total.Visibility = Visibility.Collapsed;
+            }
             txt_branch.Text = invoice.branchName;
             txt_invNumber.Text = invoice.invNumber;
             if (invoice.total != null)
