@@ -320,7 +320,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDateCheque, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-            txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
+            //txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
             dg_receivedAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor");

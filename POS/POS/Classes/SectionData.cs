@@ -269,12 +269,12 @@ namespace POS.Classes
             {
                 p_error.Visibility = Visibility.Visible;
                 tt_error.Content = MainWindow.resourcemanager.GetString(tr);
-                txt.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                //txt.Background = (Brush)bc.ConvertFrom("#15FF0000");
                 isValid = false;
             }
             else
             {
-                txt.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                //txt.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 p_error.Visibility = Visibility.Collapsed;
             }
             return isValid;
@@ -454,7 +454,7 @@ namespace POS.Classes
         }
         public static void clearTextBlockValidate(TextBlock txt, Path p_error)
         {
-            txt.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+            //txt.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             p_error.Visibility = Visibility.Collapsed;
         }
         public static void clearComboBoxValidate(ComboBox cb, Path p_error)

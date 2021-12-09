@@ -198,7 +198,7 @@ namespace POS.View
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
-            txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
+            //txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_customer, MainWindow.resourcemanager.GetString("trCustomerHint"));

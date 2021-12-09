@@ -192,7 +192,7 @@
                                         <ComboBox SelectionChanged="cb_branches_SelectionChanged" MinWidth="150" Name="cb_branches" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Branch ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
                                         <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Grid.Row="1"  Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allBranches_Checked" Unchecked="Chk_allBranches_Unchecked"></CheckBox>
 
@@ -202,7 +202,7 @@
                                         <ComboBox MinWidth="150" Name="cb_pos" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Pos ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1" SelectionChanged="Cb_pos_SelectionChanged" ></ComboBox>
                                         <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allPos" Grid.Row="2"  Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allPos_Checked" Unchecked="Chk_allPos_Unchecked"></CheckBox>
 

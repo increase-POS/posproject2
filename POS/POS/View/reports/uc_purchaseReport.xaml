@@ -311,7 +311,7 @@
                                     <ComboBox SelectionChanged="cb_branches_SelectionChanged" Name="cb_branches" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Branch ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
                                     <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Click="chk_allBranches_Click" Grid.Row="1" Grid.Column="1" Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"></CheckBox>
                                     <DockPanel  Grid.Row="1" Grid.Column="2" LastChildFill="False">

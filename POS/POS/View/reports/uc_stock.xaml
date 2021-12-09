@@ -208,7 +208,7 @@
                                                 <ComboBox  Name="cb_branchesItem"  SelectionChanged="cb_branchesItem_SelectionChanged"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Branch/Store ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
                                                 <CheckBox  x:Name="chk_allBranchesItem" Background="{StaticResource MainColorBlue}" Checked="chk_allBranchesItem_Checked" Unchecked="chk_allBranchesItem_Unchecked"
                                                Grid.Row="1" Grid.Column="1"
@@ -227,7 +227,7 @@
                                                 <ComboBox Name="cb_itemsItem" IsEnabled="False"  SelectionChanged="cb_itemsItem_SelectionChanged" Grid.Row="2"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Items ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                                 <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allItemsItem"
                                                Grid.Row="2" Grid.Column="1" IsEnabled="False" Checked="chk_allItemsItem_Checked" Unchecked="chk_allItemsItem_Unchecked"
@@ -235,7 +235,7 @@
                                                 <ComboBox Name="cb_unitsItem" IsEnabled="False" SelectionChanged="cb_SelectionChanged" Grid.Row="2"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Units ...." Grid.Column="2"
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                                 <CheckBox  Background="{StaticResource MainColorBlue}" Checked="chk_allUnitsItem_Checked" Unchecked="chk_allUnitsItem_Unchecked" IsEnabled="False" x:Name="chk_allUnitsItem"
                                               Grid.Row="2" Grid.Column="3"
@@ -261,7 +261,7 @@
                                                 <ComboBox  Name="cb_branchesLocation" SelectionChanged="cb_branchesLocation_SelectionChanged"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Branch/Store ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
                                                 <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranchesLocation"
                                                Grid.Row="1" Grid.Column="1" Checked="chk_allBranchesLocation_Checked" Unchecked="chk_allBranchesLocation_Unchecked"
@@ -280,7 +280,7 @@
                                                 <ComboBox Name="cb_sectionsLocation" IsEnabled="False" Grid.Row="2" SelectionChanged="cb_sectionsLocation_SelectionChanged"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Sections ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                                 <CheckBox IsEnabled="False" Background="{StaticResource MainColorBlue}" x:Name="chk_allSectionsLocation"
                                                Grid.Row="2" Grid.Column="1" Checked="chk_allSectionsLocation_Checked" Unchecked="chk_allSectionsLocation_Unchecked"
@@ -288,7 +288,7 @@
                                                 <ComboBox Name="cb_locationsLocation" IsEnabled="False" Grid.Row="2" SelectionChanged="cb_SelectionChanged"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Location ...." Grid.Column="2"
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                                 <CheckBox IsEnabled="False" Background="{StaticResource MainColorBlue}" x:Name="chk_allLocationsLocation"
                                               Grid.Row="2" Grid.Column="3" Checked="chk_allLocationsLocation_Checked" Unchecked="chk_allLocationsLocation_Unchecked"
@@ -312,7 +312,7 @@
                                                 <ComboBox  Name="cb_branchesCollect" SelectionChanged="cb_branchesCollect_SelectionChanged"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Branch/Store ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
                                                 <CheckBox Checked="chk_allBranchesCollect_Checked" Unchecked="chk_allBranchesCollect_Unchecked" Background="{StaticResource MainColorBlue}" x:Name="chk_allBranchesCollect"
                                                Grid.Row="1" Grid.Column="1"
@@ -331,7 +331,7 @@
                                                 <ComboBox Name="cb_itemsCollect" IsEnabled="False" SelectionChanged="cb_itemsCollect_SelectionChanged" Grid.Row="2"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Items ...."
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                                 <CheckBox Checked="chk_allItemsCollect_Checked" IsEnabled="False" Unchecked="chk_allItemsCollect_Unchecked" Background="{StaticResource MainColorBlue}" x:Name="chk_allItemsCollect"
                                                Grid.Row="2" Grid.Column="1"
@@ -339,7 +339,7 @@
                                                 <ComboBox IsEnabled="False" SelectionChanged="cb_SelectionChanged" Name="cb_unitsCollect"  Grid.Row="2"
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       materialDesign:HintAssist.Hint="Units ...." Grid.Column="2"
-                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" BorderThickness="0,0,0,2" 
+                                    Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" ></ComboBox>
                                                 <CheckBox IsEnabled="False" Checked="chk_allUnitsCollect_Checked" Unchecked="chk_allUnitsCollect_Unchecked" Background="{StaticResource MainColorBlue}" x:Name="chk_allUnitsCollect"
                                               Grid.Row="2" Grid.Column="3"

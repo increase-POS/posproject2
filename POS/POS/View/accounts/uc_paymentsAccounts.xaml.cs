@@ -140,7 +140,7 @@ namespace POS.View.accounts
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_print_pay.Content = MainWindow.resourcemanager.GetString("trPrint");
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
-            txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
+            //txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
         }
 

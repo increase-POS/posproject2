@@ -712,7 +712,7 @@
                         </Path>-->
                         <Grid Grid.Row="7" x:Name="gd_card" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
@@ -722,17 +722,13 @@
                             <DockPanel x:Name="dkp_cards" Grid.ColumnSpan="2" LastChildFill="False" HorizontalAlignment="Center">
 
                             </DockPanel>
-                            <Grid Grid.Row="1" Grid.Column="0" >
+                            <Grid Grid.Row="1" Grid.Column="0" Margin="5 0" >
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
+                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="1" Grid.Column="0"   x:Name="txt_cardTitle"  Margin="5" 
-                       Foreground="#4E4E4E" Text="Card:"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Grid.Row="1" Grid.Column="1"  x:Name="txt_card"  Margin="2.5" 
-                       Foreground="#4E4E4E" Text=""
+                                 <TextBlock Grid.Row="1" Grid.Column="1"  x:Name="txt_card"  Margin="2.5" 
+                       Foreground="#4E4E4E" Text=""  Background="White"
                         HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <Path Grid.Row="1"  Grid.Column="2"  x:Name="p_errorCard" Fill="#E81123" Stretch="Fill"
                                               Margin="2.5"
