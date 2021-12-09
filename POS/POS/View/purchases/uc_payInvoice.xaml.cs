@@ -166,6 +166,7 @@ namespace POS.View
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorDetails");
 
+            txt_shortageInvoice.Text = MainWindow.resourcemanager.GetString("trLack");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
