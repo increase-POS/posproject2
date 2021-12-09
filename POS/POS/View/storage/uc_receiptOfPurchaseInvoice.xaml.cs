@@ -373,8 +373,9 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                saveBeforeExit();
                 timer.Stop();
+                saveBeforeExit();
+                
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
