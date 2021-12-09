@@ -319,7 +319,9 @@ namespace POS.View.storage
         }
         private async void refreshInvoiceNotification()
         {
-            string invoiceType = "pw"; 
+            string invoiceType = "pw";
+            if (invoice == null)
+                invoice = new Invoice();
             int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
             if (invoice.invType == "pw")
                 invoiceCount--;
@@ -918,6 +920,7 @@ namespace POS.View.storage
                     {
                         await addInvoice(_InvoiceType);
                         clearInvoice();
+                        refreshDraftNotification();
                     }
                     else
                         clearInvoice();
