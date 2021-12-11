@@ -966,8 +966,6 @@ var strP = TokenManager.GetPrincipal(token);
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
-                                            manualDiscountType = b.manualDiscountType,
-                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                     return TokenManager.GenerateToken(invoicesCount);
@@ -1059,6 +1057,8 @@ var strP = TokenManager.GetPrincipal(token);
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
                                             cashReturn = b.cashReturn,
+                                            shippingCost = b.shippingCost,
+                                            realShippingCost = b.realShippingCost,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1143,7 +1143,8 @@ var strP = TokenManager.GetPrincipal(token);
                                             branchCreatorId = b.branchCreatorId,
                                             userId = b.userId,
                                             cashReturn = b.cashReturn,
-                                            
+                                            shippingCost = b.shippingCost,
+                                            realShippingCost = b.realShippingCost,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1277,8 +1278,6 @@ var strP = TokenManager.GetPrincipal(token);
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
-                                            manualDiscountType = b.manualDiscountType,
-                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                     return TokenManager.GenerateToken(invoicesList);
@@ -1366,8 +1365,6 @@ var strP = TokenManager.GetPrincipal(token);
                                             shippingCompanyId = b.shippingCompanyId,
                                             shipUserId = b.shipUserId,
                                             userId = b.userId,
-                                            manualDiscountType = b.manualDiscountType,
-                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                    
@@ -1450,6 +1447,8 @@ var strP = TokenManager.GetPrincipal(token);
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
+                                            shippingCost = b.shippingCost,
+                                            realShippingCost = b.realShippingCost,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1524,23 +1523,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             invTime = b.invTime,
                                             notes = b.notes,
                                             vendorInvNum = b.vendorInvNum,
-                                            vendorInvDate = b.vendorInvDate,
-                                            createUserId = b.createUserId,
-                                            updateDate = b.updateDate,
-                                            updateUserId = b.updateUserId,
-                                            branchId = b.branchId,
-                                            discountValue = b.discountValue,
-                                            discountType = b.discountType,
-                                            tax = b.tax,
-                                            taxtype = b.taxtype,
-                                            name = b.name,
-                                            isApproved = b.isApproved,
-                                            branchCreatorId = b.branchCreatorId,
-                                            shippingCompanyId = b.shippingCompanyId,
-                                            shipUserId = b.shipUserId,
                                             userId = b.userId,
-                                            manualDiscountType = b.manualDiscountType,
-                                            manualDiscountValue = b.manualDiscountValue,
                                         })
                     .ToList().Count;
                   
@@ -1617,6 +1600,8 @@ var strP = TokenManager.GetPrincipal(token);
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
+                                            shippingCost = b.shippingCost,
+                                            realShippingCost = b.realShippingCost,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -1878,7 +1863,9 @@ var strP = TokenManager.GetPrincipal(token);
                                             shipUserId = b.shipUserId,
                                             manualDiscountType = b.manualDiscountType,
                                             manualDiscountValue = b.manualDiscountValue,
-                                        }).ToList();
+                        shippingCost = b.shippingCost,
+                        realShippingCost = b.realShippingCost,
+                    }).ToList();
                     if (invoicesList != null)
                     {
                         for (int i = 0; i < invoicesList.Count; i++)
@@ -2060,6 +2047,8 @@ var strP = TokenManager.GetPrincipal(token);
                                                 manualDiscountType = b.manualDiscountType,
                                                 manualDiscountValue = b.manualDiscountValue,
                                                 cashReturn = b.cashReturn,
+                                                shippingCost = b.shippingCost,
+                                                realShippingCost = b.realShippingCost,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -2114,6 +2103,8 @@ var strP = TokenManager.GetPrincipal(token);
                                                 userId = b.userId,
                                                 manualDiscountType = b.manualDiscountType,
                                                 manualDiscountValue = b.manualDiscountValue,
+                                                shippingCost = b.shippingCost,
+                                                realShippingCost = b.realShippingCost,
                                             })
                         .ToList();
                         if (invoicesList != null)
@@ -2336,6 +2327,8 @@ var strP = TokenManager.GetPrincipal(token);
                             tmpInvoice.manualDiscountType = newObject.manualDiscountType;
                             tmpInvoice.manualDiscountValue = newObject.manualDiscountValue;
                             tmpInvoice.cashReturn = newObject.cashReturn;
+                            tmpInvoice.shippingCost = newObject.shippingCost;
+                            tmpInvoice.realShippingCost = newObject.realShippingCost;
                             entity.SaveChanges();
                             message = tmpInvoice.invoiceId.ToString();
                             return TokenManager.GenerateToken(message);
