@@ -482,7 +482,7 @@ namespace POS.View
                             await RefreshBranchesList();
                             tb_search_TextChanged(null, null);
 
-                          //  await AddFreeThone(s);
+                           await AddFreeThone(s);
                         }
                     }
                     }
