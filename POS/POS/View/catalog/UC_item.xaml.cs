@@ -1208,7 +1208,11 @@ namespace POS.View
 
                                   int res = await itemUnit.saveItemUnit(itemUnit);
                                     if (res > 0)
+                                    {
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                        MainWindow.loading_GlobalItemUnitsList();
+                                        MainWindow.loading_GlobalUnitsList();
+                                    }
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 

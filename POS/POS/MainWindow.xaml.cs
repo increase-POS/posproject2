@@ -216,7 +216,7 @@ namespace POS
         }
 
         #region loading
-        List<keyValueBool> loadingList;
+       static List<keyValueBool> loadingList;
         //loadingThread[] loadingList = new loadingThread[25];
         async void loading_getUserPath()
         {
@@ -635,7 +635,7 @@ namespace POS
                 }
             }
         }
-        async void loading_GlobalItemUnitsList()
+       public static async void loading_GlobalItemUnitsList()
         {
             try
             {
@@ -652,7 +652,7 @@ namespace POS
                 }
             }
         }
-        async void loading_GlobalUnitsList()
+       public static async void loading_GlobalUnitsList()
         {
             try
             {
