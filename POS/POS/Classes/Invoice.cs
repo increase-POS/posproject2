@@ -113,6 +113,8 @@ namespace POS.Classes
         public decimal manualDiscountValue { get; set; }
         public string manualDiscountType { get; set; }
         public string createrUserName { get; set; }
+        public decimal shippingCost { get; set; }
+        public decimal realShippingCost { get; set; }
         // for report
         public int countP { get; set; }
         public int countS { get; set; }

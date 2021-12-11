@@ -113,6 +113,7 @@ namespace POS.View.sales
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
         static private decimal _DeliveryCost = 0;
+        static private decimal _RealDeliveryCost = 0;
         static private string _InvoiceType = "ord"; // order draft
 
         // for report
@@ -917,6 +918,7 @@ namespace POS.View.sales
             _Discount = 0;
             _SequenceNum = 0;
             _DeliveryCost = 0;
+            _RealDeliveryCost = 0;
             _SelectedCustomer = -1;
             _SelectedDiscountType = 0;
             _InvoiceType = "ord";
@@ -1045,7 +1047,8 @@ namespace POS.View.sales
                 invoice.agentId = (int)cb_customer.SelectedValue;
 
             invoice.notes = tb_note.Text;
-
+            invoice.shippingCost = _DeliveryCost;
+            invoice.realShippingCost = _RealDeliveryCost;
             if (cb_branch.SelectedIndex != -1)
                 invoice.branchId = (int)cb_branch.SelectedValue;
             if (tb_taxValue.Text != "")
@@ -1492,6 +1495,8 @@ namespace POS.View.sales
                 _Tax = (decimal)invoice.tax;
             cb_branch.SelectedValue = invoice.branchId;
             cb_customer.SelectedValue = invoice.agentId;
+            _DeliveryCost = invoice.shippingCost;
+            _RealDeliveryCost = invoice.realShippingCost;
             if (invoice.totalNet != null)
             {
                 if ((decimal)invoice.totalNet != 0)
@@ -2282,6 +2287,7 @@ SectionData.isAdminPermision())
                     _SelectedCompany = (int)cb_company.SelectedValue;
                     companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
                     _DeliveryCost = (decimal)companyModel.deliveryCost;
+                    _RealDeliveryCost = (decimal)companyModel.RealDeliveryCost;
                     refreshTotalValue();
 
                     if (companyModel.deliveryType == "local")

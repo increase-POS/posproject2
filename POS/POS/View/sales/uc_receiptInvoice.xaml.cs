@@ -123,6 +123,7 @@ namespace POS.View
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
         static private decimal _DeliveryCost = 0;
+        static private decimal _RealDeliveryCost = 0;
         static public string _InvoiceType = "sd"; // sale draft
 
         // for report
@@ -1133,7 +1134,7 @@ namespace POS.View
                 valid = false;
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectTheDeliveryMan"), animation: ToasterAnimation.FadeIn);
                 SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trSelectTheDeliveryMan");
-
+                exp_delivery.IsExpanded = true;
                 return valid;
             }
             #endregion
@@ -1336,7 +1337,8 @@ namespace POS.View
 
                 invoice.deservedDate = dp_desrvedDate.SelectedDate;
                 invoice.notes = tb_note.Text;
-
+                invoice.shippingCost = _DeliveryCost;
+                invoice.realShippingCost = _RealDeliveryCost;
                 if (tb_taxValue.Text != "")
                     invoice.tax = decimal.Parse(tb_taxValue.Text);
                 else
@@ -1837,6 +1839,7 @@ namespace POS.View
             _Tax = 0;
             _Discount = 0;
             _DeliveryCost = 0;
+            _RealDeliveryCost = 0;
             _SequenceNum = 0;
             txt_invNumber.Text = "";
             _SelectedCustomer = -1;
@@ -2114,6 +2117,8 @@ namespace POS.View
             }
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
+            _DeliveryCost = invoice.shippingCost;
+            _RealDeliveryCost = invoice.realShippingCost;
             if (invoice.totalNet != null)
             {
                 if ((decimal)invoice.totalNet != 0 && invoice.totalNet != null)
@@ -4906,6 +4911,7 @@ namespace POS.View
                 {
                     companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
                     _DeliveryCost = (decimal)companyModel.deliveryCost;
+                    _RealDeliveryCost = (decimal)companyModel.RealDeliveryCost;
                     refreshTotalValue();
 
                     cb_paymentProcessType.SelectedIndex = 1; // balance

@@ -1302,7 +1302,6 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(invoicePermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-
                 {
                     //check mandatory inputs
                     bool validate = validateInvoiceValues();
@@ -1666,6 +1665,10 @@ namespace POS.View
             tb_discount.Clear();
             tb_taxValue.Clear();
             billDetails.Clear();
+            tb_processNum.Clear();
+            cb_paymentProcessType.SelectedIndex = 0;
+            cb_paymentProcessType.IsEnabled = true;
+            gd_card.Visibility = Visibility.Collapsed;
             tb_total.Text = "0";
             tb_sum.Text = "0";
             if (MainWindow.tax != 0)
