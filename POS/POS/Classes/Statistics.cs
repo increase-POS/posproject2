@@ -21,6 +21,11 @@ namespace POS.Classes
     {
 
         /////////////// الارباح
+        public decimal shippingCost { get; set; }
+        public decimal realShippingCost { get; set; }
+        public decimal shippingProfit { get; set; }
+        public decimal totalNoShip { get; set; }
+        public decimal totalNetNoShip { get; set; }
         public string ITitemName { get; set; }
         public string ITunitName { get; set; }
         //public int ITitemsTransId { get; set; }*

@@ -155,21 +155,106 @@ namespace POS.View.reports
             (dp_endDate.SelectedDate != null ? p.updateDate <= dp_endDate.SelectedDate : true)
             );
 
-            if (selectedTab == 0)
-                profitsTemp = profitsTemp.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
+            #region old
+            //if (selectedTab == 0)
+            //    profitsTemp = profitsTemp.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
 
-            else
-            {
-                var quantities = profitsTemp.GroupBy(s => s.ITitemUnitId).Select(inv => new { ITquantity = inv.Sum(p => p.ITquantity.Value) }).ToList();
-                profitsTemp = profitsTemp.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
-                int index = 0;
-                foreach (var x in profitsTemp)
-                {
-                    x.ITquantity = quantities[index].ITquantity;
-         
-                    index++;
-                }
-            }
+            //else
+            //{
+            //    var quantities = profitsTemp.GroupBy(s => s.ITitemUnitId).Select(inv => new { ITquantity = inv.Sum(p => p.ITquantity.Value) }).ToList();
+            //    profitsTemp = profitsTemp.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
+            //    int index = 0;
+            //    foreach (var x in profitsTemp)
+            //    {
+            //        x.ITquantity = quantities[index].ITquantity;
+
+            //        index++;
+            //    }
+            //}
+            //profitsQuery = profitsTemp
+            //.Where(s =>
+            //(
+            //s.invNumber.ToLower().Contains(searchText)
+            //||
+            //s.totalNet.ToString().ToLower().Contains(searchText)
+            //||
+            //s.invType.ToLower().Contains(searchText)
+            //||
+            //s.ITitemName.ToLower().Contains(searchText)
+            //||
+            //s.ITunitName.ToLower().Contains(searchText)
+            //||
+            //s.ITquantity.ToString().ToLower().Contains(searchText)
+            //||
+            //s.ITprice.ToString().ToLower().Contains(searchText)
+            //)
+            //&&
+            ////branchID/itemID
+            //(
+            //    (selectedTab == 0 ? cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true
+            //    :
+            //    cb_branches.SelectedIndex != -1 ? s.ITitemId == Convert.ToInt32(cb_branches.SelectedValue) : true)
+            //)
+            //&&
+            ////posID/unitID
+            //(
+            //    (selectedTab == 0 ? cb_pos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_pos.SelectedValue) : true
+            //    :
+            //    cb_pos.SelectedIndex != -1 ? s.ITunitId == Convert.ToInt32(cb_pos.SelectedValue) : true)
+            //    )
+            //);
+            //if (selectedTab == 0)
+            //{
+            //    var profitsSum = profitsQuery.GroupBy(s => s.invoiceId).Select(g => new
+            //    {
+            //        invoiceProfit = g.Sum(p => p.itemunitProfit)
+            //    }).ToList();
+
+            //    //foreach (var i in profitsSum)
+            //    //{
+            //    //    profitsQuery.Select(x => { x.invoiceProfit = (i.invoiceId == x.invoiceId) ? i.invoiceProfit : x.invoiceProfit; return x; });
+            //    //}
+            //    //customers.Where(c => c.IsValid).Select(c => { c.CreditLimit = 1000; return c; }).ToList();
+            //    //foreach (var (item,index) in profitsQuery)
+            //    int i = 0;
+            //    foreach (var x in profitsQuery)
+            //    {
+            //        x.invoiceProfit = profitsSum[i].invoiceProfit;
+            //        i++;
+            //    }
+            //}
+            //else if (selectedTab == 1)
+            //{
+            //    var profitsSum = profitsQuery.GroupBy(s => s.ITitemUnitId).Select(g => new
+            //    {
+            //        itemProfit = g.Sum(p => p.itemunitProfit),
+            //    }).ToList();
+
+            //    int i = 0;
+            //    foreach (var x in profitsQuery)
+            //    {
+            //        x.itemProfit = profitsSum[i].itemProfit * (decimal)x.ITquantity;
+            //        // x.itemProfit = profitsSum[i].itemProfit ;
+            //        i++;
+            //    }
+            //}
+            //profitsQueryExcel = profitsQuery.ToList();
+            #endregion
+
+            if (selectedTab == 0) await SearchInvoice();
+            else if (selectedTab == 1) await SearchItem();
+
+            RefreshProfitsView();
+            fillCombo1();
+            fillColumnChart();
+            fillPieChart();
+            fillRowChart();
+        }
+
+        async Task SearchInvoice()
+        {
+            profitsTemp = profitsTemp.GroupBy(s => s.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
+
             profitsQuery = profitsTemp
             .Where(s =>
             (
@@ -190,60 +275,86 @@ namespace POS.View.reports
             &&
             //branchID/itemID
             (
-                (selectedTab == 0 ? cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true
-                :
-                cb_branches.SelectedIndex != -1 ? s.ITitemId == Convert.ToInt32(cb_branches.SelectedValue) : true)
+                cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true
             )
             &&
             //posID/unitID
             (
-                (selectedTab == 0 ? cb_pos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_pos.SelectedValue) : true
-                :
-                cb_pos.SelectedIndex != -1 ? s.ITunitId == Convert.ToInt32(cb_pos.SelectedValue) : true)
-                )
-            );
-            if (selectedTab == 0)
-            {
-                var profitsSum = profitsQuery.GroupBy(s => s.invoiceId).Select(g => new
-                {
-                    invoiceProfit = g.Sum(p => p.itemunitProfit)
-                }).ToList();
+                cb_pos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_pos.SelectedValue) : true
+            ));
 
-                //foreach (var i in profitsSum)
-                //{
-                //    profitsQuery.Select(x => { x.invoiceProfit = (i.invoiceId == x.invoiceId) ? i.invoiceProfit : x.invoiceProfit; return x; });
-                //}
-                //customers.Where(c => c.IsValid).Select(c => { c.CreditLimit = 1000; return c; }).ToList();
-                //foreach (var (item,index) in profitsQuery)
-                int i = 0;
-                foreach (var x in profitsQuery)
-                {
-                    x.invoiceProfit = profitsSum[i].invoiceProfit;
-                    i++;
-                }
+            var profitsSum = profitsQuery.GroupBy(s => s.invoiceId).Select(g => new
+            {
+                invoiceProfit = g.Sum(p => p.itemunitProfit),
+                shippingProfit = g.FirstOrDefault().shippingProfit
+            }).ToList();
+
+            int i = 0;
+            foreach (var x in profitsQuery)
+            {
+                x.invoiceProfit = profitsSum[i].invoiceProfit + profitsSum[i].shippingProfit;
+                i++;
             }
-            else if (selectedTab == 1)
-            {
-                var profitsSum = profitsQuery.GroupBy(s => s.ITitemUnitId).Select(g => new
-                {
-                    itemProfit = g.Sum(p => p.itemunitProfit),
-                }).ToList();
+          
+            profitsQueryExcel = profitsQuery.ToList();
+        }
 
-                int i = 0;
-                foreach (var x in profitsQuery)
-                {
-                    x.itemProfit = profitsSum[i].itemProfit * (decimal)x.ITquantity;
-                    // x.itemProfit = profitsSum[i].itemProfit ;
-                    i++;
-                }
+        async Task SearchItem()
+        {
+            var quantities = profitsTemp.GroupBy(s => s.ITitemUnitId).Select(inv => new { ITquantity = inv.Sum(p => p.ITquantity.Value) }).ToList();
+            profitsTemp = profitsTemp.GroupBy(s => s.ITitemUnitId).SelectMany(inv => inv.Take(1)).ToList();
+            int index = 0;
+            foreach (var x in profitsTemp)
+            {
+                x.ITquantity = quantities[index].ITquantity;
+
+                index++;
+            }
+
+            profitsQuery = profitsTemp
+            .Where(s =>
+            (
+            s.invNumber.ToLower().Contains(searchText)
+            ||
+            s.totalNet.ToString().ToLower().Contains(searchText)
+            ||
+            s.invType.ToLower().Contains(searchText)
+            ||
+            s.ITitemName.ToLower().Contains(searchText)
+            ||
+            s.ITunitName.ToLower().Contains(searchText)
+            ||
+            s.ITquantity.ToString().ToLower().Contains(searchText)
+            ||
+            s.ITprice.ToString().ToLower().Contains(searchText)
+            )
+            &&
+            //branchID/itemID
+            (
+                cb_branches.SelectedIndex != -1 ? s.ITitemId == Convert.ToInt32(cb_branches.SelectedValue) : true
+            )
+            &&
+            //posID/unitID
+            (
+                cb_pos.SelectedIndex != -1 ? s.ITunitId == Convert.ToInt32(cb_pos.SelectedValue) : true)
+            );
+            
+            var profitsSum = profitsQuery.GroupBy(s => s.ITitemUnitId).Select(g => new
+            {
+                itemProfit = g.Sum(p => p.itemunitProfit),
+            }).ToList();
+
+            int i = 0;
+            foreach (var x in profitsQuery)
+            {
+                x.itemProfit = profitsSum[i].itemProfit * (decimal)x.ITquantity;
+                // x.itemProfit = profitsSum[i].itemProfit ;
+                i++;
             }
             profitsQueryExcel = profitsQuery.ToList();
-            RefreshProfitsView();
-            fillCombo1();
-            fillColumnChart();
-            fillPieChart();
-            fillRowChart();
         }
+
+
 
         void RefreshProfitsView()
         {

@@ -166,19 +166,19 @@ namespace POS.View.reports
             txt_stockHint.Text = MainWindow.resourcemanager.GetString("trItemLocationCollect");
 
             txt_externalInfo.Text = MainWindow.resourcemanager.GetString("trExternal");
-            //txt_externalHint.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_externalHint.Text = MainWindow.resourcemanager.GetString("trItemsAgentsInvoiceHint");
 
             txt_internalInfo.Text = MainWindow.resourcemanager.GetString("trInternal");
-            //txt_internalHint.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_internalHint.Text = MainWindow.resourcemanager.GetString("trItemsOperatorHint");
 
-            txt_directInfo.Text = MainWindow.resourcemanager.GetString("trDirect");
-            //txt_directHint.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_directInfo.Text = MainWindow.resourcemanager.GetString("trDirectEntry");
+            txt_directHint.Text = MainWindow.resourcemanager.GetString("trItemsHint");
 
             txt_stocktakingInfo.Text = MainWindow.resourcemanager.GetString("trStocktaking");
-            //txt_stocktakingHint.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_stocktakingHint.Text = MainWindow.resourcemanager.GetString("trArchivesShortfallsHint");
 
             txt_destroiedInfo.Text = MainWindow.resourcemanager.GetString("trDestructive");
-            //txt_destroiedHint.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_destroiedHint.Text = MainWindow.resourcemanager.GetString("trBranchItemHint");
            
         }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
