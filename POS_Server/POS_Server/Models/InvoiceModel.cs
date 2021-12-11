@@ -50,6 +50,8 @@ namespace POS_Server.Models
         public string createrUserName { get; set; }
         public bool isActive { get; set; }
         public decimal cashReturn { get; set; }
+        public decimal shippingCost { get; set; }
+        public decimal realShippingCost { get; set; }
     }
 
     public class CouponInvoiceModel
