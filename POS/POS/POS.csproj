@@ -1366,9 +1366,6 @@
     <Content Include="Thumb\items\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Thumb\report\tmp.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Thumb\setting\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2183,6 +2180,7 @@
   <ItemGroup>
     <Folder Include="Reports\StatisticReport\Storage\Internal\Ar\" />
     <Folder Include="Reports\StatisticReport\Storage\Internal\En\" />
+    <Folder Include="Thumb\report\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\netoaster\netoaster.csproj">

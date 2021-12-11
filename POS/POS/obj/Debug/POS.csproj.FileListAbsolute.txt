@@ -4081,7 +4081,6 @@ D:\myproj\posproject2\POS\POS\bin\Debug\EmailTemplates\images\req2.gif
 D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\agents\tmp.txt
 D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\cards\tmp.txt
 D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\items\tmp.txt
-D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\report\tmp.txt
 D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\setting\tmp.txt
 D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\tmp.txt
 D:\myproj\posproject2\POS\POS\bin\Debug\Thumb\users\tmp.txt

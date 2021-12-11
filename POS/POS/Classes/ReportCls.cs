@@ -1067,9 +1067,10 @@ namespace POS.Classes
             {
                 paramarr.Add(new ReportParameter("watermark", "0"));
             }
-
+            paramarr.Add(new ReportParameter("shippingCost", DecTostring(invoice.shippingCost) ));
 
             return paramarr;
+
         }
         public static List<ItemTransferInvoice> converter(List<ItemTransferInvoice> query)
         {
