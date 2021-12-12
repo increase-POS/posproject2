@@ -1239,6 +1239,10 @@ namespace POS.View.reports
                         uc_quotations._InvoiceType = invoice.invType;
                         uc_quotations.Instance.invoice = invoice;
                         uc_quotations.isFromReport = true;
+                        if (item.archived == 0)
+                            uc_quotations.archived = false;
+                        else
+                            uc_quotations.archived = true;
                         await uc_quotations.Instance.fillInvoiceInputs(invoice);
                     }
                 }
