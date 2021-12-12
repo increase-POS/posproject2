@@ -193,7 +193,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_receiptOfPurchaseInvoice_Click(object sender, RoutedEventArgs e)
+        public void Btn_receiptOfPurchaseInvoice_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -226,7 +226,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_itemsExport_Click(object sender, RoutedEventArgs e)
+        public void Btn_itemsExport_Click(object sender, RoutedEventArgs e)
         {
             try
             {

@@ -163,7 +163,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
+        public void Btn_purchaseOrder_Click(object sender, RoutedEventArgs e)
         {
             try
             {

@@ -1993,7 +1993,7 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void BTN_storage_Click(object sender, RoutedEventArgs e)
+        public void BTN_storage_Click(object sender, RoutedEventArgs e)
         {
             try
             {

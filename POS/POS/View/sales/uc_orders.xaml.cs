@@ -78,7 +78,7 @@ namespace POS.View.sales
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
         Invoice invoiceModel = new Invoice();
-        Invoice invoice = new Invoice();
+        public Invoice invoice = new Invoice();
         ItemLocation itemLocationModel = new ItemLocation();
         Coupon couponModel = new Coupon();
         IEnumerable<Coupon> coupons;
@@ -116,7 +116,7 @@ namespace POS.View.sales
         static private decimal _Discount = 0;
         static private decimal _DeliveryCost = 0;
         static private decimal _RealDeliveryCost = 0;
-        static private string _InvoiceType = "ord"; // order draft
+        static public string _InvoiceType = "ord"; // order draft
 
         // for report
         ReportCls reportclass = new ReportCls();
@@ -328,7 +328,7 @@ namespace POS.View.sales
       
 
         #endregion
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1535,7 +1535,7 @@ namespace POS.View.sales
             }
         }
 
-        private async Task fillInvoiceInputs(Invoice invoice)
+        public async Task fillInvoiceInputs(Invoice invoice)
         {
             txt_invNumber.Text = invoice.invNumber;
 

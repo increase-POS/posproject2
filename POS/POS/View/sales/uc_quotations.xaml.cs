@@ -75,7 +75,7 @@ namespace POS.View.sales
         List<ItemUnit> itemUnits;
 
         Invoice invoiceModel = new Invoice();
-        Invoice invoice = new Invoice();
+        public Invoice invoice = new Invoice();
         List<Invoice> invoices;
 
         Coupon couponModel = new Coupon();
@@ -111,7 +111,7 @@ namespace POS.View.sales
         static private decimal _Sum = 0;
         static private decimal _Tax = 0;
         static private decimal _Discount = 0;
-        static private string _InvoiceType = "qd"; // quotation draft
+        static public string _InvoiceType = "qd"; // quotation draft
 
         // for report
         ReportCls reportclass = new ReportCls();
@@ -254,7 +254,7 @@ namespace POS.View.sales
 
 
         #endregion
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1277,7 +1277,7 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async Task fillInvoiceInputs(Invoice invoice)
+        public async Task fillInvoiceInputs(Invoice invoice)
         {
             _Sum = (decimal)invoice.total;
             txt_invNumber.Text = invoice.invNumber.ToString();

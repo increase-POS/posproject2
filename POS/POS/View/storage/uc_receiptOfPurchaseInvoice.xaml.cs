@@ -71,7 +71,7 @@ namespace POS.View.storage
         public List<Control> controls;
 
         Invoice invoiceModel = new Invoice();
-        Invoice invoice = new Invoice();
+        public Invoice invoice = new Invoice();
         List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
         List<ItemTransfer> mainInvoiceItems;
@@ -90,7 +90,7 @@ namespace POS.View.storage
         //for bill details
         static private int _SequenceNum = 0;
         static private int _invoiceId;
-        static private string _InvoiceType = "isd"; // immidiatlly in storage draft
+        static public string _InvoiceType = "isd"; // immidiatlly in storage draft
         static private decimal _Sum = 0;
         static private decimal _Count = 0;
         //tglItemState
@@ -165,7 +165,7 @@ namespace POS.View.storage
         }
         #endregion
 
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1249,7 +1249,7 @@ namespace POS.View.storage
             }
         }
 
-        private async Task fillInvoiceInputs(Invoice invoice)
+        public async Task fillInvoiceInputs(Invoice invoice)
         {
            if(_InvoiceType == "isd")
             {

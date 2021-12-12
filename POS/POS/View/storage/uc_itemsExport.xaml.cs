@@ -63,14 +63,14 @@ namespace POS.View.storage
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         Branch branchModel = new Branch();
-       // IEnumerable<Branch> branches;
-
+        // IEnumerable<Branch> branches;
+        public static bool isFromReport = false;
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
 
         ItemLocation itemLocationModel = new ItemLocation();
-        Invoice invoice = new Invoice();
+      public  Invoice invoice = new Invoice();
         Invoice generatedInvoice = new Invoice();
         List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
@@ -81,7 +81,7 @@ namespace POS.View.storage
         ShippingCompanies companyModel = new ShippingCompanies();
         List<ShippingCompanies> companies;
         public List<Control> controls;
-        static private string _ProcessType = "imd"; //draft import
+        static public string _ProcessType = "imd"; //draft import
 
         static private int _SequenceNum = 0;
         static private int _Count = 0;
@@ -182,7 +182,7 @@ namespace POS.View.storage
                 //SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1223,7 +1223,7 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async Task fillOrderInputs(Invoice invoice)
+        public async Task fillOrderInputs(Invoice invoice)
         {
             if (invoice.invoiceMainId == null)
                 generatedInvoice = await invoice.getgeneratedInvoice(invoice.invoiceId);
