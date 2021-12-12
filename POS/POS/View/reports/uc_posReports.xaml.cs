@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,6 +68,20 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 list = await statisticModel.GetPosTrans();
 
                 fromBranches = statisticModel.getFromCombo(list);
@@ -101,6 +117,37 @@ namespace POS.View.reports
                         SectionData.EndAwait(grid_main);
                     SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void translate()
+        {
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formBranch, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toBranch, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            //chk_allFromBranch.Content = MainWindow.resourcemanager.GetString("trAll");
+            //chk_allToBranch.Content = MainWindow.resourcemanager.GetString("trAll");
+            //chk_allFromPos.Content = MainWindow.resourcemanager.GetString("trAll");
+            //chk_allToPos.Content = MainWindow.resourcemanager.GetString("trAll");
+            //chk_twoWay.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            //col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            //col_fromBranch.Header = MainWindow.resourcemanager.GetString("trType");
+            //col_fromPos.Header = MainWindow.resourcemanager.GetString("trTotal");
+            //col_toBranch.Header = MainWindow.resourcemanager.GetString("trItem");
+            //col_toPos.Header = MainWindow.resourcemanager.GetString("trUnit");
+            //col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trQTR");
+            //col_updateDate.Header = MainWindow.resourcemanager.GetString("trBranch");
+            //col_cash.Header = MainWindow.resourcemanager.GetString("trPOS");
+
+            //tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            //tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            //tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            //tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            //tt_payments.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
         List<CashTransferSts> posLst;

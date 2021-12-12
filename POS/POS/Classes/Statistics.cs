@@ -421,7 +421,7 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
-        public int archived { get; set; }
+
         public double? itemAvg { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public string causeFalls { get; set; }

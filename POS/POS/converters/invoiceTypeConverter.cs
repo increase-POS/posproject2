@@ -49,19 +49,19 @@ namespace POS.converters
                 //مسودة مرتجع مشتريات
                 case "pbd": value = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft");
                     break;
-                // مسودة طلبية مبيعات 
+                // مسودة طلبية مبيعا 
                 case "ord":
                     value = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
                     break;
-                //   طلبية مبيعات 
+                //طلبية مبيعات 
                 case "or":
                     value = MainWindow.resourcemanager.GetString("trSaleOrder");
                     break;
-                // مسودة طلبية شراء 
+                //مسودة طلبية شراء 
                 case "pod":
                     value = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
                     break;
-                // طلبية شراء 
+                //طلبية شراء 
                 case "po":
                     value = MainWindow.resourcemanager.GetString("trPurchaceOrder");
                     break;
@@ -108,6 +108,10 @@ namespace POS.converters
                 // إدخال مباشر
                 case "is":
                     value = MainWindow.resourcemanager.GetString("trDirectEntry");
+                    break;
+                // مسودة إدخال مباشر
+                case "isd":
+                    value = MainWindow.resourcemanager.GetString("trDirectEntryDraft");
                     break;
                 default: break;
             }

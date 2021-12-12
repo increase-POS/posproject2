@@ -126,7 +126,7 @@ namespace POS.View.reports
             dgPayments.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
             dgPayments.Columns[2].Header = MainWindow.resourcemanager.GetString("trDescription");
             dgPayments.Columns[3].Header = MainWindow.resourcemanager.GetString("trPayment");
-            dgPayments.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+            dgPayments.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
