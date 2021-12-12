@@ -804,6 +804,7 @@ namespace POS.View.sales
             lst_coupons.Items.Clear();
             md_docImage.Badge = "";
             isFromReport = false;
+            archived = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
 
@@ -817,6 +818,8 @@ namespace POS.View.sales
         }
         private void inputEditable()
         {
+            if (archived)
+                _InvoiceType = "q";
             switch (_InvoiceType)
             {
                 case "qd": // quotation draft invoice
@@ -850,6 +853,7 @@ namespace POS.View.sales
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
             }
+          
             if (_InvoiceType.Equals("q"))
             {
                 #region print - pdf - send email
@@ -1256,6 +1260,7 @@ namespace POS.View.sales
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
@@ -1408,6 +1413,7 @@ namespace POS.View.sales
 
                         _InvoiceType = invoice.invType;
                         isFromReport = false;
+                        archived = false;
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");

@@ -1714,6 +1714,7 @@ namespace POS.View
                 tb_taxValue.Text = "0";
 
             isFromReport = false;
+            archived = false;
             md_docImage.Badge = "";
             md_payments.Badge = "";
 
@@ -1752,6 +1753,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         await fillInvoiceInputs(invoice);
                         setNotifications();
                         refreshDocCount(invoice.invoiceId);
@@ -1811,6 +1813,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         setNotifications();
                         refreshPaymentsNotification(_invoiceId);
                         refreshDocCount(invoice.invoiceId);
@@ -1861,6 +1864,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         // notifications
                         md_payments.Badge = "";
                         setNotifications();
@@ -1949,6 +1953,7 @@ namespace POS.View
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
                             isFromReport = false;
+                            archived = false;
                             // notifications
                             setNotifications();
                             refreshPaymentsNotification(_invoiceId);
@@ -2073,7 +2078,7 @@ namespace POS.View
                 btn_items.IsEnabled = true;
                 cb_paymentProcessType.IsEnabled = true;
             }
-            else if (_InvoiceType == "pw" || _InvoiceType == "p")
+            else if (_InvoiceType == "pw" || _InvoiceType == "p" || archived)
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only

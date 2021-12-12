@@ -1840,6 +1840,7 @@ namespace POS.View
             _Sum = 0;
             companyModel = new ShippingCompanies();
             isFromReport = false;
+            archived = false;
             _Tax = 0;
             _Discount = 0;
             _DeliveryCost = 0;
@@ -1914,6 +1915,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         // notifications
                         md_payments.Badge = "";
                         setNotifications();
@@ -2002,6 +2004,7 @@ namespace POS.View
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
@@ -2064,6 +2067,7 @@ namespace POS.View
                             _invoiceId = invoice.invoiceId;
                             _InvoiceType = invoice.invType;
                             isFromReport = false;
+                            archived = false;
                             //notifications
                             setNotifications();
                             await refreshDocCount(invoice.invoiceId);
@@ -2242,6 +2246,7 @@ namespace POS.View
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
                             isFromReport = false;
+                            archived = false;
                             await fillInvoiceInputs(invoice);
                             if (w.condition == "admin")
                                 invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
@@ -2321,6 +2326,8 @@ namespace POS.View
         }
         private void inputEditable()
         {
+            if (archived)
+                _InvoiceType = "s";
             switch (_InvoiceType)
             {
                 case "sbd": // sales bounce draft invoice
@@ -4605,6 +4612,7 @@ namespace POS.View
                             invoice = w.invoice;
                             _InvoiceType = invoice.invType;
                             isFromReport = false;
+                            archived = false;
                             //notifications
                             setNotifications();
                             md_payments.Badge = "";

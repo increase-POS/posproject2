@@ -253,6 +253,7 @@ namespace POS.View.purchases
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         // notifications
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
@@ -923,6 +924,7 @@ namespace POS.View.purchases
             btn_updateVendor.IsEnabled = false;
             md_docImage.Badge = "";
             isFromReport = false;
+            archived = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
             refrishBillDetails();
             inputEditable();
@@ -958,6 +960,7 @@ namespace POS.View.purchases
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         // notifications
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
@@ -1081,7 +1084,7 @@ namespace POS.View.purchases
                 tb_barcode.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
-            else if (_InvoiceType == "po") // purchase order
+            else if (_InvoiceType == "po" || archived) // purchase order
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only

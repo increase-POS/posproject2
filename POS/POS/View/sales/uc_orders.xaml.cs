@@ -946,6 +946,7 @@ namespace POS.View.sales
             md_docImage.Badge = "";
             lst_coupons.Items.Clear();
             isFromReport = false;
+            archived = false;
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
@@ -958,6 +959,8 @@ namespace POS.View.sales
         }
         private void inputEditable()
         {
+            if (archived)
+                _InvoiceType = "or";
             switch (_InvoiceType)
             {
                 case "ord": // quotation draft invoice
@@ -1511,6 +1514,7 @@ namespace POS.View.sales
                             _InvoiceType = invoice.invType;
                             _invoiceId = invoice.invoiceId;
                             isFromReport = false;
+                            archived = false;
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
                             invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
@@ -1754,6 +1758,7 @@ namespace POS.View.sales
                             _InvoiceType = invoice.invType;
                             _invoiceId = invoice.invoiceId;
                             isFromReport = false;
+                            archived = false;
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
                             invoices = await invoice.GetInvoicesByCreator(invoiceType,MainWindow.userID.Value,duration);
@@ -1808,6 +1813,7 @@ namespace POS.View.sales
                             _InvoiceType = invoice.invType;
                             _invoiceId = invoice.invoiceId;
                             isFromReport = false;
+                            archived = false;
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
                             invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, MainWindow.userLogin.userId);
