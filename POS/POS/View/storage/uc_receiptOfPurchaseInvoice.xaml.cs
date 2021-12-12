@@ -790,8 +790,11 @@ namespace POS.View.storage
             isFromReport = false;
             refrishBillDetails();
             inputEditable();
-            btn_next.Visibility = Visibility.Collapsed;
-            btn_previous.Visibility = Visibility.Collapsed;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Collapsed;
+                btn_previous.Visibility = Visibility.Collapsed;
+            }
         }
         /*
         private void Cbm_unitItemDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
