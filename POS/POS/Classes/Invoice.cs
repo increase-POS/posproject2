@@ -646,7 +646,7 @@ namespace POS.Classes
         {
             List<ItemTransfer> items = new List<ItemTransfer>();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("itemId", invoiceId.ToString());
+            parameters.Add("branchId", branchId.ToString());
             IEnumerable<Claim> claims = await APIResult.getList("itemsLocations/getShortageItems", parameters);
             foreach (Claim c in claims)
             {
@@ -656,6 +656,22 @@ namespace POS.Classes
                 }
             }
             return items;
+        }
+        public async Task<string> isThereLack(int branchId)
+        {
+            string res = "";
+            List<ItemTransfer> items = new List<ItemTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("branchId", branchId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("itemsLocations/isThereLack", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                   res =c.Value;
+                }
+            }
+            return res;
         }
         public async Task<List<CouponInvoice>> GetInvoiceCoupons(int invoiceId)
         {

@@ -716,6 +716,7 @@ namespace POS.View
             try
             {
                 await refreshOrdersNotification();
+                refreshLackNotification();
                 if (invoice.invoiceId != 0)
                 {
                     refreshDocCount(invoice.invoiceId);
@@ -735,6 +736,7 @@ namespace POS.View
             refreshDraftNotification();
             refreshInvNotification();
             refreshOrdersNotification();
+            refreshLackNotification();
         }
         private async Task refreshDraftNotification()
         {
@@ -803,6 +805,14 @@ namespace POS.View
                 else
                     md_orders.Badge = ordersCount.ToString();
             }
+        }
+        private async Task refreshLackNotification()
+        {
+            string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
+            if (isThereLack == "yes")
+                md_shortage.Badge = "!";
+            else
+                md_shortage.Badge = "";          
         }
         private async void refreshDocCount(int invoiceId)
         {
