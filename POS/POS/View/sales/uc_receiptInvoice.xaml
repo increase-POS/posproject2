@@ -922,6 +922,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <ComboBox x:Name="cb_company"  Grid.Row="0" 
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
@@ -970,6 +971,23 @@
                                         <ToolTip x:Name="tt_errorUser" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Margin="10,0,10,0"  >
+                                    <TextBlock Grid.Row="0"  Text="Delivery cost: " x:Name="txt_deliveryCostTitle" 
+                                            Foreground="#4E4E4E"    
+                                  VerticalAlignment="Center"  
+                                       HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                                    <!--Text="{Binding total, Mode=OneWay}"-->
+                                    <TextBlock Grid.Row="1"   x:Name="tb_deliveryCost"  Margin="5" 
+                       Foreground="#4E4E4E" Text="0"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontWeight="Bold"  FontSize="12"/>
+                                    <!--Text="{Binding Path=MainWindow.Currency,Mode=OneWay}"-->
+                                    <TextBlock Grid.Row="1"   x:Name="tb_moneyIconDeliveryCost" Grid.Column="1" Margin="0" 
+                       Foreground="#4E4E4E" Text="{Binding Path=MainWindow.Currency,Mode=OneWay}"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontWeight="Bold"  FontSize="12"/>
+                                </StackPanel>
                             </Grid>
                         </Expander>
                         <!--#endregion-->

@@ -412,6 +412,7 @@ namespace POS.View
                 tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
                 tb_moneyIcontheResst.Text = MainWindow.Currency;
+                tb_moneyIconDeliveryCost.Text = MainWindow.Currency;
                 //exp_payment.IsExpanded = true;
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -681,7 +682,7 @@ namespace POS.View
             string invoiceType = "sd ,sbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "sd" || _InvoiceType == "sbd")&& invoice != null && invoice.invoiceId != 0 && !isFromReport)
+            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice != null && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -1868,6 +1869,7 @@ namespace POS.View
             tb_processNum.Clear();
             cb_paymentProcessType.SelectedIndex = 0;
             cb_paymentProcessType.IsEnabled = true;
+            tb_cashPaid.IsEnabled = true;
             lst_coupons.Items.Clear();
             btn_items.IsEnabled = true;
             md_docImage.Badge = "";
@@ -2323,7 +2325,7 @@ namespace POS.View
             {
                 case "sbd": // sales bounce draft invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
-                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                    dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                     dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = false;
@@ -2332,8 +2334,9 @@ namespace POS.View
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    bdr_paymentDetails.IsEnabled = true;
+                    //bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = true;
+                    tb_cashPaid.IsEnabled = true;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
@@ -2356,7 +2359,7 @@ namespace POS.View
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
                     btn_save.IsEnabled = true;
-                    bdr_paymentDetails.IsEnabled = true;
+                    //bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -2367,11 +2370,15 @@ namespace POS.View
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
+                        tb_cashPaid.IsEnabled = false;
+
                         cb_paymentProcessType.SelectedIndex = 1;
                     }
                     else
                     {
                         cb_paymentProcessType.IsEnabled = true;
+                        tb_cashPaid.IsEnabled = true;
+
                     }
                     tb_discount.IsEnabled = true;
                     cb_typeDiscount.IsEnabled = true;
@@ -2390,7 +2397,7 @@ namespace POS.View
                         btn_save.IsEnabled = true;
                     else
                         btn_save.IsEnabled = false;
-                    bdr_paymentDetails.IsEnabled = true;
+                    //bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
                     cb_user.IsEnabled = true;
@@ -2401,11 +2408,13 @@ namespace POS.View
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
+                        tb_cashPaid.IsEnabled = false;
                         cb_paymentProcessType.SelectedIndex = 1;
                     }
                     else
                     {
                         cb_paymentProcessType.IsEnabled = true;
+                        tb_cashPaid.IsEnabled = true;
                     }
                     tb_discount.IsEnabled = true;
                     cb_typeDiscount.IsEnabled = true;
@@ -2421,8 +2430,9 @@ namespace POS.View
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     btn_save.IsEnabled = false;
-                    bdr_paymentDetails.IsEnabled = false;
+                    //bdr_paymentDetails.IsEnabled = false;
                     cb_paymentProcessType.IsEnabled = false;
+                    tb_cashPaid.IsEnabled = false;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
@@ -2444,8 +2454,9 @@ namespace POS.View
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
                     btn_save.IsEnabled = true;
-                    bdr_paymentDetails.IsEnabled = true;
+                    //bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = false;
+                    tb_cashPaid.IsEnabled = false;
                     dkp_cards.IsEnabled = false;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
@@ -2456,11 +2467,13 @@ namespace POS.View
                     if (cb_company.SelectedIndex != -1)
                     {
                         cb_paymentProcessType.IsEnabled = false;
+                        tb_cashPaid.IsEnabled = false;
                         cb_paymentProcessType.SelectedIndex = 1;
                     }
                     else
                     {
                         cb_paymentProcessType.IsEnabled = true;
+                        tb_cashPaid.IsEnabled = true;
                     }
                     tb_discount.IsEnabled = false;
                     cb_typeDiscount.IsEnabled = false;
@@ -3413,7 +3426,7 @@ namespace POS.View
                     {
                         //validateAvailableAmount(row, newCount, index, tb );
                         int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
-                        if (availableAmount < newCount && row.type !="sr")
+                        if (availableAmount < newCount && row.type != "sr")
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
                             //newCount = newCount + availableAmount;
@@ -3623,7 +3636,7 @@ namespace POS.View
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
-                   // multiplePaytable(paramarr);
+                    // multiplePaytable(paramarr);
                     if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb"))
                     {
                         CashTransfer cachModel = new CashTransfer();
@@ -4211,7 +4224,7 @@ namespace POS.View
                         rep.Refresh();
 
 
-                   
+
                         //copy count
                         if (prInvoice.invType == "s" || prInvoice.invType == "sb" || prInvoice.invType == "p" || prInvoice.invType == "pb")
                         {
@@ -4919,10 +4932,12 @@ namespace POS.View
                     companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
                     _DeliveryCost = (decimal)companyModel.deliveryCost;
                     _RealDeliveryCost = (decimal)companyModel.RealDeliveryCost;
+                    tb_deliveryCost.Text = _DeliveryCost.ToString();
                     refreshTotalValue();
 
                     cb_paymentProcessType.SelectedIndex = 1; // balance
                     cb_paymentProcessType.IsEnabled = false;
+                    tb_cashPaid.IsEnabled = false;
                     if (companyModel.deliveryType == "local")
                     {
                         cb_user.Visibility = Visibility.Visible;

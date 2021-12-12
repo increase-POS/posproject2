@@ -2019,7 +2019,7 @@ namespace POS.View
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
-                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                 cb_vendor.IsEnabled = false;
                 dp_desrvedDate.IsEnabled = false;
@@ -2037,7 +2037,7 @@ namespace POS.View
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
-                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                 cb_vendor.IsEnabled = false;
                 dp_desrvedDate.IsEnabled = false;
