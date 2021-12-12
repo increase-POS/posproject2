@@ -1271,6 +1271,11 @@ namespace POS.View.reports
                         uc_orders._InvoiceType = invoice.invType;
                         uc_orders.Instance.invoice = invoice;
                         uc_orders.isFromReport = true;
+
+                        if (item.archived == 0)
+                            uc_orders.archived = false;
+                        else
+                            uc_orders.archived = true;
                         await uc_orders.Instance.fillInvoiceInputs(invoice);
                     }
                 }

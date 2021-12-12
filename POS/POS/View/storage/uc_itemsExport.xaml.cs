@@ -153,7 +153,7 @@ namespace POS.View.storage
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-
+                timer.Stop();
                 if (billDetails.Count > 0 && (_ProcessType == "imd" || _ProcessType == "exd"))
                 {
                     #region Accept
@@ -171,7 +171,7 @@ namespace POS.View.storage
                 }
                 else
                     clearProcess();
-                timer.Stop();
+               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -338,7 +338,7 @@ namespace POS.View.storage
             string invoiceType = "imd ,exd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice.invType == "imd" || invoice.invType == "exd")
+            if ((invoice.invType == "imd" || invoice.invType == "exd") && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -363,7 +363,7 @@ namespace POS.View.storage
                 string invoiceType = "exw";
 
                 int waitedOrdersCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
-                if (invoice.invType == "exw")
+                if (invoice.invType == "exw" && !isFromReport)
                     waitedOrdersCount--;
 
                 int previouseCount = 0;
@@ -726,6 +726,7 @@ namespace POS.View.storage
                         invoice = w.invoice;
                         _ProcessType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "im")// set title to bill
@@ -1054,6 +1055,7 @@ namespace POS.View.storage
             _DeliveryCost = 0;
             _SelectedProcess = "imd";
             _ProcessType = "imd";
+            isFromReport = false;
             invoice = new Invoice();
             generatedInvoice = new Invoice();
             tb_barcode.Clear();
@@ -1196,6 +1198,7 @@ namespace POS.View.storage
                         invoice = w.invoice;
                         _ProcessType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "imd")// set title to bill
@@ -1326,8 +1329,11 @@ namespace POS.View.storage
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
             }
-            btn_next.Visibility = Visibility.Visible;
-            btn_previous.Visibility = Visibility.Visible;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
         private async Task save()
         {

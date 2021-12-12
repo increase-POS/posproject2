@@ -1329,6 +1329,10 @@ namespace POS.View.reports
                         uc_receiptInvoice._InvoiceType = invoice.invType;
                         uc_receiptInvoice.Instance.invoice = invoice;
                         uc_receiptInvoice.isFromReport = true;
+                        if (item.archived == 0)
+                            uc_receiptInvoice.archived = false;
+                        else
+                            uc_receiptInvoice.archived = true;
                         await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
 
                     }

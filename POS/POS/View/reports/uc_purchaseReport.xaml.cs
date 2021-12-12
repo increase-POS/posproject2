@@ -1276,11 +1276,14 @@ namespace POS.View.purchases
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_purchases_Click(MainWindow.mainWindow.btn_purchase, null);
                         uc_purchases.Instance.btn_payInvoice_Click(uc_purchases.Instance.btn_payInvoice, null);
-                        uc_payInvoice.isFromReport = true;
                         uc_payInvoice.Instance.UserControl_Loaded(null, null);
                         uc_payInvoice._InvoiceType = invoice.invType;
                         uc_payInvoice.Instance.invoice = invoice;
                         uc_payInvoice.isFromReport = true;
+                        if (item.archived == 0)
+                            uc_payInvoice.archived = false;
+                        else
+                            uc_payInvoice.archived = true;
                         await uc_payInvoice.Instance.fillInvoiceInputs(invoice);
                     }
                 }
