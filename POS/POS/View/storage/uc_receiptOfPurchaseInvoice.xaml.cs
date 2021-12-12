@@ -343,6 +343,9 @@ namespace POS.View.storage
         }
         private async void refreshReturnNotification()
         {
+            try
+            {
+
             string invoiceType = "pbw";
             if (invoice == null)
                 invoice = new Invoice();
@@ -365,6 +368,11 @@ namespace POS.View.storage
                     md_returnsCount.Badge = returnsCount.ToString();
             }
         }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+        }
+    }
        
         #endregion
         

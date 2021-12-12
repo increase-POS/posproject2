@@ -403,7 +403,7 @@ namespace POS.View
                     //chk empty max invoice value
                     //SectionData.validateEmptyTextBox(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
                     //chk empty quantity
-                    SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+                    //SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
 
                     bool isEndDateSmaller = false;
                     if ((dp_startDate.SelectedDate != null) && (dp_endDate.SelectedDate != null))
@@ -418,10 +418,12 @@ namespace POS.View
                     #endregion
 
                     if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
-                        (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
+                        (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals(""))
+                        //&&
                         //(dp_startDate.Text != null) && (dp_endDate.Text != null) &&
                         //(!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
-                        (!tb_quantity.Text.Equals("")))
+                        //(!tb_quantity.Text.Equals(""))
+                        )
                     {
                         if ((!codeNotExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
                         {
@@ -464,7 +466,10 @@ namespace POS.View
                                 coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
                             else
                                 coupon.invMax = 0;
-                            coupon.quantity = Int32.Parse(tb_quantity.Text);
+                            if (string.IsNullOrWhiteSpace(tb_quantity.Text))
+                                coupon.quantity = 0;
+                            else
+                                coupon.quantity = Int32.Parse(tb_quantity.Text);
                             //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
                             coupon.remainQ = Int32.Parse(tb_quantity.Text);
                             coupon.createUserId = MainWindow.userID; ;
@@ -514,7 +519,7 @@ namespace POS.View
                 dp_endDate.SelectedDate = null;
                 tb_MinInvoiceValue.Clear();
                 tb_MaxInvoiceValue.Clear();
-                tb_quantity.Clear();
+                tb_quantity.Text = "0";
                 //tb_remainQuantity.Clear();
                 tb_note.Clear();
                 img_barcode.Source = null;
@@ -527,7 +532,7 @@ namespace POS.View
                 SectionData.clearValidate(tb_barcode, p_errorBarcode);
                 SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
                 SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
-                SectionData.clearValidate(tb_quantity, p_errorQuantity);
+                //SectionData.clearValidate(tb_quantity, p_errorQuantity);
                 SectionData.clearValidate(tb_discountValue, p_errorValueDiscount);
                 SectionData.clearComboBoxValidate(cb_typeDiscount, p_errorTypeDiscount);
                 TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
@@ -676,7 +681,7 @@ namespace POS.View
                 SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
                 SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
                 SectionData.clearValidate(tb_discountValue, p_errorValueDiscount);
-                SectionData.clearValidate(tb_quantity, p_errorQuantity);
+                //SectionData.clearValidate(tb_quantity, p_errorQuantity);
                 SectionData.clearComboBoxValidate(cb_typeDiscount, p_errorTypeDiscount);
                 TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
                 SectionData.clearValidate(tbStart, p_errorStartDate);
@@ -865,7 +870,7 @@ namespace POS.View
                     //chk empty max invoice value
                     //SectionData.validateEmptyTextBox(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
                     //chk empty quantity
-                    SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+                    //SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
 
                     bool isEndDateSmaller = false;
                     if((dp_startDate.SelectedDate != null)&&(dp_endDate.SelectedDate != null))
@@ -880,10 +885,12 @@ namespace POS.View
                     #endregion
 
                     if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
-                        (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals("")) &&
+                        (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals(""))
+                        //&&
                         //(dp_startDate.Text != null) && (dp_endDate.Text != null) &&
                         //(!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
-                        (!tb_quantity.Text.Equals("")))
+                        //(!tb_quantity.Text.Equals(""))
+                        )
                     {
                         if ((!codeNotExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
                         {
@@ -924,7 +931,12 @@ namespace POS.View
                                 coupon.invMax = decimal.Parse(tb_MaxInvoiceValue.Text);
                             else
                                 coupon.invMax = 0;
-                            coupon.quantity = Int32.Parse(tb_quantity.Text);
+
+                            if (string.IsNullOrWhiteSpace(tb_quantity.Text))
+                                coupon.quantity = 0;
+                            else
+                                coupon.quantity = Int32.Parse(tb_quantity.Text);
+
                             //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
                             coupon.remainQ = Int32.Parse(tb_quantity.Text);
                             coupon.createUserId = MainWindow.userID;
@@ -1144,8 +1156,8 @@ namespace POS.View
                     //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trEmptyMinInvoiceValueToolTip");
                     //else if ((sender as TextBox).Name == "tb_MaxInvoiceValue")
                     //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
-                    else if ((sender as TextBox).Name == "tb_quantity")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
+                    //else if ((sender as TextBox).Name == "tb_quantity")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
                     else if ((sender as TextBox).Name == "tb_discountValue")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorValueDiscount, tt_errorValueDiscount, "trEmptyDiscountValueToolTip");
                 }
@@ -1193,7 +1205,8 @@ namespace POS.View
                 validateEmpty(name, sender);
                 var txb = sender as TextBox;
                 if ((sender as TextBox).Name == "tb_MinInvoiceValue" || (sender as TextBox).Name == "tb_MaxInvoiceValue"
-                    || (sender as TextBox).Name == "tb_quantity")
+                    //|| (sender as TextBox).Name == "tb_quantity"
+                    )
                     SectionData.InputJustNumber(ref txb);
 
 
