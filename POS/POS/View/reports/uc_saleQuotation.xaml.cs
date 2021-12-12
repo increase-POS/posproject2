@@ -1234,6 +1234,7 @@ namespace POS.View.reports
                     {
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
+                        uc_sales.Instance.UserControl_Loaded(null, null);
                         uc_sales.Instance.Btn_quotations_Click(uc_sales.Instance.btn_quotation, null);
                         uc_quotations.Instance.UserControl_Loaded(null, null);
                         uc_quotations._InvoiceType = invoice.invType;

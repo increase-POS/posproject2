@@ -845,8 +845,9 @@ namespace POS.View.reports
                     {
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                          MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
+                        uc_sales.Instance.UserControl_Loaded(null, null);
                         uc_sales.Instance.Btn_receiptInvoice_Click(uc_sales.Instance.btn_reciptInvoice, null);
-                         uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
+                        uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
                         uc_receiptInvoice._InvoiceType = invoice.invType;
                         uc_receiptInvoice.Instance.invoice = invoice;
                         uc_receiptInvoice.isFromReport = true;

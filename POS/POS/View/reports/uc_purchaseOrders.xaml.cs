@@ -1209,6 +1209,7 @@ namespace POS.View.reports
                     {
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_purchases_Click(MainWindow.mainWindow.btn_purchase, null);
+                        uc_purchases.Instance.UserControl_Loaded(null, null);
                         uc_purchases.Instance.Btn_purchaseOrder_Click(uc_purchases.Instance.btn_purchaseOrder, null);
                         uc_purchaseOrder.Instance.UserControl_Loaded(null, null);
                         uc_purchaseOrder._InvoiceType = invoice.invType;

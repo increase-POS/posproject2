@@ -56,7 +56,7 @@ namespace POS.View
 
 
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
           
 
