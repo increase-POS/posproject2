@@ -1513,6 +1513,43 @@ namespace POS.View.reports
         {
             GC.Collect();
         }
+
+        Invoice invoice;
+        private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                invoice = new Invoice();
+                if (dgInvoice.SelectedIndex != -1)
+                {
+                    ItemTransferInvoice item = dgInvoice.SelectedItem as ItemTransferInvoice;
+                    if (item.invoiceId > 0)
+                    {
+                        invoice = await invoice.GetByInvoiceId(item.invoiceId);
+                        MainWindow.mainWindow.BTN_purchases_Click(MainWindow.mainWindow.btn_purchase, null);
+                        uc_purchases.Instance.btn_payInvoice_Click(uc_purchases.Instance.btn_payInvoice, null);
+                        uc_payInvoice.isFromReport = true;
+                        uc_payInvoice.Instance.UserControl_Loaded(null, null);
+                        uc_payInvoice._InvoiceType = invoice.invType;
+                        uc_payInvoice.Instance.invoice = invoice;
+                        uc_payInvoice.isFromReport = true;
+                        await uc_payInvoice.Instance.fillInvoiceInputs(invoice);
+                    }
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
 
