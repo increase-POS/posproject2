@@ -33,7 +33,7 @@ namespace POS.Classes
         public async Task<List<Pos>> Get()
         {
             List<Pos> items = new List<Pos>();
-            IEnumerable<Claim> claims = await APIResult.getList("Pos/get");
+            IEnumerable<Claim> claims = await APIResult.getList("Pos/Get");
             foreach (Claim c in claims)
             {
                 if (c.Type == "scopes")
