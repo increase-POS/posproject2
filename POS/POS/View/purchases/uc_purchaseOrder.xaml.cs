@@ -67,6 +67,7 @@ namespace POS.View.purchases
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         public static bool isFromReport = false;
+        public static bool archived = false;
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
