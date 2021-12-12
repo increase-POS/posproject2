@@ -57,7 +57,7 @@ namespace POS.View
             btn_inventory.Content = MainWindow.resourcemanager.GetString("trStocktaking");
             btn_storageStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
         }
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             #region menu state
             string menuState = MainWindow.menuIsOpen;

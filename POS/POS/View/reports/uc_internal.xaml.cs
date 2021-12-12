@@ -1235,6 +1235,7 @@ namespace POS.View.reports
                     {
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_storage_Click(MainWindow.mainWindow.btn_storage, null);
+                        View.uc_storage.Instance.UserControl_Loaded(null, null);
                         View.uc_storage.Instance.Btn_itemsExport_Click(View.uc_storage.Instance.btn_importExport, null);
                         uc_itemsExport.Instance.UserControl_Loaded(null, null);
                         uc_itemsExport._ProcessType = invoice.invType;
