@@ -907,7 +907,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to المبلغ المدفوع.
+        ///   Looks up a localized string similar to المدفوع.
         /// </summary>
         internal static string trCashPaid {
             get {

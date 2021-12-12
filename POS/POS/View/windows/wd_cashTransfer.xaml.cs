@@ -81,7 +81,7 @@ namespace POS.View.windows
         {
             txt_accounts.Text = title;
             txt_paid.Text = MainWindow.resourcemanager.GetString("trCashPaid");
-            txt_total.Text = MainWindow.resourcemanager.GetString("trOf") + MainWindow.resourcemanager.GetString("trTotal");
+            txt_total.Text = MainWindow.resourcemanager.GetString("trOf") ;
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             dg_accounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_accounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");

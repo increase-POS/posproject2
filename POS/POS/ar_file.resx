@@ -2606,7 +2606,7 @@
     <value>مخزن</value>
   </data>
   <data name="trCashPaid" xml:space="preserve">
-    <value>المبلغ المدفوع</value>
+    <value>المدفوع</value>
   </data>
   <data name="trTheRest" xml:space="preserve">
     <value>الباقي</value>

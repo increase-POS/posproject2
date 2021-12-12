@@ -2624,7 +2624,7 @@ Please add Email in setting</value>
     <value>Store</value>
   </data>
   <data name="trCashPaid" xml:space="preserve">
-    <value>Cash Paid</value>
+    <value>Paid</value>
   </data>
   <data name="trTheRest" xml:space="preserve">
     <value>The Rest</value>

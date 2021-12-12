@@ -598,11 +598,10 @@
 
                             <DatePicker  x:Name="dp_startDate" 
                                                          BorderBrush="#737373"  BorderThickness="0" 
-                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-
+                                                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                          Text="{Binding startDate, Mode=OneWay}"
                                                          TextBlock.Foreground="#4E4E4E" 
-                                                          Padding="10,0,5,0"  
+                                                         Padding="10,0,5,0"  
                                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                          materialDesign:HintAssist.Hint="Start date..."  
                                                          Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
@@ -628,9 +627,7 @@
                             </Path>
 
 
-                            <DatePicker  x:Name="dp_endDate"  
-                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-
+                            <DatePicker  x:Name="dp_endDate"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                                          BorderBrush="#737373"  BorderThickness="0" 
                                                          TextBlock.Foreground="#4E4E4E"
                                                          Text="{Binding endDate, Mode=OneWay}"
