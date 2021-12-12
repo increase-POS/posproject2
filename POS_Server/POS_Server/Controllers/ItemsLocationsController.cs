@@ -5128,18 +5128,14 @@ namespace POS_Server.Controllers
 
         }
 
-
-
         [HttpPost]
         [Route("getShortageItems")]
         public string getShortageItems(string token)
         {
-            //int branchId
-
             string message = "";
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -5155,10 +5151,7 @@ namespace POS_Server.Controllers
                         branchId = int.Parse(c.Value);
 
                     }
-
                 }
-
-
                 try
                 {
 
@@ -5219,71 +5212,77 @@ namespace POS_Server.Controllers
                 }
 
             }
+        }
+        [HttpPost]
+        [Route("isThereLack")]
+        public string isThereLack(string token)
+        {
+            string message = "";
 
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
 
+                    }
+                }
+                try
+                {
+                    InvoicesController c = new InvoicesController();
+                    var orders = c.getUnhandeledOrdersList("or", 0, branchId);
 
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        List<ItemTransferModel> requiredTransfers = new List<ItemTransferModel>();
+                        foreach (InvoiceModel invoice in orders)
+                        {
+                            var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoice.invoiceId).ToList();
+                            foreach (itemsTransfer tr in itemsTransfer)
+                            {
+                                var lockedQuantity = entity.itemsLocations
+                                    .Where(x => x.invoiceId == invoice.invoiceId && x.itemUnitId == tr.itemUnitId)
+                                    .Select(x => x.quantity).Sum();
+                                var availableAmount = getBranchAmount((int)tr.itemUnitId, branchId);
+                                var item = (from i in entity.items
+                                            join u in entity.itemsUnits on i.itemId equals u.itemId
+                                            where u.itemUnitId == tr.itemUnitId
+                                            select new ItemModel()
+                                            {
+                                                itemId = i.itemId,
+                                                name = i.name,
+                                                unitName = u.units.name,
+                                            }).FirstOrDefault();
+                                if (lockedQuantity == null)
+                                    lockedQuantity = 0;
+                                if ((lockedQuantity + availableAmount) < tr.quantity) // there is a shortage in order amount
+                                {
+                                    return TokenManager.GenerateToken("yes");
+                                }
 
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
+                            }
+                        }
+                        // return Ok(requiredTransfers);
+                        return TokenManager.GenerateToken("no");
+                    }
+                }
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
 
-            //if (valid) // APIKey is valid
-            //{
-            //    InvoicesController c = new InvoicesController();
-            //    var orders = c.getUnhandeledOrdersList("or", 0, branchId);
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        List<ItemTransferModel> requiredTransfers = new List<ItemTransferModel>();
-            //        foreach (InvoiceModel invoice in orders)
-            //        {
-            //            var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoice.invoiceId).ToList();
-            //            foreach (itemsTransfer tr in itemsTransfer)
-            //            {
-            //                var lockedQuantity = entity.itemsLocations
-            //                    .Where(x => x.invoiceId == invoice.invoiceId && x.itemUnitId == tr.itemUnitId)
-            //                    .Select(x => x.quantity).Sum();
-            //                var availableAmount = getAmountInBranch((int)tr.itemUnitId, branchId);
-            //                var item = (from i in entity.items
-            //                            join u in entity.itemsUnits on i.itemId equals u.itemId
-            //                            where u.itemUnitId == tr.itemUnitId
-            //                            select new ItemModel()
-            //                            {
-            //                                itemId = i.itemId,
-            //                                name = i.name,
-            //                                unitName = u.units.name,
-            //                            }).FirstOrDefault();
-            //                if (lockedQuantity == null)
-            //                    lockedQuantity = 0;
-            //                if ((lockedQuantity + availableAmount) < tr.quantity) // there is a shortage in order amount
-            //                {
-            //                    long requiredQuantity = (long)tr.quantity - ((long)lockedQuantity + (long)availableAmount);
-            //                    ItemTransferModel transfer = new ItemTransferModel()
-            //                    {
-            //                        invNumber = invoice.invNumber,
-            //                        invoiceId = invoice.invoiceId,
-            //                        price = 0,
-            //                        quantity = requiredQuantity,
-            //                        itemUnitId = tr.itemUnitId,
-            //                        itemId = item.itemId,
-            //                        itemName = item.name,
-            //                        unitName = item.unitName,
-            //                    };
-            //                    requiredTransfers.Add(transfer);
-            //                }
-
-            //            }
-            //        }
-            //        return Ok(requiredTransfers);
-            //    }
-            //}
-            //return NotFound();
+            }
         }
         [HttpPost]
         [Route("unlockItem")]
