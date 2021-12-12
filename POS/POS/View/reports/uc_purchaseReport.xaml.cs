@@ -181,12 +181,13 @@ namespace POS.View.purchases
             var result = Invoices.Where(x => (
 
                ((chkDraft.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false)
-                          || (chkReturn.IsChecked == true ? (x.invType == "pb") : false)
-                            || (chkInvoice.IsChecked == true ? ((x.invType == "p") || (x.invType == "pw")) : false))
-                      && (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
-                      && (endDate.SelectedDate != null ? x.invDate <= endDate.SelectedDate : true)
-                      && (startTime.SelectedTime != null ? x.invDate >= startTime.SelectedTime : true)
-                      && (endTime.SelectedTime != null ? x.invDate <= endTime.SelectedTime : true)));
+                || (chkReturn.IsChecked == true ? (x.invType == "pb") : false)
+                || (chkInvoice.IsChecked == true ? ((x.invType == "p") || (x.invType == "pw")) : false))
+                && (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
+                && (endDate.SelectedDate != null ? x.invDate <= endDate.SelectedDate : true)
+                && (startTime.SelectedTime != null ? x.invDate >= startTime.SelectedTime : true)
+                && (endTime.SelectedTime != null ? x.invDate <= endTime.SelectedTime : true)));
+            invLst = result;
             return result;
         }
         IEnumerable<ItemTransferInvoice> invLst;
@@ -424,8 +425,8 @@ namespace POS.View.purchases
         private List<ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
         {
             List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
-            var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
-
+            //var temp = fillRowChartList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
+            var temp = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
             if (selectedTab == 0)
             {
                 temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
@@ -1275,6 +1276,7 @@ namespace POS.View.purchases
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_purchases_Click(MainWindow.mainWindow.btn_purchase, null);
                         uc_purchases.Instance.btn_payInvoice_Click(uc_purchases.Instance.btn_payInvoice, null);
+                        uc_payInvoice.isFromReport = true;
                         uc_payInvoice.Instance.UserControl_Loaded(null, null);
                         uc_payInvoice._InvoiceType = invoice.invType;
                         uc_payInvoice.Instance.invoice = invoice;
