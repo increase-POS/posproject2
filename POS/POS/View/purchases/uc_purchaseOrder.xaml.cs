@@ -559,7 +559,7 @@ namespace POS.View.purchases
             string invoiceType = "pod";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice.invType == "pod" && !isFromReport)
+            if (invoice != null && invoice.invType == "pod" && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;

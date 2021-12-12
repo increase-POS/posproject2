@@ -786,7 +786,7 @@ namespace POS.View
         {
             string invoiceType = "po";
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
-            if (_InvoiceType == "po" && invoice != null && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && _InvoiceType == "po" && invoice != null && invoice.invoiceId != 0 && !isFromReport)
                 ordersCount--;
 
             int previouseCount = 0;
@@ -1447,7 +1447,7 @@ namespace POS.View
                                         cashTrasnfer.invId = invoice.invoiceId;
                                         cashTrasnfer.transNum = await cashTrasnfer.generateCashNumber("pv");
                                         cashTrasnfer.cash = invoice.totalNet;
-                                        cashTrasnfer.side = "c"; // customer
+                                        cashTrasnfer.side = "v"; // vendor
                                         cashTrasnfer.processType = cb_paymentProcessType.SelectedValue.ToString();
                                         cashTrasnfer.createUserId = MainWindow.userID;
                                         await saveCashTransfer(cashTrasnfer);

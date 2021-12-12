@@ -414,7 +414,7 @@ namespace POS.View.reports
             }
 
         }
-        private  void Btn_invoice_Click(object sender, RoutedEventArgs e)
+        private async void Btn_invoice_Click(object sender, RoutedEventArgs e)
         {//invoices
             try
             {
@@ -442,6 +442,8 @@ namespace POS.View.reports
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 chk_allBranches.IsChecked = true;
+
+                await Search();
               
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 

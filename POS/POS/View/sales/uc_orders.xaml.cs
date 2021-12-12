@@ -61,10 +61,12 @@ namespace POS.View.sales
         }
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
+        public static bool isFromReport = false;
+        static private int _invoiceId;
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
-        //Card cardModel = new Card();
+        List<Invoice> invoices;
         //IEnumerable<Card> cards;
         // IEnumerable<Item> itemsQuery;
         Branch branchModel = new Branch();
@@ -509,7 +511,7 @@ namespace POS.View.sales
             string invoiceType = "ord";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (_InvoiceType == "ord"  && invoice.invoiceId != 0)
+            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -531,7 +533,7 @@ namespace POS.View.sales
         {
             string invoiceType = "s";
             int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
-            if (_InvoiceType == "s" && invoice.invoiceId != 0)
+            if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
                 ordersCount--;
 
             int previouseCount = 0;
@@ -942,13 +944,15 @@ namespace POS.View.sales
             tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
             md_docImage.Badge = "";
             lst_coupons.Items.Clear();
-            //tb_discountCoupon.Text = "0";
+            isFromReport = false;
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             refrishBillDetails();
             tb_barcode.Focus();
             inputEditable();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
             await fillCouponsList();
         }
         private void inputEditable()
@@ -1021,7 +1025,47 @@ namespace POS.View.sales
                 btn_pdf.Visibility = Visibility.Collapsed;
                 #endregion
             }
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
+        #region navigation buttons
+        private void navigateBtnActivate()
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            if (index == invoices.Count - 1)
+                btn_next.IsEnabled = false;
+            else
+                btn_next.IsEnabled = true;
+
+            if (index == 0)
+                btn_previous.IsEnabled = false;
+            else
+                btn_previous.IsEnabled = true;
+        }
+        private async void Btn_next_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index++;
+            clearInvoice();
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        {
+            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            index--;
+            clearInvoice();
+            invoice = invoices[index];
+            _invoiceId = invoice.invoiceId;
+            navigateBtnActivate();
+            await fillInvoiceInputs(invoice);
+        }
+        #endregion
         private async Task addInvoice(string invType)
         {
             //branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
@@ -1448,12 +1492,14 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
+                    string invoiceType = "ord";
+                    int duration = 2;
                     // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
 
-                    w.invoiceType = "ord"; //draft order
+                    w.invoiceType = invoiceType; //draft order
                     w.userId = MainWindow.userLogin.userId;
-                    w.duration = 2; // view drafts which updated during 2 last days 
+                    w.duration = duration; // view drafts which updated during 2 last days 
                     w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
                     if (w.ShowDialog() == true)
@@ -1461,10 +1507,13 @@ namespace POS.View.sales
                         if (w.invoice != null)
                         {
                             invoice = w.invoice;
-
                             _InvoiceType = invoice.invType;
+                            _invoiceId = invoice.invoiceId;
+                            isFromReport = false;
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
+                            invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                            navigateBtnActivate();
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
 
@@ -1684,14 +1733,16 @@ namespace POS.View.sales
                     MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") ||
                     SectionData.isAdminPermision())
                 {
+                    string invoiceType = "or";
+                    int duration = 1;
                     // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                     saveBeforeExit();
                     wd_invoice w = new wd_invoice();
 
                     // quontations invoices
-                    w.invoiceType = "or";
+                    w.invoiceType = invoiceType;
                     w.userId = MainWindow.userLogin.userId;
-                    w.duration = 1; // view orders which updated during 1 last days 
+                    w.duration = duration; // view orders which updated during 1 last days 
                     w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                     if (w.ShowDialog() == true)
@@ -1700,9 +1751,12 @@ namespace POS.View.sales
                         {
                             invoice = w.invoice;
                             _InvoiceType = invoice.invType;
+                            _invoiceId = invoice.invoiceId;
+                            isFromReport = false;
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
-
+                            invoices = await invoice.GetInvoicesByCreator(invoiceType,MainWindow.userID.Value,duration);
+                            navigateBtnActivate();
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
 
@@ -1733,13 +1787,14 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+                    string invoiceType = "s";
+                    string invoiceStatus = "ex";
                     saveBeforeExit();
                     wd_invoice w = new wd_invoice();
 
                     // quontations invoices
-                    w.invoiceType = "s";
-                    w.invoiceStatus = "ex";
+                    w.invoiceType = invoiceType;
+                    w.invoiceStatus = invoiceStatus;
                     w.userId = MainWindow.userLogin.userId;
 
                     w.title = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
@@ -1750,10 +1805,12 @@ namespace POS.View.sales
                         {
                             invoice = w.invoice;
                             _InvoiceType = invoice.invType;
-
+                            _invoiceId = invoice.invoiceId;
+                            isFromReport = false;
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
-
+                            invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, MainWindow.userLogin.userId);
+                            navigateBtnActivate();
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
                             await fillInvoiceInputs(invoice);

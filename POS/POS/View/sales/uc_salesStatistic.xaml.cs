@@ -130,32 +130,33 @@ namespace POS.View.sales
 
         private List<ItemTransferInvoice> fillList()
         {
-            var temp = itemTransferInvoices.Where(obj => (
-            obj.updateUserId == MainWindow.userID
-              && ((chk_invoice.IsChecked == true ? obj.invType == "s" : false) || (chk_return.IsChecked == true ? obj.invType == "sb" : false) || (chk_invoice.IsChecked == true ? obj.invType == "spd" || obj.invType == "sd" : false))
-                   && (dp_invoiceDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_invoiceDate.SelectedDate.Value.Date.ToShortDateString() : true)
-                )
+            var temp = itemTransferInvoices.Where(obj => obj.updateUserId == MainWindow.userID);
+            if (selectedTab == 0)
+            {
+                temp = temp.Where(obj =>
+                     ((chk_invoice.IsChecked == true ? obj.invType == "s" : false) || (chk_return.IsChecked == true ? obj.invType == "sb" : false) || (chk_drafs.IsChecked == true ? obj.invType == "spd" || obj.invType == "sd" : false))
+                  && (dp_invoiceDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_invoiceDate.SelectedDate.Value.Date.ToShortDateString() : true)
                 );
+            }
             if (selectedTab == 1)
             {
-                temp = itemTransferInvoices.Where(obj => (obj.updateUserId == MainWindow.userID
-                         && ((chk_orderInvoice.IsChecked == true ? obj.invType == "or" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "ord" : false))
-                                   && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
-                                )
-                                );
+                temp = temp.Where(obj => 
+                            ((chk_orderInvoice.IsChecked == true ? obj.invType == "or" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "ord" : false))
+                         && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
+                         );
             }
             else if (selectedTab == 2)
             {
-                temp = itemTransferInvoices.Where(obj => (obj.updateUserId == MainWindow.userID
-                                                    && ((chk_orderInvoice.IsChecked == true ? obj.invType == "q" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "qd" : false))
-                                   && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true))
-                                           );
+                temp = temp.Where(obj =>
+                        ((chk_orderInvoice.IsChecked == true ? obj.invType == "q" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "qd" : false))
+                       && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
+                       );
             }
             return temp.ToList();
         }
 
         private void Btn_Invoice_Click(object sender, RoutedEventArgs e)
-        {
+        {//
             try
             {
                 if (sender != null)

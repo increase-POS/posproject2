@@ -59,6 +59,7 @@ namespace POS.View.storage
             }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
+        public static bool isFromReport = false;
         Category categoryModel = new Category();
         Category category = new Category();
         Item itemModel = new Item();
@@ -299,7 +300,7 @@ namespace POS.View.storage
             string invoiceType = "isd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "isd") && invoice.invoiceId != 0)
+            if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -323,7 +324,7 @@ namespace POS.View.storage
             if (invoice == null)
                 invoice = new Invoice();
             int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-            if (invoice.invType == "pw")
+            if (invoice.invType == "pw" && invoice != null && !isFromReport)
                 invoiceCount--;
 
             int previouseCount = 0;
@@ -346,7 +347,7 @@ namespace POS.View.storage
             if (invoice == null)
                 invoice = new Invoice();
             int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-            if (invoice.invType == "pbw")
+            if (invoice.invType == "pbw" && invoice != null && !isFromReport)
                 returnsCount--;
 
             int previouseCount = 0;
@@ -719,6 +720,7 @@ namespace POS.View.storage
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
                             _InvoiceType = invoice.invType;
+                            isFromReport = false;
                             setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
@@ -785,6 +787,7 @@ namespace POS.View.storage
             tb_total.Text = "0";
             tb_sum.Text = "0";
             btn_items.IsEnabled = true;
+            isFromReport = false;
             refrishBillDetails();
             inputEditable();
             btn_next.Visibility = Visibility.Collapsed;
@@ -963,6 +966,7 @@ namespace POS.View.storage
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         await fillInvoiceInputs(invoice);
                         setNotifications();
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
@@ -1219,6 +1223,7 @@ namespace POS.View.storage
 
                             _InvoiceType = invoice.invType;
                             _invoiceId = invoice.invoiceId;
+                            isFromReport = false;
                             setNotifications();
                             // set title to bill
                             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
@@ -1338,8 +1343,11 @@ namespace POS.View.storage
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
             }
-            btn_next.Visibility = Visibility.Visible;
-            btn_previous.Visibility = Visibility.Visible;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
 
 
