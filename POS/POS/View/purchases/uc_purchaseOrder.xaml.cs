@@ -66,7 +66,7 @@ namespace POS.View.purchases
         string initializeShortagePermission = "purchaseOrder_initializeShortage";
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-
+        public static bool isFromReport = false;
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
@@ -251,6 +251,7 @@ namespace POS.View.purchases
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         // notifications
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
@@ -558,7 +559,7 @@ namespace POS.View.purchases
             string invoiceType = "pod";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice.invType == "pod")
+            if (invoice.invType == "pod" && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -918,9 +919,9 @@ namespace POS.View.purchases
             tb_note.Clear();
             billDetails.Clear();
             tb_total.Text = "";
-            //tb_sum.Text = null;
             btn_updateVendor.IsEnabled = false;
             md_docImage.Badge = "";
+            isFromReport = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
             refrishBillDetails();
             inputEditable();
@@ -955,6 +956,7 @@ namespace POS.View.purchases
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         // notifications
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
@@ -1114,8 +1116,11 @@ namespace POS.View.purchases
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
             }
-            btn_next.Visibility = Visibility.Visible;
-            btn_previous.Visibility = Visibility.Visible;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
         private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
@@ -2265,7 +2270,8 @@ namespace POS.View.purchases
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if(invoice.invoiceId != 0)
+            if (invoice.invoiceId != 0)
+                clearInvoice();
             await buildShortageInvoiceDetails();
         }
         private async Task buildShortageInvoiceDetails()
