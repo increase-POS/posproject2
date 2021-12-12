@@ -71,6 +71,8 @@ namespace POS.View
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         public List<Control> controls;
 
+        public static bool isFromReport = false;
+
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
@@ -728,17 +730,18 @@ namespace POS.View
         }
         #endregion
         #region notifications
-        private async void setNotifications()
+        private void setNotifications()
         {
-            await refreshDraftNotification();
-            await refreshOrdersNotification();
+            refreshDraftNotification();
+            refreshInvNotification();
+            refreshOrdersNotification();
         }
         private async Task refreshDraftNotification()
         {
             string invoiceType = "pd ,pbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0)
+            if (invoice != null && (invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -756,13 +759,34 @@ namespace POS.View
                     md_draft.Badge = draftCount.ToString();
             }
         }
+        private async Task refreshInvNotification()
+        {
+            string invoiceType = "p ,pw ,pb ,pbw";
+            int duration = 1;
+            int invCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (invoice != null && (invoice.invType == "p" || invoice.invType == "pb" || invoice.invType == "pbw" || invoice.invType == "pw") && invoice.invoiceId != 0 && !isFromReport)
+                invCount--;
+
+            int previouseCount = 0;
+            if (md_invoices.Badge != null && md_invoices.Badge.ToString() != "") previouseCount = int.Parse(md_invoices.Badge.ToString());
+
+            if (invCount != previouseCount)
+            {
+                if (invCount > 9)
+                {
+                    invCount = 9;
+                    md_invoices.Badge = "+" + invCount.ToString();
+                }
+                else if (invCount == 0) md_invoices.Badge = "";
+                else
+                    md_invoices.Badge = invCount.ToString();
+            }
+        }
         private async Task refreshOrdersNotification()
         {
             string invoiceType = "po";
-            int duration = 0;
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
-            //int ordersCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (_InvoiceType == "po" && invoice.invoiceId != 0)
+            if (_InvoiceType == "po" && invoice != null && invoice.invoiceId != 0 && !isFromReport)
                 ordersCount--;
 
             int previouseCount = 0;
@@ -1676,6 +1700,7 @@ namespace POS.View
             else
                 tb_taxValue.Text = "0";
 
+            isFromReport = false;
             md_docImage.Badge = "";
             md_payments.Badge = "";
 
@@ -1713,6 +1738,7 @@ namespace POS.View
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         await fillInvoiceInputs(invoice);
                         setNotifications();
                         refreshDocCount(invoice.invoiceId);
@@ -1771,6 +1797,7 @@ namespace POS.View
 
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         setNotifications();
                         refreshPaymentsNotification(_invoiceId);
                         refreshDocCount(invoice.invoiceId);
@@ -1809,7 +1836,6 @@ namespace POS.View
                 // purchase orders
                 string invoiceType = "po";
                 w.invoiceType = invoiceType;
-                // w.userId = MainWindow.userLogin.userId;
                 w.branchCreatorId = MainWindow.branchID.Value;
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
@@ -1821,6 +1847,7 @@ namespace POS.View
 
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         // notifications
                         md_payments.Badge = "";
                         setNotifications();
@@ -1854,21 +1881,20 @@ namespace POS.View
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             tb_invoiceNumber.Text = invoice.vendorInvNum;
             dp_invoiceDate.Text = invoice.vendorInvDate.ToString();
-            //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
             if (invoice.totalNet != 0)
                 tb_total.Text = SectionData.DecTostring(invoice.totalNet);
             else tb_total.Text = "0";
-            //tb_taxValue.Text = invoice.tax.ToString();
+
             if ((invoice.tax != 0) && (invoice.tax != null))
                 tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
             else
                 tb_taxValue.Text = "0";
             tb_note.Text = invoice.notes;
-            //tb_sum.Text = invoice.total.ToString();
+
             if (invoice.total != 0)
                 tb_sum.Text = SectionData.DecTostring(invoice.total);
             else tb_sum.Text = "0";
-            //tb_discount.Text = invoice.discountValue.ToString();
+
             if ((invoice.discountValue != 0) && (invoice.discountValue != null))
                 tb_discount.Text = SectionData.DecTostring(invoice.discountValue);
             else
@@ -1900,8 +1926,6 @@ namespace POS.View
                     // purchase invoices
                     string invoiceType = "p";
                     w.invoiceType = invoiceType; // invoice type to view in grid
-                    //w.branchCreatorId = MainWindow.branchID.Value;
-                    //w.branchId = MainWindow.branchID.Value;
                     w.condition = "return";
                     w.userId = MainWindow.userID.Value;
                     if (w.ShowDialog() == true)
@@ -1911,6 +1935,7 @@ namespace POS.View
                             _InvoiceType = "pbd";
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
+                            isFromReport = false;
                             // notifications
                             setNotifications();
                             refreshPaymentsNotification(_invoiceId);
@@ -1995,7 +2020,7 @@ namespace POS.View
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
             }
-            if (_InvoiceType == "pbd") // return invoice
+            else if (_InvoiceType == "pbd") // return invoice
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
@@ -2012,6 +2037,8 @@ namespace POS.View
                 btn_save.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
+                btn_items.IsEnabled = false;
+                cb_paymentProcessType.IsEnabled = true;
             }
             else if (_InvoiceType == "pd" || _InvoiceType == "po") // purchase draft or purchase order
             {
@@ -2030,6 +2057,8 @@ namespace POS.View
                 btn_save.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = true;
                 tb_taxValue.IsEnabled = true;
+                btn_items.IsEnabled = true;
+                cb_paymentProcessType.IsEnabled = true;
             }
             else if (_InvoiceType == "pw" || _InvoiceType == "p")
             {
@@ -2048,6 +2077,8 @@ namespace POS.View
                 btn_save.IsEnabled = false;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
+                btn_items.IsEnabled = false;
+                cb_paymentProcessType.IsEnabled = false;
             }
 
             if (_InvoiceType.Equals("pbw"))
@@ -2076,8 +2107,11 @@ namespace POS.View
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
             }
-            btn_next.Visibility = Visibility.Visible;
-            btn_previous.Visibility = Visibility.Visible;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
         private void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
