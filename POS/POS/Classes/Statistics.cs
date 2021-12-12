@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 
 using System.Security.Claims;
-
+using System.Windows;
 
 namespace POS.Classes
 {
@@ -421,7 +421,7 @@ namespace POS.Classes
 
     public class ItemTransferInvoice
     {// new properties
-
+        public int archived { get; set; }
         public double? itemAvg { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
         public string causeFalls { get; set; }
@@ -2594,7 +2594,8 @@ namespace POS.Classes
         {
             List<VendorCombo> iulist = new List<VendorCombo>();
 
-            iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.agentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().agentId, VendorName = g.FirstOrDefault().agentName }).ToList();
+            //iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.agentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().agentId, VendorName = g.FirstOrDefault().agentName }).ToList();
+            iulist = ITInvoice.Where(g => g.side == x).GroupBy(g => g.agentId).Select(g => new VendorCombo { VendorId = g.FirstOrDefault().agentId, VendorName = g.FirstOrDefault().agentName ,Side = g.FirstOrDefault().side}).ToList();
             return iulist;
 
         }
@@ -3424,20 +3425,22 @@ namespace POS.Classes
 
                 Description3 = obj.FirstOrDefault().Description3,
 
-               
-
             }).Where(t=> !(t.side == "bnd" && t.bondIsRecieved == 1)).ToList();
             decimal rowtotal = 0;
 
-            //!(t.processType == "doc" && t.bondIsRecieved != 1)&& 
+            //row.Description1 + "+ delivery cost";
             foreach (CashTransferSts row in list2)
             {
                 row.Description2 = row.bondId > 0
-               ? (row.bondIsRecieved == 0 ?
+                ?
+               (row.bondIsRecieved == 0 ?
                    MainWindow.resourcemanager.GetString("trBondNotRecieved") :
                    MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + getProcessType(row.processType))
-                  :
-                  row.Description1;
+                 :
+                  //row.Description1;
+                  ((row.side == "c") && (row.invShippingCompanyId != null) && (row.processType == "inv") ?
+                                                                  row.Description1 + " + " + MainWindow.resourcemanager.GetString("trDeliveryCost")
+                                                                : row.Description1) ;
 
                 row.BIsReceived = row.bondId > 0
                ? ((row.bondIsRecieved == 0 && row.transType == "d") || (row.bondIsRecieved == 0 && row.transType == "p") ?
