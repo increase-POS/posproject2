@@ -61,10 +61,8 @@ namespace POS.View.sales
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
-
+        public static bool isFromReport = false;
         Card cardModel = new Card();
-        //IEnumerable<Card> cards;
-        // IEnumerable<Item> itemsQuery;
 
         Branch branchModel = new Branch();
         Branch branch;
@@ -421,7 +419,7 @@ namespace POS.View.sales
             string invoiceType = "qd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (_InvoiceType == "qd"  && invoice.invoiceId != 0)
+            if (invoice != null && _InvoiceType == "qd"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -804,7 +802,7 @@ namespace POS.View.sales
             tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();
             md_docImage.Badge = "";
-
+            isFromReport = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
 
@@ -865,8 +863,11 @@ namespace POS.View.sales
                 btn_pdf.Visibility = Visibility.Collapsed;
                 #endregion
             }
-            btn_next.Visibility = Visibility.Visible;
-            btn_previous.Visibility = Visibility.Visible;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
         private async Task addInvoice(string invType)
         {           
@@ -1253,6 +1254,7 @@ namespace POS.View.sales
 
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         refreshDraftNotification();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
@@ -1404,6 +1406,7 @@ namespace POS.View.sales
                         invoice = w.invoice;
 
                         _InvoiceType = invoice.invType;
+                        isFromReport = false;
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");

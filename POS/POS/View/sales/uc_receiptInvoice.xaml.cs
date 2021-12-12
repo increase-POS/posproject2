@@ -70,6 +70,8 @@ namespace POS.View
         }
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
+
+        public static bool isFromReport = false;
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
@@ -678,7 +680,7 @@ namespace POS.View
             string invoiceType = "sd ,sbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice.invoiceId != 0)
+            if ((_InvoiceType == "sd" || _InvoiceType == "sbd")&& invoice != null && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -705,7 +707,7 @@ namespace POS.View
                 invoicesCount = await invoice.GetCountForAdmin(invoiceType, duration);
             else
                 invoicesCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice.invoiceId != 0)
+            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice != null && invoice.invoiceId != 0 && !isFromReport)
                 invoicesCount--;
 
             int previouseCount = 0;
@@ -727,7 +729,7 @@ namespace POS.View
         {
             string invoiceType = "or";
             int ordersCount = await invoice.GetCountUnHandeledOrders(invoiceType, 0, MainWindow.branchID.Value);
-            if (_InvoiceType == "or" && invoice.invoiceId != 0)
+            if (_InvoiceType == "or" && invoice.invoiceId != 0 && !isFromReport && invoice != null)
                 ordersCount--;
 
             int previouseCount = 0;
@@ -749,7 +751,7 @@ namespace POS.View
         {
             string invoiceType = "q";
             int ordersCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value);
-            if (_InvoiceType == "q" && invoice.invoiceId != 0)
+            if (_InvoiceType == "q" && invoice.invoiceId != 0 && !isFromReport && invoice != null)
                 ordersCount--;
 
             int previouseCount = 0;
@@ -1835,7 +1837,7 @@ namespace POS.View
         {
             _Sum = 0;
             companyModel = new ShippingCompanies();
-
+            isFromReport = false;
             _Tax = 0;
             _Discount = 0;
             _DeliveryCost = 0;
@@ -1908,6 +1910,7 @@ namespace POS.View
                         invoice = w.invoice;
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
+                        isFromReport = false;
                         // notifications
                         md_payments.Badge = "";
                         setNotifications();
@@ -1980,7 +1983,6 @@ namespace POS.View
                 string invoiceType = "s , sb";
                 int duration = 1;
                 w.invoiceType = invoiceType;
-                // w.branchCreatorId = MainWindow.branchID.Value;
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = duration; // view drafts which updated during 1 last days 
                 if (SectionData.isAdminPermision())
@@ -1996,7 +1998,7 @@ namespace POS.View
 
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
-
+                        isFromReport = false;
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
@@ -2058,6 +2060,7 @@ namespace POS.View
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
                             _InvoiceType = invoice.invType;
+                            isFromReport = false;
                             //notifications
                             setNotifications();
                             await refreshDocCount(invoice.invoiceId);
@@ -2220,7 +2223,6 @@ namespace POS.View
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
                     w.title = MainWindow.resourcemanager.GetString("trReturn");
-                    //w.branchCreatorId = MainWindow.branchID.Value;
                     if (SectionData.isAdminPermision())
                         w.condition = "admin";
                     else
@@ -2236,7 +2238,7 @@ namespace POS.View
                             _InvoiceType = "sbd";
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
-
+                            isFromReport = false;
                             await fillInvoiceInputs(invoice);
                             if (w.condition == "admin")
                                 invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
@@ -2489,8 +2491,11 @@ namespace POS.View
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
             }
-            btn_next.Visibility = Visibility.Visible;
-            btn_previous.Visibility = Visibility.Visible;
+            if (!isFromReport)
+            {
+                btn_next.Visibility = Visibility.Visible;
+                btn_previous.Visibility = Visibility.Visible;
+            }
         }
         private async void Btn_invoiceImage_Click(object sender, RoutedEventArgs e)
         {
@@ -4585,6 +4590,7 @@ namespace POS.View
                         {
                             invoice = w.invoice;
                             _InvoiceType = invoice.invType;
+                            isFromReport = false;
                             //notifications
                             setNotifications();
                             md_payments.Badge = "";
