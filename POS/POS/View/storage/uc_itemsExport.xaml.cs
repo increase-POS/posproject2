@@ -65,6 +65,7 @@ namespace POS.View.storage
         Branch branchModel = new Branch();
         // IEnumerable<Branch> branches;
         public static bool isFromReport = false;
+        public static bool archived = false;
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;

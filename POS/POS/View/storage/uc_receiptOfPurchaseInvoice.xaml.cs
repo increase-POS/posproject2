@@ -60,6 +60,7 @@ namespace POS.View.storage
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         public static bool isFromReport = false;
+        public static bool archived = false;
         Category categoryModel = new Category();
         Category category = new Category();
         Item itemModel = new Item();

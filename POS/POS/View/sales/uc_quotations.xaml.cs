@@ -62,6 +62,7 @@ namespace POS.View.sales
         Item item = new Item();
         IEnumerable<Item> items;
         public static bool isFromReport = false;
+        public static bool archived = false;
         Card cardModel = new Card();
 
         Branch branchModel = new Branch();

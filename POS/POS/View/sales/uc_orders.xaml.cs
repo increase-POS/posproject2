@@ -62,6 +62,7 @@ namespace POS.View.sales
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         public static bool isFromReport = false;
+        public static bool archived = false;
         static private int _invoiceId;
         Item itemModel = new Item();
         Item item = new Item();
