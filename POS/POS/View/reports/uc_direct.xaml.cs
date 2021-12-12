@@ -24,6 +24,7 @@ using Microsoft.Reporting.WinForms;
 using System.Threading;
 using System.IO;
 using POS.View.windows;
+using POS.View.storage;
 
 namespace POS.View.reports
 {
@@ -798,5 +799,39 @@ namespace POS.View.reports
 
         }
         #endregion
+
+        Invoice invoice;
+        private async void DgDirect_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                invoice = new Invoice();
+                if (dgDirect.SelectedIndex != -1)
+                {
+                    ItemTransferInvoice item = dgDirect.SelectedItem as ItemTransferInvoice;
+                    if (item.invoiceId > 0)
+                    {
+                        invoice = await invoice.GetByInvoiceId(item.invoiceId);
+                        MainWindow.mainWindow.BTN_storage_Click(MainWindow.mainWindow.btn_storage, null);
+                        View.uc_storage.Instance.Btn_receiptOfPurchaseInvoice_Click(View.uc_storage.Instance.btn_reciptOfInvoice, null);
+                        uc_receiptOfPurchaseInvoice.Instance.UserControl_Loaded(null, null);
+                        uc_receiptOfPurchaseInvoice._InvoiceType = invoice.invType;
+                        uc_receiptOfPurchaseInvoice.Instance.invoice = invoice;
+                        uc_receiptOfPurchaseInvoice.isFromReport = true;
+                        await uc_receiptOfPurchaseInvoice.Instance.fillInvoiceInputs(invoice);
+                    }
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

@@ -26,6 +26,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Threading;
+using POS.View.sales;
 
 namespace POS.View.reports
 {
@@ -1257,7 +1258,6 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
                 invoice = new Invoice();
                 if (dgInvoice.SelectedIndex != -1)
                 {
@@ -1265,12 +1265,13 @@ namespace POS.View.reports
                     if (item.invoiceId > 0)
                     {
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
-                         MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
-                        uc_sales.Instance.Btn_receiptInvoice_Click(uc_sales.Instance.btn_reciptInvoice, null);
-                        uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
-                        uc_receiptInvoice._InvoiceType = invoice.invType;
-                        uc_receiptInvoice.Instance.invoice = invoice;
-                        await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
+                        MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
+                        uc_sales.Instance.Btn_orders_Click(uc_sales.Instance.btn_salesOrders, null);
+                        uc_orders.Instance.UserControl_Loaded(null, null);
+                        uc_orders._InvoiceType = invoice.invType;
+                        uc_orders.Instance.invoice = invoice;
+                        uc_orders.isFromReport = true;
+                        await uc_orders.Instance.fillInvoiceInputs(invoice);
                     }
                 }
                 if (sender != null)
@@ -1284,7 +1285,7 @@ namespace POS.View.reports
             }
         }
 
-        
+
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();

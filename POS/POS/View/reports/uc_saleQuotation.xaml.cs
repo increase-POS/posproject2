@@ -27,6 +27,7 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Threading;
+using POS.View.sales;
 
 namespace POS.View.reports
 {
@@ -1217,7 +1218,7 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
        }
-      
+
         Invoice invoice;
         private async void DgInvoice_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -1225,7 +1226,6 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
                 invoice = new Invoice();
                 if (dgInvoice.SelectedIndex != -1)
                 {
@@ -1234,11 +1234,12 @@ namespace POS.View.reports
                     {
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
-                        uc_sales.Instance.Btn_receiptInvoice_Click(uc_sales.Instance.btn_reciptInvoice, null);
-                        uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
-                        uc_receiptInvoice._InvoiceType = invoice.invType;
-                        uc_receiptInvoice.Instance.invoice = invoice;
-                        await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
+                        uc_sales.Instance.Btn_quotations_Click(uc_sales.Instance.btn_quotation, null);
+                        uc_quotations.Instance.UserControl_Loaded(null, null);
+                        uc_quotations._InvoiceType = invoice.invType;
+                        uc_quotations.Instance.invoice = invoice;
+                        uc_quotations.isFromReport = true;
+                        await uc_quotations.Instance.fillInvoiceInputs(invoice);
                     }
                 }
                 if (sender != null)
@@ -1252,7 +1253,8 @@ namespace POS.View.reports
             }
         }
 
-      
+
+
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();

@@ -1280,6 +1280,7 @@ namespace POS.View.purchases
                         uc_payInvoice.Instance.UserControl_Loaded(null, null);
                         uc_payInvoice._InvoiceType = invoice.invType;
                         uc_payInvoice.Instance.invoice = invoice;
+                        uc_payInvoice.isFromReport = true;
                         await uc_payInvoice.Instance.fillInvoiceInputs(invoice);
                     }
                 }

@@ -27,6 +27,7 @@ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
 using System.Threading;
+using POS.View.storage;
 
 namespace POS.View.reports
 {
@@ -1875,6 +1876,40 @@ namespace POS.View.reports
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
+        }
+
+       Invoice invoice;
+        private async void DgStock_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                invoice = new Invoice();
+                if (dgStock.SelectedIndex != -1)
+                {
+                    ItemTransferInvoice item = dgStock.SelectedItem as ItemTransferInvoice;
+                    if (item.invoiceId > 0)
+                    {
+                        invoice = await invoice.GetByInvoiceId(item.invoiceId);
+                        MainWindow.mainWindow.BTN_storage_Click(MainWindow.mainWindow.btn_storage, null);
+                      View.uc_storage.Instance.Btn_itemsExport_Click(View.uc_storage.Instance.btn_importExport, null);
+                        uc_itemsExport.Instance.UserControl_Loaded(null, null);
+                        uc_itemsExport._ProcessType = invoice.invType;
+                        uc_itemsExport.Instance.invoice = invoice;
+                        uc_itemsExport.isFromReport = true;
+                        await uc_itemsExport.Instance.fillOrderInputs(invoice);
+                    }
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

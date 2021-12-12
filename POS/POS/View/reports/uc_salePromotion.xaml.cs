@@ -849,6 +849,7 @@ namespace POS.View.reports
                          uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
                         uc_receiptInvoice._InvoiceType = invoice.invType;
                         uc_receiptInvoice.Instance.invoice = invoice;
+                        uc_receiptInvoice.isFromReport = true;
                         await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
                     }
                 }
