@@ -382,28 +382,14 @@ namespace POS.View
                     #region validate
                     bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text, 0);
 
-                    //bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , 0);
-
                     //chk empty code
                     SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                    //chk empty barcode
-                    //SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
                     //chk empty discount type
                     SectionData.validateEmptyComboBox(cb_typeDiscount, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
                     //chk empty discount value
                     SectionData.validateEmptyTextBox(tb_discountValue, p_errorValueDiscount, tt_errorValueDiscount, "trEmptyDiscountValueToolTip");
-                    //chk empty start date
-                    //SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
-                    //chk empty end date
-                    //SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
-                    //chk empty min invoice value
-                    //SectionData.validateEmptyTextBox(tb_MinInvoiceValue, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trEmptyMinInvoiceValueToolTip");
-                    //chk empty max invoice value
-                    //SectionData.validateEmptyTextBox(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
-                    //chk empty quantity
-                    //SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
 
                     bool isEndDateSmaller = false;
                     if ((dp_startDate.SelectedDate != null) && (dp_endDate.SelectedDate != null))
@@ -419,18 +405,12 @@ namespace POS.View
 
                     if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
                         (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals(""))
-                        //&&
-                        //(dp_startDate.Text != null) && (dp_endDate.Text != null) &&
-                        //(!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
-                        //(!tb_quantity.Text.Equals(""))
                         )
                     {
                         if ((!codeNotExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
                         {
                             if (!codeNotExist)
                                 SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
-                            //if (isBarcodeExist)
-                            //    SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
                             if (isEndDateSmaller)
                             {
                                 SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
@@ -450,7 +430,6 @@ namespace POS.View
                             coupon.name = tb_name.Text;
                             coupon.notes = tb_note.Text;
                             coupon.barcode = tb_barcode.Text;
-                            //coupon.barcode = await genBarCode(tb_code.Text);
                             coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
                             coupon.discountType = Convert.ToByte(cb_typeDiscount.SelectedValue);
                             if(dp_startDate.SelectedDate != null)
@@ -470,8 +449,7 @@ namespace POS.View
                                 coupon.quantity = 0;
                             else
                                 coupon.quantity = Int32.Parse(tb_quantity.Text);
-                            //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
-                            coupon.remainQ = Int32.Parse(tb_quantity.Text);
+                            coupon.remainQ = coupon.quantity;
                             coupon.createUserId = MainWindow.userID; ;
 
                             int s = await couponModel.save(coupon);
@@ -504,9 +482,9 @@ namespace POS.View
         }
 
         private  void Btn_clear_Click(object sender, RoutedEventArgs e)
-        {
+        {//clear
             try
-            {//clear
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 tb_code.Clear();
@@ -681,7 +659,6 @@ namespace POS.View
                 SectionData.clearValidate(tb_MinInvoiceValue, p_errorMinInvoiceValue);
                 SectionData.clearValidate(tb_MaxInvoiceValue, p_errorMaxInvoiceValue);
                 SectionData.clearValidate(tb_discountValue, p_errorValueDiscount);
-                //SectionData.clearValidate(tb_quantity, p_errorQuantity);
                 SectionData.clearComboBoxValidate(cb_typeDiscount, p_errorTypeDiscount);
                 TextBox tbStart = (TextBox)dp_startDate.Template.FindName("PART_TextBox", dp_startDate);
                 SectionData.clearValidate(tbStart, p_errorStartDate);
@@ -693,13 +670,12 @@ namespace POS.View
                     coupon = dg_coupon.SelectedItem as Coupon;
 
                     this.DataContext = coupon;
-
                     if (coupon != null)
                     {
                         tb_discountValue.Text = SectionData.DecTostring(coupon.discountValue);
                         tb_MinInvoiceValue.Text = SectionData.DecTostring(coupon.invMin);
                         tb_MaxInvoiceValue.Text = SectionData.DecTostring(coupon.invMax);
-
+                        tb_quantity.Text = coupon.quantity.ToString();
                         tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
                         cb_typeDiscount.SelectedValue = coupon.discountType;
                         tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
@@ -739,6 +715,7 @@ namespace POS.View
                         }
                         #endregion
                     }
+                    this.DataContext = coupon;
                 }
 
                 if (sender != null)
@@ -849,28 +826,14 @@ namespace POS.View
                     #region validate
                     bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text, coupon.cId);
 
-                    //bool isBarcodeExist = await SectionData.chkIfCouponBarCodeIsExist(tb_barcode.Text , coupon.cId);
-
                     //chk empty code
                     SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                    //chk empty barcode
-                    //SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
                     //chk empty discount type
                     SectionData.validateEmptyComboBox(cb_typeDiscount, p_errorTypeDiscount, tt_errorTypeDiscount, "trEmptyDiscountTypeToolTip");
                     //chk empty discount value
                     SectionData.validateEmptyTextBox(tb_discountValue, p_errorValueDiscount, tt_errorValueDiscount, "trEmptyDiscountValueToolTip");
-                    //chk empty start date
-                    //SectionData.validateEmptyDatePicker(dp_startDate, p_errorStartDate, tt_errorStartDate, "trEmptyStartDateToolTip");
-                    //chk empty end date
-                    //SectionData.validateEmptyDatePicker(dp_endDate, p_errorEndDate, tt_errorEndDate, "trEmptyEndDateToolTip");
-                    //chk empty min invoice value
-                    //SectionData.validateEmptyTextBox(tb_MinInvoiceValue, p_errorMinInvoiceValue, tt_errorMinInvoiceValue, "trEmptyMinInvoiceValueToolTip");
-                    //chk empty max invoice value
-                    //SectionData.validateEmptyTextBox(tb_MaxInvoiceValue, p_errorMaxInvoiceValue, tt_errorMaxInvoiceValue, "trEmptyMaxInvoiceValueToolTip");
-                    //chk empty quantity
-                    //SectionData.validateEmptyTextBox(tb_quantity, p_errorQuantity, tt_errorQuantity, "trEmptyQuantityToolTip");
 
                     bool isEndDateSmaller = false;
                     if((dp_startDate.SelectedDate != null)&&(dp_endDate.SelectedDate != null))
@@ -886,18 +849,12 @@ namespace POS.View
 
                     if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) &&
                         (!cb_typeDiscount.Text.Equals("")) && (!tb_discountValue.Text.Equals(""))
-                        //&&
-                        //(dp_startDate.Text != null) && (dp_endDate.Text != null) &&
-                        //(!tb_MinInvoiceValue.Text.Equals("")) && (!tb_MaxInvoiceValue.Text.Equals("")) &&
-                        //(!tb_quantity.Text.Equals(""))
                         )
                     {
                         if ((!codeNotExist) || (isEndDateSmaller) || (isMaxInvoiceValueSmaller))
                         {
                             if (!codeNotExist)
                                 SectionData.showTextBoxValidate(tb_code, p_errorCode, tt_errorCode, "trDuplicateCodeToolTip");
-                            //if (isBarcodeExist)
-                            //    SectionData.showTextBoxValidate(tb_barcode, p_errorBarcode, tt_errorBarcode, "trDuplicateBarcodeToolTip");
                             if (isEndDateSmaller)
                             {
                                 SectionData.showDatePickerValidate(dp_startDate, p_errorStartDate, tt_errorStartDate, "trErrorEndDateSmallerToolTip");
@@ -915,13 +872,16 @@ namespace POS.View
                             coupon.name = tb_name.Text;
                             coupon.notes = tb_note.Text;
                             coupon.barcode = tb_barcode.Text;
-                            //coupon.barcode = await genBarCode(tb_code.Text);
                             coupon.isActive = Convert.ToByte(tgl_ActiveCoupon.IsChecked);
                             coupon.discountType = Convert.ToByte(cb_typeDiscount.SelectedValue);
-                            if (dp_startDate.SelectedDate != null)
+                            if (!string.IsNullOrEmpty(dp_startDate.Text))
                                 coupon.startDate = DateTime.Parse(dp_startDate.Text);
-                            if (dp_endDate.SelectedDate != null)
+                            else
+                                coupon.startDate = null;
+                            if (!string.IsNullOrEmpty(dp_endDate.Text))
                                 coupon.endDate = DateTime.Parse(dp_endDate.Text);
+                            else
+                                coupon.endDate = null;
                             coupon.discountValue = decimal.Parse(tb_discountValue.Text);
                             if (!tb_MinInvoiceValue.Text.Equals(""))
                                 coupon.invMin = decimal.Parse(tb_MinInvoiceValue.Text);
@@ -937,8 +897,7 @@ namespace POS.View
                             else
                                 coupon.quantity = Int32.Parse(tb_quantity.Text);
 
-                            //coupon.remainQ = int.Parse(tb_remainQuantity.Text);
-                            coupon.remainQ = Int32.Parse(tb_quantity.Text);
+                            coupon.remainQ = coupon.quantity;
                             coupon.createUserId = MainWindow.userID;
                          
                             int s = await couponModel.save(coupon);

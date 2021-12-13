@@ -104,11 +104,11 @@
             </Border>
             <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
                 <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" 
-                        
-                       x:Name="dg_coupon" 
-                        AutoGenerateColumns="False" 
-                        ColumnWidth="SizeToHeader" SelectionChanged="Dg_coupon_SelectionChanged"    AlternatingRowBackground="#f3f3f3" AlternationCount="2">
+                           materialDesign:DataGridAssist.CornerRadius="5" 
+                           x:Name="dg_coupon" 
+                           AutoGenerateColumns="False" AlternatingRowBackground="#f3f3f3" AlternationCount="2"
+                           ColumnWidth="SizeToHeader" 
+                           SelectionChanged="Dg_coupon_SelectionChanged"    >
                     <DataGrid.Resources>
                         <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                         <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
@@ -737,14 +737,14 @@
                         </Grid>
 
                         <TextBox x:Name="tb_quantity" Grid.Row="10" Text="{Binding quantity, Mode=OneWay}" Padding="10,0,5,0" 
-                                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                                                      BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Quantity..."    
                                                      Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" 
                                                      BorderBrush="AliceBlue"   
                                                      MaxLength="20" 
                                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                      Height="40"  Margin="10,5,10,5" 
-                                                    PreviewKeyDown="Tb_preventSpaces" PreviewTextInput="Tb_quantity_PreviewTextInput"
+                                                     PreviewKeyDown="Tb_preventSpaces" PreviewTextInput="Tb_quantity_PreviewTextInput"
                                                      TextChanged="Tb_validateEmptyTextChange" 
                                                      LostFocus="Tb_validateEmptyLostFocus">
                             <TextBox.ToolTip>
