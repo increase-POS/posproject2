@@ -67,6 +67,11 @@ namespace POS_Server.Models
        public  decimal subTotalNet { get; set; } // with invoice discount 
         public decimal itemunitProfit { get; set; }
         public decimal invoiceProfit { get; set; }
+        public decimal shippingCost { get; set; }
+        public decimal realShippingCost { get; set; }
+        public decimal shippingProfit { get; set; }
+        public decimal totalNoShip { get; set; }
+        public decimal totalNetNoShip { get; set; }
 
     }
 }
