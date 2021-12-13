@@ -63,6 +63,7 @@ namespace POS.View.storage
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         Branch branchModel = new Branch();
+        public static bool archived = false;
         // IEnumerable<Branch> branches;
         public static bool isFromReport = false;
         ItemUnit itemUnitModel = new ItemUnit();
@@ -327,6 +328,7 @@ namespace POS.View.storage
             {
                 refreshDraftNotification();
              refreshOrderWaitNotification();
+                refreshLackNotification();
             }
             catch (Exception ex)
             {
@@ -338,7 +340,7 @@ namespace POS.View.storage
             string invoiceType = "imd ,exd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((invoice.invType == "imd" || invoice.invType == "exd") && !isFromReport)
+            if ((invoice.invType == "imd" || invoice.invType == "exd"))
                 draftCount--;
 
             int previouseCount = 0;
@@ -363,7 +365,7 @@ namespace POS.View.storage
                 string invoiceType = "exw";
 
                 int waitedOrdersCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
-                if (invoice.invType == "exw" && !isFromReport)
+                if (invoice.invType == "exw")
                     waitedOrdersCount--;
 
                 int previouseCount = 0;
@@ -386,7 +388,14 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private async Task refreshLackNotification()
+        {
+            string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
+            if (isThereLack == "yes")
+                md_shortage.Badge = "!";
+            else
+                md_shortage.Badge = "";
+        }
         #endregion
 
         async Task RefrishItems()
@@ -727,6 +736,7 @@ namespace POS.View.storage
                         _ProcessType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "im")// set title to bill
@@ -1056,6 +1066,7 @@ namespace POS.View.storage
             _SelectedProcess = "imd";
             _ProcessType = "imd";
             isFromReport = false;
+            archived = false;
             invoice = new Invoice();
             generatedInvoice = new Invoice();
             tb_barcode.Clear();
@@ -1199,6 +1210,7 @@ namespace POS.View.storage
                         _ProcessType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        archived = false;
                         setNotifications();
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "imd")// set title to bill

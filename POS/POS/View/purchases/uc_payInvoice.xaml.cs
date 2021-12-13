@@ -746,7 +746,7 @@ namespace POS.View
             string invoiceType = "pd ,pbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && (invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && (invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
                 draftCount--;
 
             int previouseCount = 0;
@@ -769,7 +769,7 @@ namespace POS.View
             string invoiceType = "p ,pw ,pb ,pbw";
             int duration = 1;
             int invCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && (invoice.invType == "p" || invoice.invType == "pb" || invoice.invType == "pbw" || invoice.invType == "pw") && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && (invoice.invType == "p" || invoice.invType == "pb" || invoice.invType == "pbw" || invoice.invType == "pw") && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
                 invCount--;
 
             int previouseCount = 0;
@@ -791,7 +791,7 @@ namespace POS.View
         {
             string invoiceType = "po";
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
-            if (invoice != null && _InvoiceType == "po" && invoice != null && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && _InvoiceType == "po" && invoice != null && invoice.invoiceId != 0)
                 ordersCount--;
 
             int previouseCount = 0;
@@ -3979,6 +3979,7 @@ namespace POS.View
         }
         private async Task buildShortageInvoiceDetails()
         {
+            dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
             //get invoice items
             invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
             mainInvoiceItems = invoiceItems;

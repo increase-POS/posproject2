@@ -512,7 +512,7 @@ namespace POS.View.sales
             string invoiceType = "ord";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
                 draftCount--;
 
             int previouseCount = 0;
@@ -534,7 +534,7 @@ namespace POS.View.sales
         {
             string invoiceType = "s";
             int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
-            if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
                 ordersCount--;
 
             int previouseCount = 0;
@@ -614,6 +614,12 @@ namespace POS.View.sales
         private async Task fillShippingCompanies()
         {
             companies = await companyModel.Get();
+            companies = companies.Where(X => X.isActive == 1).ToList();
+            var br = new ShippingCompanies();
+            br.shippingCompanyId = 0;
+            br.name = "---";
+            br.deliveryType = "";
+            companies.Insert(0, br);
             cb_company.ItemsSource = companies;
             cb_company.DisplayMemberPath = "name";
             cb_company.SelectedValuePath = "shippingCompanyId";
@@ -1103,8 +1109,11 @@ namespace POS.View.sales
                 invoice.tax = decimal.Parse(tb_taxValue.Text);
             else
                 invoice.tax = 0;
-            if (cb_company.SelectedIndex != -1)
+            if (cb_company.SelectedIndex > 0)
                 invoice.shippingCompanyId = (int)cb_company.SelectedValue;
+            else
+                invoice.shippingCompanyId = null;
+
             if (cb_user.SelectedIndex != -1)
                 invoice.shipUserId = (int)cb_user.SelectedValue;
             if (cb_typeDiscount.SelectedIndex != -1)
@@ -2346,7 +2355,7 @@ SectionData.isAdminPermision())
                     SectionData.StartAwait(grid_main);
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 100 && cb_company.SelectedIndex != -1)
+                if (elapsed.TotalMilliseconds > 100 && cb_company.SelectedIndex > 0)
                 {
                     _SelectedCompany = (int)cb_company.SelectedValue;
                     companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
@@ -2364,9 +2373,13 @@ SectionData.isAdminPermision())
                         cb_user.Visibility = Visibility.Collapsed;
                     }
                 }
-                else if (cb_company.SelectedIndex == -1)
+                else if (cb_company.SelectedIndex == -1 || cb_company.SelectedIndex == 0)
                 {
+                    companyModel = new ShippingCompanies();
                     cb_company.SelectedItem = "";
+                    cb_user.SelectedIndex = -1;
+                    _DeliveryCost = 0;
+                    _RealDeliveryCost = 0;
                 }
                 else
                     cb_company.SelectedValue = _SelectedCompany;

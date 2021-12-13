@@ -60,6 +60,7 @@ namespace POS.View.storage
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         public static bool isFromReport = false;
+        public static bool archived = false;
         Category categoryModel = new Category();
         Category category = new Category();
         Item itemModel = new Item();
@@ -300,7 +301,7 @@ namespace POS.View.storage
             string invoiceType = "isd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
+            if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && (!isFromReport || (isFromReport && !archived)))
                 draftCount--;
 
             int previouseCount = 0;
@@ -324,7 +325,7 @@ namespace POS.View.storage
             if (invoice == null)
                 invoice = new Invoice();
             int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-            if (invoice.invType == "pw" && invoice != null && !isFromReport)
+            if (invoice.invType == "pw" && invoice != null)
                 invoiceCount--;
 
             int previouseCount = 0;
@@ -343,14 +344,14 @@ namespace POS.View.storage
         }
         private async void refreshReturnNotification()
         {
-            try
-            {
+            //try
+            //{
 
             string invoiceType = "pbw";
             if (invoice == null)
                 invoice = new Invoice();
             int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-            if (invoice.invType == "pbw" && invoice != null && !isFromReport)
+            if (invoice.invType == "pbw" && invoice != null)
                 returnsCount--;
 
             int previouseCount = 0;
@@ -367,11 +368,11 @@ namespace POS.View.storage
                 else
                     md_returnsCount.Badge = returnsCount.ToString();
             }
-        }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-        }
+        //}
+        //    catch (Exception ex)
+        //    {
+        //        SectionData.ExceptionMessage(ex, this);
+        //}
     }
        
         #endregion

@@ -682,7 +682,7 @@ namespace POS.View
             string invoiceType = "sd ,sbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice != null && invoice.invoiceId != 0 && !isFromReport)
+            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice != null && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
                 draftCount--;
 
             int previouseCount = 0;
@@ -709,7 +709,7 @@ namespace POS.View
                 invoicesCount = await invoice.GetCountForAdmin(invoiceType, duration);
             else
                 invoicesCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice != null && invoice.invoiceId != 0 && !isFromReport)
+            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice != null && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
                 invoicesCount--;
 
             int previouseCount = 0;
@@ -887,6 +887,11 @@ namespace POS.View
         {
             companies = await companyModel.Get();
             companies = companies.Where(X => X.isActive == 1).ToList();
+            var br = new ShippingCompanies();
+            br.shippingCompanyId = 0;
+            br.name = "---";
+            br.deliveryType = "";
+            companies.Insert(0, br);
             cb_company.ItemsSource = companies;
             cb_company.DisplayMemberPath = "name";
             cb_company.SelectedValuePath = "shippingCompanyId";
@@ -1348,8 +1353,10 @@ namespace POS.View
                 else
                     invoice.tax = 0;
 
-                if (cb_company.SelectedIndex != -1)
+                if (cb_company.SelectedIndex > 0)
                     invoice.shippingCompanyId = (int)cb_company.SelectedValue;
+                else
+                    invoice.shippingCompanyId = null;
                 if (cb_user.SelectedIndex != -1)
                     invoice.shipUserId = (int)cb_user.SelectedValue;
 
@@ -1862,6 +1869,7 @@ namespace POS.View
             billDetails.Clear();
             tb_total.Text = "0";
             tb_sum.Text = "0";
+            tb_deliveryCost.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
             _SelectedCard = -1;
@@ -2127,6 +2135,7 @@ namespace POS.View
             }
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
+            tb_deliveryCost.Text = invoice.shippingCost.ToString();
             _DeliveryCost = invoice.shippingCost;
             _RealDeliveryCost = invoice.realShippingCost;
             if (invoice.totalNet != null)
@@ -4935,12 +4944,11 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                if (cb_company.SelectedIndex != -1)
+                if (cb_company.SelectedIndex > 0)
                 {
                     companyModel = companies.Find(c => c.shippingCompanyId == (int)cb_company.SelectedValue);
                     _DeliveryCost = (decimal)companyModel.deliveryCost;
-                    _RealDeliveryCost = (decimal)companyModel.RealDeliveryCost;
-                    tb_deliveryCost.Text = _DeliveryCost.ToString();
+                    _RealDeliveryCost = (decimal)companyModel.RealDeliveryCost;                    
                     refreshTotalValue();
 
                     cb_paymentProcessType.SelectedIndex = 1; // balance
@@ -4959,9 +4967,14 @@ namespace POS.View
                 }
                 else
                 {
+                    companyModel = new ShippingCompanies();
+                    cb_user.SelectedIndex = -1;
+                    _DeliveryCost = 0;
+                    _RealDeliveryCost = 0;               
                     cb_user.Visibility = Visibility.Collapsed;
                     p_errorUser.Visibility = Visibility.Collapsed;
                 }
+                tb_deliveryCost.Text = _DeliveryCost.ToString();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -5058,7 +5071,7 @@ namespace POS.View
                 #region
                 //com
                 SectionData.clearComboBoxValidate(cb_user, p_errorUser);
-                if (companyModel.deliveryType == "local" && cb_user.SelectedIndex == -1)
+                if (companyModel.deliveryType == "local" && (cb_user.SelectedIndex == -1))
                 {
                     //valid = false;
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectTheDeliveryMan"), animation: ToasterAnimation.FadeIn);
