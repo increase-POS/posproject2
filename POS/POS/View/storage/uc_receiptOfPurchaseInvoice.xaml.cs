@@ -81,6 +81,9 @@ namespace POS.View.storage
 
         Agent agentModel = new Agent();
         IEnumerable<Agent> vendors;
+        int _InvoiceCount = 0;
+        int _DraftCount = 0;
+        int _ReturnCount = 0;
         int prInvoiceId;
         //Branch branchModel = new Branch();
         // IEnumerable<Branch> branches;
@@ -304,20 +307,20 @@ namespace POS.View.storage
             if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
                 draftCount--;
 
-            int previouseCount = 0;
-            if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
+            //int previouseCount = 0;
+            //if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
 
-            if (draftCount != previouseCount)
+            if (draftCount != _DraftCount)
             {
                 if (draftCount > 9)
                 {
-                    draftCount = 9;
-                    md_draft.Badge = "+" + draftCount.ToString();
+                    md_draft.Badge = "+9" ;
                 }
                 else if (draftCount == 0) md_draft.Badge = "";
                 else
                     md_draft.Badge = draftCount.ToString();
             }
+            _DraftCount = draftCount;
         }
         private async void refreshInvoiceNotification()
         {
@@ -328,19 +331,25 @@ namespace POS.View.storage
             if (invoice.invType == "pw" && invoice != null)
                 invoiceCount--;
 
-            int previouseCount = 0;
-            if (md_invoiceCount.Badge != null && md_invoiceCount.Badge.ToString() != "") previouseCount = int.Parse(md_invoiceCount.Badge.ToString());
-            if (invoiceCount != previouseCount)
+            //int previouseCount = 0;
+            //if (md_invoiceCount.Badge != null && md_invoiceCount.Badge.ToString() != "")
+            //{
+            //    if (md_invoiceCount.Badge.ToString() == "+9")
+            //        previouseCount = 10;
+            //    else
+            //        previouseCount = int.Parse(md_invoiceCount.Badge.ToString());
+            //}
+            if (invoiceCount != _InvoiceCount)
             {
                 if (invoiceCount > 9)
                 {
-                    invoiceCount = 9;
-                    md_invoiceCount.Badge = "+" + invoiceCount.ToString();
+                    md_invoiceCount.Badge = "+9";
                 }
                 else if (invoiceCount == 0) md_invoiceCount.Badge = "";
                 else
                     md_invoiceCount.Badge = invoiceCount.ToString();
             }
+            _InvoiceCount = invoiceCount;
         }
         private async void refreshReturnNotification()
         {
@@ -354,20 +363,20 @@ namespace POS.View.storage
             if (invoice.invType == "pbw" && invoice != null)
                 returnsCount--;
 
-            int previouseCount = 0;
-            if (md_returnsCount.Badge != null && md_returnsCount.Badge.ToString() != "") previouseCount = int.Parse(md_returnsCount.Badge.ToString());
+            //int previouseCount = 0;
+            //if (md_returnsCount.Badge != null && md_returnsCount.Badge.ToString() != "") previouseCount = int.Parse(md_returnsCount.Badge.ToString());
 
-            if (returnsCount != previouseCount)
+            if (returnsCount != _ReturnCount)
             {
                 if (returnsCount > 9)
                 {
-                    returnsCount = 9;
-                    md_returnsCount.Badge = "+" + returnsCount.ToString();
+                    md_returnsCount.Badge = "+9";
                 }
                 else if (returnsCount == 0) md_returnsCount.Badge = "";
                 else
                     md_returnsCount.Badge = returnsCount.ToString();
             }
+            _ReturnCount = returnsCount;
         //}
         //    catch (Exception ex)
         //    {
