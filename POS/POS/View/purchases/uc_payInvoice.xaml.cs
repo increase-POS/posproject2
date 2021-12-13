@@ -3495,6 +3495,10 @@ namespace POS.View
             {
                 prInvoice = new Invoice();
                 prInvoice = await invoiceModel.GetByInvoiceId(prInvoiceId);
+                decimal? discountval = 0;
+                string discounttype = "";
+                discountval = prInvoice.discountValue;
+                discounttype = prInvoice.discountType;
 
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -3608,7 +3612,8 @@ namespace POS.View
                                                     i.price = decimal.Parse(SectionData.DecTostring(i.price));
                                                 }
                                                 string pdfpath = await SavePurpdf();
-
+                                                prInvoice.discountValue = discountval;
+                                                prInvoice.discountType = discounttype;
                                                 mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, mailpayedList, email, toAgent, setvlist);
 
                                                 //SavePurpdf();
