@@ -4378,11 +4378,16 @@ namespace POS.View
             if ((prinvoiceId > 0) || (invoice.invoiceId > 0))
             {
                 prInvoice = new Invoice();
+                Invoice tomailInvoice = new Invoice();
                 if (prinvoiceId != 0)
                     prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
                 else
                     prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
-
+                tomailInvoice = prInvoice;
+                decimal? discountval = 0;
+                string discounttype = "";
+                discountval = prInvoice.discountValue;
+                discounttype = prInvoice.discountType;
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
                 || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
                 || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
@@ -4469,7 +4474,11 @@ namespace POS.View
                                         {
                                             setvlist = await setvmodel.GetBySetName("sale_email_temp");
                                         }
+                                       
                                         string pdfpath = await SaveSalepdf();
+                                       
+                                        prInvoice.discountValue = discountval;
+                                        prInvoice.discountType = discounttype;
                                         mailtosend = mailtosend.fillSaleTempData(prInvoice, invoiceItems, mailpayedList, email, toAgent, setvlist);
 
 

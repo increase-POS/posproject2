@@ -995,7 +995,7 @@ namespace POS.Classes
 
             return disval;
         }
-        public List<ReportParameter> fillSaleInvReport(Invoice invoice, List<ReportParameter> paramarr)
+        public  List<ReportParameter> fillSaleInvReport(Invoice invoice, List<ReportParameter> paramarr)
         {
             checkLang();
 
@@ -1004,7 +1004,7 @@ namespace POS.Classes
             string userName = invoice.uuserName + " " + invoice.uuserLast;
 
             //  rep.DataSources.Add(new ReportDataSource("DataSetBank", banksQuery));
-
+            
             decimal disval = calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
           decimal manualdisval = calcpercentval(invoice.manualDiscountType, invoice.manualDiscountValue, invoice.total);
             invoice.discountValue = disval+ manualdisval;

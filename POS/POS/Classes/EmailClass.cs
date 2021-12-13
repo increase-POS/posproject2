@@ -395,7 +395,7 @@ namespace POS.Classes
 
         }
 
-        public EmailClass fillSaleTempData(Invoice invoice, List<ItemTransfer> invoiceItems, List<PayedInvclass> mailpayedList, SysEmails email, Agent toAgent, List<SetValues> setvlist)
+        public  EmailClass fillSaleTempData(Invoice invoice, List<ItemTransfer> invoiceItems, List<PayedInvclass> mailpayedList, SysEmails email, Agent toAgent, List<SetValues> setvlist)
         {
 
             string invheader = "";
@@ -406,6 +406,7 @@ namespace POS.Classes
             string paytable = "";
             string payrow = "";
             string taxdiv = "";
+            string deliverydiv = "";
 
             //payrow.tmp
             //    paytable.tmp
@@ -431,7 +432,7 @@ namespace POS.Classes
             List<MailimageClass> imgs = new List<MailimageClass>();
             MailimageClass img = new MailimageClass();
 
-            
+
             decimal disval = repm.calcpercentval(invoice.discountType, invoice.discountValue, invoice.total);
             decimal manualdisval = repm.calcpercentval(invoice.manualDiscountType, invoice.manualDiscountValue, invoice.total);
             invoice.discountValue = disval + manualdisval;
@@ -442,7 +443,7 @@ namespace POS.Classes
             {
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\ar\invfooter.tmp");
-
+                deliverydiv = repm.ReadFile(@"EmailTemplates\saletemplate\ar\deliverydiv.tmp");
                 if (invoice.invType == "s" || invoice.invType == "pw" || invoice.invType == "p")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saletemplate\ar\invbody.tmp");
@@ -476,6 +477,7 @@ namespace POS.Classes
 
                 invheader = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invheader.tmp");
                 invfooter = repm.ReadFile(@"EmailTemplates\ordertemplate\en\invfooter.tmp");
+                deliverydiv = repm.ReadFile(@"EmailTemplates\saletemplate\en\deliverydiv.tmp");
                 if (invoice.invType == "s" || invoice.invType == "pw" || invoice.invType == "p")
                 {
 
@@ -542,13 +544,13 @@ namespace POS.Classes
             if (invoice.invoiceId > 0)
             {
 
-                if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb"|| invoice.invType == "p" || invoice.invType == "pw" ))
+                if ((invoice.invType == "s" || invoice.invType == "sd" || invoice.invType == "sbd" || invoice.invType == "sb" || invoice.invType == "p" || invoice.invType == "pw"))
                 {
                     decimal sump = mailpayedList.Sum(x => x.cash).Value;
                     decimal deservd = (decimal)invoice.totalNet - sump;
 
                     cashTr = MainWindow.resourcemanagerreport.GetString("trCashType");
-                   
+
                     sumP = reportclass.DecTostring(sump);
                     deservedcash = reportclass.DecTostring(deservd);
                     invbody = invbody.Replace("[[payedsum]]", sumP);
@@ -561,12 +563,12 @@ namespace POS.Classes
                     foreach (PayedInvclass row in mailpayedList)
                     {
                         string rowhtml = payrow;
-                      
+
                         rowhtml = rowhtml.Replace("[[cashpayrow]]", reportclass.DecTostring(row.cash));
 
                         paymethod = row.processType == "cash" ? cashTr : row.cardName;
-                        rowhtml = rowhtml.Replace("[[paymethodrow]]",paymethod);
-                     
+                        rowhtml = rowhtml.Replace("[[paymethodrow]]", paymethod);
+
 
                         datapayrows += rowhtml;
 
@@ -610,23 +612,44 @@ namespace POS.Classes
                 }
 
                 //invbody = invbody.Replace("[[invoicetax]]", invoice.tax.ToString());
-                if(invoice.tax==0 || invoice.tax == null)
+                if (invoice.tax == 0 || invoice.tax == null)
                 {
                     invbody = invbody.Replace("[[invoicetax]]", repm.DecTostring(invoice.tax));
                     invbody = invbody.Replace("[[trinvoicetax]]", MainWindow.resourcemanagerreport.GetString("trTax").Trim());
-                    invbody= invbody.Replace("[[taxdiv]]","");
+                    invbody = invbody.Replace("[[taxdiv]]", "");
                 }
                 else
                 {
-                   
+
                     taxdiv = taxdiv.Replace("[[invoicetax]]", repm.DecTostring(invoice.tax));
                     taxdiv = taxdiv.Replace("[[trinvoicetax]]", MainWindow.resourcemanagerreport.GetString("trTax").Trim());
                     invbody = invbody.Replace("[[taxdiv]]", taxdiv);
                 }
-            
+                //shipping cost section
+                if ((invoice.invType == "s" || invoice.invType == "or" || invoice.invType == "q"))
+                {
+                    if (invoice.shippingCost > 0)
+                    {
+                        deliverydiv = deliverydiv.Replace("[[shippingcost]]", repm.DecTostring(invoice.shippingCost));
+                        deliverydiv = deliverydiv.Replace("[[totaldeserved]]", repm.DecTostring(invoice.totalNet));
 
-                //invbody = invbody.Replace("[[totalnet]]", invoice.totalNet.ToString());
-                invbody = invbody.Replace("[[totalnet]]", repm.DecTostring(invoice.totalNet));
+                        invbody = invbody.Replace("[[totalnet]]", repm.DecTostring(invoice.totalNet - invoice.shippingCost));
+                        invbody = invbody.Replace("[[deliverydiv]]", deliverydiv);
+                    }
+                    else
+                    {
+                        invbody = invbody.Replace("[[deliverydiv]]", "");
+                        invbody = invbody.Replace("[[totalnet]]", repm.DecTostring(invoice.totalNet));
+                    }
+                }
+                else
+                {
+                    invbody = invbody.Replace("[[totalnet]]", repm.DecTostring(invoice.totalNet));
+                    invbody = invbody.Replace("[[deliverydiv]]", "");
+
+                }
+                // end shippingcost
+
             }
 
             //  invoiceItems.trQuantity trQTR
@@ -648,7 +671,7 @@ namespace POS.Classes
             //
 
             invbody = invbody.Replace("[[trinvoicediscount]]", MainWindow.resourcemanagerreport.GetString("trDiscount").Trim());
-         
+
             invbody = invbody.Replace("[[trtotalnet]]", MainWindow.resourcemanagerreport.GetString("trTotal").Trim());
 
 
@@ -705,7 +728,7 @@ namespace POS.Classes
 
 
             invbody = invbody.Replace("[[invitemtable]]", invitemtable);
-       
+
             string mailbody = invheader + invbody + invfooter;
 
 
