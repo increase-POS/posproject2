@@ -2722,9 +2722,9 @@ namespace POS.View
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (item.OrderId != 0)
-                                    combo.IsEnabled = false;
-                                else
+                                //if (item.OrderId != 0)
+                                //    combo.IsEnabled = false;
+                                //else
                                     combo.IsEnabled = true;
                             }
                         }
@@ -2739,8 +2739,7 @@ namespace POS.View
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
-            if (dg_billDetails.SelectedIndex != -1 && column == 3)
+            if (dg_billDetails.SelectedIndex != -1)
                 if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
                     e.Cancel = true;
         }
@@ -3980,7 +3979,7 @@ namespace POS.View
         }
         private async Task buildShortageInvoiceDetails()
         {
-            dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
+           
             //get invoice items
             invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
             mainInvoiceItems = invoiceItems;
@@ -4008,6 +4007,9 @@ namespace POS.View
             tb_barcode.Focus();
 
             refrishBillDetails();
+            dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
+            dg_billDetails.Columns[4].IsReadOnly = false; //make quantity read only
+            dg_billDetails.Columns[3].IsReadOnly = false; //make quantity read only
         }
         private void Expander_Expanded(object sender, RoutedEventArgs e)
         {
