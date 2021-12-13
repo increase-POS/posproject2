@@ -512,7 +512,7 @@ namespace POS.View.sales
             string invoiceType = "ord";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
+            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
@@ -534,7 +534,7 @@ namespace POS.View.sales
         {
             string invoiceType = "s";
             int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
-            if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
+            if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
                 ordersCount--;
 
             int previouseCount = 0;

@@ -420,7 +420,7 @@ namespace POS.View.sales
             string invoiceType = "qd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "qd"  && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
+            if (invoice != null && _InvoiceType == "qd"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;

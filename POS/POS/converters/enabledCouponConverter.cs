@@ -16,7 +16,7 @@ namespace POS.converters
             Coupon c = value as Coupon;
             string state = "";
 
-            if ((c.isActive == 1) && ((c.endDate > DateTime.Now)||(c.endDate == null)) && (c.quantity >= 0))
+            if ((c.isActive == 1) && ((c.endDate > DateTime.Now)||(c.endDate == null)) && ((c.quantity == 0) || (c.quantity > 0 && c.remainQ != 0)))
                 state = MainWindow.resourcemanager.GetString("trValid");
             else
                 state = MainWindow.resourcemanager.GetString("trExpired");
