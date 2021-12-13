@@ -434,11 +434,13 @@ namespace POS.View.purchases
                 {
                     btn_shortageInvoice.Visibility = Visibility.Visible;
                     bdr_shortageInvoice.Visibility = Visibility.Visible;
+                    md_shortage.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     btn_shortageInvoice.Visibility = Visibility.Collapsed;
                     bdr_shortageInvoice.Visibility = Visibility.Collapsed;
+                    md_shortage.Visibility = Visibility.Collapsed;
                 }
 
                 #endregion
