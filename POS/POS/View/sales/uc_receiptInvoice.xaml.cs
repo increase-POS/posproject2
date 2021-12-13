@@ -682,7 +682,7 @@ namespace POS.View
             string invoiceType = "sd ,sbd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice != null && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
+            if ((_InvoiceType == "sd" || _InvoiceType == "sbd") && invoice != null && invoice.invoiceId != 0 && !isFromReport )
                 draftCount--;
 
             int previouseCount = 0;
@@ -709,7 +709,7 @@ namespace POS.View
                 invoicesCount = await invoice.GetCountForAdmin(invoiceType, duration);
             else
                 invoicesCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice != null && invoice.invoiceId != 0 && (!isFromReport || (isFromReport && !archived)))
+            if ((_InvoiceType == "s" || _InvoiceType == "sb") && invoice != null && invoice.invoiceId != 0 && !isFromReport)
                 invoicesCount--;
 
             int previouseCount = 0;

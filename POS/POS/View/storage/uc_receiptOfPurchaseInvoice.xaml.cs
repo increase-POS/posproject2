@@ -301,7 +301,7 @@ namespace POS.View.storage
             string invoiceType = "isd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && (!isFromReport || (isFromReport && !archived)))
+            if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
                 draftCount--;
 
             int previouseCount = 0;
