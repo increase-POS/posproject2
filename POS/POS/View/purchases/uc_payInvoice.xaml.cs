@@ -2739,7 +2739,8 @@ namespace POS.View
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            if (dg_billDetails.SelectedIndex != -1)
+            int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
+            if (dg_billDetails.SelectedIndex != -1 && column == 3)
                 if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
                     e.Cancel = true;
         }
