@@ -378,6 +378,7 @@ namespace POS_Server.Controllers
                 {
                     // archived = ((DateTime)I.updateDate >= dt) ?0:1,
                     DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
+                    DateTime dt1 = Convert.ToDateTime(DateTime.Today.AddDays(-1).ToShortDateString());
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
                     {
@@ -460,7 +461,7 @@ namespace POS_Server.Controllers
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= dt) ? 0 : 1,
+                                            archived = ((DateTime)I.updateDate >= (( I.invType == "pd" || I.invType == "pbd") ? dt:dt1)) ? 0 : 1,
                                             //username
 
                                             //  I.invoiceId,
@@ -991,6 +992,7 @@ namespace POS_Server.Controllers
                 try
                 {
                     DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
+                    DateTime dt1 = Convert.ToDateTime(DateTime.Today.AddDays(-1).ToShortDateString());
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
                     {
@@ -1069,7 +1071,7 @@ namespace POS_Server.Controllers
 
                                             //  I.invoiceId,
                                             //    JBB.name
-                                            archived = ((DateTime)I.updateDate >= dt) ?0:1,
+                                            archived = ((DateTime)I.updateDate >= (( I.invType == "pbd" || I.invType == "pd" ) ? dt:dt1)) ?0:1,
                                         }).ToList();
 
                         // archived = ((DateTime)I.updateDate >= dt) ?0:1,
@@ -1311,7 +1313,8 @@ namespace POS_Server.Controllers
                 {
                     // archived = ((DateTime)I.updateDate >= dt) ?0:1,
                      DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
-
+                    DateTime dt1 = Convert.ToDateTime(DateTime.Today.AddDays(-1).ToShortDateString());
+                   // archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd") ? dt : dt1)) ? 0 : 1,
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
                     {
@@ -1400,7 +1403,7 @@ namespace POS_Server.Controllers
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= dt) ? 0 : 1,
+                                            archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd")? dt:dt1)) ? 0 : 1,
 
 
 
@@ -7426,6 +7429,8 @@ namespace POS_Server.Controllers
                 {
                     // archived = ((DateTime)I.updateDate >= dt) ?0:1,
                     DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
+                    DateTime dt1 = Convert.ToDateTime(DateTime.Today.AddDays(-1).ToShortDateString());
+                    // archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd") ? dt : dt1)) ? 0 : 1,
                     Calculate calc = new Calculate();
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
@@ -7522,7 +7527,8 @@ namespace POS_Server.Controllers
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= dt) ? 0 : 1,
+                                            archived = ((DateTime)I.updateDate >=
+                                            ((I.invType == "sd" || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "qd")?dt:dt1)) ? 0 : 1,
                                             //username
 
                                             //  I.invoiceId,
@@ -7726,7 +7732,7 @@ namespace POS_Server.Controllers
                 {
                     // archived = ((DateTime)I.updateDate >= dt) ?0:1,
                     DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
-
+                    DateTime dt1 = Convert.ToDateTime(DateTime.Today.AddDays(-1).ToShortDateString());
                     Calculate calc = new Calculate();
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
@@ -7825,7 +7831,7 @@ namespace POS_Server.Controllers
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= dt) ? 0 : 1,
+                                            archived = ((DateTime)I.updateDate >= (( I.invType == "pd" || I.invType == "pbd" || I.invType == "pod" )?dt:dt1) ? 0 : 1),
                                             //username
 
                                             //  I.invoiceId,
