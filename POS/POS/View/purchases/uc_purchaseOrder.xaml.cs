@@ -82,7 +82,7 @@ namespace POS.View.purchases
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
-
+        int _DraftCount = 0;
         Invoice invoiceModel = new Invoice();
         public Invoice invoice = new Invoice();
         List<Invoice> invoices;
@@ -405,6 +405,7 @@ namespace POS.View.purchases
                 //await RefrishVendors();
                 //await fillBarcodeList();
                 refreshDraftNotification();
+                refreshLackNotification();
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
@@ -547,6 +548,7 @@ namespace POS.View.purchases
                 if (invoice.invoiceId != 0)
             {
                 refreshDocCount(invoice.invoiceId);
+                    refreshLackNotification();
             }
             }
             catch (Exception ex)
@@ -564,21 +566,29 @@ namespace POS.View.purchases
             if (invoice != null && invoice.invType == "pod" && !isFromReport)
                 draftCount--;
 
-            int previouseCount = 0;
-            if (md_draft.Badge != null && md_draft.Badge.ToString() != "")
-                previouseCount = int.Parse(md_draft.Badge.ToString());
+            //int previouseCount = 0;
+            //if (md_draft.Badge != null && md_draft.Badge.ToString() != "")
+            //    previouseCount = int.Parse(md_draft.Badge.ToString());
 
-            if (draftCount != previouseCount)
+            if (draftCount != _DraftCount)
             {
                 if (draftCount > 9)
                 {
-                    draftCount = 9;
-                    md_draft.Badge = "+" + draftCount.ToString();
+                    md_draft.Badge = "+9" ;
                 }
                 else if (draftCount == 0) md_draft.Badge = "";
                 else
                     md_draft.Badge = draftCount.ToString();
             }
+            _DraftCount = draftCount;
+        }
+        private async Task refreshLackNotification()
+        {
+            string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
+            if (isThereLack == "yes")
+                md_shortage.Badge = "!";
+            else
+                md_shortage.Badge = "";
         }
         private async void refreshDocCount(int invoiceId)
         {
@@ -1647,8 +1657,7 @@ namespace POS.View.purchases
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
-            if (dg_billDetails.SelectedIndex != -1 && column == 3)
+            if (dg_billDetails.SelectedIndex != -1)
                 if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
                     e.Cancel = true;
         }
@@ -1691,7 +1700,7 @@ namespace POS.View.purchases
 
                     oldCount = row.Count;
 
-                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw" || row.OrderId != 0)
+                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
                     {
                         ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
                         if (newCount > item.quantity)

@@ -113,7 +113,12 @@ namespace POS.View
         static private object _Sender;
         bool _IsFocused = false;
         #endregion
+        #region for notifications
+        int _DraftCount =0;
+        int _InvCount =0;
+        int _OrderCount =0;
 
+        #endregion
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         //  int? parentCategorieSelctedValue;
         public byte tglCategoryState = 1;
@@ -749,20 +754,20 @@ namespace POS.View
             if (invoice != null && (invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
-            int previouseCount = 0;
-            if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
+            //int previouseCount = 0;
+            //if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
 
-            if (draftCount != previouseCount)
+            if (draftCount != _DraftCount)
             {
                 if (draftCount > 9)
                 {
-                    draftCount = 9;
-                    md_draft.Badge = "+" + draftCount.ToString();
+                    md_draft.Badge = "+9" ;
                 }
                 else if (draftCount == 0) md_draft.Badge = "";
                 else
                     md_draft.Badge = draftCount.ToString();
             }
+            _DraftCount = draftCount;
         }
         private async Task refreshInvNotification()
         {
@@ -772,20 +777,20 @@ namespace POS.View
             if (invoice != null && (invoice.invType == "p" || invoice.invType == "pb" || invoice.invType == "pbw" || invoice.invType == "pw") && !isFromReport)
                 invCount--;
 
-            int previouseCount = 0;
-            if (md_invoices.Badge != null && md_invoices.Badge.ToString() != "") previouseCount = int.Parse(md_invoices.Badge.ToString());
+            //int previouseCount = 0;
+            //if (md_invoices.Badge != null && md_invoices.Badge.ToString() != "") previouseCount = int.Parse(md_invoices.Badge.ToString());
 
-            if (invCount != previouseCount)
+            if (invCount != _InvCount)
             {
                 if (invCount > 9)
                 {
-                    invCount = 9;
-                    md_invoices.Badge = "+" + invCount.ToString();
+                    md_invoices.Badge = "+9" ;
                 }
                 else if (invCount == 0) md_invoices.Badge = "";
                 else
                     md_invoices.Badge = invCount.ToString();
             }
+            _InvCount = invCount;
         }
         private async Task refreshOrdersNotification()
         {
@@ -794,10 +799,10 @@ namespace POS.View
             if (invoice != null && _InvoiceType == "po" && invoice != null && invoice.invoiceId != 0)
                 ordersCount--;
 
-            int previouseCount = 0;
-            if (md_orders.Badge != null && md_orders.Badge.ToString() != "") previouseCount = int.Parse(md_orders.Badge.ToString());
+            //int previouseCount = 0;
+            //if (md_orders.Badge != null && md_orders.Badge.ToString() != "") previouseCount = int.Parse(md_orders.Badge.ToString());
 
-            if (ordersCount != previouseCount)
+            if (ordersCount != _OrderCount)
             {
                 if (ordersCount > 9)
                 {
@@ -808,6 +813,7 @@ namespace POS.View
                 else
                     md_orders.Badge = ordersCount.ToString();
             }
+            _OrderCount = ordersCount;
         }
         private async Task refreshLackNotification()
         {
@@ -2797,7 +2803,7 @@ namespace POS.View
 
                     oldCount = row.Count;
 
-                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw" || row.OrderId != 0)
+                    if (_InvoiceType == "pbd" || _InvoiceType == "pbw" )
                     {
                         ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
                         if (newCount > item.quantity)
