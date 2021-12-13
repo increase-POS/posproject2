@@ -2673,7 +2673,8 @@ namespace POS.View
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (billDetails[0].OrderId != 0)
+                if (billDetails[0].invType == "p" || billDetails[0].invType == "pw"
+                        || billDetails[0].invType == "pb" || billDetails[0].invType == "pbw")
                     cmb.IsEnabled = false;
                 else
                     cmb.IsEnabled = true;

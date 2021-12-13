@@ -485,6 +485,7 @@ namespace POS.View.purchases
             public decimal Price { get; set; }
             public decimal Total { get; set; }
             public int OrderId { get; set; }
+            public string invType { get; set; }
         }
 
         #endregion
@@ -1074,6 +1075,7 @@ namespace POS.View.purchases
                     Price = (decimal)itemT.price,
                     Total = total,
                     OrderId = orderId,
+                invType = invoice.invType,
                 });
             }
 
@@ -1202,6 +1204,7 @@ namespace POS.View.purchases
                         Count = (int)itemT.quantity,
                         Price = (decimal)itemT.price,
                         Total = total,
+                invType = invoice.invType,
                     });
                 }
                 tb_barcode.Focus();
@@ -1569,6 +1572,7 @@ namespace POS.View.purchases
                 Count = 1,
                 Price = price,
                 Total = total,
+                invType = invoice.invType,
             });
             _Count++;
             _Sum += total;
@@ -1583,7 +1587,7 @@ namespace POS.View.purchases
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (billDetails[0].OrderId != 0)
+                if (billDetails[0].invType == "po")
                     cmb.IsEnabled = false;
                 else
                     cmb.IsEnabled = true;
@@ -1603,7 +1607,7 @@ namespace POS.View.purchases
                 if (dg_billDetails.SelectedIndex != -1 && cmb.SelectedValue != null)
                 {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                    if (billDetails[dg_billDetails.SelectedIndex].invType == "po")
                         cmb.IsEnabled = false;
                     else
                         cmb.IsEnabled = true;
@@ -1642,7 +1646,7 @@ namespace POS.View.purchases
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (item.OrderId != 0)
+                                if (item.invType == "po"  )
                                     combo.IsEnabled = false;
                                 else
                                     combo.IsEnabled = true;
@@ -1659,8 +1663,13 @@ namespace POS.View.purchases
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            if (dg_billDetails.SelectedIndex != -1)
-                if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+            
+            //if (dg_billDetails.SelectedIndex != -1)
+            //    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+            //        e.Cancel = true;
+
+             if (dg_billDetails.SelectedIndex != -1)
+                if (billDetails[dg_billDetails.SelectedIndex].invType == "po"  )
                     e.Cancel = true;
         }
 
@@ -2313,6 +2322,7 @@ namespace POS.View.purchases
                     OrderId = (int)itemT.invoiceId,
                     Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
                     Total = total,
+                invType = invoice.invType,
                 });
             }
 
