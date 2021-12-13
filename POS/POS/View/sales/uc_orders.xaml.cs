@@ -731,7 +731,7 @@ namespace POS.View.sales
                         var exist = selectedCoupons.Find(c => c.couponId == couponModel.cId);
                         if (couponModel != null && exist == null)
                         {
-                            if (couponModel.remainQ > 0 && couponModel.endDate >= DateTime.Now && couponModel.startDate <= DateTime.Now && _Sum >= couponModel.invMin && _Sum <= couponModel.invMax)
+                            if ((couponModel.remainQ > 0 || couponModel.quantity == 0) && couponModel.endDate >= DateTime.Now && couponModel.startDate <= DateTime.Now && _Sum >= couponModel.invMin && _Sum <= couponModel.invMax)
                             {
                                 CouponInvoice ci = new CouponInvoice();
                                 ci.couponId = couponModel.cId;
@@ -742,7 +742,7 @@ namespace POS.View.sales
                                 selectedCoupons.Add(ci);
                                 refreshTotalValue();
                             }
-                            else if (couponModel.remainQ == 0)
+                            else if (couponModel.remainQ == 0 && couponModel.quantity > 0)
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponQuantity"), animation: ToasterAnimation.FadeIn);
                             else if (couponModel.endDate < DateTime.Now)
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponExpire"), animation: ToasterAnimation.FadeIn);
