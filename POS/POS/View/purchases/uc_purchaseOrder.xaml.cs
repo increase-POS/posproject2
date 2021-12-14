@@ -66,8 +66,7 @@ namespace POS.View.purchases
         string initializeShortagePermission = "purchaseOrder_initializeShortage";
 
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
-        public static bool isFromReport = false;
-        public static bool archived = false;
+       
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
@@ -82,7 +81,7 @@ namespace POS.View.purchases
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
         List<ItemUnit> itemUnits;
-        int _DraftCount = 0;
+        
         Invoice invoiceModel = new Invoice();
         public Invoice invoice = new Invoice();
         List<Invoice> invoices;
@@ -90,6 +89,14 @@ namespace POS.View.purchases
         List<ItemTransfer> mainInvoiceItems;
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
         public List<Control> controls;
+        #region for notifications
+        private static DispatcherTimer timer;
+        public static bool isFromReport = false;
+        public static bool archived = false;
+        int _DraftCount = 0;
+        int _OrdersCount = 0;
+        int _DocCount = 0;
+        #endregion
         #region //to handle barcode characters
         static private int _SelectedVendor = -1;
         bool _IsFocused = false;
@@ -97,10 +104,7 @@ namespace POS.View.purchases
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
         static private object _Sender;
-        #endregion
-
-        private static DispatcherTimer timer;
-
+        #endregion      
         public byte tglCategoryState = 1;
         public byte tglItemState = 1;
         public string txtItemSearch;
@@ -134,14 +138,11 @@ namespace POS.View.purchases
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQTR");
 
             txt_shortageInvoice.Text = MainWindow.resourcemanager.GetString("trLack");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
-            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
-            //txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             tb_count.Text = MainWindow.resourcemanager.GetString("trCount:");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
@@ -172,8 +173,7 @@ namespace POS.View.purchases
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
 
-                saveBeforeExit();
-                
+                saveBeforeExit();               
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -182,7 +182,6 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
-                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task<bool> saveBeforeExit()
@@ -201,7 +200,6 @@ namespace POS.View.purchases
                 #endregion
                 if (w.isOk  )
                 {
-                    //Btn_newDraft_Click(null, null);
                     bool valid = validateItemUnits();
                     if (billDetails.Count > 0 && valid)
                     {
@@ -255,7 +253,7 @@ namespace POS.View.purchases
                         isFromReport = false;
                         archived = false;
                         // notifications
-                        refreshDraftNotification();
+                        refreshNotification();
                         refreshDocCount(invoice.invoiceId);
 
                         await fillInvoiceInputs(invoice);
@@ -343,7 +341,6 @@ namespace POS.View.purchases
         {
             try
             {
-                //Window parentWin = Window.GetWindow(this);
                 MainWindow.mainWindow.Closing += ParentWin_Closing;
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
@@ -351,7 +348,6 @@ namespace POS.View.purchases
 
                 // for pagination
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
-                //tb_moneyIcon.Text = MainWindow.Currency;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -365,9 +361,6 @@ namespace POS.View.purchases
 
                 translate();
                 setTimer();
-                //catigoriesAndItemsView.ucPayInvoice = this;
-
-
 
                 #region loading
                 loadingList = new List<keyValueBool>();
@@ -375,8 +368,6 @@ namespace POS.View.purchases
                 loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_refrishVendors", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
-
-
 
                 loading_RefrishItems();
                 loading_refrishVendors();
@@ -404,7 +395,7 @@ namespace POS.View.purchases
                 //await RefrishItems();
                 //await RefrishVendors();
                 //await fillBarcodeList();
-                refreshDraftNotification();
+                refreshNotification();
                 refreshLackNotification();
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
@@ -550,7 +541,9 @@ namespace POS.View.purchases
             {
                 if (invoice.invoiceId != 0)
             {
+                    refreshOrdersNotification();
                 refreshDocCount(invoice.invoiceId);
+                   
                     refreshLackNotification();
             }
             }
@@ -561,29 +554,58 @@ namespace POS.View.purchases
         }
         #endregion
         #region notification
+        private void refreshNotification()
+        {
+            refreshDraftNotification();
+            refreshOrdersNotification();
+        }
         private async void refreshDraftNotification()
         {
             string invoiceType = "pod";
             int duration = 2;
-            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && invoice.invType == "pod" && !isFromReport)
-                draftCount--;
-
-            //int previouseCount = 0;
-            //if (md_draft.Badge != null && md_draft.Badge.ToString() != "")
-            //    previouseCount = int.Parse(md_draft.Badge.ToString());
-
-            if (draftCount != _DraftCount)
+            try
             {
-                if (draftCount > 9)
+                int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+                if (invoice != null && invoice.invType == "pod" && !isFromReport)
+                    draftCount--;
+
+                if (draftCount != _DraftCount)
                 {
-                    md_draft.Badge = "+9" ;
+                    if (draftCount > 9)
+                    {
+                        md_draft.Badge = "+9";
+                    }
+                    else if (draftCount == 0) md_draft.Badge = "";
+                    else
+                        md_draft.Badge = draftCount.ToString();
                 }
-                else if (draftCount == 0) md_draft.Badge = "";
-                else
-                    md_draft.Badge = draftCount.ToString();
+                _DraftCount = draftCount;
             }
-            _DraftCount = draftCount;
+            catch { }
+        }
+        private async void refreshOrdersNotification()
+        {
+            string invoiceType = "po";
+            int duration = 1;
+            try
+            {
+                int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+                if (invoice != null && invoice.invType == "po" && !isFromReport)
+                    orderCount--;
+
+                if (orderCount != _OrdersCount)
+                {
+                    if (orderCount > 9)
+                    {
+                        md_order.Badge = "+9";
+                    }
+                    else if (orderCount == 0) md_order.Badge = "";
+                    else
+                        md_order.Badge = orderCount.ToString();
+                }
+                _OrdersCount = orderCount;
+            }
+            catch { }
         }
         private async Task refreshLackNotification()
         {
@@ -598,21 +620,15 @@ namespace POS.View.purchases
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
-            int previouseCount = 0;
-            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "")
-                previouseCount = int.Parse(md_docImage.Badge.ToString());
-
-            if (docCount != previouseCount)
+            if (docCount != _DocCount)
             {
                 if (docCount > 9)
-                {
-                    docCount = 9;
-                    md_docImage.Badge = "+" + docCount.ToString();
-                }
+                    md_docImage.Badge = "+9";
                 else if (docCount == 0) md_docImage.Badge = "";
                 else
                     md_docImage.Badge = docCount.ToString();
             }
+            _DocCount = docCount;
         }
         #endregion
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
@@ -803,7 +819,12 @@ namespace POS.View.purchases
             invoice.taxtype = 2;
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
-
+            byte isApproved = 0;
+            if (tgl_ActiveOffer.IsChecked == true)
+                isApproved = 1;
+            else
+                isApproved = 0;
+            invoice.isApproved = isApproved;
             // save invoice in DB
             int invoiceId = await invoiceModel.saveInvoice(invoice);
             invoice.invoiceId = invoiceId;
@@ -831,7 +852,7 @@ namespace POS.View.purchases
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
             clearInvoice();
-            refreshDraftNotification();
+       
             return invoiceId;
         }
         private bool validateInvoiceValues()
@@ -850,6 +871,45 @@ namespace POS.View.purchases
                 valid = validateItemUnits();
             return valid;
         }
+        private void Tgl_ActiveOffer_Checked(object sender, RoutedEventArgs e)
+        {
+            if (tgl_ActiveOffer.IsFocused)
+            {
+                #region Accept
+                if (cb_vendor.SelectedIndex != -1)
+                {
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trApproveOrderNotification");
+
+                    w.ShowDialog();
+                    if (!w.isOk)
+                    {
+                        tgl_ActiveOffer.IsChecked = false;
+                        _InvoiceType = "pod";
+                    }
+                    else
+                    {
+                        _InvoiceType = "po";
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
+                    }
+                    MainWindow.mainWindow.Opacity = 1;
+
+                }
+                #endregion
+                else
+                {
+                    tgl_ActiveOffer.IsChecked = false;
+                    exp_vendor.IsExpanded = true;
+                    SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trEmptyVendorToolTip");
+                }
+            }
+        }
+        private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _InvoiceType = "pod";
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+        }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
             try
@@ -862,7 +922,7 @@ namespace POS.View.purchases
                         bool valid = validateInvoiceValues();
                         if (valid)
                         {
-                            await addInvoice("po"); // po means purchase order
+                        await addInvoice(_InvoiceType); // po: purchase order
 
                             clearInvoice();
                         }
@@ -904,6 +964,7 @@ namespace POS.View.purchases
                 if (billDetails.Count > 0 && valid)
                 {
                     await addInvoice(_InvoiceType);
+                    refreshDraftNotification();
                 }
                 else if (billDetails.Count == 0)
                 {
@@ -938,7 +999,10 @@ namespace POS.View.purchases
             md_docImage.Badge = "";
             isFromReport = false;
             archived = false;
+            tgl_ActiveOffer.IsChecked = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+
             refrishBillDetails();
             inputEditable();
             btn_next.Visibility = Visibility.Collapsed;
@@ -975,7 +1039,7 @@ namespace POS.View.purchases
                         isFromReport = false;
                         archived = false;
                         // notifications
-                        refreshDraftNotification();
+                        refreshNotification();
                         refreshDocCount(invoice.invoiceId);
                         await fillInvoiceInputs(invoice);
 
@@ -1044,13 +1108,16 @@ namespace POS.View.purchases
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_vendor.SelectedValue = invoice.agentId;
             tb_note.Text = invoice.notes;
+            if (invoice.isApproved == 1)
+                tgl_ActiveOffer.IsChecked = true;
+            else
+                tgl_ActiveOffer.IsChecked = false;
             await buildInvoiceDetails();
             inputEditable();
         }
 
         private async Task buildInvoiceDetails()
         {
-
             //get invoice items
             invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
             // build invoice details grid
@@ -1078,8 +1145,6 @@ namespace POS.View.purchases
                 invType = invoice.invType,
                 });
             }
-
-            //tb_count.Text = _Count.ToString();
             tb_total.Text = _Count.ToString();
 
             tb_barcode.Focus();
@@ -1096,6 +1161,7 @@ namespace POS.View.purchases
                 cb_vendor.IsEnabled = true;
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
+                tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
             else if (_InvoiceType == "po" || archived) // purchase order
@@ -1106,7 +1172,8 @@ namespace POS.View.purchases
                 cb_vendor.IsEnabled = true;
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = false;
-                btn_save.IsEnabled = true;
+                tgl_ActiveOffer.IsEnabled = false;
+                btn_save.IsEnabled = false;
             }
             if (_InvoiceType.Equals("po"))
             {
@@ -2355,5 +2422,7 @@ namespace POS.View.purchases
         {
             _IsFocused = true;
         }
+
+       
     }
 }

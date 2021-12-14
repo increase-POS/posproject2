@@ -394,6 +394,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to approve the order?.
+        /// </summary>
+        internal static string trApproveOrderNotification {
+            get {
+                return ResourceManager.GetString("trApproveOrderNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to approve the quotation?.
         /// </summary>
         internal static string trApproveQuotationNotification {

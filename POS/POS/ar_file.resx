@@ -2824,4 +2824,7 @@
   <data name="trItemLocationCollect" xml:space="preserve">
     <value>عنصر, موقع, تجميع...</value>
   </data>
+  <data name="trApproveOrderNotification" xml:space="preserve">
+    <value>هل تريد تأكيد الطلبية؟</value>
+  </data>
 </root>

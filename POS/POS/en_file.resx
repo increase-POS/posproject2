@@ -2839,4 +2839,7 @@ Please add Email in setting</value>
   <data name="trItemLocationCollect" xml:space="preserve">
     <value>Item, Location, Collect...</value>
   </data>
+  <data name="trApproveOrderNotification" xml:space="preserve">
+    <value>Do you want to approve the order?</value>
+  </data>
 </root>

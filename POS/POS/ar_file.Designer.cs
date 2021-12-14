@@ -394,6 +394,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to هل تريد تأكيد الطلبية؟.
+        /// </summary>
+        internal static string trApproveOrderNotification {
+            get {
+                return ResourceManager.GetString("trApproveOrderNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هل تريد تأكيد عرض السعر؟.
         /// </summary>
         internal static string trApproveQuotationNotification {

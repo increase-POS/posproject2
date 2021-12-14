@@ -97,9 +97,7 @@ namespace POS.View
         List<ItemTransfer> mainInvoiceItems;
         Pos pos = new Pos();
         Card cardModel = new Card();
-        IEnumerable<Card> cards;
-        //  Bill bill;
-        private static DispatcherTimer timer;
+        IEnumerable<Card> cards;       
         CashTransfer cashTransfer = new CashTransfer();
         #region //to handle barcode characters
         static private int _SelectedBranch = -1;
@@ -114,9 +112,12 @@ namespace POS.View
         bool _IsFocused = false;
         #endregion
         #region for notifications
+        private static DispatcherTimer timer;
         int _DraftCount =0;
         int _InvCount =0;
+        int _DocCount = 0;
         int _OrderCount =0;
+        int _PaymentCount =0;
 
         #endregion
         CatigoriesAndItemsView catigoriesAndItemsView = new CatigoriesAndItemsView();
@@ -755,15 +756,10 @@ namespace POS.View
             if (invoice != null && (invoice.invType == "pd" || invoice.invType == "pbd") && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
-            //int previouseCount = 0;
-            //if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
-
             if (draftCount != _DraftCount)
             {
                 if (draftCount > 9)
-                {
                     md_draft.Badge = "+9" ;
-                }
                 else if (draftCount == 0) md_draft.Badge = "";
                 else
                     md_draft.Badge = draftCount.ToString();
@@ -777,9 +773,6 @@ namespace POS.View
             int invCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if (invoice != null && (invoice.invType == "p" || invoice.invType == "pb" || invoice.invType == "pbw" || invoice.invType == "pw") && !isFromReport)
                 invCount--;
-
-            //int previouseCount = 0;
-            //if (md_invoices.Badge != null && md_invoices.Badge.ToString() != "") previouseCount = int.Parse(md_invoices.Badge.ToString());
 
             if (invCount != _InvCount)
             {
@@ -799,9 +792,6 @@ namespace POS.View
             int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
             if (invoice != null && _InvoiceType == "po" && invoice != null && invoice.invoiceId != 0)
                 ordersCount--;
-
-            //int previouseCount = 0;
-            //if (md_orders.Badge != null && md_orders.Badge.ToString() != "") previouseCount = int.Parse(md_orders.Badge.ToString());
 
             if (ordersCount != _OrderCount)
             {
@@ -829,21 +819,16 @@ namespace POS.View
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
-            int previouseCount = 0;
-            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
-
-            if (docCount != previouseCount)
+            if (docCount != _DocCount)
             {
                 if (docCount > 9)
-                {
-                    docCount = 9;
-                    md_docImage.Badge = "+" + docCount.ToString();
-                }
+                    md_docImage.Badge = "+9" ;
                 else if (docCount == 0) md_docImage.Badge = "";
 
                 else
                     md_docImage.Badge = docCount.ToString();
             }
+            _DocCount = docCount;
         }
         private async void refreshPaymentsNotification(int invoiceId)
         {
@@ -857,21 +842,16 @@ namespace POS.View
             {
                 bdr_payments.Visibility = Visibility.Visible;
                 md_payments.Visibility = Visibility.Visible;
-                int previouseCount = 0;
-                if (md_payments.Badge != null && md_payments.Badge.ToString() != "") previouseCount = int.Parse(md_payments.Badge.ToString());
-
-                if (paymentsCount != previouseCount)
+                if (paymentsCount != _PaymentCount)
                 {
                     if (paymentsCount > 9)
-                    {
-                        paymentsCount = 9;
-                        md_payments.Badge = "+" + paymentsCount.ToString();
-                    }
+                        md_payments.Badge = "+9";
                     else if (paymentsCount == 0) md_payments.Badge = "";
 
                     else
                         md_payments.Badge = paymentsCount.ToString();
                 }
+                _PaymentCount = paymentsCount;
             }
         }
         #endregion
@@ -1778,7 +1758,6 @@ namespace POS.View
                             mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
-
                         }
                     }
                 }
@@ -1859,6 +1838,7 @@ namespace POS.View
                 // purchase orders
                 string invoiceType = "po";
                 w.invoiceType = invoiceType;
+                w.condition = "orders";
                 w.branchCreatorId = MainWindow.branchID.Value;
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
