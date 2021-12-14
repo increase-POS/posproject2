@@ -100,10 +100,12 @@
                     </materialDesign:Badged>
 
                     <Border Grid.Column="3"  Background="White"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
-                    <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" 
+                      BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  Name="md_order">
+                        <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_orders"  Click="Btn_orders_Click" >
-                        <StackPanel>
-                            <Path Fill="#4E4E4E" Stretch="Fill"  
+                            <StackPanel>
+                                <Path Fill="#4E4E4E" Stretch="Fill"  
                            Width="30" Height="30"  FlowDirection="LeftToRight"
                            Data="M22.6,18.9h93.3c6.1,0,5.8,2.5,5.2,8.8l-3.5,44.2c-0.6,7.1-0.1,5.3-7.6,6.4L41.5,87l3.6,10.5
 	c29.8,0,44.2,0,73.9,0c1,3.7,2.4,9.8,3.4,14h-12.3l-1.2-4.3c-24.8,0-34.3,0-59.1,0c-13.5-0.2-12.2,3.4-15.4-8.3L11.2,14.4H0V6.3
@@ -119,12 +121,12 @@
 	C71.6,143.8,71.6,143.8,71.6,143.8C71.6,143.8,71.6,143.8,71.6,143.8C71.6,143.8,71.6,143.8,71.6,143.8
 	C71.6,143.8,71.6,143.8,71.6,143.8z M143.2,71.9C143.2,71.9,143.2,71.9,143.2,71.9C143.2,71.9,143.2,71.9,143.2,71.9
 	C143.2,71.9,143.3,71.9,143.2,71.9C143.3,71.9,143.2,71.9,143.2,71.9z"  />
-                            <TextBlock Text="orders" x:Name="txt_orders" Foreground="#178DD2" 
+                                <TextBlock Text="orders" x:Name="txt_orders" Foreground="#178DD2" 
                                            FontWeight="Regular" FontSize="8" TextAlignment="Center" Width="35"
                                            HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                   
+                            </StackPanel>
+                        </Button>
+                    </materialDesign:Badged>
                     <Border Grid.Column="3"  Background="White"  Margin="7.5,10"   CornerRadius="0,0,0,0"  Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
                     <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Margin="5,10,5,0" Height="auto"
                     Background="{x:Null}" x:Name="btn_submitOrder"  Click="Btn_submitOrder_Click" Visibility="Collapsed">
@@ -626,8 +628,18 @@
                         </Grid>
                             </Expander>
                             <!--#endregion-->
-
+                        <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                        <StackPanel Orientation="Horizontal" Grid.Row="3"  Margin="5,0,0,0">
+                            <TextBlock  x:Name="txt_isApproved"
+                               Margin="5,5,15,5" Text="Ready" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                                  FontSize="12"/>
+                            <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"   IsChecked="False"
+                                 VerticalAlignment="Center" Padding="10,15,5,5"
+                                 Margin="0" Height="13" Width="28" Checked="Tgl_ActiveOffer_Checked"
+                                   Unchecked="Tgl_ActiveOffer_Unchecked" />
                         </StackPanel>
+                    </StackPanel>
                     </ScrollViewer>
 
                 </Border>

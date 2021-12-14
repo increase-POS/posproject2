@@ -116,9 +116,9 @@ namespace POS.View.windows
                 translat();
                 #endregion
                 dg_Invoice.Columns[0].Visibility = Visibility.Collapsed;
-                #region hide Total column in grid if invoice is import/export order
+                #region hide Total column in grid if invoice is import/export order/purchase order
 
-                string[] invTypeArray = new string[] { "imd" ,"exd","im","ex" ,"exw" };
+                string[] invTypeArray = new string[] { "imd" ,"exd","im","ex" ,"exw","pod","po" };
                 var impExpTypes = invTypeArray.ToList();
                 List<string> invTypeL = invoiceType.Split(',').ToList();
                 var inCommen = invTypeL.Any(s => impExpTypes.Contains(s));

@@ -2827,4 +2827,10 @@
   <data name="trApproveOrderNotification" xml:space="preserve">
     <value>هل تريد تأكيد الطلبية؟</value>
   </data>
+  <data name="trApprove" xml:space="preserve">
+    <value>موافقة</value>
+  </data>
+  <data name="trApproved" xml:space="preserve">
+    <value>مصادق</value>
+  </data>
 </root>

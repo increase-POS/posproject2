@@ -93,7 +93,13 @@ namespace POS.View.sales
         List<User> users;
         public List<Control> controls;
         Notification notification = new Notification();
+        #region for notifications
         private static DispatcherTimer timer;
+        int _DraftCount = 0;
+        int _OrdersCount = 0;
+        int _OrdersWaitCount = 0;
+        int _DocCount = 0;
+        #endregion
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
         static private int _SelectedCompany = -1;
@@ -154,17 +160,16 @@ namespace POS.View.sales
             //dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
 
-            //txt_discountCoupon.Text = MainWindow.resourcemanager.GetString("trDiscount");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
-            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_store.Text = MainWindow.resourcemanager.GetString("trStore/Branch");
             txt_coupon.Text = MainWindow.resourcemanager.GetString("trCoupon");
             txt_customer.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_delivery.Text = MainWindow.resourcemanager.GetString("trDelivery");
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
+            txt_isApproved.Text = MainWindow.resourcemanager.GetString("trReady");
 
             txt_waitConfirmUser.Text = MainWindow.resourcemanager.GetString("trWaiting");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
@@ -189,7 +194,7 @@ namespace POS.View.sales
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         #region loading
         List<keyValueBool> loadingList;
@@ -504,8 +509,9 @@ namespace POS.View.sales
         #region notifications
         private async void setNotifications()
         {
-            await refreshDraftNotification();
-            await refreshOrdersWaitNotification();
+            refreshDraftNotification();
+            refreshOrdersNotification();
+            refreshOrdersWaitNotification();
         }
         private async Task refreshDraftNotification()
         {
@@ -515,20 +521,37 @@ namespace POS.View.sales
             if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
-            int previouseCount = 0;
-            if ( md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
-
-            if (draftCount != previouseCount)
+            if (draftCount != _DraftCount)
             {
                 if (draftCount > 9)
                 {
-                    draftCount = 9;
-                    md_draft.Badge = "+" + draftCount.ToString();
+                    md_draft.Badge = "+9" ;
                 }
                 else if (draftCount == 0) md_draft.Badge = "";
                 else
                     md_draft.Badge = draftCount.ToString();
             }
+            _DraftCount = draftCount;
+        }
+        private async Task refreshOrdersNotification()
+        {
+            string invoiceType = "or";
+            int duration = 1;
+            int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
+                orderCount--;
+
+            if (orderCount != _OrdersCount)
+            {
+                if (orderCount > 9)
+                {
+                    md_order.Badge = "+9" ;
+                }
+                else if (orderCount == 0) md_order.Badge = "";
+                else
+                    md_order.Badge = orderCount.ToString();
+            }
+            _OrdersCount = orderCount;
         }
         private async Task refreshOrdersWaitNotification()
         {
@@ -537,40 +560,34 @@ namespace POS.View.sales
             if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
                 ordersCount--;
 
-            int previouseCount = 0;
-            if (md_ordersWait.Badge != null && md_ordersWait.Badge.ToString() != "") previouseCount = int.Parse(md_ordersWait.Badge.ToString());
-
-            if (ordersCount != previouseCount)
+            if (ordersCount != _OrdersWaitCount)
             {
                 if (ordersCount > 9)
                 {
-                    ordersCount = 9;
-                    md_ordersWait.Badge = "+" + ordersCount.ToString();
+                    md_ordersWait.Badge = "+9" ;
                 }
                 else if (ordersCount == 0) md_ordersWait.Badge = "";
                 else
                     md_ordersWait.Badge = ordersCount.ToString();
             }
+            _OrdersWaitCount = ordersCount;
         }       
         private async Task refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
-            int previouseCount = 0;
-            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
-
-            if (docCount != previouseCount)
+            if (docCount != _DocCount)
             {
                 if (docCount > 9)
                 {
-                    docCount = 9;
-                    md_docImage.Badge = "+" + docCount.ToString();
+                    md_docImage.Badge = "+9" ;
                 }
                 else if (docCount == 0) md_docImage.Badge = "";
                 else
                     md_docImage.Badge = docCount.ToString();
             }
+            _DocCount = docCount;
         }
 
         #endregion
@@ -955,6 +972,7 @@ namespace POS.View.sales
             archived = false;
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             refrishBillDetails();
             tb_barcode.Focus();
@@ -979,7 +997,7 @@ namespace POS.View.sales
                     cb_user.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
-                    //tb_discountCoupon.IsEnabled = true;
+                    tgl_ActiveOffer.IsEnabled = true;
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
@@ -996,7 +1014,7 @@ namespace POS.View.sales
                     cb_user.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                    //tb_discountCoupon.IsEnabled = false;
+                    tgl_ActiveOffer.IsEnabled = false;
                     btn_save.IsEnabled = false;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
@@ -1013,7 +1031,7 @@ namespace POS.View.sales
                     cb_user.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
-                   // tb_discountCoupon.IsEnabled = false;
+                    tgl_ActiveOffer.IsEnabled = false;
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
@@ -1123,7 +1141,15 @@ namespace POS.View.sales
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
-            // build invoice NUM like storCode_PI_sequence exp: 123_PI_2
+            if(invType == "or" || invType == "ord")
+            {
+                byte isApproved = 0;
+                if (tgl_ActiveOffer.IsChecked == true)
+                    isApproved = 1;
+                else
+                    isApproved = 0;
+                invoice.isApproved = isApproved;
+            }
             
             // save invoice in DB
             int invoiceId = await invoiceModel.saveInvoice(invoice);
@@ -1302,9 +1328,11 @@ namespace POS.View.sales
 
             if (firstTimeForDatagrid)
             {
+                dg_billDetails.IsEnabled = false;
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
+                dg_billDetails.IsEnabled = true;
             }
             DataGrid_CollectionChanged(dg_billDetails, null);
             //tb_sum.Text = _Sum.ToString();
@@ -2162,20 +2190,17 @@ SectionData.isAdminPermision())
                 {
                     //check mandatory inputs
                     bool valid =  validateInvoiceValues();
-                    //Boolean available = true;
-                    // if (_InvoiceType == "ord") // draft order
-                    //available = await checkItemsAmounts();
                     if (valid)
                     {
                         if (_InvoiceType == "s")
                         {
                             await saveOrderStatus(invoice.invoiceId, "tr");
                             clearInvoice();
-                             refreshOrdersWaitNotification();
+                            refreshOrdersWaitNotification();
                         }
                         else
                         {
-                            await addInvoice("or");//quontation invoice                            
+                            await addInvoice(_InvoiceType);//quontation invoice                            
                             #region notification Object
                             Notification not = new Notification()
                             {
@@ -2188,7 +2213,8 @@ SectionData.isAdminPermision())
                             await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", MainWindow.userLogin.name);
                             #endregion
                             clearInvoice();
-                            await refreshDraftNotification();
+                            refreshDraftNotification();
+                            refreshOrdersNotification();
                         }                        
                     }
                 }
@@ -2810,7 +2836,8 @@ SectionData.isAdminPermision())
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
 
                             clearInvoice();
-                            await refreshDraftNotification();
+                            refreshDraftNotification();
+                            refreshOrdersNotification();
                         }
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -2941,6 +2968,109 @@ SectionData.isAdminPermision())
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private async void Tgl_ActiveOffer_Checked(object sender, RoutedEventArgs e)
+        {
+            if (tgl_ActiveOffer.IsFocused)
+            {
+                #region Accept
+                if (cb_customer.SelectedIndex != -1 && billDetails.Count > 0)
+                {
+                    bool ready = await checkOrderReady();
+                    if (ready)
+                    {
+                        MainWindow.mainWindow.Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trApproveOrderNotification");
+
+                        w.ShowDialog();
+                        if (!w.isOk)
+                        {
+                            tgl_ActiveOffer.IsChecked = false;
+                            _InvoiceType = "ord";
+                        }
+                        else
+                        {
+                            _InvoiceType = "or";
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
+                        }
+                        MainWindow.mainWindow.Opacity = 1;
+
+                    }
+                    else
+                    {
+                        tgl_ActiveOffer.IsChecked = false;
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                #endregion
+                else if (billDetails.Count == 0)
+                {
+                    tgl_ActiveOffer.IsChecked = false;
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
+                }
+                else if (cb_customer.SelectedIndex == -1)
+                {
+                    tgl_ActiveOffer.IsChecked = false;
+                    exp_customer.IsExpanded = true;
+                    SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
+                }
+               
+            }
+        }
+
+        private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _InvoiceType = "ord";
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+        }
+        private async Task<bool> checkOrderReady()
+        {
+            foreach(BillDetails item in billDetails)
+            {
+                int availableAmount = await getAvailableAmount(item.itemId, item.itemUnitId, MainWindow.branchID.Value, item.ID);
+                if (availableAmount < item.Count)
+                    return false;
+            }
+            return true;
+        }
+        private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
+        {
+            // var itemUnits = await itemUnitModel.GetItemUnits(itemId);
+            var itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
+            int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
+            var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
+            foreach (Item u in itemUnits)
+            {
+                var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)u.itemUnitId && x.ID != ID); // unit exist in invoice
+                if (isInBill != null)
+                {
+                    var isSmall = smallUnits.Find(x => x.itemUnitId == (int)u.itemUnitId);
+                    int unitValue = 0;
+
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == u.itemUnitId).FirstOrDefault());
+                    int quantity = billDetails[index].Count;
+                    if (itemUnitId == u.itemUnitId)
+                    { }
+                    else if (isSmall != null) // from-unit is bigger than to-unit
+                    {
+                        unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, (int)u.itemUnitId);
+                        quantity = quantity / unitValue;
+                    }
+                    else
+                    {
+                        unitValue = await itemUnitModel.smallToLargeUnit(itemUnitId, (int)u.itemUnitId);
+
+                        if (unitValue != 0)
+                        {
+                            quantity = quantity * unitValue;
+                        }
+                    }
+                    availableAmount -= quantity;
+                }
+            }
+            return availableAmount;
         }
     }
 }

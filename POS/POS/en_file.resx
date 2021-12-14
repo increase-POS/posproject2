@@ -2842,4 +2842,10 @@ Please add Email in setting</value>
   <data name="trApproveOrderNotification" xml:space="preserve">
     <value>Do you want to approve the order?</value>
   </data>
+  <data name="trApprove" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="trApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
 </root>

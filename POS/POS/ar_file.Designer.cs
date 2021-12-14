@@ -394,6 +394,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to موافقة.
+        /// </summary>
+        internal static string trApprove {
+            get {
+                return ResourceManager.GetString("trApprove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مصادق.
+        /// </summary>
+        internal static string trApproved {
+            get {
+                return ResourceManager.GetString("trApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هل تريد تأكيد الطلبية؟.
         /// </summary>
         internal static string trApproveOrderNotification {

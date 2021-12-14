@@ -157,7 +157,7 @@ namespace POS.View.sales
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
             txt_quotations.Text = MainWindow.resourcemanager.GetString("trQuotations");
-            //txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            txt_isApproved.Text = MainWindow.resourcemanager.GetString("trApprove");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
