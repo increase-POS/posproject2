@@ -2893,7 +2893,7 @@ namespace POS.View
                     await RefrishCategoriesCard();
 
 
-                    category.categoryId = int.Parse(b.Tag.ToString());
+                    //category.categoryId = int.Parse(b.Tag.ToString());
 
                 }
                 await RefrishItems();
@@ -2917,7 +2917,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                category.categoryId = 0;
+                //category.categoryId = 0;
                 categoryParentId = 0;
                 await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
