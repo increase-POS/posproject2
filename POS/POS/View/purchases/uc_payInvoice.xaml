@@ -843,7 +843,7 @@
                                         Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="#f8f8f8"
                                         Grid.Column="1"  Height="40"    Margin="5,5" 
                                         PreviewKeyUp="Dp_date_PreviewKeyUp"          />
-                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 
