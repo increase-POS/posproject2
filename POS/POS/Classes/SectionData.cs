@@ -1451,5 +1451,27 @@ namespace POS.Classes
             textBlock.Text = firstTitle + " / " + secondTitle;
 
         }
+
+        /// <summary>
+        /// badged name , previous count, new count
+        /// </summary>
+        /// <param name="badged">badged name</param>
+        /// <param name="_count">previous count</param>
+        /// <param name="count">new count</param>
+        static public void refreshNotification(Badged badged, ref int _count, int count)
+        {
+            if (count != _count)
+            {
+                if (count > 9)
+                {
+                    badged.Badge = "+9";
+                }
+                else if (count == 0) badged.Badge = "";
+                else
+                    badged.Badge = count.ToString();
+            }
+            _count = count;
+        }
+
     }
 }
