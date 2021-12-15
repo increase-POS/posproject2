@@ -92,6 +92,22 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<int> CanLogIn(int userId,int posId)
+        {
+            int items =0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("posId", posId.ToString());
+            parameters.Add("userId", userId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("Users/CanLogIn", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items=int.Parse(c.Value);
+                }
+            }
+            return items;
+        }
         public async Task<List<User>> GetActiveForAccount(string payType)
         {
             List<User> items = new List<User>();
