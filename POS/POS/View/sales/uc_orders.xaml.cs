@@ -538,7 +538,7 @@ namespace POS.View.sales
             string invoiceType = "or";
             int duration = 1;
             int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && _InvoiceType == "or"  && invoice.invoiceId != 0 && !isFromReport)
                 orderCount--;
 
             if (orderCount != _OrdersCount)
@@ -1181,7 +1181,8 @@ namespace POS.View.sales
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
                 //await itemLocationModel.reserveItems(invoiceItems,invoiceId, MainWindow.branchID.Value, MainWindow.userID.Value);
-                await itemLocationModel.reserveItems(invoiceItems,invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
+                if(invType == "or")
+                    await itemLocationModel.reserveItems(invoiceItems,invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
                 // save order status
                 await saveOrderStatus(invoiceId, "pr");
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -2993,6 +2994,7 @@ SectionData.isAdminPermision())
                         else
                         {
                             _InvoiceType = "or";
+                            ///lock grid
                             btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
                         }
                         MainWindow.mainWindow.Opacity = 1;
@@ -3023,6 +3025,8 @@ SectionData.isAdminPermision())
         private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
         {
             _InvoiceType = "ord";
+            ///unlock grid
+
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private async Task<bool> checkOrderReady()
