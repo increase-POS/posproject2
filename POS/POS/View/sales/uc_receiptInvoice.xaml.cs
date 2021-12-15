@@ -1811,12 +1811,28 @@ namespace POS.View
                 bool valid = validateItemUnits();
                 if (billDetails.Count > 0 && available && valid)
                 {
-                    await addInvoice(_InvoiceType);
-                    // await refreshDraftNotification();
-                    await clearInvoice();
-                    setNotifications();
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+                    // w.contentText = "Do you want save pay invoice in drafts?";
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        await addInvoice(_InvoiceType);
+                        // await refreshDraftNotification();
+                        await clearInvoice();
+                        setNotifications();
+                    }
+                    else
+                    {
+                       await clearInvoice();
+                    }
                 }
-                else if (billDetails.Count == 0)
+                //else if (billDetails.Count == 0)
+                else
                 {
                     _InvoiceType = "sd";
                     await clearInvoice();
@@ -2260,8 +2276,7 @@ namespace POS.View
                             _InvoiceType = "sbd";
                             invoice = w.invoice;
                             _invoiceId = invoice.invoiceId;
-                            isFromReport = false;
-                            archived = false;
+                           
                             await fillInvoiceInputs(invoice);
                             if (w.condition == "admin")
                                 invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
@@ -2278,8 +2293,13 @@ namespace POS.View
                             //txt_total.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
 
                             md_payments.Badge = "";
+                            #region refresh notification
+                            isFromReport = true;
+                            archived = false;
                             setNotifications();
-                            await refreshDocCount(invoice.invoiceId);
+                            refreshDocCount(invoice.invoiceId);
+                            #endregion
+
                         }
                     }
                     Window.GetWindow(this).Opacity = 1;

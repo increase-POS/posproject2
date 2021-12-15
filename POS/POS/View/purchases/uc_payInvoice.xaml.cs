@@ -1930,7 +1930,10 @@ namespace POS.View
                     // purchase invoices
                     string invoiceType = "p";
                     w.invoiceType = invoiceType; // invoice type to view in grid
-                    w.condition = "return";
+                    if (SectionData.isAdminPermision())
+                        w.condition = "admin";
+                    else
+                        w.condition = "return";
                     w.userId = MainWindow.userID.Value;
                     if (w.ShowDialog() == true)
                     {
@@ -1938,17 +1941,22 @@ namespace POS.View
                         {
                             _InvoiceType = "pbd";
                             invoice = w.invoice;
-                            _invoiceId = invoice.invoiceId;
+                            _invoiceId = invoice.invoiceId;                           
+                            #region refresh notification
                             isFromReport = false;
                             archived = false;
-                            // notifications
                             setNotifications();
                             refreshPaymentsNotification(_invoiceId);
                             refreshDocCount(invoice.invoiceId);
+                            #endregion
                             md_payments.Badge = "";
 
                             await fillInvoiceInputs(invoice);
-                            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
+                            //invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
+                            if (w.condition == "admin")
+                                invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
+                            else
+                                invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
                             navigateBtnActivate();
                             mainInvoiceItems = invoiceItems;
 

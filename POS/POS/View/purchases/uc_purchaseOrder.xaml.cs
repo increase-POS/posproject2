@@ -150,15 +150,14 @@ namespace POS.View.purchases
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
-            txt_drafts.Text = MainWindow.resourcemanager.GetString("trOrders");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
-            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trApproved");
+            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_emailMessage.Text = MainWindow.resourcemanager.GetString("trSendEmail");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_pdf.Text = MainWindow.resourcemanager.GetString("trPdfBtn");
             txt_printInvoice.Text = MainWindow.resourcemanager.GetString("trPrint");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
-            txt_isApproved.Text = MainWindow.resourcemanager.GetString("trApprove");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
