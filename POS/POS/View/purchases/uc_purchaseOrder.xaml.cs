@@ -150,9 +150,9 @@ namespace POS.View.purchases
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
-            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
-            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trOrders");
+            txt_purchaseOrder.Text = MainWindow.resourcemanager.GetString("trReady");
             txt_emailMessage.Text = MainWindow.resourcemanager.GetString("trSendEmail");
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_pdf.Text = MainWindow.resourcemanager.GetString("trPdfBtn");
@@ -903,12 +903,36 @@ namespace POS.View.purchases
                     exp_vendor.IsExpanded = true;
                     SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trEmptyVendorToolTip");
                 }
+
+
+                if (tgl_ActiveOffer.IsChecked == true)
+                {
+                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                }
+                else
+                {
+                    dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                }
+                refrishBillDetails();
             }
         }
         private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
         {
             _InvoiceType = "pod";
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            if (tgl_ActiveOffer.IsChecked == true)
+            {
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+            }
+            else
+            {
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+            }
+            refrishBillDetails();
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
@@ -1164,7 +1188,7 @@ namespace POS.View.purchases
                 tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
-            else if (_InvoiceType == "po" || archived) // purchase order
+            else if (_InvoiceType == "po" || archived ) // purchase order
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
@@ -1654,7 +1678,8 @@ namespace POS.View.purchases
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (billDetails[0].invType == "po")
+                if (billDetails[0].invType == "po" ||
+                  tgl_ActiveOffer.IsChecked == true)
                     cmb.IsEnabled = false;
                 else
                     cmb.IsEnabled = true;
@@ -1674,7 +1699,8 @@ namespace POS.View.purchases
                 if (dg_billDetails.SelectedIndex != -1 && cmb.SelectedValue != null)
                 {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                    if (billDetails[dg_billDetails.SelectedIndex].invType == "po")
+                    if (billDetails[dg_billDetails.SelectedIndex].invType == "po" ||
+                  tgl_ActiveOffer.IsChecked == true)
                         cmb.IsEnabled = false;
                     else
                         cmb.IsEnabled = true;
@@ -1713,7 +1739,8 @@ namespace POS.View.purchases
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (item.invType == "po"  )
+                                if (item.invType == "po" ||
+                  tgl_ActiveOffer.IsChecked == true)
                                     combo.IsEnabled = false;
                                 else
                                     combo.IsEnabled = true;
@@ -1730,13 +1757,15 @@ namespace POS.View.purchases
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            
+
             //if (dg_billDetails.SelectedIndex != -1)
             //    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
             //        e.Cancel = true;
 
-             if (dg_billDetails.SelectedIndex != -1)
-                if (billDetails[dg_billDetails.SelectedIndex].invType == "po"  )
+             
+            if (dg_billDetails.SelectedIndex != -1)
+                if (billDetails[dg_billDetails.SelectedIndex].invType == "po" ||
+                  tgl_ActiveOffer.IsChecked == true)
                     e.Cancel = true;
         }
 

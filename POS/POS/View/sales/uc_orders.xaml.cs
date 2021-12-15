@@ -176,8 +176,8 @@ namespace POS.View.sales
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_invoiceImages.Text = MainWindow.resourcemanager.GetString("trImages");
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
-            txt_orders.Text = MainWindow.resourcemanager.GetString("trOrders");
-            txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
+            txt_orders.Text = MainWindow.resourcemanager.GetString("trReady");
+            txt_drafts.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
             txt_submitOrder.Text = MainWindow.resourcemanager.GetString("trReserve");
 
@@ -520,18 +520,18 @@ namespace POS.View.sales
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
-
-            if (draftCount != _DraftCount)
-            {
-                if (draftCount > 9)
-                {
-                    md_draft.Badge = "+9" ;
-                }
-                else if (draftCount == 0) md_draft.Badge = "";
-                else
-                    md_draft.Badge = draftCount.ToString();
-            }
-            _DraftCount = draftCount;
+            SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);
+            //if (draftCount != _DraftCount)
+            //{
+            //    if (draftCount > 9)
+            //    {
+            //        md_draft.Badge = "+9" ;
+            //    }
+            //    else if (draftCount == 0) md_draft.Badge = "";
+            //    else
+            //        md_draft.Badge = draftCount.ToString();
+            //}
+            //_DraftCount = draftCount;
         }
         private async Task refreshOrdersNotification()
         {
@@ -1888,6 +1888,12 @@ namespace POS.View.sales
 
                 if (dg_billDetails.SelectedIndex != -1 && cmb != null)
                 {
+                    billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+                    if (  tgl_ActiveOffer.IsChecked == true)
+                        cmb.IsEnabled = false;
+                    else
+                        cmb.IsEnabled = true;
+
                     int _datagridSelectedIndex = dg_billDetails.SelectedIndex;
                     billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
 
@@ -1976,7 +1982,12 @@ namespace POS.View.sales
                 {
                     var cmb = sender as ComboBox;
                     cmb.SelectedValue = (int)billDetails[0].itemUnitId;
-                } 
+                    if (  tgl_ActiveOffer.IsChecked == true)
+                        cmb.IsEnabled = false;
+                    else
+                        cmb.IsEnabled = true;
+
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2015,6 +2026,10 @@ namespace POS.View.sales
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
+                                if ( tgl_ActiveOffer.IsChecked == true)
+                                    combo.IsEnabled = false;
+                                else
+                                    combo.IsEnabled = true;
                             }
                         }
                     }
@@ -2029,6 +2044,13 @@ namespace POS.View.sales
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+
+            if (dg_billDetails.SelectedIndex != -1)
+                if ( tgl_ActiveOffer.IsChecked == true)
+                    e.Cancel = true;
         }
         private   void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -3020,14 +3042,36 @@ SectionData.isAdminPermision())
                 }
                
             }
+
+            if (tgl_ActiveOffer.IsChecked == true)
+            {
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+            }
+            else
+            {
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+            }
+            refrishBillDetails();
         }
 
         private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
         {
             _InvoiceType = "ord";
-            ///unlock grid
-
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+
+            if (tgl_ActiveOffer.IsChecked == true)
+            {
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+            }
+            else
+            {
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+            }
+            refrishBillDetails();
         }
         private async Task<bool> checkOrderReady()
         {
@@ -3076,5 +3120,7 @@ SectionData.isAdminPermision())
             }
             return availableAmount;
         }
+
+      
     }
 }

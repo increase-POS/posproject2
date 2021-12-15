@@ -500,9 +500,15 @@ namespace POS.View
                 #region Permision
 
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    bdr_returnInvoice.Visibility = Visibility.Visible;
                     btn_returnInvoice.Visibility = Visibility.Visible;
+                }
                 else
+                {
+                    bdr_returnInvoice.Visibility = Visibility.Collapsed;
                     btn_returnInvoice.Visibility = Visibility.Collapsed;
+                }
 
                 //if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
                 //{

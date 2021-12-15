@@ -426,9 +426,15 @@ namespace POS.View
                     md_orders.Visibility = Visibility.Collapsed;
 
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
+                {
+                    bdr_returnInvoice.Visibility = Visibility.Visible;
                     btn_returnInvoice.Visibility = Visibility.Visible;
+                }
                 else
+                {
+                    bdr_returnInvoice.Visibility = Visibility.Collapsed;
                     btn_returnInvoice.Visibility = Visibility.Collapsed;
+                }
 
                 //if (MainWindow.groupObject.HasPermissionAction(paymentsPermission, MainWindow.groupObjects, "one"))
                 //{
