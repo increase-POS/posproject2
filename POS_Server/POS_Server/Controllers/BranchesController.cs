@@ -76,7 +76,7 @@ namespace POS_Server.Controllers
                                 var parentBrancheL = entity.branches.Where(x => x.parentId == branchId).Select(x => new { x.branchId }).FirstOrDefault();
                                 var posL = entity.pos.Where(x => x.branchId == branchId).Select(b => new { b.posId }).FirstOrDefault();
                                 // var locationsL = entity.locations.Where(x => x.branchId == branchId).Select(x => new { x.locationId }).FirstOrDefault();
-                               // var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
+                                // var usersL = entity.branchesUsers.Where(x => x.branchId == branchId).Select(x => new { x.branchsUsersId }).FirstOrDefault();
                                 if ((parentBrancheL is null) && (posL is null))
                                     canDelete = true;
                             }
@@ -508,11 +508,11 @@ namespace POS_Server.Controllers
                         userId = int.Parse(c.Value);
                     }
                 }
-               
+
                 List<branches> List = new List<branches>();
-               
-                List= BrListByBranchandUser( mainBranchId,  userId);
-                
+
+                List = BrListByBranchandUser(mainBranchId, userId);
+
                 return TokenManager.GenerateToken(List);
             }
         }
@@ -578,7 +578,7 @@ namespace POS_Server.Controllers
         public List<BranchModel> BranchesByBranch(int mainBranchId)
         {
             // List<branches> blist = new List<branches>();
-
+         
             using (incposdbEntities entity = new incposdbEntities())
             {
                 List<BranchModel> List = (from S in entity.branchStore
@@ -586,7 +586,7 @@ namespace POS_Server.Controllers
                                           join BB in entity.branches on S.storeId equals BB.branchId into JSB
                                           from JBBR in JBB.DefaultIfEmpty()
                                           from JSBB in JSB.DefaultIfEmpty()
-                                          where S.branchId == mainBranchId
+                                          where S.branchId == mainBranchId 
 
                                           select new BranchModel
                                           {
@@ -614,34 +614,34 @@ namespace POS_Server.Controllers
                                           }).ToList();
 
                 List<BranchModel> Listmain = (from B in entity.branches
-                                          
-                                          where B.branchId == mainBranchId
 
-                                          select new BranchModel
-                                          {
+                                              where B.branchId == mainBranchId
+
+                                              select new BranchModel
+                                              {
 
 
-                                              //  isActive = S.isActive,
+                                                  //  isActive = S.isActive,
 
-                                              //store
-                                              branchId = B.branchId,//
-                                              code = B.code,//
-                                              name = B.name,//
-                                              address = B.address,//
-                                              email = B.email,//
-                                              phone = B.phone,//
-                                              mobile = B.mobile,//
-                                              createDate = B.createDate,//
-                                              updateDate = B.updateDate,//
-                                              createUserId = B.createUserId,//
-                                              updateUserId = B.updateUserId,//
-                                              notes = B.notes,//
-                                              parentId = B.parentId,//
-                                              isActive = B.isActive,//
-                                              type = B.type,//
+                                                  //store
+                                                  branchId = B.branchId,//
+                                                  code = B.code,//
+                                                  name = B.name,//
+                                                  address = B.address,//
+                                                  email = B.email,//
+                                                  phone = B.phone,//
+                                                  mobile = B.mobile,//
+                                                  createDate = B.createDate,//
+                                                  updateDate = B.updateDate,//
+                                                  createUserId = B.createUserId,//
+                                                  updateUserId = B.updateUserId,//
+                                                  notes = B.notes,//
+                                                  parentId = B.parentId,//
+                                                  isActive = B.isActive,//
+                                                  type = B.type,//
 
-                                          }).ToList();
-
+                                              }).ToList();
+              
                 List.AddRange(Listmain);
                 return List;
 
@@ -690,17 +690,33 @@ namespace POS_Server.Controllers
         {
             List<BranchModel> Listb = new List<BranchModel>();
             List<BranchModel> Listu = new List<BranchModel>();
-            List<BranchModel> Lists= new List<BranchModel>();
+            List<BranchModel> Lists = new List<BranchModel>();
+            List<int > brIds = new List<int>();
+            List<int> usrIds = new List<int>();
+            List<int> intersectIds = new List<int>();
+
             List<branches> List = new List<branches>();
             Listb = BranchesByBranch(mainBranchId);
-            Listu = BranchesByUser(userId);
             Lists = BranchSonsbyId(mainBranchId);
-            List = Listb.Union(Listu).ToList().Union(Lists).GroupBy(X => X.branchId).Select(X => new branches
-            
 
+            Listu = BranchesByUser(userId);
+
+            Listb = Listb.Union(Lists).ToList();
+            brIds = Listb.Select(b => b.branchId).ToList();
+            usrIds = Listu.Select(b => b.branchId).ToList();
+
+            int id = 0;
+            foreach(int rowid in usrIds)
+            {
+                id = 0;
+                id = brIds.Where(x=>x==rowid).FirstOrDefault();
+
+                intersectIds.Add(id);
+            }
+
+            List = Listu.Where(x=> intersectIds.Contains(x.branchId)).GroupBy(X => X.branchId).Select(X => new branches
             {
                 branchId = X.FirstOrDefault().branchId,
-
                 code = X.FirstOrDefault().code,
                 name = X.FirstOrDefault().name,
                 address = X.FirstOrDefault().address,
@@ -722,6 +738,44 @@ namespace POS_Server.Controllers
 
 
         }
+
+        //public List<branches> BrUnionByBranchandUser(int mainBranchId, int userId)
+        //{
+        //    List<BranchModel> Listb = new List<BranchModel>();
+        //    List<BranchModel> Listu = new List<BranchModel>();
+        //    List<BranchModel> Lists = new List<BranchModel>();
+        //    List<branches> List = new List<branches>();
+        //    Listb = BranchesByBranch(mainBranchId);
+        //    Listu = BranchesByUser(userId);
+        //    Lists = BranchSonsbyId(mainBranchId);
+        //    List = Listb.Union(Listu).ToList().Union(Lists).GroupBy(X => X.branchId).Select(X => new branches
+
+
+        //    {
+        //        branchId = X.FirstOrDefault().branchId,
+
+        //        code = X.FirstOrDefault().code,
+        //        name = X.FirstOrDefault().name,
+        //        address = X.FirstOrDefault().address,
+        //        email = X.FirstOrDefault().email,
+        //        phone = X.FirstOrDefault().phone,
+        //        mobile = X.FirstOrDefault().mobile,
+        //        createDate = X.FirstOrDefault().createDate,
+        //        updateDate = X.FirstOrDefault().updateDate,
+        //        createUserId = X.FirstOrDefault().createUserId,
+        //        updateUserId = X.FirstOrDefault().updateUserId,
+        //        notes = X.FirstOrDefault().notes,
+        //        parentId = X.FirstOrDefault().parentId,
+        //        isActive = X.FirstOrDefault().isActive,
+        //        type = X.FirstOrDefault().type,
+
+        //    }).ToList();
+
+        //    return List;
+
+
+        //}
+
 
         // add or update branch
         [HttpPost]
@@ -875,7 +929,7 @@ namespace POS_Server.Controllers
 
                             return TokenManager.GenerateToken(message);
                         }
-                        catch 
+                        catch
                         {
                             return TokenManager.GenerateToken("0");
                         }
@@ -936,77 +990,77 @@ namespace POS_Server.Controllers
                                             //else
                                             //{
 
-                                                var item = (from L in entity.locations
-                                                            join IL in entity.itemsLocations on L.locationId equals IL.locationId
-                                                            join B in entity.branches on L.branchId equals B.branchId
+                                            var item = (from L in entity.locations
+                                                        join IL in entity.itemsLocations on L.locationId equals IL.locationId
+                                                        join B in entity.branches on L.branchId equals B.branchId
 
-                                                            where B.branchId == branchId
-                                                            select new
-                                                            {
-                                                                // branch
-                                                                IL.itemsLocId,
+                                                        where B.branchId == branchId
+                                                        select new
+                                                        {
+                                                            // branch
+                                                            IL.itemsLocId,
 
-                                                            }).FirstOrDefault();
-                                                if (item != null)
+                                                        }).FirstOrDefault();
+                                            if (item != null)
+                                            {
+
+                                                isdel = false;
+                                            }
+                                            else
+                                            {
+
+                                                // delete
+                                                try
                                                 {
+                                                    //var res1 = entity.branchesUsers.1
+                                                    //res1 = entity.branchStore.2
+                                                    //    var res2 = entity.branchStore3
+                                                    // res1 = entity.sysEmails.Where
 
-                                                    isdel = false;
+
+                                                    var tmploc = entity.locations.Where(p => p.branchId == branchId);
+                                                    entity.locations.RemoveRange(tmploc);
+                                                    message = entity.SaveChanges().ToString();
+
+                                                    var tmpsections = entity.sections.Where(p => p.branchId == branchId);
+
+                                                    entity.sections.RemoveRange(tmpsections);
+                                                    message = entity.SaveChanges().ToString();
+
+
+
+
+                                                    var tmpbranchesUsers = entity.branchesUsers.Where(p => p.branchId == branchId);
+                                                    entity.branchesUsers.RemoveRange(tmpbranchesUsers);
+                                                    message = entity.SaveChanges().ToString();
+
+                                                    var tmpbranchStore = entity.branchStore.Where(p => p.branchId == branchId);
+                                                    entity.branchStore.RemoveRange(tmpbranchStore);
+                                                    message = entity.SaveChanges().ToString();
+
+                                                    var tmpbranchStore1 = entity.branchStore.Where(p => p.storeId == branchId);
+                                                    entity.branchStore.RemoveRange(tmpbranchStore1);
+                                                    message = entity.SaveChanges().ToString();
+
+                                                    var tmpsysEmails = entity.sysEmails.Where(p => p.branchId == branchId);
+                                                    entity.sysEmails.RemoveRange(tmpsysEmails);
+                                                    message = entity.SaveChanges().ToString();
+
+                                                    var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
+                                                    entity.branches.Remove(tmpBranch);
+                                                    message = entity.SaveChanges().ToString();
+                                                    return TokenManager.GenerateToken(message);
                                                 }
-                                                else
+                                                catch
                                                 {
-
-                                                    // delete
-                                                    try
-                                                    {
-                                                        //var res1 = entity.branchesUsers.1
-                                                        //res1 = entity.branchStore.2
-                                                        //    var res2 = entity.branchStore3
-                                                        // res1 = entity.sysEmails.Where
-
-
-                                                        var tmploc = entity.locations.Where(p => p.branchId == branchId);
-                                                        entity.locations.RemoveRange(tmploc);
-                                                        message = entity.SaveChanges().ToString();
-
-                                                        var tmpsections = entity.sections.Where(p => p.branchId == branchId);
-
-                                                        entity.sections.RemoveRange(tmpsections);
-                                                        message = entity.SaveChanges().ToString();
-
-
-
-
-                                                        var tmpbranchesUsers = entity.branchesUsers.Where(p => p.branchId == branchId);
-                                                        entity.branchesUsers.RemoveRange(tmpbranchesUsers);
-                                                        message = entity.SaveChanges().ToString();
-
-                                                        var tmpbranchStore = entity.branchStore.Where(p => p.branchId == branchId);
-                                                        entity.branchStore.RemoveRange(tmpbranchStore);
-                                                        message = entity.SaveChanges().ToString();
-
-                                                        var tmpbranchStore1 = entity.branchStore.Where(p => p.storeId == branchId);
-                                                        entity.branchStore.RemoveRange(tmpbranchStore1);
-                                                        message = entity.SaveChanges().ToString();
-
-                                                        var tmpsysEmails = entity.sysEmails.Where(p => p.branchId == branchId);
-                                                        entity.sysEmails.RemoveRange(tmpsysEmails);
-                                                        message = entity.SaveChanges().ToString();
-
-                                                        var tmpBranch = entity.branches.Where(p => p.branchId == branchId).First();
-                                                        entity.branches.Remove(tmpBranch);
-                                                        message = entity.SaveChanges().ToString();
-                                                        return TokenManager.GenerateToken(message);
-                                                    }
-                                                    catch 
-                                                    {
-                                                        return TokenManager.GenerateToken("0");
-                                                    }
+                                                    return TokenManager.GenerateToken("0");
                                                 }
-
-
                                             }
 
-                                       
+
+                                        }
+
+
 
                                     }
 
@@ -1063,7 +1117,7 @@ namespace POS_Server.Controllers
 
                 //}
             }
-          
+
         }
 
         List<int> branchIdlist = new List<int>();
@@ -1109,8 +1163,8 @@ namespace POS_Server.Controllers
 
                 }
 
-                List<branches> branchListR= entity.branches.Where(U => catIdlist.Contains(U.branchId)).ToList();
-                List<BranchModel>  branchListreturn = branchListR.Select(b => new BranchModel
+                List<branches> branchListR = entity.branches.Where(U => catIdlist.Contains(U.branchId)).ToList();
+                List<BranchModel> branchListreturn = branchListR.Select(b => new BranchModel
                 {
 
                     branchId = b.branchId,
@@ -1131,12 +1185,12 @@ namespace POS_Server.Controllers
                 }
                 ).ToList();
 
-            
+
                 return branchListreturn;
 
             }
 
-            }
+        }
 
 
     }

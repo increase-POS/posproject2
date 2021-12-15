@@ -28,7 +28,7 @@ namespace POS_Server.Controllers
             token = TokenManager.readToken(HttpContext.Current.Request);
             string type = "";
             Boolean canDelete = false;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -37,7 +37,7 @@ var strP = TokenManager.GetPrincipal(token);
             {
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    var usersList = entity.users.Where(u => u.isActive == 1 && u.userId!=1)
+                    var usersList = entity.users.Where(u => u.isActive == 1 && u.userId != 1)
                     .Select(u => new UserModel
                     {
                         userId = u.userId,
@@ -62,7 +62,7 @@ var strP = TokenManager.GetPrincipal(token);
                         image = u.image,
                         balance = u.balance,
                         balanceType = u.balanceType,
-                        isAdmin= u.isAdmin,
+                        isAdmin = u.isAdmin,
                     })
                     .ToList();
 
@@ -248,7 +248,7 @@ var strP = TokenManager.GetPrincipal(token);
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -302,7 +302,7 @@ var strP = TokenManager.GetPrincipal(token);
                             usersList[i].canDelete = canDelete;
                         }
                     }
-                    return TokenManager.GenerateToken(usersList.Where(u =>  u.userId != 1));
+                    return TokenManager.GenerateToken(usersList.Where(u => u.userId != 1));
                 }
             }
         }
@@ -312,7 +312,7 @@ var strP = TokenManager.GetPrincipal(token);
         public string GetUserByID(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -355,7 +355,7 @@ var strP = TokenManager.GetPrincipal(token);
                        u.isActive,
                        u.balance,
                        u.balanceType,
-                     u.isAdmin,
+                       u.isAdmin,
                    })
                    .FirstOrDefault();
                     return TokenManager.GenerateToken(user);
@@ -425,7 +425,7 @@ var strP = TokenManager.GetPrincipal(token);
         public string GetSalesMan(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -461,7 +461,7 @@ var strP = TokenManager.GetPrincipal(token);
                                          fullName = u.name + " " + u.lastname,
                                          balance = u.balance,
                                          balanceType = u.balanceType,
-                                         isAdmin=  u.isAdmin,
+                                         isAdmin = u.isAdmin,
                                      }).ToList();
 
                     foreach (UserModel user in usersList)
@@ -484,6 +484,8 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
+
         // add or update unit
         [HttpPost]
         [Route("Save")]
@@ -491,7 +493,7 @@ var strP = TokenManager.GetPrincipal(token);
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -530,7 +532,7 @@ var strP = TokenManager.GetPrincipal(token);
                         var catEntity = entity.Set<categoryuser>();
                         if (newObject.userId == 0)
                         {
-                            newObject.isAdmin =false;
+                            newObject.isAdmin = false;
 
                             ProgramInfo programInfo = new ProgramInfo();
                             int userMaxCount = programInfo.getUserCount();
@@ -594,7 +596,7 @@ var strP = TokenManager.GetPrincipal(token);
                             userObj.balance = newObject.balance;
                             userObj.balanceType = newObject.balanceType;
                             userObj.isOnline = newObject.isOnline;
-                            
+
                             entity.SaveChanges().ToString();
                             message = userObj.userId.ToString();
                             return TokenManager.GenerateToken(message);
@@ -602,11 +604,11 @@ var strP = TokenManager.GetPrincipal(token);
                         }
                     }
                 }
-                catch 
+                catch
                 {
                     message = "0";
-                   return TokenManager.GenerateToken(message);
-                   // return TokenManager.GenerateToken(ex.ToString());
+                    return TokenManager.GenerateToken(message);
+                    // return TokenManager.GenerateToken(ex.ToString());
                 }
             }
         }
@@ -616,7 +618,7 @@ var strP = TokenManager.GetPrincipal(token);
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -783,7 +785,7 @@ var strP = TokenManager.GetPrincipal(token);
             string message = "";
             var re = Request;
             var headers = re.Headers;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -824,5 +826,71 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
+
+        [HttpPost]
+        [Route("CanLogIn")]
+        public string CanLogIn(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int posId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
+                List<UserModel> users = new List<UserModel>();
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var usersList = (from bu in entity.branchesUsers
+                                         join B in entity.branches on bu.branchId equals B.branchId
+                                         join P in entity.pos on B.branchId equals P.branchId
+                                         // from u in entity.users.Where(us => us.isActive == 1 || us.userId == 1)
+
+                                         where P.posId == posId && bu.userId == userId
+                                         select new
+                                         {
+                                             bu.branchsUsersId,
+                                             bu.branchId,
+                                             bu.userId,
+                                         }).ToList();
+                        int can = 0;
+                        if(usersList==null|| usersList.Count == 0)
+                        {
+                            can = 0;
+                        }
+                        else
+                        {
+                            can = 1;
+                        }
+
+                        return TokenManager.GenerateToken(can.ToString());
+                    }
+                }
+
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }
+        }
     }
 }
+
