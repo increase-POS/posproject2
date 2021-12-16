@@ -211,9 +211,8 @@ namespace POS.View.windows
                     string password = Md5Encription.MD5Hash("Inc-m" + txtPassword.Password);
                     string userName = txtUserName.Text;
                     //check if user is exist
-                  //  users = await userModel.GetUsersActive();
+                    //  users = await userModel.GetUsersActive();
                     ////////
-                    ///
 
                     user = await userModel.Getloginuser(userName, password);
                    
@@ -239,6 +238,18 @@ namespace POS.View.windows
                             MainWindow.userID = user.userId;
                             MainWindow.userLogin = user;
 
+                            if ( await userModel.CanLogIn(user.userId, MainWindow.posID.Value) == 0 && !SectionData.isAdminPermision() )
+                            {
+                                //can't login to branch
+                                showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trDontPermissionLoginBranch");
+                                showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trDontPermissionLoginBranch");
+                            }
+                            else
+                            {
+
+                            
+
+
                             try
                             {
                                 MainWindow.lang = await getUserLanguage(user.userId);
@@ -252,11 +263,11 @@ namespace POS.View.windows
                             try
                             {
                                 string m = await SectionData.getUserMenuIsOpen(user.userId);
-                            if (!m.Equals("-1"))
-                                MainWindow.menuIsOpen = m;
-                            else
-                                MainWindow.menuIsOpen = "close";
-                            menuIsOpen = MainWindow.menuIsOpen;
+                                if (!m.Equals("-1"))
+                                    MainWindow.menuIsOpen = m;
+                                else
+                                    MainWindow.menuIsOpen = "close";
+                                menuIsOpen = MainWindow.menuIsOpen;
                             }
                             catch
                             {
@@ -270,7 +281,7 @@ namespace POS.View.windows
                             //checkother
                             string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
 
-                            int s =  await userModel.save(user);
+                            int s = await userModel.save(user);
 
                             //create lognin record
                             UsersLogs userLog = new UsersLogs();
@@ -283,7 +294,7 @@ namespace POS.View.windows
                             MainWindow.loginBranch = await branchModel.getBranchById((int)MainWindow.branchID);
 
                             userLog.userId = user.userId;
-                           int str = await userLogsModel.Save(userLog);
+                            int str = await userLogsModel.Save(userLog);
 
                             if (!str.Equals(0))
                                 MainWindow.userLogInID = str;
@@ -310,10 +321,10 @@ namespace POS.View.windows
                             main.Show();
                             this.Close();
                         }
+                        }
 
                     }
 
-                    /////////////////////////////////////
              
                     //awaitSaveBtn(false);
 

@@ -914,14 +914,14 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    Boolean available = true;
-                    bool valid = validateItemUnits();
+                    //Boolean available = true;
+                    //bool valid = validateItemUnits();
 
-                    if (billDetails.Count > 0 && available && valid && _InvoiceType == "ord")
-                    {
-                        await addInvoice(_InvoiceType); 
+                    //if (billDetails.Count > 0 && available && valid && _InvoiceType == "ord")
+                    //{
+                    //    await addInvoice(_InvoiceType); 
                         
-                    }
+                    //}
                     clearInvoice();
                     setNotifications();
                 }
@@ -970,6 +970,12 @@ namespace POS.View.sales
             lst_coupons.Items.Clear();
             isFromReport = false;
             archived = false;
+            sp_approved.Visibility = Visibility.Collapsed;
+            #region print - pdf - send email
+            btn_printInvoice.Visibility = Visibility.Collapsed;
+            btn_pdf.Visibility = Visibility.Collapsed;
+            #endregion
+            tgl_ActiveOffer.IsChecked = false;
             btn_deleteInvoice.Visibility = Visibility.Collapsed;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
@@ -1039,7 +1045,7 @@ namespace POS.View.sales
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
             }
-            if (_InvoiceType.Equals("or"))
+            if (_InvoiceType.Equals("or") || _InvoiceType.Equals("ord"))
             {
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
@@ -1537,6 +1543,7 @@ namespace POS.View.sales
                     string invoiceType = "ord";
                     int duration = 2;
                     // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
+                    clearInvoice();
                     wd_invoice w = new wd_invoice();
 
                     w.invoiceType = invoiceType; //draft order
@@ -1581,6 +1588,12 @@ namespace POS.View.sales
         public async Task fillInvoiceInputs(Invoice invoice)
         {
             txt_invNumber.Text = invoice.invNumber;
+
+            sp_approved.Visibility = Visibility.Visible;
+            #region print - pdf - send email
+            btn_printInvoice.Visibility = Visibility.Visible;
+            btn_pdf.Visibility = Visibility.Visible;
+            #endregion
 
             _Sum = (decimal)invoice.total;
             if (invoice.tax != null)
@@ -1779,7 +1792,8 @@ namespace POS.View.sales
                     string invoiceType = "or";
                     int duration = 1;
                     // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
-                    saveBeforeExit();
+                    clearInvoice();
+                    //saveBeforeExit();
                     wd_invoice w = new wd_invoice();
 
                     // quontations invoices
@@ -1833,7 +1847,8 @@ namespace POS.View.sales
                 {
                     string invoiceType = "s";
                     string invoiceStatus = "ex";
-                    saveBeforeExit();
+                    //saveBeforeExit();
+                    clearInvoice();
                     wd_invoice w = new wd_invoice();
 
                     // quontations invoices
@@ -2211,6 +2226,7 @@ SectionData.isAdminPermision())
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") ||
                         SectionData.isAdminPermision())
                 {
+
                     //check mandatory inputs
                     bool valid =  validateInvoiceValues();
                     if (valid)
@@ -2235,7 +2251,18 @@ SectionData.isAdminPermision())
                             };
                             await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", MainWindow.userLogin.name);
                             #endregion
-                            clearInvoice();
+                            if (_InvoiceType == "ord")
+                            {
+                                sp_approved.Visibility = Visibility.Visible;
+                                #region print - pdf - send email
+                                btn_printInvoice.Visibility = Visibility.Visible;
+                                btn_pdf.Visibility = Visibility.Visible;
+                                #endregion
+                            }
+                            else
+                            {
+                                clearInvoice();
+                            }
                             refreshDraftNotification();
                             refreshOrdersNotification();
                         }                        
@@ -2350,7 +2377,7 @@ SectionData.isAdminPermision())
             }
         }
         
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -2358,7 +2385,8 @@ SectionData.isAdminPermision())
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                saveBeforeExit();
+                //saveBeforeExit();    
+               await clearInvoice();
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -3018,6 +3046,7 @@ SectionData.isAdminPermision())
                             _InvoiceType = "or";
                             ///lock grid
                             btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
+
                         }
                         MainWindow.mainWindow.Opacity = 1;
 
@@ -3045,11 +3074,13 @@ SectionData.isAdminPermision())
 
             if (tgl_ActiveOffer.IsChecked == true)
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
             }
             else
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
             }
@@ -3063,11 +3094,13 @@ SectionData.isAdminPermision())
 
             if (tgl_ActiveOffer.IsChecked == true)
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
             }
             else
             {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
             }

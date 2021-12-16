@@ -6,7 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d"
-          xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         Title="Increase" Height="400"
         Width="700" KeyDown="HandleKeyPress"
         WindowStartupLocation="CenterScreen"
@@ -58,18 +58,26 @@
 
                 <Image FlowDirection="LeftToRight" Source="/pic/increase-logo100.png" Margin="0,0,0,0" Width="100" Height="100"/>
 
-                <DockPanel Grid.Row="1" Margin="0,10,15,0">
+                <DockPanel Grid.Row="1" Margin="0,10,15,0" >
                     <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <materialDesign:PackIcon Kind="Account" Height="25" Width="25" Foreground="Gray" ></materialDesign:PackIcon>
                     </TextBlock>
-                    <TextBox x:Name="txtUserName" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0"  materialDesign:HintAssist.Hint="User Name" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top" Width="160" TextChanged="TxtUserName_TextChanged" LostFocus="TxtUserName_LostFocus"></TextBox>
-                    <Path Fill="#E81123" x:Name="p_errorUserName" Stretch="Fill" Margin="5,5,15,5"
-                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Collapsed"   
+                    <Grid>
+                        <TextBox x:Name="txtUserName" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0"  materialDesign:HintAssist.Hint="User Name" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top" Width="160" TextChanged="TxtUserName_TextChanged" LostFocus="TxtUserName_LostFocus"></TextBox>
+                        <Path Fill="#E81123" x:Name="p_errorUserName" Stretch="Fill" Margin="5,5,5,5"
+                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Visible"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                        <Path.ToolTip>
-                            <ToolTip x:Name="tt_errorUserName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                        </Path.ToolTip>
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorUserName" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                     <Path Fill="#7e7e7e" Grid.Row="2" Stretch="Fill" Margin="5,5,5,5"
+                              HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
+                         VerticalAlignment="Center" Width="20"  Height="15"   
+                              Data="M11,0.5C6,0.5,1.7,3.6,0,8c1.7,4.4,6,7.5,11,7.5s9.3-3.1,11-7.5C20.3,3.6,16,0.5,11,0.5z M11,13
+	c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5S13.8,13,11,13z M11,5C9.3,5,8,6.3,8,8s1.3,3,3,3s3-1.3,3-3S12.7,5,11,5z">
                     </Path>
                 </DockPanel>
                 <DockPanel Grid.Row="2" Margin="0,10,15,0">
@@ -80,7 +88,7 @@
                         <PasswordBox x:Name="txtPassword" Margin="5,0,0,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" materialDesign:HintAssist.Hint="Password" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top" Width="160" LostFocus="TxtPassword_LostFocus" PasswordChanged="TxtPassword_PasswordChanged"></PasswordBox>
                         <TextBox x:Name="txtShowPassword" Visibility="Collapsed" Margin="5,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Width="160"></TextBox>
                         <Path Fill="#E81123" x:Name="p_errorPassword" Stretch="Fill" Margin="5,5,5,5"
-                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Collapsed"   
+                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Visible"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>

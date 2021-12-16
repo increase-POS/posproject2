@@ -644,8 +644,9 @@
                        
                            
                         <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
-                        <StackPanel Orientation="Horizontal" Grid.Row="3"  Margin="5,0,0,0">
-                            <TextBlock  x:Name="txt_isApproved"
+                        <StackPanel x:Name="sp_approved"  Visibility="Collapsed"
+                                    Orientation="Horizontal" Grid.Row="3"  Margin="5,0,0,0">
+                            <TextBlock  x:Name="txt_isApproved" 
                                Margin="5,5,15,5" Text="Ready" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>

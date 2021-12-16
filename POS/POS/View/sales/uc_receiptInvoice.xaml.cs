@@ -545,16 +545,16 @@ namespace POS.View
                 //}
 
 
-                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
-                {
-                    btn_printCount.Visibility = Visibility.Visible;
-                    bdr_printCount.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn_printCount.Visibility = Visibility.Collapsed;
-                    bdr_printCount.Visibility = Visibility.Collapsed;
-                }
+                //if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                //{
+                //    btn_printCount.Visibility = Visibility.Visible;
+                //    bdr_printCount.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    btn_printCount.Visibility = Visibility.Collapsed;
+                //    bdr_printCount.Visibility = Visibility.Collapsed;
+                //}
 
                 #endregion
                 #region print - pdf - send email
@@ -562,6 +562,10 @@ namespace POS.View
                 btn_pdf.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
+                
+                    btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                 
                 #endregion
                 #region tb_total textChange
                 var dp = DependencyPropertyDescriptor.FromProperty(
@@ -2542,6 +2546,16 @@ namespace POS.View
                     btn_emailMessage.Visibility = Visibility.Collapsed;
                     bdr_emailMessage.Visibility = Visibility.Collapsed;
                 }
+                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_printCount.Visibility = Visibility.Visible;
+                    bdr_printCount.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                }
                 #endregion
             }
             else
@@ -2551,7 +2565,12 @@ namespace POS.View
                 btn_pdf.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
+                
+                    btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                 
                 #endregion
+
             }
             if (!isFromReport)
             {
