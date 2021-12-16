@@ -2922,7 +2922,12 @@ namespace POS.View
                 await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
                 //category.categoryId = 0;
-                await RefrishItems();
+                //await RefrishItems();
+                #region 
+                allItems = await itemModel.GetAllItems();
+                items = allItems;
+                items = items.Where(x => x.type != "p" && x.type != "sr").ToList();
+                #endregion
                 Txb_searchitems_TextChanged(null, null);
 
                 if (sender != null)

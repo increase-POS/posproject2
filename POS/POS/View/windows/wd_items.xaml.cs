@@ -732,7 +732,7 @@ namespace POS.View.windows
                     await RefrishCategoriesCard();
 
 
-                    category.categoryId = int.Parse(b.Tag.ToString());
+                    //category.categoryId = int.Parse(b.Tag.ToString());
 
                 }
             
@@ -758,8 +758,40 @@ namespace POS.View.windows
                 categoryParentId = 0;
                 await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
-                category.categoryId = 0;
-                await RefrishItems();
+                //category.categoryId = 0;
+                //await RefrishItems();
+                #region
+                short defaultSale = 0;
+                short defaultPurchase = 0;
+                int branchId = MainWindow.branchID.Value;
+                selectedItems = new List<int>();
+                if (CardType.Equals("sales"))
+                {
+                    defaultSale = 1;
+                    defaultPurchase = 0;
+                }
+                else if (CardType.Equals("purchase"))
+                {
+                    defaultPurchase = 1;
+                    defaultSale = 0;
+                }
+                else if (CardType.Equals("order"))
+                {
+                    defaultPurchase = 0;
+                    defaultSale = 0;
+                }
+                else if (CardType.Equals("movement"))
+                {
+                    defaultPurchase = -1;
+                    defaultSale = -1;
+                }
+                items = await itemModel.GetSaleOrPurItems(0, defaultSale, defaultPurchase, branchId);
+                MainWindow.InvoiceGlobalItemsList = items.ToList();
+                if (defaultSale == 1)
+                    MainWindow.InvoiceGlobalSaleUnitsList = await itemUnitModel.GetForSale();
+                else
+                    MainWindow.InvoiceGlobalItemUnitsList = await itemUnitModel.Getall();
+                #endregion
                 Txb_searchitems_TextChanged(null, null);
 
                 if (sender != null)
