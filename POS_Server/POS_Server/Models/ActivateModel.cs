@@ -45,6 +45,10 @@ namespace POS_Server.Models
         public bool islimitDate { get; set; }
         public Nullable<bool> isOnlineServer { get; set; }
         public string customerServerCode { get; set; }
+        public int monthCount { get; set; }
+        public bool canRenew { get; set; }
+        public bool isBooked { get; set; }
+
 
 
     }

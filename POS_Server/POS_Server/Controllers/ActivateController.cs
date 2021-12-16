@@ -113,8 +113,10 @@ namespace POS_Server.Controllers
 
                             tmpObject.packageSaleCode = newObject.packageSaleCode;
                             tmpObject.customerServerCode = newObject.customerServerCode;// from function
+
                             tmpObject.expireDate = newObject.endDate;
                             tmpObject.isOnlineServer = newObject.isOnlineServer;
+
                             // tmpObject.packageNumber = newObject.packageCode;
 
 
@@ -387,6 +389,132 @@ namespace POS_Server.Controllers
 
         }
 
-      
+        int count = 0;
+        void t_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                int message = 0;
+            
+                ProgramDetails tmpObject = new ProgramDetails();
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var locationEntity = entity.Set<ProgramDetails>();
+
+                  
+                    tmpObject = entity.ProgramDetails.FirstOrDefault();
+
+                    if (tmpObject != null)
+                    {
+                        tmpObject.updateDate = DateTime.Now;
+                        count++;
+                        tmpObject.itemCount = count;
+                    }
+                    else
+                    {
+                        message = -1;
+                    }
+
+                    message = entity.SaveChanges();
+
+                }
+            }
+            catch
+            {
+
+            }
+            }
+
+        public int periodTimer()
+        {
+
+            try
+            {
+                System.Timers.Timer t = new System.Timers.Timer(10000);
+
+                t.Elapsed += new System.Timers.ElapsedEventHandler(t_Elapsed);
+
+                t.Start();
+
+                return 1;
+
+                /*
+                 *Global.asax.cs  add next code in  protected void Application_Start()
+           //  ActivateController us = new ActivateController();
+          //  int s = 0;
+          //s=  us.periodTimer();
+                 * */
+            }
+
+            catch
+            {
+                return 0;
+            }
+        }
+
+        [HttpPost]
+        [Route("CheckPeriod")]
+        public string CheckPeriod(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int res = CheckPeriod();
+                return TokenManager.GenerateToken(res.ToString());
+
+            }
+        }
+
+        public int CheckPeriod()
+        {
+            ProgramDetails tmpObject;
+            // 1 :  time not end-
+            //  0 : time is end 
+            
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var locationEntity = entity.Set<ProgramDetails>();
+                    tmpObject = entity.ProgramDetails.FirstOrDefault();
+                    if (tmpObject != null)
+                    {
+                        if (tmpObject.isLimitDate == false)
+                        {
+                            return 1;
+                        }
+                        else
+                        {// limited
+                            if (tmpObject.expireDate <= DateTime.Now || tmpObject.expireDate==null)
+                            {
+                                return 0;
+                            }
+                            else
+                            {
+                                return 1;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
+
+            }
+            catch
+            {
+
+                return -1;
+
+            }
+
+        }
+
     }
 }
