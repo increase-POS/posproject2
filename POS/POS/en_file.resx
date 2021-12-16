@@ -2848,4 +2848,7 @@ Please add Email in setting</value>
   <data name="trApproved" xml:space="preserve">
     <value>Approved</value>
   </data>
+  <data name="trDontPermissionLoginBranch" xml:space="preserve">
+    <value>you don't have permission login this branch</value>
+  </data>
 </root>

@@ -1969,6 +1969,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to you don&apos;t have permission login this branch.
+        /// </summary>
+        internal static string trDontPermissionLoginBranch {
+            get {
+                return ResourceManager.GetString("trDontPermissionLoginBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Draft.
         /// </summary>
         internal static string trDraft {
