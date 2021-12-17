@@ -836,7 +836,7 @@ namespace POS_Server.Controllers
                                 branchMaxCount = programInfo.getStroeCount();
                                 branchesCount = entity.branches.Where(x => x.type == "s").Count();
                             }
-                            if (branchesCount >= branchMaxCount)
+                            if (branchesCount >= branchMaxCount && branchMaxCount != -1)
                             {
                                 message = "-1";
                                 return TokenManager.GenerateToken(message);

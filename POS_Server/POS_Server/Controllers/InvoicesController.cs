@@ -13,6 +13,7 @@ using POS_Server.Models.VM;
 using System.Security.Claims;
 using Newtonsoft.Json.Converters;
 using System.Web;
+using POS_Server.Classes;
 
 namespace POS_Server.Controllers
 {
@@ -2309,19 +2310,45 @@ var strP = TokenManager.GetPrincipal(token);
                         var invoiceEntity = entity.Set<invoices>();
                         if (newObject.invoiceId == 0)
                         {
-                            if (newObject.cashReturn == null)
-                                newObject.cashReturn = 0;
-                            newObject.invDate = DateTime.Now;
-                            newObject.invTime = DateTime.Now.TimeOfDay;
-                            newObject.updateDate = DateTime.Now;
-                            newObject.updateUserId = newObject.createUserId;
-                            newObject.isActive = true;
-                            newObject.isOrginal = true;
-                            tmpInvoice = invoiceEntity.Add(newObject);
-                            entity.SaveChanges();
-                            message = tmpInvoice.invoiceId.ToString();
+                            if (newObject.invType == "s")
+                            {
+                                ProgramInfo programInfo = new ProgramInfo();
+                                int invMaxCount = programInfo.getSaleinvCount();
+                                int salesInvCount = entity.invoices.Where(x => x.invType == "s").Count();
+                                if (salesInvCount >= invMaxCount && invMaxCount != -1)
+                                {
+                                    message = "-1";
+                                }
+                                else
+                                {
+                                    if (newObject.cashReturn == null)
+                                        newObject.cashReturn = 0;
+                                    newObject.invDate = DateTime.Now;
+                                    newObject.invTime = DateTime.Now.TimeOfDay;
+                                    newObject.updateDate = DateTime.Now;
+                                    newObject.updateUserId = newObject.createUserId;
+                                    newObject.isActive = true;
+                                    newObject.isOrginal = true;
+                                    tmpInvoice = invoiceEntity.Add(newObject);
+                                    entity.SaveChanges();
+                                    message = tmpInvoice.invoiceId.ToString();
+                                }
+                            }
+                            else
+                            {
+                                if (newObject.cashReturn == null)
+                                    newObject.cashReturn = 0;
+                                newObject.invDate = DateTime.Now;
+                                newObject.invTime = DateTime.Now.TimeOfDay;
+                                newObject.updateDate = DateTime.Now;
+                                newObject.updateUserId = newObject.createUserId;
+                                newObject.isActive = true;
+                                newObject.isOrginal = true;
+                                tmpInvoice = invoiceEntity.Add(newObject);
+                                entity.SaveChanges();
+                                message = tmpInvoice.invoiceId.ToString();
+                            }
                             return TokenManager.GenerateToken(message);
-
                         }
                         else
                         {

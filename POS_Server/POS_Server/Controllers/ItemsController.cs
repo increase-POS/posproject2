@@ -1613,9 +1613,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);            
+            token = TokenManager.readToken(HttpContext.Current.Request);            
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1673,10 +1673,9 @@ var strP = TokenManager.GetPrincipal(token);
                                 ProgramInfo programInfo = new ProgramInfo();
                                 int itemMaxCount = programInfo.getItemCount();
                                 int itemsCount = entity.items.Count();
-                                if (itemsCount >= itemMaxCount)
+                                if (itemsCount >= itemMaxCount && itemMaxCount != -1)
                                 {
                                     message = "-1";
-                                    //return Ok(-1);
                                 }
                                 else
                                 {

@@ -537,7 +537,7 @@ namespace POS_Server.Controllers
                             ProgramInfo programInfo = new ProgramInfo();
                             int userMaxCount = programInfo.getUserCount();
                             int usersCount = entity.users.Count();
-                            if (usersCount >= userMaxCount)
+                            if (usersCount >= userMaxCount && userMaxCount != -1)
                             {
                                 message = "-1";
                                 return TokenManager.GenerateToken(message);

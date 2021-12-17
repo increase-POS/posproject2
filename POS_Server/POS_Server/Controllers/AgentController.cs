@@ -286,7 +286,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenMana
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
@@ -324,10 +324,10 @@ token = TokenManager.readToken(HttpContext.Current.Request);
                                 agentMaxCount = programInfo.getVendorCount();
 
                             int agentCount = entity.agents.Where(x => x.type == agentObj.type).Count();
-                            if (agentCount >= agentMaxCount)
+                            if (agentCount >= agentMaxCount && agentMaxCount != -1)
                             {
                                 message = "-1";
-                    return TokenManager.GenerateToken(message);
+                                return TokenManager.GenerateToken(message);
                             }
                             else
                             {
