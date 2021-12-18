@@ -51,6 +51,7 @@ namespace POS.View.windows
         public string invoiceStatus { get; set; }
         public string title { get; set; }
         public string condition { get; set; }
+        public bool fromOrder = false;
         public int duration { get; set; }
         private void Btn_select_Click(object sender, RoutedEventArgs e)
         {
@@ -119,30 +120,39 @@ namespace POS.View.windows
                 #region hide Total column in grid if invoice is import/export order/purchase order
 
                 string[] invTypeArray = new string[] { "imd" ,"exd","im","ex" ,"exw","pod","po" };
-                var impExpTypes = invTypeArray.ToList();
+                var invTypes = invTypeArray.ToList();
                 List<string> invTypeL = invoiceType.Split(',').ToList();
-                var inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
+                var inCommen = invTypeL.Any(s => invTypes.Contains(s));
                 if(inCommen)
-                    dg_Invoice.Columns[5].Visibility = Visibility.Collapsed; //make total column unvisible
+                    col_total.Visibility = Visibility.Collapsed; //make total column unvisible
                 #endregion
                 #region hide delete column in grid if invoice type not in invTypeArray
-                invTypeArray = new string[] { "or", "q", "po" };
-                var orderTypes = invTypeArray.ToList();
-               invTypeL = invoiceType.Split(',').ToList();
-                inCommen = invTypeL.Any(s => orderTypes.Contains(s));
+                //invTypeArray = new string[] { "or", "q", "po" };
+                //var orderTypes = invTypeArray.ToList();
+               //invTypeL = invoiceType.Split(',').ToList();
+                //inCommen = invTypeL.Any(s => orderTypes.Contains(s));
                 //if (inCommen)
                 //    dg_Invoice.Columns[0].Visibility = Visibility.Visible; //make total column unvisible
                 #endregion
-                #region display branch & user columns in grid if invoice is sales order
+                #region display branch & user columns in grid if invoice is sales order and purchase orders
                 invTypeArray = new string[] { "or" };
-                impExpTypes = invTypeArray.ToList();
+                invTypes = invTypeArray.ToList();
                 invTypeL = invoiceType.Split(',').ToList();
-                inCommen = invTypeL.Any(s => impExpTypes.Contains(s));
+                inCommen = invTypeL.Any(s => invTypes.Contains(s));
                 if (inCommen)
                 {
-                    dg_Invoice.Columns[2].Visibility = Visibility.Visible; //make branch column visible
-                    dg_Invoice.Columns[3].Visibility = Visibility.Visible; //make user column visible
-                    dg_Invoice.Columns[7].Visibility = Visibility.Visible; //make user column visible
+                    col_branch.Visibility = Visibility.Visible; //make branch column visible
+                    col_user.Visibility = Visibility.Visible; //make user column visible
+                    //dg_Invoice.Columns[7].Visibility = Visibility.Visible; //make user column visible
+                }
+                #endregion
+                #region display branch, vendor & user columns in grid if invoice is  purchase orders
+                if (invoiceType == "po" && fromOrder == false)
+                {
+                    col_branch.Visibility = Visibility.Visible; //make branch column visible
+                    col_user.Visibility = Visibility.Visible; //make user column visible
+                    col_agent.Visibility = Visibility.Visible;
+                    //dg_Invoice.Columns[7].Visibility = Visibility.Visible; //make user column visible
                 }
                 #endregion
                 await refreshInvoices();
@@ -163,18 +173,13 @@ namespace POS.View.windows
             //txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
-            //dg_Invoice.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
-            //dg_Invoice.Columns[1].Header = MainWindow.resourcemanager.GetString("trBranch");
-            //dg_Invoice.Columns[2].Header = MainWindow.resourcemanager.GetString("trUser");
-            //dg_Invoice.Columns[3].Header = MainWindow.resourcemanager.GetString("trQTR");
-            //dg_Invoice.Columns[4].Header = MainWindow.resourcemanager.GetString("trTotal");
-
             col_num.Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_user.Header = MainWindow.resourcemanager.GetString("trUser");
             col_count.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_type.Header = MainWindow.resourcemanager.GetString("trType");
+            col_agent.Header = MainWindow.resourcemanager.GetString("trVendor");
 
             txt_countTitle.Text = MainWindow.resourcemanager.GetString("trCount") + ":";
 
@@ -184,7 +189,7 @@ namespace POS.View.windows
         {
             if (condition == "orders")
             {
-                invoices = await invoice.getUnHandeldOrders(invoiceType,branchCreatorId, branchId);
+                invoices = await invoice.getUnHandeldOrders(invoiceType,branchCreatorId, branchId,duration,userId);
             }
             else if(condition == "return")
                 invoices = await invoice.getInvoicesToReturn(invoiceType, userId);

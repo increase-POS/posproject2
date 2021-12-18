@@ -173,9 +173,7 @@ namespace POS.View.purchases
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
 
-                //saveBeforeExit();    
-                    clearInvoice();
-
+                saveBeforeExit();               
                 timer.Stop();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -235,15 +233,16 @@ namespace POS.View.purchases
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Window.GetWindow(this).Opacity = 0.2;
-                clearInvoice();
-                //saveBeforeExit();
+                saveBeforeExit();
                 wd_invoice w = new wd_invoice();
                 string invoiceType = "po";
                 int duration = 1;
                 w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
+                w.branchCreatorId = MainWindow.loginBranch.branchId;
                 w.duration = duration; // view purchase orders which created during  last one day 
-
+                w.fromOrder = true;
+                w.condition = "orders";
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                 if (w.ShowDialog() == true)
@@ -263,7 +262,7 @@ namespace POS.View.purchases
 
                         mainInvoiceItems = invoiceItems;
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrder");
-                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
+                        invoices = await invoice.getUnHandeldOrders(invoiceType,MainWindow.branchID.Value,0,duration, MainWindow.userID.Value);
                         navigateBtnActivate();
                     }
                 }
@@ -436,16 +435,7 @@ namespace POS.View.purchases
                     bdr_shortageInvoice.Visibility = Visibility.Collapsed;
                     md_shortage.Visibility = Visibility.Collapsed;
                 }
-                if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
-                {
-                    btn_emailMessage.Visibility = Visibility.Visible;
-                    bdr_emailMessage.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn_emailMessage.Visibility = Visibility.Collapsed;
-                    bdr_emailMessage.Visibility = Visibility.Collapsed;
-                }
+
                 #endregion
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
@@ -818,6 +808,7 @@ namespace POS.View.purchases
                 invoice.invNumber = await invoice.generateInvNumber("pod", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             invoice.branchCreatorId = MainWindow.branchID.Value;
+            invoice.branchId = MainWindow.branchID.Value;
             invoice.posId = MainWindow.posID.Value;
 
             invoice.invType = invType;
@@ -862,11 +853,9 @@ namespace POS.View.purchases
             }
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-            if((invType == "pod" && tgl_ActiveOffer.IsChecked == true) || invType == "po")
-            {
-                clearInvoice();
-            }
 
+            clearInvoice();
+       
             return invoiceId;
         }
         private bool validateInvoiceValues()
@@ -906,7 +895,7 @@ namespace POS.View.purchases
                     {
                         _InvoiceType = "po";
                         btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
-                    }
+                    }                  
                     MainWindow.mainWindow.Opacity = 1;
 
                 }
@@ -917,17 +906,15 @@ namespace POS.View.purchases
                     exp_vendor.IsExpanded = true;
                     SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trEmptyVendorToolTip");
                 }
-
+                inputEditable();
 
                 if (tgl_ActiveOffer.IsChecked == true)
                 {
-                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                 }
                 else
                 {
-                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                 }
@@ -940,16 +927,15 @@ namespace POS.View.purchases
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             if (tgl_ActiveOffer.IsChecked == true)
             {
-                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
             }
             else
             {
-                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
             }
+            inputEditable();
             refrishBillDetails();
         }
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
@@ -964,25 +950,10 @@ namespace POS.View.purchases
                         bool valid = validateInvoiceValues();
                         if (valid)
                         {
-                        sp_approved.Visibility = Visibility.Visible;
-                        #region print - pdf - send email
-                        btn_printInvoice.Visibility = Visibility.Visible;
-                        btn_pdf.Visibility = Visibility.Visible;
-                        if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
-                        {
-                            btn_emailMessage.Visibility = Visibility.Visible;
-                            bdr_emailMessage.Visibility = Visibility.Visible;
-                        }
-                        else
-                        {
-                            btn_emailMessage.Visibility = Visibility.Collapsed;
-                            bdr_emailMessage.Visibility = Visibility.Collapsed;
-                        }
-                        #endregion
                         await addInvoice(_InvoiceType); // po: purchase order
-                        //clearInvoice();
-                        refreshDraftNotification();
-                    }
+                        refreshNotification();
+                           // clearInvoice();
+                        }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1017,18 +988,16 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                //bool valid = validateItemUnits();
-                //if (billDetails.Count > 0 && valid)
-                //{
-                //    await addInvoice(_InvoiceType);
-                //    refreshDraftNotification();
-                //}
-                //else if (billDetails.Count == 0)
-                //{
-                //    clearInvoice();
-                //}
-                clearInvoice();
-
+                bool valid = validateItemUnits();
+                if (billDetails.Count > 0 && valid)
+                {
+                    await addInvoice(_InvoiceType);
+                    refreshNotification();
+                }
+                else if (billDetails.Count == 0)
+                {
+                    clearInvoice();
+                }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1059,13 +1028,6 @@ namespace POS.View.purchases
             isFromReport = false;
             archived = false;
             tgl_ActiveOffer.IsChecked = false;
-            sp_approved.Visibility = Visibility.Collapsed;
-            #region print - pdf - send email
-            btn_printInvoice.Visibility = Visibility.Collapsed;
-            btn_pdf.Visibility = Visibility.Collapsed;
-                btn_emailMessage.Visibility = Visibility.Collapsed;
-                bdr_emailMessage.Visibility = Visibility.Collapsed;
-            #endregion
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
@@ -1081,9 +1043,8 @@ namespace POS.View.purchases
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                clearInvoice();
-                //bool res = await saveBeforeExit();
-                //while (!res) { }
+               bool res = await saveBeforeExit();
+                while (!res) { }
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
                 
@@ -1093,7 +1054,7 @@ namespace POS.View.purchases
                 w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
                 w.duration = duration; // view drafts which created during 2 last days 
-
+                w.fromOrder = true;
                 w.title = MainWindow.resourcemanager.GetString("trDrafts");
 
                 if (w.ShowDialog() == true)
@@ -1175,22 +1136,6 @@ namespace POS.View.purchases
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_vendor.SelectedValue = invoice.agentId;
             tb_note.Text = invoice.notes;
-            sp_approved.Visibility = Visibility.Visible;
-            #region print - pdf - send email
-            btn_printInvoice.Visibility = Visibility.Visible;
-            btn_pdf.Visibility = Visibility.Visible;
-            if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
-            {
-                btn_emailMessage.Visibility = Visibility.Visible;
-                bdr_emailMessage.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                btn_emailMessage.Visibility = Visibility.Collapsed;
-                bdr_emailMessage.Visibility = Visibility.Collapsed;
-            }
-            #endregion
-
             if (invoice.isApproved == 1)
                 tgl_ActiveOffer.IsChecked = true;
             else
@@ -1244,21 +1189,35 @@ namespace POS.View.purchases
                 cb_vendor.IsEnabled = true;
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
+                btn_clear.IsEnabled = true;
                 tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
-            else if (_InvoiceType == "po" || archived ) // purchase order
+            else if (_InvoiceType == "po") // purchase order
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
-                cb_vendor.IsEnabled = true;
-                tb_note.IsEnabled = true;
+                cb_vendor.IsEnabled = false;
+                tb_note.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                btn_clear.IsEnabled = false;
+                tgl_ActiveOffer.IsEnabled = true;
+                btn_save.IsEnabled = true;
+            }
+            else if(archived) //come from reports
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                cb_vendor.IsEnabled = false;
+                tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 tgl_ActiveOffer.IsEnabled = false;
+                btn_clear.IsEnabled = false;
                 btn_save.IsEnabled = false;
             }
-            if (_InvoiceType.Equals("po") || _InvoiceType.Equals("pod"))
+            if (_InvoiceType.Equals("po"))
             {
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
@@ -2369,31 +2328,19 @@ namespace POS.View.purchases
             toAgent = vendors.Where(x => x.agentId == invoice.agentId).FirstOrDefault();
             //  int? itemcount = invoiceItems.Count();
             if (email.emailId == 0)
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
-                }));
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoEmailForThisDept"), animation: ToasterAnimation.FadeIn);
             else
             {
                 if (invoice.invoiceId == 0)
-                    this.Dispatcher.Invoke(new Action(() =>
-                    {
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
-                }));
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoOrderToSen"), animation: ToasterAnimation.FadeIn);
                 else
                 {
                     if (invoiceItems == null || invoiceItems.Count() == 0)
-                        this.Dispatcher.Invoke(new Action(() =>
-                        {
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
-                }));
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereIsNoItemsToSend"), animation: ToasterAnimation.FadeIn);
                     else
                     {
                         if (toAgent.email.Trim() == "")
-                            this.Dispatcher.Invoke(new Action(() =>
-                            {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
-                }));
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
                         else
                         {
                             SetValues setvmodel = new SetValues();

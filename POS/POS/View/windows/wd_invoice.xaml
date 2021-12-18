@@ -146,6 +146,7 @@
                             </DataGridTemplateColumn>
                             <DataGridTextColumn x:Name="col_num" Width="3*"  Header="Bill Number" Binding="{Binding Path=invNumber}"/>
                             <DataGridTextColumn x:Name="col_branch" Width="2*"  Header="Branch" Binding="{Binding Path=branchCreatorName}" Visibility="Collapsed"/>
+                            <DataGridTextColumn x:Name="col_agent" Width="2*"  Header="Vendor" Binding="{Binding Path=agentName}" Visibility="Collapsed"/>
                             <DataGridTextColumn x:Name="col_user" Width="2*"  Header="User" Binding="{Binding Path=createrUserName}" Visibility="Collapsed"/>
                             <DataGridTextColumn x:Name="col_count" Width="1.5*"  Header="items count" Binding="{Binding Path=itemsCount}"/>
                             <DataGridTextColumn x:Name="col_total" Width="2*" Header="Total" Binding="{Binding Path =totalNet,Converter={StaticResource accuracyConverter }}"/>
