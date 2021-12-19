@@ -1006,7 +1006,6 @@ namespace POS.View.catalog
                 grid_categoryControlPath.Children.Clear();
                  #region
                 items = await item.GetAllSrItems();
-                //items = items.Where(x => x.type == "sr");
                 #endregion
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
