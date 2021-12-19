@@ -1284,7 +1284,7 @@ var strP = TokenManager.GetPrincipal(token);
                         searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
 
                     if (branchId != 0)
-                        searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId );
+                        searchPredicate = searchPredicate.And(inv => inv.branchId == branchId );
                     if (duration > 0)
                     {
                         DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-duration).ToShortDateString());
@@ -2959,7 +2959,7 @@ var strP = TokenManager.GetPrincipal(token);
                     searchPredicate = searchPredicate.And(inv => inv.branchCreatorId == branchCreatorId && inv.isActive == true && invTypeL.Contains(inv.invType));
 
                 if (branchId != 0)
-                    searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId);
+                    searchPredicate = searchPredicate.And(inv => inv.branchId == branchId);
                 if(userId != 0)
                     searchPredicate = searchPredicate.And(inv => inv.createUserId == userId);
                 var invoicesList = (from b in entity.invoices.Where(searchPredicate)

@@ -141,18 +141,23 @@ namespace POS.View.windows
                 inCommen = invTypeL.Any(s => invTypes.Contains(s));
                 if (inCommen)
                 {
-                    col_branch.Visibility = Visibility.Visible; //make branch column visible
-                    col_user.Visibility = Visibility.Visible; //make user column visible
+                    col_agent.Header = MainWindow.resourcemanager.GetString("trCustomer");                                      
+                    col_agent.Visibility = Visibility.Visible;
+                    if (fromOrder == false)
+                    {
+                        col_branch.Visibility = Visibility.Visible; //make branch column visible
+                        col_user.Visibility = Visibility.Visible; //make user column visible
+                    }
                     //dg_Invoice.Columns[7].Visibility = Visibility.Visible; //make user column visible
                 }
                 #endregion
                 #region display branch, vendor & user columns in grid if invoice is  purchase orders
                 if (invoiceType == "po" && fromOrder == false)
                 {
+                    col_agent.Header = MainWindow.resourcemanager.GetString("trVendor");
                     col_branch.Visibility = Visibility.Visible; //make branch column visible
                     col_user.Visibility = Visibility.Visible; //make user column visible
                     col_agent.Visibility = Visibility.Visible;
-                    //dg_Invoice.Columns[7].Visibility = Visibility.Visible; //make user column visible
                 }
                 #endregion
                 await refreshInvoices();
