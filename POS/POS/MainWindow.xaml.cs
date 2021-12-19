@@ -297,7 +297,6 @@ namespace POS
                 }
             }
         }
-
         async void loading_getPrintCount()
         {
             //get print count
@@ -635,7 +634,7 @@ namespace POS
                 }
             }
         }
-       public static async void loading_GlobalItemUnitsList()
+        async void loading_GlobalItemUnitsList()
         {
             try
             {
@@ -652,7 +651,7 @@ namespace POS
                 }
             }
         }
-       public static async void loading_GlobalUnitsList()
+        async void loading_GlobalUnitsList()
         {
             try
             {
