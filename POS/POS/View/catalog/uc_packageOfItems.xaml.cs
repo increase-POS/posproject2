@@ -1009,8 +1009,10 @@ namespace POS.View
                 categoryParentId = 0;
                 await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
-                category.categoryId = 0;
-                await RefrishItems();
+                #region 
+                items = await packageModel.GetPackages();
+                items = items.Where(x => x.type == "p");
+                #endregion
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
