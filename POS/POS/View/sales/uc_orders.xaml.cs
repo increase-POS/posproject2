@@ -3066,7 +3066,7 @@ namespace POS.View.sales
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
             }
-            refrishBillDetails();
+            refrishDataGridItems();
         }
 
         private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
@@ -3085,7 +3085,7 @@ namespace POS.View.sales
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
             }
             inputEditable();
-            refrishBillDetails();
+            refrishDataGridItems();
         }
         private async Task<bool> checkOrderReady()
         {
