@@ -1004,8 +1004,10 @@ namespace POS.View.catalog
                 categoryParentId = 0;
                 await RefrishCategoriesCard();
                 grid_categoryControlPath.Children.Clear();
-                category.categoryId = 0;
-                await RefrishItems();
+                 #region
+                items = await item.GetAllSrItems();
+                //items = items.Where(x => x.type == "sr");
+                #endregion
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
