@@ -472,16 +472,16 @@ namespace POS.View
                     md_shortage.Visibility = Visibility.Collapsed;
                 }
 
-                //if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
-                //{
-                //    btn_printCount.Visibility = Visibility.Visible;
-                //    bdr_printCount.Visibility = Visibility.Visible;
-                //}
-                //else
-                //{
-                //    btn_printCount.Visibility = Visibility.Collapsed;
-                //    bdr_printCount.Visibility = Visibility.Collapsed;
-                //}
+                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_printCount.Visibility = Visibility.Visible;
+                    bdr_printCount.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                }
 
                 #endregion
                 #region print - pdf - send email
@@ -489,10 +489,6 @@ namespace POS.View
                 btn_pdf.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
-                
-                    btn_printCount.Visibility = Visibility.Collapsed;
-                    bdr_printCount.Visibility = Visibility.Collapsed;
-                 
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -799,7 +795,7 @@ namespace POS.View
         private async Task refreshOrdersNotification()
         {
             string invoiceType = "po";
-            int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, MainWindow.branchID.Value);
+            int ordersCount = await invoice.GetCountUnHandeledOrders(invoiceType,0,0);
             if (invoice != null && _InvoiceType == "po" && invoice != null && invoice.invoiceId != 0)
                 ordersCount--;
 
@@ -1471,7 +1467,8 @@ namespace POS.View
 
                                     clearInvoice();
                                     _InvoiceType = "pd";
-                                    await refreshDraftNotification();
+                                    refreshDraftNotification();
+                                    refreshInvNotification();
                                 }
                             }
 
@@ -1849,7 +1846,7 @@ namespace POS.View
                 string invoiceType = "po";
                 w.invoiceType = invoiceType;
                 w.condition = "orders";
-                w.branchCreatorId = MainWindow.branchID.Value;
+                //w.branchCreatorId = MainWindow.branchID.Value;
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
                 if (w.ShowDialog() == true)
@@ -1871,7 +1868,8 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         await fillInvoiceInputs(invoice);
-                        invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, 0);
+                        invoices = await invoice.getUnHandeldOrders(invoiceType, MainWindow.branchID.Value, 0);
+                        //invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, 0);
                         navigateBtnActivate();
                     }
                 }
@@ -2105,7 +2103,7 @@ namespace POS.View
                 cb_paymentProcessType.IsEnabled = false;
             }
 
-            if (_InvoiceType.Equals("pbw"))
+            if (_InvoiceType.Equals("pb") || _InvoiceType.Equals("p"))
             {
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
@@ -2120,16 +2118,6 @@ namespace POS.View
                     btn_emailMessage.Visibility = Visibility.Collapsed;
                     bdr_emailMessage.Visibility = Visibility.Collapsed;
                 }
-                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
-                {
-                    btn_printCount.Visibility = Visibility.Visible;
-                    bdr_printCount.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn_printCount.Visibility = Visibility.Collapsed;
-                    bdr_printCount.Visibility = Visibility.Collapsed;
-                }
                 #endregion
             }
             else
@@ -2139,10 +2127,6 @@ namespace POS.View
                 btn_pdf.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
-                
-                    btn_printCount.Visibility = Visibility.Collapsed;
-                    bdr_printCount.Visibility = Visibility.Collapsed;
-                 
                 #endregion
             }
             if (!isFromReport)
