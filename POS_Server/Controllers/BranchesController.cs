@@ -649,6 +649,36 @@ namespace POS_Server.Controllers
 
         }
 
+        //2
+        public List<branches> Allbranches()
+        {
+            List<branches> List = new List<branches>();
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                List = entity.branches.ToList();
+                List = List.Where(b => b.branchId != 1).Select(B => new branches
+                {
+                    branchId = B.branchId,//
+                    code = B.code,//
+                    name = B.name,//
+                    address = B.address,//
+                    email = B.email,//
+                    phone = B.phone,//
+                    mobile = B.mobile,//
+                    createDate = B.createDate,//
+                    updateDate = B.updateDate,//
+                    createUserId = B.createUserId,//
+                    updateUserId = B.updateUserId,//
+                    notes = B.notes,//
+                    parentId = B.parentId,//
+                    isActive = B.isActive,//
+                    type = B.type,//
+                }
+                ).ToList();
+
+                return List;
+            }
+        }
 
         public List<BranchModel> BranchesByUser(int userId)
         {
@@ -686,58 +716,96 @@ namespace POS_Server.Controllers
 
         }
 
+        //1
         public List<branches> BrListByBranchandUser(int mainBranchId, int userId)
         {
             List<BranchModel> Listb = new List<BranchModel>();
             List<BranchModel> Listu = new List<BranchModel>();
             List<BranchModel> Lists = new List<BranchModel>();
-            List<int > brIds = new List<int>();
+            List<int> brIds = new List<int>();
             List<int> usrIds = new List<int>();
             List<int> intersectIds = new List<int>();
 
             List<branches> List = new List<branches>();
-            Listb = BranchesByBranch(mainBranchId);
-            Lists = BranchSonsbyId(mainBranchId);
-
-            Listu = BranchesByUser(userId);
-
-            Listb = Listb.Union(Lists).ToList();
-            brIds = Listb.Select(b => b.branchId).ToList();
-            usrIds = Listu.Select(b => b.branchId).ToList();
-
-            int id = 0;
-            foreach(int rowid in usrIds)
+            users thisuser = new users();
+            try
             {
-                id = 0;
-                id = brIds.Where(x=>x==rowid).FirstOrDefault();
 
-                intersectIds.Add(id);
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<users> thisuserL = entity.users.ToList();
+
+                    thisuser = thisuserL.Where(u => u.userId == userId)
+                  .Select(u => new users
+                  {
+                      userId = u.userId,
+
+                      isAdmin = u.isAdmin,
+                  }).FirstOrDefault();
+                }
+
+                if (thisuser.isAdmin == true)
+                {
+                    //admin user return all branches
+                    List = Allbranches();
+                    return List;
+                }
+                else
+                {
+                    Listb = BranchesByBranch(mainBranchId);
+                    Lists = BranchSonsbyId(mainBranchId);
+
+                    Listu = BranchesByUser(userId);
+
+                    Listb = Listb.Union(Lists).ToList();
+                    brIds = Listb.Select(b => b.branchId).ToList();
+                    usrIds = Listu.Select(b => b.branchId).ToList();
+
+                    int id = 0;
+                    foreach (int rowid in usrIds)
+                    {
+                        id = 0;
+                        id = brIds.Where(x => x == rowid).FirstOrDefault();
+
+                        intersectIds.Add(id);
+                    }
+
+                    List = Listu.Where(x => intersectIds.Contains(x.branchId)).GroupBy(X => X.branchId).Select(X => new branches
+                    {
+                        branchId = X.FirstOrDefault().branchId,
+                        code = X.FirstOrDefault().code,
+                        name = X.FirstOrDefault().name,
+                        address = X.FirstOrDefault().address,
+                        email = X.FirstOrDefault().email,
+                        phone = X.FirstOrDefault().phone,
+                        mobile = X.FirstOrDefault().mobile,
+                        createDate = X.FirstOrDefault().createDate,
+                        updateDate = X.FirstOrDefault().updateDate,
+                        createUserId = X.FirstOrDefault().createUserId,
+                        updateUserId = X.FirstOrDefault().updateUserId,
+                        notes = X.FirstOrDefault().notes,
+                        parentId = X.FirstOrDefault().parentId,
+                        isActive = X.FirstOrDefault().isActive,
+                        type = X.FirstOrDefault().type,
+
+                    }).ToList();
+
+                    return List;
+                }
+
+
+            }
+            catch
+            {
+
+                List = new List<branches>();
+                return List;
             }
 
-            List = Listu.Where(x=> intersectIds.Contains(x.branchId)).GroupBy(X => X.branchId).Select(X => new branches
-            {
-                branchId = X.FirstOrDefault().branchId,
-                code = X.FirstOrDefault().code,
-                name = X.FirstOrDefault().name,
-                address = X.FirstOrDefault().address,
-                email = X.FirstOrDefault().email,
-                phone = X.FirstOrDefault().phone,
-                mobile = X.FirstOrDefault().mobile,
-                createDate = X.FirstOrDefault().createDate,
-                updateDate = X.FirstOrDefault().updateDate,
-                createUserId = X.FirstOrDefault().createUserId,
-                updateUserId = X.FirstOrDefault().updateUserId,
-                notes = X.FirstOrDefault().notes,
-                parentId = X.FirstOrDefault().parentId,
-                isActive = X.FirstOrDefault().isActive,
-                type = X.FirstOrDefault().type,
-
-            }).ToList();
-
-            return List;
 
 
         }
+
 
         //public List<branches> BrUnionByBranchandUser(int mainBranchId, int userId)
         //{
