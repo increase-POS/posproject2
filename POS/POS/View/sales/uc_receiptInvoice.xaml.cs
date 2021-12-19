@@ -2441,10 +2441,10 @@ namespace POS.View
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
                     tb_barcode.IsEnabled = true;
-                    if (invoice.status == "ready")
-                        btn_save.IsEnabled = true;
-                    else
-                        btn_save.IsEnabled = false;
+                    //if (invoice.status == "ready")
+                    //    btn_save.IsEnabled = true;
+                    //else
+                    //    btn_save.IsEnabled = false;
                     //bdr_paymentDetails.IsEnabled = true;
                     dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = true;
