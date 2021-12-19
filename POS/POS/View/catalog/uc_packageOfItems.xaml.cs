@@ -724,7 +724,7 @@ namespace POS.View
                 //search
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
-                    //if (items is null)
+                    if (items is null)
                         await RefrishItems();
                     txtItemSearch = txb_searchitems.Text.ToLower();
                     pageIndex = 1;
@@ -1011,7 +1011,7 @@ namespace POS.View
                 grid_categoryControlPath.Children.Clear();
                 #region 
                 items = await packageModel.GetPackages();
-                items = items.Where(x => x.type == "p");
+                //items = items.Where(x => x.type == "p");
                 #endregion
                 Txb_searchitems_TextChanged(null, null);
                 if (sender != null)
