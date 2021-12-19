@@ -1696,8 +1696,7 @@ namespace POS.View.purchases
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (billDetails[0].invType == "po" ||
-                  tgl_ActiveOffer.IsChecked == true)
+                if (    tgl_ActiveOffer.IsChecked == true)
                     cmb.IsEnabled = false;
                 else
                     cmb.IsEnabled = true;
@@ -1717,8 +1716,7 @@ namespace POS.View.purchases
                 if (dg_billDetails.SelectedIndex != -1 && cmb.SelectedValue != null)
                 {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                    if (billDetails[dg_billDetails.SelectedIndex].invType == "po" ||
-                  tgl_ActiveOffer.IsChecked == true)
+                    if (     tgl_ActiveOffer.IsChecked == true)
                         cmb.IsEnabled = false;
                     else
                         cmb.IsEnabled = true;
@@ -1757,8 +1755,7 @@ namespace POS.View.purchases
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (item.invType == "po" ||
-                  tgl_ActiveOffer.IsChecked == true)
+                                if (  tgl_ActiveOffer.IsChecked == true)
                                     combo.IsEnabled = false;
                                 else
                                     combo.IsEnabled = true;
@@ -1782,8 +1779,7 @@ namespace POS.View.purchases
 
              
             if (dg_billDetails.SelectedIndex != -1)
-                if (billDetails[dg_billDetails.SelectedIndex].invType == "po" ||
-                  tgl_ActiveOffer.IsChecked == true)
+                if ( tgl_ActiveOffer.IsChecked == true)
                     e.Cancel = true;
         }
 
