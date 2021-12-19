@@ -1205,13 +1205,14 @@ namespace POS.View
                                     itemUnit.price = price;
                                     itemUnit.barcode = barcode;
                                     itemUnit.createUserId = MainWindow.userID;
+                                    itemUnit.updateUserId = MainWindow.userID;
 
                                   int res = await itemUnit.saveItemUnit(itemUnit);
                                     if (res > 0)
                                     {
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                                        MainWindow.loading_GlobalItemUnitsList();
-                                        MainWindow.loading_GlobalUnitsList();
+                                        MainWindow.GlobalItemUnitsList = await MainWindow.GlobalItemUnit.GetIU();
+                                        MainWindow.GlobalUnitsList = await MainWindow.GlobalUnit.GetU();
                                     }
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
@@ -1318,7 +1319,7 @@ namespace POS.View
                                     itemUnit.defaultPurchase = defaultBurchase;
                                     itemUnit.price = price;
                                     itemUnit.barcode = barcode;
-                                    itemUnit.createUserId = MainWindow.userID;
+                                    itemUnit.updateUserId = MainWindow.userID;
 
                                     int res = await itemUnit.saveItemUnit(itemUnit);
                                     if (res > 0)
