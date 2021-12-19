@@ -1932,46 +1932,64 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     Window.GetWindow(this).Opacity = 0.2;
-                    wd_invoice w = new wd_invoice();
-
-                    w.title = MainWindow.resourcemanager.GetString("trReturn");
-                    // purchase invoices
-                    string invoiceType = "p";
-                    w.invoiceType = invoiceType; // invoice type to view in grid
+                    wd_returnInvoice w = new wd_returnInvoice();
                     if (SectionData.isAdminPermision())
-                        w.condition = "admin";
+                        w.isAdmin = true;
                     else
-                        w.condition = "return";
-                    w.userId = MainWindow.userID.Value;
+                    {
+                        w.isAdmin = false;
+                        w.userId = MainWindow.userID.Value;
+                    }
                     if (w.ShowDialog() == true)
                     {
-                        if (w.invoice != null)
-                        {
-                            _InvoiceType = "pbd";
-                            invoice = w.invoice;
-                            _invoiceId = invoice.invoiceId;                           
-                            #region refresh notification
-                            isFromReport = false;
-                            archived = false;
-                            setNotifications();
-                            refreshPaymentsNotification(_invoiceId);
-                            refreshDocCount(invoice.invoiceId);
-                            #endregion
-                            md_payments.Badge = "";
-
-                            await fillInvoiceInputs(invoice);
-                            //invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
-                            if (w.condition == "admin")
-                                invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
-                            else
-                                invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
-                            navigateBtnActivate();
-                            mainInvoiceItems = invoiceItems;
-
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
-                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
-                        }
+                        _InvoiceType = "pbd";
+                        invoice = w.invoice;
+                        isFromReport = true;
+                        archived = false;
+                        await fillInvoiceInputs(invoice);
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                     }
+                    //wd_invoice w = new wd_invoice();
+
+                    //w.title = MainWindow.resourcemanager.GetString("trReturn");
+                    //// purchase invoices
+                    //string invoiceType = "p";
+                    //w.invoiceType = invoiceType; // invoice type to view in grid
+                    //if (SectionData.isAdminPermision())
+                    //    w.condition = "admin";
+                    //else
+                    //    w.condition = "return";
+                    //w.userId = MainWindow.userID.Value;
+                    //if (w.ShowDialog() == true)
+                    //{
+                    //    if (w.invoice != null)
+                    //    {
+                    //        _InvoiceType = "pbd";
+                    //        invoice = w.invoice;
+                    //        _invoiceId = invoice.invoiceId;                           
+                    //        #region refresh notification
+                    //        isFromReport = false;
+                    //        archived = false;
+                    //        setNotifications();
+                    //        refreshPaymentsNotification(_invoiceId);
+                    //        refreshDocCount(invoice.invoiceId);
+                    //        #endregion
+                    //        md_payments.Badge = "";
+
+                    //        await fillInvoiceInputs(invoice);
+                    //        //invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
+                    //        if (w.condition == "admin")
+                    //            invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
+                    //        else
+                    //            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value, MainWindow.branchID.Value);
+                    //        navigateBtnActivate();
+                    //        mainInvoiceItems = invoiceItems;
+
+                    //        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                    //        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                    //    }
+                    //}
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else
@@ -2041,6 +2059,7 @@ namespace POS.View
                 btn_save.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
+
             }
             else if (_InvoiceType == "pbd") // return invoice
             {
@@ -2061,8 +2080,11 @@ namespace POS.View
                 tb_taxValue.IsEnabled = false;
                 btn_items.IsEnabled = false;
                 cb_paymentProcessType.IsEnabled = true;
+                btn_clear.IsEnabled = true;
+                btn_updateVendor.IsEnabled = true;
+                btn_addVendor.IsEnabled = true;
             }
-            else if (_InvoiceType == "pd" || _InvoiceType == "po") // purchase draft or purchase order
+            else if (_InvoiceType == "pd" ) // purchase draft 
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false;
@@ -2081,6 +2103,32 @@ namespace POS.View
                 tb_taxValue.IsEnabled = true;
                 btn_items.IsEnabled = true;
                 cb_paymentProcessType.IsEnabled = true;
+                btn_clear.IsEnabled = true;
+                btn_updateVendor.IsEnabled = true;
+                btn_addVendor.IsEnabled = true;
+            }
+            else if ( _InvoiceType == "po") //  purchase order
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
+                dg_billDetails.Columns[5].IsReadOnly = false;
+                dg_billDetails.Columns[3].IsReadOnly = false;
+                dg_billDetails.Columns[4].IsReadOnly = false;
+                cb_vendor.IsEnabled = false;
+                dp_desrvedDate.IsEnabled = true;
+                dp_invoiceDate.IsEnabled = true;
+                tb_note.IsEnabled = true;
+                tb_barcode.IsEnabled = true;
+                cb_branch.IsEnabled = true;
+                tb_discount.IsEnabled = true;
+                cb_typeDiscount.IsEnabled = true;
+                btn_save.IsEnabled = true;
+                tb_invoiceNumber.IsEnabled = true;
+                tb_taxValue.IsEnabled = true;
+                btn_items.IsEnabled = true;
+                cb_paymentProcessType.IsEnabled = true;
+                btn_clear.IsEnabled = false;
+                btn_updateVendor.IsEnabled = false;
+                btn_addVendor.IsEnabled = false;
             }
             else if (_InvoiceType == "pw" || _InvoiceType == "p" || archived)
             {
@@ -2101,6 +2149,9 @@ namespace POS.View
                 tb_taxValue.IsEnabled = false;
                 btn_items.IsEnabled = false;
                 cb_paymentProcessType.IsEnabled = false;
+                btn_clear.IsEnabled = false;
+                btn_updateVendor.IsEnabled = false;
+                btn_addVendor.IsEnabled = false;
             }
 
             if (_InvoiceType.Equals("pb") || _InvoiceType.Equals("p"))

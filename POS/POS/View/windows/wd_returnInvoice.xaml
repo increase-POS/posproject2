@@ -9,8 +9,8 @@
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
          Height="140" Width="300" Background="#333333" 
-        Loaded="Window_Loaded" Closing="Window_Closing">
-    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_delivery">
+        Loaded="Window_Loaded" Unloaded="Window_Unloaded" Closing="Window_Closing">
+    <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_main">
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
@@ -58,7 +58,8 @@
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Grid.Column="0" Height="40"  Margin="10,10,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  PreviewKeyDown="space_PreviewKeyDown" />
+                                  KeyDown="Tb_invoiceNum_KeyDown"
+                                  PreviewKeyDown="space_PreviewKeyDown"  />
                 <Path Fill="#E81123" x:Name="p_errorInvoiceNum" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Row="0" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"

@@ -22,6 +22,13 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_returnInvoice : Window
     {
+        public Invoice invoice = new Invoice();
+        public bool isAdmin;
+        public int userId;
+        bool _IsFocused = false;
+        public List<Control> controls;
+        DateTime _lastKeystroke = new DateTime(0);
+        static private string _BarcodeStr = "";
         public wd_returnInvoice()
         {
             try
@@ -51,32 +58,127 @@ namespace POS.View.windows
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_delivery);
+                    SectionData.StartAwait(grid_main);
 
               
-
-
-
                 DialogResult = true;
                 this.Close();
                 if (sender != null)
-                    SectionData.EndAwait(grid_delivery);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_delivery);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
             try
             {
+                if (!_IsFocused)
+                {
+                    Control c = CheckActiveControl();
+                    if (c == null)
+                        tb_invoiceNum.Focus();
+                    _IsFocused = true;
+                }
                 if (sender != null)
-                    SectionData.StartAwait(grid_delivery);
+                    SectionData.StartAwait(grid_main);
 
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 150)
+                {
+                    _BarcodeStr = "";
+                }
+                string digit = "";
+                // record keystroke & timestamp 
+                if (e.Key >= Key.D0 && e.Key <= Key.D9)
+                {
+                    //digit pressed!         
+                    digit = e.Key.ToString().Substring(1);
+                    // = "1" when D1 is pressed
+                }
+                else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+                {
+                    digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
+                }
+                else if (e.Key >= Key.A && e.Key <= Key.Z)
+                    digit = e.Key.ToString();
+                else if (e.Key == Key.OemMinus)
+                {
+                    digit = "-";
+                }
+                _BarcodeStr += digit;
+                _lastKeystroke = DateTime.Now;
+                // process barcode
+
+                if (e.Key.ToString() == "Return" && _BarcodeStr != "")
+                {
+                    await dealWithBarcode(_BarcodeStr);
+                   
+                    tb_invoiceNum.Text = _BarcodeStr;
+                    _BarcodeStr = "";
+                    _IsFocused = false;
+                    e.Handled = true;
+                }
+              
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public Control CheckActiveControl()
+        {
+            for (int i = 0; i < controls.Count; i++)
+            {
+                Control c = controls[i];
+                if (c.IsFocused)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+        private async Task dealWithBarcode(string barcode)
+        {
+            int codeindex = barcode.IndexOf("-");
+            string prefix = "";
+            if (codeindex >= 0)
+                prefix = barcode.Substring(0, codeindex);
+            prefix = prefix.ToLower();
+            barcode = barcode.ToLower();
+            if (prefix == "pi")
+            {
+                invoice = await invoice.GetInvoicesByNumAndUser(barcode,MainWindow.userID.Value);
+                if(invoice != null)
+                    Btn_save_Click(null,null);
+                else // invalid barcode
+                {
+
+                }
+            }
+            else // check if agent invoice number
+            {
+
+            }
+
+            tb_invoiceNum.Clear();
+        }
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.KeyDown += HandleKeyPress;
+            try
+            {
+                tb_invoiceNum.Focus();
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);            
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -90,15 +192,39 @@ namespace POS.View.windows
                 translate();
                 #endregion
 
-
+                controls = new List<Control>();
+                FindControl(this.grid_main, controls);
                 if (sender != null)
-                    SectionData.EndAwait(grid_delivery);
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_delivery);
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        public void FindControl(DependencyObject root, List<Control> controls)
+        {
+            controls.Clear();
+            var queue = new Queue<DependencyObject>();
+            queue.Enqueue(root);
+            while (queue.Count > 0)
+            {
+                var current = queue.Dequeue();
+                var control = current as Control;
+                if (control != null && control.IsTabStop)
+                {
+                    controls.Add(control);
+                }
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(current); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(current, i);
+                    if (child != null)
+                    {
+                        queue.Enqueue(child);
+                    }
+                }
             }
         }
         private void translate()
@@ -112,9 +238,66 @@ namespace POS.View.windows
 
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private async void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            try
+            {
+                if (!_IsFocused)
+                {
+                    Control c = CheckActiveControl();
+                    if (c == null)
+                        tb_invoiceNum.Focus();
+                    _IsFocused = true;
+                }
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                if (elapsed.TotalMilliseconds > 150)
+                {
+                    _BarcodeStr = "";
+                }
+                string digit = "";
+                // record keystroke & timestamp 
+                if (e.Key >= Key.D0 && e.Key <= Key.D9)
+                {
+                    //digit pressed!         
+                    digit = e.Key.ToString().Substring(1);
+                    // = "1" when D1 is pressed
+                }
+                else if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+                {
+                    digit = e.Key.ToString().Substring(6); // = "1" when NumPad1 is pressed
+                }
+                else if (e.Key >= Key.A && e.Key <= Key.Z)
+                    digit = e.Key.ToString();
+                else if (e.Key == Key.OemMinus)
+                {
+                    digit = "-";
+                }
+                _BarcodeStr += digit;
+                _lastKeystroke = DateTime.Now;
+                // process barcode
+
+                if (e.Key.ToString() == "Return" && _BarcodeStr != "")
+                {
+                    await dealWithBarcode(_BarcodeStr);
+
+                    tb_invoiceNum.Text = _BarcodeStr;
+                    _BarcodeStr = "";
+                    _IsFocused = false;
+                    e.Handled = true;
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void space_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -122,6 +305,38 @@ namespace POS.View.windows
             TextBox textBox = sender as TextBox;
             SectionData.InputJustNumber(ref textBox);
             e.Handled = e.Key == Key.Space;
+        }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            MainWindow.mainWindow.KeyDown -= HandleKeyPress;
+        }
+
+        private async void Tb_invoiceNum_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                if (e.Key == Key.Return)
+                {
+                    string barcode = "";
+                    if (_BarcodeStr.Length < 13)
+                    {
+                        barcode = tb_invoiceNum.Text;
+                        await dealWithBarcode(barcode);
+                    }
+
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }
