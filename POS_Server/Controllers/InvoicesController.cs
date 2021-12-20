@@ -467,8 +467,8 @@ var strP = TokenManager.GetPrincipal(token);
             }
         }
         [HttpPost]
-        [Route("GetByInvNumAndUser")]
-        public string GetByInvNumAndUser(string token)
+        [Route("GetInvoicesByBarcodeAndUser")]
+        public string GetInvoicesByBarcodeAndUser(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
             var strP = TokenManager.GetPrincipal(token);
@@ -478,6 +478,7 @@ var strP = TokenManager.GetPrincipal(token);
             }
             else
             {
+                BranchesController bc = new BranchesController();
                 string invNum = "";
                 int branchId = 0;
                 int userId = 0;
@@ -500,8 +501,12 @@ var strP = TokenManager.GetPrincipal(token);
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     //get user branches permission
-                    
-                        var banksList = (from b in entity.invoices.Where(b => b.invNumber == invNum && b.branchId == branchId)
+                    var branches = bc.BrListByBranchandUser(branchId, userId);
+                    List<int> branchesIds = new List<int>();
+                    for (int i = 0; i < branches.Count; i++)
+                        branchesIds.Add(branches[i].branchId);
+
+                        var invoice = (from b in entity.invoices.Where(b => b.invNumber == invNum && branchesIds.Contains((int)b.branchId))
                                          join l in entity.branches on b.branchId equals l.branchId into lj
                                          from x in lj.DefaultIfEmpty()
                                          select new InvoiceModel()
@@ -544,7 +549,99 @@ var strP = TokenManager.GetPrincipal(token);
                                          })
 
                                .FirstOrDefault();
-                    return TokenManager.GenerateToken(banksList);
+                    return TokenManager.GenerateToken(invoice);
+                }
+            }
+        }
+        [HttpPost]
+        [Route("getInvoiceByNumAndUser")]
+        public string getInvoiceByNumAndUser(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                BranchesController bc = new BranchesController();
+                string vendorInvNum = "";
+                string invType = "";
+                int branchId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invNum")
+                    {
+                        vendorInvNum = c.Value;
+                    }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "invType")
+                    {
+                        invType = c.Value;
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    //get user branches permission
+                    var branches = bc.BrListByBranchandUser(branchId, userId);
+                    List<int> branchesIds = new List<int>();
+                    for (int i = 0; i < branches.Count; i++)
+                        branchesIds.Add(branches[i].branchId);
+
+                        var invoice = (from b in entity.invoices.Where(b => b.vendorInvNum == vendorInvNum && branchesIds.Contains((int)b.branchId) && b.invType == invType)
+                                         join l in entity.branches on b.branchId equals l.branchId into lj
+                                         from x in lj.DefaultIfEmpty()
+                                         select new InvoiceModel()
+                                         {
+                                             invoiceId = b.invoiceId,
+                                             invNumber = b.invNumber,
+                                             agentId = b.agentId,
+                                             invType = b.invType,
+                                             total = b.total,
+                                             totalNet = b.totalNet,
+                                             paid = b.paid,
+                                             deserved = b.deserved,
+                                             deservedDate = b.deservedDate,
+                                             invDate = b.invDate,
+                                             invoiceMainId = b.invoiceMainId,
+                                             invCase = b.invCase,
+                                             invTime = b.invTime,
+                                             notes = b.notes,
+                                             vendorInvNum = b.vendorInvNum,
+                                             vendorInvDate = b.vendorInvDate,
+                                             createUserId = b.createUserId,
+                                             updateDate = b.updateDate,
+                                             updateUserId = b.updateUserId,
+                                             branchId = b.branchId,
+                                             discountValue = b.discountValue,
+                                             discountType = b.discountType,
+                                             tax = b.tax,
+                                             taxtype = b.taxtype,
+                                             name = b.name,
+                                             isApproved = b.isApproved,
+                                             branchName = x.name,
+                                             branchCreatorId = b.branchCreatorId,
+                                             shippingCompanyId = b.shippingCompanyId,
+                                             shipUserId = b.shipUserId,
+                                             userId = b.userId,
+                                             manualDiscountType = b.manualDiscountType,
+                                             manualDiscountValue = b.manualDiscountValue,
+                                             realShippingCost = b.realShippingCost,
+                                             shippingCost = b.shippingCost,
+                                         })
+
+                               .FirstOrDefault();
+                    return TokenManager.GenerateToken(invoice);
                 }
             }
         }
@@ -3077,30 +3174,31 @@ var strP = TokenManager.GetPrincipal(token);
                                         shippingCost = b.shippingCost,
                                         updateUserId = b.updateUserId,
                                         isApproved = b.isApproved,
+                                        branchId = b.branchId,
                                     })
                 .ToList();
-                //if (invoicesList != null)
-                //{
-                //    for (int i = 0; i < invoicesList.Count(); i++)
-                //    {
-                //        string complete = "ready";
-                //        int invoiceId = invoicesList[i].invoiceId;
-                //        var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
-                //        invoicesList[i].itemsCount = itemList.Count;
-                //        foreach (itemsTransfer tr in itemList)
-                //        {
-                //            var lockedQuantity = entity.itemsLocations
-                //                .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
-                //                .Select(x => x.quantity).Sum();
-                //            if (lockedQuantity < tr.quantity)
-                //            {
-                //                complete = "notReady";
-                //                break;
-                //            }
-                //        }
-                //        invoicesList[i].status = complete;
-                //    }
-                //}
+                if (invoicesList != null)
+                {
+                    for (int i = 0; i < invoicesList.Count(); i++)
+                    {
+                        //string complete = "ready";
+                        int invoiceId = invoicesList[i].invoiceId;
+                        var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
+                        invoicesList[i].itemsCount = itemList.Count;
+                        //foreach (itemsTransfer tr in itemList)
+                        //{
+                        //    var lockedQuantity = entity.itemsLocations
+                        //        .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
+                        //        .Select(x => x.quantity).Sum();
+                        //    if (lockedQuantity < tr.quantity)
+                        //    {
+                        //        complete = "notReady";
+                        //        break;
+                        //    }
+                        //}
+                        //invoicesList[i].status = complete;
+                    }
+                }
                 return invoicesList;
             }
         }

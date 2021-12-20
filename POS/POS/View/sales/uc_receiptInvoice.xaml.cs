@@ -2265,49 +2265,64 @@ namespace POS.View
                 {
                     saveBeforeExit();
                     Window.GetWindow(this).Opacity = 0.2;
-                    wd_invoice w = new wd_invoice();
-                    w.title = MainWindow.resourcemanager.GetString("trReturn");
-                    if (SectionData.isAdminPermision())
-                        w.condition = "admin";
-                    else
-                        w.condition = "return";
+                    wd_returnInvoice w = new wd_returnInvoice();
                     w.userId = MainWindow.userID.Value;
-                    // sales invoices
-                    string invoiceType = "s";
-                    w.invoiceType = invoiceType; // invoice type to view in grid
+                    w.invoiceType = "s";
+
                     if (w.ShowDialog() == true)
                     {
-                        if (w.invoice != null)
-                        {
-                            _InvoiceType = "sbd";
-                            invoice = w.invoice;
-                            _invoiceId = invoice.invoiceId;
-                           
-                            await fillInvoiceInputs(invoice);
-                            if (w.condition == "admin")
-                                invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
-                            else
-                                invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value);
-                            navigateBtnActivate();
-                            mainInvoiceItems = invoiceItems;
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
-                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
-                            btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
-                            // orange #FFA926 red #D22A17
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                            //txt_totalDescount.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
-                            //txt_total.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
-
-                            md_payments.Badge = "";
-                            #region refresh notification
-                            isFromReport = true;
-                            archived = false;
-                            setNotifications();
-                            refreshDocCount(invoice.invoiceId);
-                            #endregion
-
-                        }
+                        _InvoiceType = "sbd";
+                        invoice = w.invoice;
+                        isFromReport = true;
+                        archived = false;
+                        await fillInvoiceInputs(invoice);
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
                     }
+                    //wd_invoice w = new wd_invoice();
+                    //w.title = MainWindow.resourcemanager.GetString("trReturn");
+                    //if (SectionData.isAdminPermision())
+                    //    w.condition = "admin";
+                    //else
+                    //    w.condition = "return";
+                    //w.userId = MainWindow.userID.Value;
+                    //// sales invoices
+                    //string invoiceType = "s";
+                    //w.invoiceType = invoiceType; // invoice type to view in grid
+                    //if (w.ShowDialog() == true)
+                    //{
+                    //    if (w.invoice != null)
+                    //    {
+                    //        _InvoiceType = "sbd";
+                    //        invoice = w.invoice;
+                    //        _invoiceId = invoice.invoiceId;
+
+                    //        await fillInvoiceInputs(invoice);
+                    //        if (w.condition == "admin")
+                    //            invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
+                    //        else
+                    //            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value);
+                    //        navigateBtnActivate();
+                    //        mainInvoiceItems = invoiceItems;
+                    //        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                    //        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                    //        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                    //        // orange #FFA926 red #D22A17
+                    //        //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                    //        //txt_totalDescount.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                    //        //txt_total.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+
+                    //        md_payments.Badge = "";
+                    //        #region refresh notification
+                    //        isFromReport = true;
+                    //        archived = false;
+                    //        setNotifications();
+                    //        refreshDocCount(invoice.invoiceId);
+                    //        #endregion
+
+                    //    }
+                    //}
                     Window.GetWindow(this).Opacity = 1;
                 }
                 else

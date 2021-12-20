@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +23,15 @@ namespace POS.View.windows
     /// </summary>
     public partial class wd_returnInvoice : Window
     {
-        public Invoice invoice = new Invoice();
-        public bool isAdmin;
-        public int userId;
+        public Invoice invoice;
+        public int userId;      
+        public bool fromPurchase = false;
+        public string invoiceType;
         bool _IsFocused = false;
         public List<Control> controls;
         DateTime _lastKeystroke = new DateTime(0);
         static private string _BarcodeStr = "";
+        Invoice invoiceModel = new Invoice();
         public wd_returnInvoice()
         {
             try
@@ -154,22 +157,25 @@ namespace POS.View.windows
                 prefix = barcode.Substring(0, codeindex);
             prefix = prefix.ToLower();
             barcode = barcode.ToLower();
-            if (prefix == "pi")
+ 
+            if (prefix == "pi" && fromPurchase)
             {
-                invoice = await invoice.GetInvoicesByNumAndUser(barcode,MainWindow.userID.Value);
-                if(invoice != null)
-                    Btn_save_Click(null,null);
-                else // invalid barcode
-                {
-
-                }
+                invoice = await invoiceModel.GetInvoicesByBarcodeAndUser(barcode,MainWindow.userID.Value);                
             }
-            else // check if agent invoice number
+            else if(prefix == "si" && !fromPurchase)
             {
-
+                invoice = await invoiceModel.GetInvoicesByBarcodeAndUser(barcode, MainWindow.userID.Value);
             }
-
+            if (invoice == null) // check if agent invoice number
+            {
+                invoice = await invoiceModel.getInvoiceByNumAndUser(invoiceType ,barcode, MainWindow.userID.Value);
+            }
+            if (invoice != null)
+                Btn_save_Click(null, null);
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInvoice"), animation: ToasterAnimation.FadeIn);
             tb_invoiceNum.Clear();
+            tb_invoiceNum.Focus();
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -320,13 +326,8 @@ namespace POS.View.windows
                     SectionData.StartAwait(grid_main);
                 if (e.Key == Key.Return)
                 {
-                    string barcode = "";
-                    if (_BarcodeStr.Length < 13)
-                    {
-                        barcode = tb_invoiceNum.Text;
-                        await dealWithBarcode(barcode);
-                    }
-
+                    string barcode = tb_invoiceNum.Text;
+                    await dealWithBarcode(barcode);
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

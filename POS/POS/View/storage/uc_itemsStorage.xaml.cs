@@ -419,7 +419,7 @@ namespace POS.View.storage
                             newLocation.note = tb_notes.Text;
                             newLocation.updateUserId = MainWindow.userID.Value;
                             newLocation.createUserId = MainWindow.userID.Value;
-                            int res = await itemLocation.unlockItem(newLocation);
+                            int res = await itemLocation.unlockItem(newLocation, MainWindow.branchID.Value);
                             if (res > 0)
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);

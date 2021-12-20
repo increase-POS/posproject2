@@ -5288,13 +5288,9 @@ namespace POS_Server.Controllers
         [Route("unlockItem")]
         public string unlockItem(string token)
         {
-            //string itemLocation
-
-
             string message = "";
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -5303,10 +5299,8 @@ namespace POS_Server.Controllers
             {
                 string Object = "";
                 int branchId = 0;
-
                 itemsLocations newObject = new itemsLocations();
-              
-             
+                        
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -5316,10 +5310,9 @@ namespace POS_Server.Controllers
                         Object = c.Value.Replace("\\", string.Empty);
                         Object = Object.Trim('"');
                         newObject = JsonConvert.DeserializeObject<itemsLocations>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
-                      
-
                     }
-                   
+                    else if (c.Type == "branchId")
+                        branchId = int.Parse(c.Value);
                 }
 
                 if (newObject != null)
@@ -5331,6 +5324,7 @@ namespace POS_Server.Controllers
                             var itemLoc = (from b in entity.itemsLocations
                                            where b.invoiceId == null && b.itemUnitId == newObject.itemUnitId && b.locationId == newObject.locationId
                                            && b.startDate == newObject.startDate && b.endDate == newObject.endDate
+                                           && b.locations.sections.branchId == branchId
                                            select new ItemLocationModel
                                            {
                                                itemsLocId = b.itemsLocId,
@@ -5452,6 +5446,133 @@ namespace POS_Server.Controllers
             //return NotFound();
 
 
+        }
+        [HttpPost]
+        [Route("unlockItems")]
+        public string unlockItems(string token)
+        {
+            string message = "";
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string Object = "";
+                int branchId = 0;
+                List<itemsTransfer> newObject = new List<itemsTransfer>();
+                        
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Object")
+                    {
+
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<List<itemsTransfer>>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    }
+                    else if (c.Type == "branchId")
+                        branchId = int.Parse(c.Value);
+                }
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        foreach(itemsTransfer item in newObject)
+                        {
+                            var itemLocId = (from b in entity.itemsLocations
+                                           where b.invoiceId == item.invoiceId && b.itemUnitId == item.itemUnitId
+                                           select new
+                                           {
+                                                b.itemsLocId,
+                                           }).SingleOrDefault();
+                            if (itemLocId != null)
+                            {
+                                var reservedItem = entity.itemsLocations.Find(itemLocId.itemsLocId);
+                                var itemLoc = (from b in entity.itemsLocations
+                                               where b.invoiceId == null && b.itemUnitId == reservedItem.itemUnitId && b.locationId == reservedItem.locationId
+                                               && b.startDate == reservedItem.startDate && b.endDate == reservedItem.endDate 
+                                               && b.locations.sections.branches.branchId == branchId
+                                               select new ItemLocationModel
+                                               {
+                                                   itemsLocId = b.itemsLocId,
+                                               }).FirstOrDefault();
+
+                                if (itemLoc == null)
+                                {
+                                    var loc = new itemsLocations()
+                                    {
+                                        locationId = reservedItem.locationId,
+                                        quantity = reservedItem.quantity,
+                                        createDate = DateTime.Now,
+                                        updateDate = DateTime.Now,
+                                        createUserId = reservedItem.createUserId,
+                                        updateUserId = reservedItem.createUserId,
+                                        startDate = reservedItem.startDate,
+                                        endDate = reservedItem.endDate,
+                                        itemUnitId = reservedItem.itemUnitId,
+                                        note = reservedItem.note,
+                                    };
+                                    entity.itemsLocations.Add(loc);
+                                }
+                                else
+                                {
+                                    var loc = entity.itemsLocations.Find(itemLoc.itemsLocId);
+                                    loc.quantity += reservedItem.quantity;
+                                    loc.updateDate = DateTime.Now;
+                                    loc.updateUserId = reservedItem.updateUserId;
+
+                                }
+                                entity.itemsLocations.Remove(reservedItem);
+                            }
+                        }
+                        entity.SaveChanges();
+
+                        //var orderItem = entity.itemsLocations.Find(newObject.itemsLocId);
+                        //if (orderItem.quantity == newObject.quantity)
+                        //    entity.itemsLocations.Remove(orderItem);
+                        //else
+                        //    orderItem.quantity -= newObject.quantity;
+
+                        //if (itemLoc == null)
+                        //{
+                        //    var loc = new itemsLocations()
+                        //    {
+                        //        locationId = newObject.locationId,
+                        //        quantity = newObject.quantity,
+                        //        createDate = DateTime.Now,
+                        //        updateDate = DateTime.Now,
+                        //        createUserId = newObject.createUserId,
+                        //        updateUserId = newObject.createUserId,
+                        //        startDate = newObject.startDate,
+                        //        endDate = newObject.endDate,
+                        //        itemUnitId = newObject.itemUnitId,
+                        //        note = newObject.note,
+                        //    };
+                        //    entity.itemsLocations.Add(loc);
+                        //}
+                        //else
+                        //{
+                        //    var loc = entity.itemsLocations.Find(itemLoc.itemsLocId);
+                        //    loc.quantity += newObject.quantity;
+                        //    loc.updateDate = DateTime.Now;
+                        //    loc.updateUserId = newObject.updateUserId;
+
+                        //}
+                        //entity.SaveChanges();
+                    }
+                    // return Ok();
+                    return TokenManager.GenerateToken("1");
+                }
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+            }
         }
         public void unlockQuantity(int invoiceId, int itemUnitId, int quantity)
         {

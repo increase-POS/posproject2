@@ -359,13 +359,14 @@ namespace POS.Classes
             //    return false;
             //}
         }
-        public async Task<int> unlockItem(ItemLocation il)
+        public async Task<int> unlockItem(ItemLocation il,int branchId)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             string method = "ItemsLocations/unlockItem";
 
             var myContent = JsonConvert.SerializeObject(il);
             parameters.Add("Object", myContent);
+            parameters.Add("branchId", branchId.ToString());
           
 
            return await APIResult.post(method, parameters);
@@ -400,6 +401,17 @@ namespace POS.Classes
             //    }
             //    return false;
             //}
+        }
+        public async Task<int> unlockItems(List<ItemTransfer> items,int branchId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "ItemsLocations/unlockItems";
+
+            var myContent = JsonConvert.SerializeObject(items);
+            parameters.Add("Object", myContent);
+            parameters.Add("branchId", branchId.ToString());
+
+           return await APIResult.post(method, parameters);
         }
         public async Task<int> unitsConversion(int branchId,int fromItemUnit , int toItemUnt, int fromQuantity,int toQuantity, int userId, ItemUnit smallUnit)
         {

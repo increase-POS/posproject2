@@ -1935,13 +1935,9 @@ namespace POS.View
                 {
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_returnInvoice w = new wd_returnInvoice();
-                    if (SectionData.isAdminPermision())
-                        w.isAdmin = true;
-                    else
-                    {
-                        w.isAdmin = false;
-                        w.userId = MainWindow.userID.Value;
-                    }
+                    w.fromPurchase = true;
+                    w.userId = MainWindow.userID.Value;
+                    w.invoiceType = "p";
                     if (w.ShowDialog() == true)
                     {
                         _InvoiceType = "pbd";
@@ -2132,7 +2128,7 @@ namespace POS.View
                 btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;
             }
-            else if (_InvoiceType == "pw" || _InvoiceType == "p" || archived)
+            else if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || archived)
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[5].IsReadOnly = true; //make price read only

@@ -1100,6 +1100,8 @@ namespace POS.View.sales
         #endregion
         private async Task addInvoice(string invType)
         {
+            bool unreserveItems = false;
+            int savedBranch = 0;
             //branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
@@ -1111,7 +1113,14 @@ namespace POS.View.sales
                 invoice.invNumber = await invoice.generateInvNumber("or", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
             else if (invType == "ord" && (invoice.invoiceId == 0 || invoice.invType == "or"))
+            {
                 invoice.invNumber = await invoice.generateInvNumber("ord", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+                if (invoice.invType == "or")
+                {
+                    unreserveItems = true;
+                    savedBranch =(int) invoice.branchId;
+                }
+            }
             invoice.invType = invType;
             invoice.discountValue = _Discount;
             invoice.discountType = "1";
@@ -1185,8 +1194,10 @@ namespace POS.View.sales
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
                 //await itemLocationModel.reserveItems(invoiceItems,invoiceId, MainWindow.branchID.Value, MainWindow.userID.Value);
-                if(invType == "or")
-                    await itemLocationModel.reserveItems(invoiceItems,invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
+                if (invType == "or")
+                    await itemLocationModel.reserveItems(invoiceItems, invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
+                else if (unreserveItems)
+                    await itemLocationModel.unlockItems(invoiceItems,savedBranch);
                 // save order status
                 await saveOrderStatus(invoiceId, "pr");
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
