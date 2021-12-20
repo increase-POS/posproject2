@@ -1110,7 +1110,7 @@ namespace POS.View.sales
             {
                 invoice.invNumber = await invoice.generateInvNumber("or", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
-            else if (invType == "ord" && invoice.invoiceId == 0)
+            else if (invType == "ord" && (invoice.invoiceId == 0 || invoice.invType == "or"))
                 invoice.invNumber = await invoice.generateInvNumber("ord", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             invoice.invType = invType;
             invoice.discountValue = _Discount;

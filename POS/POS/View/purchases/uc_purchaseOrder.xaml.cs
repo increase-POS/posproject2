@@ -802,9 +802,9 @@ namespace POS.View.purchases
 
         private async Task<int> addInvoice(string invType)
         {           
-            if (invType == "po")
+            if (invType == "po" && invoice.invType != "po")
                 invoice.invNumber = await invoice.generateInvNumber(invType, MainWindow.loginBranch.code, MainWindow.branchID.Value);
-            else if (invType == "pod" && invoice.invoiceId == 0)
+            else if ((invType == "pod") && (invoice.invoiceId == 0 || invoice.invType =="po"))
                 invoice.invNumber = await invoice.generateInvNumber("pod", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             invoice.branchCreatorId = MainWindow.branchID.Value;
