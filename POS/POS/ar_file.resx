@@ -2836,4 +2836,7 @@
   <data name="trDontPermissionLoginBranch" xml:space="preserve">
     <value>ليس لديك إذن للدخول إلى هذا الفرع</value>
   </data>
+  <data name="trNoInvoice" xml:space="preserve">
+    <value>الفاتورة غير موجودة</value>
+  </data>
 </root>

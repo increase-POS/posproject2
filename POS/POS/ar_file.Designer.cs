@@ -4661,6 +4661,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفاتورة غير موجودة.
+        /// </summary>
+        internal static string trNoInvoice {
+            get {
+                return ResourceManager.GetString("trNoInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يوجد إشعارات!.
         /// </summary>
         internal static string trNoNotifications {

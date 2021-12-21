@@ -4679,6 +4679,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The invoice does not exist.
+        /// </summary>
+        internal static string trNoInvoice {
+            get {
+                return ResourceManager.GetString("trNoInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Notifications There!.
         /// </summary>
         internal static string trNoNotifications {

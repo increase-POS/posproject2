@@ -2851,4 +2851,7 @@ Please add Email in setting</value>
   <data name="trDontPermissionLoginBranch" xml:space="preserve">
     <value>you don't have permission login this branch</value>
   </data>
+  <data name="trNoInvoice" xml:space="preserve">
+    <value>The invoice does not exist</value>
+  </data>
 </root>
