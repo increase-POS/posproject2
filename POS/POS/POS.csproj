@@ -690,6 +690,9 @@
     <Compile Include="View\windows\wd_reportSystmSetting.xaml.cs">
       <DependentUpon>wd_reportSystmSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_returnInvoice.xaml.cs">
+      <DependentUpon>wd_returnInvoice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_selectPos.xaml.cs">
       <DependentUpon>wd_selectPos.xaml</DependentUpon>
     </Compile>
@@ -1257,6 +1260,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_reportSystmSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_returnInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -474,21 +474,22 @@ namespace POS.View
                     md_shortage.Visibility = Visibility.Collapsed;
                 }
 
-                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
-                {
-                    btn_printCount.Visibility = Visibility.Visible;
-                    bdr_printCount.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn_printCount.Visibility = Visibility.Collapsed;
-                    bdr_printCount.Visibility = Visibility.Collapsed;
-                }
+                //if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                //{
+                //    btn_printCount.Visibility = Visibility.Visible;
+                //    bdr_printCount.Visibility = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    btn_printCount.Visibility = Visibility.Collapsed;
+                //    bdr_printCount.Visibility = Visibility.Collapsed;
+                //}
 
                 #endregion
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
+                btn_printCount.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
@@ -2160,6 +2161,16 @@ namespace POS.View
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
                 btn_pdf.Visibility = Visibility.Visible;
+                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_printCount.Visibility = Visibility.Visible;
+                    bdr_printCount.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                }
                 if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
                 {
                     btn_emailMessage.Visibility = Visibility.Visible;
@@ -2177,6 +2188,7 @@ namespace POS.View
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
+                btn_printCount.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
