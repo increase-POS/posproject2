@@ -237,6 +237,24 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<int> checkOrderRedeaniss(int invoiceId)
+        {
+            int count = 0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invoiceId", invoiceId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/checkOrderRedeaniss", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    count = int.Parse(c.Value);
+                    break;
+                }
+            }
+            return count;
+        }
         public async Task<int> GetCountByCreator(string invType, int createUserId, int duration)
         {
             int count = 0;

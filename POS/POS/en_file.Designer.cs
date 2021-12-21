@@ -5687,6 +5687,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saved Purchase Order.
+        /// </summary>
+        internal static string trPurchaceOrderSaved {
+            get {
+                return ResourceManager.GetString("trPurchaceOrderSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchases.
         /// </summary>
         internal static string trPurchase {
@@ -6277,6 +6286,15 @@ namespace POS {
         internal static string trSaleOrderDraft {
             get {
                 return ResourceManager.GetString("trSaleOrderDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved Sale Order.
+        /// </summary>
+        internal static string trSaleOrderSaved {
+            get {
+                return ResourceManager.GetString("trSaleOrderSaved", resourceCulture);
             }
         }
         

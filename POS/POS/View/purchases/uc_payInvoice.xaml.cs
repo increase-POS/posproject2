@@ -1718,6 +1718,8 @@ namespace POS.View
             SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trBuy");
+
             refrishBillDetails();
             _InvoiceType = "pd";
             inputEditable();
@@ -1947,6 +1949,7 @@ namespace POS.View
                         await fillInvoiceInputs(invoice);
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
                     }
                     //wd_invoice w = new wd_invoice();
 
@@ -2063,7 +2066,7 @@ namespace POS.View
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
-                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                 cb_vendor.IsEnabled = false;
                 dp_desrvedDate.IsEnabled = false;

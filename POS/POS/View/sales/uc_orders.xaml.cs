@@ -515,10 +515,10 @@ namespace POS.View.sales
         }
         private async Task refreshDraftNotification()
         {
-            string invoiceType = "ord";
+            string invoiceType = "ord, ors";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "ord"  && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && ( _InvoiceType == "ord" || _InvoiceType == "ors") && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
             SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);
             //if (draftCount != _DraftCount)
@@ -537,7 +537,8 @@ namespace POS.View.sales
         {
             string invoiceType = "or";
             int duration = 1;
-            int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            //int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            int orderCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value, 0, MainWindow.userID.Value, duration);
             if (invoice != null && _InvoiceType == "or"  && invoice.invoiceId != 0 && !isFromReport)
                 orderCount--;
 
@@ -988,7 +989,26 @@ namespace POS.View.sales
                 _InvoiceType = "or";
             switch (_InvoiceType)
             {
-                case "ord": // quotation draft invoice
+                case "ord": // sales order draft invoice
+                    dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
+                    dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                    cb_branch.IsEnabled = true;
+                    cb_customer.IsEnabled = true;
+                    cb_company.IsEnabled = true;
+                    cb_user.IsEnabled = true;
+                    tb_note.IsEnabled = true;
+                    tb_barcode.IsEnabled = true;
+                    tgl_ActiveOffer.IsEnabled = false;
+                    btn_save.IsEnabled = true;
+                    cb_coupon.IsEnabled = true;
+                    btn_clearCoupon.IsEnabled = true;
+                    btn_clearCustomer.IsEnabled = true;
+                    btn_updateCustomer.IsEnabled = true;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_submitOrder.Visibility = Visibility.Collapsed;
+                    break;
+                case "ors": // sales order saved  invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
@@ -1003,6 +1023,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
+                    btn_updateCustomer.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
@@ -1021,6 +1042,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
                     btn_submitOrder.Visibility = Visibility.Visible;
                     break;
@@ -1039,6 +1061,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
@@ -1108,18 +1131,19 @@ namespace POS.View.sales
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
-            if (invType == "or" && (invoice.invType == "ord" || invoice.invoiceId == 0))
+            if ((invType == "or" || invType =="ors") && (invoice.invType == "ord" || invoice.invoiceId == 0))
             {
                 invoice.invNumber = await invoice.generateInvNumber("or", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
-            else if (invType == "ord" && (invoice.invoiceId == 0 || invoice.invType == "or"))
+            else if (invType == "ord" && invoice.invoiceId == 0)
             {
-                invoice.invNumber = await invoice.generateInvNumber("ord", MainWindow.loginBranch.code, MainWindow.branchID.Value);
-                if (invoice.invType == "or")
-                {
-                    unreserveItems = true;
-                    savedBranch =(int) invoice.branchId;
-                }
+                invoice.invNumber = await invoice.generateInvNumber("ord", MainWindow.loginBranch.code, MainWindow.branchID.Value);              
+            }
+
+            if (invoice.invoiceId != 0)
+            {
+                unreserveItems = true;
+                savedBranch = (int)invoice.branchId;
             }
             invoice.invType = invType;
             invoice.discountValue = _Discount;
@@ -1154,7 +1178,7 @@ namespace POS.View.sales
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
-            if(invType == "or" || invType == "ord")
+            if(invType == "or" || invType == "ors" || invType == "ord")
             {
                 byte isApproved = 0;
                 if (tgl_ActiveOffer.IsChecked == true)
@@ -1194,10 +1218,12 @@ namespace POS.View.sales
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
                 //await itemLocationModel.reserveItems(invoiceItems,invoiceId, MainWindow.branchID.Value, MainWindow.userID.Value);
-                if (invType == "or")
+                if (invType == "or" || invType == "ors")
+                {
+                    if (unreserveItems)
+                        await itemLocationModel.unlockItems(invoiceItems, savedBranch);
                     await itemLocationModel.reserveItems(invoiceItems, invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
-                else if (unreserveItems)
-                    await itemLocationModel.unlockItems(invoiceItems,savedBranch);
+                }
                 // save order status
                 await saveOrderStatus(invoiceId, "pr");
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
@@ -1549,7 +1575,7 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    string invoiceType = "ord";
+                    string invoiceType = "ord, ors";
                     int duration = 2;
                     // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
@@ -1573,8 +1599,11 @@ namespace POS.View.sales
                             invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
                             navigateBtnActivate();
                             // set title to bill
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
-
+                            if(_InvoiceType == "ord")
+                                txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
+                            else
+                                txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderSaved");
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
                             await fillInvoiceInputs(invoice);
                         }
                     }
@@ -1632,6 +1661,12 @@ namespace POS.View.sales
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
                 cb_typeDiscount.SelectedIndex = 2;
+
+            if (invoice.isApproved == 1)
+                tgl_ActiveOffer.IsChecked = true;
+            else
+                tgl_ActiveOffer.IsChecked = false;
+
             tb_barcode.Clear();
             tb_barcode.Focus();
             await getInvoiceCoupons(invoice.invoiceId);
@@ -1821,6 +1856,7 @@ namespace POS.View.sales
                             navigateBtnActivate();
                             // set title to bill
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrder");
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
 
                             await fillInvoiceInputs(invoice);
                         }
@@ -2241,6 +2277,10 @@ namespace POS.View.sales
                         }
                         else
                         {
+                            if (tgl_ActiveOffer.IsChecked == true)
+                                _InvoiceType = "or";
+                            else
+                                _InvoiceType = "ors";
                             await addInvoice(_InvoiceType);//quontation invoice                            
                             #region notification Object
                             Notification not = new Notification()
@@ -2253,7 +2293,8 @@ namespace POS.View.sales
                             };
                             await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", MainWindow.userLogin.name);
                             #endregion
-                            clearInvoice();
+                            if (_InvoiceType == "or")
+                                clearInvoice();
                             refreshDraftNotification();
                             refreshOrdersNotification();
                         }                        
@@ -3018,7 +3059,7 @@ namespace POS.View.sales
                 #region Accept
                 if (cb_branch.SelectedIndex != -1 && cb_customer.SelectedIndex != -1 && billDetails.Count > 0)
                 {
-                    bool ready = await checkOrderReady();
+                    bool ready = await checkOrderReady(invoice.invoiceId);
                     if (ready)
                     {
                         MainWindow.mainWindow.Opacity = 0.2;
@@ -3098,15 +3139,19 @@ namespace POS.View.sales
             inputEditable();
             refrishDataGridItems();
         }
-        private async Task<bool> checkOrderReady()
+        private async Task<bool> checkOrderReady(int invoiceId)
         {
-            foreach(BillDetails item in billDetails)
-            {
-                int availableAmount = await getAvailableAmount(item.itemId, item.itemUnitId, (int)cb_branch.SelectedValue, item.ID);
-                if (availableAmount < item.Count)
-                    return false;
-            }
-            return true;
+            bool ready = false;
+            int res = await invoice.checkOrderRedeaniss(invoiceId);
+            if (res == 1)
+                ready = true;
+            //foreach(BillDetails item in billDetails)
+            //{
+            //    int availableAmount = await getAvailableAmount(item.itemId, item.itemUnitId, (int)cb_branch.SelectedValue, item.ID);
+            //    if (availableAmount < item.Count)
+            //        return false;
+            //}
+            return ready;
         }
         private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
         {

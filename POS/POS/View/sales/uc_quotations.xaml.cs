@@ -60,9 +60,7 @@ namespace POS.View.sales
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
         Item itemModel = new Item();
         Item item = new Item();
-        IEnumerable<Item> items;
-        public static bool isFromReport = false;
-        public static bool archived = false;
+        IEnumerable<Item> items;        
         Card cardModel = new Card();
 
         Branch branchModel = new Branch();
@@ -88,8 +86,14 @@ namespace POS.View.sales
         List<ItemTransfer> invoiceItems;
         ItemLocation itemLocationModel = new ItemLocation();
         public List<Control> controls;
+        #region for notifications
         private static DispatcherTimer timer;
-
+        public static bool isFromReport = false;
+        public static bool archived = false;
+        int _DraftCount = 0;
+        int _QoutationCount = 0;
+        int _DocCount = 0;
+        #endregion
         #region//to handle barcode characters
         static private int _SelectedCustomer = -1;
         static private int _SelectedDiscountType = -1;
@@ -283,7 +287,7 @@ namespace POS.View.sales
                 translate();
                 configureDiscountType();
                 setTimer();
-                refreshDraftNotification();
+                setNotifications();
 
                 #region loading
                 loadingList = new List<keyValueBool>();
@@ -415,6 +419,11 @@ namespace POS.View.sales
         }
         #endregion
         #region notifications
+        private async void setNotifications()
+        {
+            refreshDraftNotification();
+            refreshQuotationNotification();
+        }
         private async void refreshDraftNotification()
         {
             string invoiceType = "qd";
@@ -423,40 +432,24 @@ namespace POS.View.sales
             if (invoice != null && _InvoiceType == "qd"  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
-            int previouseCount = 0;
-            if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
+            SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);            
+        }
+        private async void refreshQuotationNotification()
+        {
+            string invoiceType = "q";
+            int duration = 1;
+            int qoutationCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+            if (invoice != null && _InvoiceType == "q"  && invoice.invoiceId != 0 && !isFromReport)
+                qoutationCount--;
 
-            if (draftCount != previouseCount)
-            {
-                if (draftCount > 9)
-                {
-                    draftCount = 9;
-                    md_draft.Badge = "+" + draftCount.ToString();
-                }
-                else if (draftCount == 0) md_draft.Badge = "";
-                else
-                    md_draft.Badge = draftCount.ToString();
-            }
+            SectionData.refreshNotification(md_qout, ref _QoutationCount, qoutationCount);           
         }
         private async void refreshDocCount(int invoiceId)
         {
             DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
-            int previouseCount = 0;
-            if (md_docImage.Badge != null && md_docImage.Badge.ToString() != "") previouseCount = int.Parse(md_docImage.Badge.ToString());
-
-            if (docCount != previouseCount)
-            {
-                if (docCount > 9)
-                {
-                    docCount = 9;
-                    md_docImage.Badge = "+" + docCount.ToString();
-                }
-                else if (docCount == 0) md_docImage.Badge = "";
-                else
-                    md_docImage.Badge = docCount.ToString();
-            }
+            SectionData.refreshNotification(md_docImage, ref _DocCount, docCount);           
         }
         #endregion
         private void configureDiscountType()
@@ -758,11 +751,24 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 
                 bool valid = validateItemUnits();
-                if (billDetails.Count > 0 )
+                if (billDetails.Count > 0 && valid)
                 {
-                    await addInvoice(_InvoiceType);
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+                    // w.contentText = "Do you want save pay invoice in drafts?";
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        await addInvoice(_InvoiceType);                     
+                    }
+                    await clearInvoice();
+                    setNotifications();
                 }
-                else if (billDetails.Count == 0)
+                else
                 {
                     clearInvoice();
                 }
@@ -947,8 +953,8 @@ namespace POS.View.sales
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);               
             }
-            clearInvoice();
-            refreshDraftNotification();
+           // clearInvoice();
+            //refreshDraftNotification();
         }
 
         #region Get Id By Click  Y
@@ -1261,7 +1267,7 @@ namespace POS.View.sales
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
                         archived = false;
-                        refreshDraftNotification();
+                        setNotifications();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
@@ -1414,6 +1420,7 @@ namespace POS.View.sales
                         _InvoiceType = invoice.invType;
                         isFromReport = false;
                         archived = false;
+                        setNotifications();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");

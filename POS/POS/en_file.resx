@@ -2854,4 +2854,10 @@ Please add Email in setting</value>
   <data name="trNoInvoice" xml:space="preserve">
     <value>The invoice does not exist</value>
   </data>
+  <data name="trPurchaceOrderSaved" xml:space="preserve">
+    <value>Saved Purchase Order</value>
+  </data>
+  <data name="trSaleOrderSaved" xml:space="preserve">
+    <value>Saved Sale Order</value>
+  </data>
 </root>

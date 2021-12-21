@@ -2839,4 +2839,10 @@
   <data name="trNoInvoice" xml:space="preserve">
     <value>الفاتورة غير موجودة</value>
   </data>
+  <data name="trPurchaceOrderSaved" xml:space="preserve">
+    <value>طلبية شراء محفوظة</value>
+  </data>
+  <data name="trSaleOrderSaved" xml:space="preserve">
+    <value>طلبية مبيعات محفوظة</value>
+  </data>
 </root>

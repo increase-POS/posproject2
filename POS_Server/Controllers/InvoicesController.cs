@@ -1408,6 +1408,7 @@ var strP = TokenManager.GetPrincipal(token);
                     return TokenManager.GenerateToken(invoicesList);
              }
         }
+       
         [HttpPost]
         [Route("GetCountUnHandeledOrders")]
         public string GetCountUnHandeledOrders(string token)
@@ -3200,6 +3201,46 @@ var strP = TokenManager.GetPrincipal(token);
                     }
                 }
                 return invoicesList;
+            }
+        }
+        [HttpPost]
+        [Route("checkOrderRedeaniss")]
+        public string checkOrderRedeaniss(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int invoiceId = 0;
+                string message = "1";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invoiceId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+                }
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
+                    foreach (itemsTransfer tr in itemList)
+                    {
+                        var lockedQuantity = entity.itemsLocations
+                            .Where(x => x.invoiceId == invoiceId && x.itemUnitId == tr.itemUnitId)
+                            .Select(x => x.quantity).Sum();
+                        if (lockedQuantity < tr.quantity)
+                        {
+                            message = "0";
+                            break;
+                        }
+                    }
+                }
+                return TokenManager.GenerateToken(message);
             }
         }
         public decimal AvgItemPurPrice(int itemUnitId, int itemId)

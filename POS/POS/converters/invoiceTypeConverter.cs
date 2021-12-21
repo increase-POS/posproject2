@@ -51,19 +51,23 @@ namespace POS.converters
                     break;
                 // مسودة طلبية مبيعا 
                 case "ord":
-                    //value = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
-                    //break;
+                    value = MainWindow.resourcemanager.GetString("trDraft");
+                    break;
                 //طلبية مبيعات 
                 case "or":
                     value = MainWindow.resourcemanager.GetString("trSaleOrder");
                     break;
                 //مسودة طلبية شراء 
                 case "pod":
-                    //value = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
-                    //break;
+                    value = MainWindow.resourcemanager.GetString("trDraft");
+                    break;
                 //طلبية شراء 
                 case "po":
                     value = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+                    break;
+                // طلبية شراء أو بيع محفوظة
+                case "pos": case "ors":
+                    value = MainWindow.resourcemanager.GetString("trSaved");
                     break;
                 //مسودة عرض 
                 case "qd":

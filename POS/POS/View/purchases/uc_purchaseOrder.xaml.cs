@@ -563,12 +563,12 @@ namespace POS.View.purchases
         }
         private async void refreshDraftNotification()
         {
-            string invoiceType = "pod";
+            string invoiceType = "pod,pos";
             int duration = 2;
             try
             {
                 int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-                if (invoice != null && invoice.invType == "pod" && !isFromReport)
+                if (invoice != null && (invoice.invType == "pod" || invoice.invType == "pos") && !isFromReport)
                     draftCount--;
 
                 if (draftCount != _DraftCount)
@@ -802,9 +802,9 @@ namespace POS.View.purchases
 
         private async Task<int> addInvoice(string invType)
         {           
-            if (invType == "po" && invoice.invType != "po")
-                invoice.invNumber = await invoice.generateInvNumber(invType, MainWindow.loginBranch.code, MainWindow.branchID.Value);
-            else if ((invType == "pod") && (invoice.invoiceId == 0 || invoice.invType =="po"))
+            if ((invType == "po" || invType == "pos") && (invoice.invType == "pod" || invoice.invoiceId == 0))
+                invoice.invNumber = await invoice.generateInvNumber("po", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+            else if (invType == "pod" && invoice.invoiceId == 0)
                 invoice.invNumber = await invoice.generateInvNumber("pod", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
             invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -950,6 +950,10 @@ namespace POS.View.purchases
                         bool valid = validateInvoiceValues();
                         if (valid)
                         {
+                        if (tgl_ActiveOffer.IsChecked == true)
+                            _InvoiceType = "po";
+                        else
+                            _InvoiceType = "pos";
                         await addInvoice(_InvoiceType); // po: purchase order
                         refreshNotification();
                            // clearInvoice();
@@ -1049,7 +1053,7 @@ namespace POS.View.purchases
                 wd_invoice w = new wd_invoice();
                 
                 // purchase drafts and purchase bounce drafts
-                string invoiceType = "pod";
+                string invoiceType = "pod, pos";
                 int duration = 2;
                 w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
@@ -1072,7 +1076,11 @@ namespace POS.View.purchases
                         await fillInvoiceInputs(invoice);
 
                         mainInvoiceItems = invoiceItems;
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
+                        if(_InvoiceType == "pod")
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
+                        else
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderSaved");
+
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
                         navigateBtnActivate();
                     }
@@ -1181,7 +1189,19 @@ namespace POS.View.purchases
         }
         private void inputEditable()
         {
-            if (_InvoiceType == "pod")
+            if (_InvoiceType == "pod") // purchase order draft
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
+                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                cb_vendor.IsEnabled = true;
+                tb_note.IsEnabled = true;
+                tb_barcode.IsEnabled = true;
+                btn_clear.IsEnabled = true;              
+                tgl_ActiveOffer.IsEnabled = false;
+                btn_save.IsEnabled = true;
+            }
+            if ( _InvoiceType == "pos") // purchase order saved
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only

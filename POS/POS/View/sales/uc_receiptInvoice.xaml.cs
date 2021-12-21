@@ -1111,8 +1111,8 @@ namespace POS.View
                         break;
                     case 1:
                         {
-                            SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
-                            exp_customer.IsExpanded = true;
+                            if(!SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip"))
+                                exp_customer.IsExpanded = true;
                             break;
                         }
                     case 2:
@@ -1128,7 +1128,8 @@ namespace POS.View
                 return false;
             }
             // check amount
-            if (_InvoiceType == "sd" || _InvoiceType == "or")
+            //if (_InvoiceType == "sd" || _InvoiceType == "or")
+            if (_InvoiceType == "sd")
                 available = await checkItemsAmounts();
             // validate items serials
             foreach (BillDetails item in billDetails)
@@ -1165,9 +1166,9 @@ namespace POS.View
 
             if (valid)
             {
-                if (cb_paymentProcessType.SelectedIndex == 1 && (companyModel == null || companyModel.deliveryType != "com"))
+                if (cb_paymentProcessType.SelectedIndex == 1 && (companyModel == null || companyModel.deliveryType != "com") && cb_customer.SelectedIndex != -1)
                 {
-                    int agentId = (int)cb_customer.SelectedValue;
+                    int agentId = (int) cb_customer.SelectedValue;
                     decimal remain = 0;
 
                     Agent customer = customers.ToList().Find(b => b.agentId == agentId && b.isLimited == true);
@@ -1290,7 +1291,10 @@ namespace POS.View
                     createUserId = MainWindow.userID.Value,
                     updateUserId = MainWindow.userID.Value,
                 };
-                await not.save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", MainWindow.loginBranch.name, (int)invoice.shipUserId);
+                int shipUserId = 0;
+                try { shipUserId = (int)invoice.shipUserId; }
+                catch { }
+                await not.save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", MainWindow.loginBranch.name, shipUserId);
                 #endregion
                 await saveOrderStatus(invoice.invoiceId, "ex");
             }
@@ -2392,6 +2396,8 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                     dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = false;
+                    btn_addCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -2417,6 +2423,8 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = false;
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = true;
+                    btn_addCustomer.IsEnabled = true;
+                    btn_updateCustomer.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -2452,6 +2460,8 @@ namespace POS.View
                     dg_billDetails.Columns[4].IsReadOnly = true; //make qty readonly
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = false;
+                    btn_addCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -2489,6 +2499,8 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
+                    btn_addCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -2513,6 +2525,8 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
+                    btn_addCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -3181,76 +3195,63 @@ namespace POS.View
                     decimal itemTax = 0;
                     //if (item.taxes != null)
                     //    itemTax = (decimal)item.taxes;
-                    decimal price = (decimal)unit.priceTax + SectionData.calcPercentage((decimal)unit.priceTax, itemTax);
-
-                    // decimal newPrice = (decimal)unit.price;
+                    decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
+                    //decimal newPrice = (decimal)unit.price;
                     decimal newPrice = price;
-                    //"tb_amont"
-
-
                     oldCount = billDetails[_datagridSelectedIndex].Count;
                     oldPrice = billDetails[_datagridSelectedIndex].Price;
+                    newCount = oldCount;
 
-                    if (_InvoiceType == "sbd")
-                    {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == billDetails[_datagridSelectedIndex].itemUnitId);
-                        if (newCount > item.quantity)
-                        {
-                            // return old value 
-                            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                            tb.Text = item.quantity.ToString();
-                            newCount = (long)item.quantity;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                        }
-                    }
-                    else
-                    {
-                        //validateAvailableAmount(row, newCount, index, tb );
-                        int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, billDetails[_datagridSelectedIndex].itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
-                        if (availableAmount < newCount)
-                        {
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                            //newCount = newCount + availableAmount;
-                            if ((int)billDetails[_datagridSelectedIndex].offerId != 0)
-                            {
-                                int remainAmount = await offer.getRemain((int)billDetails[_datagridSelectedIndex].offerId, billDetails[_datagridSelectedIndex].itemUnitId);
-                                if (remainAmount < availableAmount)
-                                    availableAmount = remainAmount;
-                            }
-                            newCount = availableAmount;
-                            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                            tb.Text = newCount.ToString();
-                            billDetails[_datagridSelectedIndex].Count = (int)newCount;
-                        }
-                        else if ((int)billDetails[_datagridSelectedIndex].offerId != 0)
-                        {
-                            offer = new ItemUnitOffer();
-                            int remainAmount = await offer.getRemain((int)billDetails[_datagridSelectedIndex].offerId, billDetails[_datagridSelectedIndex].itemUnitId);
-                            if (remainAmount < newCount)
-                            {
-                                availableAmount = remainAmount;
-                                newCount = availableAmount;
-                                tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                                tb.Text = newCount.ToString();
-                                billDetails[_datagridSelectedIndex].Count = (int)newCount;
-                            }
-                        }
-                    }
-                    //if (availableAmount < oldCount)
-                    ////if (availableAmount <= 0)
+
+                    //if (_InvoiceType == "sbd")
                     //{
-                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                    //    newCount = newCount + availableAmount;
-                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    //    tb.Text = availableAmount.ToString();
+                    //    ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                    //    if (newCount > item.quantity)
+                    //    {
+                    //        // return old value 
+                    //        t.Text = item.quantity.ToString();
+
+                    //        newCount = (long)item.quantity;
+                    //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                    //    }
                     //}
                     //else
                     //{
-                    //    // newCount = oldCount;
-                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    //    newCount = int.Parse(tb.Text);
+                    //    //validateAvailableAmount(row, newCount, index, tb );
+                    //    int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+                    //    if (availableAmount < newCount && row.type != "sr")
+                    //    {
+                    //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                    //        //newCount = newCount + availableAmount;
+                    //        if ((int)row.offerId != 0)
+                    //        {
+                    //            offer = new ItemUnitOffer();
+                    //            int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
+                    //            if (remainAmount < availableAmount)
+                    //                availableAmount = remainAmount;
+                    //        }
+                    //        newCount = availableAmount;
+                    //        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                    //        tb.Text = newCount.ToString();
+                    //        row.Count = (int)newCount;
+                    //    }
+                    //    else if ((int)row.offerId != 0)
+                    //    {
+                    //        offer = new ItemUnitOffer();
+                    //        int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
+                    //        if (remainAmount < newCount)
+                    //        {
+                    //            availableAmount = remainAmount;
+                    //            newCount = availableAmount;
+                    //            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
+                    //            tb.Text = newCount.ToString();
+                    //            row.Count = (int)newCount;
+                    //        }
+                    //    }
                     //}
-
+                    tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    tb.Text = newPrice.ToString();
+                 
                     // old total for changed item
                     decimal total = oldPrice * oldCount;
                     _Sum -= total;
@@ -3259,21 +3260,16 @@ namespace POS.View
                     // new total for changed item
                     total = newCount * newPrice;
                     _Sum += total;
+
+                    if (item.taxes != null)
+                        itemTax = (decimal)item.taxes;
                     // old tax for changed item
                     decimal tax = (decimal)itemTax * oldCount;
                     _Tax -= tax;
                     // new tax for changed item
                     tax = (decimal)itemTax * newCount;
                     _Tax += tax;
-
-                    //refresh Price cell
-                    tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    tb.Text = newPrice.ToString();
-                    //refresh total cell
-                    tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    tb.Text = total.ToString();
-
-                    //  refresh sum and total text box
+                  
                     refreshTotalValue();
 
                     // update item in billdetails           
