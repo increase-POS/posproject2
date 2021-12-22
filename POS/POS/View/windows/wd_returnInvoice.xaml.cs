@@ -56,16 +56,15 @@ namespace POS.View.windows
             }
         }
 
-        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-              
-                DialogResult = true;
-                this.Close();
+                string barcode = tb_invoiceNum.Text;
+                await dealWithBarcode(barcode);               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -171,7 +170,10 @@ namespace POS.View.windows
                 invoice = await invoiceModel.getInvoiceByNumAndUser(invoiceType ,barcode, MainWindow.userID.Value);
             }
             if (invoice != null)
-                Btn_save_Click(null, null);
+            {
+                DialogResult = true;
+                this.Close();
+            }
             else
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoInvoice"), animation: ToasterAnimation.FadeIn);
             tb_invoiceNum.Clear();

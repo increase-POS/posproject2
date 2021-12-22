@@ -1000,7 +1000,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
+        private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1015,7 +1015,6 @@ namespace POS.View
                     w.type = "c";
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
-                    await RefrishCustomers();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -2268,68 +2267,82 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-                    saveBeforeExit();
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_returnInvoice w = new wd_returnInvoice();
-                    w.userId = MainWindow.userID.Value;
-                    w.invoiceType = "s";
-
-                    if (w.ShowDialog() == true)
+                {                  
+                    if (_InvoiceType == "s")
                     {
                         _InvoiceType = "sbd";
-                        invoice = w.invoice;
                         isFromReport = true;
                         archived = false;
                         await fillInvoiceInputs(invoice);
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                         btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                        refreshInvoiceNotification();
                     }
-                    //wd_invoice w = new wd_invoice();
-                    //w.title = MainWindow.resourcemanager.GetString("trReturn");
-                    //if (SectionData.isAdminPermision())
-                    //    w.condition = "admin";
-                    //else
-                    //    w.condition = "return";
-                    //w.userId = MainWindow.userID.Value;
-                    //// sales invoices
-                    //string invoiceType = "s";
-                    //w.invoiceType = invoiceType; // invoice type to view in grid
-                    //if (w.ShowDialog() == true)
-                    //{
-                    //    if (w.invoice != null)
-                    //    {
-                    //        _InvoiceType = "sbd";
-                    //        invoice = w.invoice;
-                    //        _invoiceId = invoice.invoiceId;
+                    else
+                    {
+                        await saveBeforeExit();
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_returnInvoice w = new wd_returnInvoice();
+                        w.userId = MainWindow.userID.Value;
+                        w.invoiceType = "s";
 
-                    //        await fillInvoiceInputs(invoice);
-                    //        if (w.condition == "admin")
-                    //            invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
-                    //        else
-                    //            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value);
-                    //        navigateBtnActivate();
-                    //        mainInvoiceItems = invoiceItems;
-                    //        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
-                    //        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
-                    //        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
-                    //        // orange #FFA926 red #D22A17
-                    //        //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
-                    //        //txt_totalDescount.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
-                    //        //txt_total.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                        if (w.ShowDialog() == true)
+                        {
+                            _InvoiceType = "sbd";
+                            invoice = w.invoice;
+                            isFromReport = true;
+                            archived = false;
+                            await fillInvoiceInputs(invoice);
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                            btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                        }
+                        //wd_invoice w = new wd_invoice();
+                        //w.title = MainWindow.resourcemanager.GetString("trReturn");
+                        //if (SectionData.isAdminPermision())
+                        //    w.condition = "admin";
+                        //else
+                        //    w.condition = "return";
+                        //w.userId = MainWindow.userID.Value;
+                        //// sales invoices
+                        //string invoiceType = "s";
+                        //w.invoiceType = invoiceType; // invoice type to view in grid
+                        //if (w.ShowDialog() == true)
+                        //{
+                        //    if (w.invoice != null)
+                        //    {
+                        //        _InvoiceType = "sbd";
+                        //        invoice = w.invoice;
+                        //        _invoiceId = invoice.invoiceId;
 
-                    //        md_payments.Badge = "";
-                    //        #region refresh notification
-                    //        isFromReport = true;
-                    //        archived = false;
-                    //        setNotifications();
-                    //        refreshDocCount(invoice.invoiceId);
-                    //        #endregion
+                        //        await fillInvoiceInputs(invoice);
+                        //        if (w.condition == "admin")
+                        //            invoices = await invoice.GetInvoicesForAdmin(invoiceType, 0);
+                        //        else
+                        //            invoices = await invoice.getBranchInvoices(invoiceType, MainWindow.branchID.Value);
+                        //        navigateBtnActivate();
+                        //        mainInvoiceItems = invoiceItems;
+                        //        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                        //        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                        //        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                        //        // orange #FFA926 red #D22A17
+                        //        //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
+                        //        //txt_totalDescount.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
+                        //        //txt_total.Foreground = Application.Current.Resources["mediumRed"] as SolidColorBrush;
 
-                    //    }
-                    //}
-                    Window.GetWindow(this).Opacity = 1;
+                        //        md_payments.Badge = "";
+                        //        #region refresh notification
+                        //        isFromReport = true;
+                        //        archived = false;
+                        //        setNotifications();
+                        //        refreshDocCount(invoice.invoiceId);
+                        //        #endregion
+
+                        //    }
+                        //}
+                        Window.GetWindow(this).Opacity = 1;
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -2806,9 +2819,11 @@ namespace POS.View
             dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
+                dg_billDetails.IsEnabled = true;
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
+                dg_billDetails.IsEnabled = true;
             }
             //dg_billDetails.Items.Refresh();
             DataGrid_CollectionChanged(dg_billDetails, null);
@@ -3515,7 +3530,7 @@ namespace POS.View
                             tb.Text = newCount.ToString();
                             row.Count = (int)newCount;
                         }
-                        else if ((int)row.offerId != 0)
+                        else if (row.offerId != null && (int)row.offerId != 0)
                         {
                             offer = new ItemUnitOffer();
                             int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
@@ -3582,8 +3597,7 @@ namespace POS.View
         }
         private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
         {
-            // var itemUnits = await itemUnitModel.GetItemUnits(itemId);
-            var itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
+            var itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == itemId).ToList();
             int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
             var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
             foreach (Item u in itemUnits)

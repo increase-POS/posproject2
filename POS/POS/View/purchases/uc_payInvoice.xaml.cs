@@ -979,7 +979,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private async void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
+        private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -988,14 +988,17 @@ namespace POS.View
 
                 if (cb_vendor.SelectedIndex != -1)
                 {
+
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_updateVendor w = new wd_updateVendor();
                     //// pass agent id to update windows
                     w.agent.agentId = (int)cb_vendor.SelectedValue;
                     w.ShowDialog();
-                    await RefrishVendors();
+
+
                     Window.GetWindow(this).Opacity = 1;
                 }
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1932,8 +1935,22 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                {
-                    Window.GetWindow(this).Opacity = 0.2;
+                {                  
+                    if (_InvoiceType == "p")
+                    {
+                        _InvoiceType = "pbd";
+                        isFromReport = true;
+                        archived = false;
+                        await fillInvoiceInputs(invoice);
+                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                        refreshInvNotification();
+                    }
+                    else
+                    {
+                        await saveBeforeExit();
+                        Window.GetWindow(this).Opacity = 0.2;
                     wd_returnInvoice w = new wd_returnInvoice();
                     w.fromPurchase = true;
                     w.userId = MainWindow.userID.Value;
@@ -1948,6 +1965,7 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                         btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
+                            setNotifications();
                     }
                     //wd_invoice w = new wd_invoice();
 
@@ -1990,6 +2008,7 @@ namespace POS.View
                     //    }
                     //}
                     Window.GetWindow(this).Opacity = 1;
+                }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
