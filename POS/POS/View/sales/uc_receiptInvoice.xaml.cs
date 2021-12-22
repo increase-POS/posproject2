@@ -1000,7 +1000,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
+        private async void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1015,6 +1015,7 @@ namespace POS.View
                     w.type = "c";
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
+                    await RefrishCustomers();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

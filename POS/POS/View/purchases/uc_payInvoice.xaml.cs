@@ -979,7 +979,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
+        private async void Btn_updateVendor_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -988,17 +988,14 @@ namespace POS.View
 
                 if (cb_vendor.SelectedIndex != -1)
                 {
-
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_updateVendor w = new wd_updateVendor();
                     //// pass agent id to update windows
                     w.agent.agentId = (int)cb_vendor.SelectedValue;
                     w.ShowDialog();
-
-
+                    await RefrishVendors();
                     Window.GetWindow(this).Opacity = 1;
                 }
-
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
