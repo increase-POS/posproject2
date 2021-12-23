@@ -72,6 +72,10 @@ namespace POS.converters
                 //مسودة عرض 
                 case "qd":
                     value = MainWindow.resourcemanager.GetString("trQuotationsDraft");
+                    break; 
+                //عرض سعر محفوظ
+                case "qs":
+                    value = MainWindow.resourcemanager.GetString("trSaved");
                     break;
                 //فاتورة عرض اسعار
                 case "q":

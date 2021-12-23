@@ -247,6 +247,30 @@ namespace POS.View
             clearInvoice();
 
         }
+        private async Task saveBeforeTransfer()
+        {
+            if (billDetails.Count > 0 && _InvoiceType == "pd")
+            {
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
+                w.contentText = "Do you want save pay invoice in drafts?";
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
+                {
+                    await addInvoice(_InvoiceType, "pi");
+                    clearInvoice();
+                    _InvoiceType = "pd";
+                    setNotifications();
+                }
+            }
+            else
+            clearInvoice();
+
+        }
         #region loading
 
         List<keyValueBool> loadingList;
@@ -1790,6 +1814,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+               await saveBeforeTransfer();
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
@@ -1844,6 +1869,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                await saveBeforeTransfer();
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
 
@@ -4074,6 +4100,7 @@ namespace POS.View
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
+            await saveBeforeTransfer();
             if (invoice.invoiceId != 0)
                 clearInvoice();
             await buildShortageInvoiceDetails();

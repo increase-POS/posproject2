@@ -174,7 +174,7 @@ namespace POS.View.sales
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_coupon, MainWindow.resourcemanager.GetString("trCoponHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
 
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
 
 
@@ -426,10 +426,10 @@ namespace POS.View.sales
         }
         private async void refreshDraftNotification()
         {
-            string invoiceType = "qd";
+            string invoiceType = "qd,qs";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "qd"  && invoice.invoiceId != 0 && !isFromReport)
+            if (invoice != null && (_InvoiceType == "qd" || _InvoiceType == "qs")  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);            
@@ -812,6 +812,7 @@ namespace POS.View.sales
             isFromReport = false;
             archived = false;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotations");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
 
             refrishBillDetails();
@@ -828,7 +829,8 @@ namespace POS.View.sales
                 _InvoiceType = "q";
             switch (_InvoiceType)
             {
-                case "qd": // quotation draft invoice
+                case "qd":// quotation draft 
+                case "qs":// saved quotation  
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                     dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
@@ -841,9 +843,11 @@ namespace POS.View.sales
                     btn_save.IsEnabled = true;
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
+                    btn_clearCustomer.IsEnabled = true;
+                    btn_updateCustomer.IsEnabled = true;
                     tgl_ActiveOffer.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
-                    break;
+                    break;               
                 case "q": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //خ price read only
@@ -851,11 +855,13 @@ namespace POS.View.sales
                     cb_typeDiscount.IsEnabled = false;
                     cb_customer.IsEnabled = false;
                     tb_note.IsEnabled = false;
-                    tb_barcode.IsEnabled = false;
-                    btn_save.IsEnabled = false;
+                    tb_barcode.IsEnabled = false;                    
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
-                    tgl_ActiveOffer.IsEnabled = false;
+                    btn_clearCustomer.IsEnabled = false;
+                    btn_updateCustomer.IsEnabled = false;
+                    tgl_ActiveOffer.IsEnabled = true;
+                    btn_save.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     break;
             }
@@ -881,10 +887,19 @@ namespace POS.View.sales
             }
         }
         private async Task addInvoice(string invType)
-        {           
+        {
+            // build invoice NUM 
+            if ((invType == "q" || invType == "qs") && (invoice.invType == "qd" || invoice.invoiceId == 0))
+            {
+                invoice.invNumber = await invoice.generateInvNumber("qt", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+            }
+            else if (invType == "qd" && invoice.invoiceId == 0)
+                invoice.invNumber = await invoice.generateInvNumber("qtd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
+                invoice.branchId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
             invoice.invType = invType;
@@ -909,13 +924,7 @@ namespace POS.View.sales
             invoice.createUserId = MainWindow.userID;
             invoice.updateUserId = MainWindow.userID;
 
-            // build invoice NUM 
-            if (invType == "q")
-            {
-                invoice.invNumber = await invoice.generateInvNumber("qt", MainWindow.loginBranch.code, MainWindow.branchID.Value);
-            }
-            else if (invType == "qd" && invoice.invoiceId == 0)
-                invoice.invNumber = await invoice.generateInvNumber("qtd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+          
 
             byte isApproved = 0;
             if (tgl_ActiveOffer.IsChecked == true)
@@ -925,7 +934,7 @@ namespace POS.View.sales
             invoice.isApproved = isApproved;
             // save invoice in DB
             int invoiceId = await invoiceModel.saveInvoice(invoice);
-
+            invoice.invoiceId = invoiceId;
             if (invoiceId != 0)
             {
                 #region save coupns on invoice
@@ -952,9 +961,7 @@ namespace POS.View.sales
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);               
-            }
-           // clearInvoice();
-            //refreshDraftNotification();
+            }           
         }
 
         #region Get Id By Click  Y
@@ -1250,7 +1257,7 @@ namespace POS.View.sales
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_invoice w = new wd_invoice();
-                string invoiceType = "qd";
+                string invoiceType = "qd,qs";
                 int duration = 2;
                 w.invoiceType = invoiceType; //quontations draft invoices
                 w.userId = MainWindow.userLogin.userId;
@@ -1270,7 +1277,10 @@ namespace POS.View.sales
                         setNotifications();
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
+                        if(_InvoiceType == "qd")
+                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
+                        else
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsSaved");
 
                         await fillInvoiceInputs(invoice);
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
@@ -1766,17 +1776,20 @@ namespace POS.View.sales
 
                     if (billDetails.Count > 0 && valid)
                     {
-                        string type = "";
                         if (tgl_ActiveOffer.IsChecked == true)
-                            type = "q";
+                            _InvoiceType = "q";
                         else
-                            type = "qd";
-                        //await addInvoice("q");//quontation invoice
-                        await addInvoice(type);//quontation invoice
-
-                        if (invoice.invoiceId == 0)
+                            _InvoiceType = "qs";
+                        await addInvoice(_InvoiceType);//quontation invoice
+                        if(_InvoiceType == "q")
                             clearInvoice();
+
+                        setNotifications();
+                        //if (invoice.invoiceId == 0)
+                        // clearInvoice();
                     }
+                    else
+                        clearInvoice();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -2356,7 +2369,17 @@ namespace POS.View.sales
 
                     w.ShowDialog();
                     if (!w.isOk)
+                    {
+                        _InvoiceType = "qd";
                         tgl_ActiveOffer.IsChecked = false;
+                    }
+                    else
+                    {
+                        _InvoiceType = "q";
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trSubmit");
+
+                    }
+                   
                     MainWindow.mainWindow.Opacity = 1;
 
                 }
@@ -2364,8 +2387,11 @@ namespace POS.View.sales
                 else
                 {
                     tgl_ActiveOffer.IsChecked = false;
+                    exp_customer.IsExpanded = true;
                     SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip");
                 }
+                inputEditable();
+                refrishDataGridItems();
             }
         }
 
@@ -2578,6 +2604,14 @@ namespace POS.View.sales
         private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             _IsFocused = true;
+        }
+
+        private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _InvoiceType = "qd";
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            inputEditable();
+            refrishDataGridItems();
         }
     }
 }

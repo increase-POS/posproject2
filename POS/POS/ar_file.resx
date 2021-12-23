@@ -2845,4 +2845,7 @@
   <data name="trSaleOrderSaved" xml:space="preserve">
     <value>طلبية مبيعات محفوظة</value>
   </data>
+  <data name="trQuotationsSaved" xml:space="preserve">
+    <value>عرض سعر محفوظ</value>
+  </data>
 </root>

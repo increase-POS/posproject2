@@ -258,13 +258,13 @@ namespace POS.View
                 else
                 {
                     await clearInvoice();
-                    setNotifications();
+                    //setNotifications();
                 }
             }
             else
             {
                 await clearInvoice();
-                setNotifications();
+                //setNotifications();
             }
         }
         #region loading
@@ -2020,7 +2020,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                saveBeforeExit();
+                await newDraft();
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_invoice w = new wd_invoice();
@@ -2088,7 +2088,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(executeOrderPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    saveBeforeExit();
+                    await newDraft();
                     Window.GetWindow(this).Opacity = 0.2;
 
                     wd_invoice w = new wd_invoice();
@@ -2281,7 +2281,7 @@ namespace POS.View
                     }
                     else
                     {
-                        await saveBeforeExit();
+                        await newDraft();
                         Window.GetWindow(this).Opacity = 0.2;
                         wd_returnInvoice w = new wd_returnInvoice();
                         w.userId = MainWindow.userID.Value;
@@ -4714,7 +4714,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(quotationPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    saveBeforeExit();
+                    await newDraft();
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_invoice w = new wd_invoice();
 

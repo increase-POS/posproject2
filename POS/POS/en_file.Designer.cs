@@ -5921,6 +5921,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saved Quotation.
+        /// </summary>
+        internal static string trQuotationsSaved {
+            get {
+                return ResourceManager.GetString("trQuotationsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ready.
         /// </summary>
         internal static string trReady {

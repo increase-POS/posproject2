@@ -532,7 +532,8 @@
                                   FontSize="12"/>
                             <ToggleButton Grid.Column="1"  x:Name="tgl_ActiveOffer"   IsChecked="False"
                                  VerticalAlignment="Center" Padding="10,15,5,5"
-                                              Margin="0" Height="13" Width="28" Checked="Tgl_ActiveOffer_Checked" />
+                                              Margin="0" Height="13" Width="28" Checked="Tgl_ActiveOffer_Checked"
+                                          Unchecked="Tgl_ActiveOffer_Unchecked"/>
                         </StackPanel>
 
                     </StackPanel>

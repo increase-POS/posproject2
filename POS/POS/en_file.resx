@@ -2860,4 +2860,7 @@ Please add Email in setting</value>
   <data name="trSaleOrderSaved" xml:space="preserve">
     <value>Saved Sale Order</value>
   </data>
+  <data name="trQuotationsSaved" xml:space="preserve">
+    <value>Saved Quotation</value>
+  </data>
 </root>

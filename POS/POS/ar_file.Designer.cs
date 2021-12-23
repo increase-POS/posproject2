@@ -5885,6 +5885,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عرض سعر محفوظ.
+        /// </summary>
+        internal static string trQuotationsSaved {
+            get {
+                return ResourceManager.GetString("trQuotationsSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to جاهز.
         /// </summary>
         internal static string trReady {
