@@ -440,6 +440,7 @@ namespace POS.View.purchases
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
+                sp_Approved.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion
@@ -854,7 +855,7 @@ namespace POS.View.purchases
             else
                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-            clearInvoice();
+            //clearInvoice();
        
             return invoiceId;
         }
@@ -956,8 +957,12 @@ namespace POS.View.purchases
                             _InvoiceType = "pos";
                         await addInvoice(_InvoiceType); // po: purchase order
                         refreshNotification();
-                           // clearInvoice();
-                        }
+
+                        if (_InvoiceType == "po")
+                            clearInvoice();
+                        else
+                            inputEditable();
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1242,11 +1247,12 @@ namespace POS.View.purchases
                 btn_clear.IsEnabled = false;
                 btn_save.IsEnabled = false;
             }
-            if (_InvoiceType.Equals("po"))
+            if (_InvoiceType.Equals("po") || _InvoiceType.Equals("pos") )
             {
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
                 btn_pdf.Visibility = Visibility.Visible;
+                sp_Approved.Visibility = Visibility.Visible;
                 if (MainWindow.groupObject.HasPermissionAction(sendEmailPermission, MainWindow.groupObjects, "one"))
                 {
                     btn_emailMessage.Visibility = Visibility.Visible;
@@ -1264,6 +1270,7 @@ namespace POS.View.purchases
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
+                sp_Approved.Visibility = Visibility.Collapsed;
                 btn_emailMessage.Visibility = Visibility.Collapsed;
                 bdr_emailMessage.Visibility = Visibility.Collapsed;
                 #endregion

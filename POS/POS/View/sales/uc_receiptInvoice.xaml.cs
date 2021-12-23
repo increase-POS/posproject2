@@ -3379,10 +3379,8 @@ namespace POS.View
 
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            //if (_InvoiceType == "sbd" || _InvoiceType == "sd" || _InvoiceType == "or" || _InvoiceType == "q")
-            //    e.Cancel = false;
-            //else 
-            if (_InvoiceType == "s" || _InvoiceType == "sb")
+            int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
+            if (_InvoiceType == "s" || _InvoiceType == "sb" ||(_InvoiceType == "sbd" && column == 3) )
                 e.Cancel = true;
         }
 

@@ -356,7 +356,8 @@ namespace POS.View.sales
                 #endregion
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
-                btn_pdf.Visibility = Visibility.Collapsed; 
+                btn_pdf.Visibility = Visibility.Collapsed;
+                sp_Approved.Visibility = Visibility.Collapsed; 
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -869,11 +870,12 @@ namespace POS.View.sales
                     break;
             }
           
-            if (_InvoiceType.Equals("q"))
+            if (_InvoiceType.Equals("q") || _InvoiceType.Equals("qs"))
             {
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
                 btn_pdf.Visibility = Visibility.Visible;
+                sp_Approved.Visibility = Visibility.Visible;
                 #endregion
             }
             else
@@ -881,6 +883,7 @@ namespace POS.View.sales
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
+                sp_Approved.Visibility = Visibility.Collapsed;
                 #endregion
             }
             if (!isFromReport)
@@ -1784,8 +1787,11 @@ namespace POS.View.sales
                         else
                             _InvoiceType = "qs";
                         await addInvoice(_InvoiceType);//quontation invoice
-                        if(_InvoiceType == "q")
-                            clearInvoice();
+
+                        if (_InvoiceType == "q")
+                            await clearInvoice();
+                        else
+                            inputEditable();
 
                         setNotifications();
                         //if (invoice.invoiceId == 0)

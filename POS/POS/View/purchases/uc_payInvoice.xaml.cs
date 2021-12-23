@@ -2854,16 +2854,16 @@ namespace POS.View
         }
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
-            //int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
-            //if (dg_billDetails.SelectedIndex != -1 &&( column == 3 ))
-            //    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+            //if (dg_billDetails.SelectedIndex != -1 )
+            //    if (billDetails[dg_billDetails.SelectedIndex].invType == "p" || billDetails[dg_billDetails.SelectedIndex].invType == "pw"
+            //       || billDetails[dg_billDetails.SelectedIndex].invType == "pb" || billDetails[dg_billDetails.SelectedIndex].invType == "pbw")
             //        e.Cancel = true;
 
-
-            if (dg_billDetails.SelectedIndex != -1 )
-                if (billDetails[dg_billDetails.SelectedIndex].invType == "p" || billDetails[dg_billDetails.SelectedIndex].invType == "pw"
-                   || billDetails[dg_billDetails.SelectedIndex].invType == "pb" || billDetails[dg_billDetails.SelectedIndex].invType == "pbw")
-                    e.Cancel = true;
+            int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
+            if (_InvoiceType == "p" || _InvoiceType == "pw"
+                || _InvoiceType == "pb" || _InvoiceType == "pbw"
+                || (_InvoiceType == "pbd" && column == 3))
+                e.Cancel = true;
         }
 
 

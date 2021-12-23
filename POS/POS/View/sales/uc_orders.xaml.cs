@@ -441,7 +441,8 @@ namespace POS.View.sales
                 #endregion
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
-                btn_pdf.Visibility = Visibility.Collapsed; 
+                btn_pdf.Visibility = Visibility.Collapsed;
+                sp_Approved.Visibility = Visibility.Collapsed; 
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1093,11 +1094,12 @@ namespace POS.View.sales
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
             }
-            if (_InvoiceType.Equals("or"))
+            if (_InvoiceType.Equals("or")|| _InvoiceType.Equals("ors") || _InvoiceType.Equals("s"))
             {
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Visible;
                 btn_pdf.Visibility = Visibility.Visible;
+                sp_Approved.Visibility = Visibility.Visible;
                 #endregion
             }
             else
@@ -1105,6 +1107,7 @@ namespace POS.View.sales
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
+                sp_Approved.Visibility = Visibility.Collapsed;
                 #endregion
             }
             if (!isFromReport)
@@ -2299,7 +2302,7 @@ namespace POS.View.sales
                         if (_InvoiceType == "s")
                         {
                             await saveOrderStatus(invoice.invoiceId, "tr");
-                            clearInvoice();
+                            await clearInvoice();
                             refreshOrdersWaitNotification();
                         }
                         else
@@ -2309,6 +2312,10 @@ namespace POS.View.sales
                             else
                                 _InvoiceType = "ors";
                             await addInvoice(_InvoiceType);//quontation invoice                            
+                            if (_InvoiceType == "or")
+                               await clearInvoice();
+                            else
+                                inputEditable();
                             #region notification Object
                             Notification not = new Notification()
                             {
@@ -2320,8 +2327,7 @@ namespace POS.View.sales
                             };
                             await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", MainWindow.userLogin.name);
                             #endregion
-                            if (_InvoiceType == "or")
-                                clearInvoice();
+
                             refreshDraftNotification();
                             refreshOrdersNotification();
                         }                        
