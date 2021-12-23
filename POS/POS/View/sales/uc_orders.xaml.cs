@@ -1217,7 +1217,7 @@ namespace POS.View.sales
             
             // save invoice in DB
             int invoiceId = await invoiceModel.saveInvoice(invoice);
-
+            invoice.invoiceId = invoiceId;
             if (invoiceId != 0)
             {
                 #region save coupns on invoice
