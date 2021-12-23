@@ -1001,6 +1001,7 @@ namespace POS.View.purchases
                 if (billDetails.Count > 0 && valid)
                 {
                     await addInvoice(_InvoiceType);
+                    clearInvoice();
                     refreshNotification();
                 }
                 else if (billDetails.Count == 0)

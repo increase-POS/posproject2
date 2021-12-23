@@ -2704,10 +2704,12 @@ namespace POS.View
                 {
                     _SelectedCustomer = (int)cb_customer.SelectedValue;
                     var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
-                    if (c.payType != null)
-                        cb_paymentProcessType.SelectedValue = c.payType;
-                    else
-                        cb_paymentProcessType.SelectedIndex = 0;
+                    if (cb_company.SelectedIndex == -1)
+                    { if (c.payType != null)
+                            cb_paymentProcessType.SelectedValue = c.payType;
+                        else
+                            cb_paymentProcessType.SelectedIndex = 0;
+                    }
                 }
                 else
                 {
