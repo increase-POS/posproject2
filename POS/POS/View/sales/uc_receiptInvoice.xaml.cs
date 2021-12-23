@@ -1332,7 +1332,10 @@ namespace POS.View
             else if (invoice.invType == "sbd" && invType == "sb") // convert invoicce from draft bounce to bounce
                 invoice.invNumber = await invoice.generateInvNumber("sb", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             else if (invType == "sd" && invoice.invoiceId == 0)
+            {
+                invoice.branchId = MainWindow.branchID.Value;
                 invoice.invNumber = await invoice.generateInvNumber("sd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
+            }
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
