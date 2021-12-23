@@ -1341,9 +1341,7 @@ namespace POS.View
                 invoice.branchCreatorId = MainWindow.branchID.Value;
                 invoice.posId = MainWindow.posID.Value;
             }
-
-            if (invoice.invType != "s" || invoice.invoiceId == 0)
-            {
+              
                 invoice.posId = MainWindow.posID;
                 invoice.discountValue = _Discount;
                 invoice.discountType = "1";
@@ -1513,7 +1511,6 @@ namespace POS.View
                 }
 
                 // }
-            }
         }
 
         //bool logInProcessing = true;
@@ -1845,8 +1842,7 @@ namespace POS.View
                        await clearInvoice();
                     }
                 }
-                //else if (billDetails.Count == 0)
-                else
+                else if (billDetails.Count == 0)
                 {
                     _InvoiceType = "sd";
                     await clearInvoice();
