@@ -987,6 +987,28 @@ namespace POS.View.sales
         {
             if (archived)
                 _InvoiceType = "or";
+            if(archived)
+            {
+                dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
+                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                cb_branch.IsEnabled = false;
+                cb_customer.IsEnabled = false;
+                cb_company.IsEnabled = false;
+                cb_user.IsEnabled = false;
+                tb_note.IsEnabled = false;
+                tb_barcode.IsEnabled = false;
+                tgl_ActiveOffer.IsEnabled = false;
+                btn_save.IsEnabled = true;
+                cb_coupon.IsEnabled = false;
+                btn_clearCoupon.IsEnabled = false;
+                btn_clearCustomer.IsEnabled = false;
+                btn_updateCustomer.IsEnabled = false;
+                btn_items.IsEnabled = false;
+                btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                btn_submitOrder.Visibility = Visibility.Collapsed;
+            }
+            else
             switch (_InvoiceType)
             {
                 case "ord": // sales order draft invoice
@@ -1005,6 +1027,8 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = true;
+                    btn_items.IsEnabled = true;
+
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
@@ -1024,6 +1048,7 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = true;
+                    btn_items.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
@@ -1043,6 +1068,7 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_updateCustomer.IsEnabled = false;
+                    btn_items.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
                     btn_submitOrder.Visibility = Visibility.Visible;
                     break;
@@ -1062,6 +1088,7 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_updateCustomer.IsEnabled = false;
+                    btn_items.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;

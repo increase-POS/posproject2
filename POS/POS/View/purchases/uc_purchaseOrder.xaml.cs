@@ -1197,11 +1197,12 @@ namespace POS.View.purchases
                 cb_vendor.IsEnabled = true;
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
-                btn_clear.IsEnabled = true;              
+                btn_clear.IsEnabled = true;   
+                btn_items.IsEnabled = true;
                 tgl_ActiveOffer.IsEnabled = false;
                 btn_save.IsEnabled = true;
             }
-            if ( _InvoiceType == "pos") // purchase order saved
+            else if ( _InvoiceType == "pos") // purchase order saved
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Visible; //make delete column visible
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
@@ -1210,6 +1211,7 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
                 btn_clear.IsEnabled = true;
+                btn_items.IsEnabled = true;
                 tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
@@ -1222,10 +1224,12 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_clear.IsEnabled = false;
+                btn_items.IsEnabled = false;
                 tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
-            else if(archived) //come from reports
+
+           if(archived) //come from reports
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
@@ -1234,6 +1238,7 @@ namespace POS.View.purchases
                 tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 tgl_ActiveOffer.IsEnabled = false;
+                btn_items.IsEnabled = false;
                 btn_clear.IsEnabled = false;
                 btn_save.IsEnabled = false;
             }

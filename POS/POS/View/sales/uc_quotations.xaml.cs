@@ -845,6 +845,7 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = true;
+                    btn_items.IsEnabled = true;
                     tgl_ActiveOffer.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
                     break;               
@@ -860,6 +861,8 @@ namespace POS.View.sales
                     btn_clearCoupon.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_updateCustomer.IsEnabled = false;
+                    btn_items.IsEnabled = false;
+
                     tgl_ActiveOffer.IsEnabled = true;
                     btn_save.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
@@ -1788,8 +1791,8 @@ namespace POS.View.sales
                         //if (invoice.invoiceId == 0)
                         // clearInvoice();
                     }
-                    else
-                        clearInvoice();
+                    //else
+                       // clearInvoice();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
