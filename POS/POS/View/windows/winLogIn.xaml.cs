@@ -213,123 +213,130 @@ namespace POS.View.windows
                     //check if user is exist
                     //  users = await userModel.GetUsersActive();
                     ////////
-
-                    user = await userModel.Getloginuser(userName, password);
-                   
-                    if (user.username == null)
+                    int canLogin = await userModel.checkLoginAvalability(MainWindow.posID.Value);
+                    if (canLogin == 1)
                     {
-                        //user not found
-                      
-                        showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
+                        user = await userModel.Getloginuser(userName, password);
 
-                    }
-                    else
-                    {
-                        if (user.userId == 0)
+                        if (user.username == null)
                         {
-                            //rong password
-                            showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
+                            //user not found
+
+                            showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trUserNotFound");
 
                         }
                         else
                         {
-                            //correct
-                            //send user info to main window
-                            MainWindow.userID = user.userId;
-                            MainWindow.userLogin = user;
-
-                            if ( await userModel.CanLogIn(user.userId, MainWindow.posID.Value) == 0 && !SectionData.isAdminPermision() )
+                            if (user.userId == 0)
                             {
-                                //can't login to branch
-                                showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trDontPermissionLoginBranch");
-                                showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trDontPermissionLoginBranch");
+                                //rong password
+                                showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trWrongPassword");
+
                             }
                             else
                             {
+                                //correct
+                                //send user info to main window
+                                MainWindow.userID = user.userId;
+                                MainWindow.userLogin = user;
 
-                            
-
-
-                            try
-                            {
-                                MainWindow.lang = await getUserLanguage(user.userId);
-                                lang = MainWindow.lang;
-                            }
-                            catch
-                            {
-                                MainWindow.lang = "en";
-                                lang = MainWindow.lang;
-                            }
-                            try
-                            {
-                                string m = await SectionData.getUserMenuIsOpen(user.userId);
-                                if (!m.Equals("-1"))
-                                    MainWindow.menuIsOpen = m;
+                                if (await userModel.CanLogIn(user.userId, MainWindow.posID.Value) == 0 && !SectionData.isAdminPermision())
+                                {
+                                    //can't login to branch
+                                    showTextBoxValidate(txtUserName, p_errorUserName, tt_errorUserName, "trDontPermissionLoginBranch");
+                                    showPasswordValidate(txtPassword, p_errorPassword, tt_errorPassword, "trDontPermissionLoginBranch");
+                                }
                                 else
-                                    MainWindow.menuIsOpen = "close";
-                                menuIsOpen = MainWindow.menuIsOpen;
+                                {
+
+
+
+
+                                    try
+                                    {
+                                        MainWindow.lang = await getUserLanguage(user.userId);
+                                        lang = MainWindow.lang;
+                                    }
+                                    catch
+                                    {
+                                        MainWindow.lang = "en";
+                                        lang = MainWindow.lang;
+                                    }
+                                    try
+                                    {
+                                        string m = await SectionData.getUserMenuIsOpen(user.userId);
+                                        if (!m.Equals("-1"))
+                                            MainWindow.menuIsOpen = m;
+                                        else
+                                            MainWindow.menuIsOpen = "close";
+                                        menuIsOpen = MainWindow.menuIsOpen;
+                                    }
+                                    catch
+                                    {
+                                        MainWindow.menuIsOpen = "close";
+                                        menuIsOpen = MainWindow.menuIsOpen;
+                                    }
+                                    //make user online
+                                    user.isOnline = 1;
+                                    //  user.isActive = 1;
+
+                                    //checkother
+                                    string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
+
+                                    int s = await userModel.save(user);
+
+                                    //create lognin record
+                                    UsersLogs userLog = new UsersLogs();
+                                    userLog.posId = MainWindow.posID;
+                                    Pos posmodel = new Pos();
+                                    posmodel = await posmodel.getById((int)MainWindow.posID);
+                                    MainWindow.branchID = posmodel.branchId;
+
+                                    Branch branchModel = new Branch();
+                                    MainWindow.loginBranch = await branchModel.getBranchById((int)MainWindow.branchID);
+
+                                    userLog.userId = user.userId;
+                                    int str = await userLogsModel.Save(userLog);
+
+                                    if (!str.Equals(0))
+                                        MainWindow.userLogInID = str;
+
+                                    //remember me
+                                    if (cbxRemmemberMe.IsChecked.Value)
+                                    {
+                                        Properties.Settings.Default.userName = txtUserName.Text;
+                                        //Properties.Settings.Default.password = txtPassword.Password;
+                                        Properties.Settings.Default.Lang = lang;
+                                        Properties.Settings.Default.menuIsOpen = menuIsOpen;
+                                    }
+                                    else
+                                    {
+                                        Properties.Settings.Default.userName = "";
+                                        Properties.Settings.Default.password = "";
+                                        Properties.Settings.Default.Lang = "";
+                                        Properties.Settings.Default.menuIsOpen = "";
+                                    }
+                                    Properties.Settings.Default.Save();
+                                    //Window.GetWindow(this).Opacity = 1;
+                                    //open main window and close this window
+                                    MainWindow main = new MainWindow();
+                                    main.Show();
+                                    this.Close();
+                                }
                             }
-                            catch
-                            {
-                                MainWindow.menuIsOpen = "close";
-                                menuIsOpen = MainWindow.menuIsOpen;
-                            }
-                            //make user online
-                            user.isOnline = 1;
-                            //  user.isActive = 1;
 
-                            //checkother
-                            string str1 = await userLogsModel.checkOtherUser((int)MainWindow.userID);
-
-                            int s = await userModel.save(user);
-
-                            //create lognin record
-                            UsersLogs userLog = new UsersLogs();
-                            userLog.posId = MainWindow.posID;
-                            Pos posmodel = new Pos();
-                            posmodel = await posmodel.getById((int)MainWindow.posID);
-                            MainWindow.branchID = posmodel.branchId;
-
-                            Branch branchModel = new Branch();
-                            MainWindow.loginBranch = await branchModel.getBranchById((int)MainWindow.branchID);
-
-                            userLog.userId = user.userId;
-                            int str = await userLogsModel.Save(userLog);
-
-                            if (!str.Equals(0))
-                                MainWindow.userLogInID = str;
-
-                            //remember me
-                            if (cbxRemmemberMe.IsChecked.Value)
-                            {
-                                Properties.Settings.Default.userName = txtUserName.Text;
-                                //Properties.Settings.Default.password = txtPassword.Password;
-                                Properties.Settings.Default.Lang = lang;
-                                Properties.Settings.Default.menuIsOpen = menuIsOpen;
-                            }
-                            else
-                            {
-                                Properties.Settings.Default.userName = "";
-                                Properties.Settings.Default.password = "";
-                                Properties.Settings.Default.Lang = "";
-                                Properties.Settings.Default.menuIsOpen = "";
-                            }
-                            Properties.Settings.Default.Save();
-                            //Window.GetWindow(this).Opacity = 1;
-                            //open main window and close this window
-                            MainWindow main = new MainWindow();
-                            main.Show();
-                            this.Close();
                         }
-                        }
-
                     }
+                    else if (canLogin == -1) //program is expired
+                        tb_msg.Text = resourcemanager.GetString("trPackageIsExpired");
+                    else if (canLogin == -2) //device code is not correct 
+                        tb_msg.Text = resourcemanager.GetString("trPreventLogIn");
+                    else if (canLogin == -3) //serial is not active
+                        tb_msg.Text = resourcemanager.GetString("trPackageIsNotActive");
+                                      //awaitSaveBtn(false);
 
-             
-                    //awaitSaveBtn(false);
-
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
+                                if (sender != null)
+                                    SectionData.EndAwait(grid_main);
                     logInProcessing = false;
                 }
             }

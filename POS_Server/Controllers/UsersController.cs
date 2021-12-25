@@ -891,6 +891,81 @@ namespace POS_Server.Controllers
                 }
             }
         }
+        [HttpPost]
+        [Route("checkLoginAvalability")]
+        public string checkLoginAvalability(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string deviceCode = "";
+                int posId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "deviceCode")
+                    {
+                        deviceCode = c.Value;
+                    }
+                    else if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                }
+                int res = checkLoginAvalability(posId,deviceCode);
+            return TokenManager.GenerateToken(res.ToString());
+
+        }
+    }
+        public int checkLoginAvalability(int posId, string deviceCode)
+        {
+            // 1 :  can login-
+            //  0 : error 
+            //  -1 : package is expired 
+            //  -2 : device code is not correct 
+            //  -3 : serial is not active 
+
+            try
+            {
+                ActivateController ac = new ActivateController();
+                int active = ac.CheckPeriod();
+                if (active == 0)
+                    return -1;
+                else
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                       var tmpObject = entity.posSetting.Where(x => x.posId == posId).FirstOrDefault();
+                        if (tmpObject != null)
+                        {
+                            if (tmpObject.posDeviceCode != deviceCode)
+                            {
+                                return -2;
+                            }                           
+                        }
+                        // check serial && package avalilability
+                        var serial = entity.posSetting.Where(x => x.posId == posId && x.posSerials.isActive == true).FirstOrDefault();
+                        var programDetails = entity.ProgramDetails.Where(x => x.isActive == true).FirstOrDefault();
+                        if (serial == null || programDetails == null)
+                            return -3;                       
+                    }
+                }
+
+                return 1;
+            }
+            catch
+            {
+
+                return 0;
+
+            }
+
+        }
     }
 }
 

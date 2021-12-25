@@ -4976,6 +4976,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package is expired.
+        /// </summary>
+        internal static string trPackageIsExpired {
+            get {
+                return ResourceManager.GetString("trPackageIsExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package is not active.
+        /// </summary>
+        internal static string trPackageIsNotActive {
+            get {
+                return ResourceManager.GetString("trPackageIsNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package items.
         /// </summary>
         internal static string trPackageItems {
@@ -5521,6 +5539,15 @@ namespace POS {
         internal static string trPosTooltip {
             get {
                 return ResourceManager.GetString("trPosTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You cannot log in.
+        /// </summary>
+        internal static string trPreventLogIn {
+            get {
+                return ResourceManager.GetString("trPreventLogIn", resourceCulture);
             }
         }
         

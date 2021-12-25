@@ -173,6 +173,19 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
            return await APIResult.post(method, parameters);
         }
+        public async Task<int> checkLoginAvalability(int posId)
+        {
+            string motherCode = setupConfiguration.GetMotherBoardID();
+            string hardCode = setupConfiguration.GetHDDSerialNo();
+            string deviceCode = motherCode + "-" + hardCode;
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Users/checkLoginAvalability";
+
+            parameters.Add("deviceCode", deviceCode);
+            parameters.Add("posId", posId.ToString());
+           return await APIResult.post(method, parameters);
+        }
 
         public async Task<int> delete(int delUserId, int userId, bool final)
         {

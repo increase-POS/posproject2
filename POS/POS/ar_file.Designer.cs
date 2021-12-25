@@ -4940,6 +4940,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to النسخة منتهية الصلاحية.
+        /// </summary>
+        internal static string trPackageIsExpired {
+            get {
+                return ResourceManager.GetString("trPackageIsExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to النسخة غير فعالة.
+        /// </summary>
+        internal static string trPackageIsNotActive {
+            get {
+                return ResourceManager.GetString("trPackageIsNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to حزمة عناصر.
         /// </summary>
         internal static string trPackageItems {
@@ -5485,6 +5503,15 @@ namespace POS {
         internal static string trPosTooltip {
             get {
                 return ResourceManager.GetString("trPosTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لا يمكنك تسجيل الدخول.
+        /// </summary>
+        internal static string trPreventLogIn {
+            get {
+                return ResourceManager.GetString("trPreventLogIn", resourceCulture);
             }
         }
         

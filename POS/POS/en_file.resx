@@ -2863,4 +2863,13 @@ Please add Email in setting</value>
   <data name="trQuotationsSaved" xml:space="preserve">
     <value>Saved Quotation</value>
   </data>
+  <data name="trPackageIsExpired" xml:space="preserve">
+    <value>Package is expired</value>
+  </data>
+  <data name="trPackageIsNotActive" xml:space="preserve">
+    <value>Package is not active</value>
+  </data>
+  <data name="trPreventLogIn" xml:space="preserve">
+    <value>You cannot log in</value>
+  </data>
 </root>

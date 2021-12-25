@@ -2848,4 +2848,13 @@
   <data name="trQuotationsSaved" xml:space="preserve">
     <value>عرض سعر محفوظ</value>
   </data>
+  <data name="trPackageIsExpired" xml:space="preserve">
+    <value>النسخة منتهية الصلاحية</value>
+  </data>
+  <data name="trPackageIsNotActive" xml:space="preserve">
+    <value>النسخة غير فعالة</value>
+  </data>
+  <data name="trPreventLogIn" xml:space="preserve">
+    <value>لا يمكنك تسجيل الدخول</value>
+  </data>
 </root>
