@@ -510,33 +510,45 @@ namespace POS.View.sales
         #region notifications
         private async void setNotifications()
         {
+            try
+            {
+
+           
             refreshDraftNotification();
             refreshOrdersNotification();
             refreshOrdersWaitNotification();
+            }
+            catch { }
         }
         private async Task refreshDraftNotification()
         {
-            string invoiceType = "ord, ors";
+            try
+            {
+                string invoiceType = "ord, ors";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if (invoice != null && ( _InvoiceType == "ord" || _InvoiceType == "ors") && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
             SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);
-            //if (draftCount != _DraftCount)
-            //{
-            //    if (draftCount > 9)
-            //    {
-            //        md_draft.Badge = "+9" ;
-            //    }
-            //    else if (draftCount == 0) md_draft.Badge = "";
-            //    else
-            //        md_draft.Badge = draftCount.ToString();
-            //}
-            //_DraftCount = draftCount;
+                //if (draftCount != _DraftCount)
+                //{
+                //    if (draftCount > 9)
+                //    {
+                //        md_draft.Badge = "+9" ;
+                //    }
+                //    else if (draftCount == 0) md_draft.Badge = "";
+                //    else
+                //        md_draft.Badge = draftCount.ToString();
+                //}
+                //_DraftCount = draftCount;
+            }
+            catch { }
         }
         private async Task refreshOrdersNotification()
         {
-            string invoiceType = "or";
+                try
+                {
+                    string invoiceType = "or";
             int duration = 1;
             //int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             int orderCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value, 0, MainWindow.userID.Value, duration);
@@ -554,10 +566,14 @@ namespace POS.View.sales
                     md_order.Badge = orderCount.ToString();
             }
             _OrdersCount = orderCount;
+            }
+            catch { }
         }
         private async Task refreshOrdersWaitNotification()
         {
-            string invoiceType = "s";
+                    try
+                    {
+                        string invoiceType = "s";
             int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
             if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
                 ordersCount--;
@@ -573,10 +589,14 @@ namespace POS.View.sales
                     md_ordersWait.Badge = ordersCount.ToString();
             }
             _OrdersWaitCount = ordersCount;
+            }
+            catch { }
         }       
         private async Task refreshDocCount(int invoiceId)
         {
-            DocImage doc = new DocImage();
+                        try
+                        {
+                            DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
             if (docCount != _DocCount)
@@ -590,6 +610,8 @@ namespace POS.View.sales
                     md_docImage.Badge = docCount.ToString();
             }
             _DocCount = docCount;
+            }
+            catch { }
         }
 
         #endregion

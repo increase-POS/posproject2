@@ -559,15 +559,19 @@ namespace POS.View.purchases
         #region notification
         private void refreshNotification()
         {
-            refreshDraftNotification();
-            refreshOrdersNotification();
+            try
+            {
+                refreshDraftNotification();
+                refreshOrdersNotification();
+            }
+            catch { }
         }
         private async void refreshDraftNotification()
         {
-            string invoiceType = "pod,pos";
-            int duration = 2;
             try
             {
+                string invoiceType = "pod,pos";
+                int duration = 2;
                 int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
                 if (invoice != null && (invoice.invType == "pod" || invoice.invType == "pos") && !isFromReport)
                     draftCount--;
@@ -588,10 +592,10 @@ namespace POS.View.purchases
         }
         private async void refreshOrdersNotification()
         {
-            string invoiceType = "po";
-            int duration = 1;
             try
             {
+                string invoiceType = "po";
+                int duration = 1;
                 int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
                 if (invoice != null && invoice.invType == "po" && !isFromReport)
                     orderCount--;
@@ -612,26 +616,34 @@ namespace POS.View.purchases
         }
         private async Task refreshLackNotification()
         {
-            string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
-            if (isThereLack == "yes")
-                md_shortage.Badge = "!";
-            else
-                md_shortage.Badge = "";
+            try
+            {
+                string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
+                if (isThereLack == "yes")
+                    md_shortage.Badge = "!";
+                else
+                    md_shortage.Badge = "";
+            }
+            catch { }
         }
         private async void refreshDocCount(int invoiceId)
         {
-            DocImage doc = new DocImage();
-            int docCount = await doc.GetDocCount("Invoices", invoiceId);
-
-            if (docCount != _DocCount)
+            try
             {
-                if (docCount > 9)
-                    md_docImage.Badge = "+9";
-                else if (docCount == 0) md_docImage.Badge = "";
-                else
-                    md_docImage.Badge = docCount.ToString();
+                DocImage doc = new DocImage();
+                int docCount = await doc.GetDocCount("Invoices", invoiceId);
+
+                if (docCount != _DocCount)
+                {
+                    if (docCount > 9)
+                        md_docImage.Badge = "+9";
+                    else if (docCount == 0) md_docImage.Badge = "";
+                    else
+                        md_docImage.Badge = docCount.ToString();
+                }
+                _DocCount = docCount;
             }
-            _DocCount = docCount;
+            catch { }
         }
         #endregion
         private void Btn_updateVendor_Click(object sender, RoutedEventArgs e)

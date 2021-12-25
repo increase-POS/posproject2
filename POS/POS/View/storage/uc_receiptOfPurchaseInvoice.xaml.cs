@@ -294,14 +294,21 @@ namespace POS.View.storage
             }
         }
         private void setNotifications()
-        {
+        { try
+            {
+
             refreshDraftNotification();
              refreshInvoiceNotification();
              refreshReturnNotification();
+
+            }
+            catch { }
         }
         private async void refreshDraftNotification()
         {
-            string invoiceType = "isd";
+            try
+            {
+                string invoiceType = "isd";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
@@ -321,10 +328,14 @@ namespace POS.View.storage
                     md_draft.Badge = draftCount.ToString();
             }
             _DraftCount = draftCount;
+
         }
+            catch { }  }
         private async void refreshInvoiceNotification()
         {
-            string invoiceType = "pw";
+            try
+            {
+                string invoiceType = "pw";
             if (invoice == null)
                 invoice = new Invoice();
             int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
@@ -350,19 +361,20 @@ namespace POS.View.storage
                     md_invoiceCount.Badge = invoiceCount.ToString();
             }
             _InvoiceCount = invoiceCount;
-        }
+
+    }
+            catch { } }
         private async void refreshReturnNotification()
         {
-            //try
-            //{
+            try
+            {    
 
-            string invoiceType = "pbw";
+                string invoiceType = "pbw";
             if (invoice == null)
                 invoice = new Invoice();
             int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
             if (invoice.invType == "pbw" && invoice != null)
                 returnsCount--;
-
             //int previouseCount = 0;
             //if (md_returnsCount.Badge != null && md_returnsCount.Badge.ToString() != "") previouseCount = int.Parse(md_returnsCount.Badge.ToString());
 
@@ -377,12 +389,10 @@ namespace POS.View.storage
                     md_returnsCount.Badge = returnsCount.ToString();
             }
             _ReturnCount = returnsCount;
-        //}
-        //    catch (Exception ex)
-        //    {
-        //        SectionData.ExceptionMessage(ex, this);
-        //}
-    }
+     
+
+}
+            catch { } }
        
         #endregion
         

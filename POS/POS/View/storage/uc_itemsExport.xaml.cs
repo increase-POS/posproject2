@@ -58,7 +58,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
@@ -71,7 +71,7 @@ namespace POS.View.storage
         List<ItemUnit> itemUnits;
 
         ItemLocation itemLocationModel = new ItemLocation();
-      public  Invoice invoice = new Invoice();
+        public Invoice invoice = new Invoice();
         Invoice generatedInvoice = new Invoice();
         List<Invoice> invoices;
         List<ItemTransfer> invoiceItems;
@@ -165,14 +165,14 @@ namespace POS.View.storage
                     w.ShowDialog();
                     MainWindow.mainWindow.Opacity = 1;
                     #endregion
-                    if (w.isOk  )
+                    if (w.isOk)
                         Btn_newDraft_Click(null, null);
                     else
                         clearProcess();
                 }
                 else
                     clearProcess();
-               
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -260,7 +260,7 @@ namespace POS.View.storage
                 if (!MainWindow.groupObject.HasPermissionAction(packagePermission, MainWindow.groupObjects, "one")
                     && !MainWindow.groupObject.HasPermissionAction(unitConversionPermission, MainWindow.groupObjects, "one"))
                     bdr_package_converter.Visibility = Visibility.Collapsed;
-                
+
 
                 #endregion
 
@@ -311,7 +311,7 @@ namespace POS.View.storage
             timer.Tick += timer_Tick;
             timer.Start();
         }
-          void timer_Tick(object sendert, EventArgs et)
+        void timer_Tick(object sendert, EventArgs et)
         {
             try
             {
@@ -324,41 +324,45 @@ namespace POS.View.storage
         }
         #endregion
         #region notifications
-        private  void setNotifications()
+        private void setNotifications()
         {
             try
             {
                 refreshDraftNotification();
-             refreshOrderWaitNotification();
+                refreshOrderWaitNotification();
                 refreshLackNotification();
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async void refreshDraftNotification()
         {
-            string invoiceType = "imd ,exd";
-            int duration = 2;
-            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((invoice.invType == "imd" || invoice.invType == "exd"))
-                draftCount--;
-
-            int previouseCount = 0;
-            if (md_draftsCount.Badge != null && md_draftsCount.Badge.ToString() != "") previouseCount = int.Parse(md_draftsCount.Badge.ToString());
-
-            if (draftCount != previouseCount)
+            try
             {
-                if (draftCount > 9)
+                string invoiceType = "imd ,exd";
+                int duration = 2;
+                int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+                if ((invoice.invType == "imd" || invoice.invType == "exd"))
+                    draftCount--;
+
+                int previouseCount = 0;
+                if (md_draftsCount.Badge != null && md_draftsCount.Badge.ToString() != "") previouseCount = int.Parse(md_draftsCount.Badge.ToString());
+
+                if (draftCount != previouseCount)
                 {
-                    draftCount = 9;
-                    md_draftsCount.Badge = "+" + draftCount.ToString();
+                    if (draftCount > 9)
+                    {
+                        draftCount = 9;
+                        md_draftsCount.Badge = "+" + draftCount.ToString();
+                    }
+                    else if (draftCount == 0) md_draftsCount.Badge = "";
+                    else
+                        md_draftsCount.Badge = draftCount.ToString();
                 }
-                else if (draftCount == 0) md_draftsCount.Badge = "";
-                else
-                    md_draftsCount.Badge = draftCount.ToString();
             }
+            catch { }
         }
         private async void refreshOrderWaitNotification()
         {
@@ -387,16 +391,20 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
         private async Task refreshLackNotification()
         {
-            string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
-            if (isThereLack == "yes")
-                md_shortage.Badge = "!";
-            else
-                md_shortage.Badge = "";
+            try
+            {
+                string isThereLack = await invoice.isThereLack(MainWindow.branchID.Value);
+                if (isThereLack == "yes")
+                    md_shortage.Badge = "!";
+                else
+                    md_shortage.Badge = "";
+            }
+            catch { }
         }
         #endregion
 
@@ -792,7 +800,7 @@ namespace POS.View.storage
                             _invoiceId = invoice.invoiceId;
                             setNotifications();
                             await fillOrderInputs(invoice);
-                            invoices = await invoice.getBranchInvoices(w.invoiceType, 0,MainWindow.branchID.Value);
+                            invoices = await invoice.getBranchInvoices(w.invoiceType, 0, MainWindow.branchID.Value);
                             navigateBtnActivate();
                         }
                     }
@@ -911,7 +919,7 @@ namespace POS.View.storage
                         int itemId = w.selectedItems[i];
                         await ChangeItemIdEvent(itemId);
                     }
-                refrishBillDetails();
+                    refrishBillDetails();
                 }
 
                 Window.GetWindow(this).Opacity = 1;
@@ -1048,7 +1056,7 @@ namespace POS.View.storage
                     await saveDraft();
                     setNotifications();
                 }
-               
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1107,7 +1115,7 @@ namespace POS.View.storage
                     invoice.createUserId = MainWindow.userID;
                     invoice.updateUserId = MainWindow.userID;
                     if (invoice.invNumber == null)
-                        invoice.invNumber = await invoice.generateInvNumber("im",branchModel.code, MainWindow.branchID.Value);
+                        invoice.invNumber = await invoice.generateInvNumber("im", branchModel.code, MainWindow.branchID.Value);
                     // save invoice in DB
                     invoiceId = await invoice.saveInvoice(invoice);
                     if (invoiceId != 0)
@@ -1196,7 +1204,7 @@ namespace POS.View.storage
 
                 Window.GetWindow(this).Opacity = 0.2;
                 wd_invoice w = new wd_invoice();
-                string  invoiceType = "imd ,exd";
+                string invoiceType = "imd ,exd";
                 int duration = 2;
                 w.invoiceType = invoiceType;
                 w.userId = MainWindow.userLogin.userId;
@@ -1389,7 +1397,7 @@ namespace POS.View.storage
                             createUserId = MainWindow.userID.Value,
                             updateUserId = MainWindow.userID.Value,
                         };
-                       await not.save(not, (int) cb_branch.SelectedValue, "storageAlerts_ImpExp", MainWindow.loginBranch.name);
+                        await not.save(not, (int)cb_branch.SelectedValue, "storageAlerts_ImpExp", MainWindow.loginBranch.name);
                         #endregion
                         // expot order
                         if (invoice.invoiceId == 0) // create new export order
@@ -1510,14 +1518,14 @@ namespace POS.View.storage
                 if (
                             (
                                 (_ProcessType == "im" || _ProcessType == "imd")
-                            && 
+                            &&
                                  (MainWindow.groupObject.HasPermissionAction(importPermission, MainWindow.groupObjects, "one"))
                             )
                         ||
                             (
                                 (_ProcessType == "ex" || _ProcessType == "exd" || _ProcessType == "exw")
                             &&
-                                (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one") )
+                                (MainWindow.groupObject.HasPermissionAction(exportPermission, MainWindow.groupObjects, "one"))
                             )
                    )
                 {
@@ -1532,7 +1540,7 @@ namespace POS.View.storage
                                 Window.GetWindow(this).Opacity = 0.2;
                                 w = new wd_transItemsLocation();
                                 List<ItemTransfer> orderList = new List<ItemTransfer>();
-                            List<int> ordersIds = new List<int>();
+                                List<int> ordersIds = new List<int>();
                                 foreach (BillDetails d in billDetails)
                                 {
                                     if (d.Count == 0)
@@ -1570,19 +1578,19 @@ namespace POS.View.storage
                                             if (itemsLocations[i].isSelected == true)
                                                 readyItemsLoc.Add(itemsLocations[i]);
                                         }
-                                    #region notification Object
-                                    Notification not = new Notification()
-                                    {
-                                        title = "trExceedMaxLimitAlertTilte",
-                                        ncontent = "trExceedMaxLimitAlertContent",
-                                        msgType = "alert",
-                                        createDate = DateTime.Now,
-                                        updateDate = DateTime.Now,
-                                        createUserId = MainWindow.userID.Value,
-                                        updateUserId = MainWindow.userID.Value,
-                                    };
-                                    #endregion
-                                    await itemLocationModel.recieptOrder(readyItemsLoc,orderList, (int)cb_branch.SelectedValue, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
+                                        #region notification Object
+                                        Notification not = new Notification()
+                                        {
+                                            title = "trExceedMaxLimitAlertTilte",
+                                            ncontent = "trExceedMaxLimitAlertContent",
+                                            msgType = "alert",
+                                            createDate = DateTime.Now,
+                                            updateDate = DateTime.Now,
+                                            createUserId = MainWindow.userID.Value,
+                                            updateUserId = MainWindow.userID.Value,
+                                        };
+                                        #endregion
+                                        await itemLocationModel.recieptOrder(readyItemsLoc, orderList, (int)cb_branch.SelectedValue, MainWindow.userID.Value, "storageAlerts_minMaxItem", not);
                                         await save();
                                     }
                                 }
@@ -1712,7 +1720,7 @@ namespace POS.View.storage
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
                         }
                     }
-                  
+
 
                     _Count -= oldCount;
                     _Count += newCount;
@@ -1826,7 +1834,7 @@ namespace POS.View.storage
         }
         private void ereaseQuantity()
         {
-            foreach(BillDetails b in billDetails)
+            foreach (BillDetails b in billDetails)
             {
                 b.Count = 0;
             }
@@ -1844,14 +1852,14 @@ namespace POS.View.storage
                 {
                     /////////////////////////////////////
                     ///  
-                    if (invoiceItems!=null)
+                    if (invoiceItems != null)
                     {
                         Thread t1 = new Thread(() =>
                     {
                         printExport();
                     });
-                    t1.Start();
-                }
+                        t1.Start();
+                    }
                     //////////////////////////////////////
                 }
                 else
@@ -1886,7 +1894,7 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    if (invoiceItems!=null)
+                    if (invoiceItems != null)
                     {
                         Thread t1 = new Thread(() =>
                     {
@@ -1910,7 +1918,7 @@ namespace POS.View.storage
 
         private void pdfExport()
         {
-          
+
             BuildReport();
 
             this.Dispatcher.Invoke(() =>
@@ -1923,7 +1931,7 @@ namespace POS.View.storage
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
             });
-         
+
         }
 
         ReportCls reportclass = new ReportCls();
@@ -1939,8 +1947,8 @@ namespace POS.View.storage
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    if (invoiceItems!=null)
-                    { 
+                    if (invoiceItems != null)
+                    {
                         Window.GetWindow(this).Opacity = 0.2;
                         /////////////////////
                         string pdfpath = "";
@@ -1958,7 +1966,7 @@ namespace POS.View.storage
                             w.wb_pdfWebViewer.Dispose();
                         }
                         Window.GetWindow(this).Opacity = 1;
-                }
+                    }
                     //////////////////////////////////////
                     #endregion
                 }
@@ -1978,7 +1986,7 @@ namespace POS.View.storage
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-         
+
             string addpath;
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
@@ -2047,7 +2055,7 @@ namespace POS.View.storage
                             }
                         }
                     }
-                                count++;
+                    count++;
                 }
 
                 if (sender != null)
@@ -2118,7 +2126,7 @@ namespace POS.View.storage
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if(invoice.invoiceId != 0)
+            if (invoice.invoiceId != 0)
                 clearProcess();
             cb_processType.SelectedIndex = 0;
             cb_processType.IsEnabled = false;

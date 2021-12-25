@@ -422,35 +422,51 @@ namespace POS.View.sales
         #region notifications
         private async void setNotifications()
         {
-            refreshDraftNotification();
-            refreshQuotationNotification();
+            try
+            {
+                refreshDraftNotification();
+                refreshQuotationNotification();
+            }
+            catch { }
         }
         private async void refreshDraftNotification()
         {
-            string invoiceType = "qd,qs";
+            try
+            {
+                string invoiceType = "qd,qs";
             int duration = 2;
             int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if (invoice != null && (_InvoiceType == "qd" || _InvoiceType == "qs")  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
-            SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);            
+            SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);
+            }
+            catch { }
         }
         private async void refreshQuotationNotification()
         {
-            string invoiceType = "q";
+                try
+                {
+                    string invoiceType = "q";
             int duration = 1;
             int qoutationCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
             if (invoice != null && _InvoiceType == "q"  && invoice.invoiceId != 0 && !isFromReport)
                 qoutationCount--;
 
-            SectionData.refreshNotification(md_qout, ref _QoutationCount, qoutationCount);           
+            SectionData.refreshNotification(md_qout, ref _QoutationCount, qoutationCount);
+            }
+            catch { }
         }
         private async void refreshDocCount(int invoiceId)
         {
-            DocImage doc = new DocImage();
+                    try
+                    {
+                        DocImage doc = new DocImage();
             int docCount = await doc.GetDocCount("Invoices", invoiceId);
 
-            SectionData.refreshNotification(md_docImage, ref _DocCount, docCount);           
+            SectionData.refreshNotification(md_docImage, ref _DocCount, docCount);
+            }
+            catch { }
         }
         #endregion
         private void configureDiscountType()
