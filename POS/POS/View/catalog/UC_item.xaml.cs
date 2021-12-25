@@ -2218,17 +2218,10 @@ namespace POS.View
         async Task<IEnumerable<Item>> RefrishItems()
         {
             allItems = await itemModel.GetAllItems();
-
-
-            //if (category.categoryId == 0 && categoryParentId == 0)
-            //    items = allItems;
-            //else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
-
             if(category.categoryId != 0)
                 items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             else
                 items = allItems;
-
             items = items.Where(x => x.type != "p" && x.type != "sr").ToList();
 
             return items;
@@ -2893,11 +2886,12 @@ namespace POS.View
                     categoryParentId = int.Parse(b.Tag.ToString());
                     await RefrishCategoriesCard();
 
-
                     //category.categoryId = int.Parse(b.Tag.ToString());
-
+                    allItems = await itemModel.GetAllItems();
+                    items = await itemModel.GetItemsInCategoryAndSub(categoryParentId.Value);
+                    items = items.Where(x => x.type != "p" && x.type != "sr").ToList();
                 }
-                await RefrishItems();
+                //await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
 
                 if (sender != null)
