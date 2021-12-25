@@ -66,7 +66,7 @@
                     <Grid>
                         <TextBox x:Name="txtUserName" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="5,0,0,0"  materialDesign:HintAssist.Hint="User Name" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top" Width="160" TextChanged="TxtUserName_TextChanged" LostFocus="TxtUserName_LostFocus"></TextBox>
                         <Path Fill="#E81123" x:Name="p_errorUserName" Stretch="Fill" Margin="5,5,5,5"
-                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Visible"   
+                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -89,7 +89,7 @@
                         <PasswordBox x:Name="txtPassword" Margin="5,0,0,0" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" materialDesign:HintAssist.Hint="Password" materialDesign:HintAssist.Foreground="#FF2196F3" VerticalAlignment="Top" Width="160" LostFocus="TxtPassword_LostFocus" PasswordChanged="TxtPassword_PasswordChanged"></PasswordBox>
                         <TextBox x:Name="txtShowPassword" Visibility="Collapsed" Margin="5,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Top" Width="160"></TextBox>
                         <Path Fill="#E81123" x:Name="p_errorPassword" Stretch="Fill" Margin="5,5,5,5"
-                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Visible"   
+                                  HorizontalAlignment="Right" Grid.Row="2"  Visibility="Collapsed"   
                              VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                             <Path.ToolTip>
@@ -135,7 +135,9 @@
                                        
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="5" >
-                    <TextBlock Text="" Name="tb_msg"></TextBlock>
+                    <TextBlock Height="40" FontSize="16"
+                 FontWeight="SemiBold" Foreground="{StaticResource MainColorRed}"
+                Text="" Name="tb_msg"  />
                 </StackPanel>
             </Grid>
 
