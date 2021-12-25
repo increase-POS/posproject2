@@ -905,6 +905,8 @@ namespace POS_Server.Controllers
             {
                 string deviceCode = "";
                 int posId = 0;
+                string userName = "";
+                string password = "";
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -916,13 +918,21 @@ namespace POS_Server.Controllers
                     {
                         posId = int.Parse(c.Value);
                     }
+                    else if (c.Type == "userName")
+                    {
+                        userName = c.Value;
+                    }
+                    else if (c.Type == "password")
+                    {
+                        password = c.Value;
+                    }
                 }
-                int res = checkLoginAvalability(posId,deviceCode);
+                int res = checkLoginAvalability(posId,deviceCode,userName,password);
             return TokenManager.GenerateToken(res.ToString());
 
         }
     }
-        public int checkLoginAvalability(int posId, string deviceCode)
+        public int checkLoginAvalability(int posId, string deviceCode,string userName, string password)
         {
             // 1 :  can login-
             //  0 : error 
@@ -932,31 +942,38 @@ namespace POS_Server.Controllers
 
             try
             {
-                ActivateController ac = new ActivateController();
-                int active = ac.CheckPeriod();
-                if (active == 0)
-                    return -1;
-                else
+                using (incposdbEntities entity = new incposdbEntities())
                 {
-                    using (incposdbEntities entity = new incposdbEntities())
+                    //check support user
+                    if (userName == "Support@Increase")
                     {
-                       var tmpObject = entity.posSetting.Where(x => x.posId == posId).FirstOrDefault();
+                        var suppUser = entity.users.Where(u => u.isActive == 1 && u.username == userName && u.password == password && u.isAdmin == true).FirstOrDefault();
+                        if (suppUser != null)
+                            return 1;
+                    }
+                    ActivateController ac = new ActivateController();
+                    int active = ac.CheckPeriod();
+                    if (active == 0)
+                        return -1;
+                    else
+                    {
+                        var tmpObject = entity.posSetting.Where(x => x.posId == posId).FirstOrDefault();
                         if (tmpObject != null)
                         {
                             if (tmpObject.posDeviceCode != deviceCode)
                             {
                                 return -2;
-                            }                           
+                            }
                         }
                         // check serial && package avalilability
                         var serial = entity.posSetting.Where(x => x.posId == posId && x.posSerials.isActive == true).FirstOrDefault();
                         var programDetails = entity.ProgramDetails.Where(x => x.isActive == true).FirstOrDefault();
                         if (serial == null || programDetails == null)
-                            return -3;                       
-                    }
+                            return -3;
                 }
 
-                return 1;
+                    return 1;
+                }
             }
             catch
             {

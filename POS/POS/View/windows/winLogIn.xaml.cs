@@ -213,7 +213,8 @@ namespace POS.View.windows
                     //check if user is exist
                     //  users = await userModel.GetUsersActive();
                     ////////
-                    int canLogin = await userModel.checkLoginAvalability(MainWindow.posID.Value);
+                
+                    int canLogin = await userModel.checkLoginAvalability(MainWindow.posID.Value,userName,password);
                     if (canLogin == 1)
                     {
                         user = await userModel.Getloginuser(userName, password);

@@ -173,7 +173,7 @@ namespace POS.Classes
             parameters.Add("itemObject", myContent);
            return await APIResult.post(method, parameters);
         }
-        public async Task<int> checkLoginAvalability(int posId)
+        public async Task<int> checkLoginAvalability(int posId, string userName, string password)
         {
             string motherCode = setupConfiguration.GetMotherBoardID();
             string hardCode = setupConfiguration.GetHDDSerialNo();
@@ -184,6 +184,8 @@ namespace POS.Classes
 
             parameters.Add("deviceCode", deviceCode);
             parameters.Add("posId", posId.ToString());
+            parameters.Add("userName", userName);
+            parameters.Add("password", password);
            return await APIResult.post(method, parameters);
         }
 
