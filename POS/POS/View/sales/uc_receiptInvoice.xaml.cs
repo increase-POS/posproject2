@@ -2844,7 +2844,9 @@ namespace POS.View
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
                 tb_sum.Text = "0";
-            //tb_total.Text = Math.Round(total, 2).ToString();
+
+            if (total < 0)
+                total = 0;
             if (total != 0)
                 tb_total.Text = SectionData.DecTostring(total);
             else

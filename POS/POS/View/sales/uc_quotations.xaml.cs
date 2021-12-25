@@ -1068,6 +1068,8 @@ namespace POS.View.sales
             else
                 tb_sum.Text = "0";
 
+            if (total < 0)
+                total = 0;
             if (total != 0)
                 tb_total.Text = SectionData.DecTostring(total);
             else
