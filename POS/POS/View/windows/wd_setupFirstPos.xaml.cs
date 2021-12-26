@@ -451,6 +451,15 @@ namespace POS.View.windows
                         Properties.Settings.Default.APIUri = Global.APIUri;
                         Properties.Settings.Default.posId = res.ToString();
                         Properties.Settings.Default.Save();
+                        Properties.Settings.Default.Reload();
+                        System.Configuration.Configuration config =ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                        config.AppSettings.Settings.Add("posId",res.ToString());
+
+                        config.Save(ConfigurationSaveMode.Modified);
+
+                        // Force a reload of a changed section.
+                        ConfigurationManager.RefreshSection("appSettings");
                         this.Close();
                         return;
                     }

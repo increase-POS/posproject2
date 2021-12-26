@@ -3,6 +3,7 @@ using POS.Classes;
 using POS.View.setup;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -239,6 +240,14 @@ namespace POS.View.windows
                     Properties.Settings.Default.APIUri = Global.APIUri;
                     Properties.Settings.Default.posId = res.ToString();
                     Properties.Settings.Default.Save();
+                        System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+                        config.AppSettings.Settings.Add("posId", res.ToString());
+
+                        config.Save(ConfigurationSaveMode.Modified);
+
+                        // Force a reload of a changed section.
+                        ConfigurationManager.RefreshSection("appSettings");
                         this.Close();
                         return;
                     }

@@ -17,15 +17,16 @@ namespace POS
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private async void Application_Startup(object sender, StartupEventArgs e)
         {
             try
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
-                //POS.Properties.Settings.Default.posId = "0";
-                if (POS.Properties.Settings.Default.posId == "0")
+                System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+               // if (POS.Properties.Settings.Default.posId == "0")
+                if (config.AppSettings.Settings["posId"] == null)
                 {
                     //wd_setupOtherPos logIn = new wd_setupOtherPos();
                     //logIn.Show();
