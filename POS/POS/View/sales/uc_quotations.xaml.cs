@@ -1099,9 +1099,11 @@ namespace POS.View.sales
 
             if (firstTimeForDatagrid)
             {
+                SectionData.StartAwait(grid_main);
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
+            SectionData.EndAwait(grid_main);
             }
             DataGrid_CollectionChanged(dg_billDetails, null);
             // tb_sum.Text = _Sum.ToString();

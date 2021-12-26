@@ -622,12 +622,15 @@ namespace POS.View.storage
             dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
+                SectionData.StartAwait(grid_main);
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
+            SectionData.EndAwait(grid_main);
             }
             DataGrid_CollectionChanged(dg_billDetails, null);
             tb_count.Text = _Count.ToString();
+
         }
         void refrishDataGridItems()
         {

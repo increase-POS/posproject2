@@ -2867,11 +2867,13 @@ namespace POS.View
             dg_billDetails.ItemsSource = billDetails;
             if (firstTimeForDatagrid)
             {
+                SectionData.StartAwait(grid_main);
                 dg_billDetails.IsEnabled = true;
                 await Task.Delay(1000);
                 dg_billDetails.Items.Refresh();
                 firstTimeForDatagrid = false;
                 dg_billDetails.IsEnabled = true;
+            SectionData.EndAwait(grid_main);
             }
             //dg_billDetails.Items.Refresh();
             DataGrid_CollectionChanged(dg_billDetails, null);
@@ -2889,6 +2891,7 @@ namespace POS.View
             //else
             //    tb_taxValue.Text = "0";
             //}
+
         }
         void refrishDataGridItems()
         {
