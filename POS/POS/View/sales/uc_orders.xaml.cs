@@ -2979,8 +2979,37 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private async void Btn_addCustomer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_updateVendor w = new wd_updateVendor();
+                //// pass agent id to update windows
+                w.agent.agentId = 0;
+                w.type = "c";
+                w.ShowDialog();
+                if (w.isOk == true)
+                {
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    await RefrishCustomers();
+                }
+                Window.GetWindow(this).Opacity = 1;
 
-        private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private async void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -2993,6 +3022,7 @@ namespace POS.View.sales
                     //// pass agent id to update windows
                     w.agent.agentId = (int)cb_customer.SelectedValue;
                     w.ShowDialog();
+                    await RefrishCustomers();
                     Window.GetWindow(this).Opacity = 1;
                 }
                 if (sender != null)
