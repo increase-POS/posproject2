@@ -24,8 +24,8 @@ namespace POS.converters
             //var result = Task.Run(() => itemUnit.GetItemUnits(int.Parse(value.ToString()))).Result;
 
             var result = itemUnit.GetIUbyItem(int.Parse(value.ToString()),
-                MainWindow.GlobalItemUnitsList,
-                MainWindow.GlobalUnitsList);
+                MainWindow.mainWindow.GlobalItemUnitsList,
+                MainWindow.mainWindow.GlobalUnitsList);
 
             return result;
         }

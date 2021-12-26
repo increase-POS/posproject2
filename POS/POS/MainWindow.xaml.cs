@@ -114,10 +114,10 @@ namespace POS
         static public List<Item> InvoiceGlobalSaleUnitsList = new List<Item>();
 
 
-        static public ItemUnit GlobalItemUnit = new ItemUnit();
-        static public List<ItemUnit> GlobalItemUnitsList = new List<ItemUnit>();
-        static public Unit GlobalUnit = new Unit();
-        static public List<Unit> GlobalUnitsList = new List<Unit>();
+         public ItemUnit GlobalItemUnit = new ItemUnit();
+         public List<ItemUnit> GlobalItemUnitsList = new List<ItemUnit>();
+         public Unit GlobalUnit = new Unit();
+         public List<Unit> GlobalUnitsList = new List<Unit>();
 
         public static async Task Getprintparameter()
         {
