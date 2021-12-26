@@ -1211,8 +1211,8 @@ namespace POS.View
                                     if (res > 0)
                                     {
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                                        MainWindow.GlobalItemUnitsList = await MainWindow.GlobalItemUnit.GetIU();
-                                        MainWindow.GlobalUnitsList = await MainWindow.GlobalUnit.GetU();
+                                        MainWindow.mainWindow.GlobalItemUnitsList = await MainWindow.mainWindow.GlobalItemUnit.GetIU();
+                                        MainWindow.mainWindow.GlobalUnitsList = await MainWindow.mainWindow.GlobalUnit.GetU();
                                     }
                                     else
                                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
