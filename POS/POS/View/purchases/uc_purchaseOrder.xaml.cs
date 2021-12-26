@@ -2426,7 +2426,12 @@ namespace POS.View.purchases
         }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index++;
             clearInvoice();
             invoice = invoices[index];
@@ -2434,10 +2439,25 @@ namespace POS.View.purchases
             _invoiceId = invoice.invoiceId;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
+
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this);
+        }
+    }
         private async void Btn_previous_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index--;
             clearInvoice();
             invoice = invoices[index];
@@ -2445,15 +2465,39 @@ namespace POS.View.purchases
             _InvoiceType = invoice.invType;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
-        }
-        #endregion
 
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
+        }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this);
+        }
+    }
+        #endregion
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (invoice.invoiceId != 0)
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (invoice.invoiceId != 0)
                 clearInvoice();
             await buildShortageInvoiceDetails();
+
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this);
+        }
+    }
         private async Task buildShortageInvoiceDetails()
         {
             //get invoice items
@@ -2505,7 +2549,6 @@ namespace POS.View.purchases
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             _IsFocused = true;

@@ -5316,13 +5316,27 @@ namespace POS.View
 
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index++;
             invoice = invoices[index];
             _invoiceId = invoice.invoiceId;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this);
+        }
+    }
 
         private void navigateBtnActivate()
         {
@@ -5339,14 +5353,28 @@ namespace POS.View
         }
 
         private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+    {
+        try
         {
+            if (sender != null)
+                SectionData.StartAwait(grid_main);
+
             int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index--;
             invoice = invoices[index];
             _invoiceId = invoice.invoiceId;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
+            if (sender != null)
+                SectionData.EndAwait(grid_main);
         }
+            catch (Exception ex)
+            {
+				if (sender != null)
+				SectionData.EndAwait(grid_main);
+				SectionData.ExceptionMessage(ex,this);
+        }
+    }
 
         //private async void Btn_deleteInvoice_Click(object sender, RoutedEventArgs e)
         //{

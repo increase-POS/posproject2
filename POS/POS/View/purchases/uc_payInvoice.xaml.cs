@@ -4107,33 +4107,72 @@ namespace POS.View
         }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index++;
             clearInvoice();
             invoice = invoices[index];
             _invoiceId = invoice.invoiceId;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void Btn_previous_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index--;
             clearInvoice();
             invoice = invoices[index];
             _invoiceId = invoice.invoiceId;
             navigateBtnActivate();
             await fillInvoiceInputs(invoice);
-        }
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                }
+                catch (Exception ex)
+                {
+                    if (sender != null)
+                        SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+                }
+            }
         #endregion
 
         private async void Btn_shortageInvoice_Click(object sender, RoutedEventArgs e)
-        {
-            await saveBeforeTransfer();
+                {
+                    try
+                    {
+                        if (sender != null)
+                            SectionData.StartAwait(grid_main);
+                        await saveBeforeTransfer();
             if (invoice.invoiceId != 0)
                 clearInvoice();
             await buildShortageInvoiceDetails();
-        }
+                        if (sender != null)
+                            SectionData.EndAwait(grid_main);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (sender != null)
+                            SectionData.EndAwait(grid_main);
+                        SectionData.ExceptionMessage(ex, this);
+                    }
+                }
         private async Task buildShortageInvoiceDetails()
         {
 

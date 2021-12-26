@@ -37,7 +37,7 @@ namespace POS.View.storage
         string returnPermission = "reciptOfInvoice_return";
         string reportsPermission = "reciptOfInvoice_reports";
         string inputsPermission = "reciptOfInvoice_inputs";
-        private static uc_receiptOfPurchaseInvoice _instance; 
+        private static uc_receiptOfPurchaseInvoice _instance;
         public static uc_receiptOfPurchaseInvoice Instance
         {
             get
@@ -55,7 +55,7 @@ namespace POS.View.storage
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex,this);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
         ObservableCollection<BillDetails> billDetails = new ObservableCollection<BillDetails>();
@@ -294,12 +294,13 @@ namespace POS.View.storage
             }
         }
         private void setNotifications()
-        { try
+        {
+            try
             {
 
-            refreshDraftNotification();
-             refreshInvoiceNotification();
-             refreshReturnNotification();
+                refreshDraftNotification();
+                refreshInvoiceNotification();
+                refreshReturnNotification();
 
             }
             catch { }
@@ -309,93 +310,96 @@ namespace POS.View.storage
             try
             {
                 string invoiceType = "isd";
-            int duration = 2;
-            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
-                draftCount--;
+                int duration = 2;
+                int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+                if ((_InvoiceType == "isd") && invoice.invoiceId != 0 && invoice != null && !isFromReport)
+                    draftCount--;
 
-            //int previouseCount = 0;
-            //if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
+                //int previouseCount = 0;
+                //if (md_draft.Badge != null && md_draft.Badge.ToString() != "") previouseCount = int.Parse(md_draft.Badge.ToString());
 
-            if (draftCount != _DraftCount)
-            {
-                if (draftCount > 9)
+                if (draftCount != _DraftCount)
                 {
-                    md_draft.Badge = "+9" ;
+                    if (draftCount > 9)
+                    {
+                        md_draft.Badge = "+9";
+                    }
+                    else if (draftCount == 0) md_draft.Badge = "";
+                    else
+                        md_draft.Badge = draftCount.ToString();
                 }
-                else if (draftCount == 0) md_draft.Badge = "";
-                else
-                    md_draft.Badge = draftCount.ToString();
-            }
-            _DraftCount = draftCount;
+                _DraftCount = draftCount;
 
+            }
+            catch { }
         }
-            catch { }  }
         private async void refreshInvoiceNotification()
         {
             try
             {
                 string invoiceType = "pw";
-            if (invoice == null)
-                invoice = new Invoice();
-            int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-            if (invoice.invType == "pw" && invoice != null)
-                invoiceCount--;
+                if (invoice == null)
+                    invoice = new Invoice();
+                int invoiceCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+                if (invoice.invType == "pw" && invoice != null)
+                    invoiceCount--;
 
-            //int previouseCount = 0;
-            //if (md_invoiceCount.Badge != null && md_invoiceCount.Badge.ToString() != "")
-            //{
-            //    if (md_invoiceCount.Badge.ToString() == "+9")
-            //        previouseCount = 10;
-            //    else
-            //        previouseCount = int.Parse(md_invoiceCount.Badge.ToString());
-            //}
-            if (invoiceCount != _InvoiceCount)
-            {
-                if (invoiceCount > 9)
+                //int previouseCount = 0;
+                //if (md_invoiceCount.Badge != null && md_invoiceCount.Badge.ToString() != "")
+                //{
+                //    if (md_invoiceCount.Badge.ToString() == "+9")
+                //        previouseCount = 10;
+                //    else
+                //        previouseCount = int.Parse(md_invoiceCount.Badge.ToString());
+                //}
+                if (invoiceCount != _InvoiceCount)
                 {
-                    md_invoiceCount.Badge = "+9";
+                    if (invoiceCount > 9)
+                    {
+                        md_invoiceCount.Badge = "+9";
+                    }
+                    else if (invoiceCount == 0) md_invoiceCount.Badge = "";
+                    else
+                        md_invoiceCount.Badge = invoiceCount.ToString();
                 }
-                else if (invoiceCount == 0) md_invoiceCount.Badge = "";
-                else
-                    md_invoiceCount.Badge = invoiceCount.ToString();
-            }
-            _InvoiceCount = invoiceCount;
+                _InvoiceCount = invoiceCount;
 
-    }
-            catch { } }
+            }
+            catch { }
+        }
         private async void refreshReturnNotification()
         {
             try
-            {    
+            {
 
                 string invoiceType = "pbw";
-            if (invoice == null)
-                invoice = new Invoice();
-            int returnsCount = await invoice.GetCountBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
-            if (invoice.invType == "pbw" && invoice != null)
-                returnsCount--;
-            //int previouseCount = 0;
-            //if (md_returnsCount.Badge != null && md_returnsCount.Badge.ToString() != "") previouseCount = int.Parse(md_returnsCount.Badge.ToString());
+                if (invoice == null)
+                    invoice = new Invoice();
+                int returnsCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+                if (invoice.invType == "pbw" && invoice != null)
+                    returnsCount--;
+                //int previouseCount = 0;
+                //if (md_returnsCount.Badge != null && md_returnsCount.Badge.ToString() != "") previouseCount = int.Parse(md_returnsCount.Badge.ToString());
 
-            if (returnsCount != _ReturnCount)
-            {
-                if (returnsCount > 9)
+                if (returnsCount != _ReturnCount)
                 {
-                    md_returnsCount.Badge = "+9";
+                    if (returnsCount > 9)
+                    {
+                        md_returnsCount.Badge = "+9";
+                    }
+                    else if (returnsCount == 0) md_returnsCount.Badge = "";
+                    else
+                        md_returnsCount.Badge = returnsCount.ToString();
                 }
-                else if (returnsCount == 0) md_returnsCount.Badge = "";
-                else
-                    md_returnsCount.Badge = returnsCount.ToString();
-            }
-            _ReturnCount = returnsCount;
-     
+                _ReturnCount = returnsCount;
 
-}
-            catch { } }
-       
+
+            }
+            catch { }
+        }
+
         #endregion
-        
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             try
@@ -406,7 +410,7 @@ namespace POS.View.storage
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 timer.Stop();
                 saveBeforeExit();
-                
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -430,7 +434,7 @@ namespace POS.View.storage
                 #endregion
                 if (w.isOk)
                 {
-                    await addInvoice( "isd");
+                    await addInvoice("isd");
                     clearInvoice();
                     _InvoiceType = "isd";
                 }
@@ -453,8 +457,8 @@ namespace POS.View.storage
             public decimal Total { get; set; }
             public int OrderId { get; set; }
         }
-            #endregion
-            async Task RefrishItems()
+        #endregion
+        async Task RefrishItems()
         {
             items = await itemModel.GetAllItems();
         }
@@ -506,9 +510,9 @@ namespace POS.View.storage
                             //handle S key
                             Btn_save_Click(btn_save, null);
                             break;
-                     }
+                    }
                 }
-               
+
             }
             catch (Exception ex)
             {
@@ -516,7 +520,7 @@ namespace POS.View.storage
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
-  
+
             try
             {
                 if (sender != null)
@@ -567,7 +571,7 @@ namespace POS.View.storage
 
                 if (e.Key.ToString() == "Return" && _BarcodeStr != "")
                 {
-                    await dealWithBarcode(_BarcodeStr);                 
+                    await dealWithBarcode(_BarcodeStr);
                     tb_barcode.Text = _BarcodeStr;
                     _BarcodeStr = "";
                     e.Handled = true;
@@ -631,7 +635,7 @@ namespace POS.View.storage
                 case "is":// this barcode for invoice
                     clearInvoice();
                     invoice = await invoiceModel.GetInvoicesByNum(barcode, MainWindow.branchID.Value);
-                   // _InvoiceType = invoice.invType;
+                    // _InvoiceType = invoice.invType;
                     await fillInvoiceInputs(invoice);
                     break;
                 default: // if barcode for item
@@ -695,7 +699,7 @@ namespace POS.View.storage
                         billDetails.RemoveAt(index);
 
                         ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
-                        data.Remove(row);                     
+                        data.Remove(row);
                     }
                 _SequenceNum = 0;
                 _Sum = 0;
@@ -801,7 +805,7 @@ namespace POS.View.storage
         }
         private void clearInvoice()
         {
-          
+
             _SequenceNum = 0;
             _Count = 0;
             _Sum = 0;
@@ -940,7 +944,7 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (billDetails.Count > 0 && _InvoiceType == "isd" )
+                if (billDetails.Count > 0 && _InvoiceType == "isd")
                 {
 
                     #region Accept
@@ -1001,7 +1005,7 @@ namespace POS.View.storage
                         await fillInvoiceInputs(invoice);
                         setNotifications();
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
-                        navigateBtnActivate();                       
+                        navigateBtnActivate();
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1164,7 +1168,7 @@ namespace POS.View.storage
 
         public void ChangeCategoryIdEvent(int categoryId)
         {
-            
+
         }
 
         public async Task ChangeItemIdEvent(int itemId)
@@ -1261,7 +1265,7 @@ namespace POS.View.storage
                             txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trStoreBtn");
                             await fillInvoiceInputs(invoice);
-                            invoices = await invoice.getBranchInvoices(invoiceType,0, MainWindow.branchID.Value);
+                            invoices = await invoice.getBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
                             navigateBtnActivate();
                         }
                     }
@@ -1282,14 +1286,14 @@ namespace POS.View.storage
 
         public async Task fillInvoiceInputs(Invoice invoice)
         {
-           if(_InvoiceType == "isd")
+            if (_InvoiceType == "isd")
             {
                 tb_sum.Visibility = Visibility.Visible;
                 txt_sum.Visibility = Visibility.Visible;
                 txt_total.Visibility = Visibility.Visible;
                 tb_total.Visibility = Visibility.Visible;
             }
-           else
+            else
             {
                 tb_sum.Visibility = Visibility.Collapsed;
                 txt_sum.Visibility = Visibility.Collapsed;
@@ -1305,7 +1309,7 @@ namespace POS.View.storage
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
             refreshTotalValue();
-            inputEditable();          
+            inputEditable();
         }
         private async Task buildInvoiceDetails(int invoiceId)
         {
@@ -1339,8 +1343,8 @@ namespace POS.View.storage
             refrishBillDetails();
         }
         bool firstTimeForDatagrid = true;
-       
-       
+
+
         async void refrishBillDetails()
         {
             dg_billDetails.ItemsSource = null;
@@ -1367,7 +1371,7 @@ namespace POS.View.storage
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
-                 
+
             }
             else if (_InvoiceType == "pbw")
             {
@@ -1490,7 +1494,7 @@ namespace POS.View.storage
                     else if (columnName == MainWindow.resourcemanager.GetString("trPrice"))
                         t.Text = SectionData.DecTostring(billDetails[index].Price);
 
-                }   
+                }
                 else
                 {
                     int oldCount = 0;
@@ -1558,10 +1562,10 @@ namespace POS.View.storage
         }
 
         #endregion
-       
 
 
-      
+
+
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {
@@ -1578,7 +1582,7 @@ namespace POS.View.storage
                         await returnInvoice("pb");
                     else if (_InvoiceType == "isd" || _InvoiceType == "is")
                     {
-                       await addInvoice("is");
+                        await addInvoice("is");
                         #region notification Object
                         Notification not = new Notification()
                         {
@@ -1593,7 +1597,7 @@ namespace POS.View.storage
                         clearInvoice();
                         refreshDraftNotification();
                     }
-                    
+
                 }
 
                 //clearInvoice();
@@ -1610,9 +1614,9 @@ namespace POS.View.storage
         private async Task addInvoice(string invType)
         {
 
-           if(invType == "isd" && invoice.invoiceId == 0)
+            if (invType == "isd" && invoice.invoiceId == 0)
                 invoice.invNumber = await invoice.generateInvNumber("isd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
-            else 
+            else
                 invoice.invNumber = await invoice.generateInvNumber("is", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
 
@@ -1620,7 +1624,7 @@ namespace POS.View.storage
             invoice.branchId = MainWindow.branchID.Value;
             invoice.posId = MainWindow.posID.Value;
             invoice.invType = invType;
-                
+
             invoice.total = _Sum;
             invoice.totalNet = decimal.Parse(tb_total.Text);
             invoice.paid = 0;
@@ -1750,7 +1754,7 @@ namespace POS.View.storage
             }
             Window.GetWindow(this).Opacity = 1;
 
-             
+
         }
         private async Task receiptInvoice()
         {
@@ -1761,7 +1765,7 @@ namespace POS.View.storage
                 ncontent = "trExceedMaxLimitAlertContent",
                 msgType = "alert",
                 //createDate = DateTime.Now,
-               // updateDate = DateTime.Now,
+                // updateDate = DateTime.Now,
                 createUserId = MainWindow.userID.Value,
                 updateUserId = MainWindow.userID.Value,
             };
@@ -1770,7 +1774,7 @@ namespace POS.View.storage
             invoice.updateUserId = MainWindow.userID.Value;
             await invoiceModel.saveInvoice(invoice);
             await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
-             refreshInvoiceNotification();
+            refreshInvoiceNotification();
             clearInvoice();
         }
 
@@ -1843,7 +1847,7 @@ namespace POS.View.storage
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-               addpath = @"\Reports\Store\Ar\ArReceiptPurchaseReport.rdlc";//////??????????
+                addpath = @"\Reports\Store\Ar\ArReceiptPurchaseReport.rdlc";//////??????????
             }
             else
                 addpath = @"\Reports\Store\En\ReceiptPurchaseReport.rdlc";/////////////?????????????
@@ -1873,22 +1877,22 @@ namespace POS.View.storage
                     if (invoiceItems != null)
                     {
                         Window.GetWindow(this).Opacity = 0.2;
-                    /////////////////////
-                    string pdfpath = "";
-                    pdfpath = @"\Thumb\report\temp.pdf";
-                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                    BuildReport();
-                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                    ///////////////////
-                    wd_previewPdf w = new wd_previewPdf();
-                    w.pdfPath = pdfpath;
-                    if (!string.IsNullOrEmpty(w.pdfPath))
-                    {
-                        w.ShowDialog();
-                        w.wb_pdfWebViewer.Dispose();
-                    }
-                    Window.GetWindow(this).Opacity = 1;
-                    //////////////////////////////////////
+                        /////////////////////
+                        string pdfpath = "";
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                        BuildReport();
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        ///////////////////
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+                            w.wb_pdfWebViewer.Dispose();
+                        }
+                        Window.GetWindow(this).Opacity = 1;
+                        //////////////////////////////////////
                     }
                     #endregion
                 }
@@ -1913,7 +1917,7 @@ namespace POS.View.storage
 
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    if (invoiceItems !=null)
+                    if (invoiceItems != null)
                     {
                         Thread t1 = new Thread(() =>
                     {
@@ -1950,25 +1954,55 @@ namespace POS.View.storage
         }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
-            index++;
-            clearInvoice();
-            invoice = invoices[index];
-            _InvoiceType = invoice.invType;
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+                index++;
+                clearInvoice();
+                invoice = invoices[index];
+                _InvoiceType = invoice.invType;
+                _invoiceId = invoice.invoiceId;
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private async void Btn_previous_Click(object sender, RoutedEventArgs e)
         {
-            int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
-            index--;
-            clearInvoice();
-            invoice = invoices[index];
-            _InvoiceType = invoice.invType;
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
+                index--;
+                clearInvoice();
+                invoice = invoices[index];
+                _InvoiceType = invoice.invType;
+                _invoiceId = invoice.invoiceId;
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         #endregion
 
