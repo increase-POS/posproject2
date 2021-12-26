@@ -2390,7 +2390,7 @@ var strP = TokenManager.GetPrincipal(token);
                 int lastNum = 0;
                 using (incposdbEntities entity = new incposdbEntities())
                 {
-                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode + "-") && b.branchId == branchId).Select(b => b.invNumber).ToList();
+                    numberList = entity.invoices.Where(b => b.invNumber.Contains(invCode + "-") && b.branchCreatorId == branchId).Select(b => b.invNumber).ToList();
 
                     for (int i = 0; i < numberList.Count; i++)
                     {

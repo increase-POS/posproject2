@@ -957,7 +957,16 @@ namespace POS.View.sales
 
                     if (billDetails.Count > 0 && available && valid && _InvoiceType == "ord")
                     {
-                        await addInvoice(_InvoiceType); 
+                        #region Accept
+                        MainWindow.mainWindow.Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trSaveOrderNotification");
+
+                        w.ShowDialog();
+                        MainWindow.mainWindow.Opacity = 1;
+                        #endregion
+                        if (w.isOk)
+                            await addInvoice(_InvoiceType); 
                         
                     }
                     clearInvoice();
@@ -1210,7 +1219,8 @@ namespace POS.View.sales
             if (invoice.invoiceId != 0)
             {
                 unreserveItems = true;
-                savedBranch = (int)invoice.branchId;
+                if(invoice.branchId != null)
+                    savedBranch = (int)invoice.branchId;
             }
             invoice.invType = invType;
             invoice.discountValue = _Discount;
@@ -2505,21 +2515,21 @@ namespace POS.View.sales
         {
             if (billDetails.Count > 0 && _InvoiceType == "ord")
             {
-                #region Accept
-                MainWindow.mainWindow.Opacity = 0.2;
-                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                w.contentText = MainWindow.resourcemanager.GetString("trSaveOrderNotification");
+                //#region Accept
+                //MainWindow.mainWindow.Opacity = 0.2;
+                //wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                //w.contentText = MainWindow.resourcemanager.GetString("trSaveOrderNotification");
 
-                w.ShowDialog();
-                MainWindow.mainWindow.Opacity = 1;
-                #endregion
-                if (w.isOk  )
+                //w.ShowDialog();
+                //MainWindow.mainWindow.Opacity = 1;
+                //#endregion
+                //if (w.isOk  )
                     Btn_newDraft_Click(null, null);
-                else
-                {
-                    await clearInvoice();
-                    setNotifications();
-                }
+                //else
+                //{
+                //    await clearInvoice();
+                //    setNotifications();
+                //}
             }
             else
             {
