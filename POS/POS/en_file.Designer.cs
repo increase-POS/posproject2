@@ -2005,7 +2005,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchase Bill Draft.
+        ///   Looks up a localized string similar to Purchase Invoice Draft.
         /// </summary>
         internal static string trDraftPurchaseBill {
             get {
@@ -5705,7 +5705,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchace Order Draft.
+        ///   Looks up a localized string similar to Purchace Order - Draft.
         /// </summary>
         internal static string trPurchaceOrderDraft {
             get {
@@ -5714,7 +5714,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saved Purchase Order.
+        ///   Looks up a localized string similar to Purchase Order - Saved.
         /// </summary>
         internal static string trPurchaceOrderSaved {
             get {
@@ -5741,7 +5741,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchase Bill.
+        ///   Looks up a localized string similar to Purchase Invoice.
         /// </summary>
         internal static string trPurchaseBill {
             get {
@@ -5948,7 +5948,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saved Quotation.
+        ///   Looks up a localized string similar to Quotation - Saved.
         /// </summary>
         internal static string trQuotationsSaved {
             get {
@@ -6020,7 +6020,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Receipt of Purchases Bill.
+        ///   Looks up a localized string similar to Receipt of Purchases Invoice.
         /// </summary>
         internal static string trReceiptOfPurchasesBill {
             get {
@@ -6317,7 +6317,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sale Order Draft.
+        ///   Looks up a localized string similar to Sale Order - Draft.
         /// </summary>
         internal static string trSaleOrderDraft {
             get {
@@ -6326,7 +6326,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Saved Sale Order.
+        ///   Looks up a localized string similar to Sale Order - Saved.
         /// </summary>
         internal static string trSaleOrderSaved {
             get {

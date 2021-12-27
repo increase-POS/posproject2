@@ -1165,10 +1165,10 @@
     <value>To Should be begger then From</value>
   </data>
   <data name="trDraftPurchaseBill" xml:space="preserve">
-    <value>Purchase Bill Draft</value>
+    <value>Purchase Invoice Draft</value>
   </data>
   <data name="trPurchaseBill" xml:space="preserve">
-    <value>Purchase Bill</value>
+    <value>Purchase Invoice</value>
   </data>
   <data name="trAdministrativeDeposit" xml:space="preserve">
     <value>Administrative deposit</value>
@@ -1907,7 +1907,7 @@ Please add Email in setting</value>
     <value>Purchace Order</value>
   </data>
   <data name="trPurchaceOrderDraft" xml:space="preserve">
-    <value>Purchace Order Draft</value>
+    <value>Purchace Order - Draft</value>
   </data>
   <data name="trQuotationsDraft" xml:space="preserve">
     <value>Quotations Draft</value>
@@ -1916,7 +1916,7 @@ Please add Email in setting</value>
     <value>Sale Order</value>
   </data>
   <data name="trSaleOrderDraft" xml:space="preserve">
-    <value>Sale Order Draft</value>
+    <value>Sale Order - Draft</value>
   </data>
   <data name="trErrorEmptyItemToolTip" xml:space="preserve">
     <value>You should choose an item</value>
@@ -2432,7 +2432,7 @@ Please add Email in setting</value>
     <value>Export/Import Items</value>
   </data>
   <data name="trReceiptOfPurchasesBill" xml:space="preserve">
-    <value>Receipt of Purchases Bill</value>
+    <value>Receipt of Purchases Invoice</value>
   </data>
   <data name="trInv" xml:space="preserve">
     <value>Invoice</value>
@@ -2855,13 +2855,13 @@ Please add Email in setting</value>
     <value>The invoice does not exist</value>
   </data>
   <data name="trPurchaceOrderSaved" xml:space="preserve">
-    <value>Saved Purchase Order</value>
+    <value>Purchase Order - Saved</value>
   </data>
   <data name="trSaleOrderSaved" xml:space="preserve">
-    <value>Saved Sale Order</value>
+    <value>Sale Order - Saved</value>
   </data>
   <data name="trQuotationsSaved" xml:space="preserve">
-    <value>Saved Quotation</value>
+    <value>Quotation - Saved</value>
   </data>
   <data name="trPackageIsExpired" xml:space="preserve">
     <value>Package is expired</value>

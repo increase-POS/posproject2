@@ -1954,6 +1954,36 @@ namespace POS.View.storage
             else
                 btn_previous.IsEnabled = true;
         }
+        private void clearNavigation()
+        {
+            _SequenceNum = 0;
+            _Count = 0;
+            _Sum = 0;
+            invoice = new Invoice();
+            txt_branch.Text = "_____________";
+            txt_invNumber.Text = "";
+            billDetails.Clear();
+            tb_count.Text = "0";
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
+            btn_items.IsEnabled = true;
+            isFromReport = false;
+            refrishBillDetails();
+        }
+        private async Task navigateInvoice(int index)
+        {
+            try
+            {
+                clearNavigation();
+                invoice = invoices[index];
+                _invoiceId = invoice.invoiceId;
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1963,12 +1993,7 @@ namespace POS.View.storage
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
                 index++;
-                clearInvoice();
-                invoice = invoices[index];
-                _InvoiceType = invoice.invType;
-                _invoiceId = invoice.invoiceId;
-                navigateBtnActivate();
-                await fillInvoiceInputs(invoice);
+                await navigateInvoice(index);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1989,12 +2014,7 @@ namespace POS.View.storage
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
                 index--;
-                clearInvoice();
-                invoice = invoices[index];
-                _InvoiceType = invoice.invType;
-                _invoiceId = invoice.invoiceId;
-                navigateBtnActivate();
-                await fillInvoiceInputs(invoice);
+                await navigateInvoice(index);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

@@ -1176,6 +1176,69 @@ namespace POS.View.sales
             else
                 btn_previous.IsEnabled = true;
         }
+        private async Task clearNavigation()
+        {
+            txt_invNumber.Text = "";
+            _Sum = 0;
+            _Discount = 0;
+            _SequenceNum = 0;
+            _DeliveryCost = 0;
+            _RealDeliveryCost = 0;
+            _SelectedCustomer = -1;
+            _SelectedDiscountType = 0;
+            invoice = new Invoice();
+            selectedCoupons.Clear();
+            tb_barcode.Clear();
+            cb_customer.SelectedIndex = -1;
+            cb_customer.SelectedItem = "";
+            cb_branch.SelectedIndex = -1;
+            cb_branch.SelectedItem = "";
+            tb_note.Clear();
+            billDetails.Clear();
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
+            tb_totalDescount.Text = "0";
+            cb_company.SelectedIndex = -1;
+            cb_company.SelectedItem = "";
+            cb_user.SelectedIndex = -1;
+            cb_user.SelectedItem = "";
+            tb_discount.Clear();
+            cb_typeDiscount.SelectedIndex = 0;
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            md_docImage.Badge = "";
+            lst_coupons.Items.Clear();
+            isFromReport = false;
+            archived = false;
+            btn_deleteInvoice.Visibility = Visibility.Collapsed;
+            SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+            SectionData.clearComboBoxValidate(cb_branch, p_errorBranch);
+            refrishBillDetails();
+            tb_barcode.Focus();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
+            await fillCouponsList();
+        }
+        private async Task navigateInvoice(int index)
+        {
+            try
+            {
+                await clearNavigation();
+                invoice = invoices[index];
+                _invoiceId = invoice.invoiceId;
+                _InvoiceType = invoice.invType;
+
+                if (invoice.invType == "ord")    
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
+                else if (invoice.invType == "ors")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderSaved");
+
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1185,11 +1248,7 @@ namespace POS.View.sales
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
                 index++;
-                clearInvoice();
-                invoice = invoices[index];
-                _invoiceId = invoice.invoiceId;
-                navigateBtnActivate();
-                await fillInvoiceInputs(invoice);
+                await navigateInvoice(index);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1209,11 +1268,7 @@ namespace POS.View.sales
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
                 index--;
-                clearInvoice();
-                invoice = invoices[index];
-                _invoiceId = invoice.invoiceId;
-                navigateBtnActivate();
-                await fillInvoiceInputs(invoice);
+                await navigateInvoice(index);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

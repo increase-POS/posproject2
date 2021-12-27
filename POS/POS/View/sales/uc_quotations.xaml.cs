@@ -2486,11 +2486,8 @@ namespace POS.View.sales
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index++;
-            invoice = invoices[index];
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
-            if (sender != null)
+                await navigateInvoice(index);
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)
@@ -2500,7 +2497,62 @@ namespace POS.View.sales
 				SectionData.ExceptionMessage(ex,this);
         }
     }
-    private async void Btn_previous_Click(object sender, RoutedEventArgs e)
+        private async Task clearNavigation()
+        {
+            _Sum = 0;
+            txt_invNumber.Text = "";
+            _Discount = 0;
+            _SequenceNum = 0;
+            _SelectedCustomer = -1;
+            _SelectedDiscountType = 0;
+            invoice = new Invoice();
+            selectedCoupons.Clear();
+            tb_barcode.Clear();
+            cb_customer.SelectedIndex = -1;
+            cb_customer.SelectedItem = "";
+            tb_note.Clear();
+            tb_totalDescount.Text = "0";
+            billDetails.Clear();
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
+            tb_discount.Clear();
+            cb_typeDiscount.SelectedIndex = 0;
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            md_docImage.Badge = "";
+            tgl_ActiveOffer.IsChecked = false;
+            lst_coupons.Items.Clear();
+            md_docImage.Badge = "";
+            isFromReport = false;
+            archived = false;
+            SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+
+            refrishBillDetails();
+            tb_barcode.Focus();
+            btn_deleteInvoice.Visibility = Visibility.Collapsed;
+            await fillCouponsList();
+        }
+        private async Task navigateInvoice(int index)
+        {
+            try
+            {
+                await clearNavigation();
+                invoice = invoices[index];
+                _invoiceId = invoice.invoiceId;
+                _InvoiceType = invoice.invType;
+
+                if (invoice.invType == "qd")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsDraft");
+                else if(invoice.invType == "qs")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trQuotationsSaved");
+
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        private async void Btn_previous_Click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -2509,11 +2561,8 @@ namespace POS.View.sales
 
             int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index--;
-            invoice = invoices[index];
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
-            if (sender != null)
+                await navigateInvoice(index);
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)
