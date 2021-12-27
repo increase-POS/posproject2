@@ -1097,7 +1097,7 @@ namespace POS.View.sales
                     btn_updateCustomer.IsEnabled = true;
                     btn_items.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Collapsed;
-                    btn_submitOrder.Visibility = Visibility.Collapsed;
+                    btn_submitOrder.Visibility = Visibility.Visible;
                     break;
                 case "or": //quotation invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
@@ -1117,7 +1117,7 @@ namespace POS.View.sales
                     btn_updateCustomer.IsEnabled = false;
                     btn_items.IsEnabled = false;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
-                    btn_submitOrder.Visibility = Visibility.Visible;
+                    btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
                 case "s": //sale invoice
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
