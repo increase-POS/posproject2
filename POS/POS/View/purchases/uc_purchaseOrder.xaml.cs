@@ -1041,7 +1041,16 @@ namespace POS.View.purchases
                 bool valid = validateItemUnits();
                 if (billDetails.Count > 0 && valid)
                 {
-                    await addInvoice(_InvoiceType);
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveOrderNotification");
+
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        await addInvoice(_InvoiceType);
                     clearInvoice();
                     refreshNotification();
                 }
@@ -1088,6 +1097,7 @@ namespace POS.View.purchases
             btn_previous.Visibility = Visibility.Collapsed;
         }
         #endregion
+       
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1246,6 +1256,7 @@ namespace POS.View.purchases
                 tb_barcode.IsEnabled = true;
                 btn_clear.IsEnabled = true;   
                 btn_items.IsEnabled = true;
+                tgl_ActiveOffer.Visibility = Visibility.Collapsed;
                 tgl_ActiveOffer.IsEnabled = false;
                 btn_save.IsEnabled = true;
             }
@@ -1259,6 +1270,7 @@ namespace POS.View.purchases
                 tb_barcode.IsEnabled = true;
                 btn_clear.IsEnabled = true;
                 btn_items.IsEnabled = true;
+                tgl_ActiveOffer.Visibility = Visibility.Visible;
                 tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
@@ -1272,6 +1284,7 @@ namespace POS.View.purchases
                 tb_barcode.IsEnabled = false;
                 btn_clear.IsEnabled = false;
                 btn_items.IsEnabled = false;
+                tgl_ActiveOffer.Visibility = Visibility.Visible;
                 tgl_ActiveOffer.IsEnabled = true;
                 btn_save.IsEnabled = true;
             }
@@ -2464,14 +2477,9 @@ namespace POS.View.purchases
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index++;
-            clearInvoice();
-            invoice = invoices[index];
-            _InvoiceType = invoice.invType;
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
+                await navigateInvoice(index);
 
-            if (sender != null)
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)
@@ -2481,6 +2489,49 @@ namespace POS.View.purchases
 				SectionData.ExceptionMessage(ex,this);
         }
     }
+        private void clearNavigation()
+        {
+            _Sum = 0;
+            _Count = 0;
+            txt_invNumber.Text = "";
+            _SequenceNum = 0;
+            _SelectedVendor = -1;
+            invoice = new Invoice();
+            tb_barcode.Clear();
+            cb_vendor.SelectedIndex = -1;
+            cb_vendor.SelectedItem = "";
+            tb_note.Clear();
+            billDetails.Clear();
+            tb_total.Text = "";
+            btn_updateVendor.IsEnabled = false;
+            md_docImage.Badge = "";
+            isFromReport = false;
+            archived = false;
+            tgl_ActiveOffer.IsChecked = false;
+
+            refrishBillDetails();
+            btn_next.Visibility = Visibility.Collapsed;
+            btn_previous.Visibility = Visibility.Collapsed;
+        }
+        private async Task navigateInvoice(int index)
+        {
+            try
+            {
+                clearNavigation();
+                invoice = invoices[index];
+                _invoiceId = invoice.invoiceId;
+                _InvoiceType = invoice.invType;
+                if (invoice.invType == "pod")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");                   
+                else if (invoice.invType == "pos")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaceOrderSaved");
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private async void Btn_previous_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -2490,14 +2541,9 @@ namespace POS.View.purchases
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index--;
-            clearInvoice();
-            invoice = invoices[index];
-            _invoiceId = invoice.invoiceId;
-            _InvoiceType = invoice.invType;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
+                await navigateInvoice(index);
 
-            if (sender != null)
+                if (sender != null)
                 SectionData.EndAwait(grid_main);
         }
             catch (Exception ex)

@@ -169,7 +169,7 @@ namespace POS.View
             txt_sum.Text = MainWindow.resourcemanager.GetString("trSum");
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
-            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
+            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
             //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_store.Text = MainWindow.resourcemanager.GetString("trStore/Branch");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
@@ -451,14 +451,10 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(returnPermission, MainWindow.groupObjects, "one"))
                 {
-                    //bdr_returnInvoice.Visibility = Visibility.Visible;
-                    //btn_returnInvoice.Visibility = Visibility.Visible;
                     brd_returnInvoice.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    //bdr_returnInvoice.Visibility = Visibility.Collapsed;
-                    //btn_returnInvoice.Visibility = Visibility.Collapsed;
                     brd_returnInvoice.Visibility = Visibility.Collapsed;
                 }
 
@@ -845,8 +841,7 @@ namespace POS.View
                 {
                     if (ordersCount > 9)
                     {
-                        ordersCount = 9;
-                        md_orders.Badge = "+" + ordersCount.ToString();
+                        md_orders.Badge = "+9" ;
                     }
                     else if (ordersCount == 0) md_orders.Badge = "";
                     else
@@ -1360,18 +1355,20 @@ namespace POS.View
                 if (cb_vendor.SelectedIndex < 1)
                     return false;
             }
-            if (cb_vendor.SelectedIndex > 0)
-            {
-                if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
-                    exp_vendor.IsExpanded = true;
-                if (tb_invoiceNumber.Text.Equals(""))
-                    return false;
-            }
-            if (cb_vendor.SelectedIndex > 0 && cb_paymentProcessType.SelectedValue.ToString() != "cash")
+            //if (cb_vendor.SelectedIndex > 0)
+            //{
+            //    if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
+            //        exp_vendor.IsExpanded = true;
+            //    if (tb_invoiceNumber.Text.Equals(""))
+            //        return false;
+            //}
+            if (cb_vendor.SelectedIndex > 0 && cb_paymentProcessType.SelectedValue.ToString() != "cash" && cb_paymentProcessType.SelectedValue.ToString() != "card")
             {
                 if (!SectionData.validateEmptyDatePicker(dp_desrvedDate, p_errorDesrvedDate, tt_errorDesrvedDate, "trErrorEmptyDeservedDate"))
                     exp_vendor.IsExpanded = true;
-                if (dp_desrvedDate.Text.Equals(""))
+                if (!SectionData.validateEmptyTextBox(tb_invoiceNumber, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip"))
+                    exp_vendor.IsExpanded = true;
+                if (dp_desrvedDate.Text.Equals("") || tb_invoiceNumber.Text.Equals(""))
                     return false;
             }
             if (decimal.Parse(tb_total.Text) == 0)
@@ -1783,6 +1780,49 @@ namespace POS.View
             btn_previous.Visibility = Visibility.Collapsed;
         }
         #endregion
+        private void clearNavigation()
+        {
+            _Sum = 0;
+
+            txt_invNumber.Text = "";
+            _SequenceNum = 0;
+            _SelectedBranch = -1;
+            _SelectedVendor = -1;
+            invoice = new Invoice();
+            tb_barcode.Clear();
+            cb_branch.SelectedIndex = -1;
+            cb_vendor.SelectedIndex = -1;
+            cb_vendor.SelectedItem = "";
+            cb_typeDiscount.SelectedIndex = 0;
+            dp_desrvedDate.Text = "";
+            txt_vendorIvoiceDetails.Text = "";
+            tb_invoiceNumber.Clear();
+            dp_invoiceDate.Text = "";
+            tb_note.Clear();
+            tb_discount.Clear();
+            tb_taxValue.Clear();
+            billDetails.Clear();
+            tb_processNum.Clear();
+            cb_paymentProcessType.SelectedIndex = 0;
+            cb_paymentProcessType.IsEnabled = true;
+            gd_card.Visibility = Visibility.Collapsed;
+            tb_total.Text = "0";
+            tb_sum.Text = "0";
+            if (MainWindow.tax != 0)
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            else
+                tb_taxValue.Text = "0";
+
+            isFromReport = false;
+            archived = false;
+            md_docImage.Badge = "";
+            md_payments.Badge = "";
+
+            TextBox tbStartDate = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
+            SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
+            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+            refrishBillDetails();
+        }
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1908,6 +1948,7 @@ namespace POS.View
                 string invoiceType = "po";
                 w.invoiceType = invoiceType;
                 w.condition = "orders";
+                w.branchId = MainWindow.branchID.Value;
                 //w.branchCreatorId = MainWindow.branchID.Value;
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
@@ -1930,7 +1971,7 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         await fillInvoiceInputs(invoice);
-                        invoices = await invoice.getUnHandeldOrders(invoiceType, MainWindow.branchID.Value, 0);
+                        invoices = await invoice.getUnHandeldOrders(invoiceType,0, MainWindow.branchID.Value);
                         //invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, 0);
                         navigateBtnActivate();
                     }
@@ -4109,6 +4150,22 @@ namespace POS.View
             else
                 btn_previous.IsEnabled = true;
         }
+        private async Task navigateInvoice(int index)
+        {
+            try
+            {
+                clearNavigation();
+                invoice = invoices[index];
+                _invoiceId = invoice.invoiceId;
+                navigateBtnActivate();
+                await fillInvoiceInputs(invoice);
+                if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
+                    refreshPaymentsNotification(invoice.invoiceId);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -4117,11 +4174,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index++;
-            clearInvoice();
-            invoice = invoices[index];
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
+               await navigateInvoice(index);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -4140,12 +4193,9 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
             index--;
-            clearInvoice();
-            invoice = invoices[index];
-            _invoiceId = invoice.invoiceId;
-            navigateBtnActivate();
-            await fillInvoiceInputs(invoice);
-                    if (sender != null)
+                //clearInvoice();
+                await navigateInvoice(index);
+                if (sender != null)
                         SectionData.EndAwait(grid_main);
                 }
                 catch (Exception ex)

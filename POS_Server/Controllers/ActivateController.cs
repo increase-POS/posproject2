@@ -24,7 +24,7 @@ namespace POS_Server.Controllers
         {
             string deviceCode = "";
             // deviceCode = GetMotherBoardID() + "-" + GetHDDSerialNo();
-            deviceCode =  GetHDDSerialNo();
+            deviceCode = GetHDDSerialNo();
             return deviceCode;
         }
         public static string GetMotherBoardID()
@@ -75,14 +75,144 @@ namespace POS_Server.Controllers
 
         }
 
+        public SendDetail getinfo()
+        {
+            SendDetail sd = new SendDetail();
+            packagesSend packs = new packagesSend();
+            List<PosSerialSend> serialsendList = new List<PosSerialSend>();
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                serialsendList = (from S in entity.posSerials
+                                      //  join p in entity.posSetting on S.id equals p.posSerialId
+                                  select new PosSerialSend
+                                  {
+                                      serial = S.posSerial,
+                                      isActive = (S.isActive == true) ? 1 : 0,
+                                      // isBooked=true,
+
+                                      isBooked = S.posSetting.Where(x => x.posSerialId == S.id).ToList().Count > 0 ? true : false,
+                                      posDeviceCode = S.posSetting.Where(x => x.posSerialId == S.id).FirstOrDefault().posDeviceCode,
+                                  }).ToList();
+
+                packs = (from p in entity.ProgramDetails
+                             //  join p in entity.posSetting on S.id equals p.posSerialId
+                         select new packagesSend
+                         {
+                             programName = p.programName,
+                             branchCount = p.branchCount,
+                             posCount = p.posCount,
+                             userCount = p.userCount,
+                             vendorCount = p.vendorCount,
+                             customerCount = p.customerCount,
+                             itemCount = p.itemCount,
+                             salesInvCount = p.saleinvCount,
+                             storeCount = p.storeCount,
+                             packageSaleCode = p.packageSaleCode,
+                             customerServerCode = p.customerServerCode,
+                             expireDate = p.expireDate,
+                             isOnlineServer = p.isOnlineServer,
+                             // isOnlineServer = false,
+                             //  updateDate = p.updateDate,
+                             islimitDate = (p.isLimitDate == true) ? true : false,
+                             //islimitDate = false,
+                             //  isLimitCount = (bool)p.isLimitCount,
+                             isActive = (p.isActive == true) ? 1 : 0,
+                             //   isActive =1,
+                             canRenew = false,
+                             isPayed = true,
+                             isServerActivated = true,
+                         }).FirstOrDefault();
+            }
+            sd.packageSend = packs;
+
+            sd.PosSerialSendList = serialsendList;
+
+
+            return sd;
+        }
+
+        public async Task<string> SendCustDetail(SendDetail sdd)
+        {
+            string message = "";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //var myContent = JsonConvert.SerializeObject(sd);
+            //parameters.Add("pks", myContent);
+            //var myContent2 = JsonConvert.SerializeObject(sr);
+            //parameters.Add("psr", myContent2);
+            var myContent3 = JsonConvert.SerializeObject(sdd);
+            parameters.Add("object", myContent3);
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("packageUser/SendCustDetail", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    //    user = JsonConvert.DeserializeObject<User>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    message = c.Value;
+
+                    break;
+                }
+            }
+            return message;
+        }
+        //public async Task<string> SendCustDetail(string sd)
+        //{
+        //    string item = "";
+        //  //  sd = getinfo();
+        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+
+        // //   var myContent = JsonConvert.SerializeObject(sd);
+        //  //  parameters.Add("Object", myContent);
+        //    parameters.Add("Object","64");
+        //    string method = "packageUser/SendCustDetail";
+        //    IEnumerable<Claim> claims = await APIResult.getList(method, parameters);
+
+        //    foreach (Claim c in claims)
+        //    {
+        //        if (c.Type == "scopes")
+        //        {
+        //            item = c.Value;
+
+        //        }
+        //    }
+        //    return item;
+
+        //    //return await APIResult.post(method, parameters);
+        //}
+
+        //public async Task<string> SendCustDetail(SendDetail sd)
+        //{
+        //    string item = "";
+        //    sd = getinfo();
+        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+
+        //    var myContent = JsonConvert.SerializeObject(sd);
+        //    parameters.Add("Object", myContent);
+        //    string method = "packageUser/SendCustDetail";
+        //    IEnumerable<Claim> claims = await APIResult.getList(method, parameters);
+
+        //    foreach (Claim c in claims)
+        //    {
+        //        if (c.Type == "scopes")
+        //        {
+        //            item = c.Value;
+
+        //        }
+        //    }
+        //    return item;
+
+        //    //return await APIResult.post(method, parameters);
+        //}
 
         private int SaveProgDetails(packagesSend newObject)
         {
             int message = 0;
             if (newObject != null)
             {
-
-
 
                 ProgramDetails tmpObject;
 
@@ -93,32 +223,37 @@ namespace POS_Server.Controllers
                     {
                         var locationEntity = entity.Set<ProgramDetails>();
 
-                      // List<ProgramDetails> Objectlist = entity.ProgramDetails.ToList();
+                        // List<ProgramDetails> Objectlist = entity.ProgramDetails.ToList();
                         tmpObject = entity.ProgramDetails.FirstOrDefault();
 
                         if (tmpObject != null)
                         {
 
-                            tmpObject.updateDate =DateTime.Now;
-        tmpObject.programName = newObject.programName;
+                            tmpObject.updateDate = DateTime.Now;
+                            tmpObject.programName = newObject.programName;
                             tmpObject.branchCount = newObject.branchCount;
                             tmpObject.posCount = newObject.posCount;
                             tmpObject.userCount = newObject.userCount;
                             tmpObject.vendorCount = newObject.vendorCount;
                             tmpObject.customerCount = newObject.customerCount;
                             tmpObject.itemCount = newObject.itemCount;
-                            tmpObject.saleinvCount = newObject.salesInvCount;
+                            tmpObject.saleinvCount += newObject.totalsalesInvCount;
                             tmpObject.versionName = newObject.verName;
                             tmpObject.storeCount = newObject.storeCount;
 
                             tmpObject.packageSaleCode = newObject.packageSaleCode;
-                            tmpObject.customerServerCode = newObject.customerServerCode;// from function
+                           if( newObject.isServerActivated== false )
+                            {
+                                tmpObject.customerServerCode = newObject.customerServerCode;// from function
 
-                            tmpObject.expireDate = newObject.endDate;
+                            }
+
+                            tmpObject.expireDate = newObject.expireDate;
                             tmpObject.isOnlineServer = newObject.isOnlineServer;
+                            tmpObject.isLimitDate = newObject.islimitDate;
+                            tmpObject.isActive = ( newObject.isActive==1)?true:false;
 
                             // tmpObject.packageNumber = newObject.packageCode;
-
 
                         }
                         else
@@ -126,12 +261,7 @@ namespace POS_Server.Controllers
                             message = -1;
                         }
 
-
-
                         //  tmpObject.posSerial = newObject.posSerial;      public Nullable<int> docPapersizeId { get; set; }
-
-
-
 
                         message = entity.SaveChanges();
 
@@ -146,8 +276,8 @@ namespace POS_Server.Controllers
                 catch
                 {
                     message = -1;
-                     return (message);
-                  //  return (ex.ToString());
+                    return (message);
+                    //  return (ex.ToString());
                 }
 
             }
@@ -160,53 +290,113 @@ namespace POS_Server.Controllers
 
 
 
+        //private int SaveposSerials(List<PosSerialSend> newObjectlist)
+        //{
+        //    int message = 0;
+        //    if (newObjectlist != null)
+        //    {
+        //        List<posSerials> poslist = new List<posSerials>();
+        //        List<string> newserial = new List<string>();
+        //        List<string> oldserial = new List<string>();
+        //        foreach (PosSerialSend sendrow in newObjectlist)
+        //        {
+
+        //            newserial.Add(sendrow.serial);
+
+        //            // poslist.Except
+        //        }
+
+
+
+
+        //        try
+        //        {
+        //            using (incposdbEntities entity = new incposdbEntities())
+        //            {
+        //                //  var locationEntity = entity.Set<posSerials>();
+        //                List<posSerials> alllist = entity.posSerials.ToList();
+
+        //                oldserial = alllist.Select(s => s.posSerial).ToList();
+        //                List<string> finallist = new List<string>();
+        //                // for no duplicate 
+        //                finallist = newserial.Except(oldserial).ToList();
+        //                foreach (string sendrow in finallist)
+        //                {
+        //                    posSerials positem = new posSerials();
+        //                    positem.posSerial = sendrow;
+
+        //                    poslist.Add(positem);
+
+        //                }
+
+
+        //                entity.posSerials.AddRange(poslist);
+
+
+        //                message = entity.SaveChanges();
+
+
+
+        //            }
+        //            return (message);
+
+        //        }
+        //        catch
+        //        {
+        //            message = -1;
+        //            return (message);
+        //        }
+
+        //    }
+        //    else
+        //    {
+        //        return (-1);
+        //    }
+
+        //}
+
         private int SaveposSerials(List<PosSerialSend> newObjectlist)
         {
             int message = 0;
             if (newObjectlist != null)
             {
-                List<posSerials> poslist = new List<posSerials>();
-                List<string> newserial = new List<string>();
-                List<string> oldserial = new List<string>();
-                foreach (PosSerialSend sendrow in newObjectlist)
-                {
-
-                    newserial.Add(sendrow.serial);
-
-                    // poslist.Except
-                }
-
-
-
-
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         //  var locationEntity = entity.Set<posSerials>();
                         List<posSerials> alllist = entity.posSerials.ToList();
-
-                        oldserial = alllist.Select(s => s.posSerial).ToList();
-                        List<string> finallist = new List<string>();
-                        // for no duplicate 
-                        finallist = newserial.Except(oldserial).ToList();
-                        foreach (string sendrow in finallist)
+                        //1-dis activate serials
+                        foreach (posSerials oldrow in alllist)
                         {
-                            posSerials positem = new posSerials();
-                            positem.posSerial = sendrow;
-
-                            poslist.Add(positem);
-
+                            oldrow.isActive = false;
+                           
+                            message+= entity.SaveChanges();
                         }
 
+                        foreach (PosSerialSend snewrow in newObjectlist)
+                        {
+                            bool exist = false;
+                            foreach (posSerials oldrow in alllist)
+                            {
+                                if (oldrow.posSerial == snewrow.serial)
+                                {
+                                    exist = true;
+                                    oldrow.isActive = true;
+                                }
+                            }
+                            if (exist == false)
+                            {
+                                posSerials newsr = new posSerials();
+                                newsr.isActive = true;
+                                newsr.posSerial = snewrow.serial;
+                                entity.posSerials.Add(newsr);
 
-                        entity.posSerials.AddRange(poslist);
+                            }
+                            message+= entity.SaveChanges();
+                        }
 
-
-                        message = entity.SaveChanges();
-
-
-
+                     //   message += entity.SaveChanges();
                     }
                     return (message);
 
@@ -226,6 +416,42 @@ namespace POS_Server.Controllers
         }
 
 
+        //[HttpPost]
+        //[Route("saveserials")]
+        //public async Task<string> saveserials(string token)
+        //{
+        //    token = TokenManager.readToken(HttpContext.Current.Request);
+        //    var strP = TokenManager.GetPrincipal(token);
+        //    if (strP != "0") //invalid authorization
+        //    {
+        //        return TokenManager.GenerateToken(strP);
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            SendDetail sd = new SendDetail();
+        //            sd = getinfo();
+        //            PosSerialSend ss = new PosSerialSend();
+        //            ss.serial = "dNquBuW1qzgxbvA2";
+        //            ss.isActive = 1;
+        //            List<PosSerialSend> lsr = new List<PosSerialSend>();
+        //            lsr = sd.PosSerialSendList.Skip(5).Take(10).ToList();
+        //            lsr.Add(ss);
+        //            // int res = sd.packageSend.salesInvCount;
+        //            // string res = sd.PosSerialSendList.FirstOrDefault().serial;
+        //            int res = SaveposSerials(lsr);
+        //            // int res=  await   checkIncServerConn();
+        //            return TokenManager.GenerateToken(res.ToString());
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return TokenManager.GenerateToken(ex.ToString());
+        //        }
+
+
+        //    }
+        //}
 
         // GET api/<controller>
 
@@ -265,7 +491,7 @@ namespace POS_Server.Controllers
             }
         }
 
-       
+
 
         [HttpPost]
         [Route("Sendserverkey")]
@@ -293,40 +519,41 @@ namespace POS_Server.Controllers
                         skey = c.Value;
                     }
                 }
- try
+                try
                 {
-                  //  return TokenManager.GenerateToken("1212".ToString());
-                   serverId = ServerID();
-                   // serverId = "server13213ascas";
+                    //  return TokenManager.GenerateToken("1212".ToString());
+                    serverId = ServerID();
+                    // serverId = "server13213ascas";
 
 
-                    int conres=  await  checkIncServerConn();
+                    int conres = await checkIncServerConn();
 
                     // check con to increase server
                     if (conres > 0)
                     {
-
-
-                       // return TokenManager.GenerateToken(conres.ToString());
-
+                        // return TokenManager.GenerateToken(conres.ToString());
                         sendDetailItem = await GetSerialsAndDetails(skey, serverId);
                         //update server detail
                         // return TokenManager.GenerateToken(sendDetailItem);
-                        if (sendDetailItem.packageSend.posCount == -2)
+                        if (sendDetailItem.packageSend.result <= 0)
                         {
-                            // serial is booked
-                            res = -2;
+                           
+                            /*
+                             *   // -2 : package not active 
+                              
+                                 // -3 :serverID not match 
+                                 // -4 :not payed 
+                                 // -5 :serial not found
+                                 //"0" :  catch error
 
-                        } else if(sendDetailItem.packageSend.posCount == -3)
-                        {
-                            //serial not found
-                            res = -3;
+
+                             * */
+                            res = sendDetailItem.packageSend.result;
                         }
                         else
                         {
                             sendDetailItem.packageSend.customerServerCode = serverId;
                             sendDetailItem.packageSend.packageSaleCode = skey;
-
                             tempres = SaveProgDetails(sendDetailItem.packageSend);
                             //    return TokenManager.GenerateToken(res1);
                             //update serials 
@@ -346,25 +573,25 @@ namespace POS_Server.Controllers
                                 res = 0;
                             }
                         }
-                   
                     }
                     else
                     {
                         // connection error
                         res = -1;
                     }
+
+                    //here send data to inc server
                     return TokenManager.GenerateToken(res);
                 }
                 catch (Exception ex)
                 {
                     // connection error
-                 // return TokenManager.GenerateToken(-1);
-                  return TokenManager.GenerateToken(ex.ToString());
+                    // return TokenManager.GenerateToken(-1);
+                    return TokenManager.GenerateToken(ex.ToString());
                 }
+            }
 
-            }
-        
-            }
+        }
 
         public async Task<int> checkIncServerConn()
         {
@@ -395,13 +622,13 @@ namespace POS_Server.Controllers
             try
             {
                 int message = 0;
-            
+
                 ProgramDetails tmpObject = new ProgramDetails();
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var locationEntity = entity.Set<ProgramDetails>();
 
-                  
+
                     tmpObject = entity.ProgramDetails.FirstOrDefault();
 
                     if (tmpObject != null)
@@ -423,7 +650,7 @@ namespace POS_Server.Controllers
             {
 
             }
-            }
+        }
 
         public int periodTimer()
         {
@@ -470,12 +697,13 @@ namespace POS_Server.Controllers
             }
         }
 
+
         public int CheckPeriod()
         {
             ProgramDetails tmpObject;
             // 1 :  time not end-
             //  0 : time is end 
-            
+
             try
             {
                 using (incposdbEntities entity = new incposdbEntities())
@@ -490,7 +718,7 @@ namespace POS_Server.Controllers
                         }
                         else
                         {// limited
-                            if (tmpObject.expireDate <= DateTime.Now || tmpObject.expireDate==null)
+                            if (tmpObject.expireDate <= DateTime.Now || tmpObject.expireDate == null)
                             {
                                 return 0;
                             }
@@ -515,6 +743,38 @@ namespace POS_Server.Controllers
             }
 
         }
+
+        [HttpPost]
+        [Route("senddata")]
+        public async Task<string> senddata(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                try
+                {
+                    SendDetail sd = new SendDetail();
+                    sd = getinfo();
+                    // int res = sd.packageSend.salesInvCount;
+                    // string res = sd.PosSerialSendList.FirstOrDefault().serial;
+                    string res = await SendCustDetail(sd);
+                    // int res=  await   checkIncServerConn();
+                    return TokenManager.GenerateToken(res);
+                }
+                catch (Exception ex)
+                {
+                    return TokenManager.GenerateToken(ex.ToString());
+                }
+
+
+            }
+        }
+
 
     }
 }
