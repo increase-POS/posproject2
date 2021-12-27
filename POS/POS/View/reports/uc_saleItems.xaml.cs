@@ -220,6 +220,7 @@ namespace POS.View.reports
                 grid_items.Visibility = Visibility.Visible;
                 grid_collect.Visibility = Visibility.Hidden;
                 col_number.Visibility = Visibility.Visible;
+                col_date.Visibility = Visibility.Visible;
                 col_branch.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
                 col_unit.Visibility = Visibility.Visible;

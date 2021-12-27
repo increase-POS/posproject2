@@ -1494,6 +1494,7 @@ namespace POS.View.reports
                 col_branch.Visibility = Visibility.Visible;
                 col_invType.Visibility = Visibility.Visible;
                 col_invNumber.Visibility = Visibility.Visible;
+                col_invDate.Visibility = Visibility.Visible;
                 col_quantity.Visibility = Visibility.Visible;
                 col_agentTypeAgent.Visibility = Visibility.Visible;
                 col_itemUnits.Visibility = Visibility.Visible;

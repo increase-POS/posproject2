@@ -284,6 +284,7 @@ namespace POS.View.reports
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
             col_Num.Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            col_date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_item.Header = MainWindow.resourcemanager.GetString("trItem");
             col_unit.Header = MainWindow.resourcemanager.GetString("trUnit");

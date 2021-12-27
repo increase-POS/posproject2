@@ -115,6 +115,7 @@ namespace POS.View.reports
 
             col_invNum.Header = MainWindow.resourcemanager.GetString("trNum");
             col_invType.Header = MainWindow.resourcemanager.GetString("trType");
+            col_invDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_itemName.Header = MainWindow.resourcemanager.GetString("trItem");
             col_unitName.Header = MainWindow.resourcemanager.GetString("trUnit");
@@ -429,6 +430,7 @@ namespace POS.View.reports
 
                 col_invNum.Visibility = Visibility.Visible;
                 col_invType.Visibility = Visibility.Visible;
+                col_invDate.Visibility = Visibility.Visible;
                 col_invTotal.Visibility = Visibility.Visible;
                 col_branch.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
@@ -507,6 +509,7 @@ namespace POS.View.reports
             col_quantity.Visibility = Visibility.Collapsed;
             col_invNum.Visibility = Visibility.Collapsed;
             col_invType.Visibility = Visibility.Collapsed;
+            col_invDate.Visibility = Visibility.Collapsed;
             col_invTotal.Visibility = Visibility.Collapsed;
             col_branch.Visibility = Visibility.Collapsed;
             col_pos.Visibility = Visibility.Collapsed;

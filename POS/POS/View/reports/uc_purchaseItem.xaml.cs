@@ -195,6 +195,7 @@ namespace POS.View.reports
                 ReportsHelp.hideAllColumns(dgInvoice);
                  
                 col_number.Visibility = Visibility.Visible;
+                col_date.Visibility = Visibility.Visible;
                 col_branch.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
                 col_unit.Visibility = Visibility.Visible;
