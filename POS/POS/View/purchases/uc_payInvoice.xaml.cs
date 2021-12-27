@@ -1948,6 +1948,7 @@ namespace POS.View
                 string invoiceType = "po";
                 w.invoiceType = invoiceType;
                 w.condition = "orders";
+                w.branchId = MainWindow.branchID.Value;
                 //w.branchCreatorId = MainWindow.branchID.Value;
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
 
@@ -1970,7 +1971,7 @@ namespace POS.View
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseOrder");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         await fillInvoiceInputs(invoice);
-                        invoices = await invoice.getUnHandeldOrders(invoiceType, MainWindow.branchID.Value, 0);
+                        invoices = await invoice.getUnHandeldOrders(invoiceType,0, MainWindow.branchID.Value);
                         //invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, 0);
                         navigateBtnActivate();
                     }
