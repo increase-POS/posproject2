@@ -157,57 +157,7 @@ namespace POS_Server.Controllers
             }
             return message;
         }
-        //public async Task<string> SendCustDetail(string sd)
-        //{
-        //    string item = "";
-        //  //  sd = getinfo();
-        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-
-        // //   var myContent = JsonConvert.SerializeObject(sd);
-        //  //  parameters.Add("Object", myContent);
-        //    parameters.Add("Object","64");
-        //    string method = "packageUser/SendCustDetail";
-        //    IEnumerable<Claim> claims = await APIResult.getList(method, parameters);
-
-        //    foreach (Claim c in claims)
-        //    {
-        //        if (c.Type == "scopes")
-        //        {
-        //            item = c.Value;
-
-        //        }
-        //    }
-        //    return item;
-
-        //    //return await APIResult.post(method, parameters);
-        //}
-
-        //public async Task<string> SendCustDetail(SendDetail sd)
-        //{
-        //    string item = "";
-        //    sd = getinfo();
-        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
-
-
-        //    var myContent = JsonConvert.SerializeObject(sd);
-        //    parameters.Add("Object", myContent);
-        //    string method = "packageUser/SendCustDetail";
-        //    IEnumerable<Claim> claims = await APIResult.getList(method, parameters);
-
-        //    foreach (Claim c in claims)
-        //    {
-        //        if (c.Type == "scopes")
-        //        {
-        //            item = c.Value;
-
-        //        }
-        //    }
-        //    return item;
-
-        //    //return await APIResult.post(method, parameters);
-        //}
-
+       
         private int SaveProgDetails(packagesSend newObject)
         {
             int message = 0;
@@ -237,7 +187,27 @@ namespace POS_Server.Controllers
                             tmpObject.vendorCount = newObject.vendorCount;
                             tmpObject.customerCount = newObject.customerCount;
                             tmpObject.itemCount = newObject.itemCount;
-                            tmpObject.saleinvCount += newObject.totalsalesInvCount;
+                            if (newObject.salesInvCount == -1)
+                            {
+                                //new is unlimited
+                                tmpObject.saleinvCount = newObject.salesInvCount;
+                            }
+                            else
+                            {
+                                //new is limited
+                                if (tmpObject.saleinvCount==-1)
+                                {
+                                    //old is unlimited
+                                    tmpObject.saleinvCount = newObject.totalsalesInvCount;
+                                }
+                                else
+                                {
+                                    //old is limited
+                                    tmpObject.saleinvCount += newObject.totalsalesInvCount;
+                                }
+                               
+                            }
+                          
                             tmpObject.versionName = newObject.verName;
                             tmpObject.storeCount = newObject.storeCount;
 
@@ -534,7 +504,7 @@ namespace POS_Server.Controllers
                         // return TokenManager.GenerateToken(conres.ToString());
                         sendDetailItem = await GetSerialsAndDetails(skey, serverId);
                         //update server detail
-                        // return TokenManager.GenerateToken(sendDetailItem);
+                      
                         if (sendDetailItem.packageSend.result <= 0)
                         {
                            
@@ -572,6 +542,14 @@ namespace POS_Server.Controllers
                                 // activation error
                                 res = 0;
                             }
+
+                            
+                            //here send data to inc server
+                            SendDetail sd = new SendDetail();
+                            sd = getinfo();
+
+                            string sendres = await SendCustDetail(sd);
+
                         }
                     }
                     else
@@ -580,7 +558,9 @@ namespace POS_Server.Controllers
                         res = -1;
                     }
 
-                    //here send data to inc server
+
+                
+
                     return TokenManager.GenerateToken(res);
                 }
                 catch (Exception ex)
