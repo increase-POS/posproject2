@@ -202,12 +202,13 @@
 
 
                                     <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_invoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_invoice_Checked" Unchecked="chk_invoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_return" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_return_Checked" Unchecked="chk_return_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_drafs"  Content="Drafts" Checked="chk_drafs_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="chk_drafs_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_invoiceDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="Dp_invoiceDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Date..."></DatePicker>
+                                        <CheckBox x:Name="chk_invoice" Content="Invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_return" Content="Return invoice" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_drafs"  Content="Drafts" Foreground="{StaticResource MainColorGrey}" Margin="5" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <DatePicker SelectedDateFormat="Short"  Name="dp_invoiceDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                    materialDesign:HintAssist.Hint="Date..."
+                                                    SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
 
                                     </DockPanel>
                                 </Grid>
@@ -225,13 +226,13 @@
 
 
                                     <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_orderInvoice" Content="Order" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="Chk_orderInvoice_Checked" Unchecked="Chk_orderInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_orderDraft"  Content="Drafts" Checked="Chk_orderDraft_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="Chk_orderDraft_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_orderDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="Dp_orderDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Date..."></DatePicker>
-
-
+                                        <CheckBox x:Name="chk_orderInvoice" Content="Order" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_orderSaved"   Content="Saved" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_orderDraft"  Content="Drafts" Foreground="{StaticResource MainColorGrey}" Margin="5" Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <DatePicker SelectedDateFormat="Short"  Name="dp_orderDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right"  BorderBrush="#737373"  BorderThickness="0" 
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                    materialDesign:HintAssist.Hint="Date..."
+                                                    SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
                                     </DockPanel>
                                 </Grid>
                                 <Grid Grid.Row="1" x:Name="grid_quotation" Margin="10,0,10,10"  Visibility="Collapsed">
@@ -248,11 +249,13 @@
 
 
                                     <DockPanel Grid.ColumnSpan="3" LastChildFill="False">
-                                        <CheckBox x:Name="chk_quotationInvoice" Content="Quotation" Margin="5" Foreground="{StaticResource MainColorGrey}" Checked="Chk_quotationInvoice_Checked" Unchecked="Chk_quotationInvoice_Unchecked"></CheckBox>
-                                        <CheckBox x:Name="chk_quotationDraft"  Content="Drafts" Checked="Chk_quotationDraft_Checked" Foreground="{StaticResource MainColorGrey}" Margin="5" Unchecked="Chk_quotationDraft_Unchecked"></CheckBox>
-                                        <DatePicker SelectedDateFormat="Short"  Name="dp_quotationDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" SelectedDateChanged="Dp_quotationDate_SelectedDateChanged" BorderBrush="#737373"  BorderThickness="0" 
-                                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                materialDesign:HintAssist.Hint="Date..."></DatePicker>
+                                        <CheckBox x:Name="chk_quotationInvoice" Content="Quotation" Margin="5" Foreground="{StaticResource MainColorGrey}"  Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_quotationSaved"   Content="Saved" Margin="5" Foreground="{StaticResource MainColorGrey}"  Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <CheckBox x:Name="chk_quotationDraft"  Content="Drafts"  Foreground="{StaticResource MainColorGrey}" Margin="5"  Checked="chk_Checked" Unchecked="chk_Checked"></CheckBox>
+                                        <DatePicker SelectedDateFormat="Short"  Name="dp_quotationDate" Width="100" Margin="10,5,10,5" Padding="10,0,5,0" Height="40" DockPanel.Dock="Right" BorderBrush="#737373"  BorderThickness="0" 
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                    materialDesign:HintAssist.Hint="Date..."
+                                                    SelectedDateChanged="Dp_SelectedDateChanged"></DatePicker>
 
 
                                     </DockPanel>
@@ -292,10 +295,10 @@
 
 
                         <Button FlowDirection="LeftToRight" DockPanel.Dock="Right" Width="40" Height="40" x:Name="btn_refresh" 
-                            materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
-                          Background="{x:Null}" BorderBrush="{x:Null}"   Style="{StaticResource SmallButtonCircleRotate}"
-                             Margin="5,1"  Content="إضافة"   ToolTip="Refresh"  RenderTransformOrigin="0.5,0.5"
-                            DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
+                                materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
+                                Background="{x:Null}" BorderBrush="{x:Null}"   Style="{StaticResource SmallButtonCircleRotate}"
+                                Margin="5,1"  Content="إضافة"  RenderTransformOrigin="0.5,0.5"
+                                DataContext="M896,0L896,0C401.2,0,0,401.2,0,896v0c0,494.8,401.2,896,896,896h0c494.8,0,896-401.2,896-896v0C1792,401.2,1390.8,0,896,0z
 	 M1451.3,1021c-31.9,133.7-98.8,242.1-200.6,325.2c-101.8,83.1-221,124.6-357.7,124.6c-72.8,0-143.3-13.7-211.4-41.2
 	s-128.8-66.6-182.2-117.5l-96.5,96.5c-9.5,9.5-20.7,14.2-33.7,14.2s-24.2-4.7-33.7-14.2c-9.5-9.5-14.2-20.7-14.2-33.7v-335.3
 	c0-13,4.7-24.2,14.2-33.7s20.7-14.2,33.7-14.2h335.3c13,0,24.2,4.7,33.7,14.2c9.5,9.5,14.2,20.7,14.2,33.7c0,13-4.7,24.2-14.2,33.7
@@ -315,6 +318,13 @@
                                     <TranslateTransform/>
                                 </TransformGroup>
                             </Button.RenderTransform>
+                            <Button.ToolTip>
+                                <ToolTip x:Name="tt_refresh" Content="Refresh"
+                                              Placement="left" 
+                                              HorizontalOffset="15"
+                                              PlacementRectangle="50,0,0,0"
+                                              VerticalOffset="25"/>
+                            </Button.ToolTip>
                         </Button>
 
 
@@ -431,8 +441,8 @@
                                 </Grid>
                             </Button>
                             <Button   Background="{x:Null}"    Grid.Column="3" Margin="5,0,5,-0.6" 
-                            Padding="0" Height="Auto"   x:Name="btn_settings" 
-                                       BorderBrush="{x:Null}">
+                                      Padding="0" Height="Auto"   x:Name="btn_settings" 
+                                       BorderBrush="{x:Null}" Visibility="Collapsed">
                                 <materialDesign:PackIcon 
                           Width="20" Height="20" 
                            FlowDirection="LeftToRight" Kind="Settings" Foreground="Gray"  >
@@ -464,9 +474,9 @@
 
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition x:Name="rowToShow" Height="*"></RowDefinition>
                 <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition x:Name="rowToHide"  Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0"  Background="White" Margin="5,0,5,5" CornerRadius="7">

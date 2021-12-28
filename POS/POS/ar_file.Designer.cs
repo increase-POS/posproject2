@@ -4886,6 +4886,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to طلبية.
+        /// </summary>
+        internal static string trOrder {
+            get {
+                return ResourceManager.GetString("trOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رقم الطلبية.
         /// </summary>
         internal static string trOrderNum {
@@ -5890,6 +5899,15 @@ namespace POS {
         internal static string trQuantityHint {
             get {
                 return ResourceManager.GetString("trQuantityHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عرض سعر.
+        /// </summary>
+        internal static string trQuotation {
+            get {
+                return ResourceManager.GetString("trQuotation", resourceCulture);
             }
         }
         

@@ -2857,4 +2857,10 @@
   <data name="trPreventLogIn" xml:space="preserve">
     <value>لا يمكنك تسجيل الدخول</value>
   </data>
+  <data name="trOrder" xml:space="preserve">
+    <value>طلبية</value>
+  </data>
+  <data name="trQuotation" xml:space="preserve">
+    <value>عرض سعر</value>
+  </data>
 </root>

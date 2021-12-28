@@ -23,6 +23,8 @@ using netoaster;
 using System.Threading;
 using POS.View.sales;
 using POS.View.windows;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.sales
 {
@@ -62,14 +64,27 @@ namespace POS.View.sales
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            //load
+        {//load
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
                 itemTransferInvoices = await statisticModel.GetUserdailyinvoice((int)MainWindow.branchID, (int)MainWindow.userID);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
 
                 dp_invoiceDate.SelectedDate = DateTime.Now;
                 dp_orderDate.SelectedDate = DateTime.Now;
@@ -82,6 +97,7 @@ namespace POS.View.sales
 
                 if (MainWindow.tax == 0)
                     col_tax.Visibility = Visibility.Hidden;
+
                 dgInvoice.ItemsSource = itemTransferQuery;
 
                 if (sender != null)
@@ -95,7 +111,45 @@ namespace POS.View.sales
             }
         }
 
-        private void fillInvoiceEvents()
+        private void translate()
+        {
+            tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
+            tt_order.Content = MainWindow.resourcemanager.GetString("trOrders");
+            tt_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trDate"));
+
+            chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
+            chk_return.Content = MainWindow.resourcemanager.GetString("trReturn");
+            chk_drafs.Content = MainWindow.resourcemanager.GetString("trDraft");
+
+            chk_orderInvoice.Content = MainWindow.resourcemanager.GetString("trOrder");
+            chk_orderSaved.Content = MainWindow.resourcemanager.GetString("trSaved");
+            chk_orderDraft.Content = MainWindow.resourcemanager.GetString("trDraft");
+
+            chk_quotationInvoice.Content = MainWindow.resourcemanager.GetString("trQuotation");
+            chk_quotationSaved.Content = MainWindow.resourcemanager.GetString("trSaved");
+            chk_quotationDraft.Content = MainWindow.resourcemanager.GetString("trDraft");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_No.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_type.Header = MainWindow.resourcemanager.GetString("trType");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
+            col_discount.Header = MainWindow.resourcemanager.GetString("trDiscount");
+            col_tax.Header = MainWindow.resourcemanager.GetString("trTax");
+            col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+        }
+
+        private void fillEvents()
         {
             itemTransferQuery = fillList();
             if (MainWindow.tax == 0)
@@ -105,29 +159,7 @@ namespace POS.View.sales
             fillRowChart();
             fillPieChart();
         }
-
-        private void fillOrderEvents()
-        {
-            itemTransferQuery = fillList();
-            if (MainWindow.tax == 0)
-                col_tax.Visibility = Visibility.Hidden;
-            dgInvoice.ItemsSource = itemTransferQuery;
-            fillColumnChart();
-            fillRowChart();
-            fillPieChart();
-        }
-
-        private void fillQuotationEvents()
-        {
-            itemTransferQuery = fillList();
-            if (MainWindow.tax == 0)
-                col_tax.Visibility = Visibility.Hidden;
-            dgInvoice.ItemsSource = itemTransferQuery;
-            fillColumnChart();
-            fillRowChart();
-            fillPieChart();
-        }
-
+        //List<ItemTransferInvoice> tempLst;
         private List<ItemTransferInvoice> fillList()
         {
             var temp = itemTransferInvoices.Where(obj => obj.updateUserId == MainWindow.userID);
@@ -141,22 +173,23 @@ namespace POS.View.sales
             if (selectedTab == 1)
             {
                 temp = temp.Where(obj => 
-                            ((chk_orderInvoice.IsChecked == true ? obj.invType == "or" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "ord" : false))
+                            ((chk_orderInvoice.IsChecked == true ? obj.invType == "or" : false) || (chk_orderSaved.IsChecked == true ? obj.invType == "ors" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "ord" : false))
                          && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
                          );
             }
             else if (selectedTab == 2)
             {
                 temp = temp.Where(obj =>
-                        ((chk_orderInvoice.IsChecked == true ? obj.invType == "q" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "qd" : false))
+                          ((chk_quotationInvoice.IsChecked == true ? obj.invType == "q" : false) || (chk_quotationSaved.IsChecked == true ? obj.invType == "qs" : false) || (chk_quotationDraft.IsChecked == true ? obj.invType == "qd" : false))
                        && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
                        );
             }
+            itemTransferQuery = temp.ToList();
             return temp.ToList();
         }
 
         private void Btn_Invoice_Click(object sender, RoutedEventArgs e)
-        {//
+        {//invoice
             try
             {
                 if (sender != null)
@@ -164,6 +197,7 @@ namespace POS.View.sales
 
                 selectedTab = 0;
                 txt_search.Text = "";
+
                 path_order.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -171,7 +205,9 @@ namespace POS.View.sales
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_invoice);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_invoice);
-                fillInvoiceEvents();
+
+                fillEvents();
+                rowToHide.Height = rowToShow.Height;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -185,7 +221,7 @@ namespace POS.View.sales
         }
 
         private void Btn_order_Click(object sender, RoutedEventArgs e)
-        {
+        {//order
             try
             {
                 if (sender != null)
@@ -193,6 +229,7 @@ namespace POS.View.sales
 
                 selectedTab = 1;
                 txt_search.Text = "";
+
                 path_invoice.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -200,7 +237,9 @@ namespace POS.View.sales
                 path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_order);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_order);
-                fillOrderEvents();
+
+                fillEvents();
+                rowToHide.Height = new GridLength(0);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -214,7 +253,7 @@ namespace POS.View.sales
         }
 
         private void Btn_quotation_Click(object sender, RoutedEventArgs e)
-        {
+        {//quotation
             try
             {
                 if (sender != null)
@@ -222,6 +261,7 @@ namespace POS.View.sales
 
                 selectedTab = 2;
                 txt_search.Text = "";
+
                 path_invoice.Fill = Brushes.White;
                 path_order.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -229,7 +269,9 @@ namespace POS.View.sales
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_quotation);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_quotation);
-                fillQuotationEvents();
+
+                fillEvents();
+                rowToHide.Height = new GridLength(0);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -242,14 +284,14 @@ namespace POS.View.sales
             }
         }
 
-        private void Chk_orderInvoice_Checked(object sender, RoutedEventArgs e)
+        private void fillEventsCall(object sender)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillOrderEvents();
+                fillEvents();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -261,430 +303,23 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        private void Chk_orderInvoice_Unchecked(object sender, RoutedEventArgs e)
+        private void chk_Checked(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillOrderEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            fillEventsCall(sender);
         }
 
-        private void Chk_orderReturn_Unchecked(object sender, RoutedEventArgs e)
+        private void Dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillOrderEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_orderReturn_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillOrderEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_orderDraft_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillOrderEvents();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_orderDraft_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillOrderEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_orderDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillOrderEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_quotationDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_quotationInvoice_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_quotationInvoice_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_quotationReturn_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_quotationReturn_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_quotationDraft_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Chk_quotationDraft_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillQuotationEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void chk_invoice_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void chk_invoice_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void chk_return_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void chk_return_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void chk_drafs_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void chk_drafs_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private void Dp_invoiceDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                fillInvoiceEvents();
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            fillEventsCall(sender);
         }
 
         private void fillPieChart()
         {
             List<string> titles = new List<string>();
             IEnumerable<int> x = null;
-      
-            var temp =  itemTransferInvoices.Where(obj => (
-         
-               ((chk_invoice.IsChecked == true ? obj.invType == "s" : false) || (chk_return.IsChecked == true ? obj.invType == "sb" : false) || (chk_invoice.IsChecked == true ? obj.invType == "spd" || obj.invType == "sd" : false))
-                   && (dp_invoiceDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_invoiceDate.SelectedDate.Value.Date.ToShortDateString() : true)
-                )
-                );
-            if (selectedTab == 1)
-            {
-                temp = itemTransferInvoices.Where(obj => (
-                          ((chk_orderInvoice.IsChecked == true ? obj.invType == "or" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "ord" : false))
-                                   && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
-                                )
-                                );
-            }
-            else if (selectedTab == 2)
-            {
-                temp = itemTransferInvoices.Where(obj => (
-                                                     ((chk_orderInvoice.IsChecked == true ? obj.invType == "q" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "qd" : false))
-                                   && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true))
-                                           );
-            };
+
+            var temp = itemTransferQuery;
+
             var titleTemp = temp.GroupBy(m => m.cUserAccName);
     
             var result = temp.GroupBy(s =>new { s.updateUserId ,s.cUserAccName}).Select(s => new
@@ -694,43 +329,45 @@ namespace POS.View.sales
                 count = s.Count()
             });
             x = result.Select(m => m.count);
-            int final1 = 0;
-            int final = 0;
-
-
-            SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
-            {
-
-                List<string> lable = new List<string>();
-                if (result.Select(obj => obj.updateUserId).Skip(i).FirstOrDefault() == MainWindow.userID)
-                {
-                    final = x.ToList().Skip(i).FirstOrDefault();
-                    titles.Add(result.Select(jj => jj.cUserAccName).Skip(i).FirstOrDefault());
-                }
-                else
-                {
-                    final1 += x.ToList().Skip(i).FirstOrDefault();
-                    titles.Add("Others");
-                }
-            }
           
-            List<int> final2 = new List<int>();
-            final2.Add(final);
-            final2.Add(final1);
-            for (int i = 0; i < 2; i++)
+            SeriesCollection piechartData = new SeriesCollection();
+
+            int xCount = 0;
+            if (x.Count() <= 6) xCount = x.Count();
+            else xCount = 6;
+            for (int i = 0; i < xCount; i++)
             {
-                List<int> final3 = new List<int>();
-                final3.Add(final2.Skip(i).FirstOrDefault());
+                List<int> final = new List<int>();
+                final.Add(x.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
                   new PieSeries
                   {
-                      Values = final3.AsChartValues(),
+                      Values = final.AsChartValues(),
                       Title = titles.Skip(i).FirstOrDefault(),
                       DataLabels = true,
                   }
               );
             }
+            if (x.Count() > 6)
+            {
+                for (int i = 6; i < x.Count(); i++)
+                {
+                    List<int> final = new List<int>();
+                    List<string> lable = new List<string>();
+
+                    final.Add(x.ToList().Skip(i).FirstOrDefault());
+                    if (final.Count > 0)
+                        piechartData.Add(
+                          new PieSeries
+                          {
+                              Values = final.AsChartValues(),
+                              Title = MainWindow.resourcemanager.GetString("trOthers"),
+                              DataLabels = true,
+                          }
+                  );
+                }
+            }
+
             chart1.Series = piechartData;
         }
 
@@ -742,38 +379,26 @@ namespace POS.View.sales
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
 
-            var temp = fillList();
+            string trChk1 = "", trChk2 = "", condition1 = "", condition2 = "", condition3 = "" , condition4 = "";
+
+            if (selectedTab == 0)
+            { trChk1 = "tr_Sales"; trChk2 = "trReturned"; condition1 = "s";  condition2 = "sb";  condition3 = "sd"; condition4 = "sbd"; }
+            else if (selectedTab == 1)
+            { trChk1 = "trOrder"; trChk2 = "trSaved";     condition1 = "or"; condition2 = "ors"; condition3 = "ord"; condition4 = "ord"; }
+            else if (selectedTab == 2)
+            { trChk1 = "trQuotation"; trChk2 = "trSaved"; condition1 = "q";  condition2 = "qs";  condition3 = "qd"; condition4 = "qd"; }
+
+
+            var temp = itemTransferQuery;
             var result = temp.GroupBy(s => s.updateUserId).Select(s => new
             {
                 updateUserId = s.Key,
-                countP = s.Where(m => m.invType == "s").Count(),
-                countPb = s.Where(m => m.invType == "sb").Count(),
-                countD = s.Where(m => m.invType == "sd" || m.invType == "sbd").Count()
+                countP  = s.Where(m => m.invType == condition1).Count(),
+                countPb = s.Where(m => m.invType == condition2).Count(),
+                countD  = s.Where(m => m.invType == condition3 || m.invType == condition4).Count()
 
             });
-            if (selectedTab == 1)
-            {
-                result = temp.GroupBy(s => s.updateUserId).Select(s => new
-                {
-                    updateUserId = s.Key,
-                    countP = s.Where(m => m.invType == "or").Count(),
-                    countPb = 0,
-                    countD = s.Where(m => m.invType == "ord").Count()
-
-                });
-            }
-            else if (selectedTab == 2)
-            {
-                result = temp.GroupBy(s => s.updateUserId).Select(s => new
-                {
-                    updateUserId = s.Key,
-                    countP = s.Where(m => m.invType == "q").Count(),
-                    countPb = 0,
-                    countD = s.Where(m => m.invType == "qd").Count()
-
-                });
-            }
-
+          
             x = result.Select(m => m.countP);
             y = result.Select(m => m.countPb);
             z = result.Select(m => m.countD);
@@ -790,16 +415,37 @@ namespace POS.View.sales
             List<int> cD = new List<int>();
             List<string> titles = new List<string>()
             {
-                "مبيعات","مرتجع","مسودة"
+                MainWindow.resourcemanager.GetString(trChk1),
+                MainWindow.resourcemanager.GetString(trChk2),
+                MainWindow.resourcemanager.GetString("trDraft")
             };
-            for (int i = 0; i < x.Count(); i++)
+            int xCount = 0;
+            if (x.Count() <= 6) xCount = x.Count();
+            else xCount = 6;
+            for (int i = 0; i < xCount; i++)
             {
                 cP.Add(x.ToList().Skip(i).FirstOrDefault());
                 cPb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-
+            if(x.Count() > 6)
+            {
+                int cPSum = 0, cPbSum = 0, cDSum = 0;
+                for (int i = 6; i < x.Count() ; i++)
+                {
+                    cPSum = cPSum +x.ToList().Skip(i).FirstOrDefault();
+                    cPbSum = cPbSum + y.ToList().Skip(i).FirstOrDefault();
+                    cDSum = cDSum + z.ToList().Skip(i).FirstOrDefault();
+                }
+                if(!((cPSum == 0)&&(cPbSum == 0)&&(cDSum == 0)))
+                {
+                    cP.Add(cPSum);
+                    cPb.Add(cPbSum);
+                    cD.Add(cDSum);
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                }
+            }
             //3 فوق بعض
             columnChartData.Add(
             new StackedColumnSeries
@@ -834,7 +480,8 @@ namespace POS.View.sales
             IEnumerable<decimal> pTemp = null;
             IEnumerable<decimal> pbTemp = null;
             IEnumerable<decimal> resultTemp = null;
-            var temp = fillList();
+
+            var temp = itemTransferQuery;
             var result = temp.GroupBy(s => s.updateUserId).Select(s => new
             {
                 updateUserId = s.Key,
@@ -842,24 +489,7 @@ namespace POS.View.sales
                 totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
             }
          );
-            if (selectedTab == 1)
-            {
-                result = temp.GroupBy(s => s.updateUserId).Select(s => new
-                {
-                    updateUserId = s.Key,
-                    totalP = s.Where(x => x.invType == "or").Sum(x => x.totalNet),
-                    totalPb = s.Where(x => x.invType == "ord").Sum(x => x.totalNet)
-                });
-            }
-            else if (selectedTab == 2)
-            {
-                result = temp.GroupBy(s => s.updateUserId).Select(s => new
-                {
-                    updateUserId = s.Key,
-                    totalP = s.Where(x => x.invType == "q").Sum(x => x.totalNet),
-                    totalPb = s.Where(x => x.invType == "qd").Sum(x => x.totalNet)
-                });
-            }
+           
             var resultTotal = result.Select(x => new { x.updateUserId, total = x.totalP - x.totalPb }).ToList();
             pTemp = result.Select(x => (decimal)x.totalP);
             pbTemp = result.Select(x => (decimal)x.totalPb);
@@ -876,7 +506,9 @@ namespace POS.View.sales
             List<decimal> sub = new List<decimal>();
             List<string> titles = new List<string>()
             {
-                "اجمالي المبيعات","اجمالي المرتجع","صافي المبيعات"
+                MainWindow.resourcemanager.GetString("trNetSales"),
+                MainWindow.resourcemanager.GetString("trTotalReturn"),
+                MainWindow.resourcemanager.GetString("trTotalSales")
             };
             for (int i = 0; i < pTemp.Count(); i++)
             {
@@ -1135,5 +767,7 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+       
     }
 }

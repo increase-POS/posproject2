@@ -2872,4 +2872,10 @@ Please add Email in setting</value>
   <data name="trPreventLogIn" xml:space="preserve">
     <value>You cannot log in</value>
   </data>
+  <data name="trOrder" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="trQuotation" xml:space="preserve">
+    <value>Quotation</value>
+  </data>
 </root>

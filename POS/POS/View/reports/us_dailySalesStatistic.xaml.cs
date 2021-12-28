@@ -110,6 +110,7 @@ namespace POS.View.reports
             tt_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trDate"));
+
             chk_invoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
             chk_return.Content = MainWindow.resourcemanager.GetString("trReturn");
             chk_drafs.Content = MainWindow.resourcemanager.GetString("trDraft");
@@ -177,6 +178,8 @@ namespace POS.View.reports
                     ?
                     (chk_invoice.IsChecked == true ? s.invType == "or" : false)
                     ||
+                    (chk_return.IsChecked == true ? s.invType == "ors" : false)
+                    ||
                     (chk_drafs.IsChecked == true ? s.invType == "ord" : false)
                     : false
                 )
@@ -185,6 +188,8 @@ namespace POS.View.reports
                     selectedTab == 2 //quotation
                     ?
                     (chk_invoice.IsChecked == true ? s.invType == "q" : false)
+                    ||
+                    (chk_return.IsChecked == true ? s.invType == "qs" : false)
                     ||
                     (chk_drafs.IsChecked == true ? s.invType == "qd" : false)
                     : false
@@ -232,7 +237,10 @@ namespace POS.View.reports
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 selectedTab = 0;
                 txt_search.Text = "";
-                chk_return.Visibility = Visibility.Visible;
+                
+                chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
+                chk_return.Content = MainWindow.resourcemanager.GetString("trReturn");
+
                 path_order.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -240,6 +248,7 @@ namespace POS.View.reports
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 await Search();
+                rowToHide.Height = rowToShow.Height ;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -262,8 +271,10 @@ namespace POS.View.reports
 
                 selectedTab = 1;
                 txt_search.Text = "";
-                chk_return.Visibility = Visibility.Collapsed;
-                chk_return.IsChecked = false;
+              
+                chk_invoice.Content = MainWindow.resourcemanager.GetString("trOrder");
+                chk_return.Content = MainWindow.resourcemanager.GetString("trSaved");
+
                 path_invoice.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -271,6 +282,7 @@ namespace POS.View.reports
                 path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 await Search();
+                rowToHide.Height = new GridLength(0);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -295,8 +307,10 @@ namespace POS.View.reports
 
                 selectedTab = 2;
                 txt_search.Text = "";
-                chk_return.Visibility = Visibility.Collapsed;
-                chk_return.IsChecked = false;
+                
+                chk_invoice.Content = MainWindow.resourcemanager.GetString("trQuotation");
+                chk_return.Content = MainWindow.resourcemanager.GetString("trSaved");
+                
                 path_invoice.Fill = Brushes.White;
                 path_order.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -304,6 +318,7 @@ namespace POS.View.reports
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 await Search();
+                rowToHide.Height = new GridLength(0);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -368,10 +383,12 @@ namespace POS.View.reports
             x = result.Select(m => m.count);
 
             SeriesCollection piechartData = new SeriesCollection();
-            for (int i = 0; i < x.Count(); i++)
+            int xCount = x.Count();
+            if (x.Count() <= 6) xCount = x.Count();
+            else xCount = 6;
+            for (int i = 0; i < xCount; i++)
             {
                 List<int> final = new List<int>();
-                List<string> lable = new List<string>();
                 final.Add(x.ToList().Skip(i).FirstOrDefault());
                 piechartData.Add(
                   new PieSeries
@@ -382,6 +399,26 @@ namespace POS.View.reports
                   }
               );
             }
+            if (x.Count() > 6)
+            {
+                for (int i = 6; i < x.Count(); i++)
+                {
+                    List<int> final = new List<int>();
+                    List<string> lable = new List<string>();
+
+                    final.Add(x.ToList().Skip(i).FirstOrDefault());
+                    if(final.Count > 0)
+                        piechartData.Add(
+                          new PieSeries
+                          {
+                              Values = final.AsChartValues(),
+                              Title = MainWindow.resourcemanager.GetString("trOthers"),
+                              DataLabels = true,
+                          }
+                  );
+                }
+            }
+
             chart1.Series = piechartData;
         }
 
@@ -392,14 +429,22 @@ namespace POS.View.reports
             IEnumerable<int> x = null;
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
+            string trChk1 = "", trChk2 = "", condition1 = "", condition2 = "" , condition3 = "" ;
+
+            if (selectedTab == 0)
+            { trChk1 = "tr_Sales"; trChk2 = "trReturned"; condition1 = "s"; condition2 = "sb"; condition3 = "sd"; }
+            else if (selectedTab == 1)
+            { trChk1 = "trOrder"; trChk2 = "trSaved"; condition1 = "or"; condition2 = "ors"; condition3 = "ord"; }
+            else if (selectedTab == 2)
+            { trChk1 = "trQuotation"; trChk2 = "trSaved"; condition1 = "q"; condition2 = "qs"; condition3 = "qd"; }
 
             var temp = itemTrasferInvoicesQuery;
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
             {
                 branchCreatorId = s.Key,
-                countS = s.Where(m => m.invType == "s").Count(),
-                countSb = s.Where(m => m.invType == "sb").Count(),
-                countSd = s.Where(m => m.invType == "sd").Count()
+                countS = s.Where(m => m.invType == condition1).Count(),
+                countSb = s.Where(m => m.invType == condition2).Count(),
+                countSd = s.Where(m => m.invType == condition3).Count()
             });
             x = result.Select(m => m.countS);
             y = result.Select(m => m.countSb);
@@ -415,18 +460,40 @@ namespace POS.View.reports
             List<int> cS = new List<int>();
             List<int> cSb = new List<int>();
             List<int> cSd = new List<int>();
+           
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("tr_Sales"),
-                MainWindow.resourcemanager.GetString("trReturned"),
+               
+                MainWindow.resourcemanager.GetString(trChk1),
+                MainWindow.resourcemanager.GetString(trChk2),
                 MainWindow.resourcemanager.GetString("trDraft")
-        };
-            for (int i = 0; i < x.Count(); i++)
+            };
+            int xCount;
+            if (x.Count() <= 6) xCount = x.Count();
+            else xCount = 6;
+            for (int i = 0; i < xCount; i++)
             {
                 cS.Add(x.ToList().Skip(i).FirstOrDefault());
                 cSb.Add(y.ToList().Skip(i).FirstOrDefault());
                 cSd.Add(z.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+            if(x.Count() > 6)
+            {
+                int cSSum = 0, cSbSum = 0, cSdSum = 0;
+                for (int i = 6; i < x.Count(); i++)
+                {
+                    cSSum = cSSum + x.ToList().Skip(i).FirstOrDefault();
+                    cSbSum = cSbSum + y.ToList().Skip(i).FirstOrDefault();
+                    cSdSum = cSdSum + z.ToList().Skip(i).FirstOrDefault();
+                }
+                if (!((cSSum == 0) && (cSbSum == 0) && (cSdSum == 0)))
+                {
+                    cS.Add(cSSum);
+                    cSb.Add(cSbSum);
+                    cSd.Add(cSdSum);
+                    axcolumn.Labels.Add("trOthers");
+                }
             }
 
             //3 فوق بعض
