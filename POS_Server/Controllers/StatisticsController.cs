@@ -3827,7 +3827,7 @@ namespace POS_Server.Controllers
                                             //I.paid,
                                             //I.deserved,
                                             //I.deservedDate,
-                                            //I.invDate,
+                                            I.invDate,
                                             //I.invoiceMainId,
                                             //I.invCase,
                                             //I.invTime,
@@ -4141,7 +4141,7 @@ namespace POS_Server.Controllers
                                             I.updateDate,
                                             I.invoiceId,
                                             I.invNumber,
-
+                                            I.invDate,
                                             I.invType,
                                         
                                             discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
@@ -8976,7 +8976,7 @@ namespace POS_Server.Controllers
                                                                          //  I.paid,
                                                                          // I.deserved,
                                                                          //I.deservedDate,
-                                                                         //  I.invDate,
+                                                                         I.invDate,
                                                                          //  I.invoiceMainId,
                                                                          // I.invCase,
                                                                          //  I.invTime,
