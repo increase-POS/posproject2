@@ -456,13 +456,13 @@ namespace POS.Classes
 
 
                 }
-                else if (invoice.invType == "or")
+                else if (invoice.invType == "or"|| invoice.invType == "ors")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saleordertemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saleordertemplate\ar\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\saleordertemplate\ar\invitemrow.tmp");
                 }
-                else if (invoice.invType == "q")
+                else if (invoice.invType == "q"|| invoice.invType == "qs")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\quotationtemplate\ar\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\quotationtemplate\ar\invitemtable.tmp");
@@ -490,13 +490,13 @@ namespace POS.Classes
 
                     taxdiv = repm.ReadFile(@"EmailTemplates\saletemplate\en\taxdiv.tmp");
                 }
-                else if (invoice.invType == "or")
+                else if (invoice.invType == "or" || invoice.invType == "ors")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\saleordertemplate\en\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\saleordertemplate\en\invitemtable.tmp");
                     invitemrow = repm.ReadFile(@"EmailTemplates\saleordertemplate\en\invitemrow.tmp");
                 }
-                else if (invoice.invType == "q")
+                else if (invoice.invType == "q" || invoice.invType == "qs")
                 {
                     invbody = repm.ReadFile(@"EmailTemplates\quotationtemplate\en\invbody.tmp");
                     invitemtable = repm.ReadFile(@"EmailTemplates\quotationtemplate\en\invitemtable.tmp");
@@ -626,7 +626,7 @@ namespace POS.Classes
                     invbody = invbody.Replace("[[taxdiv]]", taxdiv);
                 }
                 //shipping cost section
-                if ((invoice.invType == "s" || invoice.invType == "or" || invoice.invType == "q"))
+                if ((invoice.invType == "s" || invoice.invType == "or" || invoice.invType == "q" || invoice.invType == "qs" || invoice.invType == "ors"))
                 {
                     if (invoice.shippingCost > 0)
                     {

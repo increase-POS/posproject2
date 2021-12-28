@@ -3345,7 +3345,7 @@ namespace POS.View
                     //
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                    string reppath = reportclass.GetpayInvoiceRdlcpath(invoice);
+                    string reppath = reportclass.GetpayInvoiceRdlcpath(prInvoice);
                     if (prInvoice.invoiceId > 0)
                     {
                         invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
@@ -3780,7 +3780,7 @@ namespace POS.View
                                                 {
                                                     setvlist = await setvmodel.GetBySetName("pur_email_temp");
                                                 }
-                                                else if (prInvoice.invType == "or")
+                                                else if (prInvoice.invType == "or"|| prInvoice.invType == "ors")
                                                 {
                                                     setvlist = await setvmodel.GetBySetName("sale_order_email_temp");
                                                 }

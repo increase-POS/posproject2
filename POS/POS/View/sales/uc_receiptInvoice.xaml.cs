@@ -4628,11 +4628,11 @@ namespace POS.View
                                         {
                                             setvlist = await setvmodel.GetBySetName("sale_email_temp");
                                         }
-                                        else if (prInvoice.invType == "or")
+                                        else if (prInvoice.invType == "or" || prInvoice.invType == "ors")
                                         {
                                             setvlist = await setvmodel.GetBySetName("sale_order_email_temp");
                                         }
-                                        else if (prInvoice.invType == "q")
+                                        else if (prInvoice.invType == "q" || prInvoice.invType == "qs")
                                         {
                                             setvlist = await setvmodel.GetBySetName("quotation_email_temp");
                                         }

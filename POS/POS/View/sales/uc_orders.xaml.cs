@@ -1906,77 +1906,81 @@ namespace POS.View.sales
 
         public async void pdfPurInvoice()
         {
-            if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
-                         || invoice.invType == "sbd" || invoice.invType == "pbd"
-                         || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+            if (invoice.invoiceId > 0)
             {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
-            }
-            else
-            {
-
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                if (invoice.invoiceId > 0)
+                prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
+                if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+                             || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+                             || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
                 {
-                    invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-
-                    User employ = new User();
-                    employ = await userModel.getUserById((int)invoice.updateUserId);
-                    invoice.uuserName = employ.name;
-                    invoice.uuserLast = employ.lastname;
-                    //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-                    //  invoice.agentCode = agentinv.code;
-                    if (invoice.agentId != null)
-                    {
-                        Agent agentinv = new Agent();
-                        agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
-
-
-                        invoice.agentCode = agentinv.code;
-                        //new lines
-                        invoice.agentName = agentinv.name;
-                        invoice.agentCompany = agentinv.company;
-                    }
-                    else
-                    {
-                        invoice.agentCode = "-";
-                        invoice.agentName = "-";
-                        invoice.agentCompany = "-";
-                    }
-                    string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
-                    ReportCls.checkLang();
-                    Branch branch = new Branch();
-                    branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
-                    if (branch.branchId > 0)
-                    {
-                        invoice.branchName = branch.name;
-                    }
-                    foreach (var i in invoiceItems)
-                    {
-                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
-                    }
-                    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        saveFileDialog.Filter = "PDF|*.pdf;";
-
-                        if (saveFileDialog.ShowDialog() == true)
-                        {
-
-                            string filepath = saveFileDialog.FileName;
-                            LocalReportExtensions.ExportToPDF(rep, filepath);
-                        }
-                    });
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintDraftInvoice"), animation: ToasterAnimation.FadeIn);
                 }
+                else
+                {
 
+                    List<ReportParameter> paramarr = new List<ReportParameter>();
+
+                    if (prInvoice.invoiceId > 0)
+                    {
+                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+
+                        User employ = new User();
+                        employ = await userModel.getUserById((int)prInvoice.updateUserId);
+                        prInvoice.uuserName = employ.name;
+                        prInvoice.uuserLast = employ.lastname;
+                        //  agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+
+                        //  invoice.agentCode = agentinv.code;
+                        if (prInvoice.agentId != null)
+                        {
+                            Agent agentinv = new Agent();
+                            agentinv = customers.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
+
+
+                            prInvoice.agentCode = agentinv.code;
+                            //new lines
+                            prInvoice.agentName = agentinv.name;
+                            prInvoice.agentCompany = agentinv.company;
+                        }
+                        else
+                        {
+                            prInvoice.agentCode = "-";
+                            prInvoice.agentName = "-";
+                            prInvoice.agentCompany = "-";
+                        }
+                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice);
+                        ReportCls.checkLang();
+                        Branch branch = new Branch();
+                        branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
+                        if (branch.branchId > 0)
+                        {
+                            prInvoice.branchName = branch.name;
+                        }
+                        foreach (var i in invoiceItems)
+                        {
+                            i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        }
+                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+                        paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
+
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            saveFileDialog.Filter = "PDF|*.pdf;";
+
+                            if (saveFileDialog.ShowDialog() == true)
+                            {
+
+                                string filepath = saveFileDialog.FileName;
+                                LocalReportExtensions.ExportToPDF(rep, filepath);
+                            }
+                        });
+                    }
+
+                }
             }
         }
 
@@ -2836,8 +2840,10 @@ namespace POS.View.sales
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
+                  
                     if (invoice.invoiceId > 0)
                     {
+                        prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
                         Window.GetWindow(this).Opacity = 0.2;
 
                         List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -2846,40 +2852,40 @@ namespace POS.View.sales
                         pdfpath = @"\Thumb\report\temp.pdf";
                         pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(invoice);
-                        if (invoice.invoiceId > 0)
+                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(prInvoice);
+                        if (prInvoice.invoiceId > 0)
                         {
                             User employ = new User();
-                            employ = await userModel.getUserById((int)invoice.updateUserId);
-                            invoice.uuserName = employ.name;
-                            invoice.uuserLast = employ.lastname;
+                            employ = await userModel.getUserById((int)prInvoice.updateUserId);
+                            prInvoice.uuserName = employ.name;
+                            prInvoice.uuserLast = employ.lastname;
 
-                            invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
-                            if (invoice.agentId != null)
+                            invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                            if (prInvoice.agentId != null)
                             {
                                 Agent agentinv = new Agent();
-                                agentinv = customers.Where(X => X.agentId == invoice.agentId).FirstOrDefault();
+                                agentinv = customers.Where(X => X.agentId == prInvoice.agentId).FirstOrDefault();
 
-                                invoice.agentCode = agentinv.code;
+                                prInvoice.agentCode = agentinv.code;
                                 //new lines
-                                invoice.agentName = agentinv.name;
-                                invoice.agentCompany = agentinv.company;
+                                prInvoice.agentName = agentinv.name;
+                                prInvoice.agentCompany = agentinv.company;
                             }
                             else
                             {
-                                invoice.agentCode = "-";
-                                invoice.agentName = "-";
-                                invoice.agentCompany = "-";
+                                prInvoice.agentCode = "-";
+                                prInvoice.agentName = "-";
+                                prInvoice.agentCompany = "-";
                             }
                             //branch name
                             Branch branch = new Branch();
-                            branch = await branchModel.getBranchById((int)invoice.branchCreatorId);
+                            branch = await branchModel.getBranchById((int)prInvoice.branchCreatorId);
                             if (branch.branchId > 0)
                             {
-                                invoice.branchName = branch.name;
+                                prInvoice.branchName = branch.name;
                             }
 
-                            invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+                            invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                             ReportCls.checkLang();
                             foreach (var i in invoiceItems)
                             {
@@ -2888,7 +2894,7 @@ namespace POS.View.sales
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
-                            paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+                            paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
                             rep.SetParameters(paramarr);
                             rep.Refresh();

@@ -637,7 +637,7 @@ namespace POS.Classes
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pod")
+                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pos" || invoice.invType == "pod" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
                 }
@@ -649,7 +649,7 @@ namespace POS.Classes
             }
             else
             {
-                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pod")
+                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pos" || invoice.invType == "pod" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
                 }
@@ -682,11 +682,11 @@ namespace POS.Classes
             if (isArabic)
             {
 
-                if (invoice.invType == "q" || invoice.invType == "qd")
+                if (invoice.invType == "q" || invoice.invType == "qd" || invoice.invType == "qs")
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
                 }
-                else if (invoice.invType == "or" || invoice.invType == "ord")
+                else if (invoice.invType == "or" || invoice.invType == "ord" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
                 }
@@ -729,11 +729,11 @@ namespace POS.Classes
             }
             else
             {
-                if (invoice.invType == "q" || invoice.invType == "qd")
+                if (invoice.invType == "q" || invoice.invType == "qd" || invoice.invType == "qs")
                 {
                     addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
                 }
-                else if (invoice.invType == "or" || invoice.invType == "ord")
+                else if (invoice.invType == "or" || invoice.invType == "ord" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Sale\En\InvPurOrderReport.rdlc";
                 }
@@ -787,11 +787,11 @@ namespace POS.Classes
             if (isArabic)
             {
 
-                if ((invoice.invType == "q" || invoice.invType == "qd"))
+                if ((invoice.invType == "q" || invoice.invType == "qd" || invoice.invType == "qs"))
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurQtReport.rdlc";
                 }
-                else if (invoice.invType == "or" || invoice.invType == "ord")
+                else if (invoice.invType == "or" || invoice.invType == "ord" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Sale\Ar\ArInvPurOrderReport.rdlc";
                 }
@@ -834,11 +834,11 @@ namespace POS.Classes
             }
             else
             {
-                if (invoice.invType == "q" || invoice.invType == "qd")
+                if (invoice.invType == "q" || invoice.invType == "qd" || invoice.invType == "qs")
                 {
                     addpath = @"\Reports\Sale\En\InvPurQtReport.rdlc";
                 }
-                else if (invoice.invType == "or" || invoice.invType == "ord")
+                else if (invoice.invType == "or" || invoice.invType == "ord" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Sale\En\InvPurOrderReport.rdlc";
                 }

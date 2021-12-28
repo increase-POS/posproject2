@@ -524,11 +524,17 @@ namespace POS.Classes
                  : invType == "pbd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaseReturnDraft") + "-" + invNumber
                  : invType == "ord" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSaleOrderDraft") + "-" + invNumber
                  : invType == "or" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSaleOrder") + "-" + invNumber
-                 : invType == "pod" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft") + "-" + invNumber
+                 : invType == "ors" ? invTypeNumber = MainWindow.resourcemanager.GetString("trSaleOrder") + "-" + invNumber
+
+                : invType == "pod" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft") + "-" + invNumber
                  : invType == "po" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaceOrder") + "-" + invNumber
-                 : invType == "qd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trQuotationsDraft") + "-" + invNumber
+                  : invType == "pos" ? invTypeNumber = MainWindow.resourcemanager.GetString("trPurchaceOrder") + "-" + invNumber
+
+                : invType == "qd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trQuotationsDraft") + "-" + invNumber
                  : invType == "q" ? invTypeNumber = MainWindow.resourcemanager.GetString("trQuotations") + "-" + invNumber
-                 : invType == "d" ? invTypeNumber = MainWindow.resourcemanager.GetString("trDestructive") + "-" + invNumber
+                 : invType == "qs" ? invTypeNumber = MainWindow.resourcemanager.GetString("trQuotations") + "-" + invNumber
+
+                : invType == "d" ? invTypeNumber = MainWindow.resourcemanager.GetString("trDestructive") + "-" + invNumber
                  : invType == "sh" ? invTypeNumber = MainWindow.resourcemanager.GetString("trShortage") + "-" + invNumber
                  : invType == "imd" ? invTypeNumber = MainWindow.resourcemanager.GetString("trImportDraft") + "-" + invNumber
                  : invType == "imw" ? invTypeNumber = MainWindow.resourcemanager.GetString("trImportOrder") + "-" + invNumber

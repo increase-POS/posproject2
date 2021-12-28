@@ -488,6 +488,9 @@ namespace POS.View.reports
                 case "or":
                     value = MainWindow.resourcemanager.GetString("trSaleOrder");
                     break;
+                         case "ors":
+                    value = MainWindow.resourcemanager.GetString("trSaleOrder");
+                    break;
                 // مسودة طلبية شراء 
                 case "pod":
                     value = MainWindow.resourcemanager.GetString("trPurchaceOrderDraft");
@@ -496,12 +499,18 @@ namespace POS.View.reports
                 case "po":
                     value = MainWindow.resourcemanager.GetString("trPurchaceOrder");
                     break;
+                case "pos":
+                    value = MainWindow.resourcemanager.GetString("trPurchaceOrder");
+                    break;
                 //مسودة عرض 
                 case "qd":
                     value = MainWindow.resourcemanager.GetString("trQuotationsDraft");
                     break;
                 //فاتورة عرض اسعار
                 case "q":
+                    value = MainWindow.resourcemanager.GetString("trQuotations");
+                    break;
+                case "qs":
                     value = MainWindow.resourcemanager.GetString("trQuotations");
                     break;
                 //الإتلاف
