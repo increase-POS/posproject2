@@ -598,8 +598,11 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trStocktaking");
             else if (firstTitle == "stock")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trStock");
-            else if (firstTitle == "saleOrders" || firstTitle == "purchaseOrders")
-                firstTitle = MainWindow.resourcemanagerreport.GetString("trOrders");
+            else if ( firstTitle == "purchaseOrders")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trPurchaseOrders");
+            else if (firstTitle == "saleOrders" )
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trSalesOrders");
+            
             else if (firstTitle == "saleItems" || firstTitle == "purchaseItem")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trItems");
             else if (firstTitle == "recipientReport")
