@@ -169,7 +169,7 @@ namespace POS.View.reports
                     ||
                     (chk_return.IsChecked == true ? s.invType == "sb" : false)
                     ||
-                    (chk_drafs.IsChecked == true ? s.invType == "sd" : false)
+                    (chk_drafs.IsChecked == true ? s.invType == "sd" || s.invType == "sbd" : false)
                     : false
                 )
                 ||
@@ -429,14 +429,15 @@ namespace POS.View.reports
             IEnumerable<int> x = null;
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
-            string trChk1 = "", trChk2 = "", condition1 = "", condition2 = "" , condition3 = "" ;
+
+            string trChk1 = "", trChk2 = "", condition1 = "", condition2 = "", condition3 = "", condition4 = "";
 
             if (selectedTab == 0)
-            { trChk1 = "tr_Sales"; trChk2 = "trReturned"; condition1 = "s"; condition2 = "sb"; condition3 = "sd"; }
+            { trChk1 = "tr_Sales"; trChk2 = "trReturned"; condition1 = "s"; condition2 = "sb"; condition3 = "sd"; condition4 = "sbd"; }
             else if (selectedTab == 1)
-            { trChk1 = "trOrder"; trChk2 = "trSaved"; condition1 = "or"; condition2 = "ors"; condition3 = "ord"; }
+            { trChk1 = "trOrder"; trChk2 = "trSaved"; condition1 = "or"; condition2 = "ors"; condition3 = "ord"; condition4 = "ord"; }
             else if (selectedTab == 2)
-            { trChk1 = "trQuotation"; trChk2 = "trSaved"; condition1 = "q"; condition2 = "qs"; condition3 = "qd"; }
+            { trChk1 = "trQuotation"; trChk2 = "trSaved"; condition1 = "q"; condition2 = "qs"; condition3 = "qd"; condition4 = "qd"; }
 
             var temp = itemTrasferInvoicesQuery;
             var result = temp.GroupBy(s => s.branchCreatorId).Select(s => new
@@ -444,7 +445,7 @@ namespace POS.View.reports
                 branchCreatorId = s.Key,
                 countS = s.Where(m => m.invType == condition1).Count(),
                 countSb = s.Where(m => m.invType == condition2).Count(),
-                countSd = s.Where(m => m.invType == condition3).Count()
+                countSd = s.Where(m => (m.invType == condition3)||(m.invType == condition4)).Count()
             });
             x = result.Select(m => m.countS);
             y = result.Select(m => m.countSb);

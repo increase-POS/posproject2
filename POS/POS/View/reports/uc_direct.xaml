@@ -299,7 +299,7 @@ Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_Num" Width="*" Header="No." Binding="{Binding invNumber}"/>
-                        <DataGridTextColumn x:Name="col_date" Width="*" Header="Date" Binding="{Binding invDate,Converter={StaticResource dateFrameConverter }}"/>
+                        <DataGridTextColumn x:Name="col_date" Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Brnach" Binding="{Binding branchName}"/>
                         <DataGridTextColumn x:Name="col_agentType" Visibility="Hidden" Width="*" Header="Agent Type" Binding="{Binding agentType , Converter={StaticResource agentTypeConverter}}"/>
                         <DataGridTextColumn x:Name="col_agent" Visibility="Hidden" Width="*" Header="Agent Name" Binding="{Binding agentName}"/>

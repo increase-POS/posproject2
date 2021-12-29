@@ -37,7 +37,7 @@ namespace POS.View.sales
         private List<ItemTransferInvoice> itemTransferInvoices = new List<ItemTransferInvoice>();
         IEnumerable<ItemTransferInvoice> itemTransferQuery;
         private static uc_salesStatistic _instance;
-
+        string searchText = "";
         public static uc_salesStatistic Instance
         {
             get
@@ -166,7 +166,7 @@ namespace POS.View.sales
             if (selectedTab == 0)
             {
                 temp = temp.Where(obj =>
-                     ((chk_invoice.IsChecked == true ? obj.invType == "s" : false) || (chk_return.IsChecked == true ? obj.invType == "sb" : false) || (chk_drafs.IsChecked == true ? obj.invType == "spd" || obj.invType == "sd" : false))
+                     ((chk_invoice.IsChecked == true ? obj.invType == "s" : false) || (chk_return.IsChecked == true ? obj.invType == "sb" : false) || (chk_drafs.IsChecked == true ? obj.invType == "sbd" || obj.invType == "sd" : false))
                   && (dp_invoiceDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_invoiceDate.SelectedDate.Value.Date.ToShortDateString() : true)
                 );
             }
@@ -321,7 +321,7 @@ namespace POS.View.sales
             var temp = itemTransferQuery;
 
             var titleTemp = temp.GroupBy(m => m.cUserAccName);
-    
+            titles.AddRange(titleTemp.Select(jj => jj.Key));
             var result = temp.GroupBy(s =>new { s.updateUserId ,s.cUserAccName}).Select(s => new
             {
                 updateUserId = s.FirstOrDefault().updateUserId,
@@ -329,7 +329,7 @@ namespace POS.View.sales
                 count = s.Count()
             });
             x = result.Select(m => m.count);
-          
+
             SeriesCollection piechartData = new SeriesCollection();
 
             int xCount = 0;
@@ -768,6 +768,43 @@ namespace POS.View.sales
             }
         }
 
-       
+        private void Txt_search_SelectionChanged(object sender, RoutedEventArgs e)
+        {//search
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                searchText = txt_search.Text.ToLower();
+                itemTransferQuery = itemTransferQuery
+                    .Where(s =>
+                (
+                s.invNumber.ToLower().Contains(searchText)
+                ||
+                s.branchCreatorName.ToLower().Contains(searchText)
+                ||
+                s.posName.ToLower().Contains(searchText)
+                ||
+                s.discountValue.ToString().ToLower().Contains(searchText)
+                ||
+                s.tax.ToString().ToLower().Contains(searchText)
+                ||
+                s.totalNet.ToString().ToLower().Contains(searchText)
+                )
+                );
+                dgInvoice.ItemsSource = itemTransferQuery;
+                fillColumnChart();
+                fillRowChart();
+                fillPieChart();
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

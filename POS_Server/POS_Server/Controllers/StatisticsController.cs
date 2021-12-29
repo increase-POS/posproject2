@@ -3835,7 +3835,7 @@ namespace POS_Server.Controllers
                                             //I.vendorInvNum,
                                             // I.vendorInvDate,
                                             //I.createUserId,
-                                            //I.updateDate,
+                                            I.updateDate,
                                             //I.updateUserId,
                                             // I.branchId,
                                             discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))

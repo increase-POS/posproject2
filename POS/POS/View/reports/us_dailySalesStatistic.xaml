@@ -299,12 +299,11 @@
 
 
                         <TextBox x:Name="txt_search"  
-                        Padding="10,0,5,0" BorderBrush="{x:Null}"
-                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                          materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
-                 Foreground="#4e4e4e" TextBlock.FontSize="14"
-                    Height="40" TextChanged="Txt_search_TextChanged"
-                 />
+                                 Padding="10,0,5,0" BorderBrush="{x:Null}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                 materialDesign:HintAssist.Hint="Enter Here To Start Search ...."  
+                                 Foreground="#4e4e4e" TextBlock.FontSize="14"
+                                 Height="40" TextChanged="Txt_search_TextChanged" />
                         <Border Margin="0,5,0,0"  Background="White" Width="30" Height="30">
                             <Path Fill="#4e4e4e" Stretch="Fill"  
                              Grid.Column="0"  

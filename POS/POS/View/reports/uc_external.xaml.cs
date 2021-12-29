@@ -42,9 +42,6 @@ namespace POS.View.reports
 
         Statistics statisticModel = new Statistics();
 
-        //IEnumerable<itemCombo> comboItems;
-        //IEnumerable<unitCombo> comboUnits;
-
         private int selectedExternalTab = 0;
         List<ExternalitemCombo> comboExternalItemsItems;
         List<ExternalUnitCombo> comboExternalItemsUnits;
@@ -70,12 +67,8 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                //storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
-
                 itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                //comboItems = statisticModel.getItemCombo(storages);
-                //comboUnits = statisticModel.getUnitCombo(storages);
                 comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
                 comboExternalItemsUnits = statisticModel.getExternalUnitCombo(itemsTransfer);
                 comboExternalAgentsAgents = statisticModel.GetExternalAgentCombos(itemsTransfer);
@@ -1469,7 +1462,6 @@ namespace POS.View.reports
             col_quantity.Visibility = Visibility.Hidden;
             col_itemUnits.Visibility = Visibility.Hidden;
             col_invNumber.Visibility = Visibility.Hidden;
-            col_invType.Visibility = Visibility.Hidden;
             col_invTypeNumber.Visibility = Visibility.Hidden;
             col_agentType.Visibility = Visibility.Hidden;
             col_agent.Visibility = Visibility.Hidden;
@@ -1488,6 +1480,8 @@ namespace POS.View.reports
                 col_quantity.Visibility = Visibility.Visible;
                 col_agentTypeAgent.Visibility = Visibility.Visible;
                 col_invTypeNumber.Visibility = Visibility.Visible;
+                col_invNumber.Visibility = Visibility.Visible;
+                col_invDate.Visibility = Visibility.Visible;
             }
             else if (selectedExternalTab == 1)
             {
@@ -1497,11 +1491,12 @@ namespace POS.View.reports
                 col_quantity.Visibility = Visibility.Visible;
                 col_agentType.Visibility = Visibility.Visible;
                 col_invTypeNumber.Visibility = Visibility.Visible;
+                col_invNumber.Visibility = Visibility.Visible;
+                col_invDate.Visibility = Visibility.Visible;
             }
             else if (selectedExternalTab == 2)
             {
                 col_branch.Visibility = Visibility.Visible;
-                col_invType.Visibility = Visibility.Visible;
                 col_invNumber.Visibility = Visibility.Visible;
                 col_invDate.Visibility = Visibility.Visible;
                 col_quantity.Visibility = Visibility.Visible;

@@ -76,16 +76,11 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                //storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
-
                 itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
-
-                //comboBranches = await branchModel.GetAllWithoutMain("all");
 
                 comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
                 comboInternalItemsUnits = statisticModel.getExternalUnitCombo(itemsInternalTransfer);
 
-                //comboInternalOperatorType = statisticModel.getTypeCompo(itemsInternalTransfer);
                 fillComboInternalOperatorType();
 
                 btn_internalItems_Click(btn_item, null);
@@ -108,8 +103,6 @@ namespace POS.View.reports
         }
         public void paint()
         {
-            //bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
-
             grid_internalItems.Visibility = Visibility.Hidden;
             grid_internalOperater.Visibility = Visibility.Hidden;
 
@@ -132,11 +125,13 @@ namespace POS.View.reports
         {
             grid_internalItems.Visibility = Visibility.Hidden;
             grid_internalOperater.Visibility = Visibility.Hidden;
-
             col_branch.Visibility = Visibility.Hidden;
             col_item.Visibility = Visibility.Hidden;
             col_unit.Visibility = Visibility.Hidden;
             col_quantity.Visibility = Visibility.Hidden;
+            col_invTypeNumber.Visibility = Visibility.Hidden;
+            col_invNumber.Visibility = Visibility.Hidden;
+            col_invDate.Visibility = Visibility.Hidden;
             col_invTypeNumber.Visibility = Visibility.Hidden;
             col_branchFrom.Visibility = Visibility.Hidden;
             col_branchTo.Visibility = Visibility.Hidden;
@@ -155,6 +150,8 @@ namespace POS.View.reports
                 col_unit.Visibility = Visibility.Visible;
                 col_quantity.Visibility = Visibility.Visible;
                 col_invTypeNumber.Visibility = Visibility.Visible;
+                col_invDate.Visibility = Visibility.Visible;
+                col_invNumber.Visibility = Visibility.Visible;
 
             }
             else if (selectedTab == 1)
@@ -165,6 +162,8 @@ namespace POS.View.reports
                 col_unit.Visibility = Visibility.Visible;
                 col_quantity.Visibility = Visibility.Visible;
                 col_invTypeNumber.Visibility = Visibility.Visible;
+                col_invDate.Visibility = Visibility.Visible;
+                col_invNumber.Visibility = Visibility.Visible;
             }
 
             #endregion
@@ -189,8 +188,6 @@ namespace POS.View.reports
 
                 showSelectedTabColumn();
 
-                //fillComboBranches(cb_internalItemsFromBranches);
-                //fillComboBranches(cb_internalItemsToBranches);
                 await SectionData.fillBranchesWithoutMain(cb_internalItemsFromBranches);
                 await SectionData.fillBranchesWithoutMain(cb_internalItemsToBranches);
                 fillComboInternalItemsItems();

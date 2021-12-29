@@ -427,13 +427,15 @@
                         <converters:invoiceTypeConverter x:Key="invoiceTypeConverter"/>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="col_invNumber" Visibility="Hidden" Width="*" Header="No." Binding="{Binding invNumber}"/>
+                        <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type" Binding="{Binding Path=.,Converter={StaticResource invoiceTypeNumberConverter }}"/>
+                        <DataGridTextColumn x:Name="col_invDate" Visibility="Hidden" Width="*" Header="Invoice Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_branch" Width="*" Header="Brnach" Binding="{Binding branchName}"/>
                         <DataGridTextColumn x:Name="col_branchFrom" Width="*" Header="From Brnach" Visibility="Hidden" Binding="{Binding exportBranch}"/>
                         <DataGridTextColumn x:Name="col_branchTo" Width="*" Header="To Brnach" Visibility="Hidden" Binding="{Binding importBranch}"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*" Header="Unit" Binding="{Binding unitName}"/>
                         <DataGridTextColumn x:Name="col_quantity" Width="*" Header="QTY" Binding="{Binding quantity}"/>
-                        <DataGridTextColumn x:Name="col_invTypeNumber" Visibility="Hidden" Width="*" Header="Invoice Type-Number" Binding="{Binding Path=.,Converter={StaticResource invoiceTypeNumberConverter }}"/>
                        
                     </DataGrid.Columns>
                 </DataGrid>
