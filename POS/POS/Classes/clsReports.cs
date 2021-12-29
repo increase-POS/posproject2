@@ -488,6 +488,7 @@ namespace POS.Classes
         {
 
             itemTypeConv(paramarr);
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
             PurStsReport(tempquery, rep, reppath);
 
         }
@@ -497,6 +498,7 @@ namespace POS.Classes
             PurStsReport(tempquery, rep, reppath);
 
             itemTransferDiscountTypeConv(paramarr);
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
             /*
              =IIF(Fields!CopdiscountType.Value="2",
 Parameters!trPercentageDiscount.Value,
