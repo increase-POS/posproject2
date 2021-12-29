@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:POS.View"
              mc:Ignorable="d"  Tag="coupon" 
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-              d:DesignHeight="675" d:DesignWidth="985" Loaded="UserControl_Loaded" >
+              d:DesignHeight="675" d:DesignWidth="985" 
+             Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
 
     <Grid x:Name="grid_main"   >
         <Grid.ColumnDefinitions>
@@ -812,8 +813,8 @@
                    Margin="1,1"    Content="Print Barcode" Click="Btn_printBarcode_Click"  />
                     <Border  Grid.Row="1">
                         <Button x:Name="btn_add" TabIndex="10"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
-                    Margin="1,1" Click="Btn_add_Click" >
+                                Background="#4E4E4E" BorderBrush="{x:Null}"
+                                Margin="1,1" Click="Btn_add_Click" >
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <materialDesign:PackIcon Name="txt_add_Icon" Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
 

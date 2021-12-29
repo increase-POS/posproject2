@@ -1921,6 +1921,7 @@ namespace POS.View.sales
 
                 saveBeforeExit();
                 timer.Stop();
+                GC.Collect();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

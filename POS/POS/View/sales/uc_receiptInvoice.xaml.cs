@@ -230,6 +230,8 @@ namespace POS.View
                 saveBeforeExit();
 
                 timer.Stop();
+
+                GC.Collect();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

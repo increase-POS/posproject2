@@ -663,5 +663,10 @@ namespace POS.View.sales
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
