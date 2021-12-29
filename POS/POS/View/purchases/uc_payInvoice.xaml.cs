@@ -214,7 +214,7 @@ namespace POS.View
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 saveBeforeExit();
                 timer.Stop();
-
+                GC.Collect();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

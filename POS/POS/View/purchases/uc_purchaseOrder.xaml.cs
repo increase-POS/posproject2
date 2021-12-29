@@ -176,6 +176,8 @@ namespace POS.View.purchases
 
                 saveBeforeExit();               
                 timer.Stop();
+
+                GC.Collect();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

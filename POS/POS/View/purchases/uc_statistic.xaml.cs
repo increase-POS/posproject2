@@ -466,5 +466,10 @@ namespace POS.View.purchases
             DataContext = this;
             rowChart.Series = rowChartData;
         }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            GC.Collect();
+        }
     }
 }
