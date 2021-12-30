@@ -2878,4 +2878,22 @@
   <data name="trItemsOperatorHint" xml:space="preserve">
     <value>عناصر, عوامل...</value>
   </data>
+  <data name="trAgents" xml:space="preserve">
+    <value>الوكلاء</value>
+  </data>
+  <data name="trAgentType" xml:space="preserve">
+    <value>نوع الوكيل</value>
+  </data>
+  <data name="trIn" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="trNo" xml:space="preserve">
+    <value>الرقم</value>
+  </data>
+  <data name="trOut" xml:space="preserve">
+    <value>Out</value>
+  </data>
+  <data name="trType-Name" xml:space="preserve">
+    <value>النوع-الاسم</value>
+  </data>
 </root>

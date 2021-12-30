@@ -2893,4 +2893,22 @@ Please add Email in setting</value>
   <data name="trItemsOperatorHint" xml:space="preserve">
     <value>Items,Operator,...</value>
   </data>
+  <data name="trAgents" xml:space="preserve">
+    <value>Agents</value>
+  </data>
+  <data name="trAgentType" xml:space="preserve">
+    <value>Agent Type</value>
+  </data>
+  <data name="trIn" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="trNo" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="trOut" xml:space="preserve">
+    <value>Out</value>
+  </data>
+  <data name="trType-Name" xml:space="preserve">
+    <value>Type-Name</value>
+  </data>
 </root>

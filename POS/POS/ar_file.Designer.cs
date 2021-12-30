@@ -313,6 +313,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الوكلاء.
+        /// </summary>
+        internal static string trAgents {
+            get {
+                return ResourceManager.GetString("trAgents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع الوكيل.
+        /// </summary>
+        internal static string trAgentType {
+            get {
+                return ResourceManager.GetString("trAgentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الكل.
         /// </summary>
         internal static string trAll {
@@ -3688,6 +3706,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In.
+        /// </summary>
+        internal static string trIn {
+            get {
+                return ResourceManager.GetString("trIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إلغاء التفعيل.
         /// </summary>
         internal static string trInActive {
@@ -4653,6 +4680,15 @@ namespace POS {
         /// <summary>
         ///   Looks up a localized string similar to الرقم.
         /// </summary>
+        internal static string trNo {
+            get {
+                return ResourceManager.GetString("trNo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الرقم.
+        /// </summary>
         internal static string trNo_ {
             get {
                 return ResourceManager.GetString("trNo.", resourceCulture);
@@ -4972,6 +5008,15 @@ namespace POS {
         internal static string trOthers {
             get {
                 return ResourceManager.GetString("trOthers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Out.
+        /// </summary>
+        internal static string trOut {
+            get {
+                return ResourceManager.GetString("trOut", resourceCulture);
             }
         }
         
@@ -7717,6 +7762,15 @@ namespace POS {
         internal static string trType {
             get {
                 return ResourceManager.GetString("trType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to النوع-الاسم.
+        /// </summary>
+        internal static string trType_Name {
+            get {
+                return ResourceManager.GetString("trType-Name", resourceCulture);
             }
         }
         

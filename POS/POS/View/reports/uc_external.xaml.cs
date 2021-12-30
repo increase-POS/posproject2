@@ -28,6 +28,8 @@ using Microsoft.Win32;
 using System.IO;
 using System.Threading;
 using POS.View.storage;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.reports
 {
@@ -67,6 +69,20 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 itemsTransfer = await statisticModel.GetExternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 comboExternalItemsItems = statisticModel.getExternalItemCombo(itemsTransfer);
@@ -96,6 +112,45 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private void translate()
+        {
+            tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_agent.Content = MainWindow.resourcemanager.GetString("trAgents");
+            tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_externalItemsBranches, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_externalItemsItems, MainWindow.resourcemanager.GetString("trItemHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_externalItemsUnits, MainWindow.resourcemanager.GetString("trUnitHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_externalItemsStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_externalItemsEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+
+            chk_externalItemsAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_externalItemsAllItems.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_externalItemsAllUnits.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_externalItemsIn.Content = MainWindow.resourcemanager.GetString("trIn");
+            chk_externalItemsOut.Content = MainWindow.resourcemanager.GetString("trOut");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_invNumber.Header = MainWindow.resourcemanager.GetString("trNo");
+            col_invTypeNumber.Header = MainWindow.resourcemanager.GetString("trType");
+            col_invDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_item.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_unit.Header = MainWindow.resourcemanager.GetString("trUnit");
+            col_agentType.Header = MainWindow.resourcemanager.GetString("trAgentType");
+            col_agent.Header = MainWindow.resourcemanager.GetString("trName");
+            col_itemUnits.Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            col_agentTypeAgent.Header = MainWindow.resourcemanager.GetString("trType-Name");
+            col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
         public uc_external()
         {

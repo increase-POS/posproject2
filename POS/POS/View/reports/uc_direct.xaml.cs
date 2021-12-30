@@ -283,7 +283,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
-            col_Num.Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            col_Num.Header = MainWindow.resourcemanager.GetString("trNo");
             col_date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_item.Header = MainWindow.resourcemanager.GetString("trItem");
