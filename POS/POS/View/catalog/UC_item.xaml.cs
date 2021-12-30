@@ -194,7 +194,6 @@ namespace POS.View
 
 
         }
-
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
             try

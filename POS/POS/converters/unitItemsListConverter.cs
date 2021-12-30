@@ -19,10 +19,13 @@ namespace POS.converters
         //    var result  = Task.Run(() => itemUnit.GetItemUnits(int.Parse(value.ToString()))).Result;
         //    return  result;
         //}
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public  object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             //var result = Task.Run(() => itemUnit.GetItemUnits(int.Parse(value.ToString()))).Result;
 
+            if(MainWindow.mainWindow.GlobalItemUnitsList.Count == 0 )
+                //MainWindow.mainWindow.GlobalItemUnitsList = await MainWindow.mainWindow.GlobalItemUnit.GetIU();
+                MainWindow.mainWindow.GlobalItemUnitsList = Task.Run(() =>  MainWindow.mainWindow.GlobalItemUnit.GetIU()).Result;
             var result = itemUnit.GetIUbyItem(int.Parse(value.ToString()),
                 MainWindow.mainWindow.GlobalItemUnitsList,
                 MainWindow.mainWindow.GlobalUnitsList);
@@ -30,7 +33,7 @@ namespace POS.converters
             return result;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public  object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

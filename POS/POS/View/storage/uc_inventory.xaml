@@ -266,7 +266,7 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Width="*" Header="Section-Location"  IsReadOnly="True">
+                                <DataGridTextColumn  Width="*" Header="Section-Location"  IsReadOnly="True">
                                     <DataGridTextColumn.Binding>
                                         <MultiBinding StringFormat="{}{0}-{1}" Converter="{StaticResource SectionLocationFreeZoneConverter}">
                                             <Binding Path="section"></Binding>
