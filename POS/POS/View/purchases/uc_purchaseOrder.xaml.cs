@@ -906,8 +906,9 @@ namespace POS.View.purchases
         private bool validateInvoiceValues()
         {
             bool valid = true;
-            if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
-                exp_vendor.IsExpanded = true;
+            //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
+            //    exp_vendor.IsExpanded = true;
+            SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip");
             if (billDetails.Count == 0)
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trAddInvoiceWithoutItems"), animation: ToasterAnimation.FadeIn);
 
@@ -948,7 +949,7 @@ namespace POS.View.purchases
                 else
                 {
                     tgl_ActiveOffer.IsChecked = false;
-                    exp_vendor.IsExpanded = true;
+                    //exp_vendor.IsExpanded = true;
                     SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trEmptyVendorToolTip");
                 }
                 inputEditable();

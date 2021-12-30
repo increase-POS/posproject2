@@ -852,6 +852,7 @@ namespace POS.View.reports
             //  getpuritemcount
             Title = MainWindow.resourcemanagerreport.GetString("trPurchasesReport") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
+            paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
             clsReports.PurStsReport(RepQuery, rep, reppath);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

@@ -357,28 +357,25 @@
                             </Grid>
                             <!--#endregion-->
                            <!--#region  Vendor-->
-                            <Expander  x:Name="exp_vendor" Tag="vendor" Expanded="Expander_Expanded" Margin="5" Background="White" Foreground="#178DD2" >
-                                <Expander.Header>
-                                    <TextBlock  Text="Vendor" x:Name="txt_vendor" Foreground="#178DD2" 
+                        <TextBlock  Text="Vendor" x:Name="txt_vendor" Foreground="#178DD2" 
                                                 FontWeight="Bold" FontSize="12"  
-                                       HorizontalAlignment="Left" Margin="0,5,5,5"/>
-                                </Expander.Header>
-                                <!--////////////////////////////// vendor////////////////////////////////////-->
-                                <Grid  x:Name="grid_vendor" Visibility="Visible"   >
-                                    <Grid.RowDefinitions >
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid  Grid.Row="0" >
-                                            <ComboBox x:Name="cb_vendor"  Grid.Row="1"
+                                       HorizontalAlignment="Left" Margin="20,5,5,5"/>
+
+                        <Grid  x:Name="grid_vendor" Visibility="Visible"   >
+                            <Grid.RowDefinitions >
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid  Grid.Row="0" >
+                                    <ComboBox x:Name="cb_vendor"  Grid.Row="1"
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                   materialDesign:HintAssist.Hint="Vendor..."  
@@ -387,7 +384,7 @@
                                   BorderBrush="#737373" BorderThickness="0"
                                   KeyUp="Cb_vendor_KeyUp" IsEditable="True" 
                                   LostFocus="input_LostFocus" SelectionChanged="Cb_vendor_SelectionChanged"/>
-                                            <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
+                                    <Path Fill="#E81123" Stretch="Fill" Margin="5,5,25,5"
                                           Name="p_errorVendor"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -397,18 +394,18 @@
                                           C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12
                                           C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 
                                           L13,15 L13,17 Z">
-                                                <Path.ToolTip>
-                                                    <ToolTip   x:Name="tt_errorVendor"
+                                        <Path.ToolTip>
+                                            <ToolTip   x:Name="tt_errorVendor"
                                                       Style="{StaticResource ToolTipError}"/>
-                                                </Path.ToolTip>
-                                            </Path>
+                                        </Path.ToolTip>
+                                    </Path>
 
-                                        </Grid>
-                                    <Button Grid.Column="1"  Padding="0"    
+                                </Grid>
+                                <Button Grid.Column="1"  Padding="0"    
                                 Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" 
                                             x:Name="btn_addVendor" Click="Btn_addVendor_Click"
                                 Margin="5,1" IsEnabled="True">
-                                        <Path Fill="#4E4E4E" Stretch="Fill"  
+                                    <Path Fill="#4E4E4E" Stretch="Fill"  
                     Width="27.5" Height="27.5"
                            Data="M275.8,467c-14.1-21.9-21.7-47.5-21.7-74.4c0-6.3,0.4-12.4,1.2-18.5H121.6v0c-3.4,0-6.8,0-10.3,0c0-15.9,0-31.2,0-47.1
 	c2.5,0,4.7,0,6.8,0c50.8,0,101.6,0,152.5,0.1c6.2-11.4,14-22,23.5-31.4c5.4-5.4,11.3-10.4,17.5-14.8c-16.8,0-33.5,0-50.2,0
@@ -420,28 +417,28 @@
 	c-60.5,0-108.5,48-108.5,108.5c0,60.4,48,108.5,108.5,108.5c60.4,0,108.5-48.1,108.5-108.5C499.5,332.2,451.4,284.1,391,284.1z
 	 M453,409.7h-45v45h-35.6v-45h-45V374h45v-45h37.2v45H453V409.7z M0,250C0,250,0,250,0,250C0,250,0,250,0,250C0,250,0,250,0,250
 	C0,250,0,250,0,250z" />
-                                    </Button>
-                                    <Button Grid.Column="2"  Padding="0" Width="25"  
+                                </Button>
+                                <Button Grid.Column="2"  Padding="0" Width="25"  
                                 Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateVendor" Click="Btn_updateVendor_Click"
                                 Margin="5,1" IsEnabled="True">
-                                            <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
+                                    <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
                              VerticalAlignment="Center" Width="30" Height="30"/>
-                                        </Button>
-                                        <Button x:Name="btn_clear" Grid.Row="3" Grid.Column="3" Padding="0"
+                                </Button>
+                                <Button x:Name="btn_clear" Grid.Row="3" Grid.Column="3" Padding="0"
                                 Background="{x:Null}" BorderBrush="{x:Null}" Click="Btn_clear_Click"
                                 Margin="5,1"   ToolTip="clear">
-                                            <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
+                                    <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle"  
                                 HorizontalAlignment="Center" Grid.Column="0"  
                                 VerticalAlignment="Center" Width="30" Height="30"/>
-                                        </Button>
+                                </Button>
 
-                                    </Grid>
-                                    <Grid Grid.Row="1"  >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox x:Name="tb_note"  Text="{Binding notes, Mode=OneWay}"
+                            </Grid>
+                            <Grid Grid.Row="1"  >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="tb_note"  Text="{Binding notes, Mode=OneWay}"
                                     Grid.Row="2" Padding="10,0,5,0"  
                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
@@ -449,18 +446,18 @@
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                     BorderBrush="#f8f8f8" TextChanged="Tb_textBox_TextChanged"
                                     Grid.Column="1"  Height="70"   Margin="5,5" TextWrapping="Wrap"/>
-                                        <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                                <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
-                                            <Path.ToolTip>
-                                                <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
-                                            </Path.ToolTip>
-                                        </Path>
-                                    </Grid>
-                                </Grid>
-                            </Expander>
-                            <!--#endregion-->
+                                    <Path.ToolTip>
+                                        <ToolTip  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+                            </Grid>
+                        </Grid>
+
+                        <!--#endregion-->
                         <Separator Margin="5,2.5" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
                         <StackPanel x:Name="sp_Approved" Visibility="Visible" Orientation="Horizontal" Grid.Row="3"  Margin="5,0,0,0">
                             <TextBlock  x:Name="txt_isApproved"

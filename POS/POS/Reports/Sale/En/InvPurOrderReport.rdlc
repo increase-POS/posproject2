@@ -683,7 +683,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Order</Value>
+                    <Value>Sales Order</Value>
                     <Style>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
