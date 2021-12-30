@@ -2606,7 +2606,7 @@
     <value>مخزن</value>
   </data>
   <data name="trCashPaid" xml:space="preserve">
-    <value>المبلغ المدفوع</value>
+    <value>المدفوع</value>
   </data>
   <data name="trTheRest" xml:space="preserve">
     <value>الباقي</value>
@@ -2824,19 +2824,43 @@
   <data name="trItemLocationCollect" xml:space="preserve">
     <value>عنصر, موقع, تجميع...</value>
   </data>
-  <data name="trArchivesShortfallsHint" xml:space="preserve">
-    <value>أرشيف, نواقص...</value>
+  <data name="trApproveOrderNotification" xml:space="preserve">
+    <value>هل تريد تأكيد الطلبية؟</value>
   </data>
-  <data name="trBranchItemHint" xml:space="preserve">
-    <value>فروع, عناصر...</value>
+  <data name="trApprove" xml:space="preserve">
+    <value>موافقة</value>
   </data>
-  <data name="trItemsAgentsInvoiceHint" xml:space="preserve">
-    <value>عناصر, وكلاء, فواتير...</value>
+  <data name="trApproved" xml:space="preserve">
+    <value>مصادق</value>
   </data>
-  <data name="trItemsHint" xml:space="preserve">
-    <value>عناصر...</value>
+  <data name="trDontPermissionLoginBranch" xml:space="preserve">
+    <value>ليس لديك إذن للدخول إلى هذا الفرع</value>
   </data>
-  <data name="trItemsOperatorHint" xml:space="preserve">
-    <value>عناصر, عوامل...</value>
+  <data name="trNoInvoice" xml:space="preserve">
+    <value>الفاتورة غير موجودة</value>
+  </data>
+  <data name="trPurchaceOrderSaved" xml:space="preserve">
+    <value>طلبية شراء محفوظة</value>
+  </data>
+  <data name="trSaleOrderSaved" xml:space="preserve">
+    <value>طلبية مبيعات محفوظة</value>
+  </data>
+  <data name="trQuotationsSaved" xml:space="preserve">
+    <value>عرض سعر محفوظ</value>
+  </data>
+  <data name="trPackageIsExpired" xml:space="preserve">
+    <value>النسخة منتهية الصلاحية</value>
+  </data>
+  <data name="trPackageIsNotActive" xml:space="preserve">
+    <value>النسخة غير فعالة</value>
+  </data>
+  <data name="trPreventLogIn" xml:space="preserve">
+    <value>لا يمكنك تسجيل الدخول</value>
+  </data>
+  <data name="trOrder" xml:space="preserve">
+    <value>طلبية</value>
+  </data>
+  <data name="trQuotation" xml:space="preserve">
+    <value>عرض سعر</value>
   </data>
 </root>

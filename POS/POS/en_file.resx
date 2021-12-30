@@ -1165,10 +1165,10 @@
     <value>To Should be begger then From</value>
   </data>
   <data name="trDraftPurchaseBill" xml:space="preserve">
-    <value>Purchase Bill Draft</value>
+    <value>Purchase Invoice Draft</value>
   </data>
   <data name="trPurchaseBill" xml:space="preserve">
-    <value>Purchase Bill</value>
+    <value>Purchase Invoice</value>
   </data>
   <data name="trAdministrativeDeposit" xml:space="preserve">
     <value>Administrative deposit</value>
@@ -1907,7 +1907,7 @@ Please add Email in setting</value>
     <value>Purchace Order</value>
   </data>
   <data name="trPurchaceOrderDraft" xml:space="preserve">
-    <value>Purchace Order Draft</value>
+    <value>Purchace Order - Draft</value>
   </data>
   <data name="trQuotationsDraft" xml:space="preserve">
     <value>Quotations Draft</value>
@@ -1916,7 +1916,7 @@ Please add Email in setting</value>
     <value>Sale Order</value>
   </data>
   <data name="trSaleOrderDraft" xml:space="preserve">
-    <value>Sale Order Draft</value>
+    <value>Sale Order - Draft</value>
   </data>
   <data name="trErrorEmptyItemToolTip" xml:space="preserve">
     <value>You should choose an item</value>
@@ -2432,7 +2432,7 @@ Please add Email in setting</value>
     <value>Export/Import Items</value>
   </data>
   <data name="trReceiptOfPurchasesBill" xml:space="preserve">
-    <value>Receipt of Purchases Bill</value>
+    <value>Receipt of Purchases Invoice</value>
   </data>
   <data name="trInv" xml:space="preserve">
     <value>Invoice</value>
@@ -2624,7 +2624,7 @@ Please add Email in setting</value>
     <value>Store</value>
   </data>
   <data name="trCashPaid" xml:space="preserve">
-    <value>Cash Paid</value>
+    <value>Paid</value>
   </data>
   <data name="trTheRest" xml:space="preserve">
     <value>The Rest</value>
@@ -2839,19 +2839,43 @@ Please add Email in setting</value>
   <data name="trItemLocationCollect" xml:space="preserve">
     <value>Item, Location, Collect...</value>
   </data>
-  <data name="trArchivesShortfallsHint" xml:space="preserve">
-    <value>Archives,Shortfalls,...</value>
+  <data name="trApproveOrderNotification" xml:space="preserve">
+    <value>Do you want to approve the order?</value>
   </data>
-  <data name="trBranchItemHint" xml:space="preserve">
-    <value>Branch,Item,...</value>
+  <data name="trApprove" xml:space="preserve">
+    <value>Approve</value>
   </data>
-  <data name="trItemsAgentsInvoiceHint" xml:space="preserve">
-    <value>Items,Agents,Invoice...</value>
+  <data name="trApproved" xml:space="preserve">
+    <value>Approved</value>
   </data>
-  <data name="trItemsHint" xml:space="preserve">
-    <value>Items...</value>
+  <data name="trDontPermissionLoginBranch" xml:space="preserve">
+    <value>you don't have permission login this branch</value>
   </data>
-  <data name="trItemsOperatorHint" xml:space="preserve">
-    <value>Items,Operator,...</value>
+  <data name="trNoInvoice" xml:space="preserve">
+    <value>The invoice does not exist</value>
+  </data>
+  <data name="trPurchaceOrderSaved" xml:space="preserve">
+    <value>Purchase Order - Saved</value>
+  </data>
+  <data name="trSaleOrderSaved" xml:space="preserve">
+    <value>Sale Order - Saved</value>
+  </data>
+  <data name="trQuotationsSaved" xml:space="preserve">
+    <value>Quotation - Saved</value>
+  </data>
+  <data name="trPackageIsExpired" xml:space="preserve">
+    <value>Package is expired</value>
+  </data>
+  <data name="trPackageIsNotActive" xml:space="preserve">
+    <value>Package is not active</value>
+  </data>
+  <data name="trPreventLogIn" xml:space="preserve">
+    <value>You cannot log in</value>
+  </data>
+  <data name="trOrder" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="trQuotation" xml:space="preserve">
+    <value>Quotation</value>
   </data>
 </root>

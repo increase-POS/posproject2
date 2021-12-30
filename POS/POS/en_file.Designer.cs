@@ -394,6 +394,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Approve.
+        /// </summary>
+        internal static string trApprove {
+            get {
+                return ResourceManager.GetString("trApprove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
+        /// </summary>
+        internal static string trApproved {
+            get {
+                return ResourceManager.GetString("trApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to approve the order?.
+        /// </summary>
+        internal static string trApproveOrderNotification {
+            get {
+                return ResourceManager.GetString("trApproveOrderNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you want to approve the quotation?.
         /// </summary>
         internal static string trApproveQuotationNotification {
@@ -426,15 +453,6 @@ namespace POS {
         internal static string trArchived {
             get {
                 return ResourceManager.GetString("trArchived", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Archives,Shortfalls,....
-        /// </summary>
-        internal static string trArchivesShortfallsHint {
-            get {
-                return ResourceManager.GetString("trArchivesShortfallsHint", resourceCulture);
             }
         }
         
@@ -736,15 +754,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Branch,Item,....
-        /// </summary>
-        internal static string trBranchItemHint {
-            get {
-                return ResourceManager.GetString("trBranchItemHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Branch Name.
         /// </summary>
         internal static string trBranchName {
@@ -925,7 +934,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cash Paid.
+        ///   Looks up a localized string similar to Paid.
         /// </summary>
         internal static string trCashPaid {
             get {
@@ -1960,6 +1969,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to you don&apos;t have permission login this branch.
+        /// </summary>
+        internal static string trDontPermissionLoginBranch {
+            get {
+                return ResourceManager.GetString("trDontPermissionLoginBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Draft.
         /// </summary>
         internal static string trDraft {
@@ -1987,7 +2005,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchase Bill Draft.
+        ///   Looks up a localized string similar to Purchase Invoice Draft.
         /// </summary>
         internal static string trDraftPurchaseBill {
             get {
@@ -3985,15 +4003,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items,Agents,Invoice....
-        /// </summary>
-        internal static string trItemsAgentsInvoiceHint {
-            get {
-                return ResourceManager.GetString("trItemsAgentsInvoiceHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Items count.
         /// </summary>
         internal static string trItemsCount {
@@ -4012,15 +4021,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items....
-        /// </summary>
-        internal static string trItemsHint {
-            get {
-                return ResourceManager.GetString("trItemsHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Item Shortage.
         /// </summary>
         internal static string trItemShortage {
@@ -4035,15 +4035,6 @@ namespace POS {
         internal static string trItemsImport_Export {
             get {
                 return ResourceManager.GetString("trItemsImport/Export", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Items,Operator,....
-        /// </summary>
-        internal static string trItemsOperatorHint {
-            get {
-                return ResourceManager.GetString("trItemsOperatorHint", resourceCulture);
             }
         }
         
@@ -4688,6 +4679,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The invoice does not exist.
+        /// </summary>
+        internal static string trNoInvoice {
+            get {
+                return ResourceManager.GetString("trNoInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Notifications There!.
         /// </summary>
         internal static string trNoNotifications {
@@ -4922,6 +4922,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        internal static string trOrder {
+            get {
+                return ResourceManager.GetString("trOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order Num.
         /// </summary>
         internal static string trOrderNum {
@@ -4972,6 +4981,24 @@ namespace POS {
         internal static string trPackage {
             get {
                 return ResourceManager.GetString("trPackage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package is expired.
+        /// </summary>
+        internal static string trPackageIsExpired {
+            get {
+                return ResourceManager.GetString("trPackageIsExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package is not active.
+        /// </summary>
+        internal static string trPackageIsNotActive {
+            get {
+                return ResourceManager.GetString("trPackageIsNotActive", resourceCulture);
             }
         }
         
@@ -5525,6 +5552,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You cannot log in.
+        /// </summary>
+        internal static string trPreventLogIn {
+            get {
+                return ResourceManager.GetString("trPreventLogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preview.
         /// </summary>
         internal static string trPreview {
@@ -5678,11 +5714,20 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchace Order Draft.
+        ///   Looks up a localized string similar to Purchace Order - Draft.
         /// </summary>
         internal static string trPurchaceOrderDraft {
             get {
                 return ResourceManager.GetString("trPurchaceOrderDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchase Order - Saved.
+        /// </summary>
+        internal static string trPurchaceOrderSaved {
+            get {
+                return ResourceManager.GetString("trPurchaceOrderSaved", resourceCulture);
             }
         }
         
@@ -5705,7 +5750,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchase Bill.
+        ///   Looks up a localized string similar to Purchase Invoice.
         /// </summary>
         internal static string trPurchaseBill {
             get {
@@ -5894,6 +5939,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Quotation.
+        /// </summary>
+        internal static string trQuotation {
+            get {
+                return ResourceManager.GetString("trQuotation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quotations.
         /// </summary>
         internal static string trQuotations {
@@ -5908,6 +5962,15 @@ namespace POS {
         internal static string trQuotationsDraft {
             get {
                 return ResourceManager.GetString("trQuotationsDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quotation - Saved.
+        /// </summary>
+        internal static string trQuotationsSaved {
+            get {
+                return ResourceManager.GetString("trQuotationsSaved", resourceCulture);
             }
         }
         
@@ -5975,7 +6038,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Receipt of Purchases Bill.
+        ///   Looks up a localized string similar to Receipt of Purchases Invoice.
         /// </summary>
         internal static string trReceiptOfPurchasesBill {
             get {
@@ -6272,11 +6335,20 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sale Order Draft.
+        ///   Looks up a localized string similar to Sale Order - Draft.
         /// </summary>
         internal static string trSaleOrderDraft {
             get {
                 return ResourceManager.GetString("trSaleOrderDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sale Order - Saved.
+        /// </summary>
+        internal static string trSaleOrderSaved {
+            get {
+                return ResourceManager.GetString("trSaleOrderSaved", resourceCulture);
             }
         }
         
