@@ -2863,4 +2863,19 @@
   <data name="trQuotation" xml:space="preserve">
     <value>عرض سعر</value>
   </data>
+  <data name="trArchivesShortfallsHint" xml:space="preserve">
+    <value>أرشيف, نواقص...</value>
+  </data>
+  <data name="trBranchItemHint" xml:space="preserve">
+    <value>فروع, عناصر...</value>
+  </data>
+  <data name="trItemsAgentsInvoiceHint" xml:space="preserve">
+    <value>عناصر, وكلاء, فواتير...</value>
+  </data>
+  <data name="trItemsHint" xml:space="preserve">
+    <value>عناصر...</value>
+  </data>
+  <data name="trItemsOperatorHint" xml:space="preserve">
+    <value>عناصر, عوامل...</value>
+  </data>
 </root>

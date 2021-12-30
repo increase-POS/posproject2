@@ -457,6 +457,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to أرشيف, نواقص....
+        /// </summary>
+        internal static string trArchivesShortfallsHint {
+            get {
+                return ResourceManager.GetString("trArchivesShortfallsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 963+.
         /// </summary>
         internal static string trAreaHint {
@@ -759,6 +768,15 @@ namespace POS {
         internal static string trBranchHint {
             get {
                 return ResourceManager.GetString("trBranchHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فروع, عناصر....
+        /// </summary>
+        internal static string trBranchItemHint {
+            get {
+                return ResourceManager.GetString("trBranchItemHint", resourceCulture);
             }
         }
         
@@ -3985,6 +4003,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عناصر, وكلاء, فواتير....
+        /// </summary>
+        internal static string trItemsAgentsInvoiceHint {
+            get {
+                return ResourceManager.GetString("trItemsAgentsInvoiceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to عدد العناصر.
         /// </summary>
         internal static string trItemsCount {
@@ -4003,6 +4030,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عناصر....
+        /// </summary>
+        internal static string trItemsHint {
+            get {
+                return ResourceManager.GetString("trItemsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نقص عنصر.
         /// </summary>
         internal static string trItemShortage {
@@ -4017,6 +4053,15 @@ namespace POS {
         internal static string trItemsImport_Export {
             get {
                 return ResourceManager.GetString("trItemsImport/Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عناصر, عوامل....
+        /// </summary>
+        internal static string trItemsOperatorHint {
+            get {
+                return ResourceManager.GetString("trItemsOperatorHint", resourceCulture);
             }
         }
         
