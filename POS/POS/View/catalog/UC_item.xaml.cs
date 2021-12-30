@@ -351,6 +351,8 @@ namespace POS.View
 
                 if (MainWindow.tax == 0)
                     tb_taxes.Visibility = Visibility.Collapsed;
+                else
+                    tb_taxes.Visibility = Visibility.Visible;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_code.Focus();

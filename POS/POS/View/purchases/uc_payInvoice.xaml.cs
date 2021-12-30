@@ -426,6 +426,8 @@ namespace POS.View
 
                 if (MainWindow.tax == 0)
                     sp_tax.Visibility = Visibility.Collapsed;
+                else
+                    sp_tax.Visibility = Visibility.Visible;
                 setTimer();
                 configureDiscountType();
                 configurProcessType();

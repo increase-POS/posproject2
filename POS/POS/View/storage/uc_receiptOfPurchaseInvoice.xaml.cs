@@ -224,6 +224,8 @@ namespace POS.View.storage
                 #endregion
                 if (MainWindow.tax == 0)
                     sp_tax.Visibility = Visibility.Collapsed;
+                else
+                    sp_tax.Visibility = Visibility.Visible;
                 FindControl(this.grid_main, controls);
 
                 #region datagridChange

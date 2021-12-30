@@ -157,6 +157,8 @@ namespace POS.View.catalog
                 #endregion
                 if (MainWindow.tax == 0)
                     tb_taxes.Visibility = Visibility.Collapsed;
+                else
+                    tb_taxes.Visibility = Visibility.Visible;
                 await fillCategories();
 
                 generateBarcode();

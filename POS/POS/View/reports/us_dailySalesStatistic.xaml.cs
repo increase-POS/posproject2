@@ -216,6 +216,8 @@ namespace POS.View.reports
             //hide tax column if region tax equals to 0
             if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
+            else
+                col_tax.Visibility = Visibility.Visible;
 
             dgInvoice.ItemsSource = itemTrasferInvoicesQuery;
             txt_count.Text = itemTrasferInvoicesQuery.Count().ToString();

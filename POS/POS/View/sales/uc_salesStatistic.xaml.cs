@@ -97,6 +97,8 @@ namespace POS.View.sales
 
                 if (MainWindow.tax == 0)
                     col_tax.Visibility = Visibility.Hidden;
+                else
+                    col_tax.Visibility = Visibility.Visible;
 
                 dgInvoice.ItemsSource = itemTransferQuery;
 
@@ -154,6 +156,8 @@ namespace POS.View.sales
             itemTransferQuery = fillList();
             if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
+            else
+                col_tax.Visibility = Visibility.Visible;
             dgInvoice.ItemsSource = itemTransferQuery;
             fillColumnChart();
             fillRowChart();

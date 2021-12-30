@@ -580,6 +580,8 @@ namespace POS.View.reports
             //hide tax column if region tax equals to 0
             if (MainWindow.tax == 0)
                 col_tax.Visibility = Visibility.Hidden;
+            else
+                col_tax.Visibility = Visibility.Visible;
 
             ObservableCollection<int> selected = new ObservableCollection<int>();
             if (selectedTab == 0)
