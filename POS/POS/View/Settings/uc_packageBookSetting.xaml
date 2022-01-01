@@ -1,0 +1,217 @@
+﻿<UserControl x:Class="POS.View.Settings.uc_packageBookSetting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:POS.View.Settings"
+             mc:Ignorable="d"  Loaded="UserControl_Loaded"
+           xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="800" d:DesignWidth="950" Unloaded="UserControl_Unloaded">
+    <Grid x:Name="grid_main">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid  Margin="15,15,15,15">
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderThickness="0" Grid.Row="0"  Grid.RowSpan="2"    Grid.Column="0"    
+                        Margin="5,0,10,10"
+                        CornerRadius="7" BorderBrush="Black" Background="White"  Padding="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Package Details" x:Name="txt_packageDetails" Foreground="#178DD2" FontWeight="Bold"
+                                   FontSize="20"  
+                                  VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_packageCodeTitle" Text="Code"  Margin="10,5,5,5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="1" Grid.Column="1"  x:Name="txt_packageCode" Text="{Binding packageCode, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock Grid.Row="2"  Grid.Column="0"   x:Name="txt_packageNameTitle" Text="Package"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock Grid.Row="2" Grid.Column="1"   x:Name="txt_packageName" Text="{Binding packageName, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock  Grid.Row="3" Grid.Column="0"   x:Name="txt_priceTitle" Text="Price"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="3"  Grid.Column="1"   x:Name="txt_price" Text="{Binding price, Mode=OneWay}"  Margin="10" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+                        <TextBlock  Grid.Row="4" Grid.Column="0"   x:Name="txt_statusTitle" Text="Status"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="4"  Grid.Column="1"   x:Name="txt_status" Text="{Binding Path=isActive, Mode=OneWay,Converter={StaticResource isActiveConverter}}"  Margin="10" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                    </Grid>
+                </Border>
+                <Border BorderThickness="0" Grid.Row="0"   Grid.Column="1"   
+                        Margin="10,0,5,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Text="Program Details" x:Name="txt_programDetails" Foreground="#178DD2" FontWeight="Bold"
+                                   FontSize="20"  
+                                  VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_programTitle" Text="program"  Margin="10,5,5,5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="1" Grid.Column="1"  x:Name="txt_program" Text="{Binding programName, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock Grid.Row="2"  Grid.Column="0"   x:Name="txt_versionTitle" Text="version"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock Grid.Row="2" Grid.Column="1"   x:Name="txt_version" Text="{Binding verName, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <!--<TextBlock  Grid.Row="3" Grid.Column="0"   x:Name="txt_priceTitle" Text="price"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="3"  Grid.Column="1"   x:Name="txt_price" Text="{Binding price, Mode=OneWay}"  Margin="10" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />-->
+
+                    </Grid>
+                </Border>
+               
+                <Border BorderThickness="0" Grid.Row="1"   Grid.Column="1"  Height="50"   Margin="10,5,5,10"
+                    CornerRadius="7" BorderBrush="Black" Background="{StaticResource MainColorBlue}" Padding="0">
+                    <Button Content="Extend" Height="auto" BorderBrush="{x:Null}"
+                    Foreground="White" FontSize="22" FontWeight="Bold"
+                   x:Name="btn_extend" Click="Btn_extend_Click"
+                Background="{x:Null}"  IsEnabled="True" />
+                </Border>
+                <Border BorderThickness="0" Grid.Row="2"   Grid.ColumnSpan="2"     Margin="5,10,5,10"
+                    CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2.5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2.5*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Package Limits" x:Name="txt_packageLimits" Foreground="#178DD2" FontWeight="Bold" 
+                                   FontSize="20"  Grid.ColumnSpan="4"
+                                  VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="10,5,5,5"/>
+                        <!--#region Row 1-->
+                        <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_branchCountTitle" Text="branchs"  Margin="10,5,5,5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="1" Grid.Column="1"  x:Name="txt_branchCountCode" Text="{Binding branchCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock Grid.Row="1"  Grid.Column="2"   x:Name="txt_storeCountNameTitle" Text="stores"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock Grid.Row="1" Grid.Column="3"   x:Name="txt_storeCountName" Text="{Binding storeCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+                        <!--#endregion-->
+
+                        <!--#region Row 2-->
+                        <TextBlock  Grid.Row="2"  Grid.Column="0"  x:Name="txt_userCountTitle" Text="users"  Margin="10,5,5,5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="2" Grid.Column="1"  x:Name="txt_userCountCode" Text="{Binding userCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock Grid.Row="2"  Grid.Column="2"   x:Name="txt_posCountNameTitle" Text="pos"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock Grid.Row="2" Grid.Column="3"   x:Name="txt_posCountName" Text="{Binding posCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+                        <!--#endregion-->
+
+                        <!--#region Row 3-->
+
+                        <TextBlock  Grid.Row="3"  Grid.Column="0"  x:Name="txt_customerCountTitle" Text="customers"  Margin="10,5,5,5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="3" Grid.Column="1"  x:Name="txt_customerCountCode" Text="{Binding customerCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock Grid.Row="3"  Grid.Column="2"   x:Name="txt_vendorCountNameTitle" Text="vendors"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock Grid.Row="3" Grid.Column="3"   x:Name="txt_vendorCountName" Text="{Binding vendorCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+                        <!--#endregion-->
+
+                        <!--#region Row 4-->
+
+                        <TextBlock  Grid.Row="4"  Grid.Column="0"  x:Name="txt_salesInvCountTitle" Text="salesInvs"  Margin="10,5,5,5"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock  Grid.Row="4" Grid.Column="1"  x:Name="txt_salesInvCountCode" Text="{Binding salesInvCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+
+                        <TextBlock Grid.Row="4"  Grid.Column="2"   x:Name="txt_itemCountNameTitle" Text="items"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <TextBlock Grid.Row="4" Grid.Column="3"   x:Name="txt_itemCountName" Text="{Binding itemCount, Mode=OneWay}"  Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  />
+                        <!--#endregion-->
+
+                        <!--#region Row 5-->
+
+                        <!--#endregion-->
+
+
+                    </Grid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

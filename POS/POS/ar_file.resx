@@ -2896,4 +2896,28 @@
   <data name="trType-Name" xml:space="preserve">
     <value>النوع-الاسم</value>
   </data>
+  <data name="String2" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trPackageDetails" xml:space="preserve">
+    <value>تفاصيل الحزمة</value>
+  </data>
+  <data name="trPackageLimits" xml:space="preserve">
+    <value>حدود الحزمة</value>
+  </data>
+  <data name="trPOSs" xml:space="preserve">
+    <value>نقاط البيع</value>
+  </data>
+  <data name="trProgram" xml:space="preserve">
+    <value>البرنامج</value>
+  </data>
+  <data name="trProgramDetails" xml:space="preserve">
+    <value>تفاصيل البرنامج</value>
+  </data>
+  <data name="trStatus" xml:space="preserve">
+    <value>الحالة</value>
+  </data>
+  <data name="trVersion" xml:space="preserve">
+    <value>الإصدار</value>
+  </data>
 </root>

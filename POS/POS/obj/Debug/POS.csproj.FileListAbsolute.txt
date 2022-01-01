@@ -3401,7 +3401,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_packageOfItems.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_packageOfItems.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_serviceItem.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\catalog\uc_serviceItem.baml
-E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 D:\myproj\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
 D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_rectangleCard.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\controlTemplate\UC_squareCard.g.cs
@@ -3999,7 +3998,6 @@ E:\github\posproject2\POS\POS\bin\Debug\EmailTemplates\images\req2.gif
 E:\github\posproject2\POS\POS\bin\Debug\Thumb\agents\tmp.txt
 E:\github\posproject2\POS\POS\bin\Debug\Thumb\cards\tmp.txt
 E:\github\posproject2\POS\POS\bin\Debug\Thumb\items\tmp.txt
-E:\github\posproject2\POS\POS\bin\Debug\Thumb\report\tmp.txt
 E:\github\posproject2\POS\POS\bin\Debug\Thumb\setting\tmp.txt
 E:\github\posproject2\POS\POS\bin\Debug\Thumb\tmp.txt
 E:\github\posproject2\POS\POS\bin\Debug\Thumb\users\tmp.txt
@@ -4165,3 +4163,13 @@ D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_direct.g.cs
 D:\myproj\posproject2\POS\POS\obj\Debug\View\reports\uc_direct.baml
 D:\myproj\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Storage\Direct\Ar\ArItem.rdlc
 D:\myproj\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Storage\Direct\En\Item.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Storage\Direct\Ar\ArItem.rdlc
+E:\GitHub\posproject2\POS\POS\bin\Debug\Reports\StatisticReport\Storage\Direct\En\Item.rdlc
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_direct.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_returnInvoice.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\reports\uc_direct.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_returnInvoice.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_taxSetting.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_taxSetting.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_packageBookSetting.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_packageBookSetting.baml

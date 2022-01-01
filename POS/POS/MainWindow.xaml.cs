@@ -1474,6 +1474,8 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmail");
                 else if (tag == "emailTemplates")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmailTemplates");
+                else if (tag == "packageBookSetting")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("");
                 #endregion
                 #region  report
                 else if (tag == "reports")

@@ -2911,4 +2911,25 @@ Please add Email in setting</value>
   <data name="trEmptyLanguage" xml:space="preserve">
     <value>Language can't be empty</value>
   </data>
+  <data name="trPackageDetails" xml:space="preserve">
+    <value>Package Details</value>
+  </data>
+  <data name="trPackageLimits" xml:space="preserve">
+    <value>Package Limits</value>
+  </data>
+  <data name="trPOSs" xml:space="preserve">
+    <value>POS</value>
+  </data>
+  <data name="trProgram" xml:space="preserve">
+    <value>Program</value>
+  </data>
+  <data name="trProgramDetails" xml:space="preserve">
+    <value>Program Details</value>
+  </data>
+  <data name="trStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="trVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
 </root>
