@@ -112,6 +112,7 @@ namespace POS.View.Settings
             btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");
             btn_permissions.Content = MainWindow.resourcemanager.GetString("trPermission");
             btn_emails.Content = MainWindow.resourcemanager.GetString("trEmail");
+            //btn_packageBookSetting.Content = MainWindow.resourcemanager.GetString("trEmail");
             //btn_emailTemplates.Content = MainWindow.resourcemanager.GetString("trEmailTemplates");
 
         }
@@ -128,6 +129,9 @@ namespace POS.View.Settings
 
             btn_emails.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_emails.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
+            btn_packageBookSetting.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_packageBookSetting.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             //btn_emailTemplates.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             //btn_emailTemplates.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -201,6 +205,25 @@ namespace POS.View.Settings
 
                 us_emailGeneral uc = new us_emailGeneral();
                 grid_main.Children.Add(uc);
+
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Btn_packageBookSetting_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                refreashBachgroundClick(btn_packageBookSetting);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_packageBookSetting.Instance);
+
+                //us_emailGeneral uc = new us_emailGeneral();
+                //grid_main.Children.Add(uc);
 
                 Button button = sender as Button;
                 MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);

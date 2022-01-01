@@ -40,6 +40,7 @@
             <converters:orderStatusConverter x:Key="orderStatusConverter"/>
             <converters:BooleanReverseConverter x:Key="BooleanReverseConverter"/>
             <converters:itemTypeConverter x:Key="itemTypeConverter"/>
+            <converters:isActiveConverter x:Key="isActiveConverter"/>
             <!--<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>-->
             <!--#region Fonts-->
             <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>

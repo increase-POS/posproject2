@@ -307,6 +307,7 @@
     <Compile Include="converters\invoiceTypeConverter.cs" />
     <Compile Include="converters\invoiceTypeNumberConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
+    <Compile Include="converters\isActiveConverter.cs" />
     <Compile Include="converters\itemTypeConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\LocationFreeZoneConverter.cs" />
@@ -492,6 +493,9 @@
     </Compile>
     <Compile Include="View\Settings\uc_general.xaml.cs">
       <DependentUpon>uc_general.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\uc_packageBookSetting.xaml.cs">
+      <DependentUpon>uc_packageBookSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Settings\uc_permissions.xaml.cs">
       <DependentUpon>uc_permissions.xaml</DependentUpon>
@@ -997,6 +1001,10 @@
     <Page Include="View\Settings\uc_general.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Settings\uc_packageBookSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Settings\uc_permissions.xaml">
       <SubType>Designer</SubType>
