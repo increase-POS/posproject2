@@ -33,6 +33,10 @@
           <DataField>agentName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="AgentNameAgent">
+          <DataField>AgentNameAgent</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="agentType">
           <DataField>agentType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -40,6 +44,10 @@
         <Field Name="AgentTypeAgent">
           <DataField>AgentTypeAgent</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="archived">
+          <DataField>archived</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="barcode">
           <DataField>barcode</DataField>
@@ -712,16 +720,19 @@
                   <Width>3.86934cm</Width>
                 </TablixColumn>
                 <TablixColumn>
+                  <Width>3.46603cm</Width>
+                </TablixColumn>
+                <TablixColumn>
                   <Width>4.3456cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.67815cm</Width>
+                  <Width>3.22294cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.00055cm</Width>
+                  <Width>2.5243cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.74896cm</Width>
+                  <Width>3.21438cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.69976cm</Width>
@@ -758,6 +769,41 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox25</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Date</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1058,6 +1104,46 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="updateDate">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!updateDate.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>=IIf(Parameters!dateForm.Value="ShortDatePattern","dd/MM/yyyy",
+(IIf(Parameters!dateForm.Value="LongDatePattern","dddd, MMMM d, yyyy",
+IIf(Parameters!dateForm.Value="MonthDayPattern","MMMM dd",
+IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>updateDate</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                            <Direction>RTL</Direction>
+                          </Style>
+                        </Textbox>
+                        <rd:Selected>true</rd:Selected>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="invNumber1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1313,6 +1399,7 @@ Fields!ITtype.Value = "p",Parameters!trPackage.Value
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -1329,7 +1416,7 @@ Fields!ITtype.Value = "p",Parameters!trPackage.Value
             <Top>2.07142cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.09898cm</Width>
+            <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>

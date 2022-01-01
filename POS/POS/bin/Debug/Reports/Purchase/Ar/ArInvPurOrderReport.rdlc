@@ -1820,6 +1820,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="isOrginal">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1970,6 +1976,11 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>7</RowIndex>
           <ParameterName>shippingCost</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>7</RowIndex>
+          <ParameterName>isOrginal</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

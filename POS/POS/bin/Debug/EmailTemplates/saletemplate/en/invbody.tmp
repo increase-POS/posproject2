@@ -45,7 +45,7 @@
         </div>
         <div style="clear: both;"></div>
         <div class="h-deserved">
-          <h2 style="text-decoration: underline; margin-bottom: 3px; color: #47484b;">Deserved:</h2>
+          <h2 style="text-decoration: underline; margin-bottom: 3px; color: #47484b;">Unpaid:</h2>
           <span style="font-size: 14px; font-weight: normal; color: #47484b;">[[deservedcash]] [[currency]]</span>
         </div>
       </div>
@@ -57,6 +57,7 @@
           <p style="font-family:'Open Sans',sans-serif; font-size: 22px; font-weight: bold; color: #47484b;">[[trtotalnet]]: <span style="font-size: 18px; font-weight: normal; color: #47484b;">[[totalnet]]  [[currency]]</span></p>
         </div>
       </div>
+	  [[deliverydiv]]
     </div><div style="clear: both;"></div>
     <div class="inv-note" style="width: 100%; float: left; padding: 10px; margin-top: 30px;">
       <p style="text-align: center; font-family:'Open Sans',sans-serif; font-size: 14px; color: #47484b; margin: auto; width: 80%; margin-bottom: 30px;">[[invoicenote]]</p>  

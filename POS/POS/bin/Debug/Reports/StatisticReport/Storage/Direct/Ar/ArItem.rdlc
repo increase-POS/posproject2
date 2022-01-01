@@ -47,6 +47,10 @@
           <DataField>agentName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="AgentNameAgent">
+          <DataField>AgentNameAgent</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="agentType">
           <DataField>agentType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -54,6 +58,10 @@
         <Field Name="AgentTypeAgent">
           <DataField>AgentTypeAgent</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="archived">
+          <DataField>archived</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="barcode">
           <DataField>barcode</DataField>
@@ -339,6 +347,10 @@
           <DataField>ITdiscountValue</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="itemAvg">
+          <DataField>itemAvg</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="itemCount">
           <DataField>itemCount</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -398,6 +410,10 @@
         <Field Name="ITquantity">
           <DataField>ITquantity</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="ITtype">
+          <DataField>ITtype</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ITunitId">
           <DataField>ITunitId</DataField>
@@ -619,6 +635,10 @@
           <DataField>unitName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="updateDate">
+          <DataField>updateDate</DataField>
+          <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="updateUserId">
           <DataField>updateUserId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
@@ -714,16 +734,19 @@
                   <Width>5.54271cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.57646cm</Width>
+                  <Width>4.41854cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.99437cm</Width>
+                  <Width>4.93604cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.51866cm</Width>
+                  <Width>4.43333cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.35395cm</Width>
+                  <Width>3.77783cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3.8777cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -751,6 +774,41 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>التاريخ</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -946,6 +1004,45 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="updateDate">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!updateDate.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>=IIf(Parameters!dateForm.Value="ShortDatePattern","dd/MM/yyyy",
+(IIf(Parameters!dateForm.Value="LongDatePattern","dddd, MMMM d, yyyy",
+IIf(Parameters!dateForm.Value="MonthDayPattern","MMMM dd",
+IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>updateDate</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <rd:Selected>true</rd:Selected>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="branchName">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1090,6 +1187,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />

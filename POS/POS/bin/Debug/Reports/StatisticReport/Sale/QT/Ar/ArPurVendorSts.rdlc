@@ -33,6 +33,10 @@
           <DataField>agentName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="AgentNameAgent">
+          <DataField>AgentNameAgent</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="agentType">
           <DataField>agentType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -40,6 +44,10 @@
         <Field Name="AgentTypeAgent">
           <DataField>AgentTypeAgent</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="archived">
+          <DataField>archived</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="barcode">
           <DataField>barcode</DataField>
@@ -63,6 +71,14 @@
         </Field>
         <Field Name="branchType">
           <DataField>branchType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="causeDestroy">
+          <DataField>causeDestroy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="causeFalls">
+          <DataField>causeFalls</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Copbarcode">
@@ -249,6 +265,18 @@
           <DataField>invDate</DataField>
           <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="inventoryDate">
+          <DataField>inventoryDate</DataField>
+          <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="inventoryNum">
+          <DataField>inventoryNum</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="inventoryType">
+          <DataField>inventoryType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="invNumber">
           <DataField>invNumber</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -305,6 +333,14 @@
           <DataField>ITdiscountValue</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="itemAvg">
+          <DataField>itemAvg</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="itemCount">
+          <DataField>itemCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
         <Field Name="itemId">
           <DataField>itemId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
@@ -360,6 +396,10 @@
         <Field Name="ITquantity">
           <DataField>ITquantity</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="ITtype">
+          <DataField>ITtype</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ITunitId">
           <DataField>ITunitId</DataField>
@@ -581,8 +621,24 @@
           <DataField>unitName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="updateDate">
+          <DataField>updateDate</DataField>
+          <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="updateUserId">
           <DataField>updateUserId</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="userdestroy">
+          <DataField>userdestroy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="userFalls">
+          <DataField>userFalls</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="userId">
+          <DataField>userId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="uUserAccName">
@@ -664,16 +720,19 @@
                   <Width>4.47574cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.97732cm</Width>
+                  <Width>3.414cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.94315cm</Width>
+                  <Width>3.4473cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.37313cm</Width>
+                  <Width>3.28169cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.135cm</Width>
+                  <Width>2.84396cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.99729cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.07667cm</Width>
@@ -682,7 +741,7 @@
                   <Width>1.865cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.25296cm</Width>
+                  <Width>3.69734cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -711,6 +770,46 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox25</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <LeftBorder>
+                              <Style>Solid</Style>
+                            </LeftBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                            <Direction>RTL</Direction>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox23">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>التاريخ</Value>
+                                  <Style>
+                                    <FontFamily />
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox23</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1051,6 +1150,42 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="updateDate2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!updateDate.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>=IIf(Parameters!dateForm.Value = "ShortDatePattern", "dd/MM/yyyy", IIf(Parameters!dateForm.Value = "LongDatePattern", "dddd, MMMM d, yyyy", IIf(Parameters!dateForm.Value = "MonthDayPattern", "MMMM dd", IIf(Parameters!dateForm.Value = "YearMonthPattern", "MMMM yyyy", "dd/MM/yyyy"))))</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>updateDate</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                            <Direction>RTL</Direction>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="invNumber1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1308,6 +1443,7 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -1325,7 +1461,7 @@
             <Top>2.07142cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.09897cm</Width>
+            <Width>27.09899cm</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!isTax.Value&lt;&gt;"0" or Parameters!isTax.Value&lt;&gt; 0,False,True)</Hidden>
@@ -1343,22 +1479,25 @@
                   <Width>4.62254cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.57136cm</Width>
+                  <Width>3.04271cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.65578cm</Width>
+                  <Width>4.20094cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.15452cm</Width>
+                  <Width>3.80911cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.17014cm</Width>
+                  <Width>3.30785cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.8791cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.09077cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.83386cm</Width>
+                  <Width>4.14594cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1387,6 +1526,46 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox25</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <LeftBorder>
+                              <Style>Solid</Style>
+                            </LeftBorder>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                            <Direction>RTL</Direction>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox11">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>التاريخ</Value>
+                                  <Style>
+                                    <FontFamily />
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox11</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1687,6 +1866,45 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="updateDate">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!updateDate.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Format>=IIf(Parameters!dateForm.Value="ShortDatePattern","dd/MM/yyyy",
+(IIf(Parameters!dateForm.Value="LongDatePattern","dddd, MMMM d, yyyy",
+IIf(Parameters!dateForm.Value="MonthDayPattern","MMMM dd",
+IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</Format>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>updateDate</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                            <Direction>RTL</Direction>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="invNumber3">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -1908,6 +2126,7 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -1925,7 +2144,7 @@
             <Top>2.0861cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.09897cm</Width>
+            <Width>27.09896cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!isTax.Value = "0" Or Parameters!isTax.Value = 0 Or Parameters!isTax.Value = "null", False,True)</Hidden>
