@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -112,7 +113,22 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
 
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+                var txb = sender as TextBox;
+                if ((sender as TextBox).Name == "tb_taxes" || (sender as TextBox).Name == "tb_price")
+                    SectionData.InputJustNumber(ref txb);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
         {
             try
@@ -128,12 +144,19 @@ namespace POS.View.windows
 
         private void validateEmpty(string name, object sender)
         {
-            if (name == "ComboBox")
+            try
             {
-                if ((sender as ComboBox).Name == "cb_firstLevel")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorFirstLevel, tt_errorFirstLevel, "trFirstPath");
-                else if ((sender as ComboBox).Name == "cb_secondLevel")
-                    SectionData.validateEmptyComboBox((ComboBox)sender, p_errorSecondLevel, tt_errorSecondLevel, "trSecondPath");
+                if (name == "TextBox")
+                {
+                    if ((sender as TextBox).Name == "tb_invoiceTax")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorInvoiceTax, tt_errorInvoiceTax, "trIsRequired");
+                    else if ((sender as TextBox).Name == "tb_itemsTax")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorItemsTax, tt_errorItemsTax, "trIsRequired");
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -166,6 +189,35 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Tb_PreventSpaces(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                e.Handled = e.Key == Key.Space;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            try
+            {
+                //decimal
+                var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+                if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                    e.Handled = false;
+
+                else
+                    e.Handled = true;
+            }
+            catch (Exception ex)
+            {
                 SectionData.ExceptionMessage(ex, this);
             }
         }

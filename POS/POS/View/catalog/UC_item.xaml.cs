@@ -169,8 +169,8 @@ namespace POS.View
             dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trCountUnit");
             dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trSmallUnit");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_selectUnit, MainWindow.resourcemanager.GetString("trSelectUnitHint"));
-            txt_isDefaultPurchases.Text = MainWindow.resourcemanager.GetString("trIsDefaultPurchases");
-            tb_isDefaultSales.Text = MainWindow.resourcemanager.GetString("trIsDefaultSales");
+            txt_isDefaultPurchases.Text = MainWindow.resourcemanager.GetString("trPurchase");
+            tb_isDefaultSales.Text = MainWindow.resourcemanager.GetString("trSales");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_count, MainWindow.resourcemanager.GetString("trCountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_unit, MainWindow.resourcemanager.GetString("trUnitHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPriceHint"));
