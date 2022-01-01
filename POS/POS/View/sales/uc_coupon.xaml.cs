@@ -398,7 +398,8 @@ namespace POS.View
                     bool isMaxInvoiceValueSmaller = false;
                     try
                     {
-                        if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
+                        if(!tb_MaxInvoiceValue.Text.Equals("0"))
+                            if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
                     }
                     catch { }
                     #endregion
@@ -842,7 +843,8 @@ namespace POS.View
                     bool isMaxInvoiceValueSmaller = false;
                     try
                     {
-                        if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
+                        if(!tb_MaxInvoiceValue.Text.Equals("0"))
+                            if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
                     }
                     catch { }
                     #endregion
