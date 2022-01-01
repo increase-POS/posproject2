@@ -717,6 +717,9 @@
     <Compile Include="View\windows\wd_subscriptionFees.xaml.cs">
       <DependentUpon>wd_subscriptionFees.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_taxSetting.xaml.cs">
+      <DependentUpon>wd_taxSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_transItemsLocation.xaml.cs">
       <DependentUpon>wd_transItemsLocation.xaml</DependentUpon>
     </Compile>
@@ -1298,6 +1301,10 @@
     <Page Include="View\windows\wd_subscriptionFees.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_taxSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\windows\wd_transItemsLocation.xaml">
       <SubType>Designer</SubType>
