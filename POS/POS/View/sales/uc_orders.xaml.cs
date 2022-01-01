@@ -1096,7 +1096,7 @@ namespace POS.View.sales
                     btn_clearCustomer.IsEnabled = true;
                     btn_updateCustomer.IsEnabled = true;
                     btn_items.IsEnabled = true;
-                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
+                    btn_deleteInvoice.Visibility = Visibility.Visible;
                     btn_submitOrder.Visibility = Visibility.Visible;
                     break;
                 case "or": //quotation invoice
@@ -1116,7 +1116,7 @@ namespace POS.View.sales
                     btn_clearCustomer.IsEnabled = false;
                     btn_updateCustomer.IsEnabled = false;
                     btn_items.IsEnabled = false;
-                    btn_deleteInvoice.Visibility = Visibility.Visible;
+                    btn_deleteInvoice.Visibility = Visibility.Collapsed;
                     btn_submitOrder.Visibility = Visibility.Collapsed;
                     break;
                 case "s": //sale invoice
@@ -3103,7 +3103,6 @@ namespace POS.View.sales
         {
             try
             {
-
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (invoice.invoiceId != 0)
@@ -3117,7 +3116,9 @@ namespace POS.View.sales
                     #endregion
                     if (w.isOk)
                     {
-                        int res = await invoice.deleteOrder(invoice.invoiceId);
+                        int savedBranch = (int)invoice.branchId;
+                        int res = await itemLocationModel.unlockItems(invoiceItems, savedBranch);
+                       // int res = await invoice.deleteOrder(invoice.invoiceId);
                         if (res>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
