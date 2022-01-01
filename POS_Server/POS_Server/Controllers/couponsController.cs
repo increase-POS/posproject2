@@ -98,7 +98,7 @@ namespace POS_Server.Controllers
                      * var couponsList = entity.coupons.Where(x => (x.remainQ > 0 || x.quantity == 0) &&( (x.startDate <= DateTime.Now && x.endDate >= DateTime.Now)||x.endDate ==null )&& x.isActive == 1)
                      * */
 
-                    var couponsList = entity.coupons.Where(x => (x.remainQ > 0 || x.quantity == 0) && ((x.startDate <= DateTime.Now && x.endDate >= DateTime.Now) || x.endDate == null) && x.isActive == 1)
+                    var couponsList = entity.coupons.Where(x => (x.remainQ > 0 || x.quantity == 0) && (x.startDate <= DateTime.Now || x.startDate == null ) && (x.endDate >= DateTime.Now || x.endDate == null)  && x.isActive == 1)
 
                    .Select(c => new CouponModel
                    {

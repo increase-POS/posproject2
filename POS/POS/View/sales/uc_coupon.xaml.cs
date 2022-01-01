@@ -398,7 +398,7 @@ namespace POS.View
                     bool isMaxInvoiceValueSmaller = false;
                     try
                     {
-                        if(!tb_MaxInvoiceValue.Text.Equals("0"))
+                        if (!decimal.Parse(tb_MaxInvoiceValue.Text).Equals(0))
                             if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
                     }
                     catch { }
@@ -843,7 +843,7 @@ namespace POS.View
                     bool isMaxInvoiceValueSmaller = false;
                     try
                     {
-                        if(!tb_MaxInvoiceValue.Text.Equals("0"))
+                        if(!decimal.Parse(tb_MaxInvoiceValue.Text).Equals(0))
                             if (decimal.Parse(tb_MaxInvoiceValue.Text) < decimal.Parse(tb_MinInvoiceValue.Text)) isMaxInvoiceValueSmaller = true;
                     }
                     catch { }
