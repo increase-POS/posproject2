@@ -853,7 +853,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete the main branch.
+        ///   Looks up a localized string similar to Can not delete the main branch.
         /// </summary>
         internal static string trCannotDeleteTheMainBranch {
             get {
@@ -862,7 +862,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete the main POS.
+        ///   Looks up a localized string similar to Can not delete the main POS.
         /// </summary>
         internal static string trCannotDeleteTheMainPos {
             get {
@@ -871,7 +871,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cannot delete the main user.
+        ///   Looks up a localized string similar to Can not delete the main user.
         /// </summary>
         internal static string trCannotDeleteTheMainUser {
             get {
@@ -1042,7 +1042,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A category cannot be associated with itself.
+        ///   Looks up a localized string similar to A category can not be associated with itself.
         /// </summary>
         internal static string trCategorieParentError {
             get {
@@ -2167,7 +2167,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accuracy of numbers cann&apos;t be empty.
+        ///   Looks up a localized string similar to Accuracy of numbers can&apos;t be empty.
         /// </summary>
         internal static string trEmptyAccuracy {
             get {
@@ -2176,7 +2176,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address cann&apos;t be null.
+        ///   Looks up a localized string similar to Address can&apos;t be null.
         /// </summary>
         internal static string trEmptyAddress {
             get {
@@ -2185,7 +2185,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Address cann&apos;t be empty.
+        ///   Looks up a localized string similar to Address can&apos;t be empty.
         /// </summary>
         internal static string trEmptyAddressToolTip {
             get {
@@ -2257,7 +2257,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Currency cann&apos;t be empty.
+        ///   Looks up a localized string similar to Currency can&apos;t be empty.
         /// </summary>
         internal static string trEmptyCurrency {
             get {
@@ -2275,7 +2275,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date format cann&apos;t be empty.
+        ///   Looks up a localized string similar to Date format can&apos;t be empty.
         /// </summary>
         internal static string trEmptyDateFormat {
             get {
@@ -2284,7 +2284,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delivery cost cann&apos;t be empty.
+        ///   Looks up a localized string similar to Delivery cost can&apos;t be empty.
         /// </summary>
         internal static string trEmptyDeliveryCostToolTip {
             get {
@@ -2293,7 +2293,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delivery type cann&apos;t be empty.
+        ///   Looks up a localized string similar to Delivery type can&apos;t be empty.
         /// </summary>
         internal static string trEmptyDeliveryTypeToolTip {
             get {
@@ -2329,7 +2329,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The document due date cannot be empty.
+        ///   Looks up a localized string similar to The document due date can not be empty.
         /// </summary>
         internal static string trEmptyDocDateToolTip {
             get {
@@ -2347,7 +2347,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email cann&apos;t be empty.
+        ///   Looks up a localized string similar to Email can&apos;t be empty.
         /// </summary>
         internal static string trEmptyEmailToolTip {
             get {
@@ -2374,7 +2374,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This field cann&apos;t be empty.
+        ///   Looks up a localized string similar to This field can&apos;t be empty.
         /// </summary>
         internal static string trEmptyError {
             get {
@@ -2383,7 +2383,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fax cann&apos;t be empty.
+        ///   Looks up a localized string similar to Fax can&apos;t be empty.
         /// </summary>
         internal static string trEmptyFaxToolTip {
             get {
@@ -2410,7 +2410,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Language cann&apos;t be empty.
+        ///   Looks up a localized string similar to Language can&apos;t be empty.
         /// </summary>
         internal static string trEmptyLanguage {
             get {
@@ -2482,7 +2482,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The phone number cannot be blank.
+        ///   Looks up a localized string similar to The phone number can&apos;t be blank.
         /// </summary>
         internal static string trEmptyPhoneToolTip {
             get {
@@ -2491,7 +2491,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Price cann&apos;t be empty.
+        ///   Looks up a localized string similar to Price can&apos;t be empty.
         /// </summary>
         internal static string trEmptyPrice {
             get {
@@ -2536,7 +2536,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Real delivery cost cann&apos;t be empty.
+        ///   Looks up a localized string similar to Real delivery cost can&apos;t be empty.
         /// </summary>
         internal static string trEmptyRealDeliveryCostToolTip {
             get {
@@ -2545,7 +2545,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Region cann&apos;t be empty.
+        ///   Looks up a localized string similar to Region can&apos;t be empty.
         /// </summary>
         internal static string trEmptyRegion {
             get {
@@ -2590,7 +2590,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tax cann&apos;t be empty .
+        ///   Looks up a localized string similar to Tax can&apos;t be empty .
         /// </summary>
         internal static string trEmptyTax {
             get {
@@ -2599,7 +2599,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User cann&apos;t be empty.
+        ///   Looks up a localized string similar to User can&apos;t be empty.
         /// </summary>
         internal static string trEmptyUser {
             get {
@@ -2842,7 +2842,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delivery type cann&apos;t be empty.
+        ///   Looks up a localized string similar to Delivery type can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyDeliveryTypeToolTip {
             get {
@@ -2851,7 +2851,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Depositor cann&apos;t be empty.
+        ///   Looks up a localized string similar to Depositor can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyDepositFromToolTip {
             get {
@@ -2860,7 +2860,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Depositor cann&apos;t be empty.
+        ///   Looks up a localized string similar to Depositor can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyDepositorToolTip {
             get {
@@ -2887,7 +2887,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The destination unit cannot be empty.
+        ///   Looks up a localized string similar to The destination unit can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyDesUnitToToolTip {
             get {
@@ -2896,7 +2896,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End date cann&apos;t be empty.
+        ///   Looks up a localized string similar to End date can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyEndDateToolTip {
             get {
@@ -2968,7 +2968,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pos cann&apos;t be empty.
+        ///   Looks up a localized string similar to Pos can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyPosToolTip {
             get {
@@ -2995,7 +2995,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The source unit cannot be empty.
+        ///   Looks up a localized string similar to The source unit can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptySrcUnitToolTip {
             get {
@@ -3004,7 +3004,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start date cnn&apos;t be empty.
+        ///   Looks up a localized string similar to Start date can&apos;t be empty.
         /// </summary>
         internal static string trErrorEmptyStartDateToolTip {
             get {
@@ -3058,7 +3058,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The end date cannot be earlier than the start date.
+        ///   Looks up a localized string similar to The end date can&apos;t be earlier than the start date.
         /// </summary>
         internal static string trErrorEndDateSmallerToolTip {
             get {
@@ -3094,7 +3094,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deserved date cannot be earlier than invoice date.
+        ///   Looks up a localized string similar to Deserved date can&apos;t be earlier than invoice date.
         /// </summary>
         internal static string trErrorInvDateAfterDeserveToolTip {
             get {
@@ -3211,7 +3211,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quantity cannot be zero.
+        ///   Looks up a localized string similar to Quantity can&apos;t be zero.
         /// </summary>
         internal static string trErrorQuantIsZeroToolTip {
             get {
@@ -3454,7 +3454,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The main path cann&apos;t be empty.
+        ///   Looks up a localized string similar to The main path can&apos;t be empty.
         /// </summary>
         internal static string trFirstPath {
             get {
@@ -3598,7 +3598,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The amount cannot be greater than the deserved one.
+        ///   Looks up a localized string similar to The amount can&apos;t be greater than the deserved one.
         /// </summary>
         internal static string trGreaterAmmount {
             get {
@@ -5642,7 +5642,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot log in.
+        ///   Looks up a localized string similar to You can&apos;t log in.
         /// </summary>
         internal static string trPreventLogIn {
             get {
@@ -6659,7 +6659,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The secondary path cann&apos;t be empty.
+        ///   Looks up a localized string similar to The secondary path can&apos;t be empty.
         /// </summary>
         internal static string trSecondPath {
             get {
@@ -8288,7 +8288,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot create more than one inventory in branch.
+        ///   Looks up a localized string similar to You can&apos;t create more than one inventory in branch.
         /// </summary>
         internal static string trWarningOneInventory {
             get {
@@ -8405,7 +8405,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Amount cann&apos;t be zero.
+        ///   Looks up a localized string similar to Amount can&apos;t be zero.
         /// </summary>
         internal static string trZeroAmmount {
             get {

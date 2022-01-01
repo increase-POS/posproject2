@@ -766,7 +766,7 @@
     <value>Branch can not be empty</value>
   </data>
   <data name="trEmptyPhoneToolTip" xml:space="preserve">
-    <value>The phone number cannot be blank</value>
+    <value>The phone number can't be blank</value>
   </data>
   <data name="trPassword" xml:space="preserve">
     <value>Password</value>
@@ -877,7 +877,7 @@
     <value>Start date can not be empty</value>
   </data>
   <data name="trErrorEndDateSmallerToolTip" xml:space="preserve">
-    <value>The end date cannot be earlier than the start date</value>
+    <value>The end date can't be earlier than the start date</value>
   </data>
   <data name="trErrorItemNotFoundToolTip" xml:space="preserve">
     <value>Item not found</value>
@@ -1207,7 +1207,7 @@
     <value>Error barcode</value>
   </data>
   <data name="trErrorInvDateAfterDeserveToolTip" xml:space="preserve">
-    <value>Deserved date cannot be earlier than invoice date</value>
+    <value>Deserved date can't be earlier than invoice date</value>
   </data>
   <data name="trMessageBoxActivate" xml:space="preserve">
     <value>Are you sure you want to activate this?</value>
@@ -1219,7 +1219,7 @@
     <value>Are you sure you want to delete this?</value>
   </data>
   <data name="trEmptyDocDateToolTip" xml:space="preserve">
-    <value>The document due date cannot be empty</value>
+    <value>The document due date can not be empty</value>
   </data>
   <data name="trReturnedInvoice" xml:space="preserve">
     <value>Returned Invoice</value>
@@ -1240,10 +1240,10 @@
     <value>Bonds</value>
   </data>
   <data name="trErrorEmptyDepositFromToolTip" xml:space="preserve">
-    <value>Depositor cann't be empty</value>
+    <value>Depositor can't be empty</value>
   </data>
   <data name="trErrorEmptyDepositorToolTip" xml:space="preserve">
-    <value>Depositor cann't be empty</value>
+    <value>Depositor can't be empty</value>
   </data>
   <data name="trPaid" xml:space="preserve">
     <value>Paid</value>
@@ -1264,7 +1264,7 @@
     <value>Branch/Store...</value>
   </data>
   <data name="trEmptyError" xml:space="preserve">
-    <value>This field cann't be empty</value>
+    <value>This field can't be empty</value>
   </data>
   <data name="trFromX" xml:space="preserve">
     <value>From X</value>
@@ -1354,10 +1354,10 @@
     <value>All coupons are used</value>
   </data>
   <data name="trErrorEmptyEndDateToolTip" xml:space="preserve">
-    <value>End date cann't be empty</value>
+    <value>End date can't be empty</value>
   </data>
   <data name="trErrorEmptyStartDateToolTip" xml:space="preserve">
-    <value>Start date cnn't be empty</value>
+    <value>Start date can't be empty</value>
   </data>
   <data name="trSelectedLocations" xml:space="preserve">
     <value>Selected locations</value>
@@ -1396,7 +1396,7 @@
     <value>Card Name...</value>
   </data>
   <data name="trCategorieParentError" xml:space="preserve">
-    <value>A category cannot be associated with itself</value>
+    <value>A category can not be associated with itself</value>
   </data>
   <data name="trClose" xml:space="preserve">
     <value>Close</value>
@@ -1444,19 +1444,19 @@
     <value>Location is already exist</value>
   </data>
   <data name="trEmptyDeliveryCostToolTip" xml:space="preserve">
-    <value>Delivery cost cann't be empty</value>
+    <value>Delivery cost can't be empty</value>
   </data>
   <data name="trEmptyRealDeliveryCostToolTip" xml:space="preserve">
-    <value>Real delivery cost cann't be empty</value>
+    <value>Real delivery cost can't be empty</value>
   </data>
   <data name="trErrorEmptyDeliveryTypeToolTip" xml:space="preserve">
-    <value>Delivery type cann't be empty</value>
+    <value>Delivery type can't be empty</value>
   </data>
   <data name="trLocaly" xml:space="preserve">
     <value>Localy</value>
   </data>
   <data name="trEmptyDeliveryTypeToolTip" xml:space="preserve">
-    <value>Delivery type cann't be empty</value>
+    <value>Delivery type can't be empty</value>
   </data>
   <data name="trPurchaseReturnDraft" xml:space="preserve">
     <value>Purchase Return Draft</value>
@@ -1492,13 +1492,13 @@
     <value>Delivery type...</value>
   </data>
   <data name="trEmptyAddressToolTip" xml:space="preserve">
-    <value>Address cann't be empty</value>
+    <value>Address can't be empty</value>
   </data>
   <data name="trEmptyEmailToolTip" xml:space="preserve">
-    <value>Email cann't be empty</value>
+    <value>Email can't be empty</value>
   </data>
   <data name="trEmptyFaxToolTip" xml:space="preserve">
-    <value>Fax cann't be empty</value>
+    <value>Fax can't be empty</value>
   </data>
   <data name="trRealDeliveryCost" xml:space="preserve">
     <value>Real delivery cost</value>
@@ -1573,19 +1573,16 @@
     <value>select new location for transf</value>
   </data>
   <data name="trEmptyAddress" xml:space="preserve">
-    <value>Address cann't be null</value>
-  </data>
-  <data name="trEmptyLanguage" xml:space="preserve">
-    <value>Language cann't be empty</value>
+    <value>Address can't be null</value>
   </data>
   <data name="trEmptyRegion" xml:space="preserve">
-    <value>Region cann't be empty</value>
+    <value>Region can't be empty</value>
   </data>
   <data name="trEmptyStoreCost" xml:space="preserve">
     <value>Storage cost cann't be empty</value>
   </data>
   <data name="trEmptyTax" xml:space="preserve">
-    <value>Tax cann't be empty </value>
+    <value>Tax can't be empty </value>
   </data>
   <data name="trPopSave" xml:space="preserve">
     <value>Saved successfully</value>
@@ -1597,7 +1594,7 @@
     <value>Administrative password change</value>
   </data>
   <data name="trEmptyUser" xml:space="preserve">
-    <value>User cann't be empty</value>
+    <value>User can't be empty</value>
   </data>
   <data name="trLogOut" xml:space="preserve">
     <value>Log out</value>
@@ -1642,7 +1639,7 @@
     <value>Maximum balance value exceeded</value>
   </data>
   <data name="trEmptyPrice" xml:space="preserve">
-    <value>Price cann't be empty</value>
+    <value>Price can't be empty</value>
   </data>
   <data name="trSelectedUsers" xml:space="preserve">
     <value>Selected users</value>
@@ -1777,7 +1774,7 @@
     <value>store</value>
   </data>
   <data name="trCannotDeleteTheMainUser" xml:space="preserve">
-    <value>Cannot delete the main user</value>
+    <value>Can not delete the main user</value>
   </data>
   <data name="trInventoryDate" xml:space="preserve">
     <value>Inventory date</value>
@@ -1792,16 +1789,16 @@
     <value>Can't add an invoice without items</value>
   </data>
   <data name="trCannotDeleteTheMainBranch" xml:space="preserve">
-    <value>Cannot delete the main branch</value>
+    <value>Can not delete the main branch</value>
   </data>
   <data name="trCannotDeleteTheMainPos" xml:space="preserve">
-    <value>Cannot delete the main POS</value>
+    <value>Can not delete the main POS</value>
   </data>
   <data name="trCard" xml:space="preserve">
     <value>Cards</value>
   </data>
   <data name="trGreaterAmmount" xml:space="preserve">
-    <value>The amount cannot be greater than the deserved one</value>
+    <value>The amount can't be greater than the deserved one</value>
   </data>
   <data name="trMembership" xml:space="preserve">
     <value>Membership</value>
@@ -1810,7 +1807,7 @@
     <value>Subscriptions</value>
   </data>
   <data name="trZeroAmmount" xml:space="preserve">
-    <value>Amount cann't be zero</value>
+    <value>Amount can't be zero</value>
   </data>
   <data name="trInvoiceDate" xml:space="preserve">
     <value>Invoice Date</value>
@@ -1825,10 +1822,10 @@
     <value>Count:</value>
   </data>
   <data name="trErrorEmptyDesUnitToToolTip" xml:space="preserve">
-    <value>The destination unit cannot be empty</value>
+    <value>The destination unit can't be empty</value>
   </data>
   <data name="trErrorEmptySrcUnitToolTip" xml:space="preserve">
-    <value>The source unit cannot be empty</value>
+    <value>The source unit can't be empty</value>
   </data>
   <data name="trInventoryDraft" xml:space="preserve">
     <value>Inventory Draft</value>
@@ -1840,7 +1837,7 @@
     <value>There is no inventory</value>
   </data>
   <data name="trWarningOneInventory" xml:space="preserve">
-    <value>You cannot create more than one inventory in branch</value>
+    <value>You can't create more than one inventory in branch</value>
   </data>
   <data name="trScan" xml:space="preserve">
     <value>Scan</value>
@@ -1928,19 +1925,19 @@ Please add Email in setting</value>
     <value>Quantity is not enough</value>
   </data>
   <data name="trErrorQuantIsZeroToolTip" xml:space="preserve">
-    <value>Quantity cannot be zero</value>
+    <value>Quantity can't be zero</value>
   </data>
   <data name="trCreatedOper" xml:space="preserve">
     <value>Created</value>
   </data>
   <data name="trErrorEmptyPosToolTip" xml:space="preserve">
-    <value>Pos cann't be empty</value>
+    <value>Pos can't be empty</value>
   </data>
   <data name="trDateForm" xml:space="preserve">
     <value>Date state</value>
   </data>
   <data name="trEmptyDateFormat" xml:space="preserve">
-    <value>Date format cann't be empty</value>
+    <value>Date format can't be empty</value>
   </data>
   <data name="trAmountHint" xml:space="preserve">
     <value>Amount...</value>
@@ -2075,7 +2072,7 @@ Please add Email in setting</value>
     <value>Archive</value>
   </data>
   <data name="trEmptyCurrency" xml:space="preserve">
-    <value>Currency cann't be empty</value>
+    <value>Currency can't be empty</value>
   </data>
   <data name="trInventory" xml:space="preserve">
     <value>Inventory</value>
@@ -2351,10 +2348,10 @@ Please add Email in setting</value>
     <value>Reports Settings</value>
   </data>
   <data name="trFirstPath" xml:space="preserve">
-    <value>The main path cann't be empty</value>
+    <value>The main path can't be empty</value>
   </data>
   <data name="trSecondPath" xml:space="preserve">
-    <value>The secondary path cann't be empty</value>
+    <value>The secondary path can't be empty</value>
   </data>
   <data name="trFirstLevel" xml:space="preserve">
     <value>Main path</value>
@@ -2375,7 +2372,7 @@ Please add Email in setting</value>
     <value>The count must be more than zero</value>
   </data>
   <data name="trEmptyAccuracy" xml:space="preserve">
-    <value>Accuracy of numbers cann't be empty</value>
+    <value>Accuracy of numbers can't be empty</value>
   </data>
   <data name="trIsRequired" xml:space="preserve">
     <value>is required</value>
@@ -2870,7 +2867,7 @@ Please add Email in setting</value>
     <value>Package is not active</value>
   </data>
   <data name="trPreventLogIn" xml:space="preserve">
-    <value>You cannot log in</value>
+    <value>You can't log in</value>
   </data>
   <data name="trOrder" xml:space="preserve">
     <value>Order</value>
@@ -2910,5 +2907,8 @@ Please add Email in setting</value>
   </data>
   <data name="trType-Name" xml:space="preserve">
     <value>Type-Name</value>
+  </data>
+  <data name="trEmptyLanguage" xml:space="preserve">
+    <value>Language can't be empty</value>
   </data>
 </root>
