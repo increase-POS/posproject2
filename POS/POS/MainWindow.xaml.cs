@@ -67,6 +67,12 @@ namespace POS
         bool isHome = false;
         internal static int? isInvTax;
         internal static decimal? tax;
+        //tax
+        internal static bool? invoiceTax_bool;
+        internal static decimal? invoiceTax_decimal;
+        internal static bool? itemsTax_bool;
+        internal static decimal? itemsTax_decimal;
+
         internal static int? itemCost;
         internal static string dateFormat;
         internal static string accuracy;

@@ -19,7 +19,6 @@
             <Border  BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>
-
                     <Button   IsCancel="true"  HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" 
                              BorderBrush="{x:Null}"  Foreground="White" Margin="7.5,0"  x:Name="btn_colse" Click="Btn_colse_Click"
                              FontWeight="SemiBold" Width="24" Padding="0" ToolTip="Close"  FontSize="14">
@@ -74,26 +73,27 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock  Grid.Row="0"   Grid.Column="0"  
-                           x:Name="txt_invoiceTax"  Text="Invoice"  Margin="5,0,5,0" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" />
-                <ToggleButton   Grid.Row="0"   Grid.Column="1"  Margin="0,0,5,0"  
-                    x:Name="tgl_invoiceTax" 
-                             VerticalAlignment="Center" Padding="10,15,5,5"  
-                         Height="13" Width="28" />
+                <TextBlock  Grid.Row="0"   Grid.Column="0"   
+                            x:Name="txt_invoiceTax"  Text="Invoice"  Margin="5,0,5,0" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <ToggleButton  Grid.Row="0"   Grid.Column="1"  Margin="0,0,5,0"  
+                               x:Name="tgl_invoiceTax" 
+                               VerticalAlignment="Center" Padding="10,15,5,5"  
+                               Height="13" Width="28"
+                               IsChecked="{Binding invoiceTax_bool, Mode=OneWay}"/>
                 <Grid  Grid.Row="0"   Grid.Column="2" >
-                    
-                    
+                   
                     <TextBox x:Name="tb_invoiceTax" Padding="10,10,5,5" 
-                              Grid.Row="0"   Grid.Column="2" 
-                                     BorderThickness="0,0,0,2"  
-                                     Foreground="#4E4E4E"  Background="#f8f8f8"
-                                     BorderBrush="AliceBlue"  
-                                     Margin="5"  
-                                      PreviewKeyDown="Tb_PreventSpaces" 
-                                     PreviewTextInput="Tb_decimal_PreviewTextInput"
-                                     TextChanged="Tb_validateEmptyTextChange" 
-                                     LostFocus="Tb_validateEmptyLostFocus">
+                            Grid.Row="0"   Grid.Column="2" 
+                            BorderThickness="0,0,0,2"  
+                            Foreground="#4E4E4E"  Background="#f8f8f8"
+                            BorderBrush="AliceBlue"  
+                            Margin="5"  
+                            Text ="{Binding invoiceTax_decimal, Mode=OneWay}"
+                            PreviewKeyDown="Tb_PreventSpaces" 
+                            PreviewTextInput="Tb_decimal_PreviewTextInput"
+                            TextChanged="Tb_validateEmptyTextChange" 
+                            LostFocus="Tb_validateEmptyLostFocus">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_invoiceTax" 
                                               Placement="left" 
@@ -113,23 +113,25 @@
                     </Path>
                 </Grid>
                 <TextBlock  Grid.Row="1"   Grid.Column="0" 
-                           x:Name="txt_itemsTax"  Text="Items"  Margin="5,0,5,0" Foreground="#6e6e6e"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            x:Name="txt_itemsTax"  Text="Items"  Margin="5,0,5,0" Foreground="#6e6e6e"
+                            HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <ToggleButton  Grid.Row="1"   Grid.Column="1"   Margin="0,0,5,0"   
-                    x:Name="tgl_itemsTax" 
-                             VerticalAlignment="Center" Padding="10,15,5,5"  
-                         Height="13" Width="28" />
+                               x:Name="tgl_itemsTax" 
+                               VerticalAlignment="Center" Padding="10,15,5,5"  
+                               Height="13" Width="28" 
+                               IsChecked="{Binding itemsTax_bool, Mode=OneWay}"/>
                 <Grid  Grid.Row="1"   Grid.Column="2" >
                    
-                    <TextBox x:Name="tb_itemsTax" Padding="10,10,5,5" 
-                                     BorderThickness="0,0,0,2"  
-                                     Foreground="#4E4E4E"  Background="#f8f8f8"
-                                     BorderBrush="AliceBlue"  
-                                     Margin="5" Grid.Column="2" 
-                                      PreviewKeyDown="Tb_PreventSpaces" 
-                                     PreviewTextInput="Tb_decimal_PreviewTextInput"
-                                     TextChanged="Tb_validateEmptyTextChange" 
-                                     LostFocus="Tb_validateEmptyLostFocus">
+                    <TextBox    x:Name="tb_itemsTax" Padding="10,10,5,5" 
+                                BorderThickness="0,0,0,2"  
+                                Foreground="#4E4E4E"  Background="#f8f8f8"
+                                BorderBrush="AliceBlue"  
+                                Margin="5" Grid.Column="2" 
+                                Text ="{Binding itemsTax_decimal, Mode=OneWay}"
+                                PreviewKeyDown="Tb_PreventSpaces" 
+                                PreviewTextInput="Tb_decimal_PreviewTextInput"
+                                TextChanged="Tb_validateEmptyTextChange" 
+                                LostFocus="Tb_validateEmptyLostFocus">
                         <TextBox.ToolTip>
                             <ToolTip x:Name="tt_itemsTax" 
                                               Placement="left" 
