@@ -17,8 +17,11 @@ namespace POS_Server.Models
 
         public bool isBooked { get; set; }
         public int isActive { get; set; }
+        public string posName { get; set; }
+        public string branchName { get; set; }
 
-  
+    
+
     }
 
 
