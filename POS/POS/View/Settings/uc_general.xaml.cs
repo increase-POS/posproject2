@@ -154,24 +154,24 @@ namespace POS.View.Settings
         }
         async void loading_getDefaultTax()
         {
-            try
-            {
-                #region get default tax
-                await getDefaultTax();
-                if (tax != null)
-                    tb_tax.Text = tax.value;
-                #endregion
-            }
-            catch (Exception)
-            { }
-            foreach (var item in loadingList)
-            {
-                if (item.key.Equals("loading_getDefaultTax"))
-                {
-                    item.value = true;
-                    break;
-                }
-            }
+            //try
+            //{
+            //    #region get default tax
+            //    await getDefaultTax();
+            //    if (tax != null)
+            //        tb_tax.Text = tax.value;
+            //    #endregion
+            //}
+            //catch (Exception)
+            //{ }
+            //foreach (var item in loadingList)
+            //{
+            //    if (item.key.Equals("loading_getDefaultTax"))
+            //    {
+            //        item.value = true;
+            //        break;
+            //    }
+            //}
         }
         async void loading_getDefaultItemCost()
         {
@@ -291,7 +291,7 @@ namespace POS.View.Settings
                     loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
                     //loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
-                    loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
+                    //loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultItemCost", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
@@ -536,7 +536,7 @@ namespace POS.View.Settings
             tt_region.Content = MainWindow.resourcemanager.GetString("trRegion");
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
-            tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
+            //tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
             tt_itemsCost.Content = MainWindow.resourcemanager.GetString("trItemCost");
             tt_dateForm.Content = MainWindow.resourcemanager.GetString("trDateForm");
             tt_accuracy.Content = MainWindow.resourcemanager.GetString("trAccuracy");
@@ -685,26 +685,33 @@ namespace POS.View.Settings
 
                 if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
-                    if (!tb_tax.Text.Equals(""))
-                    {
-                        if (tax == null)
-                            tax = new SetValues();
-                        tax.value = tb_tax.Text;
-                        tax.isSystem = 1;
-                        tax.settingId = taxId;
-                        
-                        int s = await valueModel.Save(tax);
-                        if (!s.Equals(0))
-                        {
-                            //update tax in main window
-                            MainWindow.tax = decimal.Parse(tax.value);
+                    #region old
+                    //SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
+                    //if (!tb_tax.Text.Equals(""))
+                    //{
+                    //    if (tax == null)
+                    //        tax = new SetValues();
+                    //    tax.value = tb_tax.Text;
+                    //    tax.isSystem = 1;
+                    //    tax.settingId = taxId;
 
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                        }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                    }
+                    //    int s = await valueModel.Save(tax);
+                    //    if (!s.Equals(0))
+                    //    {
+                    //        //update tax in main window
+                    //        MainWindow.tax = decimal.Parse(tax.value);
+
+                    //        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    //    }
+                    //    else
+                    //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    //}
+                    #endregion
+
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_taxSetting w = new wd_taxSetting();
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
