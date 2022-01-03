@@ -36,6 +36,12 @@ namespace POS.View.Settings
         static SettingCls set = new SettingCls();
         static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
+        //tax
+        static SetValues setVInvoice = new SetValues();
+        static SetValues setVInvoiceBool = new SetValues();
+        static SetValues setVItem = new SetValues();
+        static SetValues setVItemBool = new SetValues();
+        ////////
         static SetValues itemCost = new SetValues();
         static SetValues printCount = new SetValues();
         static SetValues accuracy = new SetValues();
@@ -433,7 +439,23 @@ namespace POS.View.Settings
             set = settingsCls.Where(s => s.name == "tax").FirstOrDefault<SettingCls>();
             taxId = set.settingId;
             tax = settingsValues.Where(i => i.settingId == taxId).FirstOrDefault();
+
             return tax;
+        }
+        public static async Task<List<string>> getDefaultTaxList()///???
+        {
+            setVInvoiceBool = settingsValues.Where(v => v.name == "invoiceTax_bool").FirstOrDefault();
+            setVInvoice = settingsValues.Where(v => v.name == "invoiceTax_decimal").FirstOrDefault();
+            setVItemBool = settingsValues.Where(v => v.name == "itemsTax_bool").FirstOrDefault();
+            setVItem = settingsValues.Where(v => v.name == "itemsTax_decimal").FirstOrDefault();
+
+            List<string> taxLst = new List<string>();
+            taxLst.Add(setVInvoiceBool.value);
+            taxLst.Add(setVInvoice.value);
+            taxLst.Add(setVItemBool.value);
+            taxLst.Add(setVItem.value);
+
+            return taxLst;
         }
         public static async Task<SetValues> getDefaultItemCost()
         {

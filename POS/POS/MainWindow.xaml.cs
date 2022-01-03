@@ -68,9 +68,9 @@ namespace POS
         internal static int? isInvTax;
         internal static decimal? tax;
         //tax
-        internal static bool? invoiceTax_bool;
+        internal static bool?    invoiceTax_bool;
         internal static decimal? invoiceTax_decimal;
-        internal static bool? itemsTax_bool;
+        internal static bool?    itemsTax_bool;
         internal static decimal? itemsTax_decimal;
 
         internal static int? itemCost;
@@ -269,10 +269,19 @@ namespace POS
             try
             {
                 tax = decimal.Parse(await getDefaultTax());
+                //List<string> taxLst = await getDefaultTaxList();
+                //invoiceTax_bool = Convert.ToBoolean(taxLst[0]) ;
+                //invoiceTax_decimal = decimal.Parse(taxLst[1]);
+                //itemsTax_bool = Convert.ToBoolean(taxLst[2]);
+                //itemsTax_decimal = decimal.Parse(taxLst[3]);
             }
             catch
             {
                 tax = 0;
+                invoiceTax_bool = false;
+                invoiceTax_decimal = 0;
+                itemsTax_bool = false;
+                itemsTax_decimal = 0;
             }
             foreach (var item in loadingList)
             {
@@ -1685,6 +1694,14 @@ namespace POS
                 return v.value;
             else
                 return "";
+        }
+
+        async Task<List<string>> getDefaultTaxList()
+        {
+            List<string> taxLst = await uc_general.getDefaultTaxList();
+            if (taxLst == null)
+                taxLst = new List<string>() { "false", "0", "false", "0" };
+            return taxLst;
         }
         async Task<string> getDefaultItemCost()
         {

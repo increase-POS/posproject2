@@ -4363,6 +4363,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to القيمة العظمى.
+        /// </summary>
+        internal static string trMax {
+            get {
+                return ResourceManager.GetString("trMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to قيمة التجميع العظمى.
+        /// </summary>
+        internal static string trMaxCollect {
+            get {
+                return ResourceManager.GetString("trMaxCollect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الأكبر.
         /// </summary>
         internal static string trMaxHint {
@@ -4471,11 +4489,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to القيمة الدنيا.
+        /// </summary>
+        internal static string trMin {
+            get {
+                return ResourceManager.GetString("trMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الحدود الدنيا والعليا من العنصر.
         /// </summary>
         internal static string trMinAndMaxOfItem {
             get {
                 return ResourceManager.GetString("trMinAndMaxOfItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to قيمة التجميع الدنيا.
+        /// </summary>
+        internal static string trMinCollect {
+            get {
+                return ResourceManager.GetString("trMinCollect", resourceCulture);
             }
         }
         
