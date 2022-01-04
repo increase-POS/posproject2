@@ -93,7 +93,8 @@ namespace POS_Server.Controllers
                                       // isBooked=true,
                                       posName=PS.pos.name,
                                       branchName=PS.pos.branches.name,
-
+                                      posId=PS.posId,
+                                      posSettingId=PS.posSettingId,
                                       //  isBooked = S.posSetting.Where(x => x.posSerialId == S.id).ToList().Count > 0 ? true : false,
                                       isBooked = (PS.posSerialId ==  0 || PS.posSerialId == null) ? false : true,
 
@@ -418,7 +419,97 @@ namespace POS_Server.Controllers
 
         }
 
+        private int SaveunlimitedSerials(List<PosSerialSend> newObjectlist)
+        {
+            int message = 0;
+            if (newObjectlist != null)
+            {
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        //  var locationEntity = entity.Set<posSerials>();
+                        List<posSerials> alllist = entity.posSerials.ToList();
+                        //1-dis activate serials
+                        foreach (posSerials oldrow in alllist)
+                        {
+                            oldrow.isActive = false;
 
+                            message += entity.SaveChanges();
+                        }
+
+                        // get unlimited serial{
+                        PosSerialSend unlimitedser = new PosSerialSend();
+                        unlimitedser = newObjectlist.Where(x => x.unLimited == true).First();
+                        //get booked pos and serialId
+                        if (unlimitedser.serial != null || unlimitedser.serial != "")
+                        {
+                            int unlimitedserialId = 0;
+                          List<PosSerialSend>linkdpos=  getserialsinfo();
+                            linkdpos = linkdpos.Where(x => x.isBooked == true).ToList();
+                            //add unlimited serial
+                            foreach (PosSerialSend snewrow in newObjectlist)
+                            {
+
+                                bool exist = false;
+                                foreach (posSerials oldrow in alllist)
+                                {
+                                    if (oldrow.posSerial == snewrow.serial && snewrow.unLimited == true)
+                                    {
+                                        exist = true;
+                                        oldrow.isActive = true;
+                                        oldrow.notes = "1";
+                                        unlimitedserialId = oldrow.id;
+
+                                    }
+                                }
+                                if (exist == false)
+                                {
+                                    posSerials newsr = new posSerials();
+                                    newsr.isActive = true;
+                                    newsr.posSerial = snewrow.serial;
+                                    newsr.notes = "1";
+                                    entity.posSerials.Add(newsr);
+                                    unlimitedserialId = newsr.id;
+
+                                }
+                                message += entity.SaveChanges();
+                            }
+                            //
+                            // change serialId
+                            foreach (PosSerialSend newrow in linkdpos)
+                            {
+                                int? posId= newrow.posId==null?0: newrow.posId;
+                                var posdb = entity.posSetting.Where(x => x.posId == posId).FirstOrDefault();
+                                posdb.posSerialId = unlimitedserialId;
+                                entity.SaveChanges();
+
+                            }
+                            //
+
+
+                        }
+                        
+                  
+
+                        //   message += entity.SaveChanges();
+                    }
+                    return (message);
+
+                }
+                catch
+                {
+                    message = -1;
+                    return (message);
+                }
+
+            }
+            else
+            {
+                return (-1);
+            }
+
+        }
         //[HttpPost]
         //[Route("saveserials")]
         //public async Task<string> saveserials(string token)
@@ -564,7 +655,17 @@ namespace POS_Server.Controllers
                             {
                                 res += 1;
                                 tempres = 0;
-                                tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+                                if (sendDetailItem.packageSend.posCount==-1)
+                                {
+                                    //unlimited pos
+                            
+                                    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
+                                }
+                                else
+                                {
+                                    tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+                                }
+                               
                             }
                             if (tempres >= 0)
                             {
