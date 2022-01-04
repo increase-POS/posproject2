@@ -141,7 +141,7 @@ namespace POS.View.Settings
         private async void Btn_extend_Click(object sender, RoutedEventArgs e)
         {//extend
             int chk = 0;
-            string activationkey = "";//get from info //customerServerCode?????????????
+            string activationkey = progDetails.packageSaleCode;//get from info 
             try
             {
                 if (activationkey.Trim() != "".Trim())
@@ -150,7 +150,7 @@ namespace POS.View.Settings
 
                     chk = await ac.checkconn();
 
-                    //chk = await ac.Sendserverkey(tb_activationkey.Text);????????????
+                    chk = await ac.Sendserverkey(activationkey);
 
                     if (chk <= 0)
                     {

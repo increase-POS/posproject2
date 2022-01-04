@@ -160,24 +160,46 @@ namespace POS.View.Settings
         }
         async void loading_getDefaultTax()
         {
-            //try
-            //{
-            //    #region get default tax
-            //    await getDefaultTax();
-            //    if (tax != null)
-            //        tb_tax.Text = tax.value;
-            //    #endregion
-            //}
-            //catch (Exception)
-            //{ }
-            //foreach (var item in loadingList)
-            //{
-            //    if (item.key.Equals("loading_getDefaultTax"))
-            //    {
-            //        item.value = true;
-            //        break;
-            //    }
-            //}
+            try
+            {
+                #region get default tax
+                await getDefaultTax();
+                if (tax != null) { }
+                    //tb_tax.Text = tax.value;
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultTax"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+
+        async void loading_getDefaultTaxList()//??
+        {
+            try
+            {
+                #region get default tax
+                List<string> taxLst = await getDefaultTaxList();
+                if (taxLst != null)
+                { }
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultTaxList"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
         }
         async void loading_getDefaultItemCost()
         {
@@ -297,7 +319,8 @@ namespace POS.View.Settings
                     loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
                     //loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
-                    //loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });//
+                    //loadingList.Add(new keyValueBool { key = "getDefaultTaxList", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultItemCost", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
@@ -444,10 +467,16 @@ namespace POS.View.Settings
         }
         public static async Task<List<string>> getDefaultTaxList()///???
         {
-            setVInvoiceBool = settingsValues.Where(v => v.name == "invoiceTax_bool").FirstOrDefault();
-            setVInvoice = settingsValues.Where(v => v.name == "invoiceTax_decimal").FirstOrDefault();
-            setVItemBool = settingsValues.Where(v => v.name == "itemsTax_bool").FirstOrDefault();
-            setVItem = settingsValues.Where(v => v.name == "itemsTax_decimal").FirstOrDefault();
+            //setVInvoiceBool = settingsValues.Where(v => v.name == "invoiceTax_bool").FirstOrDefault();
+            //setVInvoice = settingsValues.Where(v => v.name == "invoiceTax_decimal").FirstOrDefault();
+            //setVItemBool = settingsValues.Where(v => v.name == "itemsTax_bool").FirstOrDefault();
+            //setVItem = settingsValues.Where(v => v.name == "itemsTax_decimal").FirstOrDefault();
+            List<SetValues> sv = new List<SetValues>();
+            sv = settingsValues.Where(v => v.notes == "tax").ToList();
+            setVInvoiceBool = sv[0];
+            setVInvoice = sv[1];
+            setVItemBool = sv[2];
+            setVItem = sv[3];
 
             List<string> taxLst = new List<string>();
             taxLst.Add(setVInvoiceBool.value);

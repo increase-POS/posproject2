@@ -268,16 +268,16 @@ namespace POS
             //get tax
             try
             {
-                tax = decimal.Parse(await getDefaultTax());
-                //List<string> taxLst = await getDefaultTaxList();
-                //invoiceTax_bool = Convert.ToBoolean(taxLst[0]) ;
-                //invoiceTax_decimal = decimal.Parse(taxLst[1]);
-                //itemsTax_bool = Convert.ToBoolean(taxLst[2]);
-                //itemsTax_decimal = decimal.Parse(taxLst[3]);
+                //tax = decimal.Parse(await getDefaultTax());
+                List<string> taxLst = await getDefaultTaxList();
+                invoiceTax_bool = Convert.ToBoolean(taxLst[0]) ;
+                invoiceTax_decimal = decimal.Parse(taxLst[1]);
+                itemsTax_bool = Convert.ToBoolean(taxLst[2]);
+                itemsTax_decimal = decimal.Parse(taxLst[3]);
             }
             catch
             {
-                tax = 0;
+                //tax = 0;
                 invoiceTax_bool = false;
                 invoiceTax_decimal = 0;
                 itemsTax_bool = false;
