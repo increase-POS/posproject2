@@ -27,6 +27,8 @@ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
 using System.Threading;
+using System.Reflection;
+using System.Resources;
 
 namespace POS.View.reports
 {
@@ -63,9 +65,21 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
 
-                //comboBranches = await branchModel.GetAllWithoutMain("all");
+                storages = await statisticModel.GetStorage((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 comboItems = statisticModel.getItemCombo(storages);
                 comboUnits = statisticModel.getUnitCombo(storages);
@@ -97,6 +111,48 @@ namespace POS.View.reports
             }
         }
 
+        private void translate()
+        {
+            tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_location.Content = MainWindow.resourcemanager.GetString("trLocations");
+            tt_collect.Content = MainWindow.resourcemanager.GetString("trCollect");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchesItem, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_itemsItem, MainWindow.resourcemanager.GetString("trItemHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_unitsItem, MainWindow.resourcemanager.GetString("trUnitHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDateItem, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDateItem, MainWindow.resourcemanager.GetString("trEndDateHint"));
+
+            chk_expireDateItem.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allBranchesItem.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allItemsItem.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allUnitsItem.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_section.Header = MainWindow.resourcemanager.GetString("trSection");
+            col_location.Header = MainWindow.resourcemanager.GetString("trLocation");
+            col_itemUnits.Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            col_item.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_unit.Header = MainWindow.resourcemanager.GetString("trUnit");
+            col_locationSection.Header = MainWindow.resourcemanager.GetString("trSectionLocation");
+            col_startDate.Header = MainWindow.resourcemanager.GetString("trStartDate");
+            col_endDate.Header = MainWindow.resourcemanager.GetString("trEndDate");
+            col_Min.Header = MainWindow.resourcemanager.GetString("trMin");//??
+            col_Max.Header = MainWindow.resourcemanager.GetString("trMax");//??
+            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinCollect");//??
+            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxCollect");//??
+            col_stockCost.Header = MainWindow.resourcemanager.GetString("trCost");
+            col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+        }
         public uc_stock()
         {
             try

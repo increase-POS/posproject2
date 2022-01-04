@@ -2932,4 +2932,16 @@ Please add Email in setting</value>
   <data name="trVersion" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="trMax" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="trMaxCollect" xml:space="preserve">
+    <value>Max Collect</value>
+  </data>
+  <data name="trMin" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="trMinCollect" xml:space="preserve">
+    <value>Min Collect</value>
+  </data>
 </root>

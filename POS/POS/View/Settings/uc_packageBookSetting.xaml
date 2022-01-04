@@ -100,14 +100,6 @@
                         <TextBlock Grid.Row="2" Grid.Column="1"   x:Name="txt_version" Text="{Binding verName, Mode=OneWay}"  Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
                                   FontSize="14"  />
-
-                        <!--<TextBlock  Grid.Row="3" Grid.Column="0"   x:Name="txt_priceTitle" Text="price"  Margin="10"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
-                                  FontSize="16"  />
-                        <TextBlock  Grid.Row="3"  Grid.Column="1"   x:Name="txt_price" Text="{Binding price, Mode=OneWay}"  Margin="10" 
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />-->
-
                     </Grid>
                 </Border>
                

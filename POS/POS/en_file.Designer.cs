@@ -4372,6 +4372,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max.
+        /// </summary>
+        internal static string trMax {
+            get {
+                return ResourceManager.GetString("trMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Collect.
+        /// </summary>
+        internal static string trMaxCollect {
+            get {
+                return ResourceManager.GetString("trMaxCollect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Max....
         /// </summary>
         internal static string trMaxHint {
@@ -4480,11 +4498,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Min.
+        /// </summary>
+        internal static string trMin {
+            get {
+                return ResourceManager.GetString("trMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Maximum and Minimum of Items.
         /// </summary>
         internal static string trMinAndMaxOfItem {
             get {
                 return ResourceManager.GetString("trMinAndMaxOfItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min Collect.
+        /// </summary>
+        internal static string trMinCollect {
+            get {
+                return ResourceManager.GetString("trMinCollect", resourceCulture);
             }
         }
         

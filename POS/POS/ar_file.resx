@@ -2920,4 +2920,16 @@
   <data name="trVersion" xml:space="preserve">
     <value>الإصدار</value>
   </data>
+  <data name="trMax" xml:space="preserve">
+    <value>القيمة العظمى</value>
+  </data>
+  <data name="trMaxCollect" xml:space="preserve">
+    <value>قيمة التجميع العظمى</value>
+  </data>
+  <data name="trMin" xml:space="preserve">
+    <value>القيمة الدنيا</value>
+  </data>
+  <data name="trMinCollect" xml:space="preserve">
+    <value>قيمة التجميع الدنيا</value>
+  </data>
 </root>
