@@ -1613,7 +1613,8 @@ namespace POS.View
                     invoice.deserved -= cashTransfer.cash;
                     await invoice.saveInvoice(invoice);
                     break;
-                case "card": // card                 
+                case "card": // card  
+                    cashTransfer.docNum = tb_processNum.Text;
                     await cashTransfer.Save(cashTransfer); //add cash transfer 
                     invoice.paid += cashTransfer.cash;
                     invoice.deserved -= cashTransfer.cash;
@@ -1651,6 +1652,7 @@ namespace POS.View
                     break;
                 case "card":
                     cashTransfer.cash = invoice.totalNet;
+                    cashTransfer.cardId = _SelectedCard;
                     await cashTransfer.Save(cashTransfer); //add cash transfer  
                     invoice.paid = invoice.totalNet;
                     invoice.deserved = 0;
