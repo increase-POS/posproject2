@@ -163,7 +163,7 @@
                         <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_branchCountTitle" Text="branchs"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <DockPanel x:Name="dpnl_branch" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
                             <TextBlock   x:Name="txt_branchCount" Text="{Binding branchCount, Mode=OneWay}"  
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
@@ -173,11 +173,14 @@
                             <TextBlock   x:Name="txt_branchCountNow" Text="{Binding branchCountNow, Mode=OneWay}"  
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+                            <TextBlock   x:Name="txt_branchUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
                         </DockPanel>
                         <TextBlock Grid.Row="1"  Grid.Column="2"   x:Name="txt_storeCountNameTitle" Text="stores"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                        <DockPanel x:Name="dpnl_store" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
                             <TextBlock   x:Name="txt_storeCount" Text="{Binding storeCount, Mode=OneWay}" 
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
@@ -187,6 +190,9 @@
                             <TextBlock   x:Name="txt_storeCountNow" Text="{Binding storeCountNow, Mode=OneWay}" 
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+                            <TextBlock   x:Name="txt_storeUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
                         </DockPanel>
                         <!--#endregion-->
 
@@ -194,7 +200,7 @@
                         <TextBlock  Grid.Row="2"  Grid.Column="0"  x:Name="txt_userCountTitle" Text="users"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                        <DockPanel x:Name="dpnl_user" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
                            
                             <TextBlock   x:Name="txt_userCount" Text="{Binding userCount, Mode=OneWay}" 
                                          Foreground="{StaticResource MainColorBlue}"
@@ -205,12 +211,15 @@
                             <TextBlock   x:Name="txt_userCountNow" Text="{Binding userCountNow, Mode=OneWay}" 
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+                            <TextBlock   x:Name="txt_userUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
 
                         </DockPanel>
                         <TextBlock Grid.Row="2"  Grid.Column="2"   x:Name="txt_posCountNameTitle" Text="pos"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <DockPanel x:Name="dpnl_pos" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
                             <TextBlock   x:Name="txt_posCount" Text="{Binding posCount, Mode=OneWay}"  
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
@@ -220,6 +229,9 @@
                             <TextBlock   x:Name="txt_posCountNow" Text="{Binding posCountNow, Mode=OneWay}"  
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+                            <TextBlock   x:Name="txt_posUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
                         </DockPanel>
                         <!--#endregion-->
 
@@ -228,7 +240,7 @@
                         <TextBlock  Grid.Row="3"  Grid.Column="0"  x:Name="txt_customerCountTitle" Text="customers"  Margin="10,5,5,5"
                                     HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                     FontSize="16"  />
-                        <DockPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                        <DockPanel x:Name="dpnl_customer" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
                            
                             <TextBlock   x:Name="txt_customerCount" Text="{Binding customerCount, Mode=OneWay}"  
                                      Foreground="{StaticResource MainColorBlue}"
@@ -239,12 +251,15 @@
                             <TextBlock   x:Name="txt_customerCountNow" Text="{Binding customerCountNow, Mode=OneWay}"  
                                      Foreground="{StaticResource MainColorBlue}"
                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_customerUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
 
                         </DockPanel>
                         <TextBlock Grid.Row="3"  Grid.Column="2"   x:Name="txt_vendorCountNameTitle" Text="vendors"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                        <DockPanel x:Name="dpnl_vendor" Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
                             <TextBlock  x:Name="txt_vendorCount" Text="{Binding vendorCount, Mode=OneWay}" 
                                         Foreground="{StaticResource MainColorBlue}"
                                         FontSize="14"  />
@@ -255,6 +270,9 @@
                             <TextBlock  x:Name="txt_vendorCountNow" Text="{Binding vendorCountNow, Mode=OneWay}" 
                                         Foreground="{StaticResource MainColorBlue}"
                                         FontSize="14"  />
+                            <TextBlock   x:Name="txt_vendorUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
 
                         </DockPanel>
                         <!--#endregion-->
@@ -265,7 +283,7 @@
                         <TextBlock  Grid.Row="4"  Grid.Column="0"  x:Name="txt_salesInvCountTitle" Text="salesInvs"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
+                        <DockPanel x:Name="dpnl_salesInv" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
                            
                             <TextBlock  x:Name="txt_salesInvCount" Text="{Binding saleinvCount, Mode=OneWay}" 
                                         VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
@@ -276,11 +294,14 @@
                             <TextBlock  x:Name="txt_salesInvCountNow" Text="{Binding saleinvCountNow, Mode=OneWay}"
                                         VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
                                         FontSize="14"  />
+                            <TextBlock   x:Name="txt_salesInvUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
                         </DockPanel>
                         <TextBlock Grid.Row="4"  Grid.Column="2"   x:Name="txt_itemCountNameTitle" Text="items"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <DockPanel Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                        <DockPanel x:Name="dpnl_item" Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
                             <TextBlock   x:Name="txt_itemCount" Text="{Binding itemCount, Mode=OneWay}" 
                                          Foreground="{StaticResource MainColorBlue}"
                                          FontSize="14"  />
@@ -290,7 +311,10 @@
                             <TextBlock   x:Name="txt_itemCountNow" Text="{Binding itemCountNow, Mode=OneWay}" 
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
-                           
+                            <TextBlock   x:Name="txt_itemUnlimited" Text="unlimited"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  Visibility="Collapsed"/>
+
                         </DockPanel>
                         <!--#endregion-->
 
