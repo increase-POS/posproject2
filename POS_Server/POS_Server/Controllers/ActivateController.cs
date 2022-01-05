@@ -655,16 +655,15 @@ namespace POS_Server.Controllers
                             {
                                 res += 1;
                                 tempres = 0;
-                                if (sendDetailItem.packageSend.posCount==-1)
-                                {
-                                    //unlimited pos
+                                //if (sendDetailItem.packageSend.posCount==-1)
+                                //{
+                                //    //unlimited pos
                             
-                                    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
-                                }
-                                else
-                                {
+                                //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
+                                //}
+                               
                                     tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
-                                }
+                                
                                
                             }
                             if (tempres >= 0)
