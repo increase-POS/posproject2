@@ -75,6 +75,12 @@ namespace POS_Server.Models
 
         public string packageNumber { get; set; }
 
+      
+        public Nullable<int> pId { get; set; }
+        public Nullable<int> pcdId { get; set; }
+        public string activeState { get; set; }
+        
+
     }
     public class SendDetail
     {

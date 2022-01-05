@@ -53,10 +53,35 @@ namespace POS_Server.Controllers
             }
             return result;
         }
-        public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode)
+        public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode,string packState)
         {
             SendDetail item = new SendDetail();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
+       
+            parameters.Add("activeState", packState);
+            parameters.Add("packageSaleCode", packageSaleCode);
+            parameters.Add("customerServerCode", customerServerCode);
+          
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServer", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = JsonConvert.DeserializeObject<SendDetail>(c.Value, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                }
+            }
+            return item;
+
+        }
+        public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode, packagesSend packState)
+        {
+            SendDetail item = new SendDetail();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            var myContent = JsonConvert.SerializeObject(packState);
+            parameters.Add("packState", myContent);
             parameters.Add("packageSaleCode", packageSaleCode);
             parameters.Add("customerServerCode", customerServerCode);
 
@@ -85,28 +110,75 @@ namespace POS_Server.Controllers
                 serialsendList = (from PS in entity.posSetting
                                   join S in entity.posSerials on PS.posSerialId equals S.id
                                   //  join p in entity.posSetting on S.id equals p.posSerialId
-                                  where PS.posSerialId!=null
-                                  select new PosSerialSend 
+                                  where PS.posSerialId != null
+                                  select new PosSerialSend
                                   {
                                       serial = S.posSerial,
                                       isActive = (S.isActive == true) ? 1 : 0,
                                       // isBooked=true,
-                                      posName=PS.pos.name,
-                                      branchName=PS.pos.branches.name,
-                                      posId=PS.posId,
-                                      posSettingId=PS.posSettingId,
+                                      posName = PS.pos.name,
+                                      branchName = PS.pos.branches.name,
+                                      posId = PS.posId,
+                                      posSettingId = PS.posSettingId,
                                       //  isBooked = S.posSetting.Where(x => x.posSerialId == S.id).ToList().Count > 0 ? true : false,
-                                      isBooked = (PS.posSerialId ==  0 || PS.posSerialId == null) ? false : true,
+                                      isBooked = (PS.posSerialId == 0 || PS.posSerialId == null) ? false : true,
 
                                       posDeviceCode = PS.posDeviceCode,
                                   }).ToList();
 
-               
+
             }
-        
+
 
 
             return serialsendList;
+        }
+
+        public packagesSend getpackinfo()
+        {
+           
+            packagesSend packs = new packagesSend();
+       
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+         
+                packs = (from p in entity.ProgramDetails
+                             //  join p in entity.posSetting on S.id equals p.posSerialId
+                         select new packagesSend
+                         {
+                             programName = p.programName,
+                             branchCount = p.branchCount,
+                             posCount = p.posCount,
+                             userCount = p.userCount,
+                             vendorCount = p.vendorCount,
+                             customerCount = p.customerCount,
+                             itemCount = p.itemCount,
+                             salesInvCount = p.saleinvCount,
+                             storeCount = p.storeCount,
+                             packageSaleCode = p.packageSaleCode,
+                             customerServerCode = p.customerServerCode,
+                             expireDate = p.expireDate,
+                             isOnlineServer = p.isOnlineServer,
+                             // isOnlineServer = false,
+                           //  updateDate = p.updateDate,
+                             islimitDate = (p.isLimitDate == true) ? true : false,
+                             //islimitDate = false,
+                             //  isLimitCount = (bool)p.isLimitCount,
+                             isActive = (p.isActive == true) ? 1 : 0,
+                             //   isActive =1,
+                             canRenew = false,
+                             isPayed = true,
+                             isServerActivated = true,
+                             pId=p.pId,
+                             pcdId=p.pcdId,
+                             bookDate=p.bookDate,
+                             
+                         }).FirstOrDefault();
+            }
+         
+
+            return packs;
         }
         public SendDetail getinfo()
         {
@@ -191,7 +263,7 @@ namespace POS_Server.Controllers
             }
             return message;
         }
-       
+
         private int SaveProgDetails(packagesSend newObject)
         {
             int message = 0;
@@ -229,7 +301,7 @@ namespace POS_Server.Controllers
                             else
                             {
                                 //new is limited
-                                if (tmpObject.saleinvCount==-1)
+                                if (tmpObject.saleinvCount == -1)
                                 {
                                     //old is unlimited
                                     tmpObject.saleinvCount = newObject.totalsalesInvCount;
@@ -239,14 +311,14 @@ namespace POS_Server.Controllers
                                     //old is limited
                                     tmpObject.saleinvCount += newObject.totalsalesInvCount;
                                 }
-                               
+
                             }
-                          
+
                             tmpObject.versionName = newObject.verName;
                             tmpObject.storeCount = newObject.storeCount;
 
                             tmpObject.packageSaleCode = newObject.packageSaleCode;
-                           if( newObject.isServerActivated== false )
+                            if (newObject.isServerActivated == false)
                             {
                                 tmpObject.customerServerCode = newObject.customerServerCode;// from function
 
@@ -255,7 +327,7 @@ namespace POS_Server.Controllers
                             tmpObject.expireDate = newObject.expireDate;
                             tmpObject.isOnlineServer = newObject.isOnlineServer;
                             tmpObject.isLimitDate = newObject.islimitDate;
-                            tmpObject.isActive = ( newObject.isActive==1)?true:false;
+                            tmpObject.isActive = (newObject.isActive == 1) ? true : false;
 
                             // tmpObject.packageNumber = newObject.packageCode;
 
@@ -374,8 +446,8 @@ namespace POS_Server.Controllers
                         foreach (posSerials oldrow in alllist)
                         {
                             oldrow.isActive = false;
-                           
-                            message+= entity.SaveChanges();
+
+                            message += entity.SaveChanges();
                         }
 
                         foreach (PosSerialSend snewrow in newObjectlist)
@@ -397,10 +469,10 @@ namespace POS_Server.Controllers
                                 entity.posSerials.Add(newsr);
 
                             }
-                            message+= entity.SaveChanges();
+                            message += entity.SaveChanges();
                         }
 
-                     //   message += entity.SaveChanges();
+                        //   message += entity.SaveChanges();
                     }
                     return (message);
 
@@ -445,7 +517,7 @@ namespace POS_Server.Controllers
                         if (unlimitedser.serial != null || unlimitedser.serial != "")
                         {
                             int unlimitedserialId = 0;
-                          List<PosSerialSend>linkdpos=  getserialsinfo();
+                            List<PosSerialSend> linkdpos = getserialsinfo();
                             linkdpos = linkdpos.Where(x => x.isBooked == true).ToList();
                             //add unlimited serial
                             foreach (PosSerialSend snewrow in newObjectlist)
@@ -479,7 +551,7 @@ namespace POS_Server.Controllers
                             // change serialId
                             foreach (PosSerialSend newrow in linkdpos)
                             {
-                                int? posId= newrow.posId==null?0: newrow.posId;
+                                int? posId = newrow.posId == null ? 0 : newrow.posId;
                                 var posdb = entity.posSetting.Where(x => x.posId == posId).FirstOrDefault();
                                 posdb.posSerialId = unlimitedserialId;
                                 entity.SaveChanges();
@@ -489,8 +561,8 @@ namespace POS_Server.Controllers
 
 
                         }
-                        
-                  
+
+
 
                         //   message += entity.SaveChanges();
                     }
@@ -591,6 +663,7 @@ namespace POS_Server.Controllers
         [Route("Sendserverkey")]
         public async Task<string> Sendserverkey(string token)
         {
+            getIncSite();
             token = TokenManager.readToken(HttpContext.Current.Request);
             var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
@@ -601,6 +674,7 @@ namespace POS_Server.Controllers
             {
                 string res1 = "";
                 string skey = "";
+                string activeState = "";
                 string serverId = "";
                 SendDetail sendDetailItem = new SendDetail();
                 int res = 0;
@@ -612,6 +686,13 @@ namespace POS_Server.Controllers
                     {
                         skey = c.Value;
                     }
+                    else if (c.Type == "activeState")
+                    {
+                        activeState = c.Value;
+                    }
+
+
+
                 }
                 try
                 {
@@ -626,12 +707,12 @@ namespace POS_Server.Controllers
                     if (conres > 0)
                     {
                         // return TokenManager.GenerateToken(conres.ToString());
-                        sendDetailItem = await GetSerialsAndDetails(skey, serverId);
+                        sendDetailItem = await GetSerialsAndDetails(skey, serverId,"");
                         //update server detail
-                      
+
                         if (sendDetailItem.packageSend.result <= 0)
                         {
-                           
+
                             /*
                              *   // -2 : package not active 
                               
@@ -658,13 +739,13 @@ namespace POS_Server.Controllers
                                 //if (sendDetailItem.packageSend.posCount==-1)
                                 //{
                                 //    //unlimited pos
-                            
+
                                 //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
                                 //}
-                               
-                                    tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
-                                
-                               
+
+                                tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+
+
                             }
                             if (tempres >= 0)
                             {
@@ -676,7 +757,7 @@ namespace POS_Server.Controllers
                                 res = 0;
                             }
 
-                            
+
                             //here send data to inc server
                             SendDetail sd = new SendDetail();
                             sd = getinfo();
@@ -692,7 +773,7 @@ namespace POS_Server.Controllers
                     }
 
 
-                
+
 
                     return TokenManager.GenerateToken(res);
                 }
@@ -919,6 +1000,190 @@ namespace POS_Server.Controllers
 
         //    }
         //}
+        // get increase site
+        public string getIncSite()
+        {
+            string uri = "";
+            setValuesController ctrObject = new setValuesController();
+            uri = ctrObject.GetBySettingName("active_site");
+            //  Global.APIUri = tb_serverUri.Text + @"/api/";
+            uri= uri + @"/api/";
+            APIResult.APIUri = uri;
+            return uri;
+        }
+
+        // get state then activate
+        [HttpPost]
+        [Route("ActivateSendserverkey")]
+        public async Task<string> ActivateSendserverkey(string token)
+        {
+            getIncSite();
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                //  APIResult.APIUri = "ssxs";
+
+                string res1 = "";
+                string skey = "";
+                string activeState = "";
+                string activeSite = "";
+                string serverId = "";
+                SendDetail sendDetailItem = new SendDetail();
+                int res = 0;
+                int tempres = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "skey")
+                    {
+                        skey = c.Value;
+                    }
+                    else if (c.Type == "activeState")
+                    {
+                        activeState = c.Value;
+                    }
+                
+
+
+                }
+                try
+                {
+                    //  return TokenManager.GenerateToken("1212".ToString());
+                    serverId = ServerID();
+                    // serverId = "server13213ascas";
+
+
+                    int conres = await checkIncServerConn();
+
+                    // check con to increase server
+                    if (conres > 0)
+                    {
+                        packagesSend packState = new packagesSend();
+                        packState = getpackinfo();
+                        packState.activeState = activeState;
+                        // return TokenManager.GenerateToken(conres.ToString());
+                        sendDetailItem = await GetSerialsAndDetails(skey, serverId, packState);
+
+                        //update server detail
+
+                        if (sendDetailItem.packageSend.result <= 0)
+                        {
+
+                            /*
+                             *   // -2 : package not active 
+                              
+                                 // -3 :serverID not match 
+                                 // -4 :not payed 
+                                 // -5 :serial not found
+                                 //"0" :  catch error
+
+
+                             * */
+                            res = sendDetailItem.packageSend.result;
+                        }
+                        else
+                        {
+                            sendDetailItem.packageSend.customerServerCode = serverId;
+                            sendDetailItem.packageSend.packageSaleCode = skey;
+                            tempres = SaveProgDetails(sendDetailItem.packageSend);
+                            //    return TokenManager.GenerateToken(res1);
+                            //update serials 
+                            if (tempres >= 0)
+                            {
+                                res += 1;
+                                tempres = 0;
+                                //if (sendDetailItem.packageSend.posCount==-1)
+                                //{
+                                //    //unlimited pos
+
+                                //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
+                                //}
+
+                                tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+
+
+                            }
+                            if (tempres >= 0)
+                            {
+                                res += 1;
+                            }
+                            else
+                            {
+                                // activation error
+                                res = 0;
+                            }
+
+
+                            //here send data to inc server
+                            SendDetail sd = new SendDetail();
+                            sd = getinfo();
+
+                            string sendres = await SendCustDetail(sd);
+
+                        }
+                    }
+                    else
+                    {
+                        // connection error
+                        res = -1;
+                    }
+                    //
+                  if(sendDetailItem.packageSend.activeState=="noch" && res > 0)
+                    {
+                        //nochange
+                        res = 2;
+
+                    }else if (sendDetailItem.packageSend.activeState == "ch" && res > 0)
+                    {
+                        //change
+                        res = 3;
+                    }
+                  
+
+
+                    return TokenManager.GenerateToken(res);
+                }
+                catch (Exception ex)
+                {
+                    // connection error
+                    // return TokenManager.GenerateToken(-1);
+                    return TokenManager.GenerateToken(ex.ToString());
+                }
+            }
+
+        }
+
+
+        [HttpPost]
+        [Route("activesite")]
+        public async Task<string> activesite(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                try
+                {
+                    string site = getIncSite();
+                    return TokenManager.GenerateToken(site);
+                }
+                catch (Exception ex)
+                {
+                    return TokenManager.GenerateToken(ex.ToString());
+                }
+
+
+            }
+        }
 
 
     }

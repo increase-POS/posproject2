@@ -240,6 +240,46 @@ namespace POS_Server.Controllers
         }
 
 
+
+        public string GetBySettingName(string settingName)
+        {
+
+            setValues sv = new setValues();
+          List<setValues> svl = new List<setValues>();
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        setting sett = entity.setting.Where(s => s.name == settingName).FirstOrDefault();
+
+                    var svlv = entity.setValues.ToList();
+                    svl=svlv.Where(x => sett.settingId == x.settingId)
+                         .Select(X => new setValues
+                         {
+                            valId= X.valId,
+                             value=  X.value,
+                             isDefault=   X.isDefault,
+                             isSystem=  X.isSystem,
+                             settingId=   X.settingId,
+                             notes= X.notes,
+
+                         }).ToList();
+                    sv = svl.FirstOrDefault();
+                    return sv.value;
+                    }
+
+                }
+                catch 
+                {
+               // return ex.ToString();
+              return "0";
+                }
+         
+        }
+
+
         [HttpPost]
         [Route("GetBySetvalNote")]
       public string   GetBySetvalNote(string token)
