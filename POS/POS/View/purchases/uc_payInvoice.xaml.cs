@@ -2610,8 +2610,7 @@ namespace POS.View
                 // process barcode
 
                 if (e.Key.ToString() == "Return" && _BarcodeStr != "")
-                {
-                    await dealWithBarcode(_BarcodeStr);
+                {                  
                     if (_Sender != null)
                     {
                         DatePicker dt = _Sender as DatePicker;
@@ -2619,7 +2618,16 @@ namespace POS.View
                         if (dt != null)
                         {
                             if (dt.Name == "dp_desrvedDate" || dt.Name == "dp_invoiceDate")
-                                _BarcodeStr = _BarcodeStr.Substring(1);
+                            {
+                                string br = "";
+                                for (int i = 0; i < _BarcodeStr.Length; i++)
+                                {
+                                    br += _BarcodeStr[i];
+                                    i++;
+                                }
+                                _BarcodeStr = br;
+                                //_BarcodeStr = _BarcodeStr.Substring(1);
+                            }
                         }
                         else if (tb != null)
                         {
@@ -2635,6 +2643,7 @@ namespace POS.View
                             }
                         }
                     }
+                    await dealWithBarcode(_BarcodeStr);
                     tb_barcode.Text = _BarcodeStr;
                     _BarcodeStr = "";
                     _IsFocused = false;
