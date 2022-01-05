@@ -371,11 +371,9 @@ var strP = TokenManager.GetPrincipal(token);
                         var validSerial = entity.posSerials.Where(x => x.posSerial == activationCode).FirstOrDefault();
                         if (validSerial != null) // activation code is correct
                         {
-                            ProgramInfo programInfo = new ProgramInfo();
-                            int posMaxCount = programInfo.getPosCount();
                             var serialExist = entity.posSetting.Where(x => x.posSerialId == validSerial.id).FirstOrDefault();
 
-                            if (serialExist == null || posMaxCount == -1) // activation code is available or unlimited package
+                            if (serialExist == null) // activation code is available
                             {
                                 var pos = entity.pos.Find(1);
                                 pos.name = posName;
@@ -486,11 +484,9 @@ var strP = TokenManager.GetPrincipal(token);
                         var validSerial = entity.posSerials.Where(x => x.posSerial == activationCode).FirstOrDefault();
                         if (validSerial != null) // activation code is correct
                         {
-                            ProgramInfo programInfo = new ProgramInfo();
-                            int posMaxCount = programInfo.getPosCount();
                             var serialExist = entity.posSetting.Where(x => x.posSerialId == validSerial.id).FirstOrDefault();
 
-                            if (serialExist == null || posMaxCount == -1) // activation code is available or unlimited package
+                            if (serialExist == null ) // activation code is available or unlimited package
                             {
                                 #region add pos settings record
                                 var posSett = new posSetting()

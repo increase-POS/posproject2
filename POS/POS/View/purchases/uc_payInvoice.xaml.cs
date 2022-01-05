@@ -1613,7 +1613,8 @@ namespace POS.View
                     invoice.deserved -= cashTransfer.cash;
                     await invoice.saveInvoice(invoice);
                     break;
-                case "card": // card                 
+                case "card": // card  
+                    cashTransfer.docNum = tb_processNum.Text;
                     await cashTransfer.Save(cashTransfer); //add cash transfer 
                     invoice.paid += cashTransfer.cash;
                     invoice.deserved -= cashTransfer.cash;
@@ -1651,6 +1652,7 @@ namespace POS.View
                     break;
                 case "card":
                     cashTransfer.cash = invoice.totalNet;
+                    cashTransfer.cardId = _SelectedCard;
                     await cashTransfer.Save(cashTransfer); //add cash transfer  
                     invoice.paid = invoice.totalNet;
                     invoice.deserved = 0;
@@ -2109,6 +2111,7 @@ namespace POS.View
                         //}
                         Window.GetWindow(this).Opacity = 1;
                     }
+                    mainInvoiceItems = invoiceItems;
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -2610,8 +2613,7 @@ namespace POS.View
                 // process barcode
 
                 if (e.Key.ToString() == "Return" && _BarcodeStr != "")
-                {
-                    await dealWithBarcode(_BarcodeStr);
+                {                  
                     if (_Sender != null)
                     {
                         DatePicker dt = _Sender as DatePicker;
@@ -2619,7 +2621,16 @@ namespace POS.View
                         if (dt != null)
                         {
                             if (dt.Name == "dp_desrvedDate" || dt.Name == "dp_invoiceDate")
-                                _BarcodeStr = _BarcodeStr.Substring(1);
+                            {
+                                string br = "";
+                                for (int i = 0; i < _BarcodeStr.Length; i++)
+                                {
+                                    br += _BarcodeStr[i];
+                                    i++;
+                                }
+                                _BarcodeStr = br;
+                                //_BarcodeStr = _BarcodeStr.Substring(1);
+                            }
                         }
                         else if (tb != null)
                         {
@@ -2635,6 +2646,7 @@ namespace POS.View
                             }
                         }
                     }
+                    await dealWithBarcode(_BarcodeStr);
                     tb_barcode.Text = _BarcodeStr;
                     _BarcodeStr = "";
                     _IsFocused = false;
