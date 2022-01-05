@@ -2944,4 +2944,13 @@ Please add Email in setting</value>
   <data name="trMinCollect" xml:space="preserve">
     <value>Min Collect</value>
   </data>
+  <data name="trExpiredDate" xml:space="preserve">
+    <value>Expired date</value>
+  </data>
+  <data name="trExtend" xml:space="preserve">
+    <value>Extend</value>
+  </data>
+  <data name="trUpgrade" xml:space="preserve">
+    <value>Upgrade</value>
+  </data>
 </root>

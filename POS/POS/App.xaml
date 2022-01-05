@@ -8,6 +8,7 @@
     <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
+            <converters:expiredDateConverter x:Key="expiredDateConverter"/>
             <converters:dateFrameConverter x:Key="dateFrameConverter"/>
             <converters:deliveryTypeConverter x:Key="deliveryTypeConverter"/>
             <converters:depositorBondeConverter x:Key="depositorBondeConverter"/>

@@ -49,13 +49,20 @@ namespace POS.View.windows
         }
         SetValues setVInvoice = new SetValues();    SetValues setVInvoiceBool = new SetValues();
         SetValues setVItem    = new SetValues();    SetValues setVItemBool    = new SetValues();
+
+        SettingCls setInvoice = new SettingCls(); SettingCls setInvoiceBool = new SettingCls();
+        SettingCls setItem    = new SettingCls(); SettingCls setItemBool = new SettingCls();
+
         List<SetValues> valuesLst = new List<SetValues>();
+
+        SettingCls settingModel = new SettingCls();
+        List<SettingCls> settingsLst = new List<SettingCls>();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
                 #region translate
 
@@ -73,31 +80,46 @@ namespace POS.View.windows
                 translate();
                 #endregion
 
-                valuesLst =  await setValuesModel.GetBySetvalNote("tax");
+                valuesLst =  await setValuesModel.GetAll();
 
-                //setVInvoice = valuesLst.Where(v => v.name == "invoiceTax_decimal").FirstOrDefault();
-                //setVInvoiceBool = valuesLst.Where(v => v.name == "invoiceTax_bool").FirstOrDefault();
-                //setVItem = valuesLst.Where(v => v.name == "itemsTax_decimal").FirstOrDefault();
-                //setVItemBool = valuesLst.Where(v => v.name == "itemsTax_bool").FirstOrDefault();
-                setVInvoice = valuesLst[1];
-                setVInvoiceBool = valuesLst[0];
-                setVItem = valuesLst[3];
-                setVItemBool = valuesLst[2];
+                settingsLst = await settingModel.GetAll();
+                //get settingIds
+                setInvoiceBool = settingsLst.Where(v => v.name == "invoiceTax_bool").FirstOrDefault();
+                setInvoice     = settingsLst.Where(v => v.name == "invoiceTax_decimal").FirstOrDefault();
+                setItemBool    = settingsLst.Where(v => v.name == "itemsTax_bool").FirstOrDefault();
+                setItem        = settingsLst.Where(v => v.name == "itemsTax_decimal").FirstOrDefault();
 
-                tgl_invoiceTax.IsChecked = Convert.ToBoolean(setVInvoiceBool.value);
-                tb_invoiceTax.Text = setVInvoice.value;
-                tgl_itemsTax.IsChecked = Convert.ToBoolean(setVItemBool.value);
-                tb_itemsTax.Text = setVItem.value;
+                setVInvoiceBool = valuesLst.Where(v => v.settingId == setInvoiceBool.settingId).FirstOrDefault();
+                setVInvoice     = valuesLst.Where(v => v.settingId == setInvoice.settingId).FirstOrDefault();
+                setVItemBool    = valuesLst.Where(v => v.settingId == setItemBool.settingId).FirstOrDefault();
+                setVItem        = valuesLst.Where(v => v.settingId == setItem.settingId).FirstOrDefault();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+                if (setVInvoiceBool != null)
+                    tgl_invoiceTax.IsChecked = Convert.ToBoolean(setVInvoiceBool.value);
+                else
+                    tgl_invoiceTax.IsChecked = false;
+                if(setVInvoice != null)
+                    tb_invoiceTax.Text = setVInvoice.value;
+                else
+                    tb_invoiceTax.Text = "";
+                if(setVItemBool != null)
+                    tgl_itemsTax.IsChecked = Convert.ToBoolean(setVItemBool.value);
+                else
+                    tgl_itemsTax.IsChecked = false;
+                if(setVItem != null)
+                    tb_itemsTax.Text = setVItem.value;
+                else
+                    tb_itemsTax.Text = "";
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
 
@@ -196,33 +218,32 @@ namespace POS.View.windows
         static SetValues tax = new SetValues();
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
         {//save
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
+                #region validate
                 if (tgl_invoiceTax.IsChecked == true)
                     SectionData.validateEmptyTextBox(tb_invoiceTax, p_errorInvoiceTax, tt_errorInvoiceTax, "trEmptyTax");
                 else
                     SectionData.clearValidate(tb_invoiceTax, p_errorInvoiceTax);
-                if(tgl_itemsTax.IsChecked == true)
-                    SectionData.validateEmptyTextBox(tb_itemsTax, p_errorItemsTax, tt_errorItemsTax, "trEmptyTax");
-                else
-                    SectionData.clearValidate(tb_itemsTax, p_errorItemsTax);
+                //if(tgl_itemsTax.IsChecked == true)
+                //    SectionData.validateEmptyTextBox(tb_itemsTax, p_errorItemsTax, tt_errorItemsTax, "trEmptyTax");
+                //else
+                //    SectionData.clearValidate(tb_itemsTax, p_errorItemsTax);
+                #endregion
 
-                if ((!tb_invoiceTax.Text.Equals("")) && (!tb_itemsTax.Text.Equals("")))
+                //if ((!tb_invoiceTax.Text.Equals("")) && (!tb_itemsTax.Text.Equals("")))
+                if ((!tb_invoiceTax.Text.Equals("")))
                 {
-                    SetValues valueModel = new SetValues();
-                    int taxId = valuesLst[0].settingId.Value;
-                   
                     if (setVInvoiceBool == null)
                         setVInvoiceBool = new SetValues();
                     //save bool invoice tax
                     setVInvoiceBool.value = tgl_invoiceTax.IsChecked.ToString();
-                    setVInvoiceBool.name = "invoiceTax_bool";
                     setVInvoiceBool.isSystem = 1;
-                    setVInvoiceBool.settingId = taxId;
-                    int invoiceBoolRes = await valueModel.Save(setVInvoiceBool);
+                    setVInvoiceBool.settingId = setInvoiceBool.settingId;
+                    int invoiceBoolRes = await setValuesModel.Save(setVInvoiceBool);
 
                     if (setVInvoice == null)
                         setVInvoice = new SetValues();
@@ -231,19 +252,17 @@ namespace POS.View.windows
                     if (tgl_invoiceTax.IsChecked == true) invTax = tb_invoiceTax.Text;
                     else invTax = "0.0";
                     setVInvoice.value = invTax;
-                    setVInvoice.name = "invoiceTax_decimal";
                     setVInvoice.isSystem = 1;
-                    setVInvoice.settingId = taxId;
-                    int invoiceRes = await valueModel.Save(setVInvoice);
+                    setVInvoice.settingId = setInvoice.settingId;
+                    int invoiceRes = await setValuesModel.Save(setVInvoice);
 
                     if (setVItemBool == null)
                         setVItemBool = new SetValues();
                     //save bool item tax
                     setVItemBool.value = tgl_itemsTax.IsChecked.ToString();
-                    setVItemBool.name = "itemsTax_bool";
                     setVItemBool.isSystem = 1;
-                    setVItemBool.settingId = taxId;
-                    int itemBoolRes = await valueModel.Save(setVItemBool);
+                    setVItemBool.settingId = setItemBool.settingId;
+                    int itemBoolRes = await setValuesModel.Save(setVItemBool);
 
                     if (setVItem == null)
                         setVItem = new SetValues();
@@ -252,10 +271,9 @@ namespace POS.View.windows
                     if (tgl_itemsTax.IsChecked == true) itemTax = tb_itemsTax.Text;
                     else itemTax = "0.0";
                     setVItem.value = itemTax;
-                    setVItem.name = "itemsTax_decimal";
                     setVItem.isSystem = 1;
-                    setVItem.settingId = taxId;
-                    int itemRes = await valueModel.Save(setVItem);
+                    setVItem.settingId = setItem.settingId;
+                    int itemRes = await setValuesModel.Save(setVItem);
 
                     if ((invoiceBoolRes > 0) && (invoiceRes > 0) && (itemBoolRes > 0) && (itemRes > 0) )
                     {
@@ -272,15 +290,15 @@ namespace POS.View.windows
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
              }
 
-                    if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //        if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)

@@ -41,10 +41,10 @@
                                   VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="10,5,5,5"/>
                         <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_packageCodeTitle" Text="Code"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
-                                  FontSize="16"  />
-                        <TextBlock  Grid.Row="1" Grid.Column="1"  x:Name="txt_packageCode" Text="{Binding packageCode, Mode=OneWay}"  Margin="10"
+                                  FontSize="16"  Visibility="Collapsed"/>
+                        <TextBlock  Grid.Row="1" Grid.Column="1"  x:Name="txt_packageCode" Text="{Binding packageSaleCode, Mode=OneWay}"  Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                                  FontSize="14"  Visibility="Collapsed"/>
 
                         <TextBlock Grid.Row="2"  Grid.Column="0"   x:Name="txt_packageNameTitle" Text="Package"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
@@ -53,12 +53,27 @@
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
                                   FontSize="14"  />
 
-                        <TextBlock  Grid.Row="3" Grid.Column="0"   x:Name="txt_priceTitle" Text="Price"  Margin="10"
+                        <!--<TextBlock  Grid.Row="3" Grid.Column="0"   x:Name="txt_priceTitle" Text="Price"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
                         <TextBlock  Grid.Row="3"  Grid.Column="1"   x:Name="txt_price" Text="{Binding price, Mode=OneWay}"  Margin="10" 
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                                  FontSize="14"  />-->
+                        <TextBlock  Grid.Row="3" Grid.Column="0"   x:Name="txt_expiredTitle" Text="Epired date"  Margin="10"
+                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                  FontSize="16"  />
+                        <!--Text="{Binding expireDate, Mode=OneWay}"-->
+                        
+                        <TextBlock  Grid.Row="3"  Grid.Column="1"   x:Name="txt_expiredDate"  Margin="10" 
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                  FontSize="14"  >
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource expiredDateConverter}">
+                                    <Binding Path="expireDate"></Binding>
+                                    <Binding Path="isLimitDate"></Binding>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                         <TextBlock  Grid.Row="4" Grid.Column="0"   x:Name="txt_statusTitle" Text="Status"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
@@ -97,18 +112,32 @@
                         <TextBlock Grid.Row="2"  Grid.Column="0"   x:Name="txt_versionTitle" Text="version"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock Grid.Row="2" Grid.Column="1"   x:Name="txt_version" Text="{Binding verName, Mode=OneWay}"  Margin="10"
+                        <TextBlock Grid.Row="2" Grid.Column="1"   x:Name="txt_version" Text="{Binding versionName, Mode=OneWay}"  Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
                                   FontSize="14"  />
                     </Grid>
                 </Border>
                
                 <Border BorderThickness="0" Grid.Row="1"   Grid.Column="1"  Height="50"   Margin="10,5,5,10"
-                    CornerRadius="7" BorderBrush="Black" Background="{StaticResource MainColorBlue}" Padding="0">
-                    <Button Content="Extend" Height="auto" BorderBrush="{x:Null}"
-                    Foreground="White" FontSize="22" FontWeight="Bold"
-                   x:Name="btn_extend" Click="Btn_extend_Click"
-                Background="{x:Null}"  IsEnabled="True" />
+                        CornerRadius="7" BorderBrush="Black"  Padding="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Extend" Height="auto" BorderBrush="{x:Null}"
+                                Foreground="White" FontSize="18" FontWeight="Bold"
+                                x:Name="btn_extend" Grid.Column="0" Margin="5"
+                                IsEnabled="True"
+                                Background="{StaticResource MainColorBlue}"
+                                Click="Btn_extend_Click"/>
+                        <Button Content="Upgrade" Height="auto" BorderBrush="{x:Null}"
+                                Foreground="White" FontSize="18" FontWeight="Bold"
+                                x:Name="btn_upgrade" Grid.Column="1" Margin="5"
+                                IsEnabled="True" 
+                                Background="{StaticResource MainColorBlue}" Click="Btn_upgrade_Click"
+                                />
+                    </Grid>
                 </Border>
                 <Border BorderThickness="0" Grid.Row="2"   Grid.ColumnSpan="2"     Margin="5,10,5,10"
                     CornerRadius="7" BorderBrush="Black" Background="White" Padding="0">
@@ -134,66 +163,135 @@
                         <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_branchCountTitle" Text="branchs"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock  Grid.Row="1" Grid.Column="1"  x:Name="txt_branchCountCode" Text="{Binding branchCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
-
+                        <DockPanel Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                            <TextBlock   x:Name="txt_branchCount" Text="{Binding branchCount, Mode=OneWay}"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_branch" Text="/"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_branchCountNow" Text="{Binding branchCountNow, Mode=OneWay}"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                        </DockPanel>
                         <TextBlock Grid.Row="1"  Grid.Column="2"   x:Name="txt_storeCountNameTitle" Text="stores"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock Grid.Row="1" Grid.Column="3"   x:Name="txt_storeCountName" Text="{Binding storeCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                        <DockPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                            <TextBlock   x:Name="txt_storeCount" Text="{Binding storeCount, Mode=OneWay}" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_store" Text="/" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_storeCountNow" Text="{Binding storeCountNow, Mode=OneWay}" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                        </DockPanel>
                         <!--#endregion-->
 
                         <!--#region Row 2-->
                         <TextBlock  Grid.Row="2"  Grid.Column="0"  x:Name="txt_userCountTitle" Text="users"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock  Grid.Row="2" Grid.Column="1"  x:Name="txt_userCountCode" Text="{Binding userCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                        <DockPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                           
+                            <TextBlock   x:Name="txt_userCount" Text="{Binding userCount, Mode=OneWay}" 
+                                         Foreground="{StaticResource MainColorBlue}"
+                                         FontSize="14"  />
+                            <TextBlock   x:Name="txt_userCountCode" Text="/" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_userCountNow" Text="{Binding userCountNow, Mode=OneWay}" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
 
+                        </DockPanel>
                         <TextBlock Grid.Row="2"  Grid.Column="2"   x:Name="txt_posCountNameTitle" Text="pos"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock Grid.Row="2" Grid.Column="3"   x:Name="txt_posCountName" Text="{Binding posCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                        <DockPanel Grid.Row="2" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                            <TextBlock   x:Name="txt_posCount" Text="{Binding posCount, Mode=OneWay}"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_pos" Text="/"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_posCountNow" Text="{Binding posCountNow, Mode=OneWay}"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                        </DockPanel>
                         <!--#endregion-->
 
                         <!--#region Row 3-->
 
                         <TextBlock  Grid.Row="3"  Grid.Column="0"  x:Name="txt_customerCountTitle" Text="customers"  Margin="10,5,5,5"
-                        HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
-                                  FontSize="16"  />
-                        <TextBlock  Grid.Row="3" Grid.Column="1"  x:Name="txt_customerCountCode" Text="{Binding customerCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
+                                    FontSize="16"  />
+                        <DockPanel Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                           
+                            <TextBlock   x:Name="txt_customerCount" Text="{Binding customerCount, Mode=OneWay}"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                    FontSize="14"  />
+                            <TextBlock   x:Name="txt_customer" Text="/"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                    FontSize="14"  />
+                            <TextBlock   x:Name="txt_customerCountNow" Text="{Binding customerCountNow, Mode=OneWay}"  
+                                     Foreground="{StaticResource MainColorBlue}"
+                                    FontSize="14"  />
 
+                        </DockPanel>
                         <TextBlock Grid.Row="3"  Grid.Column="2"   x:Name="txt_vendorCountNameTitle" Text="vendors"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock Grid.Row="3" Grid.Column="3"   x:Name="txt_vendorCountName" Text="{Binding vendorCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                        <DockPanel Grid.Row="3" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                            <TextBlock  x:Name="txt_vendorCount" Text="{Binding vendorCount, Mode=OneWay}" 
+                                        Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+                           
+                            <TextBlock  x:Name="txt_vendor" Text="/" 
+                                        Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+                            <TextBlock  x:Name="txt_vendorCountNow" Text="{Binding vendorCountNow, Mode=OneWay}" 
+                                        Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+
+                        </DockPanel>
                         <!--#endregion-->
 
                         <!--#region Row 4-->
-
+                        
+                        
                         <TextBlock  Grid.Row="4"  Grid.Column="0"  x:Name="txt_salesInvCountTitle" Text="salesInvs"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock  Grid.Row="4" Grid.Column="1"  x:Name="txt_salesInvCountCode" Text="{Binding salesInvCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
-
+                        <DockPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="10">
+                           
+                            <TextBlock  x:Name="txt_salesInvCount" Text="{Binding saleinvCount, Mode=OneWay}" 
+                                        VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+                            <TextBlock  x:Name="txt_salesInv" Text="/" 
+                                         VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+                            <TextBlock  x:Name="txt_salesInvCountNow" Text="{Binding saleinvCountNow, Mode=OneWay}"
+                                        VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+                        </DockPanel>
                         <TextBlock Grid.Row="4"  Grid.Column="2"   x:Name="txt_itemCountNameTitle" Text="items"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <TextBlock Grid.Row="4" Grid.Column="3"   x:Name="txt_itemCountName" Text="{Binding itemCount, Mode=OneWay}"  Margin="10"
-                        HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
-                                  FontSize="14"  />
+                        <DockPanel Grid.Row="4" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="10">
+                            <TextBlock   x:Name="txt_itemCount" Text="{Binding itemCount, Mode=OneWay}" 
+                                         Foreground="{StaticResource MainColorBlue}"
+                                         FontSize="14"  />
+                            <TextBlock   x:Name="txt_item" Text="/" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_itemCountNow" Text="{Binding itemCountNow, Mode=OneWay}" 
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                           
+                        </DockPanel>
                         <!--#endregion-->
 
                         <!--#region Row 5-->

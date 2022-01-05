@@ -3346,6 +3346,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expired date.
+        /// </summary>
+        internal static string trExpiredDate {
+            get {
+                return ResourceManager.GetString("trExpiredDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
         internal static string trExport {
@@ -3387,6 +3396,15 @@ namespace POS {
         internal static string trExportOrder {
             get {
                 return ResourceManager.GetString("trExportOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extend.
+        /// </summary>
+        internal static string trExtend {
+            get {
+                return ResourceManager.GetString("trExtend", resourceCulture);
             }
         }
         
@@ -8023,6 +8041,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrade.
+        /// </summary>
+        internal static string trUpgrade {
+            get {
+                return ResourceManager.GetString("trUpgrade", resourceCulture);
             }
         }
         

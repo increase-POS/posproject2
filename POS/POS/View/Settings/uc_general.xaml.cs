@@ -1,4 +1,5 @@
 ﻿using netoaster;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
@@ -180,27 +181,6 @@ namespace POS.View.Settings
             }
         }
 
-        async void loading_getDefaultTaxList()//??
-        {
-            try
-            {
-                #region get default tax
-                List<string> taxLst = await getDefaultTaxList();
-                if (taxLst != null)
-                { }
-                #endregion
-            }
-            catch (Exception)
-            { }
-            foreach (var item in loadingList)
-            {
-                if (item.key.Equals("loading_getDefaultTaxList"))
-                {
-                    item.value = true;
-                    break;
-                }
-            }
-        }
         async void loading_getDefaultItemCost()
         {
             try
@@ -319,15 +299,14 @@ namespace POS.View.Settings
                     loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
                     //loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
-                    loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });//
-                    //loadingList.Add(new keyValueBool { key = "getDefaultTaxList", value = false });
+                    //loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultItemCost", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
                     loading_fillRegions();
                     //loading_fillLanguages();
                     loading_fillCurrencies();
-                    loading_getDefaultTax();
+                    //loading_getDefaultTax();
                     loading_getDefaultItemCost();
                     loading_getDefaultDateForm();
                     loading_fillAccuracy();
@@ -876,9 +855,9 @@ namespace POS.View.Settings
             {
                 if (name == "TextBox")
                 {
-                    if ((sender as TextBox).Name == "tb_tax")
-                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
-                    else if ((sender as TextBox).Name == "tb_itemsCost")
+                    //if ((sender as TextBox).Name == "tb_tax")
+                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
+                    if ((sender as TextBox).Name == "tb_itemsCost")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorItemsCost, tt_errorItemsCost, "trEmptyItemCost");
 
                 }
@@ -1093,6 +1072,13 @@ namespace POS.View.Settings
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Btn_book_Click(object sender, RoutedEventArgs e)
+        {//book
+            grid_main.Children.Clear();
+            grid_main.Children.Add(uc_packageBookSetting.Instance);
+            Button button = sender as Button;
         }
 
         private async void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)

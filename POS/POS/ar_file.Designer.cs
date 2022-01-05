@@ -3337,6 +3337,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ انتهاء الصلاحية.
+        /// </summary>
+        internal static string trExpiredDate {
+            get {
+                return ResourceManager.GetString("trExpiredDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تصدير.
         /// </summary>
         internal static string trExport {
@@ -3378,6 +3387,15 @@ namespace POS {
         internal static string trExportOrder {
             get {
                 return ResourceManager.GetString("trExportOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تمديد.
+        /// </summary>
+        internal static string trExtend {
+            get {
+                return ResourceManager.GetString("trExtend", resourceCulture);
             }
         }
         
@@ -7987,6 +8005,15 @@ namespace POS {
         internal static string trUpdate {
             get {
                 return ResourceManager.GetString("trUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ترقية.
+        /// </summary>
+        internal static string trUpgrade {
+            get {
+                return ResourceManager.GetString("trUpgrade", resourceCulture);
             }
         }
         

@@ -493,6 +493,90 @@ namespace POS
                 }
             }
         }
+
+        async void loading_getTaxDetails()
+        {
+            try
+            {
+                List<SettingCls> settingsCls = await setModel.GetAll();
+                List<SetValues> settingsValues = await valueModel.GetAll();
+                SettingCls set = new SettingCls();
+                SetValues setV = new SetValues();
+
+                #region get invoice tax bool
+                //Thread t1 = new Thread(() =>
+                //{
+                //this.Dispatcher.Invoke(() =>
+                //{
+                        //get invoice tax bool
+                        set = settingsCls.Where(s => s.name == "invoiceTax_bool").FirstOrDefault<SettingCls>();
+                        setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+                        if (setV != null)
+                            invoiceTax_bool = bool.Parse(setV.value);
+
+                //});
+                //});
+                //t1.Start();
+                #endregion
+
+                #region  get invoice tax decimal
+                //Thread t2 = new Thread(() =>
+                //{
+                //this.Dispatcher.Invoke(() =>
+                //{
+                        //get invoice tax decimal
+                        set = settingsCls.Where(s => s.name == "invoiceTax_decimal").FirstOrDefault<SettingCls>();
+                        setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+                        if (setV != null)
+                            invoiceTax_decimal = decimal.Parse(setV.value);
+                //});
+                //});
+                //t2.Start();
+                #endregion
+
+                #region  get item tax bool
+                //Thread t3 = new Thread(() =>
+                //{
+                //this.Dispatcher.Invoke(() =>
+                //{
+                        //get item tax bool
+                        set = settingsCls.Where(s => s.name == " itemsTax_bool").FirstOrDefault<SettingCls>();
+                        setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+                        if (setV != null)
+                            itemsTax_bool = bool.Parse(setV.value);
+                //});
+                //});
+                //t3.Start();
+                #endregion
+
+                #region get item tax decimal
+                //Thread t4 = new Thread(() =>
+                //{
+                //this.Dispatcher.Invoke(() =>
+                //{
+                        //get item tax decimal
+                        set = settingsCls.Where(s => s.name == " itemsTax_decimal").FirstOrDefault<SettingCls>();
+                        setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+                        if (setV != null)
+                            itemsTax_decimal = decimal.Parse(setV.value);
+                //});
+                //});
+                //t4.Start();
+                #endregion
+
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getTaxDetails"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+
+        }
         async void loading_getDefaultSystemInfo()
         {
             try
@@ -752,7 +836,7 @@ namespace POS
                 loadingList = new List<keyValueBool>();
                 bool isDone = true;
                 loadingList.Add(new keyValueBool { key = "loading_getUserPath", value = false });
-                loadingList.Add(new keyValueBool { key = "loading_getTax", value = false });
+                //loadingList.Add(new keyValueBool { key = "loading_getTax", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getItemCost", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getDateForm", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getRegionAndCurrency", value = false });
@@ -760,6 +844,7 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_getAccurac", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getUserPersonalInfo", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getDefaultSystemInfo", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getTaxDetails", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getItemUnitsUsers", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getGroupObjects", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getprintSitting", value = false });
@@ -769,7 +854,7 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_getPrintCount", value = false });
 
                 loading_getUserPath();
-                loading_getTax();
+                //loading_getTax();
                 loading_getItemCost();
                 loading_getDateForm();
                 loading_getRegionAndCurrency();
@@ -778,6 +863,7 @@ namespace POS
                 loading_getItemUnitsUsers();
                 loading_getUserPersonalInfo();
                 loading_getDefaultSystemInfo();
+                loading_getTaxDetails();
                 loading_getGroupObjects();
                 loading_getprintSitting();
                 loading_GlobalItemUnitsList();

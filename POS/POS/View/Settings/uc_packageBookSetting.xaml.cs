@@ -70,6 +70,8 @@ namespace POS.View.Settings
 
                 progDetails = await progDetailsModel.getCurrentInfo();
 
+                this.DataContext = progDetails;
+
                 SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -85,7 +87,7 @@ namespace POS.View.Settings
             txt_packageDetails.Text = MainWindow.resourcemanager.GetString("trPackageDetails");
             txt_packageCodeTitle.Text = MainWindow.resourcemanager.GetString("trCode");
             txt_packageNameTitle.Text = MainWindow.resourcemanager.GetString("trName");
-            txt_priceTitle.Text = MainWindow.resourcemanager.GetString("trPrice");
+            txt_expiredTitle.Text = MainWindow.resourcemanager.GetString("trExpiredDate");
             txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trStatus");
 
             txt_programDetails.Text = MainWindow.resourcemanager.GetString("trProgramDetails");
@@ -101,6 +103,9 @@ namespace POS.View.Settings
             txt_posCountNameTitle.Text = MainWindow.resourcemanager.GetString("trPOSs");
             txt_vendorCountNameTitle.Text = MainWindow.resourcemanager.GetString("trVendors");
             txt_itemCountNameTitle.Text = MainWindow.resourcemanager.GetString("trItems");
+
+            btn_extend.Content = MainWindow.resourcemanager.GetString("trExtend");
+            btn_upgrade.Content = MainWindow.resourcemanager.GetString("trUpgrade");
         }
 
         #region events
@@ -157,7 +162,44 @@ namespace POS.View.Settings
                         string message = "inc(" + chk + ")";
 
                         string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
-                        //tb_activationkey.Text = messagecode;??????????????
+
+                        string msg = "The Activation not complete (Error code:" + messagecode + ")";
+
+                        Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
+                    }
+
+                    else
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: "The Activation done successfuly", animation: ToasterAnimation.FadeIn);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Toaster.ShowWarning(Window.GetWindow(this), message: "The server Not Found", animation: ToasterAnimation.FadeIn);
+            }
+        }
+
+        private async void Btn_upgrade_Click(object sender, RoutedEventArgs e)
+        {//upgrade
+            int chk = 0;
+            string activationkey = progDetails.packageSaleCode;//get from info 
+            try
+            {
+                if (activationkey.Trim() != "".Trim())
+                {
+                    AvtivateServer ac = new AvtivateServer();
+
+                    chk = await ac.checkconn();
+
+                    chk = await ac.Sendserverkey(activationkey);
+
+                    if (chk <= 0)
+                    {
+                        string message = "inc(" + chk + ")";
+
+                        string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
 
                         string msg = "The Activation not complete (Error code:" + messagecode + ")";
 
