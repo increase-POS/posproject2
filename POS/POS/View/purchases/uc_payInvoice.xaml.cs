@@ -2109,6 +2109,7 @@ namespace POS.View
                         //}
                         Window.GetWindow(this).Opacity = 1;
                     }
+                    mainInvoiceItems = invoiceItems;
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
