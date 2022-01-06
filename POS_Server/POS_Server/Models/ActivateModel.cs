@@ -79,7 +79,14 @@ namespace POS_Server.Models
         public Nullable<int> pId { get; set; }
         public Nullable<int> pcdId { get; set; }
         public string activeState { get; set; }
-        
+        public string activeres { get; set; }
+
+        public string customerName { get; set; }// 6- customer Name
+        public string customerLastName { get; set; }// 6- customer LastName
+        public string agentName { get; set; }// 5- Agent name 
+        public string agentAccountName { get; set; }//5- Agent AccountName
+        public string agentLastName { get; set; }//5- Agent LastName
+
 
     }
     public class SendDetail

@@ -53,15 +53,15 @@ namespace POS_Server.Controllers
             }
             return result;
         }
-        public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode,string packState)
+        public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode, string packState)
         {
             SendDetail item = new SendDetail();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
-       
+
             parameters.Add("activeState", packState);
             parameters.Add("packageSaleCode", packageSaleCode);
             parameters.Add("customerServerCode", customerServerCode);
-          
+
             //#################
             IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServer", parameters);
 
@@ -86,7 +86,7 @@ namespace POS_Server.Controllers
             parameters.Add("customerServerCode", customerServerCode);
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServer", parameters);
+            IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServerState", parameters);
 
             foreach (Claim c in claims)
             {
@@ -136,13 +136,13 @@ namespace POS_Server.Controllers
 
         public packagesSend getpackinfo()
         {
-           
+
             packagesSend packs = new packagesSend();
-       
+
 
             using (incposdbEntities entity = new incposdbEntities())
             {
-         
+
                 packs = (from p in entity.ProgramDetails
                              //  join p in entity.posSetting on S.id equals p.posSerialId
                          select new packagesSend
@@ -161,7 +161,7 @@ namespace POS_Server.Controllers
                              expireDate = p.expireDate,
                              isOnlineServer = p.isOnlineServer,
                              // isOnlineServer = false,
-                           //  updateDate = p.updateDate,
+                             //  updateDate = p.updateDate,
                              islimitDate = (p.isLimitDate == true) ? true : false,
                              //islimitDate = false,
                              //  isLimitCount = (bool)p.isLimitCount,
@@ -170,13 +170,19 @@ namespace POS_Server.Controllers
                              canRenew = false,
                              isPayed = true,
                              isServerActivated = true,
-                             pId=p.pId,
-                             pcdId=p.pcdId,
-                             bookDate=p.bookDate,
-                             
+                             pId = p.pId,
+                             pcdId = p.pcdId,
+                             bookDate = p.bookDate,
+
+                             customerName = p.customerName,
+                             customerLastName = p.customerLastName,
+                             agentName = p.agentName,
+                             agentLastName = p.agentLastName,
+                             agentAccountName = p.agentAccountName,
+
                          }).FirstOrDefault();
             }
-         
+
 
             return packs;
         }
@@ -293,6 +299,10 @@ namespace POS_Server.Controllers
                             tmpObject.vendorCount = newObject.vendorCount;
                             tmpObject.customerCount = newObject.customerCount;
                             tmpObject.itemCount = newObject.itemCount;
+
+                            //customer
+
+
                             if (newObject.salesInvCount == -1)
                             {
                                 //new is unlimited
@@ -312,6 +322,8 @@ namespace POS_Server.Controllers
                                     tmpObject.saleinvCount += newObject.totalsalesInvCount;
                                 }
 
+
+
                             }
 
                             tmpObject.versionName = newObject.verName;
@@ -329,7 +341,13 @@ namespace POS_Server.Controllers
                             tmpObject.isLimitDate = newObject.islimitDate;
                             tmpObject.isActive = (newObject.isActive == 1) ? true : false;
 
-                            // tmpObject.packageNumber = newObject.packageCode;
+                            tmpObject.packageNumber = newObject.packageCode;
+                            tmpObject.customerName = newObject.customerName;
+                            tmpObject.customerLastName = newObject.customerLastName;
+                            tmpObject.agentName = newObject.agentName;
+                            tmpObject.agentLastName = newObject.agentLastName;
+                            tmpObject.agentAccountName = newObject.agentAccountName;
+
 
                         }
                         else
@@ -707,7 +725,7 @@ namespace POS_Server.Controllers
                     if (conres > 0)
                     {
                         // return TokenManager.GenerateToken(conres.ToString());
-                        sendDetailItem = await GetSerialsAndDetails(skey, serverId,"");
+                        sendDetailItem = await GetSerialsAndDetails(skey, serverId, "");
                         //update server detail
 
                         if (sendDetailItem.packageSend.result <= 0)
@@ -1007,15 +1025,15 @@ namespace POS_Server.Controllers
             setValuesController ctrObject = new setValuesController();
             uri = ctrObject.GetBySettingName("active_site");
             //  Global.APIUri = tb_serverUri.Text + @"/api/";
-            uri= uri + @"/api/";
+            uri = uri + @"/api/";
             APIResult.APIUri = uri;
             return uri;
         }
 
         // get state then activate
         [HttpPost]
-        [Route("ActivateSendserverkey")]
-        public async Task<string> ActivateSendserverkey(string token)
+        [Route("StatSendserverkey")]
+        public async Task<string> StatSendserverkey(string token)
         {
             getIncSite();
             token = TokenManager.readToken(HttpContext.Current.Request);
@@ -1047,7 +1065,7 @@ namespace POS_Server.Controllers
                     {
                         activeState = c.Value;
                     }
-                
+
 
 
                 }
@@ -1066,7 +1084,9 @@ namespace POS_Server.Controllers
                         packagesSend packState = new packagesSend();
                         packState = getpackinfo();
                         packState.activeState = activeState;
+
                         // return TokenManager.GenerateToken(conres.ToString());
+                        //packState=up:upgrade - rn:renew
                         sendDetailItem = await GetSerialsAndDetails(skey, serverId, packState);
 
                         //update server detail
@@ -1080,17 +1100,25 @@ namespace POS_Server.Controllers
                                  // -3 :serverID not match 
                                  // -4 :not payed 
                                  // -5 :serial not found
+                             // -6 : package changed but not payed ==noch
                                  //"0" :  catch error
 
 
                              * */
                             res = sendDetailItem.packageSend.result;
+                            if (res == -6)
+                            {
+                                res = 2;//nochange
+                            }
                         }
                         else
                         {
+
                             sendDetailItem.packageSend.customerServerCode = serverId;
                             sendDetailItem.packageSend.packageSaleCode = skey;
+
                             tempres = SaveProgDetails(sendDetailItem.packageSend);
+
                             //    return TokenManager.GenerateToken(res1);
                             //update serials 
                             if (tempres >= 0)
@@ -1117,7 +1145,7 @@ namespace POS_Server.Controllers
                                 // activation error
                                 res = 0;
                             }
-
+                            //
 
                             //here send data to inc server
                             SendDetail sd = new SendDetail();
@@ -1133,17 +1161,18 @@ namespace POS_Server.Controllers
                         res = -1;
                     }
                     //
-                  if(sendDetailItem.packageSend.activeState=="noch" && res > 0)
+                    if ((sendDetailItem.packageSend.activeres == "noch" && res > 0) || res == 2)
                     {
                         //nochange
                         res = 2;
 
-                    }else if (sendDetailItem.packageSend.activeState == "ch" && res > 0)
+                    }
+                    else if (sendDetailItem.packageSend.activeres == "ch" && res > 0)
                     {
                         //change
                         res = 3;
                     }
-                  
+
 
 
                     return TokenManager.GenerateToken(res);
@@ -1159,31 +1188,31 @@ namespace POS_Server.Controllers
         }
 
 
-        [HttpPost]
-        [Route("activesite")]
-        public async Task<string> activesite(string token)
-        {
-            token = TokenManager.readToken(HttpContext.Current.Request);
-            var strP = TokenManager.GetPrincipal(token);
-            if (strP != "0") //invalid authorization
-            {
-                return TokenManager.GenerateToken(strP);
-            }
-            else
-            {
-                try
-                {
-                    string site = getIncSite();
-                    return TokenManager.GenerateToken(site);
-                }
-                catch (Exception ex)
-                {
-                    return TokenManager.GenerateToken(ex.ToString());
-                }
+        //[HttpPost]
+        //[Route("activesite")]
+        //public async Task<string> activesite(string token)
+        //{
+        //    token = TokenManager.readToken(HttpContext.Current.Request);
+        //    var strP = TokenManager.GetPrincipal(token);
+        //    if (strP != "0") //invalid authorization
+        //    {
+        //        return TokenManager.GenerateToken(strP);
+        //    }
+        //    else
+        //    {
+        //        try
+        //        {
+        //            string site = getIncSite();
+        //            return TokenManager.GenerateToken(site);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return TokenManager.GenerateToken(ex.ToString());
+        //        }
 
 
-            }
-        }
+        //    }
+        //}
 
 
     }
