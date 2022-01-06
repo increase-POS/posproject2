@@ -55,6 +55,12 @@ namespace POS.Classes
 
         public Nullable<System.DateTime> serverDateNow { get; set; }
 
+        public string customerName { get; set; }
+        public string customerLastName { get; set; }
+        public string agentName { get; set; }
+        public string agentLastName { get; set; }
+        public string agentAccountName { get; set; }
+
 
 
 
