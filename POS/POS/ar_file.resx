@@ -553,7 +553,7 @@
     <value>لا يمكن التعديل بدون الاسم و رقم الجوال</value>
   </data>
   <data name="trEmail" xml:space="preserve">
-    <value>البريد الالكتروني</value>
+    <value>الإيميل</value>
   </data>
   <data name="trFax" xml:space="preserve">
     <value>الفاكس</value>
@@ -2671,9 +2671,6 @@
   <data name="trAmountPaidEqualInvoiceValue" xml:space="preserve">
     <value>يجب أن يكون المبلغ المدفوع يساوي قيمة الفاتورة</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="trBackup" xml:space="preserve">
     <value>نسخ احتياطي</value>
   </data>
@@ -2895,9 +2892,6 @@
   </data>
   <data name="trType-Name" xml:space="preserve">
     <value>النوع-الاسم</value>
-  </data>
-  <data name="String2" xml:space="preserve">
-    <value />
   </data>
   <data name="trPackageDetails" xml:space="preserve">
     <value>تفاصيل الحزمة</value>

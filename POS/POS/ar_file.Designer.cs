@@ -70,24 +70,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        internal static string String2 {
-            get {
-                return ResourceManager.GetString("String2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to رصيد.
         /// </summary>
         internal static string tr_Balance {
@@ -2113,7 +2095,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to البريد الالكتروني.
+        ///   Looks up a localized string similar to الإيميل.
         /// </summary>
         internal static string trEmail {
             get {
