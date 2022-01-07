@@ -1653,6 +1653,7 @@ namespace POS.View
                 case "card":
                     cashTransfer.cash = invoice.totalNet;
                     cashTransfer.cardId = _SelectedCard;
+                    cashTransfer.docNum = tb_processNum.Text;
                     await cashTransfer.Save(cashTransfer); //add cash transfer  
                     invoice.paid = invoice.totalNet;
                     invoice.deserved = 0;
@@ -1993,6 +1994,27 @@ namespace POS.View
         }
         public async Task fillInvoiceInputs(Invoice invoice)
         {
+            if(_InvoiceType == "p" || _InvoiceType == "pb")
+            {
+                var cashTransfers = await cashTransfer.GetListByInvId(invoice.invoiceId);
+                if (cashTransfers.Count == 1)
+                {
+                    cb_paymentProcessType.SelectedValue = cashTransfers[0].processType;
+                    _SelectedCard = (int)cashTransfers[0].cardId;
+                    tb_processNum.Text = cashTransfers[0].docNum;
+                    if ((int)cashTransfers[0].cardId != 0)
+                    {
+                        var card = cards.Where(x => x.cardId == (int)cashTransfers[0].cardId).FirstOrDefault();
+                        txt_card.Text = card.name;
+                        if (card.hasProcessNum.Value)
+                            tb_processNum.Visibility = Visibility.Visible;
+                        else
+                            tb_processNum.Visibility = Visibility.Collapsed;
+                    }
+                }
+                else
+                    cb_paymentProcessType.SelectedValue = "multiple";
+            }
             _Sum = (decimal)invoice.total;
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_branch.SelectedValue = invoice.branchId;
@@ -2177,6 +2199,9 @@ namespace POS.View
                 cb_branch.IsEnabled = false;
                 tb_discount.IsEnabled = false;
                 cb_typeDiscount.IsEnabled = false;
+                cb_paymentProcessType.IsEnabled = false;
+                tb_processNum.IsEnabled = false;
+                dkp_cards.IsEnabled = false;
                 btn_save.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
@@ -2201,6 +2226,8 @@ namespace POS.View
                 tb_taxValue.IsEnabled = false;
                 btn_items.IsEnabled = false;
                 cb_paymentProcessType.IsEnabled = true;
+                tb_processNum.IsEnabled = true;
+                dkp_cards.IsEnabled = true;
                 btn_clear.IsEnabled = true;
                 btn_updateVendor.IsEnabled = true;
                 btn_addVendor.IsEnabled = true;
@@ -2224,6 +2251,8 @@ namespace POS.View
                 tb_taxValue.IsEnabled = true;
                 btn_items.IsEnabled = true;
                 cb_paymentProcessType.IsEnabled = true;
+                dkp_cards.IsEnabled = true;
+                tb_processNum.IsEnabled = true;
                 btn_clear.IsEnabled = true;
                 btn_updateVendor.IsEnabled = true;
                 btn_addVendor.IsEnabled = true;
@@ -2247,6 +2276,8 @@ namespace POS.View
                 tb_taxValue.IsEnabled = true;
                 btn_items.IsEnabled = true;
                 cb_paymentProcessType.IsEnabled = true;
+                dkp_cards.IsEnabled = true;
+                tb_processNum.IsEnabled = true;
                 btn_clear.IsEnabled = false;
                 btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;
@@ -2270,6 +2301,8 @@ namespace POS.View
                 tb_taxValue.IsEnabled = false;
                 btn_items.IsEnabled = false;
                 cb_paymentProcessType.IsEnabled = false;
+                dkp_cards.IsEnabled = false;
+                tb_processNum.IsEnabled = false;
                 btn_clear.IsEnabled = false;
                 btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;

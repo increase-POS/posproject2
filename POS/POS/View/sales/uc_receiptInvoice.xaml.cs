@@ -2837,7 +2837,11 @@ namespace POS.View
             decimal total = _Sum - totalDiscount + _DeliveryCost;
             //if (MainWindow.isInvTax == 1)
             //{
-            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
+            try
+            {
+                taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
+            }
+            catch { }
             //}
             //else
             //    tb_taxValue.Text = _Tax.ToString();
