@@ -2953,4 +2953,34 @@ Please add Email in setting</value>
   <data name="trUpgrade" xml:space="preserve">
     <value>Upgrade</value>
   </data>
+  <data name="trActivationCode" xml:space="preserve">
+    <value>Activation Code</value>
+  </data>
+  <data name="trActivationDetails" xml:space="preserve">
+    <value>Activation Details</value>
+  </data>
+  <data name="trAgent" xml:space="preserve">
+    <value>Agent</value>
+  </data>
+  <data name="trSerials" xml:space="preserve">
+    <value>Serials</value>
+  </data>
+  <data name="trEmptySerial" xml:space="preserve">
+    <value>Enter Serial</value>
+  </data>
+  <data name="trActivationCompleted" xml:space="preserve">
+    <value>The Activation done successfuly</value>
+  </data>
+  <data name="trActivationNotCompleted" xml:space="preserve">
+    <value>The activation does not completed</value>
+  </data>
+  <data name="trErrorCode" xml:space="preserve">
+    <value>Error Code</value>
+  </data>
+  <data name="trNoChanges" xml:space="preserve">
+    <value>No Changes</value>
+  </data>
+  <data name="trSerial" xml:space="preserve">
+    <value>Serial</value>
+  </data>
 </root>

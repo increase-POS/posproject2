@@ -223,6 +223,42 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activation Code.
+        /// </summary>
+        internal static string trActivationCode {
+            get {
+                return ResourceManager.GetString("trActivationCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Activation done successfuly.
+        /// </summary>
+        internal static string trActivationCompleted {
+            get {
+                return ResourceManager.GetString("trActivationCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activation Details.
+        /// </summary>
+        internal static string trActivationDetails {
+            get {
+                return ResourceManager.GetString("trActivationDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The activation does not completed.
+        /// </summary>
+        internal static string trActivationNotCompleted {
+            get {
+                return ResourceManager.GetString("trActivationNotCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate.
         /// </summary>
         internal static string trActive {
@@ -309,6 +345,15 @@ namespace POS {
         internal static string trAdressHint {
             get {
                 return ResourceManager.GetString("trAdressHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Agent.
+        /// </summary>
+        internal static string trAgent {
+            get {
+                return ResourceManager.GetString("trAgent", resourceCulture);
             }
         }
         
@@ -2563,6 +2608,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enter Serial.
+        /// </summary>
+        internal static string trEmptySerial {
+            get {
+                return ResourceManager.GetString("trEmptySerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start date can not be empty.
         /// </summary>
         internal static string trEmptyStartDateToolTip {
@@ -2703,6 +2757,15 @@ namespace POS {
         internal static string trErrorBarcodeToolTip {
             get {
                 return ResourceManager.GetString("trErrorBarcodeToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Code.
+        /// </summary>
+        internal static string trErrorCode {
+            get {
+                return ResourceManager.GetString("trErrorCode", resourceCulture);
             }
         }
         
@@ -4764,6 +4827,15 @@ namespace POS {
         internal static string trNo_ {
             get {
                 return ResourceManager.GetString("trNo.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Changes.
+        /// </summary>
+        internal static string trNoChanges {
+            get {
+                return ResourceManager.GetString("trNoChanges", resourceCulture);
             }
         }
         
@@ -7046,6 +7118,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Serial.
+        /// </summary>
+        internal static string trSerial {
+            get {
+                return ResourceManager.GetString("trSerial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Serial number.
         /// </summary>
         internal static string trSerialNum {
@@ -7069,6 +7150,15 @@ namespace POS {
         internal static string trSerialNumHint {
             get {
                 return ResourceManager.GetString("trSerialNumHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serials.
+        /// </summary>
+        internal static string trSerials {
+            get {
+                return ResourceManager.GetString("trSerials", resourceCulture);
             }
         }
         

@@ -2935,4 +2935,34 @@
   <data name="trUpgrade" xml:space="preserve">
     <value>ترقية</value>
   </data>
+  <data name="trActivationCode" xml:space="preserve">
+    <value>كود التفعيل</value>
+  </data>
+  <data name="trActivationDetails" xml:space="preserve">
+    <value>تفاصيل التفعيل</value>
+  </data>
+  <data name="trAgent" xml:space="preserve">
+    <value>المورد</value>
+  </data>
+  <data name="trSerials" xml:space="preserve">
+    <value>الأرقام التسلسلية</value>
+  </data>
+  <data name="trEmptySerial" xml:space="preserve">
+    <value>أدخل الرقم التسلسلي</value>
+  </data>
+  <data name="trActivationCompleted" xml:space="preserve">
+    <value>تم التفعيل بنجاح</value>
+  </data>
+  <data name="trActivationNotCompleted" xml:space="preserve">
+    <value>لم يكتمل التفعيل</value>
+  </data>
+  <data name="trErrorCode" xml:space="preserve">
+    <value>كود الخطأ</value>
+  </data>
+  <data name="trNoChanges" xml:space="preserve">
+    <value>لا يوجد تعديلات</value>
+  </data>
+  <data name="trSerial" xml:space="preserve">
+    <value>الرقم التسلسلي</value>
+  </data>
 </root>

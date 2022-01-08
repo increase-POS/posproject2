@@ -807,6 +807,7 @@
           
 
             <!--#region  Colors-->
+            <SolidColorBrush x:Key="MainColor" Color="#2491EA"/>
             <SolidColorBrush x:Key="MainColorBlue" Color="#178DD2"/>
             
             <SolidColorBrush x:Key="MainColorOrange" Color="#FFA926"/>

@@ -12,9 +12,9 @@ namespace POS.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.ToString().Equals("1"))
+            if (value.ToString().Equals("True"))
                 value = MainWindow.resourcemanager.GetString("trValid");
-            else if (value.ToString().Equals("0"))
+            else if (value.ToString().Equals("False"))
                 value = MainWindow.resourcemanager.GetString("trInValid");
             else
                 value = "";

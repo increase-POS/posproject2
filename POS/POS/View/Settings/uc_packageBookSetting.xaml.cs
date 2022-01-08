@@ -1,5 +1,6 @@
 ﻿using netoaster;
 using POS.Classes;
+using POS.View.windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -145,12 +146,18 @@ namespace POS.View.Settings
             txt_packageDetails.Text = MainWindow.resourcemanager.GetString("trPackageDetails");
             txt_packageCodeTitle.Text = MainWindow.resourcemanager.GetString("trCode");
             txt_packageNameTitle.Text = MainWindow.resourcemanager.GetString("trName");
+            txt_agentTitle.Text = MainWindow.resourcemanager.GetString("trAgent");
+            txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_expiredTitle.Text = MainWindow.resourcemanager.GetString("trExpiredDate");
             txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trStatus");
 
             txt_programDetails.Text = MainWindow.resourcemanager.GetString("trProgramDetails");
             txt_programTitle.Text = MainWindow.resourcemanager.GetString("trProgram");
             txt_versionTitle.Text = MainWindow.resourcemanager.GetString("trVersion");
+
+            txt_activationDetails.Text = MainWindow.resourcemanager.GetString("trActivationDetails");
+            txt_serialsTitle.Text = MainWindow.resourcemanager.GetString("trSerials");
+            txt_activationCodeTitle.Text = MainWindow.resourcemanager.GetString("trActivationCode");
 
             txt_packageLimits.Text = MainWindow.resourcemanager.GetString("trPackageLimits");
             txt_branchCountTitle.Text = MainWindow.resourcemanager.GetString("trBranches");
@@ -223,14 +230,24 @@ namespace POS.View.Settings
 
                         string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
 
-                        string msg = "The Activation not complete (Error code:" + messagecode + ")";
+                        //string msg = "The Activation not complete (Error code:" + messagecode + ")";
+                        
+                        string msg = MainWindow.resourcemanager.GetString("trActivationNotCompleted")+ "(" +
+                                     MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
 
                         Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
                     }
 
                     else
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: "The Activation done successfuly", animation: ToasterAnimation.FadeIn);
+                        if(chk == 3)
+                            //Toaster.ShowSuccess(Window.GetWindow(this), message: "The Activation done successfuly", animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trActivationCompleted"), animation: ToasterAnimation.FadeIn);
+
+                        else if (chk == 2)
+                            //Toaster.ShowSuccess(Window.GetWindow(this), message: "No changes", animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
+
                     }
                 }
             }
@@ -270,7 +287,11 @@ namespace POS.View.Settings
 
                     else
                     {
-                        Toaster.ShowSuccess(Window.GetWindow(this), message: "The Activation done successfuly", animation: ToasterAnimation.FadeIn);
+                        if(chk == 3)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: "The Upgrade done successfuly", animation: ToasterAnimation.FadeIn);
+                        else if(chk == 2)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: "No changes", animation: ToasterAnimation.FadeIn);
+
                     }
                 }
             }
@@ -278,6 +299,32 @@ namespace POS.View.Settings
             {
 
                 Toaster.ShowWarning(Window.GetWindow(this), message: "The server Not Found", animation: ToasterAnimation.FadeIn);
+            }
+        }
+
+        private async void Btn_serials_Click(object sender, RoutedEventArgs e)
+        {//serials
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_serials w = new wd_serials();
+                    w.activationCode = progDetails.packageSaleCode;
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+
+                    progDetails = await progDetailsModel.getCurrentInfo();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
             }
         }
     }

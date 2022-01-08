@@ -32,6 +32,7 @@ namespace POS.View.Settings
     {
         static SettingCls setModel = new SettingCls();
         static SetValues valueModel = new SetValues();
+        AvtivateServer ac = new AvtivateServer();
         static UserSetValues usValueModel = new UserSetValues();
         static CountryCode countryModel = new CountryCode();
         static SettingCls set = new SettingCls();
@@ -43,6 +44,7 @@ namespace POS.View.Settings
         static SetValues setVItem = new SetValues();
         static SetValues setVItemBool = new SetValues();
         ////////
+        SetValues activationSite = new SetValues();
         static SetValues itemCost = new SetValues();
         static SetValues printCount = new SetValues();
         static SetValues accuracy = new SetValues();
@@ -202,6 +204,26 @@ namespace POS.View.Settings
                 }
             }
         }
+        async void loading_getDefaultActivationSite()
+        {//??
+            try
+            {
+                activationSite = await ac.getactivesite();
+                if (activationSite != null)
+                    tb_activationSite.Text = activationSite.value;
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultActivationSite"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
+        
         async void loading_getDefaultDateForm()
         {
             try
@@ -297,17 +319,15 @@ namespace POS.View.Settings
                     loadingList = new List<keyValueBool>();
                     bool isDone = true;
                     loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
-                    //loadingList.Add(new keyValueBool { key = "loading_fillLanguages", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
-                    //loadingList.Add(new keyValueBool { key = "loading_getDefaultTax", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultItemCost", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultActivationSite", value = false });///???
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
                     loading_fillRegions();
-                    //loading_fillLanguages();
                     loading_fillCurrencies();
-                    //loading_getDefaultTax();
                     loading_getDefaultItemCost();
+                    loading_getDefaultActivationSite();
                     loading_getDefaultDateForm();
                     loading_fillAccuracy();
                     do
@@ -444,7 +464,7 @@ namespace POS.View.Settings
 
             return tax;
         }
-        public static async Task<List<string>> getDefaultTaxList()///???
+        public static async Task<List<string>> getDefaultTaxList()
         {
             //setVInvoiceBool = settingsValues.Where(v => v.name == "invoiceTax_bool").FirstOrDefault();
             //setVInvoice = settingsValues.Where(v => v.name == "invoiceTax_decimal").FirstOrDefault();
@@ -855,8 +875,8 @@ namespace POS.View.Settings
             {
                 if (name == "TextBox")
                 {
-                    //if ((sender as TextBox).Name == "tb_tax")
-                    //    SectionData.validateEmptyTextBox((TextBox)sender, p_errorTax, tt_errorTax, "trEmptyTax");
+                    if ((sender as TextBox).Name == "tb_activationSite")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorActivationSite, tt_errorActivationSite, "trEmptyActivationSite");
                     if ((sender as TextBox).Name == "tb_itemsCost")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorItemsCost, tt_errorItemsCost, "trEmptyItemCost");
 
@@ -1079,6 +1099,46 @@ namespace POS.View.Settings
             grid_main.Children.Clear();
             grid_main.Children.Add(uc_packageBookSetting.Instance);
             Button button = sender as Button;
+        }
+
+        private async void Btn_saveActivationSite_Click(object sender, RoutedEventArgs e)
+        {//activation Site
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    SectionData.validateEmptyTextBox(tb_activationSite, p_errorActivationSite , tt_errorActivationSite, "trEmptyActivationSite");
+                    if (!tb_itemsCost.Text.Equals(""))
+                    {
+                       
+                        activationSite = await ac.getactivesite();
+
+                        // save
+                        activationSite.value = @tb_activationSite.Text;
+                        int res = await valueModel.Save(activationSite);
+
+                        if (!res.Equals(0))
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        else
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
 
         private async void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)
