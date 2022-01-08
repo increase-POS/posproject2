@@ -282,10 +282,13 @@ namespace POS.View
                 //img_user.Source = new BitmapImage(new Uri("pic/no-image-icon-125x125.png"));
 
                 btn_stores.IsEnabled = false;
+                grid_userNameLabel.Visibility = Visibility.Collapsed;
+                grid_userNameInput.Visibility = Visibility.Visible;
 
                 p_errorFirstName.Visibility = Visibility.Collapsed;
                 p_errorLastName.Visibility = Visibility.Collapsed;
                 p_errorUserName.Visibility = Visibility.Collapsed;
+                p_errorUserNameLabel.Visibility = Visibility.Collapsed;
                 p_errorPassword.Visibility = Visibility.Collapsed;
                 p_errorJob.Visibility = Visibility.Collapsed;
 
@@ -297,6 +300,9 @@ namespace POS.View
                 SectionData.clearValidate(tb_mobile, p_errorMobile);
                 SectionData.clearPasswordValidate(pb_password, p_errorPassword);
                 p_showPassword.Visibility = Visibility.Visible;
+
+                
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -316,6 +322,9 @@ namespace POS.View
 
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 btn_stores.IsEnabled = false;
+                grid_userNameLabel.Visibility = Visibility.Collapsed;
+                grid_userNameInput.Visibility = Visibility.Visible;
+
                 // for pagination onTop Always
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
                 //CreateGridCardContainer();
@@ -420,13 +429,25 @@ namespace POS.View
                     SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
                     //chk empty username
                     SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
-                    if (pb_password.Password.Equals(""))
-                    { SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip"); p_showPassword.Visibility = Visibility.Collapsed; }
+                    SectionData.validateEmptyTextBox(tb_userName, p_errorUserNameLabel, tt_errorUserNameLabel, "trEmptyUserNameToolTip");
+                    if (pb_password.Password.Equals("") && grid_userNameInput.IsVisible == true)
+                    {
+                        SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip");
+                        p_showPassword.Visibility = Visibility.Collapsed;
+                    }
                     //validate email
                     SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                     //chk duplicate userName
                     bool duplicateUserName = false;
                     duplicateUserName = await chkIfUserNameIsExists(tb_userName.Text, 0);
+                    if (duplicateUserName)
+                    {
+                        p_errorUserName.Visibility = Visibility.Visible;
+                        p_errorUserNameLabel.Visibility = Visibility.Visible;
+                        tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                        tt_errorUserNameLabel.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                        tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                    }
                     //chk password length
                     bool passLength = false;
                     passLength = chkPasswordLength(pb_password.Password);
@@ -448,12 +469,14 @@ namespace POS.View
                         {
                             if (emailError)
                                 SectionData.validateEmail(tb_email, p_errorEmail, tt_errorEmail);
-                            if (duplicateUserName)
-                            {
-                                p_errorUserName.Visibility = Visibility.Visible;
-                                tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
-                                tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
-                            }
+                            //if (duplicateUserName)
+                            //{
+                            //    p_errorUserName.Visibility = Visibility.Visible;
+                            //    p_errorUserNameLabel.Visibility = Visibility.Visible;
+                            //    tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                            //    tt_errorUserNameLabel.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                            //    tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
+                            //}
                             if (passLength)
                             {
                                 p_errorPassword.Visibility = Visibility.Visible;
@@ -512,8 +535,9 @@ namespace POS.View
                             Tb_search_TextChanged(null, null);
 
                             await fillJobCombo();
-                            SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
-                            SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
+                            Btn_clear_Click(null,null);
+                            //SectionData.getMobile(user.mobile, cb_areaMobile, tb_mobile);
+                            //SectionData.getPhone(user.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
                         }
                     }
                 }
@@ -550,6 +574,7 @@ namespace POS.View
                     SectionData.validateEmptyComboBox(cb_job, p_errorJob, tt_errorJob, "trEmptyJobToolTip");
                     //chk empty username
                     SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+                    SectionData.validateEmptyTextBox(tb_userName, p_errorUserNameLabel, tt_errorUserNameLabel, "trEmptyUserNameToolTip");
                     //chk empty password
                     if (pb_password.Password.Equals(""))
                     { SectionData.showPasswordValidate(pb_password, p_errorPassword, tt_errorPassword, "trEmptyPasswordToolTip"); p_showPassword.Visibility = Visibility.Collapsed; }
@@ -578,7 +603,9 @@ namespace POS.View
                             if (duplicateUserName)
                             {
                                 p_errorUserName.Visibility = Visibility.Visible;
+                                p_errorUserNameLabel.Visibility = Visibility.Visible;
                                 tt_errorUserName.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
+                                tt_errorUserNameLabel.Content = MainWindow.resourcemanager.GetString("trErrorDuplicateUserNameToolTip");
                                 tb_userName.Background = (Brush)bc.ConvertFrom("#15FF0000");
                             }
                         }
@@ -749,6 +776,7 @@ namespace POS.View
             try
             {
                 SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+                SectionData.validateEmptyTextBox(tb_userName, p_errorUserNameLabel, tt_errorUserNameLabel, "trEmptyUserNameToolTip");
             }
             catch(Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
@@ -759,6 +787,7 @@ namespace POS.View
             try
             {
                 SectionData.validateEmptyTextBox(tb_userName, p_errorUserName, tt_errorUserName, "trEmptyUserNameToolTip");
+                SectionData.validateEmptyTextBox(tb_userName, p_errorUserNameLabel, tt_errorUserNameLabel, "trEmptyUserNameToolTip");
             }
             catch(Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
@@ -1324,6 +1353,7 @@ namespace POS.View
                 p_errorFirstName.Visibility = Visibility.Collapsed;
                 p_errorLastName.Visibility = Visibility.Collapsed;
                 p_errorUserName.Visibility = Visibility.Collapsed;
+                p_errorUserNameLabel.Visibility = Visibility.Collapsed;
                 p_errorPassword.Visibility = Visibility.Collapsed;
                 p_errorEmail.Visibility = Visibility.Collapsed;
                 p_errorJob.Visibility = Visibility.Collapsed;
@@ -1343,10 +1373,14 @@ namespace POS.View
                 {
                     user = dg_users.SelectedItem as User;
                     this.DataContext = user;
+
+                   
                 }
                 if (user != null)
                 {
                     btn_stores.IsEnabled = true;
+                    grid_userNameLabel.Visibility = Visibility.Visible;
+                    grid_userNameInput.Visibility = Visibility.Collapsed;
 
                     if (user.userId != 0)
                     {
@@ -1406,10 +1440,13 @@ namespace POS.View
         {
            
                 btn_stores.IsEnabled = true;
-                #region
-                p_errorFirstName.Visibility = Visibility.Collapsed;
+            grid_userNameLabel.Visibility = Visibility.Visible;
+            grid_userNameInput.Visibility = Visibility.Collapsed;
+            #region
+            p_errorFirstName.Visibility = Visibility.Collapsed;
                 p_errorLastName.Visibility = Visibility.Collapsed;
                 p_errorUserName.Visibility = Visibility.Collapsed;
+            p_errorUserNameLabel.Visibility = Visibility.Collapsed;
                 p_errorPassword.Visibility = Visibility.Collapsed;
                 p_errorEmail.Visibility = Visibility.Collapsed;
                 p_errorJob.Visibility = Visibility.Collapsed;
