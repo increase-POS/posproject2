@@ -1,5 +1,4 @@
 ﻿using netoaster;
-using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
@@ -292,12 +291,11 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
-
-                settingsCls = await setModel.GetAll();
+                if (SectionData.isSupportPermision())
+                    brd_activationSite.Visibility = Visibility.Visible;
+                 settingsCls = await setModel.GetAll();
                 settingsValues = await valueModel.GetAll();
-
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -362,7 +360,6 @@ namespace POS.View.Settings
                 }
 
                 #endregion
-
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1341,8 +1338,8 @@ namespace POS.View.Settings
                     Window.GetWindow(this).Opacity = 1;
 
                     //update user in main window
-                    user = await userModel.getUserById(w.userID);
-                    MainWindow.userLogin = user;
+                    //user = await userModel.getUserById(w.userID);
+                    //MainWindow.userLogin = user;
 
                 }
                 else
