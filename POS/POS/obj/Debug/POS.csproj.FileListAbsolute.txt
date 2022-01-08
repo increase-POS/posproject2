@@ -4173,3 +4173,6 @@ E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_taxSetting.baml
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_taxSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_packageBookSetting.g.cs
 E:\GitHub\posproject2\POS\POS\obj\Debug\View\Settings\uc_packageBookSetting.baml
+E:\GitHub\posproject2\POS\POS\obj\Debug\POS.csprojAssemblyReference.cache
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_serials.g.cs
+E:\GitHub\posproject2\POS\POS\obj\Debug\View\windows\wd_serials.baml
