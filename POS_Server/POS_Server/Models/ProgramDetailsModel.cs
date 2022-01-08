@@ -44,9 +44,13 @@ namespace POS_Server.Models
         public int storeCountNow { get; set; }
      
         public Nullable<System.DateTime> serverDateNow { get; set; }
-       
-        
-     
+
+        public string customerName { get; set; }// 6- customer Name
+        public string customerLastName { get; set; }// 6- customer LastName
+        public string agentName { get; set; }// 5- Agent name 
+        public string agentAccountName { get; set; }//5- Agent AccountName
+        public string agentLastName { get; set; }//5- Agent LastName
+
 
     }
    
