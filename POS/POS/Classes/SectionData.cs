@@ -861,7 +861,13 @@ namespace POS.Classes
                 return true;
             return false;
         }
-
+        static public bool isSupportPermision()
+        {
+            //if (MainWindow.userLogin.userId == 1 || MainWindow.userLogin.userId == 2)
+            if (MainWindow.userLogin.isAdmin == true && MainWindow.userLogin.username == "Support@Increase")
+                return true;
+            return false;
+        }
         static List<Branch> branches;
         static List<Branch> branchesWithAll;
         static List<Branch> branchesWithoutMain;
@@ -1129,7 +1135,8 @@ namespace POS.Classes
             else if (str == "settings")
                 _str = MainWindow.resourcemanager.GetString("trSettings");
             #endregion
-
+            if (str == "dashboard")
+                _str = MainWindow.resourcemanager.GetString("trDashBoard");
             #region  storage
             if (str == "locations")
                 _str = MainWindow.resourcemanager.GetString("trLocation");
