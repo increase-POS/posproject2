@@ -103,6 +103,66 @@ namespace POS.Classes
             return item;
 
         }
+
+        public async Task<int> updatesalecode(string skey)
+        {
+            int item = 0;
+            // int res = 0;
+            //  SendDetail item = new SendDetail();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("skey", skey);
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Activate/updatesalecode", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = int.Parse(c.Value);
+                    // item = JsonConvert.DeserializeObject<SendDetail>(c.Value, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                    break;
+                }
+            }
+            return item;
+
+        }
+
+
+        public async Task<SetValues> getactivesite()
+        {
+
+            SetValues item = new SetValues();
+
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Activate/getactivesite");
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = JsonConvert.DeserializeObject<SetValues>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    break;
+                }
+            }
+            return item;
+
+
+        }
+
+        //AvtivateServer ac = new AvtivateServer();
+        ////get
+        //SetValues sv = new SetValues();
+        //SetValues svModel = new SetValues();
+
+        //sv = await ac.getactivesite();
+
+        //// save
+        //sv.value =  @"https://localhost:443";//from textbox
+        //        int res = await svModel.Save(sv);
+
+
         // extend button start:
         //private async void next_Click(object sender, RoutedEventArgs e)
         //{
