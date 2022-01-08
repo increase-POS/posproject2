@@ -287,7 +287,7 @@ namespace POS.View.sales
                 translate();
                 configureDiscountType();
                 setTimer();
-                setNotifications();
+              setNotifications();
 
                 #region loading
                 loadingList = new List<keyValueBool>();
@@ -300,9 +300,9 @@ namespace POS.View.sales
 
 
                 loading_RefrishItems();
-                loading_RefrishCustomers();
+               loading_RefrishCustomers();
                 loading_fillBarcodeList();
-                loading_fillCouponsList();
+              loading_fillCouponsList();
 
                 do
                 {
@@ -1055,11 +1055,16 @@ namespace POS.View.sales
                 #endregion
                 totalDiscount = _Discount + manualDiscount;
             }
-                decimal taxValue = _Tax;
+              //  decimal taxValue = _Tax;
             decimal total = _Sum - totalDiscount;
-            
-            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.invoiceTax_decimal);
-            
+
+            decimal taxValue = 0;
+            try
+            {
+                taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+            }
+            catch { }
+
             total += taxValue;
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);

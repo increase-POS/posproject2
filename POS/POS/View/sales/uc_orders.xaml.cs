@@ -1478,7 +1478,13 @@ namespace POS.View.sales
                 #endregion
                 totalDiscount = _Discount + manualDiscount;
             }
-            decimal taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+
+            decimal taxValue = 0;
+            try
+            {
+                taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+            }
+            catch { }
             decimal total = _Sum - totalDiscount + taxValue + _DeliveryCost;
 
             if (_Sum != 0)
