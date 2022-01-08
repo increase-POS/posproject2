@@ -234,6 +234,15 @@ namespace POS_Server.Controllers
                              canRenew = false,
                              isPayed = true,
                              isServerActivated = true,
+                             pId = p.pId,
+                             pcdId = p.pcdId,
+                             bookDate = p.bookDate,
+
+                             customerName = p.customerName,
+                             customerLastName = p.customerLastName,
+                             agentName = p.agentName,
+                             agentLastName = p.agentLastName,
+                             agentAccountName = p.agentAccountName,
                          }).FirstOrDefault();
             }
             sd.packageSend = packs;
@@ -347,7 +356,10 @@ namespace POS_Server.Controllers
                             tmpObject.agentName = newObject.agentName;
                             tmpObject.agentLastName = newObject.agentLastName;
                             tmpObject.agentAccountName = newObject.agentAccountName;
-
+                            tmpObject.pId = newObject.pId;
+                            tmpObject.pcdId = newObject.pcdId;
+                            tmpObject.bookDate = newObject.bookDate;
+                            tmpObject.packageName = newObject.packageName;
 
                         }
                         else
@@ -1106,10 +1118,7 @@ namespace POS_Server.Controllers
 
                              * */
                             res = sendDetailItem.packageSend.result;
-                            if (res == -6)
-                            {
-                                res = 2;//nochange
-                            }
+                       
                         }
                         else
                         {
@@ -1161,20 +1170,19 @@ namespace POS_Server.Controllers
                         res = -1;
                     }
                     //
-                    if ((sendDetailItem.packageSend.activeres == "noch" && res > 0) || res == 2)
+                    if ((sendDetailItem.packageSend.activeres == "noch" && res > 0) || sendDetailItem.packageSend.result == -6)
                     {
                         //nochange
                         res = 2;
 
                     }
-                    else if (sendDetailItem.packageSend.activeres == "ch" && res > 0)
+                    else if (sendDetailItem.packageSend.activeres == "ch" && sendDetailItem.packageSend.result>0)
                     {
                         //change
                         res = 3;
                     }
 
-
-
+                  //  return TokenManager.GenerateToken(sendDetailItem.packageSend.activeres);
                     return TokenManager.GenerateToken(res);
                 }
                 catch (Exception ex)

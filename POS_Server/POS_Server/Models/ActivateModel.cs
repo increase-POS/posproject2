@@ -15,7 +15,7 @@ namespace POS_Server.Models
         public string serial { get; set; }
         public string posDeviceCode { get; set; }
 
-        public bool isBooked { get; set; }
+        public Nullable<bool> isBooked { get; set; }
         public int isActive { get; set; }
         public string posName { get; set; }
         public string branchName { get; set; }
