@@ -395,6 +395,62 @@ namespace POS_Server.Controllers
         }
 
 
+        private int updateActiveKey(packagesSend newObject)
+        {
+            int message = 0;
+            if (newObject != null)
+            {
+
+                ProgramDetails tmpObject;
+
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var locationEntity = entity.Set<ProgramDetails>();
+
+                        // List<ProgramDetails> Objectlist = entity.ProgramDetails.ToList();
+                        tmpObject = entity.ProgramDetails.FirstOrDefault();
+
+                        if (tmpObject != null)
+                        {
+
+                            tmpObject.updateDate = DateTime.Now; 
+
+                            tmpObject.packageSaleCode = newObject.packageSaleCode;
+                            
+
+                        }
+                        else
+                        {
+                            message = -1;
+                        }
+
+                        
+                        message = entity.SaveChanges();
+
+ 
+                    }
+                    return (message);
+
+                }
+                catch
+                {
+                    message = -1;
+                    return (message);
+                    //  return (ex.ToString());
+                }
+
+            }
+            else
+            {
+                return (-1);
+            }
+
+        }
+
+
 
         //private int SaveposSerials(List<PosSerialSend> newObjectlist)
         //{
@@ -1042,6 +1098,8 @@ namespace POS_Server.Controllers
             return uri;
         }
 
+
+
         // get state then activate
         [HttpPost]
         [Route("StatSendserverkey")]
@@ -1077,8 +1135,6 @@ namespace POS_Server.Controllers
                     {
                         activeState = c.Value;
                     }
-
-
 
                 }
                 try
@@ -1118,7 +1174,7 @@ namespace POS_Server.Controllers
 
                              * */
                             res = sendDetailItem.packageSend.result;
-                       
+
                         }
                         else
                         {
@@ -1176,13 +1232,13 @@ namespace POS_Server.Controllers
                         res = 2;
 
                     }
-                    else if (sendDetailItem.packageSend.activeres == "ch" && sendDetailItem.packageSend.result>0)
+                    else if (sendDetailItem.packageSend.activeres == "ch" && sendDetailItem.packageSend.result > 0)
                     {
                         //change
                         res = 3;
                     }
 
-                  //  return TokenManager.GenerateToken(sendDetailItem.packageSend.activeres);
+                    //  return TokenManager.GenerateToken(sendDetailItem.packageSend.activeres);
                     return TokenManager.GenerateToken(res);
                 }
                 catch (Exception ex)
@@ -1221,6 +1277,83 @@ namespace POS_Server.Controllers
 
         //    }
         //}
+
+
+        //
+        [HttpPost]
+        [Route("getactivesite")]
+        public async Task<string> getactivesite(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                setValues sv = new setValues();
+                try
+                {
+                    string uri = "";
+
+                    setValuesController ctrObject = new setValuesController();
+                    sv = ctrObject.GetRowBySettingName("active_site");
+                    return TokenManager.GenerateToken(sv);
+                }
+                catch (Exception ex)
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+
+            }
+        }
+
+
+        [HttpPost]
+        [Route("updatesalecode")]
+        public async Task<string> updatesalecode(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string skey = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "skey")
+                    {
+                        skey = c.Value;
+                    }
+                    break;
+
+                }
+                packagesSend ps = new packagesSend();
+                int res=0;
+                try
+                {
+                   
+                    ps.packageSaleCode = skey;
+                    res=updateActiveKey(ps);
+                  
+                    return TokenManager.GenerateToken(res.ToString());
+                }
+                catch (Exception ex)
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+
+            }
+        }
+
+
 
 
     }

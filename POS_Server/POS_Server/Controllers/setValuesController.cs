@@ -278,6 +278,44 @@ namespace POS_Server.Controllers
                 }
          
         }
+        public setValues GetRowBySettingName(string settingName)
+        {
+
+            setValues sv = new setValues();
+            List<setValues> svl = new List<setValues>();
+
+            // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    setting sett = entity.setting.Where(s => s.name == settingName).FirstOrDefault();
+
+                    var svlv = entity.setValues.ToList();
+                    svl = svlv.Where(x => sett.settingId == x.settingId)
+                         .Select(X => new setValues
+                         {
+                             valId = X.valId,
+                             value = X.value,
+                             isDefault = X.isDefault,
+                             isSystem = X.isSystem,
+                             settingId = X.settingId,
+                             notes = X.notes,
+
+                         }).ToList();
+                    sv = svl.FirstOrDefault();
+                    return sv ;
+                }
+
+            }
+            catch
+            {
+                sv = new setValues();
+                // return ex.ToString();
+                return sv;
+            }
+
+        }
 
 
         [HttpPost]
@@ -1197,6 +1235,95 @@ namespace POS_Server.Controllers
         }
 
         #endregion 
+        public int Save(setValues newObject)
+        {
+            //string Object string newObject
+            string message = "";
+            int res = 0;
+
+            if (newObject != null)
+            {
+
+
+                setValues tmpObject = null;
+
+
+                try
+                {
+                    if (newObject.settingId == 0 || newObject.settingId == null)
+                    {
+                        Nullable<int> id = null;
+                        newObject.settingId = id;
+                    }
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var sEntity = entity.Set<setValues>();
+                        setValues defItem = entity.setValues.Where(p => p.settingId == newObject.settingId && p.isDefault == 1).FirstOrDefault();
+
+                        if (newObject.valId == 0)
+                        {
+                            if (newObject.isDefault == 1)
+                            { // get the row with same settingId of newObject
+                                if (defItem != null)
+                                {
+                                    defItem.isDefault = 0;
+                                    entity.SaveChanges();
+                                }
+                            }
+                            else //Object.isDefault ==0 
+                            {
+                                if (defItem == null)//other values isDefault not 1 
+                                {
+                                    newObject.isDefault = 1;
+                                }
+
+                            }
+                            sEntity.Add(newObject);
+                            res = newObject.valId;
+
+                            message = res.ToString();
+                            entity.SaveChanges();
+                        }
+                        else
+                        {
+                            //update
+                            if (newObject.isDefault == 1)
+                            {
+                                defItem.isDefault = 0;//reset the other default to 0 if exist
+                            }
+                            tmpObject = entity.setValues.Where(p => p.valId == newObject.valId).FirstOrDefault();
+                            tmpObject.valId = newObject.valId;
+                            tmpObject.notes = newObject.notes;
+                            tmpObject.value = newObject.value;
+                            tmpObject.isDefault = newObject.isDefault;
+                            tmpObject.isSystem = newObject.isSystem;
+
+                            tmpObject.settingId = newObject.settingId;
+                            entity.SaveChanges();
+                            res = tmpObject.valId;
+                            message = res.ToString();
+                        }
+
+
+                    }
+
+                    return (res);
+
+                }
+                catch
+                {
+                    message = "0";
+                    return 0;
+                }
+
+
+            }
+
+            return res;
+
+
+
+        }
 
     }
 }
