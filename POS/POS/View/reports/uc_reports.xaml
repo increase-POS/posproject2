@@ -26,7 +26,8 @@
                         
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border x:Name="bdr_storageReports"  Height="87" Grid.Row="0" Tag="storageReports">
+                    <Border x:Name="bdr_storageReports"  Height="87" Grid.Row="0" 
+                            Tag="storageReports" Visibility="Collapsed">
                         <Button x:Name="btn_storageReports" Click="btn_storageReports_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White"  FlowDirection="LeftToRight"
                   Content="Storage"    BorderBrush="#67686D"  Tag="storageReports"
@@ -47,7 +48,8 @@
 	c-0.2-43.2,0.2-86.3-0.3-129.5c-0.2-14.3,14.9-31.5,28.2-32.1c11.1-0.5,22.3-0.9,33.4-1c16.1-0.2,32.3,0,49.1,0V744h17.8V639.7
 	c17.7,0,34.5-0.1,51.3,0.1c10.8,0.1,21.7,0.1,32.4,1.2c12.2,1.2,23.9,12.1,24.8,21.9C286.4,667.3,286.8,671.8,286.8,676.3z"/>
                     </Border>
-                    <Border x:Name="bdr_purchaseReports"  Height="87" Grid.Row="1"   Tag="purchaseReports">
+                    <Border x:Name="bdr_purchaseReports"  Height="87" Grid.Row="1"   Tag="purchaseReports"
+                             Visibility="Collapsed">
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
                 Height="75" Width="75" Background="White"  FlowDirection="LeftToRight"
                   Content="Purchases"  x:Name="btn_purchaseReports"  BorderBrush="#67686D"  Tag="purchaseReports"
@@ -102,7 +104,8 @@
 	C268.9,599.5,271.1,612.3,273.6,625z M237.4,538.1c-3.8-18.5-7.6-36.9-11.5-55.7c-16.6,7.7-23,21.3-18.7,37.6
 	C209.7,529.3,226.1,539.4,237.4,538.1z" Click="btn_purchaseReport_Click"/>
                     </Border>
-                    <Border x:Name="bdr_salesReports"  Height="87" Grid.Row="2"  Tag="salesReports">
+                    <Border x:Name="bdr_salesReports"  Height="87" Grid.Row="2"  Tag="salesReports"
+                             Visibility="Collapsed">
                         <Button x:Name="btn_salesReports" Click="btn_salesReports_Click" Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
                 Height="75" Width="75" Background="White"  FlowDirection="LeftToRight"
                   Content="Sales"    BorderBrush="#67686D"  Tag="salesReports"
@@ -117,7 +120,8 @@
 	l-20.3,117.9c-1.3,7.8-9.2,13.3-17.5,12.2l-1-0.1c-8.6-1.2-14.5-8.8-13.1-16.9L432,172.5c1.3-7.8,9.2-13.3,17.5-12.2l1,0.1
 	C459.2,161.6,465.1,169.2,463.7,177.3z"/>
                     </Border>
-                    <Border x:Name="bdr_accountsReports"  Height="87" Grid.Row="3"  Tag="accountsReports">
+                    <Border x:Name="bdr_accountsReports"  Height="87" Grid.Row="3"  Tag="accountsReports"
+                             Visibility="Collapsed">
                         <Button x:Name="btn_accountsReports" Click="btn_accountsReports_Click" Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
                 Height="75" Width="75" Background="White" FlowDirection="LeftToRight"
                   Content="Accounts"    BorderBrush="#67686D" Tag="accountsReports"

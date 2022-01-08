@@ -30,7 +30,8 @@
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                    <Border x:Name="bdr_locations"  Height="87" Grid.Row="0" >
+                    <Border x:Name="bdr_locations" Tag="locations"
+                             Visibility="Collapsed" Height="87" Grid.Row="0" >
                         <Button x:Name="btn_locations" Click="Btn_locations_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White"  Tag="locations" 
                   Content="Locations"    BorderBrush="#67686D"  ToolTip="Preparation of Locations"
@@ -48,7 +49,8 @@
 	C405.7,211.9,403.2,209.2,393,209.2z M394.1,285.1L394.1,285.1l-10.4-11.3l-10.1,11.3l0,0v-61.2h20.5V285.1z"/>
                     </Border>
 
-                    <Border x:Name="bdr_section"  Height="87" Grid.Row="1" >
+                    <Border x:Name="bdr_section"   Tag="section" 
+                             Visibility="Collapsed" Height="87" Grid.Row="1" >
                         <Button x:Name="btn_section" Click="Btn_section_Click" Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0"
                 Height="75" Width="75" Background="White"  Tag="section" 
                   Content="Section"    BorderBrush="#67686D"  ToolTip="Section of stores"
@@ -66,7 +68,8 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_reciptOfInvoice"  Height="87" Grid.Row="2" >
+                    <Border x:Name="bdr_reciptOfInvoice"  Tag="reciptOfInvoice"
+                             Visibility="Collapsed" Height="87" Grid.Row="2" >
                         <Button x:Name="btn_reciptOfInvoice" Click="Btn_receiptOfPurchaseInvoice_Click" Style="{StaticResource SmallButton}"   Grid.Row="2" Grid.Column="0"
                 Height="75" Width="75" Background="White"  FlowDirection="LeftToRight" Tag="reciptOfInvoice"
                   Content="Invoice"    BorderBrush="#67686D"  ToolTip="Receipt of a purchase invoice"
@@ -86,7 +89,8 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_itemsStorage"  Height="87" Grid.Row="3" >
+                    <Border x:Name="bdr_itemsStorage"   Tag="itemsStorage"
+                            Visibility="Collapsed"   Height="87" Grid.Row="3" >
                         <Button x:Name="btn_itemsStorage" Click="Btn_itemsStorage_Click" Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
                 Height="75" Width="75" Background="White"  Tag="itemsStorage"
                   Content="Storage"    BorderBrush="#67686D"  ToolTip="Items storage"
@@ -104,7 +108,8 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_importExport"  Height="87" Grid.Row="4" >
+                    <Border x:Name="bdr_importExport"  Tag="importExport"
+                             Visibility="Collapsed" Height="87" Grid.Row="4" >
                         <Button x:Name="btn_importExport" Click="Btn_itemsExport_Click" Style="{StaticResource SmallButton}"   Grid.Row="4" Grid.Column="0"
                 Height="75" Width="75" Background="White" 
                   Content="Import/Export"    BorderBrush="#67686D"  Tag="importExport"
@@ -123,7 +128,8 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_itemsDestroy"  Height="87" Grid.Row="5" >
+                    <Border x:Name="bdr_itemsDestroy"  Tag="itemsDestroy"
+                             Visibility="Collapsed" Height="87" Grid.Row="5" >
                         <Button x:Name="btn_itemsDestroy" Click="Btn_itemsDestroy_Click" Style="{StaticResource SmallButton}"   Grid.Row="5" Grid.Column="0"
                 Height="75" Width="75" Background="White" 
                   Content="Destructive"    BorderBrush="#67686D" Tag="itemsDestroy"
@@ -133,7 +139,8 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_shortage"  Height="87" Grid.Row="6" >
+                    <Border x:Name="bdr_shortage"  Tag="shortage" 
+                            Visibility="Collapsed"  Height="87" Grid.Row="6" >
 
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="6" Grid.Column="0"
                 Height="75" Width="75" Background="White"  Tag="shortage" 
@@ -168,7 +175,8 @@
 
 
 
-                    <Border x:Name="bdr_inventory"  Height="87" Grid.Row="7" >
+                    <Border x:Name="bdr_inventory"  Tag="inventory"
+                          Visibility="Collapsed"    Height="87" Grid.Row="7" >
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="7" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="2.5" Tag="inventory"
                   Content="Stocktaking"  x:Name="btn_inventory"  Click="Btn_inventory_Click" BorderBrush="#67686D"
@@ -182,7 +190,8 @@
                     </Border>
 
 
-                    <Border x:Name="bdr_storageStatistic" Visibility="Collapsed"  Height="87" Grid.Row="8" >
+                    <Border x:Name="bdr_storageStatistic"  Tag="storageStatistic"
+                            Visibility="Collapsed"  Height="87" Grid.Row="8" >
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="8" Grid.Column="0"
                 Height="75" Width="75" Background="White" Margin="5" FlowDirection="LeftToRight"
                   Content="Statistic"  x:Name="btn_storageStatistic"  BorderBrush="#67686D"  Tag="storageStatistic"

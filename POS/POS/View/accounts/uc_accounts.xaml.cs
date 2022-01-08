@@ -85,11 +85,15 @@ namespace POS.View.accounts
             //await _loaded(sender);
         }
         public bool stopPermission;
-         
-        void permission()
+
+        async void permission()
         {
             bool loadWindow = false;
-                if (!SectionData.isAdminPermision())
+            var borders = FindControls.FindVisualChildren<Border>(this);
+            if (borders.Count() == 0)
+                await Task.Delay(0500);
+            borders = FindControls.FindVisualChildren<Border>(this);
+            if (!SectionData.isAdminPermision())
                 foreach (Border border in FindControls.FindVisualChildren<Border>(this))
                 {
                     if (border.Tag != null)
@@ -105,10 +109,18 @@ namespace POS.View.accounts
                             }
                         }
                         else border.Visibility = Visibility.Collapsed;
+                if (borders.Count() != 0)
+                stopPermission = true;
                 }
             else
+            {
+                foreach (Border border in FindControls.FindVisualChildren<Border>(this))
+                    if (border.Tag != null)
+                        border.Visibility = Visibility.Visible;
                 Btn_pos_Click(btn_posAccounting, null);
-            stopPermission = true;
+                if (borders.Count() != 0)
+                    stopPermission = true;
+            }
         }
         private void translate()
         {

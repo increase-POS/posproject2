@@ -101,9 +101,13 @@ namespace POS.View
             }
         }
         public bool stopPermission;
-        void permission()
+        async void permission()
         {
             bool loadWindow = false;
+            var borders = FindControls.FindVisualChildren<Border>(this);
+            if (borders.Count() == 0)
+                await Task.Delay(0500);
+            borders = FindControls.FindVisualChildren<Border>(this);
             if (!SectionData.isAdminPermision())
                 foreach (Border border in FindControls.FindVisualChildren<Border>(this))
                 {
@@ -120,10 +124,18 @@ namespace POS.View
                             }
                         }
                         else border.Visibility = Visibility.Collapsed;
+                if (borders.Count() != 0)
+                stopPermission = true;
                 }
             else
+            {
+                foreach (Border border in FindControls.FindVisualChildren<Border>(this))
+                    if (border.Tag != null)
+                        border.Visibility = Visibility.Visible;
                 btn_payInvoice_Click(btn_payInvoice, null);
-            stopPermission = true;
+                if (borders.Count() != 0)
+                    stopPermission = true;
+            }
         }
         void refreashBackground()
         {
