@@ -10,7 +10,7 @@
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0" 
         Height="500" Width="775"   Background="Transparent"
-        AllowsTransparency="True"
+        AllowsTransparency="True" Title="Increase"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_ucInvoice" >
         <Grid.RowDefinitions>

@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d" KeyDown="HandleKeyPress"
+        Title="Increase"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Title="wd_itemsList" d:DesignHeight="200" Width="300" Background="#333333" 
+         d:DesignHeight="200" Width="300" Background="#333333" 
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid Grid.Column="1" Grid.Row="1"  Background="#333333"  x:Name="grid_serialNum">
         <Grid.RowDefinitions>
