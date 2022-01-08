@@ -330,7 +330,7 @@ namespace POS.View.sales
                 }
                 while (!isDone);
                 #endregion
-               
+
 
                 //pos = await posModel.getById(MainWindow.posID.Value);
                 pos = MainWindow.posLogIn;
@@ -341,13 +341,11 @@ namespace POS.View.sales
                 //SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
 
-                //tb_taxValue.Text = MainWindow.tax.ToString();
-                //tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
-                if (MainWindow.tax == 0)
+                if (MainWindow.invoiceTax_bool == false)
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
                     sp_tax.Visibility = Visibility.Visible;
                 }
                 #region datagridChange
@@ -357,7 +355,7 @@ namespace POS.View.sales
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;
                 btn_pdf.Visibility = Visibility.Collapsed;
-                sp_Approved.Visibility = Visibility.Collapsed; 
+                sp_Approved.Visibility = Visibility.Collapsed;
                 #endregion
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -410,6 +408,7 @@ namespace POS.View.sales
         {
             try
             {
+                refreshQuotationNotification();
                 if (invoice.invoiceId != 0)
                     refreshDocCount(invoice.invoiceId);
             }
@@ -834,8 +833,7 @@ namespace POS.View.sales
             tb_sum.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            //tb_taxValue.Text = MainWindow.tax.ToString();
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();
@@ -949,7 +947,7 @@ namespace POS.View.sales
 
             invoice.notes = tb_note.Text;
 
-            if (tb_taxValue.Text != "")
+            if (tb_taxValue.Text != "" && MainWindow.invoiceTax_bool == true)
                 invoice.tax = decimal.Parse(tb_taxValue.Text);
             else
                 invoice.tax = 0;
@@ -1060,7 +1058,7 @@ namespace POS.View.sales
                 decimal taxValue = _Tax;
             decimal total = _Sum - totalDiscount;
             
-            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
+            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.invoiceTax_decimal);
             
             total += taxValue;
             if (_Sum != 0)
@@ -1106,15 +1104,10 @@ namespace POS.View.sales
             SectionData.EndAwait(grid_main);
             }
             DataGrid_CollectionChanged(dg_billDetails, null);
-            // tb_sum.Text = _Sum.ToString();
+
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else tb_sum.Text = "0";
-
-            //if (MainWindow.isInvTax == 0)
-            //    //tb_taxValue.Text = _Tax.ToString();
-            //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
-
         }
         void refrishDataGridItems()
         {
@@ -1349,16 +1342,13 @@ namespace POS.View.sales
             cb_customer.SelectedValue = invoice.agentId;
             if (invoice.totalNet != null)
             {
-                //tb_total.Text = Math.Round((double)invoice.totalNet, 2).ToString();
                 if ((decimal)invoice.totalNet != 0)
                     tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
                 else tb_total.Text = "0";
             }
-            //tb_taxValue.Text = invoice.tax.ToString();
             tb_taxValue.Text = SectionData.DecTostring(_Tax);
 
             tb_note.Text = invoice.notes;
-            //tb_sum.Text = invoice.total.ToString();
             if (invoice.total != 0)
                 tb_sum.Text = SectionData.DecTostring(invoice.total);
             else
@@ -2518,7 +2508,7 @@ namespace POS.View.sales
             tb_sum.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();

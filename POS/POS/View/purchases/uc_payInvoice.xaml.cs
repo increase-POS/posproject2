@@ -424,10 +424,13 @@ namespace POS.View
 
 
 
-                if (MainWindow.tax == 0)
+                if (MainWindow.invoiceTax_bool == false)
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
+                {
                     sp_tax.Visibility = Visibility.Visible;
+                    tb_taxValue.Text = MainWindow.invoiceTax_decimal.ToString();
+                }
                 setTimer();
                 configureDiscountType();
                 configurProcessType();
@@ -1265,7 +1268,7 @@ namespace POS.View
                 invoice.vendorInvDate = dp_invoiceDate.SelectedDate;
                 invoice.notes = tb_note.Text;
                 invoice.taxtype = 2;
-                if (tb_taxValue.Text != "")
+                if (tb_taxValue.Text != "" && MainWindow.invoiceTax_bool == true)
                     invoice.tax = decimal.Parse(tb_taxValue.Text);
                 else
                     invoice.tax = 0;
@@ -1762,8 +1765,8 @@ namespace POS.View
             gd_card.Visibility = Visibility.Collapsed;
             tb_total.Text = "0";
             tb_sum.Text = "0";
-            if (MainWindow.tax != 0)
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            if (MainWindow.invoiceTax_decimal != 0)
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             else
                 tb_taxValue.Text = "0";
 
@@ -1814,7 +1817,7 @@ namespace POS.View
             tb_total.Text = "0";
             tb_sum.Text = "0";
             if (MainWindow.tax != 0)
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             else
                 tb_taxValue.Text = "0";
 
@@ -1994,27 +1997,49 @@ namespace POS.View
         }
         public async Task fillInvoiceInputs(Invoice invoice)
         {
-            if(_InvoiceType == "p" || _InvoiceType == "pb")
+            #region payment process
+            if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pbw"||  _InvoiceType == "pb")
             {
+                //payments
                 var cashTransfers = await cashTransfer.GetListByInvId(invoice.invoiceId);
                 if (cashTransfers.Count == 1)
                 {
                     cb_paymentProcessType.SelectedValue = cashTransfers[0].processType;
-                    _SelectedCard = (int)cashTransfers[0].cardId;
-                    tb_processNum.Text = cashTransfers[0].docNum;
-                    if ((int)cashTransfers[0].cardId != 0)
+                    try
                     {
-                        var card = cards.Where(x => x.cardId == (int)cashTransfers[0].cardId).FirstOrDefault();
-                        txt_card.Text = card.name;
-                        if (card.hasProcessNum.Value)
-                            tb_processNum.Visibility = Visibility.Visible;
-                        else
-                            tb_processNum.Visibility = Visibility.Collapsed;
+                        _SelectedCard = (int)cashTransfers[0].cardId;
+                        tb_processNum.Text = cashTransfers[0].docNum;
+                    
+                        if ((int)cashTransfers[0].cardId != 0)
+                        {
+                            var card = cards.Where(x => x.cardId == (int)cashTransfers[0].cardId).FirstOrDefault();
+                            txt_card.Text = card.name;
+                            if (card.hasProcessNum.Value)
+                                tb_processNum.Visibility = Visibility.Visible;
+                            else
+                                tb_processNum.Visibility = Visibility.Collapsed;
+                        }
                     }
+                    catch { }
                 }
                 else
                     cb_paymentProcessType.SelectedValue = "multiple";
+                
             }
+            #endregion
+            #region tax
+            if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pd")
+            {              
+                if (invoice.tax != null)
+                    tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
+                else
+                    tb_taxValue.Text = "0";
+            }
+            else if(_InvoiceType == "pbw" || _InvoiceType == "pb")
+            {
+                tb_taxValue.Text = "0";
+            }
+            #endregion
             _Sum = (decimal)invoice.total;
             txt_invNumber.Text = invoice.invNumber.ToString();
             cb_branch.SelectedValue = invoice.branchId;
@@ -2026,10 +2051,7 @@ namespace POS.View
                 tb_total.Text = SectionData.DecTostring(invoice.totalNet);
             else tb_total.Text = "0";
 
-            if ((invoice.tax != 0) && (invoice.tax != null))
-                tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
-            else
-                tb_taxValue.Text = "0";
+            
             tb_note.Text = invoice.notes;
 
             if (invoice.total != 0)

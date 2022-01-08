@@ -338,7 +338,6 @@ namespace POS.View.sales
         {
             try
             {
-                //Window parentWin = Window.GetWindow(this);
                 MainWindow.mainWindow.Closing += ParentWin_Closing;
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
@@ -418,11 +417,11 @@ namespace POS.View.sales
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
                    
-                if (MainWindow.tax == 0)
+                if (MainWindow.invoiceTax_bool == false)
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
                     sp_tax.Visibility = Visibility.Visible;
                 }
                 setNotifications();
@@ -495,15 +494,15 @@ namespace POS.View.sales
         {
             try
             {
-                await refreshOrdersWaitNotification();
+                refreshOrdersNotification();
+                refreshOrdersWaitNotification();
                 if (invoice.invoiceId != 0)
                 {
-                    await refreshDocCount(invoice.invoiceId);
+                   refreshDocCount(invoice.invoiceId);
                 }
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
             }
         }
         #endregion
@@ -511,12 +510,10 @@ namespace POS.View.sales
         private async void setNotifications()
         {
             try
-            {
-
-           
-            refreshDraftNotification();
-            refreshOrdersNotification();
-            refreshOrdersWaitNotification();
+            {           
+                refreshDraftNotification();
+                refreshOrdersNotification();
+                refreshOrdersWaitNotification();
             }
             catch { }
         }
@@ -530,17 +527,6 @@ namespace POS.View.sales
             if (invoice != null && ( _InvoiceType == "ord" || _InvoiceType == "ors") && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
             SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);
-                //if (draftCount != _DraftCount)
-                //{
-                //    if (draftCount > 9)
-                //    {
-                //        md_draft.Badge = "+9" ;
-                //    }
-                //    else if (draftCount == 0) md_draft.Badge = "";
-                //    else
-                //        md_draft.Badge = draftCount.ToString();
-                //}
-                //_DraftCount = draftCount;
             }
             catch { }
         }
@@ -1013,7 +999,7 @@ namespace POS.View.sales
             cb_user.SelectedItem = "";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             lst_coupons.Items.Clear();
             isFromReport = false;
@@ -1204,7 +1190,7 @@ namespace POS.View.sales
             cb_user.SelectedItem = "";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             lst_coupons.Items.Clear();
             isFromReport = false;
@@ -1320,7 +1306,7 @@ namespace POS.View.sales
             invoice.realShippingCost = _RealDeliveryCost;
             if (cb_branch.SelectedIndex != -1)
                 invoice.branchId = (int)cb_branch.SelectedValue;
-            if (tb_taxValue.Text != "")
+            if (tb_taxValue.Text != "" && MainWindow.invoiceTax_bool == true)
                 invoice.tax = decimal.Parse(tb_taxValue.Text);
             else
                 invoice.tax = 0;
@@ -1492,8 +1478,7 @@ namespace POS.View.sales
                 #endregion
                 totalDiscount = _Discount + manualDiscount;
             }
-            decimal taxValue = _Tax;
-            taxValue = SectionData.calcPercentage(_Sum, (decimal)MainWindow.tax);
+            decimal taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
             decimal total = _Sum - totalDiscount + taxValue + _DeliveryCost;
 
             if (_Sum != 0)
@@ -1549,7 +1534,6 @@ namespace POS.View.sales
 
             if (MainWindow.isInvTax == 0)
             {
-                //tb_taxValue.Text = _Tax.ToString();
                 if (_Tax != 0)
                     tb_taxValue.Text = SectionData.DecTostring(_Tax);
                 else

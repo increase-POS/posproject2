@@ -485,12 +485,12 @@ namespace POS.View
                 #region Style Date
                 SectionData.defaultDatePickerStyle(dp_desrvedDate);
                 #endregion
-                //tb_taxValue.Text = MainWindow.tax.ToString();
-                if (MainWindow.tax == 0)
+
+                if (MainWindow.invoiceTax_bool == false)
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
                     sp_tax.Visibility = Visibility.Visible;
                 }
 
@@ -1404,7 +1404,7 @@ namespace POS.View
             invoice.notes = tb_note.Text;
             invoice.shippingCost = _DeliveryCost;
             invoice.realShippingCost = _RealDeliveryCost;
-            if (tb_taxValue.Text != "")
+            if (tb_taxValue.Text != "" && MainWindow.invoiceTax_bool == true)
                 invoice.tax = decimal.Parse(tb_taxValue.Text);
             else
                 invoice.tax = 0;
@@ -1962,7 +1962,10 @@ namespace POS.View
             md_docImage.Badge = "";
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
-            //gd_theRest.Visibility = Visibility.Collapsed;
+            if (MainWindow.invoiceTax_decimal != 0)
+                tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+            else
+                tb_taxValue.Text = "0";
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
@@ -2198,12 +2201,7 @@ namespace POS.View
             else
                 _Sum = 0;
             txt_invNumber.Text = invoice.invNumber.ToString();
-            if (invoice.tax != null)
-            {
-                _Tax = (decimal)invoice.tax;
-                //tb_taxValue.Text = invoice.tax.ToString();
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
-            }
+            #region tax
             if (_InvoiceType == "sbd")
             {
                 _Tax = 0;
@@ -2212,6 +2210,22 @@ namespace POS.View
                 else
                     tb_taxValue.Text = "0";
             }
+            else
+            {
+                if (invoice.tax != null)
+                {
+                    _Tax = (decimal)invoice.tax;
+                    tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
+
+                    //tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                }
+                else
+                {
+                    _Tax = 0;
+                    tb_taxValue.Text = "0";
+                }
+            }
+            #endregion
             cb_customer.SelectedValue = invoice.agentId;
             dp_desrvedDate.Text = invoice.deservedDate.ToString();
             tb_deliveryCost.Text = invoice.shippingCost.ToString();
@@ -2835,18 +2849,11 @@ namespace POS.View
             }
             decimal taxValue = _Tax;
             decimal total = _Sum - totalDiscount + _DeliveryCost;
-            //if (MainWindow.isInvTax == 1)
-            //{
-            try
-            {
-                taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
-            }
-            catch { }
-            //}
-            //else
-            //    tb_taxValue.Text = _Tax.ToString();
+
+            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.invoiceTax_decimal);
+
             total += taxValue;
-            //tb_sum.Text = _Sum.ToString();
+
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
@@ -2884,20 +2891,6 @@ namespace POS.View
             }
             //dg_billDetails.Items.Refresh();
             DataGrid_CollectionChanged(dg_billDetails, null);
-
-            //tb_sum.Text = _Sum.ToString();
-            //if (_Sum != 0)
-            //    tb_sum.Text = SectionData.DecTostring(_Sum);
-            //else
-            //    tb_sum.Text = "0";
-            //if (MainWindow.isInvTax == 0)
-            //{
-            //tb_taxValue.Text = _Tax.ToString();
-            //if (_Tax != 0)
-            //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
-            //else
-            //    tb_taxValue.Text = "0";
-            //}
 
         }
         void refrishDataGridItems()
