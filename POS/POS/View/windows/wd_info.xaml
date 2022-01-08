@@ -81,7 +81,7 @@
                         <Border x:Name="bdr_supMainImage" Margin="10,0,10,0" Height="60"  Width="{Binding Path=ActualHeight, ElementName=bdr_supMainImage}" 
                                 FlowDirection="LeftToRight"   >
                             <Border.Background>
-                                <ImageBrush x:Name="img_supMainLogo"  Stretch="Uniform"  ImageSource="/pic/increase-logo.png"/>
+                                <ImageBrush x:Name="img_supMainLogo"  Stretch="Uniform"  ImageSource="/pic/subIncrease-logo.png"/>
                             </Border.Background>
                         </Border>
                     </StackPanel>
@@ -106,13 +106,13 @@
                         <TextBlock Text="Sales:" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="{StaticResource MainColorBlue}" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,5,5"/>
-                        <TextBlock   Text="92255222" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                        <TextBlock   Text="+965-92255222" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="0"/>
                         <TextBlock   Text="-" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="5"/>
-                        <TextBlock   Text="Sales@in.com.kw" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                        <TextBlock   Text="sales@in.com.kw" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="0"/>
                     </StackPanel>
@@ -121,13 +121,13 @@
                         <TextBlock Text="Support:" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="{StaticResource MainColorBlue}" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,5,5"/>
-                        <TextBlock   Text="92255222" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                        <TextBlock   Text="+965-94131113" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="0"/>
                         <TextBlock   Text="-" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="4"/>
-                        <TextBlock   Text="Sales@in.com.kw" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
+                        <TextBlock   Text="support@in.com.kw" FontSize="12" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="0"/>
 
