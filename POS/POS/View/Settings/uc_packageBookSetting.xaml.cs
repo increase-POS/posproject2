@@ -213,7 +213,9 @@ namespace POS.View.Settings
 
                     chk = await ac.checkconn();
 
-                    chk = await ac.Sendserverkey(activationkey);
+                    chk = await ac.StatSendserverkey(activationkey,"rn");
+                    // //change      chk = 3;
+                    //nochange     chk = 2;
 
                     if (chk <= 0)
                     {
@@ -251,7 +253,9 @@ namespace POS.View.Settings
 
                     chk = await ac.checkconn();
 
-                    chk = await ac.Sendserverkey(activationkey);
+                    chk = await ac.StatSendserverkey(activationkey, "up");
+                    // //change      chk = 3;
+                    //nochange     chk = 2;
 
                     if (chk <= 0)
                     {

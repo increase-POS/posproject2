@@ -78,6 +78,31 @@ namespace POS.Classes
 
         }
 
+
+        public async Task<int> StatSendserverkey(string skey, string activeState)
+        {
+            int item = 0;
+            // int res = 0;
+            //  SendDetail item = new SendDetail();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("skey", skey);
+            parameters.Add("activeState", activeState);
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Activate/StatSendserverkey", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = int.Parse(c.Value);
+                    // item = JsonConvert.DeserializeObject<SendDetail>(c.Value, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+
+                    break;
+                }
+            }
+            return item;
+
+        }
         // extend button start:
         //private async void next_Click(object sender, RoutedEventArgs e)
         //{
