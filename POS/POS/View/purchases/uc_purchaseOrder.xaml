@@ -495,7 +495,8 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="35"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                         <TextBlock Text="Purchases Order" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
@@ -555,7 +556,7 @@
                             </DataGrid.Columns>
                         </DataGrid>
                         <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
-                        <StackPanel Grid.Row="3"  Orientation="Horizontal" Margin="5,0,5,0">
+                    <StackPanel Grid.Row="3"  Orientation="Horizontal" Margin="5">
                             <Button Grid.Column="1" BorderBrush="{x:Null}" Visibility="Collapsed"   
                         Background="{x:Null}" x:Name="btn_previous" Padding="0"  
                                     Margin="5,0,5,0" Height="auto" Click="Btn_previous_Click">

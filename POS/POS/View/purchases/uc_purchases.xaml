@@ -24,7 +24,8 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Border x:Name="bdr_payInvoice" Tag="payInvoice"  Height="87" Grid.Row="0" >
+                    <Border x:Name="bdr_payInvoice" Tag="payInvoice" 
+                           Visibility="Collapsed" Height="87" Grid.Row="0" >
                         <Button x:Name="btn_payInvoice" Click="btn_payInvoice_Click" Style="{StaticResource SmallButton}"   Grid.Row="0" Grid.Column="0"
                 Height="75" Width="75" Background="White" FlowDirection="LeftToRight"
                   Content="Pay Invoice"    BorderBrush="#67686D"  Tag="payInvoice" 
@@ -43,7 +44,8 @@
 	c0.9,0.4,1.8,0.9,2.5,1.6c0.7,0.6,1.2,1.4,1.6,2.2c0.4,0.9,0.6,1.9,0.6,2.9C93.8,82.1,93.7,82.9,93.5,83.6z M0.5,60.8L0.5,60.8
 	l0-1.6h0V60.8z M127.3,71.6L127.3,71.6l0-1.6h0V71.6z"/>
                     </Border>
-                    <Border x:Name="bdr_purchaseOrder" Tag="purchaseOrder"  Height="87" Grid.Row="1" >
+                    <Border x:Name="bdr_purchaseOrder" Tag="purchaseOrder" 
+                             Visibility="Collapsed" Height="87" Grid.Row="1" >
                         <Button  Style="{StaticResource SmallButton}"   Grid.Row="1" Grid.Column="0" 
                 Height="75" Width="75" Background="White" Click="Btn_purchaseOrder_Click" Tag="purchaseOrder"
                   Content="Order"  x:Name="btn_purchaseOrder"  BorderBrush="#67686D"  FlowDirection="LeftToRight"

@@ -83,7 +83,8 @@ namespace POS.View.windows
         private async Task fillUsers()
         {
             List<User> users =  await userModel.GetUsersActive();
-
+            if (!SectionData.isSupportPermision())
+                users = users.Where(x => x.isAdmin == false).ToList();
             cb_user.ItemsSource = users;
             cb_user.DisplayMemberPath = "username";
             cb_user.SelectedValuePath = "userId";

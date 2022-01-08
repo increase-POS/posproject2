@@ -82,15 +82,18 @@ namespace POS.View.Settings
             }
         }
         public bool stopPermission;
-        void permission()
+        async void permission()
         {
             bool loadWindow = false;
+            var borders = FindControls.FindVisualChildren<Border>(this);
+            if (borders.Count() == 0)
+                await Task.Delay(0500);
+                borders = FindControls.FindVisualChildren<Border>(this);
             if (!SectionData.isAdminPermision())
                 foreach (Border border in FindControls.FindVisualChildren<Border>(this))
                 {
                     if (border.Tag != null)
                         if (MainWindow.groupObject.HasPermission(border.Tag.ToString(), MainWindow.groupObjects))
-
                         {
                             border.Visibility = Visibility.Visible;
                             if (!loadWindow)
@@ -101,10 +104,19 @@ namespace POS.View.Settings
                             }
                         }
                         else border.Visibility = Visibility.Collapsed;
+                if (borders.Count() != 0)
+                        stopPermission = true; 
                 }
             else
+            {
+                foreach (Border border in FindControls.FindVisualChildren<Border>(this))
+                    if (border.Tag != null)
+                            border.Visibility = Visibility.Visible;
                 btn_general_Click(btn_general, null);
-            stopPermission = true;
+                if (borders.Count() != 0)
+                stopPermission = true;
+            }
+            //MessageBox.Show("");
         }
         public void translate()
         {

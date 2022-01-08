@@ -702,6 +702,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="Orders" x:Name="txt_payInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
@@ -772,8 +773,8 @@
                                 <DataGridTextColumn IsReadOnly="True"  Width="*"  Header="Total" Binding="{Binding Path=Total ,Converter={StaticResource accuracyConverter}}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
-                        <StackPanel Grid.Row="3"  Orientation="Horizontal" Margin="5,0,5,0">
+                      
+                        <StackPanel Grid.Row="2"  Orientation="Horizontal" Margin="5">
                             <Button Grid.Column="1" BorderBrush="{x:Null}" Visibility="Collapsed"  
                         Background="{x:Null}" x:Name="btn_previous" Padding="0"   Click="Btn_previous_Click"
                                     Margin="5,0,5,0" Height="auto">
@@ -804,21 +805,24 @@
                                     </Path>
                                 </StackPanel>
                             </Button>
-                            <StackPanel x:Name="sp_tax" Visibility="Collapsed" Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        </StackPanel>
+                    <Separator Margin="5,0" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+
+                    <StackPanel x:Name="sp_tax" Visibility="Collapsed" Grid.Row="4" Orientation="Horizontal"
                                     Margin="0,0,10,0"  >
-                                <TextBlock Grid.Row="0"  Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                        <TextBlock Grid.Row="0"  Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
-                                <TextBlock Grid.Row="1"   x:Name="tb_taxValue" Grid.Column="1" Margin="5" 
+                        <TextBlock Grid.Row="1"   x:Name="tb_taxValue" Grid.Column="1" Margin="5" 
                        Foreground="#4E4E4E" Text="{Binding tax, Mode=OneWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                                <TextBlock    Foreground="#4E4E4E" Text="%"
+                        <TextBlock    Foreground="#4E4E4E" Text="%"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"
                                     Margin="0,0,10,0"  >
                             <TextBlock Grid.Row="0"  Text="SUM" x:Name="txt_sum" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
