@@ -565,7 +565,8 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
-                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <TextBlock Text="Items Import/Export" x:Name="txt_titleDataGridInvoice" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                      VerticalAlignment="Center" 
