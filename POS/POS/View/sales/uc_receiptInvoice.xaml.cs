@@ -1142,36 +1142,50 @@ namespace POS.View
         }
         private async Task<bool> validateInvoiceValues()
         {
-            bool valid;
+            bool valid = true;
             bool available = true;
-            SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
-
-            // validate empty values
-            if (cb_paymentProcessType.SelectedIndex != -1)
-            {
-                switch (cb_paymentProcessType.SelectedIndex)
-                {
-                    case 0:
-                        SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
-                        break;
-                    case 1:
-                        {
-                            if (!SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip"))
-                                exp_customer.IsExpanded = true;
-                            break;
-                        }
-                    case 2:
-                        SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
-                        SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
-                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
-                        break;
-                }
-            }
             if (decimal.Parse(tb_total.Text) == 0)
             {
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
                 return false;
             }
+            SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+
+            // validate empty values
+            if (cb_paymentProcessType.SelectedIndex != -1)
+            {
+                switch (cb_paymentProcessType.SelectedValue.ToString())
+                {
+                    case "cash":
+                        SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        break;
+                    case "balance":
+                        if (!SectionData.validateEmptyComboBox(cb_customer, p_errorCustomer, tt_errorCustomer, "trEmptyCustomerToolTip"))
+                        {
+                            exp_customer.IsExpanded = true;
+                            valid = false;
+                        }
+                        break;
+                    case "card":
+                        if (txt_card.Text.Equals(""))
+                            valid = false;
+                        SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
+                        if (_SelectedCard != -1)
+                        {
+                            var card = cards.Where(x => x.cardId == _SelectedCard).FirstOrDefault();
+                            if (card.hasProcessNum.Value && tb_processNum.Text.Equals(""))
+                            {
+                                SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
+                                valid = false;
+                            }
+                        }
+                        break;
+                }
+            }
+            else
+                valid = false;
+           
             // check amount
             //if (_InvoiceType == "sd" || _InvoiceType == "or")
             if (_InvoiceType == "sd")
@@ -1199,11 +1213,12 @@ namespace POS.View
                 return valid;
             }
             #endregion
-            if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
-            || (cb_paymentProcessType.SelectedIndex == 0)
-            || (cb_paymentProcessType.SelectedIndex == 3)
-            || (cb_paymentProcessType.SelectedIndex == 2 && _SelectedCard != -1)))
-                valid = true;
+            //if (billDetails.Count > 0 && available && ((cb_paymentProcessType.SelectedIndex == 1 && cb_customer.SelectedIndex != -1)
+            //|| (cb_paymentProcessType.SelectedIndex == 0)
+            //|| (cb_paymentProcessType.SelectedIndex == 3)
+            //|| (cb_paymentProcessType.SelectedIndex == 2 && _SelectedCard != -1)))
+           if (billDetails.Count > 0 && available && valid)
+                    valid = true;
             else
                 valid = false;
             if (valid == true)
@@ -1972,6 +1987,7 @@ namespace POS.View
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearTextBlockValidate(txt_card, p_errorCard);
             SectionData.clearComboBoxValidate(cb_user, p_errorUser);
+            SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
             SectionData.clearValidate(tb_processNum, p_errorProcessNum);
             refrishBillDetails();
             tb_barcode.Focus();
