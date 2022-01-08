@@ -86,7 +86,11 @@ namespace POS_Server.Controllers
                              packageName=p.packageName,
                              versionName=p.versionName,
                              packageNumber=p.packageNumber,
-
+                             customerName = p.customerName,
+                             customerLastName = p.customerLastName,
+                             agentName = p.agentName,
+                             agentLastName = p.agentLastName,
+                             agentAccountName = p.agentAccountName,
                          }).FirstOrDefault();
 
                 packs.posCountNow=  entity.pos.Count();

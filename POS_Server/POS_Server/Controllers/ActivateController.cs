@@ -243,6 +243,7 @@ namespace POS_Server.Controllers
                              agentName = p.agentName,
                              agentLastName = p.agentLastName,
                              agentAccountName = p.agentAccountName,
+                             packageName=p.packageName,
                          }).FirstOrDefault();
             }
             sd.packageSend = packs;
