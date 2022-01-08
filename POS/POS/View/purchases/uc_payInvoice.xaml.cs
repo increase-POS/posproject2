@@ -1194,6 +1194,8 @@ namespace POS.View
                 {
                     if ((sender as TextBox).Name == "tb_invoiceNumber")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorInvoiceNumber, tt_errorInvoiceNumber, "trErrorEmptyInvNumToolTip");
+                    else if ((sender as TextBox).Name == "tb_processNum")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
                 }
                 else if (name == "ComboBox")
                 {
@@ -1348,17 +1350,39 @@ namespace POS.View
             //SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
             //if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
             //    exp_vendor.IsExpanded = true;
+            if (decimal.Parse(tb_total.Text) == 0)
+            {
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+                return false;
+            }
             if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < decimal.Parse(tb_total.Text))
             {
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
                 return false;
             }
-            if (cb_paymentProcessType.SelectedValue.ToString() == "balance")
+           else if (cb_paymentProcessType.SelectedValue.ToString() == "balance")
             {
                 if (!SectionData.validateEmptyComboBox(cb_vendor, p_errorVendor, tt_errorVendor, "trErrorEmptyVendorToolTip"))
                     exp_vendor.IsExpanded = true;
                 if (cb_vendor.SelectedIndex < 1)
                     return false;
+            }
+            else if(cb_paymentProcessType.SelectedValue.ToString() == "card")
+            {
+                if (_SelectedCard == -1)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectCreditCard"), animation: ToasterAnimation.FadeIn);
+                    return false;
+                }
+                else
+                {
+                    var card = cards.Where(x => x.cardId == _SelectedCard).FirstOrDefault();
+                    if (card.hasProcessNum.Value && tb_processNum.Text.Equals(""))
+                    {
+                        SectionData.validateEmptyTextBox(tb_processNum, p_errorProcessNum, tt_errorProcessNum, "trEmptyProcessNumToolTip");
+                        return false;
+                    }
+                }
             }
             //if (cb_vendor.SelectedIndex > 0)
             //{
@@ -1376,12 +1400,7 @@ namespace POS.View
                 if (dp_desrvedDate.Text.Equals("") || tb_invoiceNumber.Text.Equals(""))
                     return false;
             }
-            if (decimal.Parse(tb_total.Text) == 0)
-            {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
-                return false;
-            }
-
+            
             return true;
         }
 
@@ -1745,6 +1764,7 @@ namespace POS.View
             _SequenceNum = 0;
             _SelectedBranch = -1;
             _SelectedVendor = -1;
+            _SelectedCard = -1;
             invoice = new Invoice();
             tb_barcode.Clear();
             cb_branch.SelectedIndex = -1;
@@ -1777,6 +1797,9 @@ namespace POS.View
 
             TextBox tbStartDate = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
             SectionData.clearValidate(tbStartDate, p_errorDesrvedDate);
+            SectionData.clearValidate(tb_processNum, p_errorProcessNum);
+            SectionData.clearComboBoxValidate(cb_vendor, p_errorVendor);
+            SectionData.clearValidate(tb_invoiceNumber, p_errorInvoiceNumber);
             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseBill");
             btn_save.Content = MainWindow.resourcemanager.GetString("trBuy");

@@ -468,9 +468,9 @@
                                  Text="{Binding test, Mode=OneWay}" Margin="5"
                                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                  Grid.Column="2" Padding="10,0,5,0" Height="40"
-                                             PreviewKeyDown="PreventSpaces" 
+                                 PreviewKeyDown="PreventSpaces"  LostFocus="input_LostFocus"
                                  PreviewTextInput="Tb_EnglishDigit_PreviewTextInput" 
-                                        BorderThickness="1" TextChanged="Tb_textBox_TextChanged"
+                                BorderThickness="1" TextChanged="Tb_textBox_TextChanged"
                                  materialDesign:HintAssist.Hint="Process Number..."  
                                  Foreground="#4E4E4E"  TextBlock.FontSize="12"
                                  Background="#f8f8f8" BorderBrush="#f8f8f8" />
