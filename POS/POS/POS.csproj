@@ -304,6 +304,7 @@
     <Compile Include="converters\depositorTypeConverter.cs" />
     <Compile Include="converters\discountTypeConverter.cs" />
     <Compile Include="converters\enabledCouponConverter.cs" />
+    <Compile Include="converters\expiredDateConverter.cs" />
     <Compile Include="converters\inventoryTypeConverter.cs" />
     <Compile Include="converters\invoiceStatusConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
@@ -704,6 +705,9 @@
     </Compile>
     <Compile Include="View\windows\wd_serialNum.xaml.cs">
       <DependentUpon>wd_serialNum.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_serials.xaml.cs">
+      <DependentUpon>wd_serials.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_setupFirstPos.xaml.cs">
       <DependentUpon>wd_setupFirstPos.xaml</DependentUpon>
@@ -1288,6 +1292,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_serials.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\windows\wd_setupFirstPos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1381,6 +1389,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="pic\increase-logo100.png" />
+    <Resource Include="pic\subIncrease-logo.png" />
     <Content Include="Thumb\agents\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
