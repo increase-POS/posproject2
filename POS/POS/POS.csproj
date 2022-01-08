@@ -1398,7 +1398,6 @@
     <Content Include="Thumb\items\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Thumb\Scan\scan.jpg" />
     <Content Include="Thumb\Scan\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
