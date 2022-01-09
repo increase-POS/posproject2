@@ -672,7 +672,7 @@ namespace POS.View.reports
             itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
 
             //hide tax column if region tax equals to 0
-            if (MainWindow.tax == 0)
+            if (MainWindow.invoiceTax_bool.Value)
                 col_tax.Visibility = Visibility.Hidden;
             else
                 col_tax.Visibility = Visibility.Visible;
