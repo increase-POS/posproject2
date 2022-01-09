@@ -694,7 +694,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                        
-                        <TextBlock x:Name="txt_tax" Grid.Column="0" Margin="10,0,5,0" Text="Test" 
+                        <TextBlock x:Name="txt_tax" Grid.Column="0" Margin="10,0,5,0" Text="Parent Tax" 
                                     Foreground="#6e6e6e" 
                                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             <ToggleButton x:Name="tgl_tax"   Grid.Column="1"

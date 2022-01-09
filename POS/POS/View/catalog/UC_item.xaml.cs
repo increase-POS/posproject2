@@ -2116,6 +2116,10 @@ namespace POS.View
                     cat = await categoryModel.getById(catId);
                     //tb_taxes.Text = cat.taxes.ToString();
                     tb_taxes.Text = SectionData.DecTostring(cat.taxes);
+                    if (cat.fixedTax == 1)
+                        tb_taxes.IsEnabled = false;
+                    else
+                        tb_taxes.IsEnabled = true;
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

@@ -60,6 +60,7 @@ var strP = TokenManager.GetPrincipal(token);
                                  notes = p.notes,
                                  parentId = p.parentId,
                                  taxes = p.taxes,
+                                 fixedTax = p.fixedTax,
                                  updateDate = p.updateDate,
                                  updateUserId = p.updateUserId,
                                  isActive = p.isActive,
@@ -132,6 +133,7 @@ var strP = TokenManager.GetPrincipal(token);
                                      notes = p.notes,
                                      parentId = p.parentId,
                                      taxes = p.taxes,
+                                     fixedTax = p.fixedTax,
                                      updateDate = p.updateDate,
                                      updateUserId = p.updateUserId,
                                      isActive = p.isActive,
@@ -157,6 +159,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                   notes = p.notes,
                                                   parentId = p.parentId,
                                                   taxes = p.taxes,
+                                                  fixedTax = p.fixedTax,
                                                   updateDate = p.updateDate,
                                                   updateUserId = p.updateUserId,
                                                   isActive = p.isActive,
@@ -207,6 +210,7 @@ var strP = TokenManager.GetPrincipal(token);
                        p.notes,
                        p.parentId,
                        p.taxes,
+                       p.fixedTax,
                        p.updateDate,
                        p.updateUserId,
                    })
@@ -255,6 +259,7 @@ var strP = TokenManager.GetPrincipal(token);
                                 p.notes,
                                 p.parentId,
                                 p.taxes,
+                                p.fixedTax,
                                 p.updateDate,
                                 p.updateUserId,
                             }).FirstOrDefault();
@@ -271,6 +276,7 @@ var strP = TokenManager.GetPrincipal(token);
                         tempcate.notes = category.notes;
                         tempcate.parentId = category.parentId;
                         tempcate.taxes = category.taxes;
+                        tempcate.fixedTax = category.fixedTax;
                         tempcate.updateDate = category.updateDate;
                         tempcate.updateUserId = category.updateUserId;
                          
@@ -333,6 +339,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                   C.notes,
                                                   C.parentId,
                                                   C.taxes,
+                                                  C.fixedTax,
                                                   C.updateDate,
                                                   C.updateUserId,
                                                   C.isActive,
@@ -364,6 +371,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                   C.notes,
                                                   C.parentId,
                                                   C.taxes,
+                                                  C.fixedTax,
                                                   C.updateDate,
                                                   C.updateUserId,
                                                   C.isActive,
@@ -464,6 +472,7 @@ var strP = TokenManager.GetPrincipal(token);
                             tmpCategory.notes = newObject.notes;
                             tmpCategory.parentId = newObject.parentId;
                             tmpCategory.taxes = newObject.taxes;
+                            tmpCategory.fixedTax = newObject.fixedTax;
                             tmpCategory.updateDate = DateTime.Now;
                             tmpCategory.updateUserId = newObject.updateUserId;
                             tmpCategory.isActive = newObject.isActive;
@@ -527,7 +536,8 @@ var strP = TokenManager.GetPrincipal(token);
                             {
                                 for (int i = 0; i < catitems.Count; i++)
                                 {
-                                    
+                                    if(tmpCategory.fixedTax == 1)
+                                        catitems[i].taxes = tmpCategory.taxes;
                                     catitems[i].isActive = (byte)isActivecat;
                                     catitems[i].updateUserId = updateuser;
                                     catitems[i].updateDate = DateTime.Now;

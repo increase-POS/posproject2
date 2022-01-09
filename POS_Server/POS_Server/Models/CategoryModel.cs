@@ -14,6 +14,7 @@ namespace POS_Server.Models
         public string image { get; set; }
         public Nullable<short> isActive { get; set; }
         public Nullable<decimal> taxes { get; set; }
+        public Nullable<byte> fixedTax { get; set; }
         public Nullable<int> parentId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }

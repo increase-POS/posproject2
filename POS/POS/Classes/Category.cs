@@ -21,6 +21,7 @@ namespace POS.Classes
         public string details { get; set; }
         public string image { get; set; }
         public Nullable<decimal> taxes { get; set; }
+        public Nullable<byte> fixedTax { get; set; }
         public Nullable<int> parentId { get; set; }
         public Nullable<System.DateTime> createDate { get; set; }
         public Nullable<System.DateTime> updateDate { get; set; }
