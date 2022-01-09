@@ -179,11 +179,11 @@ namespace POS.View
 
 
               await  fillCategories();
-
+                RefrishCategoriesDatagrid(categories);
                 if (MainWindow.itemsTax_bool == false)
-                    tb_taxes.Visibility = Visibility.Collapsed;
+                    gd_tax.Visibility = Visibility.Collapsed;
                 else
-                    tb_taxes.Visibility = Visibility.Visible;
+                    gd_tax.Visibility = Visibility.Visible;
 
 
                 if (sender != null)
@@ -201,7 +201,27 @@ namespace POS.View
         {
             try
             {
-
+                if ( cb_parentCategorie.SelectedIndex > 0)
+                {
+                    int catId = (int)cb_parentCategorie.SelectedValue;
+                    var cat = categories.Where(x => x.categoryId == catId).FirstOrDefault();
+                    tb_taxes.Text = SectionData.DecTostring(cat.taxes);
+                    if (cat.fixedTax == 1)
+                    {
+                       gd_tax.IsEnabled = false;
+                       tgl_tax.IsChecked = true;
+                    }
+                    else
+                    {
+                        gd_tax.IsEnabled = true;
+                        tgl_tax.IsChecked = false;
+                    }
+                }
+                else
+                {
+                    gd_tax.IsEnabled = true;
+                    tgl_tax.IsChecked = false;
+                }
                 if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
                 else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
                 if (parentCategorieSelctedValue != category.categoryId)

@@ -26,9 +26,9 @@ namespace POS_Server.Controllers
         [Route("GetAllCategories")]
         public string GetAllCategories(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             Boolean canDelete = false;
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -393,9 +393,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Save")]
         public string Save(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -529,8 +529,14 @@ var strP = TokenManager.GetPrincipal(token);
                                 }
                                 entity.SaveChanges();
                             }
+                            if (tmpCategory.fixedTax == 1)
+                            {
+                                var categories = entity.categories.Where(U => catIdlist.Contains((int)U.categoryId)).ToList();
+                                categories.ForEach(a => a.taxes = tmpCategory.taxes);
+                            }
                             // disactive items related to selected category and subs
                             catIdlist.Add(categoryId);
+                           
                             var catitems = entity.items.Where(U => catIdlist.Contains((int)U.categoryId)).ToList();
                             if (catitems.Count > 0)
                             {

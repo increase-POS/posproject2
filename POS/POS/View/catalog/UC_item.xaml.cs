@@ -2110,7 +2110,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Category cat = new Category();
-                if (cb_parentItem.SelectedIndex == -1 && cb_categorie.SelectedIndex != -1)
+                if (cb_categorie.SelectedIndex != -1)
                 {
                     int catId = (int)cb_categorie.SelectedValue;
                     cat = await categoryModel.getById(catId);

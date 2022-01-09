@@ -687,7 +687,7 @@
                             </Path.ToolTip>
                         </Path>
 
-                        <Grid Grid.Row="4">
+                        <Grid Grid.Row="4" Name="gd_tax">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="auto" />
