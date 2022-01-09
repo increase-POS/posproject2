@@ -578,7 +578,7 @@ namespace POS.View.reports
             txt_count.Text = dgInvoice.Items.Count.ToString();
 
             //hide tax column if region tax equals to 0
-            if (MainWindow.tax == 0)
+            if (MainWindow.invoiceTax_bool.Value)
                 col_tax.Visibility = Visibility.Hidden;
             else
                 col_tax.Visibility = Visibility.Visible;
