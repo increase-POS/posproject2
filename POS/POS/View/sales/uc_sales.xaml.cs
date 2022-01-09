@@ -51,11 +51,11 @@ namespace POS.View
             btn_salesStatistic.Content = MainWindow.resourcemanager.GetString("trDaily");
             btn_coupon.Content = MainWindow.resourcemanager.GetString("trCoupon");
             btn_offer.Content = MainWindow.resourcemanager.GetString("trOffer");
-            btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");
+            //btn_medals.Content = MainWindow.resourcemanager.GetString("trMedals");
 
             btn_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
             btn_salesOrders.Content = MainWindow.resourcemanager.GetString("trOrders");
-            btn_membership.Content = MainWindow.resourcemanager.GetString("trMembership");
+            //btn_membership.Content = MainWindow.resourcemanager.GetString("trMembership");
 
 
 
@@ -164,11 +164,11 @@ namespace POS.View
             btn_salesOrders.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_salesOrders.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_medals.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_medals.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_medals.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_medals.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_membership.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_membership.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_membership.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_membership.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
         void refreashBachgroundClick(Button btn)
@@ -272,38 +272,38 @@ namespace POS.View
             }
         }
 
-        private void Btn_medals_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                refreashBachgroundClick(btn_medals);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(uc_medals.Instance);
-                Button button = sender as Button;
-                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+        //private void Btn_medals_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        refreashBachgroundClick(btn_medals);
+        //        grid_main.Children.Clear();
+        //        grid_main.Children.Add(uc_medals.Instance);
+        //        Button button = sender as Button;
+        //        MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
 
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
 
-        private void Btn_membership_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                refreashBachgroundClick(btn_membership);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(uc_membership.Instance);
-                Button button = sender as Button;
-                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //private void Btn_membership_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        refreashBachgroundClick(btn_membership);
+        //        grid_main.Children.Clear();
+        //        grid_main.Children.Add(uc_membership.Instance);
+        //        Button button = sender as Button;
+        //        MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
