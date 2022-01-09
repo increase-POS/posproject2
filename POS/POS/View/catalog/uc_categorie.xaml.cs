@@ -127,6 +127,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxHint"));
             // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));
             txt_categorie.Text = MainWindow.resourcemanager.GetString("trCategorie");
+            txt_tax.Text = MainWindow.resourcemanager.GetString("trParentTax");
 
             txt_addButton.Text = MainWindow.resourcemanager.GetString("trAdd");
             txt_updateButton.Text = MainWindow.resourcemanager.GetString("trUpdate");
@@ -321,6 +322,10 @@ namespace POS.View
                         tax = 0;
                     else tax = decimal.Parse(tb_taxes.Text);
 
+                    if (tgl_tax.IsChecked == true)
+                        category.fixedTax = 1;
+                    else
+                        category.fixedTax = 0;
                     if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
                     else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
 
@@ -406,6 +411,11 @@ namespace POS.View
                     if (string.IsNullOrEmpty(tb_taxes.Text))
                         tax = 0;
                     else tax = decimal.Parse(tb_taxes.Text);
+
+                    if (tgl_tax.IsChecked == true)
+                        category.fixedTax = 1;
+                    else
+                        category.fixedTax = 0;
 
                     if (cb_parentCategorie.Text.Equals("")) parentCategorieSelctedValue = 0;
                     else parentCategorieSelctedValue = Convert.ToInt32(cb_parentCategorie.SelectedValue);
@@ -656,7 +666,10 @@ namespace POS.View
                     cb_parentCategorie.SelectedValue = category.parentId;
 
                     tb_taxes.Text = SectionData.DecTostring(category.taxes);
-
+                    if (category.fixedTax == 1)
+                        tgl_tax.IsChecked = true;
+                    else
+                        tgl_tax.IsChecked = false;
                     getImg();
 
                     #region delete
@@ -729,6 +742,10 @@ namespace POS.View
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
             tb_taxes.Text = SectionData.DecTostring(category.taxes);
+            if (category.fixedTax == 1)
+                tgl_tax.IsChecked = true;
+            else
+                tgl_tax.IsChecked = false;
             if (categories.Where(x => (x.categoryCode.Contains(txtCategorySearch) ||
              x.name.Contains(txtCategorySearch) ||
              x.details.Contains(txtCategorySearch)
