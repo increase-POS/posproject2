@@ -382,7 +382,7 @@
                                             PreviewTextInput="DecimalValidationTextBox"  PreviewKeyDown="space_PreviewKeyDown"
                                                Height="20"  
                                              TextChanged="Tb_taxValue_TextChanged"/>
-                        <TextBlock    Foreground="#4E4E4E" Text="%"
+                        <TextBlock    Foreground="#4E4E4E" Text="%" Name="tb_percentage"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontWeight="Bold"  FontSize="12"/>
                     </StackPanel>

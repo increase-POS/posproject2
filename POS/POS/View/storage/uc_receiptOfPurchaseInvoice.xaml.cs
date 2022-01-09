@@ -196,7 +196,11 @@ namespace POS.View.storage
                 setNotifications();
                 setTimer();
                 controls = new List<Control>();
-
+                #region hid tax inputs
+                txt_tax.Visibility = Visibility.Collapsed;
+                tb_taxValue.Visibility = Visibility.Collapsed;
+                tb_percentage.Visibility = Visibility.Collapsed;
+                #endregion
                 #region loading
                 loadingList = new List<keyValueBool>();
                 bool isDone = true;
@@ -1287,21 +1291,7 @@ namespace POS.View.storage
         }
 
         public async Task fillInvoiceInputs(Invoice invoice)
-        {
-            if (_InvoiceType == "isd")
-            {
-                tb_sum.Visibility = Visibility.Visible;
-                txt_sum.Visibility = Visibility.Visible;
-                txt_total.Visibility = Visibility.Visible;
-                tb_total.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                tb_sum.Visibility = Visibility.Collapsed;
-                txt_sum.Visibility = Visibility.Collapsed;
-                txt_total.Visibility = Visibility.Collapsed;
-                tb_total.Visibility = Visibility.Collapsed;
-            }
+        {          
             txt_branch.Text = invoice.branchName;
             txt_invNumber.Text = invoice.invNumber;
             if (invoice.total != null)
@@ -1375,13 +1365,38 @@ namespace POS.View.storage
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                txt_tax.Visibility = Visibility.Visible;
+                tb_taxValue.Visibility = Visibility.Visible;
+                tb_percentage.Visibility = Visibility.Visible;
+                tb_sum.Visibility = Visibility.Collapsed;
+                txt_sum.Visibility = Visibility.Collapsed;
+                txt_total.Visibility = Visibility.Collapsed;
+                tb_total.Visibility = Visibility.Collapsed;
 
             }
             else if (_InvoiceType == "pbw")
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
+                txt_tax.Visibility = Visibility.Visible;
+                tb_taxValue.Visibility = Visibility.Visible;
+                tb_percentage.Visibility = Visibility.Visible;
+                tb_sum.Visibility = Visibility.Collapsed;
+                txt_sum.Visibility = Visibility.Collapsed;
+                txt_total.Visibility = Visibility.Collapsed;
+                tb_total.Visibility = Visibility.Collapsed;
             }
+            else
+            {
+                txt_tax.Visibility = Visibility.Collapsed;
+                tb_taxValue.Visibility = Visibility.Collapsed;
+                tb_percentage.Visibility = Visibility.Collapsed;
+                tb_sum.Visibility = Visibility.Visible;
+                txt_sum.Visibility = Visibility.Visible;
+                txt_total.Visibility = Visibility.Visible;
+                tb_total.Visibility = Visibility.Visible;
+            }
+
             if (!isFromReport)
             {
                 btn_next.Visibility = Visibility.Visible;
