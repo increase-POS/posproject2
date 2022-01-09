@@ -55,7 +55,7 @@ namespace POS.View
             btn_itemsDestroy.Content = MainWindow.resourcemanager.GetString("trDestructive");
             btn_shortage.Content = MainWindow.resourcemanager.GetString("trShortage");
             btn_inventory.Content = MainWindow.resourcemanager.GetString("trStocktaking");
-            btn_storageStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+            //btn_storageStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
         }
         public void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

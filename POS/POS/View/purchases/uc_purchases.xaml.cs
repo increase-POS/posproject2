@@ -52,7 +52,7 @@ namespace POS.View
         {
             btn_payInvoice.Content = MainWindow.resourcemanager.GetString("trInvoice");
             btn_purchaseOrder.Content = MainWindow.resourcemanager.GetString("trOrders");
-            btn_purchaseStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+            //btn_purchaseStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
 
 
         }
@@ -146,8 +146,8 @@ namespace POS.View
             btn_purchaseOrder.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_purchaseOrder.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_purchaseStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_purchaseStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_purchaseStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_purchaseStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
 
@@ -194,7 +194,7 @@ namespace POS.View
         {
             try
             {
-                refreashBachgroundClick(btn_purchaseStatistic);
+                //refreashBachgroundClick(btn_purchaseStatistic);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_statistic.Instance);
                 Button button = sender as Button;
