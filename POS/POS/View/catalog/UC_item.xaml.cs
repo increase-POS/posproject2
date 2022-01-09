@@ -348,7 +348,7 @@ namespace POS.View
                 cb_minUnit.SelectedIndex = 0;
                 cb_maxUnit.SelectedIndex = 0;
 
-                if (MainWindow.tax == 0)
+                if (MainWindow.itemsTax_bool == false)
                     tb_taxes.Visibility = Visibility.Collapsed;
                 else
                     tb_taxes.Visibility = Visibility.Visible;
@@ -1735,6 +1735,7 @@ namespace POS.View
                 tb_code.Clear();
                 tb_name.Clear();
                 tb_details.Clear();
+                openFileDialog.FileName = "";
                 cb_parentItem.SelectedIndex = -1;
                 cb_categorie.SelectedIndex = -1;
                 cb_itemType.SelectedIndex = -1;
