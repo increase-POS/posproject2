@@ -155,7 +155,7 @@ namespace POS.View.catalog
                 }
                 translate();
                 #endregion
-                if (MainWindow.tax == 0)
+                if (MainWindow.itemsTax_bool == false)
                     tb_taxes.Visibility = Visibility.Collapsed;
                 else
                     tb_taxes.Visibility = Visibility.Visible;
@@ -289,7 +289,7 @@ namespace POS.View.catalog
 
             txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_categorie, MainWindow.resourcemanager.GetString("trSelectCategorieHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxesHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxHint"));
 
             txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarCode");
 

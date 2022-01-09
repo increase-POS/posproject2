@@ -730,7 +730,7 @@
                                                  Grid.Row="2" Padding="10,0,5,0" MaxLength="20" 
                                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"   
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                                                 BorderThickness="1"  materialDesign:HintAssist.Hint="Taxes..."  
+                                                 BorderThickness="1"  materialDesign:HintAssist.Hint="Tax..."  
                                                  Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                                  BorderBrush="#f8f8f8" TextChanged="Tb_validateEmptyTextChange"
                                                  Grid.Column="1"  Height="40"  Margin="10,5" 

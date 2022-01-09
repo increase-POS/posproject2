@@ -124,7 +124,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
             txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_parentCategorie, MainWindow.resourcemanager.GetString("trParentCategorieHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxesHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxHint"));
             // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));
             txt_categorie.Text = MainWindow.resourcemanager.GetString("trCategorie");
 
@@ -179,7 +179,7 @@ namespace POS.View
 
               await  fillCategories();
 
-                if (MainWindow.tax == 0)
+                if (MainWindow.itemsTax_bool == false)
                     tb_taxes.Visibility = Visibility.Collapsed;
                 else
                     tb_taxes.Visibility = Visibility.Visible;
@@ -1170,7 +1170,7 @@ namespace POS.View
             DTForExcel.Columns[1].Caption = MainWindow.resourcemanager.GetString("trNameHint");
             DTForExcel.Columns[2].Caption = MainWindow.resourcemanager.GetString("trDetailsHint");
             DTForExcel.Columns[3].Caption = MainWindow.resourcemanager.GetString("trParentCategorieHint");
-            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trTaxesHint");
+            DTForExcel.Columns[4].Caption = MainWindow.resourcemanager.GetString("trTaxHint");
 
 
             ExportToExcel.Export(DTForExcel);
