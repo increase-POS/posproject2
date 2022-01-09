@@ -586,11 +586,7 @@ namespace POS.View.purchases
             reportQuery = filltoprint();
 
             //hide tax column if all values equal 0
-            //if (MainWindow.tax == 0)
-            //    col_tax.Visibility = Visibility.Hidden;
-            //else
-            //    col_tax.Visibility = Visibility.Visible;
-            if(MainWindow.invoiceTax_bool.Value)
+            if(!MainWindow.invoiceTax_bool.Value)
                 col_tax.Visibility = Visibility.Hidden;
             else
                 col_tax.Visibility = Visibility.Visible;
