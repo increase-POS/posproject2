@@ -132,7 +132,7 @@ namespace POS.View.accounts
             btn_bonds.Content = MainWindow.resourcemanager.GetString("trBonds");
             btn_ordersAccounting.Content = MainWindow.resourcemanager.GetString("trOrders");
             btn_subscriptions.Content = MainWindow.resourcemanager.GetString("trSubscriptions");
-            btn_accountsStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
+            //btn_accountsStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
 
         }
         void refreashBackground()
@@ -159,8 +159,8 @@ namespace POS.View.accounts
             btn_subscriptions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_subscriptions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_accountsStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_accountsStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_accountsStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_accountsStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
         void refreashBachgroundClick(Button btn)
         {

@@ -1330,7 +1330,7 @@ namespace POS.View.purchases
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Invoice\Ar\ArPurVendorSts.rdlc";
-                    paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
+                //    paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
                     secondTitle = "vendors";
                     subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
@@ -1364,7 +1364,7 @@ namespace POS.View.purchases
                 else if (selectedTab == 2)
                 {
                     addpath = @"\Reports\StatisticReport\Purchase\Invoice\En\EnPurVendorSts.rdlc";
-                    paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
+                   // paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
                     secondTitle = "vendors";
                     subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
                 }
@@ -1389,6 +1389,7 @@ namespace POS.View.purchases
             ReportCls.checkLang();
             Title = MainWindow.resourcemanagerreport.GetString("trPurchasesReport") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
+
             clsReports.PurInvStsReport(reportQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

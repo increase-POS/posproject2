@@ -41,7 +41,7 @@ namespace POS.View.reports
             btn_purchaseReports.Content = MainWindow.resourcemanager.GetString("trPurchases");
             btn_storageReports.Content = MainWindow.resourcemanager.GetString("trStorage");
             btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounts");
-            btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
+            //btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
         }
 
         public uc_reports()
@@ -154,8 +154,8 @@ namespace POS.View.reports
             btn_accountsReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_accountsReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_usersReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_usersReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
         }
 
@@ -238,7 +238,7 @@ namespace POS.View.reports
         {
             try
             {
-                refreashBachgroundClick(btn_usersReports);
+                //refreashBachgroundClick(btn_usersReports);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_usersReport.Instance);
             }

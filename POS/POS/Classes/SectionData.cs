@@ -1216,7 +1216,7 @@ namespace POS.Classes
             else if (str == "membership")
                 _str = MainWindow.resourcemanager.GetString("trMembership");
             else if (str == "salesStatistic")
-                _str = MainWindow.resourcemanager.GetString("trStatistic");
+                _str = MainWindow.resourcemanager.GetString("trDaily");
             #endregion
             #region  sectionData
             if (str == "suppliers")
