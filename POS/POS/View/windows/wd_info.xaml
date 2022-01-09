@@ -77,8 +77,8 @@
                         <TextBlock Text="شركة انكريس للتجارة العامة ذ.م.م" FontSize="16" FontWeight="SemiBold"  HorizontalAlignment="Center"
                            Foreground="#8C8C8C" Grid.Column="1"
                        VerticalAlignment="Center" Margin="10,5,10,5"/>
-
-                        <Border x:Name="bdr_supMainImage" Margin="10,0,10,0" Height="60"  Width="{Binding Path=ActualHeight, ElementName=bdr_supMainImage}" 
+                        <!--Width="{Binding Path=ActualHeight, ElementName=bdr_supMainImage}"-->
+                        <Border x:Name="bdr_supMainImage" Margin="10,0,10,0" Height="60"  Width="100" 
                                 FlowDirection="LeftToRight"   >
                             <Border.Background>
                                 <ImageBrush x:Name="img_supMainLogo"  Stretch="Uniform"  ImageSource="/pic/subIncrease-logo.png"/>
