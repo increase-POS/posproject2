@@ -259,6 +259,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activation Site.
+        /// </summary>
+        internal static string trActivationSite {
+            get {
+                return ResourceManager.GetString("trActivationSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activate.
         /// </summary>
         internal static string trActive {
@@ -741,6 +750,15 @@ namespace POS {
         internal static string trBondesCount {
             get {
                 return ResourceManager.GetString("trBondesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bond not received.
+        /// </summary>
+        internal static string trBondNotReceived {
+            get {
+                return ResourceManager.GetString("trBondNotReceived", resourceCulture);
             }
         }
         
@@ -2217,6 +2235,15 @@ namespace POS {
         internal static string trEmptyAccuracy {
             get {
                 return ResourceManager.GetString("trEmptyAccuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter activation site.
+        /// </summary>
+        internal static string trEmptyActivationSite {
+            get {
+                return ResourceManager.GetString("trEmptyActivationSite", resourceCulture);
             }
         }
         
@@ -5318,6 +5345,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parent Tax.
+        /// </summary>
+        internal static string trParentTax {
+            get {
+                return ResourceManager.GetString("trParentTax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string trPassword {
@@ -5881,6 +5917,15 @@ namespace POS {
         internal static string trPrintEmptyInvoice {
             get {
                 return ResourceManager.GetString("trPrintEmptyInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process not confirmed.
+        /// </summary>
+        internal static string trProcessNotConfirmed {
+            get {
+                return ResourceManager.GetString("trProcessNotConfirmed", resourceCulture);
             }
         }
         
@@ -7163,6 +7208,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server not found.
+        /// </summary>
+        internal static string trServerNotFount {
+            get {
+                return ResourceManager.GetString("trServerNotFount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service.
         /// </summary>
         internal static string trService {
@@ -8140,6 +8194,24 @@ namespace POS {
         internal static string trUpgrade {
             get {
                 return ResourceManager.GetString("trUpgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrade Completed successfully.
+        /// </summary>
+        internal static string trUpgradeCompleted {
+            get {
+                return ResourceManager.GetString("trUpgradeCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upgrade does not Completed.
+        /// </summary>
+        internal static string trUpgradeNotCompleted {
+            get {
+                return ResourceManager.GetString("trUpgradeNotCompleted", resourceCulture);
             }
         }
         

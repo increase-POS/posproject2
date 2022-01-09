@@ -372,8 +372,8 @@ namespace POS.View.accounts
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            try
-            {
+            //try
+            //{
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
                 try
@@ -390,8 +390,8 @@ namespace POS.View.accounts
                         s.amount.ToString().ToLower().Contains(searchText)
                         || s.type.ToString().ToLower().Contains(searchText)
                         )
-                        && s.updateDate.Value.Date >= sDate
-                        && s.updateDate.Value.Date <= eDate
+                        &&sDate != null ? s.updateDate.Value.Date >= sDate : true
+                        &&eDate != null ? s.updateDate.Value.Date <= eDate : true
                         && s.isRecieved == tgl_bondState
                         );
 
@@ -403,13 +403,13 @@ namespace POS.View.accounts
                 catch { }
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucBonds);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         private async void Tgl_isRecieved_Unchecked(object sender, RoutedEventArgs e)
@@ -841,21 +841,22 @@ namespace POS.View.accounts
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucBonds);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_ucBonds);
 
+                if(dp_endSearchDate.SelectedDate.Value != null)
                 eDate = dp_endSearchDate.SelectedDate.Value;
 
                 await RefreshBondsList();
                 Tb_search_TextChanged(null, null);
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_ucBonds);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_ucBonds);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -865,22 +866,23 @@ namespace POS.View.accounts
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucBonds);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_ucBonds);
 
+                if (dp_startSearchDate.SelectedDate.Value != null)
                 sDate = dp_startSearchDate.SelectedDate.Value;
 
                 await RefreshBondsList();
                 Tb_search_TextChanged(null, null);
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
+                    if (sender != null)
+                        SectionData.EndAwait(grid_ucBonds);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_ucBonds);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -921,7 +923,7 @@ namespace POS.View.accounts
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
         }
 
         void RefreshBondView()

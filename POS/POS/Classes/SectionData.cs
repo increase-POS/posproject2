@@ -1216,7 +1216,7 @@ namespace POS.Classes
             else if (str == "membership")
                 _str = MainWindow.resourcemanager.GetString("trMembership");
             else if (str == "salesStatistic")
-                _str = MainWindow.resourcemanager.GetString("trStatistic");
+                _str = MainWindow.resourcemanager.GetString("trDaily");
             #endregion
             #region  sectionData
             if (str == "suppliers")
@@ -1453,6 +1453,8 @@ namespace POS.Classes
                 secondTitle = MainWindow.resourcemanager.GetString("trGeneralExpenses");
             else if (secondTitle == "administrativePull")
                 secondTitle = MainWindow.resourcemanager.GetString("trAdministrativePull");
+            else if (secondTitle == "administrativeDeposit")
+                secondTitle = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
             //////////////////////////////////////////////////////////////////////////////
 
             textBlock.Text = firstTitle + " / " + secondTitle;

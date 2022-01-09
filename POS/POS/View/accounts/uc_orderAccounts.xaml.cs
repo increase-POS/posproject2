@@ -318,7 +318,7 @@ namespace POS.View.accounts
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
             tt_add_Button.Content = MainWindow.resourcemanager.GetString("trSave");
         }
         private void Dg_orderAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
