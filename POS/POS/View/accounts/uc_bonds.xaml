@@ -118,6 +118,10 @@
                                                           VerticalOffset="25"/>
                         </DatePicker.ToolTip>
                     </DatePicker>
+                    <CheckBox x:Name="chb_all"    Background="{StaticResource MainColorBlue}"
+                       Content="All"
+                        Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                        Checked="Chb_all_Checked"  Unchecked="Chb_all_Unchecked"/>
 
                     <ToggleButton DockPanel.Dock="Right" x:Name="tgl_isRecieved"  Checked="Tgl_isRecieved_Checked" Unchecked="Tgl_isRecieved_Unchecked"
                              VerticalAlignment="Center" Padding="10,15,5,5"  IsChecked="True" 

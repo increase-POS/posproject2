@@ -955,17 +955,30 @@ namespace POS.View.accounts
                 if (cashes is null)
                     await RefreshCashesList();
 
-                searchText = tb_search.Text.ToLower();
-                cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
-                || s.cash.ToString().ToLower().Contains(searchText)
-                )
-                && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
-                && s.transType == "p"
-                && s.processType != "inv"
-                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                );
-
+                if (chb_all.IsChecked == false)
+                {
+                    searchText = tb_search.Text.ToLower();
+                    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                    || s.cash.ToString().ToLower().Contains(searchText)
+                    )
+                    && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
+                    && s.transType == "p"
+                    && s.processType != "inv"
+                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                    );
+                }
+                else
+                {
+                    searchText = tb_search.Text.ToLower();
+                    cashesQuery = cashes.Where(s => (s.transNum.ToLower().Contains(searchText)
+                    || s.cash.ToString().ToLower().Contains(searchText)
+                    )
+                    && (s.side == "v" || s.side == "c" || s.side == "u" || s.side == "s" || s.side == "e" || s.side == "m" || s.side == "sh")
+                    && s.transType == "p"
+                    && s.processType != "inv"
+                    );
+                }
                 cashesQueryExcel = cashesQuery.ToList();
                 RefreshCashView();
             }
@@ -1858,6 +1871,36 @@ namespace POS.View.accounts
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
+        }
+        private async void Chb_all_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+            dp_endSearchDate.IsEnabled = false;
+
+                Btn_refresh_Click(btn_refresh, null);
+
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+                dp_endSearchDate.IsEnabled = true;
+
+                Btn_refresh_Click(btn_refresh, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

@@ -417,22 +417,41 @@ namespace POS.View.accounts
                 { 
                 if (invoices is null)
                     await RefreshInvoiceList();
-                this.Dispatcher.Invoke(() =>
-                {
-                    searchText = tb_search.Text.ToLower();
-                    invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
-                    || s.shipUserName.ToLower().Contains(searchText)
-                    || s.agentName.ToLower().Contains(searchText)
-                    || s.totalNet.ToString().ToLower().Contains(searchText)
-                    || s.status.ToLower().Contains(searchText)
-                    )
-                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                    );
 
-                });
+                    if (chb_all.IsChecked == false)
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            searchText = tb_search.Text.ToLower();
+                            invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                            || s.shipUserName.ToLower().Contains(searchText)
+                            || s.agentName.ToLower().Contains(searchText)
+                            || s.totalNet.ToString().ToLower().Contains(searchText)
+                            || s.status.ToLower().Contains(searchText)
+                            )
+                            && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                            && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                            );
 
-                invoiceQueryExcel = invoiceQuery.ToList();
+                        });
+                    }
+                    else
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            searchText = tb_search.Text.ToLower();
+                            invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                            || s.shipUserName.ToLower().Contains(searchText)
+                            || s.agentName.ToLower().Contains(searchText)
+                            || s.totalNet.ToString().ToLower().Contains(searchText)
+                            || s.status.ToLower().Contains(searchText)
+                            )
+                            );
+
+                        });
+                    }
+
+                    invoiceQueryExcel = invoiceQuery.ToList();
                 RefreshInvoiceView();
                 }
                 catch { }
@@ -1331,6 +1350,32 @@ namespace POS.View.accounts
             }
 
         }
+        private async void Chb_all_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+            dp_endSearchDate.IsEnabled = false;
+                Btn_refresh_Click(btn_refresh, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+                dp_endSearchDate.IsEnabled = true;
 
+                Btn_refresh_Click(btn_refresh, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }

@@ -120,6 +120,19 @@
                                                           VerticalOffset="25"/>
                         </DatePicker.ToolTip>
                     </DatePicker>
+                    <CheckBox x:Name="chb_all"    Background="{StaticResource MainColorBlue}"
+                       Content="All"
+                        Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                        Checked="Chb_all_Checked"  Unchecked="Chb_all_Unchecked"/>
+                </DockPanel>
+            </Border>
+            <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
+                <Grid Margin="5,5,0,17.5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <DockPanel Margin="10 0 0 0" LastChildFill="False"  HorizontalAlignment="Left">
                         <ComboBox  x:Name="cb_state"   DockPanel.Dock="Right"
                                      BorderBrush="#737373"  BorderThickness="0" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -137,31 +150,30 @@
                                                           VerticalOffset="25"/>
                             </ComboBox.ToolTip>
                         </ComboBox>
-                </DockPanel>
-            </Border>
-            <Border Margin="5,5,5,0" Grid.Row="1"  Background="White" CornerRadius="7,7,0,0">
-                <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
+                    </DockPanel>
+                    <DataGrid  Margin="5,5,5,17.5"  Grid.Row="1"  IsReadOnly="True"  Background="White"
                       materialDesign:DataGridAssist.CornerRadius="5" 
                        x:Name="dg_posAccounts"
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader" SelectionChanged="Dg_posAccounts_SelectionChanged"   AlternatingRowBackground="#f3f3f3" AlternationCount="2">
-                    <DataGrid.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
-                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
-                            <Setter Property="Background" Value="#e7f3fa" />
-                            <Setter Property="BorderBrush" Value="White"/>
-                            <Setter Property="BorderThickness" Value="0 0 1 0"/>
-                        </Style>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn Width="*"  Header="From pos"        Binding="{Binding Path=posName}"/>
-                        <DataGridTextColumn Width="*"  Header="To pos"          Binding="{Binding Path=pos2Name}"/>
-                        <DataGridTextColumn Width="*"  Header="type"            Binding="{Binding transType,Converter={StaticResource transTypeConverter }}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="Cash"        Binding="{Binding Path=cash}"/>-->
-                        <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
+                            <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
+                                <Setter Property="Background" Value="#e7f3fa" />
+                                <Setter Property="BorderBrush" Value="White"/>
+                                <Setter Property="BorderThickness" Value="0 0 1 0"/>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
+                            <DataGridTextColumn Width="*"  Header="From pos"        Binding="{Binding Path=posName}"/>
+                            <DataGridTextColumn Width="*"  Header="To pos"          Binding="{Binding Path=pos2Name}"/>
+                            <DataGridTextColumn Width="*"  Header="type"            Binding="{Binding transType,Converter={StaticResource transTypeConverter }}"/>
+                            <!--<DataGridTextColumn Width="*"  Header="Cash"        Binding="{Binding Path=cash}"/>-->
+                            <DataGridTextColumn Width="*"  Header="Cash"            Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </Border>
             <!--#region -->
             <Border Grid.Row="2" Margin="5,0,5,0" Background="White" CornerRadius="0,0,7,7" >

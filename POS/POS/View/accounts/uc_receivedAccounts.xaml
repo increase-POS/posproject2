@@ -119,6 +119,11 @@
                                                           VerticalOffset="25"/>
                         </DatePicker.ToolTip>
                     </DatePicker>
+                    <CheckBox x:Name="chb_all"    Background="{StaticResource MainColorBlue}"
+                       Content="All"
+                        Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                        Checked="Chb_all_Checked"  Unchecked="Chb_all_Unchecked"/>
+
                 </DockPanel>
             </Border>
 
