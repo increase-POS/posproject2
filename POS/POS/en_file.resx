@@ -2983,4 +2983,28 @@ Please add Email in setting</value>
   <data name="trSerial" xml:space="preserve">
     <value>Serial</value>
   </data>
+  <data name="trServerNotFount" xml:space="preserve">
+    <value>Server not found</value>
+  </data>
+  <data name="trUpgradeNotCompleted" xml:space="preserve">
+    <value>Upgrade does not Completed</value>
+  </data>
+  <data name="trActivationSite" xml:space="preserve">
+    <value>Activation Site</value>
+  </data>
+  <data name="trEmptyActivationSite" xml:space="preserve">
+    <value>Enter activation site</value>
+  </data>
+  <data name="trUpgradeCompleted" xml:space="preserve">
+    <value>Upgrade Completed successfully</value>
+  </data>
+  <data name="trParentTax" xml:space="preserve">
+    <value>Parent Tax</value>
+  </data>
+  <data name="trBondNotReceived" xml:space="preserve">
+    <value>Bond not received</value>
+  </data>
+  <data name="trProcessNotConfirmed" xml:space="preserve">
+    <value>Process not confirmed</value>
+  </data>
 </root>

@@ -544,11 +544,11 @@ namespace POS.View.accounts
                         }
                         #endregion
                     }
-                    }
-                    else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                    if (sender != null)
-                        SectionData.EndAwait(grid_ucposAccounts);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucposAccounts);
             }
             catch (Exception ex)
             {

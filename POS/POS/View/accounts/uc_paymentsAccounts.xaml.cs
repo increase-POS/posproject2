@@ -139,7 +139,7 @@ namespace POS.View.accounts
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_print_pay.Content = MainWindow.resourcemanager.GetString("trPrint");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
             //txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
         }
@@ -711,7 +711,7 @@ namespace POS.View.accounts
                     #endregion
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
 
                 if (sender != null)
@@ -1022,7 +1022,7 @@ namespace POS.View.accounts
                     #endregion
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -1080,7 +1080,7 @@ namespace POS.View.accounts
                     }
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
@@ -1333,7 +1333,7 @@ namespace POS.View.accounts
             {//
                 //shCompanies = await shCompanyModel.Get();
                 shCompanies = await shCompanyModel.GetForAccount("p");
-
+                shCompanies = shCompanies.Where(sh => sh.deliveryType != "local");
                 cb_recipientSh.ItemsSource = shCompanies;
                 cb_recipientSh.DisplayMemberPath = "name";
                 cb_recipientSh.SelectedValuePath = "shippingCompanyId";
@@ -1457,7 +1457,7 @@ namespace POS.View.accounts
                     }
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -1488,7 +1488,7 @@ namespace POS.View.accounts
                     }
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);
@@ -1568,13 +1568,13 @@ namespace POS.View.accounts
 
                         }
                         else
-                            Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         Window.GetWindow(this).Opacity = 1;
                     }
 
                 }
                 else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: "you don't have permission", animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn) ;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucPaymentsAccounts);

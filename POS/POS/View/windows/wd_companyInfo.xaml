@@ -170,7 +170,8 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <ComboBox Grid.Column="0" x:Name="cb_areaMobile" Padding="10,10,5,0"  SelectedIndex="0"   TextBlock.Foreground="#4E4E4E" TabIndex="3"  TextBlock.FontSize="12" Margin="5,5,0,5" VerticalAlignment="Center"   Height="40" Width="60" Background="#f8f8f8"   BorderBrush="#737373"      BorderThickness="0"  FontFamily="{StaticResource Font-cairo-light}"  />
-                    <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue" MaxLength="9" PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" 
+                    <TextBox x:Name="tb_mobile" Grid.Column="1" Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Stretch" Text="{Binding mobile, Mode=OneWay}" Padding="10,0,5,0"  TabIndex="4"  BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Mobile..."   Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8" BorderBrush="AliceBlue"  PreviewTextInput="NumberValidationTextBox"  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}" Height="40"   Margin="5" 
+                             MaxLength="10"
                              PreviewKeyDown="tb_mobile_PreviewKeyDown"   
                              TextChanged="Tb_validateEmptyTextChange" 
                              LostFocus="Tb_validateEmptyLostFocus">
@@ -209,13 +210,13 @@
                            BorderBrush="#737373"       BorderThickness="0" 
                             FontFamily="{StaticResource Font-cairo-light}"  />
                     <TextBox x:Name="tb_phone"  Text="{Binding phone, Mode=OneWay}" Grid.Column="2"  Padding="10,0,5,0" 
-                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
-                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                           BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
-                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                     MaxLength="15"
-                  Height="40"   Margin="5"  TabIndex="7" PreviewKeyDown="tb_phone_PreviewKeyDown"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Phone..."    
+                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                             materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                             MaxLength="10"
+                             Height="40"   Margin="5"  TabIndex="7" PreviewKeyDown="tb_phone_PreviewKeyDown"
                               TextChanged="Tb_validateEmptyTextChange" 
                               LostFocus="Tb_validateEmptyLostFocus">
                         <!--<TextBox.ToolTip>
@@ -262,21 +263,16 @@
 
 
                     <TextBox x:Name="tb_fax"  Text="{Binding fax, Mode=OneWay}" Padding="10,0,5,0" 
-                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
-                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                     BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
-                                     Height="40"   Margin="5" Grid.Column="2" 
-                                     TabIndex="10" PreviewKeyDown="tb_fax_PreviewKeyDown"
-                                     TextChanged="Tb_validateEmptyTextChange" 
-                                     LostFocus="Tb_validateEmptyLostFocus">
-                        <!--<TextBox.ToolTip>
-                            <ToolTip x:Name="tt_fax" Content="Fax"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                        </TextBox.ToolTip>-->
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                             BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Fax..."    
+                             Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                             BorderBrush="AliceBlue" PreviewTextInput="NumberValidationTextBox"
+                             Height="40"   Margin="5" Grid.Column="2"
+                             MaxLength="10"
+                             TabIndex="10" PreviewKeyDown="tb_fax_PreviewKeyDown"
+                             TextChanged="Tb_validateEmptyTextChange" 
+                             LostFocus="Tb_validateEmptyLostFocus">
+                       
                     </TextBox>
                     <Path Fill="#E81123" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorFax"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
@@ -289,8 +285,6 @@
 
                 </Grid>
                 <!--#endregion-->
-
-
 
                 <Button Content="Save" Grid.Row="10" Grid.ColumnSpan="5" TabIndex="12"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"

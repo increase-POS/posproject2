@@ -230,8 +230,6 @@ namespace POS.View.Settings
 
                         string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
 
-                        //string msg = "The Activation not complete (Error code:" + messagecode + ")";
-                        
                         string msg = MainWindow.resourcemanager.GetString("trActivationNotCompleted")+ "(" +
                                      MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
 
@@ -240,12 +238,13 @@ namespace POS.View.Settings
 
                     else
                     {
-                        if(chk == 3)
-                            //Toaster.ShowSuccess(Window.GetWindow(this), message: "The Activation done successfuly", animation: ToasterAnimation.FadeIn);
+                        if (chk == 3)
+                        {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trActivationCompleted"), animation: ToasterAnimation.FadeIn);
-
+                            progDetails = await progDetailsModel.getCurrentInfo();
+                            this.DataContext = progDetails;
+                        }
                         else if (chk == 2)
-                            //Toaster.ShowSuccess(Window.GetWindow(this), message: "No changes", animation: ToasterAnimation.FadeIn);
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
 
                     }
@@ -254,7 +253,7 @@ namespace POS.View.Settings
             catch (Exception ex)
             {
 
-                Toaster.ShowWarning(Window.GetWindow(this), message: "The server Not Found", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
             }
         }
 
@@ -280,25 +279,29 @@ namespace POS.View.Settings
 
                         string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
 
-                        string msg = "The Activation not complete (Error code:" + messagecode + ")";
+                        string msg = MainWindow.resourcemanager.GetString("trUpgradeNotCompleted") + "(" +
+                                    MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
 
                         Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
                     }
 
                     else
                     {
-                        if(chk == 3)
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: "The Upgrade done successfuly", animation: ToasterAnimation.FadeIn);
-                        else if(chk == 2)
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: "No changes", animation: ToasterAnimation.FadeIn);
+                        if (chk == 3)
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trUpgradeCompleted"), animation: ToasterAnimation.FadeIn);
+                            progDetails = await progDetailsModel.getCurrentInfo();
+                            this.DataContext = progDetails;
+                        }
+                        else if (chk == 2)
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
 
                     }
                 }
             }
             catch (Exception ex)
             {
-
-                Toaster.ShowWarning(Window.GetWindow(this), message: "The server Not Found", animation: ToasterAnimation.FadeIn);
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
             }
         }
 

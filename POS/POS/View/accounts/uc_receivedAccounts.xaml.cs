@@ -341,7 +341,7 @@ namespace POS.View.accounts
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
 
         }
         private void Dg_receivedAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1309,7 +1309,7 @@ namespace POS.View.accounts
             {
                 //shCompanies = await shCompanyModel.Get();
                 shCompanies = await shCompanyModel.GetForAccount("d");
-
+                shCompanies = shCompanies.Where(sh => sh.deliveryType != "local");
                 cb_depositorSh.ItemsSource = shCompanies;
                 cb_depositorSh.DisplayMemberPath = "name";
                 cb_depositorSh.SelectedValuePath = "shippingCompanyId";
@@ -1433,11 +1433,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucReceivedAccounts);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    //
-
                     Window.GetWindow(this).Opacity = 0.2;
-
-
 
                     string pdfpath;
                     pdfpath = @"\Thumb\report\temp.pdf";
@@ -1457,10 +1453,9 @@ namespace POS.View.accounts
 
                             w.wb_pdfWebViewer.Dispose();
 
-
                         }
                         else
-                            Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         Window.GetWindow(this).Opacity = 1;
                     }
 

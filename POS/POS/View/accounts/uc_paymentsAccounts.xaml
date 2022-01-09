@@ -102,13 +102,13 @@
                         </DatePicker.ToolTip>
                     </DatePicker>
                     <DatePicker  x:Name="dp_endSearchDate"  
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E"
+                                 BorderBrush="#737373"  BorderThickness="0" 
+                                 TextBlock.Foreground="#4E4E4E"
                                  Grid.Row="2" Padding="10,0,5,0"  
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                                 Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
                                  materialDesign:HintAssist.Hint="End date..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                 Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
                                  HorizontalAlignment="Left" VerticalAlignment="Center" 
                             Grid.Column="2"  Height="40" Width="125"  Margin="5,5" >
                         <DatePicker.ToolTip>

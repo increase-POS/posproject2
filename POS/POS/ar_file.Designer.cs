@@ -250,6 +250,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to موقع التفعيل.
+        /// </summary>
+        internal static string trActivationSite {
+            get {
+                return ResourceManager.GetString("trActivationSite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تفعيل.
         /// </summary>
         internal static string trActive {
@@ -732,6 +741,15 @@ namespace POS {
         internal static string trBondesCount {
             get {
                 return ResourceManager.GetString("trBondesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to لم يتم استلام السند.
+        /// </summary>
+        internal static string trBondNotReceived {
+            get {
+                return ResourceManager.GetString("trBondNotReceived", resourceCulture);
             }
         }
         
@@ -2208,6 +2226,15 @@ namespace POS {
         internal static string trEmptyAccuracy {
             get {
                 return ResourceManager.GetString("trEmptyAccuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to أدخل موقع التفعيل.
+        /// </summary>
+        internal static string trEmptyActivationSite {
+            get {
+                return ResourceManager.GetString("trEmptyActivationSite", resourceCulture);
             }
         }
         
@@ -5273,6 +5300,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الضريبة المصدر.
+        /// </summary>
+        internal static string trParentTax {
+            get {
+                return ResourceManager.GetString("trParentTax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to كلمة المرور.
         /// </summary>
         internal static string trPassword {
@@ -5836,6 +5872,15 @@ namespace POS {
         internal static string trPrintEmptyInvoice {
             get {
                 return ResourceManager.GetString("trPrintEmptyInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العملية غير مؤكدة.
+        /// </summary>
+        internal static string trProcessNotConfirmed {
+            get {
+                return ResourceManager.GetString("trProcessNotConfirmed", resourceCulture);
             }
         }
         
@@ -7118,6 +7163,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لم يتم العثور على المخدم.
+        /// </summary>
+        internal static string trServerNotFount {
+            get {
+                return ResourceManager.GetString("trServerNotFount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to خدمة.
         /// </summary>
         internal static string trService {
@@ -8086,6 +8140,24 @@ namespace POS {
         internal static string trUpgrade {
             get {
                 return ResourceManager.GetString("trUpgrade", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تمت الترقية بنجاح.
+        /// </summary>
+        internal static string trUpgradeCompleted {
+            get {
+                return ResourceManager.GetString("trUpgradeCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الترقية لم تكتمل.
+        /// </summary>
+        internal static string trUpgradeNotCompleted {
+            get {
+                return ResourceManager.GetString("trUpgradeNotCompleted", resourceCulture);
             }
         }
         

@@ -59,10 +59,10 @@ namespace POS.View.windows
         List<SettingCls> settingsLst = new List<SettingCls>();
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
 
@@ -111,22 +111,24 @@ namespace POS.View.windows
                 else
                     tb_itemsTax.Text = "";
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trTax");
-            btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
+            txt_title.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_invoiceTax.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_itemsTax.Text = MainWindow.resourcemanager.GetString("trItems");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)

@@ -166,7 +166,7 @@ namespace POS.View.reports
                        && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
                        && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
             }
-            else if (selectedTab == 3)
+            else if (selectedTab == 4)
             {
                 if(selectedItem5 != null)
                     result = payments.Where(x => (
@@ -313,11 +313,13 @@ namespace POS.View.reports
             bdr_customer.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_vendor.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_user.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_administrativeDeposit.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_shipping.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
             path_customer.Fill = Brushes.White;
             path_vendor.Fill = Brushes.White;
             path_user.Fill = Brushes.White;
+            path_administrativeDeposit.Fill = Brushes.White;
             path_shipping.Fill = Brushes.White;
 
         }
@@ -327,6 +329,7 @@ namespace POS.View.reports
             btn_customer.IsEnabled = true;
             btn_vendor.IsEnabled = true;
             btn_user.IsEnabled = true;
+            btn_administrativeDeposit.IsEnabled = true;
             btn_shipping.IsEnabled = true;
         }
 
@@ -525,18 +528,77 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        private void Btn_administrativeDeposit_Click(object sender, RoutedEventArgs e)
+        {//administrative deposite
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trAdministrativeDeposit")+"...");
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+                hideAllColumn();
+                selectedTab = 3;
+                //view columns
+                col_tansNum.Visibility = Visibility.Visible;
+                col_processType.Visibility = Visibility.Visible;
+                col_updateUserAcc.Visibility = Visibility.Visible;
+                col_shipping.Visibility = Visibility.Visible;
+                col_updateDate.Visibility = Visibility.Visible;
+                col_cash.Visibility = Visibility.Visible;
+
+                txt_search.Text = "";
+
+                paint();
+                bdr_administrativeDeposit.Background = Brushes.White;
+                path_administrativeDeposit.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                isEnabledButtons();
+                btn_administrativeDeposit.IsEnabled = false;
+                btn_administrativeDeposit.Opacity = 1;
+            
+                cb_vendors.Visibility = Visibility.Collapsed;
+                cb_vendors.SelectedItem = null;
+                chk_allVendors.Visibility = Visibility.Collapsed;
+                /*
+                var iulist = payments.Where(g => g.shippingCompanyId != null).GroupBy(g => g.shippingCompanyId).Select(g => new ShippingCombo { ShippingId = g.FirstOrDefault().shippingCompanyId, ShippingName = g.FirstOrDefault().shippingCompanyName }).ToList();
+                cb_vendors.SelectedValuePath = "ShippingId";
+                cb_vendors.DisplayMemberPath = "ShippingName";
+                cb_vendors.ItemsSource = iulist;
+                */
+                payCombo = statisticModel.getPaymentsTypeComboBySide(payments, "m");
+                fillPaymentsTypeCombo(cb_vendorPayType);
+
+                accCombo = statisticModel.getAccounantCombo(payments, "m");
+                fillAccCombo(accCombo, cb_vendorAccountant);
+
+                fillEvents("m");
+
+                chk_allVendorsPaymentType.IsChecked = true;
+                chk_allVendors.IsChecked = true;
+                chk_allVendorsAccountant.IsChecked = true;
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private async void Btn_shipping_Click(object sender, RoutedEventArgs e)
         {//shipping
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trShippingCompanyHint"));
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
                 hideAllColumn();
-                selectedTab = 3;
+                selectedTab = 4;
                 //view columns
                 col_tansNum.Visibility = Visibility.Visible;
                 col_processType.Visibility = Visibility.Visible;
@@ -576,15 +638,15 @@ namespace POS.View.reports
                 chk_allVendorsAccountant.IsChecked = true;
 
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         /*Fill Events*/
@@ -598,7 +660,7 @@ namespace POS.View.reports
                 temp = temp.Where(t => (t.shippingCompanyId == null && t.userId == null && t.agentId != null) ||
                                        (t.shippingCompanyId != null && t.userId != null && t.agentId != null));
             }
-            else if (selectedTab == 3)
+            else if (selectedTab == 4)
             {
                 temp = temp.Where(t => (t.shippingCompanyId != null && t.userId == null && t.agentId != null) ||
                                        (t.shippingCompanyId != null && t.userId == null && t.agentId == null));
@@ -733,8 +795,26 @@ namespace POS.View.reports
                 });
                 names.AddRange(tempName.Select(nn => nn.userName));
             }
-            //shipping
+            //administrative deposite
             if (selectedTab == 3)
+            {
+                var res = temp;
+                resultList = res.GroupBy(x => x.userId).Select(x => new CashTransferSts
+                {
+                    processType = x.FirstOrDefault().processType,
+                    cashTotal = x.Where(g => g.processType == "cash").Sum(g => (decimal)g.cash),
+                    cardTotal = x.Where(g => g.processType == "card").Sum(g => (decimal)g.cash),
+                    chequeTotal = x.Where(g => g.processType == "cheque").Sum(g => (decimal)g.cash),
+                    docTotal = x.Where(g => g.processType == "doc").Sum(g => (decimal)g.cash),
+                    balanceTotal = x.Where(g => g.processType == "balance").Sum(g => (decimal)g.cash),
+                    invoiceTotal = x.Where(g => g.processType == "inv").Sum(g => (decimal)g.cash),
+                    usersName = x.FirstOrDefault().usersName,
+                    userId = x.FirstOrDefault().userId,
+                }
+                ).ToList();
+            }
+            //shipping
+            if (selectedTab == 4)
             {
                 var res = temp.Where(x => x.shippingCompanyId != null).GroupBy(x => new { x.shippingCompanyId, x.processType }).Select(x => new CashTransferSts
                 {
@@ -1026,6 +1106,10 @@ namespace POS.View.reports
                 }
                 else if (selectedTab == 3)
                 {
+                    fillEvents("m");
+                }
+                else if (selectedTab == 4)
+                {
                     fillEvents("sh");
                 }
 
@@ -1088,6 +1172,18 @@ namespace POS.View.reports
                 else if (selectedTab == 3)
                 {
                     dgPayments.ItemsSource = recLst.Where(obj => (
+                     obj.side == "m"
+                        &&
+                        (
+                       obj.transNum.Contains(txt_search.Text) ||
+                       obj.processType.Contains(txt_search.Text) ||
+                       obj.updateUserAcc.Contains(txt_search.Text) ||
+                       obj.shippingCompanyName.Contains(txt_search.Text)
+                       )));
+                }
+                else if (selectedTab == 4)
+                {
+                    dgPayments.ItemsSource = recLst.Where(obj => (
                      obj.side == "sh"
                         &&
                         (
@@ -1097,7 +1193,6 @@ namespace POS.View.reports
                        obj.shippingCompanyName.Contains(txt_search.Text)
                        )));
                 }
-
                 txt_count.Text = dgPayments.Items.Count.ToString();
 
                 if (sender != null)
@@ -1345,6 +1440,8 @@ namespace POS.View.reports
             else if (selectedTab == 2)
                 fillEvents("u");
             else if (selectedTab == 3)
+                fillEvents("m");
+            else if (selectedTab == 4)
                 fillEvents("sh");
         }
 
@@ -1372,5 +1469,7 @@ namespace POS.View.reports
         {
             GC.Collect();
         }
+
+       
     }
 }

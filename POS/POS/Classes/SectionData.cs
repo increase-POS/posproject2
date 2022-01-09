@@ -1453,6 +1453,8 @@ namespace POS.Classes
                 secondTitle = MainWindow.resourcemanager.GetString("trGeneralExpenses");
             else if (secondTitle == "administrativePull")
                 secondTitle = MainWindow.resourcemanager.GetString("trAdministrativePull");
+            else if (secondTitle == "administrativeDeposit")
+                secondTitle = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
             //////////////////////////////////////////////////////////////////////////////
 
             textBlock.Text = firstTitle + " / " + secondTitle;

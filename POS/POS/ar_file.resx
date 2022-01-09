@@ -2965,4 +2965,28 @@
   <data name="trSerial" xml:space="preserve">
     <value>الرقم التسلسلي</value>
   </data>
+  <data name="trServerNotFount" xml:space="preserve">
+    <value>لم يتم العثور على المخدم</value>
+  </data>
+  <data name="trUpgradeNotCompleted" xml:space="preserve">
+    <value>الترقية لم تكتمل</value>
+  </data>
+  <data name="trActivationSite" xml:space="preserve">
+    <value>موقع التفعيل</value>
+  </data>
+  <data name="trEmptyActivationSite" xml:space="preserve">
+    <value>أدخل موقع التفعيل</value>
+  </data>
+  <data name="trUpgradeCompleted" xml:space="preserve">
+    <value>تمت الترقية بنجاح</value>
+  </data>
+  <data name="trParentTax" xml:space="preserve">
+    <value>الضريبة المصدر</value>
+  </data>
+  <data name="trBondNotReceived" xml:space="preserve">
+    <value>لم يتم استلام السند</value>
+  </data>
+  <data name="trProcessNotConfirmed" xml:space="preserve">
+    <value>العملية غير مؤكدة</value>
+  </data>
 </root>

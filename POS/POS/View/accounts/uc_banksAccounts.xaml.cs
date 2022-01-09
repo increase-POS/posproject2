@@ -115,7 +115,7 @@ namespace POS.View.accounts
             btn_image.Content = MainWindow.resourcemanager.GetString("trImage");
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_printInvoice.Content = MainWindow.resourcemanager.GetString("trPrint");
-            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdf");
+            btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
         }
 
         private void Btn_confirm_Click(object sender, RoutedEventArgs e)
@@ -1182,7 +1182,7 @@ namespace POS.View.accounts
                     }
                     else
                     {
-                        MessageBox.Show("bond not recieved");
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBondNotReceived"), animation: ToasterAnimation.FadeIn);
                     }
 
 
@@ -1224,7 +1224,7 @@ namespace POS.View.accounts
                     }
                     else
                     {
-                        MessageBox.Show("process not confirmed");
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trProcessNotConfirmed"), animation: ToasterAnimation.FadeIn);
                     }
 
                     #endregion
@@ -1275,10 +1275,8 @@ namespace POS.View.accounts
                     }
                     else
                     {
-                        MessageBox.Show("process not confirmed");
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trProcessNotConfirmed"), animation: ToasterAnimation.FadeIn);
                     }
-
-                  
 
                     #endregion
                 }

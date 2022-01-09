@@ -837,12 +837,7 @@
                         <Button x:Name="btn_add"  TabIndex="10" Content="Save" Grid.Row="2"
                                 Background="#4E4E4E" BorderBrush="{x:Null}" Grid.ColumnSpan="3"
                                 Margin="1,1" Click="Btn_add_Click" >
-                                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <materialDesign:PackIcon Name="txt_add_Icon" Kind="PlusThick" VerticalAlignment="Center" Width="15"  Height="15" Margin="0,1,2,0">
-                                    </materialDesign:PackIcon>
-                                    <TextBlock Visibility="Collapsed" Name="txt_addButton" Text="Add" VerticalAlignment="Center">
-                                    </TextBlock>
-                                </StackPanel>-->
+                             
                         <Button.ToolTip>
                             <ToolTip x:Name="tt_add_Button" Content="Add"
                                     Placement="left" 
