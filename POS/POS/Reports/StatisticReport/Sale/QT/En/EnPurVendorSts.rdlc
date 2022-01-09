@@ -1410,7 +1410,7 @@
             <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!isTax.Value&lt;&gt;"0" or Parameters!isTax.Value&lt;&gt; 0,False,True)</Hidden>
+              <Hidden>=Parameters!isTax.Value=false</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2045,7 +2045,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <Width>27.09896cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!isTax.Value = "0" Or Parameters!isTax.Value = 0 Or Parameters!isTax.Value = "null", False,True)</Hidden>
+              <Hidden>=Parameters!isTax.Value=true</Hidden>
             </Visibility>
             <Style>
               <Border>

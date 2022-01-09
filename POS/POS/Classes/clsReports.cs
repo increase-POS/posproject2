@@ -529,7 +529,7 @@ Parameters!trValueDiscount.Value)
         public static void SaleInvoiceStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
-            paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
+            paramarr.Add(new ReportParameter("isTax", MainWindow.invoiceTax_bool.ToString()));
             itemTransferInvTypeConv(paramarr);
 
         }
@@ -546,8 +546,7 @@ Parameters!trValueDiscount.Value)
             {
                 date = SectionData.DateToString(tempquery.FirstOrDefault().updateDate);
             }
-
-            paramarr.Add(new ReportParameter("isTax", MainWindow.tax.ToString()));
+            paramarr.Add(new ReportParameter("isTax", MainWindow.invoiceTax_bool.ToString()));
             paramarr.Add(new ReportParameter("invDate", date));
             itemTransferInvTypeConv(paramarr);
 

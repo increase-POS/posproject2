@@ -1424,31 +1424,31 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>5.13419cm</Width>
+                  <Width>5.14673cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.37867cm</Width>
+                  <Width>2.39121cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.0111cm</Width>
+                  <Width>3.02364cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.17422cm</Width>
+                  <Width>3.18676cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.68006cm</Width>
+                  <Width>2.6926cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.68006cm</Width>
+                  <Width>2.6926cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.8863cm</Width>
+                  <Width>1.89884cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.49485cm</Width>
+                  <Width>2.50739cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.54669cm</Width>
+                  <Width>3.55923cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -2166,12 +2166,12 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <LayoutDirection>RTL</LayoutDirection>
             <DataSetName>DataSetITinvoice</DataSetName>
             <Top>2.05435cm</Top>
-            <Left>1.30051cm</Left>
+            <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>26.98614cm</Width>
+            <Width>27.09897cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!isTax.Value = True</Hidden>
+              <Hidden>=Parameters!isTax.Value=false</Hidden>
             </Visibility>
             <Style>
               <Border>
