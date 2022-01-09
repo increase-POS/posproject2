@@ -356,9 +356,6 @@
     <Compile Include="View\accounts\uc_receivedAccounts.xaml.cs">
       <DependentUpon>uc_receivedAccounts.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\accounts\uc_subscriptions.xaml.cs">
-      <DependentUpon>uc_subscriptions.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\catalog\uc_serviceItem.xaml.cs">
       <DependentUpon>uc_serviceItem.xaml</DependentUpon>
     </Compile>
@@ -460,12 +457,6 @@
     </Compile>
     <Compile Include="View\reports\us_dailySalesStatistic.xaml.cs">
       <DependentUpon>us_dailySalesStatistic.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\sales\uc_medals.xaml.cs">
-      <DependentUpon>uc_medals.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\sales\uc_membership.xaml.cs">
-      <DependentUpon>uc_membership.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\sales\uc_orders.xaml.cs">
       <DependentUpon>uc_orders.xaml</DependentUpon>
@@ -820,10 +811,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\accounts\uc_subscriptions.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\catalog\uc_serviceItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -841,8 +828,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\purchases\uc_statistic.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="View\reports\uc_accountant.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -957,14 +944,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\us_dailySalesStatistic.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\sales\uc_medals.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\sales\uc_membership.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
