@@ -380,6 +380,8 @@ namespace POS.View.accounts
                 {
                     if (bonds is null)
                         await RefreshBondsList();
+                if (chb_all.IsChecked == false)
+                {
                     this.Dispatcher.Invoke(() =>
                     {
                         searchText = tb_search.Text.ToLower();
@@ -390,14 +392,30 @@ namespace POS.View.accounts
                         s.amount.ToString().ToLower().Contains(searchText)
                         || s.type.ToString().ToLower().Contains(searchText)
                         )
-                        &&sDate != null ? s.updateDate.Value.Date >= sDate : true
-                        &&eDate != null ? s.updateDate.Value.Date <= eDate : true
+                        && sDate != null ? s.updateDate.Value.Date >= sDate : true
+                        && eDate != null ? s.updateDate.Value.Date <= eDate : true
                         && s.isRecieved == tgl_bondState
                         );
 
                     });
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        searchText = tb_search.Text.ToLower();
+                        bondsQuery = bonds.Where(s => (
+                        s.number.ToLower().Contains(searchText)
+                        ||
+                        s.amount.ToString().ToLower().Contains(searchText)
+                        || s.type.ToString().ToLower().Contains(searchText)
+                        )
+                        && s.isRecieved == tgl_bondState
+                        );
+                    });
+                }
 
-                    bondsQueryExcel = bondsQuery.ToList();
+                bondsQueryExcel = bondsQuery.ToList();
                     RefreshBondView();
                 }
                 catch { }
@@ -857,7 +875,7 @@ namespace POS.View.accounts
             {
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_ucBonds);
-                SectionData.ExceptionMessage(ex, this);
+                //SectionData.ExceptionMessage(ex, this);
             }
         }
 
@@ -1489,7 +1507,36 @@ namespace POS.View.accounts
             if (!regex.IsMatch(e.Text))
                 e.Handled = true;
         }
-        
-        
+        private async void Chb_all_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+            dp_endSearchDate.IsEnabled = false;
+
+
+                Btn_refresh_Click(btn_refresh, null);
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+                dp_endSearchDate.IsEnabled = true;
+
+                Btn_refresh_Click(btn_refresh, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
     }
 }

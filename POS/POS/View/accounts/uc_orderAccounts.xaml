@@ -85,7 +85,12 @@
                                                           VerticalOffset="25"/>
                             </DatePicker.ToolTip>
                         </DatePicker>
-                        <Button DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
+                    <CheckBox x:Name="chb_all"    Background="{StaticResource MainColorBlue}"
+                       Content="All"
+                        Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}"
+                        Checked="Chb_all_Checked"  Unchecked="Chb_all_Unchecked"/>
+
+                    <Button DockPanel.Dock="Right" FlowDirection="LeftToRight"  Width="40" Height="40" x:Name="btn_refresh" Grid.Row="0" Grid.Column="4" Padding="0" 
                             materialDesign:ButtonAssist.CornerRadius="15" Cursor="Hand"
                           Background="{x:Null}" BorderBrush="{x:Null}" 
                             Click="Btn_refresh_Click"  Style="{StaticResource SmallButtonCircleRotate}"

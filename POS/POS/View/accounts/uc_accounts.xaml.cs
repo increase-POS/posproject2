@@ -131,7 +131,7 @@ namespace POS.View.accounts
             btn_received.Content = MainWindow.resourcemanager.GetString("trReceived");
             btn_bonds.Content = MainWindow.resourcemanager.GetString("trBonds");
             btn_ordersAccounting.Content = MainWindow.resourcemanager.GetString("trOrders");
-            btn_subscriptions.Content = MainWindow.resourcemanager.GetString("trSubscriptions");
+            //btn_subscriptions.Content = MainWindow.resourcemanager.GetString("trSubscriptions");
             //btn_accountsStatistic.Content = MainWindow.resourcemanager.GetString("trStatistic");
 
         }
@@ -156,8 +156,8 @@ namespace POS.View.accounts
             btn_ordersAccounting.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
 
-            btn_subscriptions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_subscriptions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            //btn_subscriptions.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            //btn_subscriptions.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
             //btn_accountsStatistic.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             //btn_accountsStatistic.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
@@ -277,22 +277,22 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_subscriptions_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
+        //private void Btn_subscriptions_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
 
-                refreashBachgroundClick(btn_subscriptions);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(uc_subscriptions.Instance);
-                Button button = sender as Button;
-                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //        refreashBachgroundClick(btn_subscriptions);
+        //        grid_main.Children.Clear();
+        //        grid_main.Children.Add(uc_subscriptions.Instance);
+        //        Button button = sender as Button;
+        //        MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
         private void Btn_statistic_Click(object sender, RoutedEventArgs e)
         {
             try

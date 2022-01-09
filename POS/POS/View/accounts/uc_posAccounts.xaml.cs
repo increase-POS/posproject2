@@ -63,7 +63,7 @@ namespace POS.View.accounts
             {
                 InitializeComponent();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
         }
         private void translate()
@@ -118,19 +118,19 @@ namespace POS.View.accounts
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
-                grid_ucposAccounts.FlowDirection = FlowDirection.LeftToRight;
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucposAccounts.FlowDirection = FlowDirection.LeftToRight;
 
-            }
-            else
-            {
-                MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
-                grid_ucposAccounts.FlowDirection = FlowDirection.RightToLeft;
-            }
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucposAccounts.FlowDirection = FlowDirection.RightToLeft;
+                }
 
-            translate();
-            #endregion
+                translate();
+                #endregion
 
                 #region Style Date
                 /////////////////////////////////////////////////////////////
@@ -200,7 +200,7 @@ namespace POS.View.accounts
 
                 //this.Dispatcher.Invoke(() =>
                 //{
-                    Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
                 //});
 
                 if (sender != null)
@@ -220,7 +220,7 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucposAccounts);
                 await RefreshCashesList();
-                    Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
@@ -239,7 +239,7 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucposAccounts);
                 await RefreshCashesList();
-                    Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
             }
@@ -248,8 +248,8 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
                 SectionData.ExceptionMessage(ex, this);
+            }
         }
-    }
         private async void Dg_posAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
@@ -285,22 +285,22 @@ namespace POS.View.accounts
                         if (cashtrans.posId == MainWindow.posID.Value)
                         {
                             if (cashtrans.isConfirm != 1)
-                            { btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm") ; btn_confirm.IsEnabled = true; }
+                            { btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm"); btn_confirm.IsEnabled = true; }
                             else
                             { btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed"); btn_confirm.IsEnabled = false; }
                         }
                         else
                         {
-                      
+
                             btn_confirm.IsEnabled = false;
                             if (cashtrans.isConfirm != 1)
-                                 btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
+                                btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
                             else
-                                 btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
+                                btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
                         }
 
                         #region get two pos
-                  
+
                         cashes2 = await cashModel.GetbySourcId("p", cashtrans.cashTransId);
                         //to insure that the pull operation is in cashtrans2 
                         if (cashtrans.transType == "p")
@@ -320,9 +320,9 @@ namespace POS.View.accounts
                         cb_toBranch.SelectedValue = (MainWindow.posList.Where(x => x.posId == cashtrans3.posId).FirstOrDefault() as Pos).branchId;
                         cb_pos2.SelectedValue = cashtrans3.posId;
 
-                         
 
-                        if((cashtrans2.isConfirm == 1)&&(cashtrans3.isConfirm == 1))
+
+                        if ((cashtrans2.isConfirm == 1) && (cashtrans3.isConfirm == 1))
                             btn_update.IsEnabled = false;
                         //else
                         //    btn_update.IsEnabled = true;
@@ -352,75 +352,134 @@ namespace POS.View.accounts
                         if (cashes is null)
                             await RefreshCashesList();
                         searchText = tb_search.Text;
-
-                        switch (Convert.ToInt32(cb_state.SelectedValue))
+                        if (chb_all.IsChecked == false)
                         {
-                            case 0://inconfirmed
-                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                 || s.transType.Contains(searchText)
-                                 || s.cash.ToString().Contains(searchText)
-                                 || s.posName.Contains(searchText)
-                                 )
-                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                && s.posId == MainWindow.posID.Value
-                                && s.isConfirm == 0
-                                );
-                                break;
-                            case 1://waiting
-                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                || s.transType.Contains(searchText)
-                                || s.cash.ToString().Contains(searchText)
-                                || s.posName.Contains(searchText)
-                                )
-                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                && s.posId == MainWindow.posID.Value
-                                && s.isConfirm == 1
-                                //&& another is not confirmed 
-                                && s.isConfirm2 == 0
-                                );
-                                break;
-                            case 2://confirmed
-                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                || s.transType.Contains(searchText)
-                                || s.cash.ToString().Contains(searchText)
-                                || s.posName.Contains(searchText)
-                                )
-                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                && s.posId == MainWindow.posID.Value
-                                && s.isConfirm == 1
-                                //&& another is confirmed
-                                && s.isConfirm2 == 1
-                                );
-                                break;
-                            case 3://created by me
-                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                || s.transType.Contains(searchText)
-                                || s.cash.ToString().Contains(searchText)
-                                || s.posName.Contains(searchText)
-                                )
-                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                && s.posIdCreator == MainWindow.posID.Value
-                                );
-                                break;
-                            default://no select
-                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                || s.transType.Contains(searchText)
-                                || s.cash.ToString().Contains(searchText)
-                                || s.posName.Contains(searchText)
-                                )
-                               && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                               && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                               );
-                                break;
+                            switch (Convert.ToInt32(cb_state.SelectedValue))
+                            {
+                                case 0://inconfirmed
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                     || s.transType.Contains(searchText)
+                                     || s.cash.ToString().Contains(searchText)
+                                     || s.posName.Contains(searchText)
+                                     )
+                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                    && s.posId == MainWindow.posID.Value
+                                    && s.isConfirm == 0
+                                    );
+                                    break;
+                                case 1://waiting
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                    && s.posId == MainWindow.posID.Value
+                                    && s.isConfirm == 1
+                                    //&& another is not confirmed 
+                                    && s.isConfirm2 == 0
+                                    );
+                                    break;
+                                case 2://confirmed
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                    && s.posId == MainWindow.posID.Value
+                                    && s.isConfirm == 1
+                                    //&& another is confirmed
+                                    && s.isConfirm2 == 1
+                                    );
+                                    break;
+                                case 3://created by me
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                    && s.posIdCreator == MainWindow.posID.Value
+                                    );
+                                    break;
+                                default://no select
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                   && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                   && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                   );
+                                    break;
+                            }
                         }
-                    
-                    RefreshCashView();
-                    cashesQueryExcel = cashesQuery.ToList();
-                    txt_count.Text = cashesQuery.Count().ToString();
+                        else
+                        {
+                            switch (Convert.ToInt32(cb_state.SelectedValue))
+                            {
+                                case 0://inconfirmed
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                     || s.transType.Contains(searchText)
+                                     || s.cash.ToString().Contains(searchText)
+                                     || s.posName.Contains(searchText)
+                                     )
+                                    && s.posId == MainWindow.posID.Value
+                                    && s.isConfirm == 0
+                                    );
+                                    break;
+                                case 1://waiting
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                    && s.posId == MainWindow.posID.Value
+                                    && s.isConfirm == 1
+                                    //&& another is not confirmed 
+                                    && s.isConfirm2 == 0
+                                    );
+                                    break;
+                                case 2://confirmed
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                    && s.posId == MainWindow.posID.Value
+                                    && s.isConfirm == 1
+                                    //&& another is confirmed
+                                    && s.isConfirm2 == 1
+                                    );
+                                    break;
+                                case 3://created by me
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                    && s.posIdCreator == MainWindow.posID.Value
+                                    );
+                                    break;
+                                default://no select
+                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                    || s.transType.Contains(searchText)
+                                    || s.cash.ToString().Contains(searchText)
+                                    || s.posName.Contains(searchText)
+                                    )
+                                   );
+                                    break;
+                            }
+                        }
+
+                        RefreshCashView();
+                        cashesQueryExcel = cashesQuery.ToList();
+                        txt_count.Text = cashesQuery.Count().ToString();
                     }
                     catch { }
                 }
@@ -567,21 +626,21 @@ namespace POS.View.accounts
                 {
 
                     #region validate
-                //chk empty cash
-                SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                //chk empty user
-                SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
-                //chk empty bank
-                SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
-                //chk if 2 pos is the same
-                bool isSame = false;
-                if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
-                    isSame = true;
-                if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue  == cb_pos2.SelectedValue))
-                {
-                    SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
-                    SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
-                }
+                    //chk empty cash
+                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                    //chk empty user
+                    SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
+                    //chk empty bank
+                    SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
+                    //chk if 2 pos is the same
+                    bool isSame = false;
+                    if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
+                        isSame = true;
+                    if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue == cb_pos2.SelectedValue))
+                    {
+                        SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
+                        SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
+                    }
                     #endregion
 
                     #region update
@@ -592,7 +651,7 @@ namespace POS.View.accounts
                         cashtrans2.notes = tb_note.Text;
                         cashtrans2.posId = Convert.ToInt32(cb_pos1.SelectedValue);
 
-                       int s1 = await cashModel.Save(cashtrans2);
+                        int s1 = await cashModel.Save(cashtrans2);
 
                         if (!s1.Equals(0))
                         {
@@ -703,7 +762,7 @@ namespace POS.View.accounts
                         if (pos.balance >= cashtrans2.cash)
                         {
                             cashtrans2.isConfirm = 1;
-                            int s =await cashModel.Save(cashtrans2);
+                            int s = await cashModel.Save(cashtrans2);
                             s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
                             //   if (s.Equals("transdone"))//tras done so confirm
                             if (s.Equals(1))//tras done so confirm
@@ -741,7 +800,7 @@ namespace POS.View.accounts
                 btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
                 btn_confirm.IsEnabled = false;
             }
-            }
+        }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
             try
@@ -753,7 +812,7 @@ namespace POS.View.accounts
                 cb_pos1.SelectedIndex = -1;
                 cb_pos2.SelectedIndex = -1;
                 tb_note.Clear();
-            
+
                 btn_add.IsEnabled = true;
                 btn_update.IsEnabled = true;
                 btn_delete.IsEnabled = true;
@@ -894,7 +953,7 @@ namespace POS.View.accounts
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
             try
-            { 
+            {
                 string name = sender.GetType().Name;
                 validateEmpty(name, sender);
                 var txb = sender as TextBox;
@@ -918,14 +977,14 @@ namespace POS.View.accounts
             else
                 e.Handled = true;
         }
-       
+
         void FN_ExportToExcel()
         {
             var QueryExcel = cashesQuery.AsEnumerable().Select(x => new
             {
                 TransNum = x.transNum,
                 PosFromName = x.posName,
-                PosToName   = x.pos2Name,
+                PosToName = x.pos2Name,
                 OpperationType = x.transType,
                 Cash = x.cash
             });
@@ -946,7 +1005,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucposAccounts);
 
                 await RefreshCashesList();
-                    Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);
             }
@@ -958,7 +1017,7 @@ namespace POS.View.accounts
             }
         }
 
-        private  void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_pos1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//pos1selection
             try
             {
@@ -988,7 +1047,7 @@ namespace POS.View.accounts
 
         }
 
-        private  void Cb_fromBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_fromBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//fill pos1
             try
             {
@@ -1081,7 +1140,7 @@ namespace POS.View.accounts
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-                   
+
                     clsReports.posAccReport(cashesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
@@ -1249,6 +1308,36 @@ namespace POS.View.accounts
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
+        }
+
+        private async void Chb_all_Checked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+            dp_endSearchDate.IsEnabled = false;
+
+                Btn_refresh_Click(btn_refresh, null);
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                dp_startSearchDate.IsEnabled =
+                dp_endSearchDate.IsEnabled = true;
+
+                Btn_refresh_Click(btn_refresh, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }
