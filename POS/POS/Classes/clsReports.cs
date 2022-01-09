@@ -702,6 +702,7 @@ Parameters!trValueDiscount.Value)
 
             PurStsReport(tempquery, rep, reppath);
             itemTransferInvTypeConv(paramarr);
+            paramarr.Add(new ReportParameter("isTax", MainWindow.invoiceTax_bool.ToString()));
 
 
         }
