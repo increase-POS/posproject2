@@ -1157,7 +1157,7 @@
                 </Border>
 
 
-                <Border x:Name="brd_activationSite" Visibility="Visible" Background="White" CornerRadius="7" 
+                <Border x:Name="brd_activationSite" Visibility="Collapsed" Background="White" CornerRadius="7" 
                         Height="140" Width="260" BorderThickness="1"
                         BorderBrush="#178DD2" 
                         MinHeight="100" Margin="10,0,10,20">

@@ -294,7 +294,10 @@ namespace POS.View.Settings
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (SectionData.isSupportPermision())
                     brd_activationSite.Visibility = Visibility.Visible;
-                 settingsCls = await setModel.GetAll();
+                else
+                    brd_activationSite.Visibility = Visibility.Collapsed;
+
+                settingsCls = await setModel.GetAll();
                 settingsValues = await valueModel.GetAll();
                 #region translate
                 if (MainWindow.lang.Equals("en"))
