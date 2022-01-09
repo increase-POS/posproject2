@@ -3007,4 +3007,7 @@ Please add Email in setting</value>
   <data name="trProcessNotConfirmed" xml:space="preserve">
     <value>Process not confirmed</value>
   </data>
+  <data name="trServerNotCompatible" xml:space="preserve">
+    <value>The server is not compatible</value>
+  </data>
 </root>

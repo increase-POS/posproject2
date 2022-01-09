@@ -334,6 +334,8 @@ namespace POS.View.windows
                         tb_msg.Text = resourcemanager.GetString("trPreventLogIn");
                     else if (canLogin == -3) //serial is not active
                         tb_msg.Text = resourcemanager.GetString("trPackageIsNotActive");
+                    else if (canLogin == -4) //serial is not active
+                        tb_msg.Text = resourcemanager.GetString("trServerNotCompatible");
 
                     if (sender != null)
                                     SectionData.EndAwait(grid_main);

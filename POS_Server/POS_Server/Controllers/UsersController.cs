@@ -939,11 +939,12 @@ namespace POS_Server.Controllers
             //  -1 : package is expired 
             //  -2 : device code is not correct 
             //  -3 : serial is not active 
+            // -4 : customer server code is wrong
 
             try
             {
                 using (incposdbEntities entity = new incposdbEntities())
-                {
+                {                    
                     //check support user
                     if (userName == "Support@Increase")
                     {
@@ -959,10 +960,18 @@ namespace POS_Server.Controllers
                     {
                         var tmpObject = entity.posSetting.Where(x => x.posId == posId).FirstOrDefault();
                         if (tmpObject != null)
-                        {
+                        {      
+                            // check customer code
                             if (tmpObject.posDeviceCode != deviceCode)
                             {
                                 return -2;
+                            }
+                            //check customer server code
+                            ProgramDetailsController pc = new ProgramDetailsController();
+                            var programD = pc.getCurrentInfo();
+                            if (programD == null || programD.customerServerCode != ac.ServerID())
+                            {
+                                return -4;
                             }
                         }
                         // check serial && package avalilability

@@ -7208,6 +7208,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The server is not compatible.
+        /// </summary>
+        internal static string trServerNotCompatible {
+            get {
+                return ResourceManager.GetString("trServerNotCompatible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server not found.
         /// </summary>
         internal static string trServerNotFount {

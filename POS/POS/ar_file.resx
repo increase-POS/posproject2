@@ -2989,4 +2989,7 @@
   <data name="trProcessNotConfirmed" xml:space="preserve">
     <value>العملية غير مؤكدة</value>
   </data>
+  <data name="trServerNotCompatible" xml:space="preserve">
+    <value>السيرفر غير متوافق</value>
+  </data>
 </root>

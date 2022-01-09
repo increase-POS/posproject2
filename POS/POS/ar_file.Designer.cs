@@ -7163,6 +7163,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to السيرفر غير متوافق.
+        /// </summary>
+        internal static string trServerNotCompatible {
+            get {
+                return ResourceManager.GetString("trServerNotCompatible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لم يتم العثور على المخدم.
         /// </summary>
         internal static string trServerNotFount {
