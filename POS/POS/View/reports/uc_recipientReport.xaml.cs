@@ -1238,6 +1238,11 @@ namespace POS.View.reports
                 }
                 else if (selectedTab == 3)
                 {
+                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArAdministrativeDeposit.rdlc";
+                    secondTitle = "AdministrativeDeposit";
+                }
+                else if (selectedTab == 4)
+                {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\Ar\ArShipping.rdlc";
                     secondTitle = "shipping";
                 }
@@ -1260,6 +1265,11 @@ namespace POS.View.reports
                     secondTitle = "users";
                 }
                 else if (selectedTab == 3)
+                {
+                    addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\AdministrativeDeposit.rdlc";
+                    secondTitle = "AdministrativeDeposit";
+                }
+                else if (selectedTab == 4)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Recipient\En\Shipping.rdlc";
                     secondTitle = "shipping";

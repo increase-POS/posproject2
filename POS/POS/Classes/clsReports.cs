@@ -627,7 +627,7 @@ Parameters!trValueDiscount.Value)
             else if (firstTitle == "DirectEntry")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trDirectEntry");
             //trCashBalance trDirectEntry
-            //trTransfers
+            //trTransfers administrativePull
             //////////////////////////////////////////////////////////////////////////////
 
             if (secondTitle == "branch")
@@ -686,6 +686,8 @@ Parameters!trValueDiscount.Value)
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trGeneralExpenses");
             else if (secondTitle == "administrativePull")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trAdministrativePull");
+            else if (secondTitle == "AdministrativeDeposit")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trAdministrativeDeposit");
             else if (secondTitle == "BestSeller")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trBestSeller");
             else if (secondTitle == "MostPurchased")

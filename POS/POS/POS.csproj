@@ -1745,6 +1745,12 @@
     <Content Include="Reports\StatisticReport\Storage\Direct\En\Item.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\Ar\ArAdministrativeDeposit.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Recipient\En\AdministrativeDeposit.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc" />
     <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc" />
