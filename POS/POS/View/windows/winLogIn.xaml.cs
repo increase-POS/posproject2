@@ -215,7 +215,7 @@ namespace POS.View.windows
                     ////////
                 
                     int canLogin = await userModel.checkLoginAvalability(MainWindow.posID.Value,userName,password);
-                    //if (canLogin == 1)
+                    if (canLogin == 1)
                     {
                         user = await userModel.Getloginuser(userName, password);
 
@@ -328,15 +328,14 @@ namespace POS.View.windows
 
                         }
                     }
-                    //else if (canLogin == -1) //program is expired
-                    //    tb_msg.Text = resourcemanager.GetString("trPackageIsExpired");
-                    //else if (canLogin == -2) //device code is not correct 
-                    //    tb_msg.Text = resourcemanager.GetString("trPreventLogIn");
-                    //else if (canLogin == -3) //serial is not active
-                    //    tb_msg.Text = resourcemanager.GetString("trPackageIsNotActive");
-                                      //awaitSaveBtn(false);
+                    else if (canLogin == -1) //program is expired
+                        tb_msg.Text = resourcemanager.GetString("trPackageIsExpired");
+                    else if (canLogin == -2) //device code is not correct 
+                        tb_msg.Text = resourcemanager.GetString("trPreventLogIn");
+                    else if (canLogin == -3) //serial is not active
+                        tb_msg.Text = resourcemanager.GetString("trPackageIsNotActive");
 
-                                if (sender != null)
+                    if (sender != null)
                                     SectionData.EndAwait(grid_main);
                     logInProcessing = false;
                 }
