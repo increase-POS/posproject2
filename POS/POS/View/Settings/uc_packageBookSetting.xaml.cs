@@ -150,6 +150,7 @@ namespace POS.View.Settings
             txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_expiredTitle.Text = MainWindow.resourcemanager.GetString("trExpiredDate");
             txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trStatus");
+            txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trServerStatus");
 
             txt_programDetails.Text = MainWindow.resourcemanager.GetString("trProgramDetails");
             txt_programTitle.Text = MainWindow.resourcemanager.GetString("trProgram");
@@ -329,6 +330,11 @@ namespace POS.View.Settings
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Btn_extendUpgrade_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

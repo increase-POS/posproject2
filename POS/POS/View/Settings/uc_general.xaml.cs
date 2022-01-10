@@ -293,9 +293,15 @@ namespace POS.View.Settings
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 if (SectionData.isSupportPermision())
+                {
                     brd_activationSite.Visibility = Visibility.Visible;
+                    brd_serverStatus.Visibility = Visibility.Visible;
+                }
                 else
+                {
                     brd_activationSite.Visibility = Visibility.Collapsed;
+                    brd_serverStatus.Visibility = Visibility.Collapsed;
+                }
 
                 settingsCls = await setModel.GetAll();
                 settingsValues = await valueModel.GetAll();
@@ -363,6 +369,7 @@ namespace POS.View.Settings
                 }
 
                 #endregion
+                fillTypeOnline();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -582,8 +589,10 @@ namespace POS.View.Settings
             txt_errorsExport.Text = MainWindow.resourcemanager.GetString("trErrorsFile");
             txt_errorsExportHint.Text = MainWindow.resourcemanager.GetString("trErrorFileDownload") + "..."; 
             txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trPurchaseCost");
+            txt_itemsCostHint.Text = MainWindow.resourcemanager.GetString("trItemCostHint");
             txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
             txt_activationSite.Text = MainWindow.resourcemanager.GetString("trActivationSite");
+            txt_serverStatus.Text = MainWindow.resourcemanager.GetString("trServerStatus");
             tt_region.Content = MainWindow.resourcemanager.GetString("trRegion");
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
@@ -1143,6 +1152,21 @@ namespace POS.View.Settings
 
         }
 
+        private void Btn_savesSrverStatus_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void fillTypeOnline()
+        {
+            cb_serverStatus.DisplayMemberPath = "Text";
+            cb_serverStatus.SelectedValuePath = "Value";
+            var typelist = new[] {
+                 new { Text = MainWindow.resourcemanager.GetString("trOnlineType")       , Value = "online" },
+                 new { Text = MainWindow.resourcemanager.GetString("trOfflineType")       , Value = "offline" },
+                };
+            cb_serverStatus.ItemsSource = typelist;
+            cb_serverStatus.SelectedIndex = 0;
+        }
         private async void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)
         {//save purchase cost
             try
