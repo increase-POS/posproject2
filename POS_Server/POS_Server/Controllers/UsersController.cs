@@ -968,7 +968,7 @@ namespace POS_Server.Controllers
                             }
                             //check customer server code
                             ProgramDetailsController pc = new ProgramDetailsController();
-                            var programD = pc.getCurrentInfo();
+                            var programD = pc.getCustomerServerCode();
                             if (programD == null || programD.customerServerCode != ac.ServerID())
                             {
                                 return -4;
