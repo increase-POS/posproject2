@@ -76,6 +76,7 @@ namespace POS.View.windows
                 #endregion
 
                 allUsersSource = await userModel.GetUsersActive();
+                allUsersSource = allUsersSource.Where(x => x.isAdmin != true).ToList();
                 selectedUsersSource = await groupModel.GetUsersByGroupId(groupId);
                 foreach (var u in selectedUsersSource)
                 {
