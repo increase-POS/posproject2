@@ -1041,8 +1041,8 @@
                         </Border>
                     </Grid>
                 </Border>-->
-              
-                <Border Background="White" CornerRadius="7"   Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
+
+                <Border x:Name="brd_itemsCost" Background="White" CornerRadius="7"   Height="140" Width="260" BorderThickness="1" BorderBrush="#178DD2" MinHeight="100" Margin="10,0,10,20">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -1058,7 +1058,7 @@
                             <!--#region  Edit-->
                             <!--Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      materialDesign:HintAssist.Hint="itemsCost..."-->
-                            <TextBlock x:Name="txt_itemsCostHint" Text="Admin Change Password ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
+                            <!--<TextBlock x:Name="txt_itemsCostHint" Text="purchace item price / invoices" Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>-->
 
                             <Grid>
                                 <TextBox x:Name="tb_itemsCost" Padding="10,10,5,5" 
@@ -1070,15 +1070,7 @@
                                      PreviewKeyDown="Tb_PreventSpaces" 
                                      PreviewTextInput="Tb_decimal_PreviewTextInput"
                                      TextChanged="Tb_validateEmptyTextChange" 
-                                     LostFocus="Tb_validateEmptyLostFocus">
-                                    <TextBox.ToolTip>
-                                        <ToolTip x:Name="tt_itemsCost" 
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                                    </TextBox.ToolTip>
-                                </TextBox>
+                                     LostFocus="Tb_validateEmptyLostFocus"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorItemsCost"
                                   HorizontalAlignment="Right"  Grid.Row="0"  Visibility="Collapsed"
                                   VerticalAlignment="Center" Width="15"  Height="15"

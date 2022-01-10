@@ -589,7 +589,7 @@ namespace POS.View.Settings
             txt_errorsExport.Text = MainWindow.resourcemanager.GetString("trErrorsFile");
             txt_errorsExportHint.Text = MainWindow.resourcemanager.GetString("trErrorFileDownload") + "..."; 
             txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trPurchaseCost");
-            txt_itemsCostHint.Text = MainWindow.resourcemanager.GetString("trItemCostHint");
+            brd_itemsCost.ToolTip = MainWindow.resourcemanager.GetString("trItemCostHint");
             txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
             txt_activationSite.Text = MainWindow.resourcemanager.GetString("trActivationSite");
             txt_serverStatus.Text = MainWindow.resourcemanager.GetString("trServerStatus");
@@ -597,7 +597,7 @@ namespace POS.View.Settings
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
             //tt_tax.Content = MainWindow.resourcemanager.GetString("trTax");
-            tt_itemsCost.Content = MainWindow.resourcemanager.GetString("trItemCost");
+            //tt_itemsCost.Content = MainWindow.resourcemanager.GetString("trItemCost");
             tt_dateForm.Content = MainWindow.resourcemanager.GetString("trDateForm");
             tt_accuracy.Content = MainWindow.resourcemanager.GetString("trAccuracy");
             tt_activationSite.Content = MainWindow.resourcemanager.GetString("trActivationSite");
