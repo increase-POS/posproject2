@@ -3010,4 +3010,16 @@ Please add Email in setting</value>
   <data name="trServerNotCompatible" xml:space="preserve">
     <value>The server is not compatible</value>
   </data>
+  <data name="trItemCostHint" xml:space="preserve">
+    <value>calculate purchase price average by last purchase  invoices</value>
+  </data>
+  <data name="trOfflineType" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="trOnlineType" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="trServerStatus" xml:space="preserve">
+    <value>Server status</value>
+  </data>
 </root>

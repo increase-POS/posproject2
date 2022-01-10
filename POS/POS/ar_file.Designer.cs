@@ -4093,6 +4093,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حساب متوسط شراء العنصر باستخدام آخر فواتير شراء.
+        /// </summary>
+        internal static string trItemCostHint {
+            get {
+                return ResourceManager.GetString("trItemCostHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to معلومات.
         /// </summary>
         internal static string trItemData {
@@ -5021,6 +5030,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to داخلي.
+        /// </summary>
+        internal static string trOfflineType {
+            get {
+                return ResourceManager.GetString("trOfflineType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to موافق.
         /// </summary>
         internal static string trOK {
@@ -5080,6 +5098,15 @@ namespace POS {
         internal static string trOnline {
             get {
                 return ResourceManager.GetString("trOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اتصال بالانترنت.
+        /// </summary>
+        internal static string trOnlineType {
+            get {
+                return ResourceManager.GetString("trOnlineType", resourceCulture);
             }
         }
         
@@ -7177,6 +7204,15 @@ namespace POS {
         internal static string trServerNotFount {
             get {
                 return ResourceManager.GetString("trServerNotFount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حالة السيرفر.
+        /// </summary>
+        internal static string trServerStatus {
+            get {
+                return ResourceManager.GetString("trServerStatus", resourceCulture);
             }
         }
         

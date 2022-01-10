@@ -2992,4 +2992,16 @@
   <data name="trServerNotCompatible" xml:space="preserve">
     <value>السيرفر غير متوافق</value>
   </data>
+  <data name="trItemCostHint" xml:space="preserve">
+    <value>حساب متوسط شراء العنصر باستخدام آخر فواتير شراء</value>
+  </data>
+  <data name="trOfflineType" xml:space="preserve">
+    <value>داخلي</value>
+  </data>
+  <data name="trOnlineType" xml:space="preserve">
+    <value>اتصال بالانترنت</value>
+  </data>
+  <data name="trServerStatus" xml:space="preserve">
+    <value>حالة السيرفر</value>
+  </data>
 </root>

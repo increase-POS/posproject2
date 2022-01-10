@@ -4120,6 +4120,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to calculate purchase price average by last purchase  invoices.
+        /// </summary>
+        internal static string trItemCostHint {
+            get {
+                return ResourceManager.GetString("trItemCostHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Data.
         /// </summary>
         internal static string trItemData {
@@ -5066,6 +5075,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        internal static string trOfflineType {
+            get {
+                return ResourceManager.GetString("trOfflineType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         internal static string trOK {
@@ -5125,6 +5143,15 @@ namespace POS {
         internal static string trOnline {
             get {
                 return ResourceManager.GetString("trOnline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Online.
+        /// </summary>
+        internal static string trOnlineType {
+            get {
+                return ResourceManager.GetString("trOnlineType", resourceCulture);
             }
         }
         
@@ -7222,6 +7249,15 @@ namespace POS {
         internal static string trServerNotFount {
             get {
                 return ResourceManager.GetString("trServerNotFount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server status.
+        /// </summary>
+        internal static string trServerStatus {
+            get {
+                return ResourceManager.GetString("trServerStatus", resourceCulture);
             }
         }
         
