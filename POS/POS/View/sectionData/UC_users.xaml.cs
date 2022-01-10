@@ -282,6 +282,7 @@ namespace POS.View
                 //img_user.Source = new BitmapImage(new Uri("pic/no-image-icon-125x125.png"));
 
                 btn_stores.IsEnabled = false;
+                btn_stores.Visibility = Visibility.Visible;
                 grid_userNameLabel.Visibility = Visibility.Collapsed;
                 grid_userNameInput.Visibility = Visibility.Visible;
 
@@ -322,6 +323,7 @@ namespace POS.View
 
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
                 btn_stores.IsEnabled = false;
+                btn_stores.Visibility = Visibility.Visible;
                 grid_userNameLabel.Visibility = Visibility.Collapsed;
                 grid_userNameInput.Visibility = Visibility.Visible;
 
@@ -1379,6 +1381,12 @@ namespace POS.View
                 if (user != null)
                 {
                     btn_stores.IsEnabled = true;
+                    if (user.isAdmin.Value)
+                        btn_stores.Visibility = Visibility.Collapsed;
+                    else
+                        btn_stores.Visibility = Visibility.Visible;
+
+
                     grid_userNameLabel.Visibility = Visibility.Visible;
                     grid_userNameInput.Visibility = Visibility.Collapsed;
 
@@ -1440,6 +1448,9 @@ namespace POS.View
         {
            
                 btn_stores.IsEnabled = true;
+
+            
+
             grid_userNameLabel.Visibility = Visibility.Visible;
             grid_userNameInput.Visibility = Visibility.Collapsed;
             #region
@@ -1461,8 +1472,12 @@ namespace POS.View
 
                 user = users.ToList().Find(c => c.userId == userId);
                 this.DataContext = user;
+            if (user.isAdmin.Value)
+                btn_stores.Visibility = Visibility.Collapsed;
+            else
+                btn_stores.Visibility = Visibility.Visible;
 
-                if (user != null)
+            if (user != null)
                 {
                     if (user.userId != 0)
                     {
