@@ -533,6 +533,7 @@ var strP = TokenManager.GetPrincipal(token);
                             {
                                 var categories = entity.categories.Where(U => catIdlist.Contains((int)U.categoryId)).ToList();
                                 categories.ForEach(a => a.taxes = tmpCategory.taxes);
+                                categories.ForEach(a => a.fixedTax = tmpCategory.fixedTax);
                             }
                             // disactive items related to selected category and subs
                             catIdlist.Add(categoryId);
