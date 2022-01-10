@@ -253,6 +253,7 @@
     <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="categoryuser" Relationship="Self.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
+    <Property Name="fixedTax" Type="Byte" />
   </EntityType>
   <EntityType Name="categoryuser">
     <Key>
@@ -1118,6 +1119,19 @@
     <Property Name="isLimitDate" Type="Boolean" />
     <Property Name="isLimitCount" Type="Boolean" />
     <Property Name="isActive" Type="Boolean" Nullable="false" />
+    <Property Name="packageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="bookDate" Type="DateTime" Precision="7" />
+    <Property Name="pId" Type="Int32" />
+    <Property Name="pcdId" Type="Int32" />
+    <Property Name="customerName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="customerLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="agentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="agentLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="agentAccountName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="pocrDate" Type="DateTime" Precision="7" />
+    <Property Name="poId" Type="Int32" />
+    <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="upnum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="properties">
     <Key>

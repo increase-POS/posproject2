@@ -112,19 +112,6 @@ namespace POS_Server.Controllers
 
             return packs;
         }
-        public ProgramDetailsModel getCustomerServerCode()
-        {
-            ProgramDetailsModel packs = new ProgramDetailsModel();
-            using (incposdbEntities entity = new incposdbEntities())
-            {
-                packs = (from p in entity.ProgramDetails
-                             //  join p in entity.posSetting on S.id equals p.posSerialId
-                         select new ProgramDetailsModel
-                         {
-                             customerServerCode = p.customerServerCode,
-                         }).FirstOrDefault();
-            }
-            return packs;
-        }
+
     }
 }

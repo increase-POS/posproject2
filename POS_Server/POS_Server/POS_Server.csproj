@@ -311,6 +311,7 @@
     <Compile Include="Controllers\PointsController.cs" />
     <Compile Include="Controllers\PosSettingController.cs" />
     <Compile Include="Controllers\PrinterController.cs" />
+    <Compile Include="Controllers\ProgramDetailsController.cs" />
     <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Controllers\shippingCompaniesController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
@@ -446,6 +447,7 @@
     <Compile Include="Models\PackageModel.cs" />
     <Compile Include="Models\PointsModel.cs" />
     <Compile Include="Models\PosSettingModel.cs" />
+    <Compile Include="Models\ProgramDetailsModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\OfferModel.cs" />

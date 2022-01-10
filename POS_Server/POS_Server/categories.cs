@@ -34,6 +34,7 @@ namespace POS_Server
         public Nullable<int> createUserId { get; set; }
         public Nullable<int> updateUserId { get; set; }
         public string notes { get; set; }
+        public Nullable<byte> fixedTax { get; set; }
     
         public virtual users users { get; set; }
         public virtual users users1 { get; set; }

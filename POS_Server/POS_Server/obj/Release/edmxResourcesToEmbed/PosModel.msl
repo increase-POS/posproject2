@@ -187,6 +187,7 @@
     <EntitySetMapping Name="categories">
       <EntityTypeMapping TypeName="incposdbModel.categories">
         <MappingFragment StoreEntitySet="categories">
+          <ScalarProperty Name="fixedTax" ColumnName="fixedTax" />
           <ScalarProperty Name="categoryId" ColumnName="categoryId" />
           <ScalarProperty Name="categoryCode" ColumnName="categoryCode" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -891,6 +892,19 @@
     <EntitySetMapping Name="ProgramDetails">
       <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
         <MappingFragment StoreEntitySet="ProgramDetails">
+          <ScalarProperty Name="upnum" ColumnName="upnum" />
+          <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="poId" ColumnName="poId" />
+          <ScalarProperty Name="pocrDate" ColumnName="pocrDate" />
+          <ScalarProperty Name="agentAccountName" ColumnName="agentAccountName" />
+          <ScalarProperty Name="agentLastName" ColumnName="agentLastName" />
+          <ScalarProperty Name="agentName" ColumnName="agentName" />
+          <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
+          <ScalarProperty Name="customerName" ColumnName="customerName" />
+          <ScalarProperty Name="pcdId" ColumnName="pcdId" />
+          <ScalarProperty Name="pId" ColumnName="pId" />
+          <ScalarProperty Name="bookDate" ColumnName="bookDate" />
+          <ScalarProperty Name="packageName" ColumnName="packageName" />
           <ScalarProperty Name="isActive" ColumnName="isActive" />
           <ScalarProperty Name="isLimitCount" ColumnName="isLimitCount" />
           <ScalarProperty Name="isLimitDate" ColumnName="isLimitDate" />
