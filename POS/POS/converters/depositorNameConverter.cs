@@ -34,13 +34,15 @@ namespace POS.converters
             }
 
             if (!string.IsNullOrEmpty(s.agentName))
-                return name +" "+s.agentName;
-            else if (!string.IsNullOrEmpty(s.usersName) && !string.IsNullOrEmpty(s.usersLName)) 
-                return name +" "+ s.usersName + " " + s.usersLName;
+                name = name + " " + s.agentName;
+            else if (!string.IsNullOrEmpty(s.usersName) && !string.IsNullOrEmpty(s.usersLName))
+                name = name + " " + s.usersName + " " + s.usersLName;
             else if (!string.IsNullOrEmpty(s.shippingCompanyName))
-                return name + " " + s.shippingCompanyName;
-            else
-                return name;
+                name = name + " " + s.shippingCompanyName;
+            else if ((s.side != "e") && (s.side != "m"))
+                name = name + " " + MainWindow.resourcemanager.GetString("trUnKnown");
+
+            return name;
 
         }
 

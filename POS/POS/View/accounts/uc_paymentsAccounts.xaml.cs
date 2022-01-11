@@ -95,7 +95,6 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_recipientSh, MainWindow.resourcemanager.GetString("trRecipientHint"));
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentProcessType, MainWindow.resourcemanager.GetString("trPaymentTypeHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNum, MainWindow.resourcemanager.GetString("trDocNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCheque, MainWindow.resourcemanager.GetString("trDocNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCard, MainWindow.resourcemanager.GetString("trProcessNumHint"));
@@ -106,24 +105,8 @@ namespace POS.View.accounts
             dg_paymentsAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_paymentsAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
             dg_paymentsAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            dg_paymentsAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-
-            //tt_depositTo.Content = MainWindow.resourcemanager.GetString("trDepositTo");
-            //tt_recepientV.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_recepientC.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_recepientU.Content = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            //tt_recepientSh.Content = MainWindow.resourcemanager.GetString("trShippingCompany");
-
-            //tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_docNumCheque.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_docNumCard.Content = MainWindow.resourcemanager.GetString("trProcessNumTooltip");
-
-            //tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
-            //tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            dg_paymentsAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_paymentsAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -140,7 +123,6 @@ namespace POS.View.accounts
             btn_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             btn_print_pay.Content = MainWindow.resourcemanager.GetString("trPrint");
             btn_pdf.Content = MainWindow.resourcemanager.GetString("trPdfBtn");
-            //txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
         }
 
@@ -394,10 +376,10 @@ namespace POS.View.accounts
 
         private void Dg_paymentsAccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucPaymentsAccounts);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_ucPaymentsAccounts);
 
                 SectionData.clearValidate(tb_docNum, p_errorDocNum);
 
@@ -453,14 +435,18 @@ namespace POS.View.accounts
                         {
                             case "v":
                                 cb_recipientV.SelectedIndex = -1;
-                                cb_recipientV.SelectedValue = cashtrans.agentId.Value;
+                                try
+                                { cb_recipientV.SelectedValue = cashtrans.agentId.Value; }
+                                catch { }
                                 cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                                 cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                                 cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                                 break;
                             case "c":
                                 cb_recipientC.SelectedIndex = -1;
-                                cb_recipientC.SelectedValue = cashtrans.agentId.Value;
+                                try
+                                { cb_recipientC.SelectedValue = cashtrans.agentId.Value; }
+                                catch { }
                                 cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                                 cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
                                 cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
@@ -468,14 +454,18 @@ namespace POS.View.accounts
                             case "u":
                             case "s":
                                 cb_recipientU.SelectedIndex = -1;
-                                cb_recipientU.SelectedValue = cashtrans.userId.Value;
+                                try
+                                { cb_recipientU.SelectedValue = cashtrans.userId.Value; }
+                                catch { }
                                 cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                                 cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                                 cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                                 break;
                             case "sh":
                                 cb_recipientSh.SelectedIndex = -1;
-                                cb_recipientSh.SelectedValue = cashtrans.shippingCompanyId.Value;
+                                try
+                                { cb_recipientSh.SelectedValue = cashtrans.shippingCompanyId.Value; }
+                                catch { }
                                 cb_recipientC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientC, p_errorRecipient);
                                 cb_recipientV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientV, p_errorRecipient);
                                 cb_recipientU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientU, p_errorRecipient);
@@ -500,15 +490,15 @@ namespace POS.View.accounts
                     }
                 }
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucPaymentsAccounts);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucPaymentsAccounts);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucPaymentsAccounts);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_ucPaymentsAccounts);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)

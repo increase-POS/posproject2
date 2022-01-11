@@ -212,13 +212,11 @@
                         </DataGrid.Resources>
 
                         <DataGrid.Columns>
-                            <!--<DataGridCheckBoxColumn Width="50" Binding="{Binding Path=isChecked}" IsThreeState="False"/>-->
-                            <DataGridTextColumn Width="*"   Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn Width="*"   Header="sales man" Binding="{Binding Path=shipUserName}"/>
-                            <DataGridTextColumn Width="*"   Header="customer" Binding="{Binding Path=agentName}"/>
-                            <!--<DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=deserved}"/>-->
+                            <DataGridTextColumn Width="*"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
+                            <DataGridTextColumn Width="*"  Header="sales man" Binding="{Binding Path=shipUserName}"/>
+                            <DataGridTextColumn Width="*"  Header="customer" Binding="{Binding Path=agentName}"/>
+                            <DataGridTextColumn Width="*"  Header="Date"          Binding="{Binding updateDate, Converter={StaticResource dateFrameConverter }}"/>
                             <DataGridTextColumn Width="*"  Header="Cash"  Binding="{Binding Path =deserved,Converter={StaticResource accuracyConverter }}"/>
-                            <!--<DataGridTextColumn Width="*"  Header="Status" Binding="{Binding Path=status}"/>-->
                             <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding status,Converter={StaticResource invoiceStatusConverter }}"/>
                         </DataGrid.Columns>
                     </DataGrid>

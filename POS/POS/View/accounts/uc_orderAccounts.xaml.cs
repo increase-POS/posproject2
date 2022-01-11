@@ -286,23 +286,9 @@ namespace POS.View.accounts
             dg_orderAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
             dg_orderAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trSalesMan");
             dg_orderAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trCustomer");
-            dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-            dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trState");
-
-            //tt_code.Content = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //tt_paymentType.Content = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //tt_docNum.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_docDate.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_docNumCheque.Content = MainWindow.resourcemanager.GetString("trDocNumTooltip");
-            //tt_docDateCheque.Content = MainWindow.resourcemanager.GetString("trDocDateTooltip");
-            //tt_docNumCard.Content = MainWindow.resourcemanager.GetString("trProcessNumTooltip");
-            //tt_card.Content = MainWindow.resourcemanager.GetString("trCardTooltip");
-            //tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
-            //tt_startDate.Content = MainWindow.resourcemanager.GetString("trSartDate");
-            //tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
-            //tt_state.Content = MainWindow.resourcemanager.GetString("trState");
+            dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_orderAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trState");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");

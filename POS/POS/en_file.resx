@@ -3022,4 +3022,7 @@ Please add Email in setting</value>
   <data name="trServerStatus" xml:space="preserve">
     <value>Server status</value>
   </data>
+  <data name="trPayDate" xml:space="preserve">
+    <value>Pay Date</value>
+  </data>
 </root>

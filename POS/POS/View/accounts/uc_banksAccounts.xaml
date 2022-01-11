@@ -145,9 +145,9 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Transfer number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn Width="*"  Header="Bank"   Binding="{Binding Path=bankName}"/>
+                        <DataGridTextColumn Width="*"  Header="Bank"  Binding="{Binding Path=bankName}"/>
                         <DataGridTextColumn Width="*"  Header="Deposite/Receipt Number" Binding="{Binding Path=docNum}"/>
-                        <!--<DataGridTextColumn Width="*"  Header="Cash" Binding="{Binding Path=cash}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Date"  Binding="{Binding updateDate, Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn Width="*"  Header="Cash"  Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
                     </DataGrid.Columns>
                 </DataGrid>

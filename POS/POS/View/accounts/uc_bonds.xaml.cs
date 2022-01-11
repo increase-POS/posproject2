@@ -921,11 +921,13 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_processNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_chequeProcessNum, MainWindow.resourcemanager.GetString("trProcessNumHint"));
-             dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
+
+            dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             dg_bonds.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-            dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+            dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+            dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trPayDate");
+            dg_bonds.Columns[5].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
