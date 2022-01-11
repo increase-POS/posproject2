@@ -112,6 +112,42 @@ namespace POS_Server.Controllers
 
             return packs;
         }
+        public ProgramDetailsModel getCustomerServerCode()
+        {
+            ProgramDetailsModel packs = new ProgramDetailsModel();
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                packs = (from p in entity.ProgramDetails
+                             //  join p in entity.posSetting on S.id equals p.posSerialId
+                         select new ProgramDetailsModel
+                         {
+                             customerServerCode = p.customerServerCode,
+                         }).FirstOrDefault();
+            }
+            return packs;
+        }
+        public int getSalesInvCountInMonth()
+        {
+            int invCount = 0;
+            
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var expireDate = entity.ProgramDetails.Select(x => x.expireDate).Single();
+                int expireDay = Convert.ToDateTime(expireDate).Day;               
+                int currentMonth = DateTime.Now.Month;
+                int currentYear = DateTime.Now.Year;
+                int currentMonthDays =  DateTime.DaysInMonth(currentYear, currentMonth);
 
+                if (expireDay > currentMonthDays)
+                    expireDay = currentMonthDays;
+                DateTime compaireDate2 = new DateTime(currentYear, currentMonth, expireDay);
+                DateTime compairDate1 = compaireDate2.AddMonths(-1);
+
+                // get sales imvoice count between compaireDate1 and compairDate2
+                invCount = entity.invoices.Where(x => x.invType == "s" && x.updateDate >= compairDate1 && x.updateDate < compaireDate2).Count();
+
+            }
+            return invCount;
+        }
     }
 }
