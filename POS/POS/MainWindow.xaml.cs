@@ -959,7 +959,7 @@ namespace POS
                     textBox.SelectAll();
         }
 
-        public static bool loadingDefaultPath(string first, string second)
+        public async static Task<bool> loadingDefaultPath(string first, string second)
         {
             bool load = false;
             if (!string.IsNullOrEmpty(first) && !string.IsNullOrEmpty(second))
@@ -967,14 +967,14 @@ namespace POS
                 foreach (Button button in FindControls.FindVisualChildren<Button>(MainWindow.mainWindow))
                 {
                     if (button.Tag != null)
-                        if (button.Tag.ToString() == first && MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects))
+                        if (button.Tag.ToString() == first &&( MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects) || SectionData.isAdminPermision() ))
                         {
                             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                             load = true;
                             break;
                         }
                 }
-
+               await Task.Delay(0500);
                 if (first == "home")
                     loadingSecondLevel(second, uc_home.Instance);
                 if (first == "catalog")
@@ -998,16 +998,16 @@ namespace POS
             return load;
         }
 
-        static void loadingSecondLevel(string second, UserControl userControl)
+        static  void loadingSecondLevel(string second, UserControl userControl)
         {
             userControl.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
             var button = userControl.FindName("btn_" + second) as Button;
             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
-        void permission()
+      async  void permission()
         {
             bool loadWindow = false;
-            loadWindow = loadingDefaultPath(firstPath, secondPath);
+            loadWindow = await loadingDefaultPath(firstPath, secondPath);
             if (!SectionData.isAdminPermision())
                 foreach (Button button in FindControls.FindVisualChildren<Button>(this))
                 {
