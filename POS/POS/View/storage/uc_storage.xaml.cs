@@ -66,12 +66,12 @@ namespace POS.View
             else
                 ex.IsExpanded = false;
             #endregion
-
+            //if (sender != null)
+            //    SectionData.StartAwait(grid_main);
             #region translate
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+               
 
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -88,13 +88,13 @@ namespace POS.View
                 #endregion
                 if(!stopPermission)
                 permission();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }

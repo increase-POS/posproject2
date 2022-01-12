@@ -123,8 +123,8 @@ namespace POS.View
         {
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_main);
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 { MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly()); grid_ucSectionData.FlowDirection = FlowDirection.LeftToRight; }
@@ -142,14 +142,14 @@ namespace POS.View
                 else
                     ex.IsExpanded = false;
                 #endregion
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_main);
             }
         }
         public bool stopPermission;
