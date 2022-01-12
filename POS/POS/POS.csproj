@@ -28,7 +28,7 @@
     <ProductName>POS</ProductName>
     <PublisherName>Increase</PublisherName>
     <SuiteName>POS</SuiteName>
-    <ApplicationRevision>16</ApplicationRevision>
+    <ApplicationRevision>20</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -1367,6 +1367,18 @@
     <Content Include="EmailTemplates\images\req2.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Internal\Ar\ArOperator.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Internal\En\Item.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Internal\En\Operator.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="pic\increase-logo100.png" />
     <Content Include="Thumb\agents\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1716,8 +1728,12 @@
     <Content Include="Reports\StatisticReport\Sale\En\EnPurVendorSts.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc" />
-    <Content Include="Reports\StatisticReport\Storage\Destructive\En\Des.rdlc" />
+    <Content Include="Reports\StatisticReport\Storage\Destructive\Ar\ArDes.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\Destructive\En\Des.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Reports\StatisticReport\Storage\Direct\Ar\ArItem.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1730,12 +1746,24 @@
     <Content Include="Reports\StatisticReport\Accounts\Recipient\En\AdministrativeDeposit.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\External\En\Agent.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\External\En\Invoice.rdlc" />
-    <EmbeddedResource Include="Reports\StatisticReport\Storage\External\En\Item.rdlc" />
+    <Content Include="Reports\StatisticReport\Storage\External\Ar\ArAgent.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\External\Ar\ArInvoice.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\External\Ar\ArItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\External\En\Agent.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\External\En\Invoice.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Storage\External\En\Item.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Reports\Store\Ar\ArDestroyReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2091,11 +2119,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoice.datasource" />
-    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc" />
-    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurPosSts.rdlc" />
-    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurSts.rdlc" />
-    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurUserSts.rdlc" />
-    <None Include="Reports\StatisticReport\Sale\QT\En\EnPurVendorSts.rdlc" />
+    <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurPosSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurUserSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurVendorSts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Reports\StatisticReport\Storage\Stock\Ar\ArCollect.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2198,8 +2236,6 @@
     <Resource Include="pic\no-image-icon-90x90.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Reports\StatisticReport\Storage\Internal\Ar\" />
-    <Folder Include="Reports\StatisticReport\Storage\Internal\En\" />
     <Folder Include="Thumb\report\" />
   </ItemGroup>
   <ItemGroup>
