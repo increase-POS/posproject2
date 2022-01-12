@@ -26,7 +26,7 @@ namespace POS
 
                 System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                // if (POS.Properties.Settings.Default.posId == "0")
-               /*
+              
                 if (config.AppSettings.Settings["posId"] == null)
                 {
                     //wd_setupOtherPos logIn = new wd_setupOtherPos();
@@ -35,10 +35,10 @@ namespace POS
                     logIn.Show();
                 }
                 else
-                {*/
+                {
                     winLogIn logIn = new winLogIn();
                     logIn.Show();
-                //}
+                }
 
                 //wd_setupOtherPos logIn = new wd_setupOtherPos();
                 //logIn.Show();
