@@ -1730,7 +1730,7 @@ namespace POS
                 w.ShowDialog();
                 Window.GetWindow(this).Opacity = 1;
 
-                userLogin = await userModel.getUserById(w.userID);
+                //userLogin = await userModel.getUserById(w.userID);
 
             }
             catch (Exception ex)
