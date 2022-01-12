@@ -5363,6 +5363,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تاريخ الدفع.
+        /// </summary>
+        internal static string trPayDate {
+            get {
+                return ResourceManager.GetString("trPayDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الدفعة.
         /// </summary>
         internal static string trPayment {

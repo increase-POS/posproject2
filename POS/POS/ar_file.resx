@@ -3004,4 +3004,7 @@
   <data name="trServerStatus" xml:space="preserve">
     <value>حالة السيرفر</value>
   </data>
+  <data name="trPayDate" xml:space="preserve">
+    <value>تاريخ الدفع</value>
+  </data>
 </root>

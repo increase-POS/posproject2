@@ -2510,10 +2510,10 @@ var strP = TokenManager.GetPrincipal(token);
                         break;
                     }
                 }
-
-                try
-                {
-                    invoices tmpInvoice;
+            try
+            {
+                invoices tmpInvoice;
+                    ProgramDetailsController pc = new ProgramDetailsController();
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var invoiceEntity = entity.Set<invoices>();
@@ -2523,7 +2523,7 @@ var strP = TokenManager.GetPrincipal(token);
                             {
                                 ProgramInfo programInfo = new ProgramInfo();
                                 int invMaxCount = programInfo.getSaleinvCount();
-                                int salesInvCount = entity.invoices.Where(x => x.invType == "s").Count();
+                                int salesInvCount = pc.getSalesInvCountInMonth();
                                 if (salesInvCount >= invMaxCount && invMaxCount != -1)
                                 {
                                     message = "-1";
@@ -2598,13 +2598,13 @@ var strP = TokenManager.GetPrincipal(token);
                             return TokenManager.GenerateToken(message);
                         }
                     }
-                }
+            }
 
-                catch
-                {
-                    message = "0";
-                    return TokenManager.GenerateToken(message);
-                }
+            catch
+            {
+                message = "0";
+                return TokenManager.GenerateToken(message);
+            }
             }
         }
 

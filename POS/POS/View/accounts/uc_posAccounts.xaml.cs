@@ -82,13 +82,8 @@ namespace POS.View.accounts
             dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trFromPos");
             dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trToPos");
             dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-
-            //tt_Pos1.Content = MainWindow.resourcemanager.GetString("trFromPos");
-            //tt_Pos2.Content = MainWindow.resourcemanager.GetString("trToPos");
-            //tt_cash.Content = MainWindow.resourcemanager.GetString("trCashTooltip");
-            //tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
-            //tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
+            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_posAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -121,7 +116,6 @@ namespace POS.View.accounts
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_ucposAccounts.FlowDirection = FlowDirection.LeftToRight;
-
                 }
                 else
                 {

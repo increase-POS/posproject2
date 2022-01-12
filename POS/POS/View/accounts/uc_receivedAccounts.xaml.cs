@@ -320,12 +320,12 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDateCheque, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-            //txt_cardTitle.Text = MainWindow.resourcemanager.GetString("tr_Card") + ":";
 
             dg_receivedAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_receivedAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor");
             dg_receivedAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_receivedAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_receivedAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -395,27 +395,51 @@ namespace POS.View.accounts
 
                     tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
 
-                    cb_depositFrom.SelectedValue = "m";
+                    cb_depositFrom.SelectedValue = cashtrans.side;
 
                     switch (cb_depositFrom.SelectedValue.ToString())
                     {
                         case "v":
-                            cb_depositorV.SelectedValue = cashtrans.agentId.Value;
+                            cb_depositorV.SelectedIndex = -1;
+                            try { cb_depositorV.SelectedValue = cashtrans.agentId.Value; }
+                            catch { }
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                            cb_depositorSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
                             break;
                         case "c":
-                            cb_depositorC.SelectedValue = cashtrans.agentId.Value;
+                            cb_depositorC.SelectedIndex = -1;
+                            try { cb_depositorC.SelectedValue = cashtrans.agentId.Value; }
+                            catch { }
+                            cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                            cb_depositorSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
                             break;
                         case "u":
-                            cb_depositorU.SelectedValue = cashtrans.userId.Value;
+                            cb_depositorU.SelectedIndex = -1;
+                            try { cb_depositorU.SelectedValue = cashtrans.userId.Value; }
+                            catch { }
+                            cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                            cb_depositorSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
                             break;
                         case "sh":
-                            cb_depositorSh.SelectedValue = cashtrans.shippingCompanyId.Value;
+                            cb_depositorSh.SelectedIndex = -1;
+                            try { cb_depositorSh.SelectedValue = cashtrans.shippingCompanyId.Value; }
+                            catch { }
+                            cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
                             break;
                         case "m":
+                            cb_depositorV.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                            cb_depositorC.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                            cb_depositorU.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                            cb_depositorSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_depositorSh, p_errordepositor);
                             break;
-                    }
+                        }
 
-                    cb_paymentProcessType.SelectedValue = cashtrans.processType;
+                        cb_paymentProcessType.SelectedValue = cashtrans.processType;
                     if (cashtrans.cardId != null)
                     _SelectedCard = (int) cashtrans.cardId;
                 }

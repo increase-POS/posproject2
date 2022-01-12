@@ -99,7 +99,8 @@ namespace POS.View.accounts
             dg_bankAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_bankAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trBank");
             dg_bankAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositeNumTooltip");
-            dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_bankAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_bankAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
