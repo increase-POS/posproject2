@@ -892,10 +892,12 @@
     <EntitySetMapping Name="ProgramDetails">
       <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
         <MappingFragment StoreEntitySet="ProgramDetails">
-          <ScalarProperty Name="upnum" ColumnName="upnum" />
           <ScalarProperty Name="notes" ColumnName="notes" />
+          <ScalarProperty Name="upnum" ColumnName="upnum" />
           <ScalarProperty Name="poId" ColumnName="poId" />
           <ScalarProperty Name="pocrDate" ColumnName="pocrDate" />
+          <ScalarProperty Name="activatedate" ColumnName="activatedate" />
+          <ScalarProperty Name="isServerActivated" ColumnName="isServerActivated" />
           <ScalarProperty Name="agentAccountName" ColumnName="agentAccountName" />
           <ScalarProperty Name="agentLastName" ColumnName="agentLastName" />
           <ScalarProperty Name="agentName" ColumnName="agentName" />

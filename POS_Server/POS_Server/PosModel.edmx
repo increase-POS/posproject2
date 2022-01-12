@@ -878,10 +878,12 @@
           <Property Name="agentName" Type="nvarchar" MaxLength="500" />
           <Property Name="agentLastName" Type="nvarchar" MaxLength="500" />
           <Property Name="agentAccountName" Type="nvarchar" MaxLength="500" />
+          <Property Name="isServerActivated" Type="bit" Nullable="false" />
+          <Property Name="activatedate" Type="datetime2" Precision="7" />
           <Property Name="pocrDate" Type="datetime2" Precision="7" />
           <Property Name="poId" Type="int" />
-          <Property Name="notes" Type="nvarchar" MaxLength="500" />
           <Property Name="upnum" Type="nvarchar" MaxLength="500" />
+          <Property Name="notes" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -1755,6 +1757,18 @@
             </Principal>
             <Dependent Role="Expenses">
               <PropertyRef Name="createUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_groupObject_groups">
+          <End Role="groups" Type="Self.groups" Multiplicity="0..1" />
+          <End Role="groupObject" Type="Self.groupObject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="groupId" />
+            </Principal>
+            <Dependent Role="groupObject">
+              <PropertyRef Name="groupId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3402,6 +3416,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_users_groups">
+          <End Role="groups" Type="Self.groups" Multiplicity="0..1" />
+          <End Role="users" Type="Self.users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groups">
+              <PropertyRef Name="groupId" />
+            </Principal>
+            <Dependent Role="users">
+              <PropertyRef Name="groupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_userSetValues_setValues">
           <End Role="setValues" Type="Self.setValues" Multiplicity="0..1" />
           <End Role="userSetValues" Type="Self.userSetValues" Multiplicity="*" />
@@ -3756,6 +3782,10 @@
           <AssociationSet Name="FK_Expenses_users" Association="Self.FK_Expenses_users">
             <End Role="users" EntitySet="users" />
             <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_groupObject_groups" Association="Self.FK_groupObject_groups">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="groupObject" EntitySet="groupObject" />
           </AssociationSet>
           <AssociationSet Name="FK_groupObject_objects" Association="Self.FK_groupObject_objects">
             <End Role="objects" EntitySet="objects" />
@@ -4304,6 +4334,10 @@
           <AssociationSet Name="FK_sysEmails_users1" Association="Self.FK_sysEmails_users1">
             <End Role="users" EntitySet="users" />
             <End Role="sysEmails" EntitySet="sysEmails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_users_groups" Association="Self.FK_users_groups">
+            <End Role="groups" EntitySet="groups" />
+            <End Role="users" EntitySet="users" />
           </AssociationSet>
           <AssociationSet Name="FK_userSetValues_setValues" Association="Self.FK_userSetValues_setValues">
             <End Role="setValues" EntitySet="setValues" />
@@ -5462,10 +5496,12 @@
           <Property Name="agentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="agentLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="agentAccountName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="isServerActivated" Type="Boolean" Nullable="false" />
+          <Property Name="activatedate" Type="DateTime" Precision="7" />
           <Property Name="pocrDate" Type="DateTime" Precision="7" />
           <Property Name="poId" Type="Int32" />
-          <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="upnum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -9986,10 +10022,12 @@
           <EntitySetMapping Name="ProgramDetails">
             <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
               <MappingFragment StoreEntitySet="ProgramDetails">
-                <ScalarProperty Name="upnum" ColumnName="upnum" />
                 <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="upnum" ColumnName="upnum" />
                 <ScalarProperty Name="poId" ColumnName="poId" />
                 <ScalarProperty Name="pocrDate" ColumnName="pocrDate" />
+                <ScalarProperty Name="activatedate" ColumnName="activatedate" />
+                <ScalarProperty Name="isServerActivated" ColumnName="isServerActivated" />
                 <ScalarProperty Name="agentAccountName" ColumnName="agentAccountName" />
                 <ScalarProperty Name="agentLastName" ColumnName="agentLastName" />
                 <ScalarProperty Name="agentName" ColumnName="agentName" />

@@ -892,10 +892,6 @@
     <EntitySetMapping Name="ProgramDetails">
       <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
         <MappingFragment StoreEntitySet="ProgramDetails">
-          <ScalarProperty Name="upnum" ColumnName="upnum" />
-          <ScalarProperty Name="notes" ColumnName="notes" />
-          <ScalarProperty Name="poId" ColumnName="poId" />
-          <ScalarProperty Name="pocrDate" ColumnName="pocrDate" />
           <ScalarProperty Name="agentAccountName" ColumnName="agentAccountName" />
           <ScalarProperty Name="agentLastName" ColumnName="agentLastName" />
           <ScalarProperty Name="agentName" ColumnName="agentName" />

@@ -45,9 +45,11 @@ namespace POS_Server
         public string agentName { get; set; }
         public string agentLastName { get; set; }
         public string agentAccountName { get; set; }
+        public bool isServerActivated { get; set; }
+        public Nullable<System.DateTime> activatedate { get; set; }
         public Nullable<System.DateTime> pocrDate { get; set; }
         public Nullable<int> poId { get; set; }
-        public string notes { get; set; }
         public string upnum { get; set; }
+        public string notes { get; set; }
     }
 }

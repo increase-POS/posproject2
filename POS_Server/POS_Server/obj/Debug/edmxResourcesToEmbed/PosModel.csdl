@@ -1128,10 +1128,12 @@
     <Property Name="agentName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="agentLastName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="agentAccountName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="isServerActivated" Type="Boolean" Nullable="false" />
+    <Property Name="activatedate" Type="DateTime" Precision="7" />
     <Property Name="pocrDate" Type="DateTime" Precision="7" />
     <Property Name="poId" Type="Int32" />
-    <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="upnum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="properties">
     <Key>
