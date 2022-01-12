@@ -385,7 +385,7 @@
                         </Path>
 
 
-                        <ComboBox x:Name="cb_branch" Grid.Row="2" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                        <!--<ComboBox x:Name="cb_branch" Grid.Row="2" Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                              materialDesign:HintAssist.Hint="Store/Branch..."  
                            TextBlock.FontSize="12" Margin="10,5,10,5"
                      Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
@@ -409,7 +409,7 @@
                             <Path.ToolTip>
                                 <ToolTip  x:Name="tt_errorSelectBranch"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
-                        </Path>
+                        </Path>-->
 
                         <TextBox  x:Name="tb_note" Grid.Row="3" Text="{Binding note, Mode=OneWay}"
                                                  Padding="10,0,5,0"  

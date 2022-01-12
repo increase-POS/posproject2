@@ -102,7 +102,7 @@ namespace POS.View
         {
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
 
             btn_locations.Content = MainWindow.resourcemanager.GetString("trLocation");
@@ -123,7 +123,7 @@ namespace POS.View
             tt_delete_Button.Content = MainWindow.resourcemanager.GetString("trDelete");
 
             tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranch/Store");
+            //tt_branch.Content = MainWindow.resourcemanager.GetString("trBranch/Store");
             tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
@@ -157,12 +157,12 @@ namespace POS.View
                 }
 
                 translate();
-                await SectionData.fillBranches(cb_branch, "bs");
-                cb_branch.SelectedValue = MainWindow.branchID;
-                if (SectionData.isAdminPermision())
-                    cb_branch.IsEnabled = true;
-                else
-                    cb_branch.IsEnabled = false;
+                //await SectionData.fillBranches(cb_branch, "bs");
+                //cb_branch.SelectedValue = MainWindow.branchID;
+                //if (SectionData.isAdminPermision())
+                //    cb_branch.IsEnabled = true;
+                //else
+                //    cb_branch.IsEnabled = false;
 
                 //fillBranches();
                 //cb_branch.SelectedIndex = 0;
@@ -203,15 +203,15 @@ namespace POS.View
                 //clear
                 tb_name.Clear();
                 tb_note.Clear();
-                cb_branch.SelectedValue= MainWindow.branchID; 
+                //cb_branch.SelectedValue= MainWindow.branchID; 
  
                 p_errorName.Visibility = Visibility.Collapsed;
-                p_errorSelectBranch.Visibility = Visibility.Collapsed;
+                //p_errorSelectBranch.Visibility = Visibility.Collapsed;
 
                 btn_locations.IsEnabled = false;
 
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                //cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
             }
             catch (Exception ex)
             {
@@ -226,10 +226,11 @@ namespace POS.View
             //chk empty Name
             SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
             //chk empty Branch
-            SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
+            //SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
 
 
-            if ((!tb_name.Text.Equals("")) && (!cb_branch.Text.Equals("")))
+            //if ((!tb_name.Text.Equals("")) && (!cb_branch.Text.Equals("")))
+            if ((!tb_name.Text.Equals("")) )
                 return true;
             else return false;
         }
@@ -248,7 +249,8 @@ namespace POS.View
                     if (validate(section))
                     {
                         section.name = tb_name.Text;
-                        section.branchId = Convert.ToInt32(cb_branch.SelectedValue);
+                        //section.branchId = Convert.ToInt32(cb_branch.SelectedValue);
+                        section.branchId = MainWindow.branchID;
                         section.note = tb_note.Text;
                         section.createUserId = MainWindow.userID;
                         section.updateUserId = MainWindow.userID;
@@ -293,7 +295,7 @@ namespace POS.View
                     if (validate(section))
                     {
                         section.name = tb_name.Text;
-                        section.branchId = Convert.ToInt32(cb_branch.SelectedValue);
+                        //section.branchId = Convert.ToInt32(cb_branch.SelectedValue);
                         section.note = tb_note.Text;
                         section.updateUserId = MainWindow.userID;
 
@@ -412,10 +414,10 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 //selection
                 p_errorName.Visibility = Visibility.Collapsed;
-                p_errorSelectBranch.Visibility = Visibility.Collapsed;
+                //p_errorSelectBranch.Visibility = Visibility.Collapsed;
 
                 tb_name.Background = (Brush)bc.ConvertFrom("#f8f8f8");
-                cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
+                //cb_branch.Background = (Brush)bc.ConvertFrom("#f8f8f8");
 
                 if (dg_section.SelectedIndex != -1)
                 {
@@ -430,9 +432,9 @@ namespace POS.View
                     if (section.branchId != 0)
                     {
                         //display branch by id
-                        branch = await branchModel.getBranchById(section.branchId.Value);
+                        //branch = await branchModel.getBranchById(section.branchId.Value);
 
-                        cb_branch.SelectedValue = branch.branchId;
+                        //cb_branch.SelectedValue = branch.branchId;
                     }
 
                     #region delete
@@ -481,8 +483,8 @@ namespace POS.View
             try
             {
 
-                if ((sender as ComboBox).Name == "cb_branch")
-                    SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
+                //    if ((sender as ComboBox).Name == "cb_branch")
+                //        SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
             }
             catch (Exception ex)
             {
@@ -498,9 +500,9 @@ namespace POS.View
                 if ((sender as Control).Name == "tb_name")
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-                else if ((sender as Control).Name == "cb_branch")
-                    //chk empty mobile
-                    SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
+                //else if ((sender as Control).Name == "cb_branch")
+                //    //chk empty mobile
+                //    SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
 
             }
             catch (Exception ex)
@@ -591,7 +593,7 @@ namespace POS.View
         {
             dg_section.ItemsSource = sectionsQuery;
             txt_count.Text = sectionsQuery.Count().ToString();
-            cb_branch.SelectedValue = MainWindow.branchID; ;
+            //cb_branch.SelectedValue = MainWindow.branchID; ;
         }
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {
