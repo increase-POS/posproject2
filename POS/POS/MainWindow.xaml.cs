@@ -976,21 +976,21 @@ namespace POS
                 }
                await Task.Delay(0500);
                 if (first == "home")
-                    loadingSecondLevel(second, uc_home.Instance);
+                     loadingSecondLevel(second, uc_home.Instance);
                 if (first == "catalog")
-                    loadingSecondLevel(second, UC_catalog.Instance);
+                     loadingSecondLevel(second, UC_catalog.Instance);
                 if (first == "storage")
-                    loadingSecondLevel(second, POS.View.uc_storage.Instance);
+                     loadingSecondLevel(second, POS.View.uc_storage.Instance);
                 if (first == "purchase")
-                    loadingSecondLevel(second, uc_purchases.Instance);
+                     loadingSecondLevel(second, uc_purchases.Instance);
                 if (first == "sales")
-                    loadingSecondLevel(second, uc_sales.Instance);
+                     loadingSecondLevel(second, uc_sales.Instance);
                 if (first == "accounts")
-                    loadingSecondLevel(second, uc_accounts.Instance);
+                     loadingSecondLevel(second, uc_accounts.Instance);
                 if (first == "reports")
-                    loadingSecondLevel(second, uc_reports.Instance);
+                     loadingSecondLevel(second, uc_reports.Instance);
                 if (first == "sectionData")
-                    loadingSecondLevel(second, UC_SectionData.Instance);
+                     loadingSecondLevel(second, UC_SectionData.Instance);
                 if (first == "settings")
                     loadingSecondLevel(second, uc_settings.Instance);
 
@@ -1002,6 +1002,7 @@ namespace POS
         {
             userControl.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
             var button = userControl.FindName("btn_" + second) as Button;
+            if (button!= null)
             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
       async  void permission()
