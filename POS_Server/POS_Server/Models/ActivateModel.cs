@@ -30,7 +30,7 @@ namespace POS_Server.Models
 
     public class packagesSend
     {
-
+        public Nullable<int> packageUserId { get; set; }
         public string packageName { get; set; }
 
         public int branchCount { get; set; }
@@ -86,6 +86,13 @@ namespace POS_Server.Models
         public string agentName { get; set; }// 5- Agent name 
         public string agentAccountName { get; set; }//5- Agent AccountName
         public string agentLastName { get; set; }//5- Agent LastName
+
+        public Nullable<System.DateTime> pocrDate { get; set; }
+        public Nullable<int> poId { get; set; }
+        public string notes { get; set; }
+        public string upnum { get; set; }
+        public string packuserType { get; set; }
+        public string activeApp { get; set; }
 
 
     }
