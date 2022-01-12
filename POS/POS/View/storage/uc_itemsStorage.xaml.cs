@@ -226,7 +226,7 @@ namespace POS.View.storage
             txt_itemsStorageHeader.Text = MainWindow.resourcemanager.GetString("trItemStorage");
             txt_Location.Text = MainWindow.resourcemanager.GetString("trLocationt");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemName, MainWindow.resourcemanager.GetString("trItemNameHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemName, MainWindow.resourcemanager.GetString("trItemHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_quantity, MainWindow.resourcemanager.GetString("trQuantityHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_section, MainWindow.resourcemanager.GetString("trSectionHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_XYZ, MainWindow.resourcemanager.GetString("trLocationHint"));
