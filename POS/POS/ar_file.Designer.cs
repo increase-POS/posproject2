@@ -2626,6 +2626,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حالة المخدم لا يمكن أن تكون فارغة.
+        /// </summary>
+        internal static string trEmptyServerStatus {
+            get {
+                return ResourceManager.GetString("trEmptyServerStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ البدء لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyStartDateToolTip {

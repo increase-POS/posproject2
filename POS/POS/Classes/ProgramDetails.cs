@@ -61,7 +61,11 @@ namespace POS.Classes
         public string agentLastName { get; set; }
         public string agentAccountName { get; set; }
 
-
+        public Nullable<System.DateTime> pocrDate { get; set; }
+        public Nullable<int> poId { get; set; }
+        public string notes { get; set; }
+        public string upnum { get; set; }
+        public string packuserType { get; set; }
 
 
         public async Task<ProgramDetails> getCurrentInfo()
@@ -79,6 +83,23 @@ namespace POS.Classes
             return item;
         }
 
+        public async Task<int> updateIsonline(bool isOnlineServer)
+        {
+            int item = 0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("isOnlineServer", isOnlineServer.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("ProgramDetails/updateIsonline", parameters);
 
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = int.Parse(c.Value);
+
+                }
+            }
+            return item;
+        }
     }
 }

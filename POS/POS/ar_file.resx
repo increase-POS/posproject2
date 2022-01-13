@@ -3007,4 +3007,7 @@
   <data name="trPayDate" xml:space="preserve">
     <value>تاريخ الدفع</value>
   </data>
+  <data name="trEmptyServerStatus" xml:space="preserve">
+    <value>حالة المخدم لا يمكن أن تكون فارغة</value>
+  </data>
 </root>

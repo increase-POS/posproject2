@@ -98,11 +98,12 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <ComboBox x:Name="cb_typeOnline"  Grid.Row="0" Margin="10,5,10,5" 
-                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="First Level..."  
+                          Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                           materialDesign:HintAssist.Hint="First Level..."  
                            TextBlock.FontSize="12"   Background="#f8f8f8"
-                                        Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                Grid.Column="0" Height="40" SelectionChanged="Cb_firstLevel_SelectionChanged" 
+                           Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                           Grid.Column="0" Height="40" 
+                           SelectionChanged="Cb_firstLevel_SelectionChanged" 
                            LostFocus="Tb_validateEmptyLostFocus" 
                            BorderBrush="#737373" BorderThickness="0"   >
 

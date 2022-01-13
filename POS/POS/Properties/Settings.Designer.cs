@@ -97,7 +97,7 @@ namespace POS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.1.5:44370/api/")]
         public string APIUri {
             get {
                 return ((string)(this["APIUri"]));

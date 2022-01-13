@@ -85,16 +85,20 @@ namespace POS.Classes
         public string PathUp(string path, int levelnum, string addtopath)
         {
             int pos1 = 0;
-            for (int i = 1; i <= levelnum; i++)
-            {
-                pos1 = path.LastIndexOf("\\");
-                path = path.Substring(0, pos1);
-            }
+            levelnum = 0;
+            //for (int i = 1; i <= levelnum; i++)
+            //{
+            //    //pos1 = path.LastIndexOf("\\");
+            //    //path = path.Substring(0, pos1);
+            //}
 
-            //string newPath = path + addtopath;
-            //return newPath;
-            addtopath = addtopath.Substring(1);
-            return addtopath;
+            string newPath = path + addtopath;
+            string finalDir = Path.GetDirectoryName(newPath);
+            if (!Directory.Exists(finalDir))
+                Directory.CreateDirectory(finalDir);
+            if (!File.Exists(newPath))
+                File.Create(newPath);
+            return newPath;
         }
 
         public string TimeToString(TimeSpan? time)

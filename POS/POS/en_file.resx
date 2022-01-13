@@ -3025,4 +3025,7 @@ Please add Email in setting</value>
   <data name="trPayDate" xml:space="preserve">
     <value>Pay Date</value>
   </data>
+  <data name="trEmptyServerStatus" xml:space="preserve">
+    <value>Server status can not be empty</value>
+  </data>
 </root>

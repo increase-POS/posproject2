@@ -198,8 +198,8 @@
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
                             <TextBlock  Grid.Row="2" Grid.Column="1"  x:Name="txt_serverStatus" 
-                                        Text="{Binding serverStatus, Mode=OneWay}"  Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                        Text="{Binding Path=isOnlineServer, Mode=OneWay,Converter={StaticResource isOnlineConverter}}" 
                                   FontSize="14"  />
                             <TextBlock Grid.Row="3"  Grid.ColumnSpan="2"   x:Name="txt_activationCodeTitle" Text="Activation code"  Margin="10 10 10 2.5"
                         HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#4E4E4E" FontWeight="SemiBold" 
