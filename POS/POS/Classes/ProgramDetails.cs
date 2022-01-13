@@ -61,7 +61,11 @@ namespace POS.Classes
         public string agentLastName { get; set; }
         public string agentAccountName { get; set; }
 
-
+        public Nullable<System.DateTime> pocrDate { get; set; }
+        public Nullable<int> poId { get; set; }
+        public string notes { get; set; }
+        public string upnum { get; set; }
+        public string packuserType { get; set; }
 
 
         public async Task<ProgramDetails> getCurrentInfo()

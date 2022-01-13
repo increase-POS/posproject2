@@ -14,7 +14,7 @@ namespace POS
         //public static string APIUri = "http://141.95.1.58:44/api/";
 
         //public static string APIUri = "http://141.95.1.58:44/api/";
-     
+
         //public static string APIUri = Properties.Settings.Default.APIUri;
 
         public static string ScannedImageLocation = "Thumb/Scan/scan.jpg";
