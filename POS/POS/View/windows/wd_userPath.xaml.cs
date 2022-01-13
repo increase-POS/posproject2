@@ -99,7 +99,8 @@ namespace POS.View.windows
         {
             var objectsLst = await _object.GetAll();
             objectsLst = objectsLst.Where(x => x.name != "storageStatistic" && x.name != "usersReports" 
-            && x.name != "purchaseStatistic" && x.name != "accountsStatistic").ToList();
+            && x.name != "purchaseStatistic" && x.name != "accountsStatistic"
+            && x.name != "medals" && x.name != "membership").ToList();
             if (!SectionData.isAdminPermision())
             {
                 var list = new List<Classes.Object>();
