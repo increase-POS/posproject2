@@ -311,6 +311,7 @@
     <Compile Include="converters\invoiceTypeNumberConverter.cs" />
     <Compile Include="converters\invoiceTypeVisibilityConverter.cs" />
     <Compile Include="converters\isActiveConverter.cs" />
+    <Compile Include="converters\isOnlineConverter.cs" />
     <Compile Include="converters\itemTypeConverter.cs" />
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\LocationFreeZoneConverter.cs" />
