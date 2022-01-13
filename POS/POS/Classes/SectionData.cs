@@ -1027,7 +1027,7 @@ namespace POS.Classes
 
             var progressRingList = FindControls.FindVisualChildren<MahApps.Metro.Controls.ProgressRing>(grid)
                  .Where(x => x.Name == "prg_awaitRing");
-            if (progressRingList.Count() == 0)
+            if (progressRingList.Count() == 0 )
             {
                     grid.IsEnabled = true;
                     grid.Opacity = 1;
@@ -1249,6 +1249,17 @@ namespace POS.Classes
                 _str = MainWindow.resourcemanager.GetString("trEmail");
             else if (str == "emailTemplates")
                 _str = MainWindow.resourcemanager.GetString("trEmailTemplates");
+            #endregion
+            #region report
+            if (str == "salesReports")
+                _str = MainWindow.resourcemanager.GetString("trSales");
+            else if (str == "purchaseReports")
+                _str = MainWindow.resourcemanager.GetString("trPurchases");
+            else if (str == "storageReports")
+                _str = MainWindow.resourcemanager.GetString("trStorage");
+            else if (str == "accountsReports")
+                _str = MainWindow.resourcemanager.GetString("trAccounts");
+
             #endregion
 
 
