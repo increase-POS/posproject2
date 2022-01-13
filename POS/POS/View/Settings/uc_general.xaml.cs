@@ -35,7 +35,6 @@ namespace POS.View.Settings
         static UserSetValues usValueModel = new UserSetValues();
         static CountryCode countryModel = new CountryCode();
         static SettingCls set = new SettingCls();
-        static SetValues language = new SetValues();
         static SetValues tax = new SetValues();
         //tax
         static SetValues setVInvoice = new SetValues();
@@ -50,12 +49,15 @@ namespace POS.View.Settings
         static SetValues dateForm = new SetValues();
         static SetValues cost = new SetValues();
         static public UserSetValues usLanguage = new UserSetValues();
-        static UserSetValues usValue = new UserSetValues();
         static CountryCode region = new CountryCode();
         static List<SetValues> languages = new List<SetValues>();
         static int taxId = 0, costId = 0, dateFormId, accuracyId , itemCostId = 0 , printCountId = 0;
         string usersSettingsPermission = "general_usersSettings";
         string companySettingsPermission = "general_companySettings";
+
+        static ProgramDetails progDetailsModel = new ProgramDetails();
+        static ProgramDetails progDetails = new ProgramDetails();
+
 
         OpenFileDialog openFileDialog = new OpenFileDialog();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -160,28 +162,7 @@ namespace POS.View.Settings
                 }
             }
         }
-        async void loading_getDefaultTax()
-        {
-            try
-            {
-                #region get default tax
-                await getDefaultTax();
-                if (tax != null) { }
-                    //tb_tax.Text = tax.value;
-                #endregion
-            }
-            catch (Exception)
-            { }
-            foreach (var item in loadingList)
-            {
-                if (item.key.Equals("loading_getDefaultTax"))
-                {
-                    item.value = true;
-                    break;
-                }
-            }
-        }
-
+        
         async void loading_getDefaultItemCost()
         {
             try
@@ -260,6 +241,30 @@ namespace POS.View.Settings
                 }
             }
         }
+
+        async void loading_getDefaultServerStatus()
+        {
+            try
+            {
+                #region get default server status
+                await getDefaultServerStatus();
+                if (progDetails != null)
+                    cb_serverStatus.SelectedValue = progDetails.isOnlineServer;
+                else
+                    cb_serverStatus.SelectedIndex = -1;
+                #endregion
+            }
+            catch (Exception)
+            { }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getDefaultServerStatus"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
         async void loading_fillAccuracy()
         {
             try
@@ -328,15 +333,18 @@ namespace POS.View.Settings
                     loadingList.Add(new keyValueBool { key = "loading_fillRegions", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillCurrencies", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultItemCost", value = false });
-                    loadingList.Add(new keyValueBool { key = "loading_getDefaultActivationSite", value = false });///???
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultActivationSite", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
+                    loadingList.Add(new keyValueBool { key = "loading_getDefaultServerStatus", value = false });
+
                     loading_fillRegions();
                     loading_fillCurrencies();
                     loading_getDefaultItemCost();
                     loading_getDefaultActivationSite();
                     loading_getDefaultDateForm();
                     loading_fillAccuracy();
+                    loading_getDefaultServerStatus();
                     do
                     {
                         isDone = true;
@@ -436,12 +444,18 @@ namespace POS.View.Settings
 
         public static async Task<SetValues> getDefaultAccuracy()
         {
-            //settingsCls = await setModel.GetAll();
-            //settingsValues = await valueModel.GetAll();
             set = settingsCls.Where(s => s.name == "accuracy").FirstOrDefault<SettingCls>();
             accuracyId = set.settingId;
             accuracy = settingsValues.Where(i => i.settingId == accuracyId).FirstOrDefault();
             return accuracy;
+        }
+
+        //ProgramDetails progDetails = new ProgramDetails();
+        public static async Task<ProgramDetails> getDefaultServerStatus()
+        {
+            progDetails = await progDetailsModel.getCurrentInfo();
+          
+            return progDetails;
         }
 
         public static async Task<SetValues> getDefaultCost()
@@ -1152,8 +1166,41 @@ namespace POS.View.Settings
 
         }
 
-        private void Btn_savesSrverStatus_Click(object sender, RoutedEventArgs e)
-        {
+        private async void Btn_savesSrverStatus_Click(object sender, RoutedEventArgs e)
+        {//server status
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
+
+              
+                SectionData.validateEmptyComboBox(cb_serverStatus, p_errorServerStatus, tt_errorServerStatus, "trEmptyServerStatus");
+                if (!cb_serverStatus.Text.Equals(""))
+                {
+                    if (progDetails == null)
+                        progDetails = new ProgramDetails();
+
+                    // progDetails.isOnlineServer = (bool)cb_serverStatus.SelectedValue;
+
+                    int res = await progDetailsModel.updateIsonline(false);
+
+                    if (res > 0)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+               
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
 
         }
         private void fillTypeOnline()
@@ -1161,8 +1208,8 @@ namespace POS.View.Settings
             cb_serverStatus.DisplayMemberPath = "Text";
             cb_serverStatus.SelectedValuePath = "Value";
             var typelist = new[] {
-                 new { Text = MainWindow.resourcemanager.GetString("trOnlineType")       , Value = "online" },
-                 new { Text = MainWindow.resourcemanager.GetString("trOfflineType")       , Value = "offline" },
+                 new { Text = MainWindow.resourcemanager.GetString("trOnlineType")       , Value = "True" },
+                 new { Text = MainWindow.resourcemanager.GetString("trOfflineType")       , Value = "False" },
                 };
             cb_serverStatus.ItemsSource = typelist;
             cb_serverStatus.SelectedIndex = 0;

@@ -133,5 +133,20 @@ namespace POS.View.windows
             cb_typeOnline.ItemsSource = typelist;
             cb_typeOnline.SelectedIndex = 0;
         }
+
+        private void Btn_save_Click(object sender, RoutedEventArgs e)
+        {//save
+
+        }
+
+        private void Cb_firstLevel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Tb_validateEmptyLostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

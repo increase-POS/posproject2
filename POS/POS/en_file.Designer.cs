@@ -2644,6 +2644,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server status can not be empty.
+        /// </summary>
+        internal static string trEmptyServerStatus {
+            get {
+                return ResourceManager.GetString("trEmptyServerStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start date can not be empty.
         /// </summary>
         internal static string trEmptyStartDateToolTip {

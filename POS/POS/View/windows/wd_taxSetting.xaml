@@ -96,13 +96,6 @@
                             PreviewTextInput="Tb_decimal_PreviewTextInput"
                             TextChanged="Tb_validateEmptyTextChange" 
                             LostFocus="Tb_validateEmptyLostFocus">
-                        <TextBox.ToolTip>
-                            <ToolTip x:Name="tt_invoiceTax" 
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                        </TextBox.ToolTip>
                     </TextBox>
                     <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorInvoiceTax"
                                Grid.Row="0"   Grid.Column="2" 
@@ -135,13 +128,7 @@
                                 PreviewTextInput="Tb_decimal_PreviewTextInput"
                                 TextChanged="Tb_validateEmptyTextChange" 
                                 LostFocus="Tb_validateEmptyLostFocus">
-                        <TextBox.ToolTip>
-                            <ToolTip x:Name="tt_itemsTax" 
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                        </TextBox.ToolTip>
+                        
                     </TextBox>
                     <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorItemsTax"
                                   HorizontalAlignment="Right"  Grid.Row="0"  Visibility="Collapsed"

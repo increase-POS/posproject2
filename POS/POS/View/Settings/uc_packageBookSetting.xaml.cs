@@ -129,6 +129,17 @@ namespace POS.View.Settings
                 { dpnl_item.Visibility = Visibility.Visible; txt_itemUnlimited.Visibility = Visibility.Collapsed; }
                 #endregion
 
+                if (SectionData.isSupportPermision())
+                {
+                    btn_extend.Visibility = Visibility.Visible;
+                    btn_upgrade.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_extend.Visibility = Visibility.Visible;
+                    btn_upgrade.Visibility = Visibility.Collapsed;
+                }
+
                 this.DataContext = progDetails;
 
                 SectionData.EndAwait(grid_main);
@@ -213,97 +224,112 @@ namespace POS.View.Settings
         {//extend
             int chk = 0;
             string activationkey = progDetails.packageSaleCode;//get from info 
-            try
-            {
-                if (activationkey.Trim() != "".Trim())
+
+            if (progDetails.isOnlineServer.Value)//online
+            { 
+                #region 
+                try
                 {
-                    AvtivateServer ac = new AvtivateServer();
-
-                    chk = await ac.checkconn();
-
-                    chk = await ac.StatSendserverkey(activationkey,"rn");
-                    // //change      chk = 3;
-                    //nochange     chk = 2;
-
-                    if (chk <= 0)
+                    if (activationkey.Trim() != "".Trim())
                     {
-                        string message = "inc(" + chk + ")";
+                        AvtivateServer ac = new AvtivateServer();
 
-                        string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
+                        chk = await ac.checkconn();
 
-                        string msg = MainWindow.resourcemanager.GetString("trActivationNotCompleted")+ "(" +
-                                     MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
+                        chk = await ac.StatSendserverkey(activationkey, "rn");
+                        // //change      chk = 3;
+                        //nochange     chk = 2;
 
-                        Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
-                    }
-
-                    else
-                    {
-                        if (chk == 3)
+                        if (chk <= 0)
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trActivationCompleted"), animation: ToasterAnimation.FadeIn);
-                            progDetails = await progDetailsModel.getCurrentInfo();
-                            this.DataContext = progDetails;
-                        }
-                        else if (chk == 2)
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
+                            string message = "inc(" + chk + ")";
 
+                            string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
+
+                            string msg = MainWindow.resourcemanager.GetString("trActivationNotCompleted") + "(" +
+                                         MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
+
+                            Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
+                        }
+
+                        else
+                        {
+                            if (chk == 3)
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trActivationCompleted"), animation: ToasterAnimation.FadeIn);
+                                progDetails = await progDetailsModel.getCurrentInfo();
+                                this.DataContext = progDetails;
+                            }
+                            else if (chk == 2)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
+
+                        }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
+                catch (Exception ex)
+                {
 
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
+                }
+            #endregion
             }
+            else//offline
+            { }
         }
 
         private async void Btn_upgrade_Click(object sender, RoutedEventArgs e)
         {//upgrade
             int chk = 0;
             string activationkey = progDetails.packageSaleCode;//get from info 
-            try
+           
+            if (progDetails.isOnlineServer.Value)//online
             {
-                if (activationkey.Trim() != "".Trim())
+                try
                 {
-                    AvtivateServer ac = new AvtivateServer();
-
-                    chk = await ac.checkconn();
-
-                    chk = await ac.StatSendserverkey(activationkey, "up");
-                    // //change      chk = 3;
-                    //nochange     chk = 2;
-
-                    if (chk <= 0)
+                    if (activationkey.Trim() != "".Trim())
                     {
-                        string message = "inc(" + chk + ")";
+                        AvtivateServer ac = new AvtivateServer();
 
-                        string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
+                        chk = await ac.checkconn();
 
-                        string msg = MainWindow.resourcemanager.GetString("trUpgradeNotCompleted") + "(" +
-                                    MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
+                        chk = await ac.StatSendserverkey(activationkey, "up");
+                        // //change      chk = 3;
+                        //nochange     chk = 2;
 
-                        Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
-                    }
-
-                    else
-                    {
-                        if (chk == 3)
+                        if (chk <= 0)
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trUpgradeCompleted"), animation: ToasterAnimation.FadeIn);
-                            progDetails = await progDetailsModel.getCurrentInfo();
-                            this.DataContext = progDetails;
-                        }
-                        else if (chk == 2)
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
+                            string message = "inc(" + chk + ")";
 
+                            string messagecode = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(message));
+
+                            string msg = MainWindow.resourcemanager.GetString("trUpgradeNotCompleted") + "(" +
+                                        MainWindow.resourcemanager.GetString("trErrorCode") + ":" + messagecode + ")";
+
+                            Toaster.ShowWarning(Window.GetWindow(this), message: msg, animation: ToasterAnimation.FadeIn);
+                        }
+
+                        else
+                        {
+                            if (chk == 3)
+                            {
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trUpgradeCompleted"), animation: ToasterAnimation.FadeIn);
+                                progDetails = await progDetailsModel.getCurrentInfo();
+                                this.DataContext = progDetails;
+                            }
+                            else if (chk == 2)
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChanges"), animation: ToasterAnimation.FadeIn);
+
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
+                }
             }
-            catch (Exception ex)
-            {
-                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
-            }
+            else//offlint
+            { }
+           
         }
 
         private async void Btn_serials_Click(object sender, RoutedEventArgs e)

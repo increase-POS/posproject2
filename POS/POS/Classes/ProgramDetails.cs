@@ -83,6 +83,23 @@ namespace POS.Classes
             return item;
         }
 
+        public async Task<int> updateIsonline(bool isOnlineServer)
+        {
+            int item = 0;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("isOnlineServer", isOnlineServer.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("ProgramDetails/updateIsonline", parameters);
 
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    item = int.Parse(c.Value);
+
+                }
+            }
+            return item;
+        }
     }
 }
