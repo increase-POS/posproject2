@@ -25,12 +25,9 @@ namespace POS
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
                 System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-               // if (POS.Properties.Settings.Default.posId == "0")
-              
+
                 if (config.AppSettings.Settings["posId"] == null)
                 {
-                    //wd_setupOtherPos logIn = new wd_setupOtherPos();
-                    //logIn.Show();
                     wd_setupFirstPos logIn = new wd_setupFirstPos();
                     logIn.Show();
                 }
@@ -39,9 +36,6 @@ namespace POS
                     winLogIn logIn = new winLogIn();
                     logIn.Show();
                 }
-
-                //wd_setupOtherPos logIn = new wd_setupOtherPos();
-                //logIn.Show();
 
             }
 		 catch (Exception ex)
