@@ -178,7 +178,7 @@ namespace POS.View.storage
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
-
+               tb_moneyIcon.Text = MainWindow.Currency;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -1635,7 +1635,7 @@ namespace POS.View.storage
 
             if (invType == "isd" && invoice.invoiceId == 0)
                 invoice.invNumber = await invoice.generateInvNumber("isd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
-            else
+            else if(invType == "is")
                 invoice.invNumber = await invoice.generateInvNumber("is", MainWindow.loginBranch.code, MainWindow.branchID.Value);
 
 

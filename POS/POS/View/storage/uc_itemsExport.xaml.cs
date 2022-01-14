@@ -665,45 +665,45 @@ namespace POS.View.storage
         #endregion
 
         #region Button In DataGrid
-        void deleteRowFromOrderItems(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        //void deleteRowFromOrderItems(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (sender != null)
+        //            SectionData.StartAwait(grid_main);
 
-                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
-                    if (vis is DataGridRow)
-                    {
-                        BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
-                        int index = dg_billDetails.SelectedIndex;
+        //        for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+        //            if (vis is DataGridRow)
+        //            {
+        //                BillDetails row = (BillDetails)dg_billDetails.SelectedItems[0];
+        //                int index = dg_billDetails.SelectedIndex;
 
-                        // remove item from bill
-                        billDetails.RemoveAt(index);
+        //                // remove item from bill
+        //                billDetails.RemoveAt(index);
 
-                        ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
-                        data.Remove(row);
+        //                ObservableCollection<BillDetails> data = (ObservableCollection<BillDetails>)dg_billDetails.ItemsSource;
+        //                data.Remove(row);
 
-                        // calculate new total
-                        //refreshTotalValue();
-                    }
-                _SequenceNum = 0;
-                for (int i = 0; i < billDetails.Count; i++)
-                {
-                    _SequenceNum++;
-                    billDetails[i].ID = _SequenceNum;
-                }
-                refrishBillDetails();
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //                // calculate new total
+        //                //refreshTotalValue();
+        //            }
+        //        _SequenceNum = 0;
+        //        for (int i = 0; i < billDetails.Count; i++)
+        //        {
+        //            _SequenceNum++;
+        //            billDetails[i].ID = _SequenceNum;
+        //        }
+        //        refrishBillDetails();
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
         #endregion
 
 
@@ -916,7 +916,6 @@ namespace POS.View.storage
                 w.ShowDialog();
                 if (w.isActive)
                 {
-                    // ChangeItemIdEvent(w.selectedItem);
                     for (int i = 0; i < w.selectedItems.Count; i++)
                     {
                         int itemId = w.selectedItems[i];
@@ -1028,12 +1027,13 @@ namespace POS.View.storage
 
                         tb_count.Text = _Count.ToString();
                     }
+                _SequenceNum = 0;
                 for (int i = 0; i < billDetails.Count; i++)
                 {
                     _SequenceNum++;
                     billDetails[i].ID = _SequenceNum;
                 }
-                //refrishBillDetails();
+                refrishBillDetails();
 
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
