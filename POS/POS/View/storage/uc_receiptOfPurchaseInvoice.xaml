@@ -365,10 +365,10 @@
                         </Button>
                     </StackPanel>
 
-                    <Separator Margin="5,0" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                    <Separator Margin="5,0" Grid.Row="3"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" Name="sp_sum"/>
                          <StackPanel x:Name="sp_tax" Visibility="Visible" Grid.Row="4" Orientation="Horizontal" 
                                     Margin="0,0,10,0"  >
-                        <TextBlock Grid.Row="0"  Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
+                        <!--<TextBlock Grid.Row="0"  Text="TAX" x:Name="txt_tax" Foreground="#178DD2" FontWeight="Bold" FontSize="18"  
                                   VerticalAlignment="Center" 
                                        HorizontalAlignment="Left" Margin="10,5,5,5"/>
 
@@ -384,7 +384,7 @@
                                              TextChanged="Tb_taxValue_TextChanged"/>
                         <TextBlock    Foreground="#4E4E4E" Text="%" Name="tb_percentage"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
-                                  FontWeight="Bold"  FontSize="12"/>
+                                  FontWeight="Bold"  FontSize="12"/>-->
                     </StackPanel>
 
                     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"

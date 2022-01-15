@@ -619,7 +619,7 @@
                                 <DataGridTextColumn  Header="Amount"  Width="*"  Binding="{Binding Path=Count}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />
+                        <!--<Separator Margin="5,0" Grid.Row="2"  Background="#DFDFDF" VerticalAlignment="Center" Width="auto" />-->
 
                         <StackPanel Grid.Row="3"  Orientation="Horizontal" Margin="5">
                             <Button Grid.Column="1" BorderBrush="{x:Null}" Visibility="Collapsed"  
