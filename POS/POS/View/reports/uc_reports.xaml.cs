@@ -40,7 +40,7 @@ namespace POS.View.reports
             btn_salesReports.Content = MainWindow.resourcemanager.GetString("trSales");
             btn_purchaseReports.Content = MainWindow.resourcemanager.GetString("trPurchases");
             btn_storageReports.Content = MainWindow.resourcemanager.GetString("trStorage");
-            btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounts");
+            btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounting");
             //btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
         }
 

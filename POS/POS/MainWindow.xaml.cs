@@ -1625,6 +1625,8 @@ namespace POS
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trPayments");
                 else if (tag == "recipient")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trRecipientTooltip");
+                else if (tag == "received")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trReceived");
                 else if (tag == "bank")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trBank");
                 else if (tag == "pos")

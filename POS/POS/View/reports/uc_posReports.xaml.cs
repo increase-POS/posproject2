@@ -237,7 +237,7 @@ namespace POS.View.reports
             txt_count.Text = temp.Count().ToString();
             fillColumnChart();
             //fillPieChart();
-            //fillRowChart();
+            fillRowChart();
         }
 
         private void Cb_formBranch_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -711,70 +711,86 @@ namespace POS.View.reports
 
         private void fillRowChart()
         {
-            int endYear = DateTime.Now.Year;
-            int startYear = endYear - 1;
-            int startMonth = DateTime.Now.Month;
-            int endMonth = startMonth;
-            if (dp_StartDate.SelectedDate != null && dp_EndDate.SelectedDate != null)
-            {
-                startYear = dp_StartDate.SelectedDate.Value.Year;
-                endYear = dp_EndDate.SelectedDate.Value.Year;
-                startMonth = dp_StartDate.SelectedDate.Value.Month;
-                endMonth = dp_EndDate.SelectedDate.Value.Month;
-            }
-
             MyAxis.Labels = new List<string>();
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            var temp = posLst;
-
             SeriesCollection rowChartData = new SeriesCollection();
 
-            List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> pull = new List<decimal>();
             List<decimal> deposit = new List<decimal>();
 
-            if (endYear - startYear <= 1)
+            var temp = posLst;
+
+            var res = temp.GroupBy(x => new { x.frombranchId }).Select(x => new CashTransferSts
             {
-                for (int year = startYear; year <= endYear; year++)
+                transType = "p",
+                branchId = x.FirstOrDefault().frombranchId,
+                branchName = x.FirstOrDefault().frombranchName,
+                cash = x.Sum(g => g.cash)
+            });
+            
+            var res1 = temp.GroupBy(x => new { x.tobranchId }).Select(x => new CashTransferSts
+            {
+                transType = "d",
+                branchId = x.FirstOrDefault().tobranchId,
+                branchName = x.FirstOrDefault().tobranchName,
+                cash = x.Sum(g => g.cash)
+            });
+
+            List<CashTransferSts> result = new List<CashTransferSts>();
+
+            result.AddRange(res.ToList());
+
+            if (chk_twoWay.IsChecked == true)
+                result.AddRange(res1.ToList());
+
+            var finalResult = result.GroupBy(x => new { x.branchId }).Select(x => new CashTransferSts
+            {
+                transType = x.FirstOrDefault().transType,
+                branchId = x.FirstOrDefault().branchId,
+                branchName = x.FirstOrDefault().branchName,
+                depositSum = x.Where(g => g.transType == "d").Sum(g => (decimal)g.cash),
+                pullSum = x.Where(g => g.transType == "p").Sum(g => (decimal)g.cash)
+            });
+            var tempName = finalResult.Select(s => new
+            {
+                itemName = s.branchName,
+            });
+            names.AddRange(tempName.Select(nn => nn.itemName));
+
+            int xCount = 6;
+
+            if (names.Count() <= 6)
+                xCount = names.Count();
+
+            for (int i = 0; i < xCount; i++)
+            {
+                pull.Add(finalResult.ToList().Skip(i).FirstOrDefault().depositSum);
+                deposit.Add(finalResult.ToList().Skip(i).FirstOrDefault().pullSum);
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
+
+            if (names.Count() > 6)
+            {
+                decimal depositSum = 0, pullSum = 0;
+                for (int i = 6; i < names.Count(); i++)
                 {
-                    for (int month = startMonth; month <= 12; month++)
-                    {
-                        var firstOfThisMonth = new DateTime(year, month, 1);
-                        var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                        var drawPull = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
-                        var drawDeposit= temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
-                        pull.Add((decimal)drawPull);
-                        deposit.Add((decimal)drawDeposit);
+                    depositSum = depositSum + finalResult.ToList().Skip(i).FirstOrDefault().depositSum;
+                    pullSum = pullSum + finalResult.ToList().Skip(i).FirstOrDefault().pullSum;
+                }
+                if (!((depositSum == 0) && (pullSum == 0)))
+                {
+                    pull.Add(depositSum);
+                    deposit.Add(pullSum);
 
-                        MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
-
-                        if (year == endYear && month == endMonth)
-                        {
-                            break;
-                        }
-                        if (month == 12)
-                        {
-                            startMonth = 1;
-                            break;
-                        }
-                    }
+                    axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
                 }
             }
-            else
+            for (int i = 0; i < pull.Count(); i++)
             {
-                for (int year = startYear; year <= endYear; year++)
-                {
-                    var firstOfThisYear = new DateTime(year, 1, 1);
-                    var firstOfNextMYear = firstOfThisYear.AddYears(1);
-                    var drawPull = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.transType == "p").Sum(c => c.cash.Value);
-                    var drawDeposit= temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.transType == "d").Sum(c => c.cash.Value);
-                    pull.Add(drawPull);
-                    deposit.Add(drawDeposit);
-                    MyAxis.Labels.Add(year.ToString());
-                }
+                MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
             rowChartData.Add(
           new LineSeries

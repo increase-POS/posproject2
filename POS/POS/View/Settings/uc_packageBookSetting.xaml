@@ -216,8 +216,8 @@
               
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition x:Name="col_extend" Width="*"/>
+                            <ColumnDefinition x:Name="col_upgrade" Width="*"/>
                         </Grid.ColumnDefinitions>
                        
                         <Button Content="Extend" Height="40" BorderBrush="{x:Null}"
@@ -227,18 +227,17 @@
                                 Background="{StaticResource MainColorBlue}"
                                 Click="Btn_extend_Click"/>
                         <Button Content="Upgrade"  Height="40" BorderBrush="{x:Null}"
-
                                 Foreground="White" FontSize="18" FontWeight="Bold"
                                 x:Name="btn_upgrade" Grid.Column="1" Margin="5"
                                 IsEnabled="True" 
                                 Background="{StaticResource MainColorBlue}" Click="Btn_upgrade_Click"
                                 />
-                        <Button Content="Extend/Upgrade"  Height="40" BorderBrush="{x:Null}"
+                        <!--<Button Content="Extend/Upgrade"  Height="40" BorderBrush="{x:Null}"
                                 Foreground="White" FontSize="18" FontWeight="Bold"
                                 x:Name="btn_extendUpgrade" Grid.Column="0" Margin="10 5 5 5 "
                                 IsEnabled="True" Grid.ColumnSpan="2"
                                 Visibility="Collapsed"
-                                Background="{StaticResource MainColorBlue}" Click="Btn_extendUpgrade_Click"/>
+                                Background="{StaticResource MainColorBlue}" Click="Btn_extendUpgrade_Click"/>-->
                     </Grid>
                 </Grid>
                 

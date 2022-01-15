@@ -131,13 +131,12 @@ namespace POS.View.Settings
 
                 if (SectionData.isSupportPermision())
                 {
-                    btn_extend.Visibility = Visibility.Visible;
-                    btn_upgrade.Visibility = Visibility.Visible;
+                    col_upgrade.Width = col_extend.Width;
+
                 }
                 else
                 {
-                    btn_extend.Visibility = Visibility.Visible;
-                    btn_upgrade.Visibility = Visibility.Collapsed;
+                    col_upgrade.Width = new GridLength(0);
                 }
 
                 this.DataContext = progDetails;

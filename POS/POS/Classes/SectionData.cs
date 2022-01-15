@@ -1159,7 +1159,7 @@ namespace POS.Classes
             #endregion
             #region  Account
             else if (str == "posAccounting")
-                _str = MainWindow.resourcemanager.GetString("trPOS");
+                _str = MainWindow.resourcemanager.GetString("trTransfers");
             else if (str == "payments")
                 _str = MainWindow.resourcemanager.GetString("trPayments");
             else if (str == "received")
@@ -1388,7 +1388,8 @@ namespace POS.Classes
             else if (firstTitle == "saleItems" || firstTitle == "purchaseItem")
                 firstTitle = MainWindow.resourcemanager.GetString("trItems");
             else if (firstTitle == "recipientReport")
-                firstTitle = MainWindow.resourcemanager.GetString("trRecepient");
+                //firstTitle = MainWindow.resourcemanager.GetString("trRecepient");
+                firstTitle = MainWindow.resourcemanager.GetString("trReceived");
             else if (firstTitle == "accountStatement")
                 firstTitle = MainWindow.resourcemanager.GetString("trAccountStatement");
             else if (firstTitle == "paymentsReport")
@@ -1425,13 +1426,15 @@ namespace POS.Classes
             else if (secondTitle == "order")
                 secondTitle = MainWindow.resourcemanager.GetString("trOrders");
             else if (secondTitle == "quotation")
-                secondTitle = MainWindow.resourcemanager.GetString("trQuotations");
+                secondTitle = MainWindow.resourcemanager.GetString("trQuotations"); 
             else if (secondTitle == "operator")
                 secondTitle = MainWindow.resourcemanager.GetString("trOperator");
             else if (secondTitle == "payments")
                 secondTitle = MainWindow.resourcemanager.GetString("trPayments");
             else if (secondTitle == "recipient")
                 secondTitle = MainWindow.resourcemanager.GetString("trRecepient");
+            else if (secondTitle == "received")
+                secondTitle = MainWindow.resourcemanager.GetString("trReceived");
             else if (secondTitle == "destroied") 
                  secondTitle = MainWindow.resourcemanager.GetString("trDestructives");
             else if (secondTitle == "agent")
