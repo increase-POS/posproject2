@@ -1208,10 +1208,96 @@ namespace POS.Classes
 
 
         //////////
+        
+
+        public static bool encodestring(string sourcetext, string dest)
+        {
+            try
+            {
+                byte[] arr = ConvertToBytes(sourcetext);
+                //  byte[] arr = File.ReadAllBytes(source);
+
+                arr = Encrypt(arr);
+
+                File.WriteAllBytes(dest, arr);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        private static byte[] ConvertToBytes(string text)
+        {
+            return System.Text.Encoding.Unicode.GetBytes(text);
+        }
+
+        public static string Decrypt(string EncryptedText)
+        {
+            byte[] b = ConvertToBytes(EncryptedText);
+            b = Decrypt(b);
+            return ConvertToText(b);
+        }
+        public static string DeCompressThenDecrypt(string text)
+        {
+            var bytes = Encoding.UTF8.GetBytes(text);
+            text = Encoding.UTF8.GetString(bytes);
+
+            return (Decrypt(text));
+        }
+        public static bool decodefile(string Source, string DestPath)
+        {
+            try
+            {
+                byte[] restorearr = File.ReadAllBytes(Source);
+
+                restorearr = Decrypt(restorearr);
+                File.WriteAllBytes(DestPath, restorearr);
+                return true;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static string decodetoString(string Source)
+        {
+            try
+            {
+                byte[] restorearr = File.ReadAllBytes(Source);
+
+                restorearr = Decrypt(restorearr);
+                return ConvertToText(restorearr);
+                // File.WriteAllBytes(DestPath, restorearr);
 
 
-
-
+            }
+            catch
+            {
+                return "0";
+            }
+        }
+        private static string ConvertToText(byte[] ByteAarry)
+        {
+            return System.Text.Encoding.Unicode.GetString(ByteAarry);
+        }
+        public static byte[] Decrypt(byte[] Encrypted)
+        {
+            BitArray enc = ToBits(Encrypted);
+            BitArray XorH = SubBits(enc, 0, enc.Length / 2);
+            XorH = XorH.Not();
+            BitArray RHH = SubBits(enc, enc.Length / 2, enc.Length / 2);
+            RHH = RHH.Not();
+            BitArray LHH = XorH.Xor(RHH);
+            BitArray bits = ConcateBits(LHH, RHH);
+            byte[] decr = new byte[bits.Length / 8];
+            bits.CopyTo(decr, 0);
+            return decr;
+        }
 
     }
 }

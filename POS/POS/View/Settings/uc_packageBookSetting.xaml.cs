@@ -17,6 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 
 namespace POS.View.Settings
 {
@@ -38,6 +40,9 @@ namespace POS.View.Settings
         }
 
         private static uc_packageBookSetting _instance;
+
+        OpenFileDialog openFileDialog = new OpenFileDialog();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
         public static uc_packageBookSetting Instance
         {
             get
@@ -88,7 +93,7 @@ namespace POS.View.Settings
                 progDetails = await progDetailsModel.getCurrentInfo();
 
                 #region unlimited
-                if(progDetails.branchCount == -1)
+                if (progDetails.branchCount == -1)
                 { dpnl_branch.Visibility = Visibility.Collapsed; txt_branchUnlimited.Visibility = Visibility.Visible; }
                 else
                 { dpnl_branch.Visibility = Visibility.Visible; txt_branchUnlimited.Visibility = Visibility.Collapsed; }
@@ -208,10 +213,10 @@ namespace POS.View.Settings
         #region validate - clearValidate - textChange - lostFocus - . . . . 
         void Clear()
         {
-          
+
         }
 
-       
+
         #endregion
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
@@ -225,7 +230,7 @@ namespace POS.View.Settings
             string activationkey = progDetails.packageSaleCode;//get from info 
 
             if (progDetails.isOnlineServer.Value)//online
-            { 
+            {
                 #region 
                 try
                 {
@@ -270,23 +275,94 @@ namespace POS.View.Settings
 
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
                 }
-            #endregion
+                #endregion
             }
             else//offline
             {
-                int result = 0;
-                if(result > 0)
+
+                // start activate
+
+                chk = 0;
+                string message = "";
+                try
                 {
 
-                }
-                else
-                {
-                    if(result == -8)
+                    bool isServerActivated = true;
+                    AvtivateServer ac = new AvtivateServer();
+                    string activeState = "rn";
+                    int activematch = 0;
+
+                    string filepath = "";
+                    openFileDialog.Filter = "INC|*.ac; ";
+                    SendDetail customerdata = new SendDetail();
+                    SendDetail dc = new SendDetail();
+                    if (openFileDialog.ShowDialog() == true)
                     {
-                        string msg = "";
-                        Toaster.ShowWarning(Window.GetWindow(this), msg, animation: ToasterAnimation.FadeIn);
+                        filepath = openFileDialog.FileName;
+
+                      
+                        string objectstr = "";
+
+                        objectstr = ReportCls.decodetoString(filepath);
+
+                        dc = JsonConvert.DeserializeObject<SendDetail>(objectstr, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        packagesSend pss = new packagesSend();
+
+                        pss = dc.packageSend;
+                        isServerActivated = dc.packageSend.isServerActivated;
+                        pss.activeApp = "-";
+
+                        dc.packageSend = pss;
+
+                        // string activeState = "";
+                        if (dc.packageSend.activeState == activeState)
+                        {
+                            activematch = 1;
+                            customerdata = await ac.OfflineActivate(dc, activeState);
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: "The file isn't Extend file", animation: ToasterAnimation.FadeIn);
+
+                        }
+
                     }
+
+                    // upload
+
+                    if (activematch == 1)
+                    {
+                        if (customerdata.packageSend.result > 0)
+                        {
+                            Toaster.ShowSuccess(Window.GetWindow(this), message: "Success", animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
+                        {
+                            //   MessageBox.Show(customerdata.packageSend.result.ToString());
+                            string msg = "NOT complete - " + customerdata.packageSend.result.ToString();
+                            Toaster.ShowWarning(Window.GetWindow(this), msg, animation: ToasterAnimation.FadeIn);
+
+                        }
+                    }
+                    else
+                    {
+                        //close
+
+                    }
+
+                    //end uploaa 
+
                 }
+                catch (Exception ex)
+                {
+
+                    Toaster.ShowWarning(Window.GetWindow(this), message: "The server Not Found", animation: ToasterAnimation.FadeIn);
+                }
+
+
+                //end activate
+
             }
         }
 
@@ -294,7 +370,7 @@ namespace POS.View.Settings
         {//upgrade
             int chk = 0;
             string activationkey = progDetails.packageSaleCode;//get from info 
-           
+
             if (progDetails.isOnlineServer.Value)//online
             {
                 try
@@ -342,21 +418,121 @@ namespace POS.View.Settings
             }
             else//offline
             {
-                int result = 0;
-                if (result > 0)
+
+                
+                // start activate
+
+                chk = 0;
+                string message = "";
+                try
                 {
 
-                }
-                else
-                {
-                    if (result == -8)
+                    bool isServerActivated = true;
+                    AvtivateServer ac = new AvtivateServer();
+                    string activeState = "up";
+                    int activematch = 0;
+
+                    string filepath = "";
+                    openFileDialog.Filter = "INC|*.ac; ";
+                    SendDetail customerdata = new SendDetail();
+                    SendDetail dc = new SendDetail();
+                    if (openFileDialog.ShowDialog() == true)
                     {
-                        string msg = "";
-                        Toaster.ShowWarning(Window.GetWindow(this), msg, animation: ToasterAnimation.FadeIn);
+                        filepath = openFileDialog.FileName;
+
+                        //   bool resr = ReportCls.decodefile(filepath, @"D:\stringlist.txt");//comment
+
+                        string objectstr = "";
+
+                        objectstr = ReportCls.decodetoString(filepath);
+
+                        dc = JsonConvert.DeserializeObject<SendDetail>(objectstr, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+                        packagesSend pss = new packagesSend();
+
+                        pss = dc.packageSend;
+                        isServerActivated = dc.packageSend.isServerActivated;
+                        pss.activeApp = "-";
+
+                        dc.packageSend = pss;
+
+                        // string activeState = "";
+                        if (dc.packageSend.activeState == activeState)
+                        {
+                            activematch = 1;
+                            customerdata = await ac.OfflineActivate(dc, activeState);
+                        }
+                        else
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: "The file isn't upgrade file", animation: ToasterAnimation.FadeIn);
+
+                        }
+
                     }
+
+                    // upload
+
+                    if (activematch==1)
+                    {
+                        if (customerdata.packageSend.result > 0)
+                        {
+                           
+                                // if first activate OR upgrade  show save dialoge to save customer data in file 
+                                saveFileDialog.Filter = "File|*.ac;";
+                                if (saveFileDialog.ShowDialog() == true)
+                                {
+                                    string DestPath = saveFileDialog.FileName;
+
+                                    string myContent = JsonConvert.SerializeObject(customerdata);
+
+                                    bool res = false;
+
+                                    res = ReportCls.encodestring(myContent, DestPath);
+
+                                    if (res)
+                                    {
+                                        //     //done
+                                        //   MessageBox.Show("Success");
+                                        Toaster.ShowSuccess(Window.GetWindow(this), message: "Success", animation: ToasterAnimation.FadeIn);
+                                    }
+                                    else
+                                    {
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: "Error", animation: ToasterAnimation.FadeIn);
+                                        //   MessageBox.Show("Error");
+                                    }
+
+
+                                }
+                        }
+                        else
+                        {
+                            //   MessageBox.Show(customerdata.packageSend.result.ToString());
+                            string msg = "NOT complete - " + customerdata.packageSend.result.ToString();
+                            Toaster.ShowWarning(Window.GetWindow(this), msg, animation: ToasterAnimation.FadeIn);
+                          
+                        }
+                    }
+                    else
+                    {
+                        //close
+
+                    }
+                
+                    //end uploaa 
+
                 }
+                catch (Exception ex)
+                {
+
+                    Toaster.ShowWarning(Window.GetWindow(this), message: "The server Not Found", animation: ToasterAnimation.FadeIn);
+                }
+
+
+                //end activate
+
+
+               
             }
-           
+
         }
 
         private async void Btn_serials_Click(object sender, RoutedEventArgs e)
@@ -366,13 +542,13 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_serials w = new wd_serials();
-                    w.activationCode = progDetails.packageSaleCode;
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
+                Window.GetWindow(this).Opacity = 0.2;
+                wd_serials w = new wd_serials();
+                w.activationCode = progDetails.packageSaleCode;
+                w.ShowDialog();
+                Window.GetWindow(this).Opacity = 1;
 
-                    progDetails = await progDetailsModel.getCurrentInfo();
+                progDetails = await progDetailsModel.getCurrentInfo();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
