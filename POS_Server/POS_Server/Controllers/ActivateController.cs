@@ -53,29 +53,30 @@ namespace POS_Server.Controllers
             }
             return result;
         }
-        public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode, string packState)
-        {
-            SendDetail item = new SendDetail();
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
+        //public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode, string packState)
+        //{
+        //    SendDetail item = new SendDetail();
+        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
 
-            parameters.Add("activeState", packState);
-            parameters.Add("packageSaleCode", packageSaleCode);
-            parameters.Add("customerServerCode", customerServerCode);
+        //    parameters.Add("activeState", packState);
+        //    parameters.Add("packageSaleCode", packageSaleCode);
+        //    parameters.Add("customerServerCode", customerServerCode);
 
-            //#################
-            IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServer", parameters);
+        //    //#################
+        //    IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServer", parameters);
 
-            foreach (Claim c in claims)
-            {
-                if (c.Type == "scopes")
-                {
-                    item = JsonConvert.DeserializeObject<SendDetail>(c.Value, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+        //    foreach (Claim c in claims)
+        //    {
+        //        if (c.Type == "scopes")
+        //        {
+        //            item = JsonConvert.DeserializeObject<SendDetail>(c.Value, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
 
-                }
-            }
-            return item;
+        //        }
+        //    }
+        //    return item;
 
-        }
+        //}
+
         public async Task<SendDetail> GetSerialsAndDetails(string packageSaleCode, string customerServerCode, packagesSend packState)
         {
             SendDetail item = new SendDetail();
@@ -92,6 +93,7 @@ namespace POS_Server.Controllers
             {
                 if (c.Type == "scopes")
                 {
+
                     item = JsonConvert.DeserializeObject<SendDetail>(c.Value, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
 
                 }
@@ -99,6 +101,32 @@ namespace POS_Server.Controllers
             return item;
 
         }
+
+
+        public async Task<string> GetSerialsAndDetails2(string packageSaleCode, string customerServerCode, packagesSend packState)
+        {
+            string item = "0";
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            var myContent = JsonConvert.SerializeObject(packState);
+            parameters.Add("packState", myContent);
+            parameters.Add("packageSaleCode", packageSaleCode);
+            parameters.Add("customerServerCode", customerServerCode);
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("packageUser/ActivateServerState", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+
+                    item = c.Value;
+                }
+            }
+            return item;
+
+        }
+
         public List<PosSerialSend> getserialsinfo()
         {
             SendDetail sd = new SendDetail();
@@ -169,7 +197,8 @@ namespace POS_Server.Controllers
 
                              canRenew = false,
                              isPayed = true,
-                             isServerActivated = true,
+                           isServerActivated = p.isServerActivated,
+                           activatedate=p.activatedate,
                              pId = p.pId,
                              pcdId = p.pcdId,
                              bookDate = p.bookDate,
@@ -236,17 +265,19 @@ namespace POS_Server.Controllers
                            
                              //  updateDate = p.updateDate,
                              islimitDate = (p.isLimitDate == true) ? true : false,
-                             //islimitDate = false,
+                        
                              //  isLimitCount = (bool)p.isLimitCount,
                              isActive = (p.isActive == true) ? 1 : 0,
-                             //   isActive =1,
+                       
                              canRenew = false,
                              isPayed = true,
-                             isServerActivated = true,
+                             isServerActivated = p.isServerActivated,
+                             activatedate=p.activatedate,
                              pId = p.pId,
                              pcdId = p.pcdId,
                              bookDate = p.bookDate,
-
+                             pocrDate=p.pocrDate,
+                             poId=p.poId,
                              customerName = p.customerName,
                              customerLastName = p.customerLastName,
                              agentName = p.agentName,
@@ -348,11 +379,10 @@ namespace POS_Server.Controllers
                             tmpObject.storeCount = newObject.storeCount;
 
                             tmpObject.packageSaleCode = newObject.packageSaleCode;
-                            if (newObject.isServerActivated == false)
-                            {
+                          
                                 tmpObject.customerServerCode = newObject.customerServerCode;// from function
 
-                            }
+                            
 
                             tmpObject.expireDate = newObject.expireDate;
                             tmpObject.isOnlineServer = newObject.isOnlineServer;
@@ -374,6 +404,11 @@ namespace POS_Server.Controllers
                             tmpObject.poId = newObject.poId;
                             tmpObject.notes = newObject.notes;
                             tmpObject.upnum = newObject.upnum;
+
+                            tmpObject.isServerActivated = newObject.isServerActivated;
+                            tmpObject.activatedate = newObject.activatedate;
+                        
+
                         }
                         else
                         {
@@ -747,133 +782,133 @@ namespace POS_Server.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("Sendserverkey")]
-        public async Task<string> Sendserverkey(string token)
-        {
-            getIncSite();
-            token = TokenManager.readToken(HttpContext.Current.Request);
-            var strP = TokenManager.GetPrincipal(token);
-            if (strP != "0") //invalid authorization
-            {
-                return TokenManager.GenerateToken(strP);
-            }
-            else
-            {
-                string res1 = "";
-                string skey = "";
-                string activeState = "";
-                string serverId = "";
-                SendDetail sendDetailItem = new SendDetail();
-                int res = 0;
-                int tempres = 0;
-                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
-                foreach (Claim c in claims)
-                {
-                    if (c.Type == "skey")
-                    {
-                        skey = c.Value;
-                    }
-                    else if (c.Type == "activeState")
-                    {
-                        activeState = c.Value;
-                    }
+        //[HttpPost]
+        //[Route("Sendserverkey")]
+        //public async Task<string> Sendserverkey(string token)
+        //{
+        //    getIncSite();
+        //    token = TokenManager.readToken(HttpContext.Current.Request);
+        //    var strP = TokenManager.GetPrincipal(token);
+        //    if (strP != "0") //invalid authorization
+        //    {
+        //        return TokenManager.GenerateToken(strP);
+        //    }
+        //    else
+        //    {
+        //        string res1 = "";
+        //        string skey = "";
+        //        string activeState = "";
+        //        string serverId = "";
+        //        SendDetail sendDetailItem = new SendDetail();
+        //        int res = 0;
+        //        int tempres = 0;
+        //        IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+        //        foreach (Claim c in claims)
+        //        {
+        //            if (c.Type == "skey")
+        //            {
+        //                skey = c.Value;
+        //            }
+        //            else if (c.Type == "activeState")
+        //            {
+        //                activeState = c.Value;
+        //            }
 
 
 
-                }
-                try
-                {
-                    //  return TokenManager.GenerateToken("1212".ToString());
-                    serverId = ServerID();
-                    // serverId = "server13213ascas";
+        //        }
+        //        try
+        //        {
+        //            //  return TokenManager.GenerateToken("1212".ToString());
+        //            serverId = ServerID();
+        //            // serverId = "server13213ascas";
 
 
-                    int conres = await checkIncServerConn();
+        //            int conres = await checkIncServerConn();
 
-                    // check con to increase server
-                    if (conres > 0)
-                    {
-                        // return TokenManager.GenerateToken(conres.ToString());
-                        sendDetailItem = await GetSerialsAndDetails(skey, serverId, "");
-                        //update server detail
+        //            // check con to increase server
+        //            if (conres > 0)
+        //            {
+        //                // return TokenManager.GenerateToken(conres.ToString());
+        //                sendDetailItem = await GetSerialsAndDetails(skey, serverId, "");
+        //                //update server detail
 
-                        if (sendDetailItem.packageSend.result <= 0)
-                        {
+        //                if (sendDetailItem.packageSend.result <= 0)
+        //                {
 
-                            /*
-                             *   // -2 : package not active 
+        //                    /*
+        //                     *   // -2 : package not active 
                               
-                                 // -3 :serverID not match 
-                                 // -4 :not payed 
-                                 // -5 :serial not found
-                                 //"0" :  catch error
+        //                         // -3 :serverID not match 
+        //                         // -4 :not payed 
+        //                         // -5 :serial not found
+        //                         //"0" :  catch error
 
 
-                             * */
-                            res = sendDetailItem.packageSend.result;
-                        }
-                        else
-                        {
-                            sendDetailItem.packageSend.customerServerCode = serverId;
-                            sendDetailItem.packageSend.packageSaleCode = skey;
-                            tempres = SaveProgDetails(sendDetailItem.packageSend);
-                            //    return TokenManager.GenerateToken(res1);
-                            //update serials 
-                            if (tempres >= 0)
-                            {
-                                res += 1;
-                                tempres = 0;
-                                //if (sendDetailItem.packageSend.posCount==-1)
-                                //{
-                                //    //unlimited pos
+        //                     * */
+        //                    res = sendDetailItem.packageSend.result;
+        //                }
+        //                else
+        //                {
+        //                    sendDetailItem.packageSend.customerServerCode = serverId;
+        //                    sendDetailItem.packageSend.packageSaleCode = skey;
+        //                    tempres = SaveProgDetails(sendDetailItem.packageSend);
+        //                    //    return TokenManager.GenerateToken(res1);
+        //                    //update serials 
+        //                    if (tempres >= 0)
+        //                    {
+        //                        res += 1;
+        //                        tempres = 0;
+        //                        //if (sendDetailItem.packageSend.posCount==-1)
+        //                        //{
+        //                        //    //unlimited pos
 
-                                //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
-                                //}
+        //                        //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
+        //                        //}
 
-                                tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
-
-
-                            }
-                            if (tempres >= 0)
-                            {
-                                res += 1;
-                            }
-                            else
-                            {
-                                // activation error
-                                res = 0;
-                            }
+        //                        tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
 
 
-                            //here send data to inc server
-                            SendDetail sd = new SendDetail();
-                            sd = getinfo();
-
-                            string sendres = await SendCustDetail(sd);
-
-                        }
-                    }
-                    else
-                    {
-                        // connection error
-                        res = -1;
-                    }
+        //                    }
+        //                    if (tempres >= 0)
+        //                    {
+        //                        res += 1;
+        //                    }
+        //                    else
+        //                    {
+        //                        // activation error
+        //                        res = 0;
+        //                    }
 
 
+        //                    //here send data to inc server
+        //                    SendDetail sd = new SendDetail();
+        //                    sd = getinfo();
+
+        //                    string sendres = await SendCustDetail(sd);
+
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // connection error
+        //                res = -1;
+        //            }
 
 
-                    return TokenManager.GenerateToken(res);
-                }
-                catch (Exception ex)
-                {
-                    // connection error
-                    // return TokenManager.GenerateToken(-1);
-                    return TokenManager.GenerateToken(ex.ToString());
-                }
-            }
 
-        }
+
+        //            return TokenManager.GenerateToken(res);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // connection error
+        //            // return TokenManager.GenerateToken(-1);
+        //            return TokenManager.GenerateToken(ex.ToString());
+        //        }
+        //    }
+
+        //}
 
         public async Task<int> checkIncServerConn()
         {
@@ -1103,160 +1138,184 @@ namespace POS_Server.Controllers
         [Route("StatSendserverkey")]
         public async Task<string> StatSendserverkey(string token)
         {
-            getIncSite();
-            token = TokenManager.readToken(HttpContext.Current.Request);
-            var strP = TokenManager.GetPrincipal(token);
-            if (strP != "0") //invalid authorization
-            {
-                return TokenManager.GenerateToken(strP);
-            }
-            else
-            {
-                //  APIResult.APIUri = "ssxs";
-
-                string res1 = "";
-                string skey = "";
-                string activeState = "";
-                string activeSite = "";
-                string serverId = "";
-                SendDetail sendDetailItem = new SendDetail();
-                int res = 0;
-                int tempres = 0;
-                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
-                foreach (Claim c in claims)
+            
+                getIncSite();
+                token = TokenManager.readToken(HttpContext.Current.Request);
+                var strP = TokenManager.GetPrincipal(token);
+                if (strP != "0") //invalid authorization
                 {
-                    if (c.Type == "skey")
-                    {
-                        skey = c.Value;
-                    }
-                    else if (c.Type == "activeState")
-                    {
-                        activeState = c.Value;
-                    }
-
+                    return TokenManager.GenerateToken(strP);
                 }
-                try
+                else
                 {
-                    //  return TokenManager.GenerateToken("1212".ToString());
-                    serverId = ServerID();
-                    // serverId = "server13213ascas";
+                    //  APIResult.APIUri = "ssxs";
 
-
-                    int conres = await checkIncServerConn();
-
-                    // check con to increase server
-                    if (conres > 0)
+                    string res1 = "";
+                    string skey = "";
+                    string activeState = "";
+                    string activeSite = "";
+                    string serverId = "";
+                    SendDetail sendDetailItem = new SendDetail();
+                    int res = 0;
+                    int tempres = 0;
+                    IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+               
+                    foreach (Claim c in claims)
                     {
-                        packagesSend packState = new packagesSend();
-                        packState = getpackinfo();
-                        packState.activeState = activeState;
-
-                        // return TokenManager.GenerateToken(conres.ToString());
-                        //packState=up:upgrade - rn:renew
-                        sendDetailItem = await GetSerialsAndDetails(skey, serverId, packState);
-
-                        //update server detail
-
-                        if (sendDetailItem.packageSend.result <= 0)
+                        if (c.Type == "skey")
                         {
-
-                            /*
-                             *   // -2 : package not active 
-                              
-                                 // -3 :serverID not match 
-                                 // -4 :not payed 
-                                 // -5 :serial not found
-                             // -6 : package changed but not payed ==noch
-                                 //"0" :  catch error
-                                 // -7  method not match // online or offline
-//-8 the current updat is newr than the offline update
-//-9 the client command is different from activate file 
-
-
-                             * */
-                            res = sendDetailItem.packageSend.result;
-
+                            skey = c.Value;
                         }
-                        else
+                        else if (c.Type == "activeState")
                         {
-                            if (sendDetailItem.packageSend.result==1)
+                            activeState = c.Value;
+                        }
+                      
+                    }
+
+                    try
+                    {
+                        //  return TokenManager.GenerateToken("1212".ToString());
+                        serverId = ServerID();
+                        // serverId = "server13213ascas";
+
+
+                        int conres = await checkIncServerConn();
+                 
+                        // check con to increase server
+                        if (conres > 0)
+                        {
+                            packagesSend packState = new packagesSend();
+                            packState = getpackinfo();
+                            if (packState.isServerActivated == false)
                             {
-                                sendDetailItem.packageSend.customerServerCode = serverId;
-                                sendDetailItem.packageSend.packageSaleCode = skey;
+                                packState.customerServerCode = serverId;
+                            }
+                            packState.activeState = activeState;
 
-                                tempres = SaveProgDetails(sendDetailItem.packageSend);
-
-                                //    return TokenManager.GenerateToken(res1);
-                                //update serials 
-                                if (tempres >= 0)
-                                {
-                                    res = 1;
-                                    tempres = 0;
-                                    //if (sendDetailItem.packageSend.posCount==-1)
-                                    //{
-                                    //    //unlimited pos
-
-                                    //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
-                                    //}
-
-                                    tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+                            // return TokenManager.GenerateToken(conres.ToString());
+                            //packState=up:upgrade - rn:renew
 
 
-                                }
-                                if (tempres >= 0)
-                                {
-                                    res = 1;
-                                }
-                                else
-                                {
-                                    // activation error
-                                    res = 0;
-                                }
-                                //
+                             sendDetailItem = await GetSerialsAndDetails(skey, serverId, packState);//no coment
+                          //  string mm =await GetSerialsAndDetails2(skey, serverId, packState);
 
-                                //here send data to inc server
-                                SendDetail sd = new SendDetail();
-                                sd = getinfo();
+                          //   return TokenManager.GenerateToken(sendDetailItem.packageSend.result.ToString());
+                            //update server detail
+                            res = sendDetailItem.packageSend.result;
+                            // return TokenManager.GenerateToken(res);
+                         //   return TokenManager.GenerateToken(sendDetailItem.packageSend.result);
+                            if (sendDetailItem.packageSend.result <= 0)
+                            {
+                         
+                             //   return TokenManager.GenerateToken(sendDetailItem.packageSend.result.ToString());
+                                /*
+                                 *   // -2 : package not active 
 
-                                string sendres = await SendCustDetail(sd);
+                                     // -3 :serverID not match 
+                                     // -4 :not payed 
+                                     // -5 :serial not found
+                                 // -6 : package changed but not payed ==noch
+                                     //"0" :  catch error
+                                     // -7  method not match // online or offline
+    //-8 the current updat is newr than the offline update
+    //-9 the client command is different from activate file 
+
+
+                                 * */
+                                res = sendDetailItem.packageSend.result;
+                           
                             }
                             else
                             {
-                                // no change // dont save any thing
+                                if (sendDetailItem.packageSend.result == 1)
+                                {
+                                    sendDetailItem.packageSend.customerServerCode = serverId;
+                                    sendDetailItem.packageSend.packageSaleCode = skey;
+
+                                    tempres = SaveProgDetails(sendDetailItem.packageSend);
+
+                                    //    return TokenManager.GenerateToken(res1);
+                                    //update serials 
+                                    if (tempres >= 0)
+                                    {
+                                        res = 1;
+                                        tempres = 0;
+                                        //if (sendDetailItem.packageSend.posCount==-1)
+                                        //{
+                                        //    //unlimited pos
+
+                                        //    tempres = SaveunlimitedSerials(sendDetailItem.PosSerialSendList);
+                                        //}
+
+                                        tempres = SaveposSerials(sendDetailItem.PosSerialSendList);
+
+
+                                    }
+                                    if (tempres >= 0)
+                                    {
+                                        res = 1;
+                                    }
+                                    else
+                                    {
+                                        // activation error
+                                        res = 0;
+                                    }
+                                    //
+
+                                    //here send data to inc server
+                                    SendDetail sd = new SendDetail();
+                                    sd = getinfo();
+
+                                    string sendres = await SendCustDetail(sd);
+                                }
+                                else
+                                {
+                                    // no change // dont save any thing
+                                }
+
+
                             }
-                          
+                        }
+                        else
+                        {
+                            // connection error
+                            res = -1;
+                        }
+
+                     //   return TokenManager.GenerateToken("44");
+                        //
+                        if ((sendDetailItem.packageSend.activeres == "noch" && res > 0) || sendDetailItem.packageSend.result == -6)
+                        {
+                            //nochange
+                            res = 2;
 
                         }
+                        else if (sendDetailItem.packageSend.activeres == "ch" && sendDetailItem.packageSend.result > 0)
+                        {
+                            //change
+                            res = 3;
+                        }
+                        if (sendDetailItem.packageSend.activeState == "all" && sendDetailItem.packageSend.result > 0)
+                        {
+                            //change
+                            res = 3;
+                        }
+
+                        return TokenManager.GenerateToken(res);
+                        //   return TokenManager.GenerateToken(res);
                     }
-                    else
+                    catch (Exception ex)
                     {
                         // connection error
-                        res = -1;
+                        // return TokenManager.GenerateToken(-1);
+                        return TokenManager.GenerateToken(ex.ToString());
                     }
-                    //
-                    if ((sendDetailItem.packageSend.activeres == "noch" && res > 0) || sendDetailItem.packageSend.result == -6)
-                    {
-                        //nochange
-                        res = 2;
-
-                    }
-                    else if (sendDetailItem.packageSend.activeres == "ch" && sendDetailItem.packageSend.result > 0)
-                    {
-                        //change
-                        res = 3;
-                    }
-
-                    //  return TokenManager.GenerateToken(sendDetailItem.packageSend.activeres);
-                    return TokenManager.GenerateToken(res);
+//return TokenManager.GenerateToken(res);
                 }
-                catch (Exception ex)
-                {
-                    // connection error
-                    // return TokenManager.GenerateToken(-1);
-                    return TokenManager.GenerateToken(ex.ToString());
-                }
-            }
-
+               // return TokenManager.GenerateToken("-11");
+            
+        //    return TokenManager.GenerateToken("-10");
         }
 
         //[HttpPost]
@@ -1440,6 +1499,7 @@ namespace POS_Server.Controllers
             customerServerCode = serverId;
 
             packState = getpackinfo();
+            packuserfile = SendDetailFile.packageSend;
 
             // SaveProgDetails(packuserfile);
             try
@@ -1448,6 +1508,7 @@ namespace POS_Server.Controllers
 
                 //  payOpModel lastpayrow = new payOpModel();
                 List<PosSerialSend> serialList = new List<PosSerialSend>();
+                serialList = SendDetailFile.PosSerialSendList;
                 SendDetail senditem = new SendDetail();
                 packagesSend package = new packagesSend();
                 string activeres = "noch";
@@ -1534,7 +1595,7 @@ namespace POS_Server.Controllers
                                             return senditem;
 
                                         }
-                                        else if (packuserfile.isActive == 1 && (packuserfile.isServerActivated == false || (packuserfile.isServerActivated == true && packuserfile.customerServerCode == customerServerCode))) //&&  row.expireDate==null 
+                                        else if (packuserfile.isActive == 1 && (packState.isServerActivated == false || (packuserfile.isServerActivated == true && packuserfile.customerServerCode == customerServerCode))) //&&  row.expireDate==null 
                                         {
 
                                             //get poserials 
@@ -1585,10 +1646,15 @@ namespace POS_Server.Controllers
 
                                                 package.packuserType = packuserfile.type;
                                                 package.isActive = (int)packuserfile.isActive;
-                                                package.activatedate = DateTime.Now;// save on client if null 
+                                               
                                                 package.result = 1;
+                                                if(packState.isServerActivated == false)
+                                                {
+                                                    package.customerServerCode = serverId;
+                                                    package.activatedate = DateTime.Now;// save on client if null 
 
-                                                senditem.packageSend = package;
+                                                }
+                                                    senditem.packageSend = package;
                                                 senditem.PosSerialSendList = serialList;
 
 
@@ -1632,7 +1698,7 @@ namespace POS_Server.Controllers
                                                 package.totalsalesInvCount = 0;
 
                                                 package.canRenew = false;
-
+                                                package.activeState = packuserfile.activeState;
 
                                                 serialList = getserialsinfo();
                                                 senditem.packageSend = package;
@@ -1821,6 +1887,54 @@ namespace POS_Server.Controllers
 
         }
 
+
+
+        //[HttpPost]
+        //[Route("offserialstest")]
+        //public async Task<string> offserialstest(string token)
+        //{
+        //    //  getIncSite();
+        //    token = TokenManager.readToken(HttpContext.Current.Request);
+        //    var strP = TokenManager.GetPrincipal(token);
+        //    if (strP != "0") //invalid authorization
+        //    {
+        //        return TokenManager.GenerateToken(strP);
+        //    }
+        //    else
+        //    {
+
+
+
+        //        string activeState = "";
+
+        //        SendDetail sendDetailItem = new SendDetail();
+
+              
+              
+        //        try
+        //        {
+        //            SendDetail returnsend = new SendDetail();
+        //            List<PosSerialSend> plis = new List<PosSerialSend>();
+        //            //  sd = getinfo();
+
+
+        //            plis = getserialsinfo();
+        //            returnsend.PosSerialSendList = plis;
+             
+        //            return TokenManager.GenerateToken(returnsend);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // connection error
+        //            SendDetail senditem = new SendDetail();
+
+        //            packagesSend ps = new packagesSend();
+        //            ps.result = 0;
+        //            senditem.packageSend = ps;
+        //            return TokenManager.GenerateToken(senditem);
+        //        }
+        //    }
+        //}
 
     }
 }
