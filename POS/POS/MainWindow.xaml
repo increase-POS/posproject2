@@ -138,7 +138,7 @@
                     </StackPanel>
                 </Grid>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="5">
-                    <TextBlock Name="txt_cashTitle"    HorizontalAlignment="Right" Foreground="White"  FontSize="12" ></TextBlock>
+                    <TextBlock Name="txt_cashTitle" Text="cash balance"   HorizontalAlignment="Right" Foreground="White"  FontSize="12" ></TextBlock>
                     <DockPanel>
                         <TextBlock Name="txt_cashSympol"  Foreground="{StaticResource lightGreen}" HorizontalAlignment="Center"  FontSize="14" Margin="5,0,5,0"></TextBlock>
                         <TextBlock Name="txt_cashValue"  Foreground="{StaticResource lightGreen}" HorizontalAlignment="Center"  FontSize="14" ></TextBlock>

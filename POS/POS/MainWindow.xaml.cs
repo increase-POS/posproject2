@@ -1290,7 +1290,7 @@ namespace POS
             txt_sectiondata.Text = resourcemanager.GetString("trSectionData");
             tt_settings.Content = resourcemanager.GetString("trSettings");
             txt_settings.Text = resourcemanager.GetString("trSettings");
-            txt_cashTitle.Text = resourcemanager.GetString("trBalance");
+            txt_cashTitle.Text = resourcemanager.GetString("trCashBalance");
 
             mi_changePassword.Header = resourcemanager.GetString("trChangePassword");
             BTN_logOut.Header = resourcemanager.GetString("trLogOut");
