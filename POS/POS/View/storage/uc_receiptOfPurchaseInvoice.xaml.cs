@@ -179,6 +179,7 @@ namespace POS.View.storage
 
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                tb_moneyIcon.Text = MainWindow.Currency;
+                tb_moneyIconTotal.Text = MainWindow.Currency;
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -197,9 +198,9 @@ namespace POS.View.storage
                 setTimer();
                 controls = new List<Control>();
                 #region hid tax inputs
-                txt_tax.Visibility = Visibility.Collapsed;
-                tb_taxValue.Visibility = Visibility.Collapsed;
-                tb_percentage.Visibility = Visibility.Collapsed;
+                //txt_tax.Visibility = Visibility.Collapsed;
+                //tb_taxValue.Visibility = Visibility.Collapsed;
+                //tb_percentage.Visibility = Visibility.Collapsed;
                 #endregion
                 #region loading
                 loadingList = new List<keyValueBool>();
@@ -1066,10 +1067,10 @@ namespace POS.View.storage
             decimal total = _Sum;
             decimal taxValue = 0;
             decimal taxInputVal = 0;
-            if (!tb_taxValue.Text.Equals(""))
-                taxInputVal = decimal.Parse(tb_taxValue.Text);
-            if (total != 0)
-                taxValue = SectionData.calcPercentage(total, taxInputVal);
+            //if (!tb_taxValue.Text.Equals(""))
+            //    taxInputVal = decimal.Parse(tb_taxValue.Text);
+            //if (total != 0)
+            //    taxValue = SectionData.calcPercentage(total, taxInputVal);
 
             //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
@@ -1365,36 +1366,45 @@ namespace POS.View.storage
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
-                txt_tax.Visibility = Visibility.Visible;
-                tb_taxValue.Visibility = Visibility.Visible;
-                tb_percentage.Visibility = Visibility.Visible;
+                //txt_tax.Visibility = Visibility.Visible;
+                //tb_taxValue.Visibility = Visibility.Visible;
+                //tb_percentage.Visibility = Visibility.Visible;
+                sp_sum.Visibility = Visibility.Collapsed;
                 tb_sum.Visibility = Visibility.Collapsed;
                 txt_sum.Visibility = Visibility.Collapsed;
+                tb_moneyIcon.Visibility = Visibility.Collapsed;
                 txt_total.Visibility = Visibility.Collapsed;
                 tb_total.Visibility = Visibility.Collapsed;
+                tb_moneyIconTotal.Visibility = Visibility.Collapsed;
 
             }
             else if (_InvoiceType == "pbw")
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
-                txt_tax.Visibility = Visibility.Visible;
-                tb_taxValue.Visibility = Visibility.Visible;
-                tb_percentage.Visibility = Visibility.Visible;
+                //txt_tax.Visibility = Visibility.Visible;
+                //tb_taxValue.Visibility = Visibility.Visible;
+                //tb_percentage.Visibility = Visibility.Visible;
+                sp_sum.Visibility = Visibility.Collapsed;
                 tb_sum.Visibility = Visibility.Collapsed;
                 txt_sum.Visibility = Visibility.Collapsed;
+                tb_moneyIcon.Visibility = Visibility.Collapsed;
                 txt_total.Visibility = Visibility.Collapsed;
                 tb_total.Visibility = Visibility.Collapsed;
+                tb_moneyIconTotal.Visibility = Visibility.Collapsed;
             }
             else
             {
-                txt_tax.Visibility = Visibility.Collapsed;
-                tb_taxValue.Visibility = Visibility.Collapsed;
-                tb_percentage.Visibility = Visibility.Collapsed;
+                //txt_tax.Visibility = Visibility.Collapsed;
+                //tb_taxValue.Visibility = Visibility.Collapsed;
+                //tb_percentage.Visibility = Visibility.Collapsed;
+                sp_sum.Visibility = Visibility.Visible;
                 tb_sum.Visibility = Visibility.Visible;
                 txt_sum.Visibility = Visibility.Visible;
+                tb_moneyIcon.Visibility = Visibility.Visible;
                 txt_total.Visibility = Visibility.Visible;
                 tb_total.Visibility = Visibility.Visible;
+                tb_moneyIconTotal.Visibility = Visibility.Visible;
             }
 
             if (!isFromReport)
