@@ -273,7 +273,21 @@ namespace POS.View.Settings
             #endregion
             }
             else//offline
-            { }
+            {
+                int result = 0;
+                if(result > 0)
+                {
+
+                }
+                else
+                {
+                    if(result == -8)
+                    {
+                        string msg = "";
+                        Toaster.ShowWarning(Window.GetWindow(this), msg, animation: ToasterAnimation.FadeIn);
+                    }
+                }
+            }
         }
 
         private async void Btn_upgrade_Click(object sender, RoutedEventArgs e)
@@ -326,8 +340,22 @@ namespace POS.View.Settings
                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trServerNotFount"), animation: ToasterAnimation.FadeIn);
                 }
             }
-            else//offlint
-            { }
+            else//offline
+            {
+                int result = 0;
+                if (result > 0)
+                {
+
+                }
+                else
+                {
+                    if (result == -8)
+                    {
+                        string msg = "";
+                        Toaster.ShowWarning(Window.GetWindow(this), msg, animation: ToasterAnimation.FadeIn);
+                    }
+                }
+            }
            
         }
 
