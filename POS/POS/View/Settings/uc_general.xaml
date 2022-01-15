@@ -9,7 +9,7 @@
              d:DesignHeight="800" d:DesignWidth="1300" Loaded="UserControl_Loaded">
     <Grid x:Name="grid_main">
         <ScrollViewer Margin="5,0,-5,0">
-            <WrapPanel Margin="0,15,0,15" HorizontalAlignment="Center" >
+            <WrapPanel Margin="0,15,0,15" HorizontalAlignment="Left" >
 
                 <Border Background="White" CornerRadius="7"  Height="140"  Width="260" BorderThickness="1" BorderBrush="#178DD2" Margin="10,0,10,20">
                     <Grid >
