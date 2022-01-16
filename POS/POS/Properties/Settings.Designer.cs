@@ -97,18 +97,6 @@ namespace POS.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.1.5:44370/api/")]
-        public string APIUri {
-            get {
-                return ((string)(this["APIUri"]));
-            }
-            set {
-                this["APIUri"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public string posId {
             get {
@@ -116,6 +104,18 @@ namespace POS.Properties {
             }
             set {
                 this["posId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.1.5:44370/api/")]
+        public string APIUri {
+            get {
+                return ((string)(this["APIUri"]));
+            }
+            set {
+                this["APIUri"] = value;
             }
         }
     }
