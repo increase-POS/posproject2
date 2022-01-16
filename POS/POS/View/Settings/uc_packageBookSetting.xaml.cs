@@ -164,8 +164,8 @@ namespace POS.View.Settings
             txt_agentTitle.Text = MainWindow.resourcemanager.GetString("trAgent");
             txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trCustomer");
             txt_expiredTitle.Text = MainWindow.resourcemanager.GetString("trExpiredDate");
-            txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trStatus");
             txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trServerStatus");
+            txt_serverStatusTitle.Text = MainWindow.resourcemanager.GetString("trServerType");
 
             txt_programDetails.Text = MainWindow.resourcemanager.GetString("trProgramDetails");
             txt_programTitle.Text = MainWindow.resourcemanager.GetString("trProgram");
@@ -179,7 +179,7 @@ namespace POS.View.Settings
             txt_branchCountTitle.Text = MainWindow.resourcemanager.GetString("trBranches");
             txt_userCountTitle.Text = MainWindow.resourcemanager.GetString("trUsers");
             txt_customerCountTitle.Text = MainWindow.resourcemanager.GetString("trCustomers");
-            txt_salesInvCountTitle.Text = MainWindow.resourcemanager.GetString("trInvoices");
+            txt_salesInvCountTitle.Text = MainWindow.resourcemanager.GetString("trInvoicesPerMonth");
             txt_storeCountNameTitle.Text = MainWindow.resourcemanager.GetString("trStores");
             txt_posCountNameTitle.Text = MainWindow.resourcemanager.GetString("trPOSs");
             txt_vendorCountNameTitle.Text = MainWindow.resourcemanager.GetString("trVendors");
@@ -188,7 +188,7 @@ namespace POS.View.Settings
             btn_extend.Content = MainWindow.resourcemanager.GetString("trExtend");
             btn_upgrade.Content = MainWindow.resourcemanager.GetString("trUpgrade");
 
-            txt_perMonth.Text = " "+ MainWindow.resourcemanager.GetString("trPerMonth");
+            //txt_perMonth.Text = " "+ MainWindow.resourcemanager.GetString("trPerMonth");
         }
 
         #region events

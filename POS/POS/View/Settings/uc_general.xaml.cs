@@ -617,7 +617,7 @@ namespace POS.View.Settings
             brd_itemsCost.ToolTip = MainWindow.resourcemanager.GetString("trItemCostHint");
             txt_backup.Text = MainWindow.resourcemanager.GetString("trBackUp/Restore");
             txt_activationSite.Text = MainWindow.resourcemanager.GetString("trActivationSite");
-            txt_serverStatus.Text = MainWindow.resourcemanager.GetString("trServerStatus");
+            txt_serverStatus.Text = MainWindow.resourcemanager.GetString("trServerType");
             tt_region.Content = MainWindow.resourcemanager.GetString("trRegion");
             tt_language.Content = MainWindow.resourcemanager.GetString("trLanguage");
             tt_currency.Content = MainWindow.resourcemanager.GetString("trCurrency");
