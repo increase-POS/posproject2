@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:POS.View.reports"
                   xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="1200" Unloaded="UserControl_Unloaded">
+             d:DesignHeight="450" d:DesignWidth="1200" 
+             Unloaded="UserControl_Unloaded" Loaded="UserControl_Loaded">
     <Grid  x:Name="grid_ucSales">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>

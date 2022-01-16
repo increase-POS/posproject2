@@ -4030,6 +4030,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الفواتير خلال شهر.
+        /// </summary>
+        internal static string trInvoicesPerMonth {
+            get {
+                return ResourceManager.GetString("trInvoicesPerMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تم التأكيد.
         /// </summary>
         internal static string trIsConfirmed {
@@ -7231,6 +7240,15 @@ namespace POS {
         internal static string trServerStatus {
             get {
                 return ResourceManager.GetString("trServerStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع السيرفر.
+        /// </summary>
+        internal static string trServerType {
+            get {
+                return ResourceManager.GetString("trServerType", resourceCulture);
             }
         }
         

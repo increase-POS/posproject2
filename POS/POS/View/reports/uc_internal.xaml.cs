@@ -28,6 +28,8 @@ using Microsoft.Win32;
 using System.IO;
 using System.Threading;
 using POS.View.storage;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.reports
 {
@@ -76,6 +78,20 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 itemsInternalTransfer = await statisticModel.GetInternalMov((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 comboInternalItemsItems = statisticModel.getExternalItemCombo(itemsInternalTransfer);
@@ -96,11 +112,44 @@ namespace POS.View.reports
         }
     }
 
-        private void isEnabledButtonsInternal()
+        private void translate()
         {
-            btn_item.IsEnabled = true;
-            btn_operator.IsEnabled = true;
+            tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_operator.Content = MainWindow.resourcemanager.GetString("trOperator");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsFromBranches, MainWindow.resourcemanager.GetString("trFromBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsItems, MainWindow.resourcemanager.GetString("trItemHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsToBranches, MainWindow.resourcemanager.GetString("trToBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsUnits, MainWindow.resourcemanager.GetString("trUnitHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_InternalItemsEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_internalItemsStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+
+            chk_internalItemsFromAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_internalItemsAllItems.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_internalItemsToAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_internalItemsAllUnits.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_internalItemsTwoWay.Content = MainWindow.resourcemanager.GetString("trTwoWays");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_invNumber.Header = MainWindow.resourcemanager.GetString("trNo");
+            col_invTypeNumber.Header = MainWindow.resourcemanager.GetString("trType");
+            col_invDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_item.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_unit.Header = MainWindow.resourcemanager.GetString("trUnit");
+            col_branchFrom.Header = MainWindow.resourcemanager.GetString("trFromBranch");
+            col_branchTo.Header = MainWindow.resourcemanager.GetString("trToBranch");
+            col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
+     
         public void paint()
         {
             grid_internalItems.Visibility = Visibility.Hidden;

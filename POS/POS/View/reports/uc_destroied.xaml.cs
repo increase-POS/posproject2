@@ -27,6 +27,8 @@ using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.IO;
 using System.Threading;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.reports
 {
@@ -75,12 +77,23 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 Destroied = await statisticModel.GetDesItems((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                //comboBranches = await branchModel.GetAllWithoutMain("all");
-
-                //fillComboBranches(cb_destroiedBranch);
-
+               
                 await SectionData.fillBranchesWithoutMain(cb_destroiedBranch);
 
                 Btn_destroied_Click(btn_destroied , null);
@@ -96,6 +109,37 @@ namespace POS.View.reports
             }
         }
 
+        private void translate()
+        {
+            tt_destroied.Content = MainWindow.resourcemanager.GetString("trDestructive");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_destroiedBranch, MainWindow.resourcemanager.GetString("trBranchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_destroiedItemsUnits, MainWindow.resourcemanager.GetString("trItemUnitHint"));
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_destroiedStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_destroiedEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+
+            chk_destroiedAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_destroiedAllItemsUnits.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_use.Header = MainWindow.resourcemanager.GetString("trUser");
+            col_destroiedNumber.Header = MainWindow.resourcemanager.GetString("trNo");
+            col_destroiedDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_destroiedItemsUnits.Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            col_destroiedReason.Header = MainWindow.resourcemanager.GetString("trReason");
+            col_destroiedAmount.Header = MainWindow.resourcemanager.GetString("trQTR");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+        }
+
         public void paint()
         {
             grid_detroied.Visibility = Visibility.Visible;
@@ -105,14 +149,7 @@ namespace POS.View.reports
             path_destroied.Fill = Brushes.White;
         }
 
-       
-        private void fillComboBranches(ComboBox cb)
-        {
-            cb.SelectedValuePath = "branchId";
-            cb.DisplayMemberPath = "name";
-            cb.ItemsSource = comboBranches;
-        }
-
+      
         private void fillDestroidEvents()
         {
             temp = fillListDestroied(cb_destroiedBranch, cb_destroiedItemsUnits, dp_destroiedStartDate, dp_destroiedEndDate);

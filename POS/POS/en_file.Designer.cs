@@ -4057,6 +4057,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invoices Per Month.
+        /// </summary>
+        internal static string trInvoicesPerMonth {
+            get {
+                return ResourceManager.GetString("trInvoicesPerMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirmed.
         /// </summary>
         internal static string trIsConfirmed {
@@ -7276,6 +7285,15 @@ namespace POS {
         internal static string trServerStatus {
             get {
                 return ResourceManager.GetString("trServerStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server type.
+        /// </summary>
+        internal static string trServerType {
+            get {
+                return ResourceManager.GetString("trServerType", resourceCulture);
             }
         }
         

@@ -27,7 +27,8 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Threading;
-
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.reports
 {
@@ -84,15 +85,26 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 inventory = await statisticModel.GetInventory((int)MainWindow.branchID, (int)MainWindow.userID);
 
                 falls = await statisticModel.GetFallsItems((int)MainWindow.branchID, (int)MainWindow.userID);
 
-                //comboBranches = await branchModel.GetAllWithoutMain("all");
-
                 fillComboArchivedTypeType();
 
-                //cbStockType = statisticModel.getStocktakingArchivesTypeCombo(inventory);
                 comboShortFalls = statisticModel.getshortFalls(falls);
 
                 Btn_archives_Click(btn_archives, null);
@@ -107,12 +119,46 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-       
-        private void fillComboBranches(ComboBox cb)
+
+        private void translate()
         {
-            cb.SelectedValuePath = "branchId";
-            cb.DisplayMemberPath = "name";
-            cb.ItemsSource = comboBranches;
+            tt_archives.Content = MainWindow.resourcemanager.GetString("trArchive");
+            tt_shortfalls.Content = MainWindow.resourcemanager.GetString("trShortages");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_stocktakingArchivedBranch, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_stocktakingArchivedType, MainWindow.resourcemanager.GetString("trArchive") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_stocktakingFalseBranch, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_stocktakingFalseType, MainWindow.resourcemanager.GetString("trItemUnit") + "...");
+
+            chk_stocktakingArchivedAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_stocktakingArchivedAllTypes.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_stocktakingFalseAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_stocktakingFalseAllTypes.Content = MainWindow.resourcemanager.GetString("trAll");
+
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_stocktakingArchivedEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_stocktakingArchivedStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_stocktakingFalseEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_stocktakingFalseStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_itemUnits.Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            col_stockTakeNum.Header = MainWindow.resourcemanager.GetString("trNO");
+            col_stockTakingCoastType.Header = MainWindow.resourcemanager.GetString("trType");
+            col_stockTakingDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_diffPercentage.Header = MainWindow.resourcemanager.GetString("trDiffrencePercentage");
+            col_itemCountAr.Header = MainWindow.resourcemanager.GetString("trItemsCount");
+            col_DestroyedCount.Header = MainWindow.resourcemanager.GetString("trDestroyedCount");
+            col_destroiedReason.Header = MainWindow.resourcemanager.GetString("trReason");
+          
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
 
         private void hideAllColumn()
