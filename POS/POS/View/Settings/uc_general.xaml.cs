@@ -249,7 +249,10 @@ namespace POS.View.Settings
                 #region get default server status
                 await getDefaultServerStatus();
                 if (progDetails != null)
-                    cb_serverStatus.SelectedValue = progDetails.isOnlineServer;
+                {
+                    if (progDetails.isOnlineServer.Value) cb_serverStatus.SelectedIndex = 0;
+                    else cb_serverStatus.SelectedIndex = 1;
+                }
                 else
                     cb_serverStatus.SelectedIndex = -1;
                 #endregion
@@ -296,7 +299,9 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
                 if (SectionData.isSupportPermision())
                 {
                     brd_activationSite.Visibility = Visibility.Visible;
@@ -310,6 +315,9 @@ namespace POS.View.Settings
 
                 settingsCls = await setModel.GetAll();
                 settingsValues = await valueModel.GetAll();
+
+                fillTypeOnline();
+
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -377,7 +385,8 @@ namespace POS.View.Settings
                 }
 
                 #endregion
-                fillTypeOnline();
+
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1168,39 +1177,35 @@ namespace POS.View.Settings
 
         private async void Btn_savesSrverStatus_Click(object sender, RoutedEventArgs e)
         {//server status
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-              
                 SectionData.validateEmptyComboBox(cb_serverStatus, p_errorServerStatus, tt_errorServerStatus, "trEmptyServerStatus");
                 if (!cb_serverStatus.Text.Equals(""))
                 {
                     if (progDetails == null)
                         progDetails = new ProgramDetails();
 
-                    // progDetails.isOnlineServer = (bool)cb_serverStatus.SelectedValue;
-
-                    int res = await progDetailsModel.updateIsonline(false);
+                    bool isOnline = bool.Parse(cb_serverStatus.SelectedValue.ToString());
+                    int res = await progDetailsModel.updateIsonline(isOnline);
 
                     if (res > 0)
-                    {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                    }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
-               
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         private void fillTypeOnline()
