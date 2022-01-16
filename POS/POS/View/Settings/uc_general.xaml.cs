@@ -242,14 +242,19 @@ namespace POS.View.Settings
             }
         }
 
-        async void loading_getDefaultServerStatus()
+        async Task loading_getDefaultServerStatus()
         {
             try
             {
+                fillTypeOnline();
+
                 #region get default server status
                 await getDefaultServerStatus();
                 if (progDetails != null)
-                    cb_serverStatus.SelectedValue = progDetails.isOnlineServer;
+                {
+                    if (progDetails.isOnlineServer.Value) cb_serverStatus.SelectedIndex = 0;
+                    else cb_serverStatus.SelectedIndex = 1;
+                }
                 else
                     cb_serverStatus.SelectedIndex = -1;
                 #endregion
@@ -296,7 +301,10 @@ namespace POS.View.Settings
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
+
                 if (SectionData.isSupportPermision())
                 {
                     brd_activationSite.Visibility = Visibility.Visible;
@@ -310,6 +318,8 @@ namespace POS.View.Settings
 
                 settingsCls = await setModel.GetAll();
                 settingsValues = await valueModel.GetAll();
+
+
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -336,7 +346,7 @@ namespace POS.View.Settings
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultActivationSite", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_getDefaultDateForm", value = false });
                     loadingList.Add(new keyValueBool { key = "loading_fillAccuracy", value = false });
-                    loadingList.Add(new keyValueBool { key = "loading_getDefaultServerStatus", value = false });
+                    //loadingList.Add(new keyValueBool { key = "loading_getDefaultServerStatus", value = false });
 
                     loading_fillRegions();
                     loading_fillCurrencies();
@@ -344,7 +354,7 @@ namespace POS.View.Settings
                     loading_getDefaultActivationSite();
                     loading_getDefaultDateForm();
                     loading_fillAccuracy();
-                    loading_getDefaultServerStatus();
+                    //loading_getDefaultServerStatus();
                     do
                     {
                         isDone = true;
@@ -371,13 +381,14 @@ namespace POS.View.Settings
                     }
                     while (!isDone);
                     await loading_fillLanguages();
-
+                    await loading_getDefaultServerStatus();
                     fillBackup();
                     firstLoading = false;
                 }
 
                 #endregion
-                fillTypeOnline();
+
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -1168,39 +1179,38 @@ namespace POS.View.Settings
 
         private async void Btn_savesSrverStatus_Click(object sender, RoutedEventArgs e)
         {//server status
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
-              
                 SectionData.validateEmptyComboBox(cb_serverStatus, p_errorServerStatus, tt_errorServerStatus, "trEmptyServerStatus");
                 if (!cb_serverStatus.Text.Equals(""))
                 {
                     if (progDetails == null)
                         progDetails = new ProgramDetails();
 
-                    // progDetails.isOnlineServer = (bool)cb_serverStatus.SelectedValue;
-
-                    int res = await progDetailsModel.updateIsonline(false);
+                    bool isOnline = bool.Parse(cb_serverStatus.SelectedValue.ToString());
+                    int res = await progDetailsModel.updateIsonline(isOnline);
 
                     if (res > 0)
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        MainWindow.loadingDefaultPath("settings", "general");
                     }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                 }
-               
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         private void fillTypeOnline()
@@ -1212,7 +1222,6 @@ namespace POS.View.Settings
                  new { Text = MainWindow.resourcemanager.GetString("trOfflineType")       , Value = "False" },
                 };
             cb_serverStatus.ItemsSource = typelist;
-            cb_serverStatus.SelectedIndex = 0;
         }
         private async void Btn_saveItemsCost_Click(object sender, RoutedEventArgs e)
         {//save purchase cost
