@@ -936,10 +936,11 @@ namespace POS_Server.Controllers
         {
             // 1 :  can login-
             //  0 : error 
-            //  -1 : package is expired 
-            //  -2 : device code is not correct 
-            //  -3 : serial is not active 
+            // -1 : package is expired 
+            // -2 : device code is not correct 
+            // -3 : serial is not active 
             // -4 : customer server code is wrong
+            // -5 : login date is before last login date
 
             try
             {
@@ -951,6 +952,14 @@ namespace POS_Server.Controllers
                         var suppUser = entity.users.Where(u => u.isActive == 1 && u.username == userName && u.password == password && u.isAdmin == true).FirstOrDefault();
                         if (suppUser != null)
                             return 1;
+                    }
+                    //compair login date with last login date for this user
+                    var user = entity.users.Where(x => x.username == userName && x.password == password && x.isActive == 1).FirstOrDefault();
+                    if(user != null)
+                    {
+                        var logs = entity.usersLogs.Where(x => x.userId == user.userId).OrderByDescending(x => x.sInDate).FirstOrDefault();
+                        if (logs != null && logs.sInDate > DateTime.Now)
+                            return -5;
                     }
                     ActivateController ac = new ActivateController();
                     int active = ac.CheckPeriod();
