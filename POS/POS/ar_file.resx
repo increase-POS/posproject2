@@ -3010,4 +3010,10 @@
   <data name="trEmptyServerStatus" xml:space="preserve">
     <value>حالة المخدم لا يمكن أن تكون فارغة</value>
   </data>
+  <data name="trInvoicesPerMonth" xml:space="preserve">
+    <value>الفواتير خلال شهر</value>
+  </data>
+  <data name="trServerType" xml:space="preserve">
+    <value>نوع السيرفر</value>
+  </data>
 </root>

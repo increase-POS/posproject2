@@ -3028,4 +3028,10 @@ Please add Email in setting</value>
   <data name="trEmptyServerStatus" xml:space="preserve">
     <value>Server status can not be empty</value>
   </data>
+  <data name="trInvoicesPerMonth" xml:space="preserve">
+    <value>Invoices Per Month</value>
+  </data>
+  <data name="trServerType" xml:space="preserve">
+    <value>Server type</value>
+  </data>
 </root>
