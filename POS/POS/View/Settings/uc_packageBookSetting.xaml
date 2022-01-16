@@ -197,7 +197,7 @@
                             <TextBlock  Grid.Row="2"  Grid.Column="0"  x:Name="txt_serverStatusTitle" Text="Server status"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                            <TextBlock  Grid.Row="2" Grid.Column="1"  x:Name="txt_serverStatus" 
+                            <TextBlock  Grid.Row="2" Grid.Column="1"  x:Name="txt_serverStatus" Margin="10"
                         HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
                                         Text="{Binding Path=isOnlineServer, Mode=OneWay,Converter={StaticResource isOnlineConverter}}" 
                                   FontSize="14"  />
