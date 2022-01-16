@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -130,6 +132,50 @@ namespace POS.View.reports
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_ucSales.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_ucSales.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void translate()
+        {
+            txt_invoiceInfo.Text = MainWindow.resourcemanager.GetString("trInvoice");
+            txt_invoiceHint.Text = MainWindow.resourcemanager.GetString("trBranch") + ", " + MainWindow.resourcemanager.GetString("trPOS") + ", " +
+                                   MainWindow.resourcemanager.GetString("trCustomer") + "...";
+            txt_itemInfo.Text = MainWindow.resourcemanager.GetString("trItems");
+            txt_itemHint.Text = MainWindow.resourcemanager.GetString("trItems") + "...";
+            txt_promotionInfo.Text = MainWindow.resourcemanager.GetString("trPromotion");
+            txt_promotionHint.Text = MainWindow.resourcemanager.GetString("trCoupon") + ", " + MainWindow.resourcemanager.GetString("trOffer") + ", " +
+                                     MainWindow.resourcemanager.GetString("trPackage") + "...";
+            txt_orderInfo.Text = MainWindow.resourcemanager.GetString("trOrders");
+            txt_orderHint.Text = MainWindow.resourcemanager.GetString("trBranch") + ", " + MainWindow.resourcemanager.GetString("trPOS") + ", " +
+                                 MainWindow.resourcemanager.GetString("trCustomer") + "...";
+            txt_quotationInfo.Text = MainWindow.resourcemanager.GetString("trQuotation");
+            txt_quotationHint.Text = MainWindow.resourcemanager.GetString("trBranch") + ", " + MainWindow.resourcemanager.GetString("trPOS") + ", " +
+                                 MainWindow.resourcemanager.GetString("trCustomer") + "...";
+            txt_dailySalesInfo.Text = MainWindow.resourcemanager.GetString("trDailySales");
+            txt_dailySalesHint.Text = MainWindow.resourcemanager.GetString("trDailySales")+"...";
         }
     }
 }

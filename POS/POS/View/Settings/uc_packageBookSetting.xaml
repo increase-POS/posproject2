@@ -253,8 +253,8 @@
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2.5*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1.5*"/>
                             <ColumnDefinition Width="2.5*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
@@ -265,29 +265,41 @@
                         <TextBlock  Grid.Row="1"  Grid.Column="0"  x:Name="txt_branchCountTitle" Text="branchs"  Margin="10,5,5,5"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
                                   FontSize="16"  />
-                        <Grid x:Name="dpnl_branch" Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                            <Grid.ColumnDefinitions>
+                       
+                        <Grid x:Name="dpnl_branch" Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+
+                                <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2.25*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock   x:Name="txt_branchCount" Text="{Binding branchCount, Mode=OneWay}"  
                                          Grid.Column="3"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+                           
                             <TextBlock   x:Name="txt_branch" Text="/"  
                                          Grid.Column="1"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+                            
                             <TextBlock   x:Name="txt_branchCountNow" Text="{Binding branchCountNow, Mode=OneWay}"  
                                          Grid.Column="0"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
+
+                            <TextBlock  Text="per month" Visibility="Hidden"
+                                        Grid.Column="3"
+                                         Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
+
                             <TextBlock   x:Name="txt_branchUnlimited" Text="unlimited"  
-                                         Grid.Column="3"
+                                         Grid.Column="4"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  Visibility="Collapsed"/>
+
                         </Grid>
                         <TextBlock Grid.Row="1"  Grid.Column="2"   x:Name="txt_storeCountNameTitle" Text="stores"  Margin="10"
                         HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="#4E4E4E"
@@ -327,6 +339,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2.25*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock   x:Name="txt_userCount" Text="{Binding userCount, Mode=OneWay}" 
@@ -341,8 +354,12 @@
                                          Grid.Column="0"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  />
-                            <TextBlock   x:Name="txt_userUnlimited" Text="unlimited"  
+                            <TextBlock    Text="per month"  Visibility="Hidden"
                                          Grid.Column="3"
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_userUnlimited" Text="unlimited"  
+                                         Grid.Column="4"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  Visibility="Collapsed"/>
 
@@ -386,6 +403,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2.25*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock   x:Name="txt_customerCount" Text="{Binding customerCount, Mode=OneWay}"  
@@ -400,8 +418,12 @@
                                          Grid.Column="0"
                                      Foreground="{StaticResource MainColorBlue}"
                                     FontSize="14"  />
-                            <TextBlock   x:Name="txt_customerUnlimited" Text="unlimited"  
+                            <TextBlock    Text="per month" Visibility="Hidden"
                                          Grid.Column="3"
+                                     Foreground="{StaticResource MainColorBlue}"
+                                     FontSize="14"  />
+                            <TextBlock   x:Name="txt_customerUnlimited" Text="unlimited"  
+                                         Grid.Column="4"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  Visibility="Collapsed"/>
 
@@ -448,6 +470,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="2.25*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock  x:Name="txt_salesInvCount" Text="{Binding saleinvCount, Mode=OneWay}" 
@@ -462,8 +485,12 @@
                                         Grid.Column="0"
                                         VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
                                         FontSize="14"  />
+                            <TextBlock  x:Name="txt_perMonth" Text="per month" 
+                                        Grid.Column="3"
+                                         VerticalAlignment="Center" Foreground="{StaticResource MainColorBlue}"
+                                        FontSize="14"  />
                             <TextBlock   x:Name="txt_salesInvUnlimited" Text="unlimited"  
-                                         Grid.Column="3"
+                                         Grid.Column="4"
                                      Foreground="{StaticResource MainColorBlue}"
                                      FontSize="14"  Visibility="Collapsed"/>
                         </Grid>

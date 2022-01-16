@@ -187,6 +187,8 @@ namespace POS.View.Settings
 
             btn_extend.Content = MainWindow.resourcemanager.GetString("trExtend");
             btn_upgrade.Content = MainWindow.resourcemanager.GetString("trUpgrade");
+
+            txt_perMonth.Text = " "+ MainWindow.resourcemanager.GetString("trPerMonth");
         }
 
         #region events
