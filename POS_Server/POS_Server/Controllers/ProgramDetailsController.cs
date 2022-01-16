@@ -165,7 +165,7 @@ namespace POS_Server.Controllers
                 packs.customerCountNow= entity.agents.Where(x => x.type == "c").Count();
                 packs.itemCountNow = entity.items.Count();
 
-                packs.saleinvCountNow  = entity.invoices.Where(x => x.invType == "s").Count();
+                packs.saleinvCountNow = getSalesInvCountInMonth();
                 packs.serverDateNow = DateTime.Now;
 
             }

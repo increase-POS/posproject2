@@ -93,7 +93,7 @@ namespace POS_Server.Models
         public string upnum { get; set; }
         public string packuserType { get; set; }
         public string activeApp { get; set; }
-
+        public string confirmStat { get; set; }
 
     }
     public class SendDetail
