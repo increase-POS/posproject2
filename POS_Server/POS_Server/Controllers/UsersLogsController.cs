@@ -683,6 +683,9 @@ namespace POS_Server.Controllers
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var item = entity.usersLogs.Where(u => u.logId == logId).FirstOrDefault();
+                    //check if user change server date
+                    if (item.sInDate > DateTime.Now)
+                        return true;
                     if (item.sOutDate != null)
                     {
                         return true;
