@@ -336,6 +336,8 @@ namespace POS.View.windows
                         tb_msg.Text = resourcemanager.GetString("trPackageIsNotActive");
                     else if (canLogin == -4) //serial is not active
                         tb_msg.Text = resourcemanager.GetString("trServerNotCompatible");
+                    else if (canLogin == -5) //login date is before last login date
+                        tb_msg.Text = resourcemanager.GetString("trDateNotCompatible");
 
                     if (sender != null)
                                     SectionData.EndAwait(grid_main);
