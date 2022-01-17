@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-         Title="Increase"  Height="500" Width="200">
+         Title="Increase POS"  Height="500" Width="200">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition    Height="100"></RowDefinition>

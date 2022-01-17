@@ -8,7 +8,7 @@
              xmlns:converters="clr-namespace:POS.converters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize" Margin="0" Title="Increase" 
+        ResizeMode="NoResize" Margin="0" Title="Increase POS" 
       Height="400" Width="600"   Background="Transparent" AllowsTransparency="True"
         Loaded="Window_Loaded" MouseDown="Window_MouseDown">
     <Grid Grid.Column="1" Grid.Row="1"   x:Name="grid_ucInventory" >

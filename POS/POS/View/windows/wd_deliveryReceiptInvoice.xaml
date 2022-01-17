@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:POS.View.windows"
         mc:Ignorable="d" KeyDown="Window_KeyDown"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-         Title="Increase"  WindowStyle="None" WindowStartupLocation="CenterScreen"
+         Title="Increase POS"  WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
          Height="175" Width="300" Background="#333333" 
         Loaded="Window_Loaded" Closing="Window_Closing">

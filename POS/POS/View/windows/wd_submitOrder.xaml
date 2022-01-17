@@ -7,7 +7,7 @@
         mc:Ignorable="d" KeyDown="HandleKeyPress"
         xmlns:converters="clr-namespace:POS.converters"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="Increase" WindowStyle="None" WindowStartupLocation="CenterScreen"
+        Title="Increase POS" WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0" 
         Height="500" Width="700"   Background="Transparent"
         AllowsTransparency="True"
