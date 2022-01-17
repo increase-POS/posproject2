@@ -988,26 +988,7 @@ namespace POS.View.accounts
                     Thread t1 = new Thread(() =>
                     {
                         #region
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Account\En\PayAccReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                        ReportCls.checkLang();
-                        //cashesQueryExcel = cashesQuery.ToList();
-                        clsReports.paymentAccReport(cashesQuery, rep, reppath, paramarr);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
+                        BuildReport();
                         this.Dispatcher.Invoke(() =>
                         {
                             saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -1664,7 +1645,28 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
+            }
+            else addpath = @"\Reports\Account\En\PayAccReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //cashesQueryExcel = cashesQuery.ToList();
+            clsReports.paymentAccReport(cashesQuery, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+            rep.Refresh();
+        }
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try
@@ -1674,25 +1676,8 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
+                    BuildReport();
 
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\En\PayAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    //cashesQueryExcel = cashesQuery.ToList();
-                    clsReports.paymentAccReport(cashesQuery, rep, reppath, paramarr);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
                     LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     #endregion
                 }
@@ -1722,30 +1707,11 @@ namespace POS.View.accounts
                     Window.GetWindow(this).Opacity = 0.2;
                     string pdfpath = "";
 
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-                    //
+               
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                    string addpath = "";
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\En\PayAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    //cashesQueryExcel = cashesQuery.ToList();
-                    clsReports.paymentAccReport(cashesQuery, rep, reppath, paramarr);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
-
+                    BuildReport();
                     LocalReportExtensions.ExportToPDF(rep, pdfpath);
                     wd_previewPdf w = new wd_previewPdf();
                     w.pdfPath = pdfpath;
@@ -1812,27 +1778,7 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one"))
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArPayAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\En\PayAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    //cashesQueryExcel = cashesQuery.ToList();
-                    clsReports.paymentAccReport(cashesQuery, rep, reppath, paramarr);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    clsReports.bankdg(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
+                    BuildReport();
 
                     saveFileDialog.Filter = "PDF|*.pdf;";
 

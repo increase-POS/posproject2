@@ -55,6 +55,17 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+
+            paramarr.Add(new ReportParameter("trDocNumTooltip", MainWindow.resourcemanagerreport.GetString("trDocNumTooltip")));
+            paramarr.Add(new ReportParameter("trRecipientTooltip", MainWindow.resourcemanagerreport.GetString("trRecipientTooltip")));
+
+            paramarr.Add(new ReportParameter("trPaymentTypeTooltip", MainWindow.resourcemanagerreport.GetString("trPaymentTypeTooltip")));
+
+            paramarr.Add(new ReportParameter("trDocDateTooltip", MainWindow.resourcemanagerreport.GetString("trDocDateTooltip")));
+
+            paramarr.Add(new ReportParameter("trPayDate", MainWindow.resourcemanagerreport.GetString("trPayDate")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+
             foreach (var c in bondsQuery)
             {
 
@@ -116,6 +127,17 @@ namespace POS.Classes
                 o.deserved = decimal.Parse(SectionData.DecTostring(o.deserved));
             }
             DeliverStateConv(paramarr);
+
+            paramarr.Add(new ReportParameter("trInvoiceNumber", MainWindow.resourcemanagerreport.GetString("trInvoiceNumber")));
+            paramarr.Add(new ReportParameter("trSalesMan", MainWindow.resourcemanagerreport.GetString("trSalesMan")));
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+            paramarr.Add(new ReportParameter("trState", MainWindow.resourcemanagerreport.GetString("trState")));
+
+            DateFormConv(paramarr);
+
+
             rep.DataSources.Add(new ReportDataSource("DataSetInvoice", invoiceQuery));
         }
         public static void DeliverStateConv(List<ReportParameter> paramarr)
@@ -125,12 +147,20 @@ namespace POS.Classes
 
         }
 
-        public static void bankAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath)
+        public static void bankAccReport(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
+
+
+
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-
+            paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
+            paramarr.Add(new ReportParameter("trBank", MainWindow.resourcemanagerreport.GetString("trBank")));
+            paramarr.Add(new ReportParameter("trDepositeNumTooltip", MainWindow.resourcemanagerreport.GetString("trDepositeNumTooltip")));
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+            DateFormConv(paramarr);
             foreach (var c in cash)
             {
                 ///////////////////
@@ -242,6 +272,16 @@ namespace POS.Classes
             cashTransferProcessTypeConv(paramarr);
 
 
+            paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
+            paramarr.Add(new ReportParameter("trRecepient", MainWindow.resourcemanagerreport.GetString("trRecepient")));
+            paramarr.Add(new ReportParameter("trPaymentTypeTooltip", MainWindow.resourcemanagerreport.GetString("trPaymentTypeTooltip")));
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+
+            DateFormConv(paramarr);
+
+
+
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
 
@@ -262,6 +302,13 @@ namespace POS.Classes
 
             cashTransTypeConv(paramarr);
             cashTransferProcessTypeConv(paramarr);
+ 
+            paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
+            paramarr.Add(new ReportParameter("trDepositor", MainWindow.resourcemanagerreport.GetString("trDepositor")));
+            paramarr.Add(new ReportParameter("trPaymentTypeTooltip", MainWindow.resourcemanagerreport.GetString("trPaymentTypeTooltip")));
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+
 
 
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
@@ -280,6 +327,16 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
             paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
 
+            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
+
+            paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
+            paramarr.Add(new ReportParameter("trFromPos", MainWindow.resourcemanagerreport.GetString("trFromPos")));
+            paramarr.Add(new ReportParameter("trToPos", MainWindow.resourcemanagerreport.GetString("trToPos")));
+            paramarr.Add(new ReportParameter("trOpperationTypeToolTip", MainWindow.resourcemanagerreport.GetString("trOpperationTypeToolTip")));
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+            DateFormConv(paramarr);
+          
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
         public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath, List<ReportParameter> paramarr)
@@ -605,7 +662,7 @@ Parameters!trValueDiscount.Value)
             else if (firstTitle == "saleItems" || firstTitle == "purchaseItem")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trItems");
             else if (firstTitle == "recipientReport")
-                firstTitle = MainWindow.resourcemanagerreport.GetString("trRecepient");
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trReceived");
             else if (firstTitle == "accountStatement")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trAccountStatement");
             else if (firstTitle == "paymentsReport")
@@ -657,7 +714,7 @@ Parameters!trValueDiscount.Value)
             else if (secondTitle == "payments")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trPayments");
             else if (secondTitle == "recipient")
-                secondTitle = MainWindow.resourcemanagerreport.GetString("trRecepient");
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trReceived");
             else if (secondTitle == "destroied")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trDestructives");
             else if (secondTitle == "agent")
@@ -1230,5 +1287,8 @@ Parameters!trValueDiscount.Value)
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetItemLocation", itemLocations));
         }
+
+
+
     }
 }
