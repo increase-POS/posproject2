@@ -569,29 +569,7 @@ namespace POS.View.accounts
                     #region
                     Thread t1 = new Thread(() =>
                     {
-                        List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                        ReportCls.checkLang();
-                        foreach (var r in cashesQueryExcel)
-                        {
-                            r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                        }
-                        clsReports.bankAccReport(cashesQueryExcel, rep, reppath);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
+                        BuildReport();
                         this.Dispatcher.Invoke(() =>
                         {
                             saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -871,7 +849,34 @@ namespace POS.View.accounts
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+        public void BuildReport()
+        { 
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
+            }
+            else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            foreach (var r in cashesQuery)
+            {
+                r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+            }
+            clsReports.bankAccReport(cashesQuery, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+            clsReports.bankdg(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -882,31 +887,7 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-                    foreach (var r in cashesQuery)
-                    {
-                        r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-                    }
-                    clsReports.bankAccReport(cashesQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    clsReports.bankdg(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
-
+                    BuildReport();
                     saveFileDialog.Filter = "PDF|*.pdf;";
 
                     if (saveFileDialog.ShowDialog() == true)
@@ -939,25 +920,7 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-
-                    clsReports.bankAccReport(cashesQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
+                    BuildReport();
                     LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
                     #endregion
                 }
@@ -988,30 +951,13 @@ namespace POS.View.accounts
 
                     string pdfpath = "";
 
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
+            
 
                     //
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                    string addpath = "";
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArBankAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\EN\BankAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                    ReportCls.checkLang();
-
-                    clsReports.bankAccReport(cashesQuery, rep, reppath);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
+                    BuildReport();
 
                     LocalReportExtensions.ExportToPDF(rep, pdfpath);
                     wd_previewPdf w = new wd_previewPdf();

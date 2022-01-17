@@ -566,7 +566,32 @@ namespace POS.View.accounts
             }
         }
 
+        public void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
 
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
+            }
+            else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            ReportCls.checkLang();
+            foreach (var r in bondsQueryExcel)
+            {
+                r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
+                r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
+            }
+            clsReports.bondsReport(bondsQueryExcel, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
             try
@@ -580,28 +605,8 @@ namespace POS.View.accounts
                     Thread t1 = new Thread(() =>
                     {
                         List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                        string addpath;
-                        bool isArabic = ReportCls.checkLang();
-                        if (isArabic)
-                        {
-                            addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
-                        }
-                        else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
-                        string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                        ReportCls.checkLang();
-                        foreach (var r in bondsQueryExcel)
-                        {
-                            r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
-                            r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
-                        }
-                        clsReports.bondsReport(bondsQueryExcel, rep, reppath, paramarr);
-                        clsReports.setReportLanguage(paramarr);
-                        clsReports.Header(paramarr);
-
-                        rep.SetParameters(paramarr);
-
-                        rep.Refresh();
+                        BuildReport();
+                      
                         this.Dispatcher.Invoke(() =>
                         {
                             saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -1225,25 +1230,7 @@ namespace POS.View.accounts
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
 
-                List<ReportParameter> paramarr = new List<ReportParameter>();
-
-                string addpath;
-                bool isArabic = ReportCls.checkLang();
-                if (isArabic)
-                {
-                    addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
-                }
-                else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
-                string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
-                ReportCls.checkLang();
-
-                clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
-                clsReports.setReportLanguage(paramarr);
-                clsReports.Header(paramarr);
-
-                rep.SetParameters(paramarr);
-                rep.Refresh();
+                BuildReport();
                 LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
 
                 if (sender != null)
@@ -1274,28 +1261,13 @@ namespace POS.View.accounts
                     Window.GetWindow(this).Opacity = 0.2;
                     string pdfpath = "";
 
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
+               
 
                     //
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
 
-                    string addpath = "";
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                    ReportCls.checkLang();
-                    clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-
-                    rep.SetParameters(paramarr);
-
-                    rep.Refresh();
+                    BuildReport();
 
                     LocalReportExtensions.ExportToPDF(rep, pdfpath);
                     wd_previewPdf w = new wd_previewPdf();
@@ -1454,28 +1426,7 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    List<ReportParameter> paramarr = new List<ReportParameter>();
-                    string addpath;
-                    bool isArabic = ReportCls.checkLang();
-                    if (isArabic)
-                    {
-                        addpath = @"\Reports\Account\Ar\ArBondAccReport.rdlc";
-                    }
-                    else addpath = @"\Reports\Account\EN\BondAccReport.rdlc";
-                    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-                    ReportCls.checkLang();
-                    //List<Bonds> items = new List<Bonds>((dg_bonds.ItemsSource as IEnumerable<Bonds>).OfType<Bonds>());\
-                    foreach (var r in bondsQuery)
-                    {
-                        r.amount = decimal.Parse(SectionData.DecTostring(r.amount));
-                        r.deserveDate = Convert.ToDateTime(SectionData.DateToString(r.deserveDate));
-                    }
-                    clsReports.bondsReport(bondsQuery, rep, reppath, paramarr);
-
-                    clsReports.setReportLanguage(paramarr);
-                    clsReports.Header(paramarr);
-                    rep.SetParameters(paramarr);
-                    rep.Refresh();
+                    BuildReport();
                     saveFileDialog.Filter = "PDF|*.pdf;";
                     if (saveFileDialog.ShowDialog() == true)
                     {
