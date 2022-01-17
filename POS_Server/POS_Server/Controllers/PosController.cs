@@ -46,7 +46,7 @@ var strP = TokenManager.GetPrincipal(token);
                                    from x in lj.DefaultIfEmpty()
                                    select new PosModel() {
                                        posId = p.posId,
-                                       balance = p.balance,
+                                       balance = p.balance != null ? p.balance : 0,
                                        branchId = p.branchId,
                                        code = p.code,
                                        name = p.name,
@@ -114,7 +114,7 @@ var strP = TokenManager.GetPrincipal(token);
                                 select new PosModel()
                                 {
                                     posId = p.posId,
-                                    balance = p.balance,
+                                    balance = p.balance != null ? p.balance : 0,
                                     branchId = p.branchId,
                                     code = p.code,
                                     name = p.name,

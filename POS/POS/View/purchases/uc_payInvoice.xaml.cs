@@ -1355,7 +1355,7 @@ namespace POS.View
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorTotalIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
                 return false;
             }
-            if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < decimal.Parse(tb_total.Text))
+            if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && (MainWindow.posLogIn.balance < decimal.Parse(tb_total.Text) || MainWindow.posLogIn.balance == null))
             {
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
                 return false;
@@ -1464,7 +1464,7 @@ namespace POS.View
                             }
                             if (multipleValid)
                             {
-                                if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < invoice.totalNet)
+                                if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && (MainWindow.posLogIn.balance < invoice.totalNet || MainWindow.posLogIn.balance == null))
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
 
                                 else
@@ -1609,22 +1609,22 @@ namespace POS.View
             {
                 case "cash":// cash: update pos balance  
                     pos = MainWindow.posLogIn;
-                    if (pos.balance > 0)
+                    if (MainWindow.posLogIn.balance > 0)
                     {
-                        if (pos.balance >= cashTransfer.cash)
+                        if (MainWindow.posLogIn.balance >= cashTransfer.cash)
                         {
-                            pos.balance -= cashTransfer.cash;
+                            MainWindow.posLogIn.balance -= cashTransfer.cash;
                             invoice.paid = cashTransfer.cash;
                             invoice.deserved -= cashTransfer.cash;
                         }
                         else
                         {
-                            invoice.paid = pos.balance;
-                            cashTransfer.cash = pos.balance;
-                            invoice.deserved -= pos.balance;
-                            pos.balance = 0;
+                            invoice.paid = MainWindow.posLogIn.balance;
+                            cashTransfer.cash = MainWindow.posLogIn.balance;
+                            invoice.deserved -= MainWindow.posLogIn.balance;
+                            MainWindow.posLogIn.balance = 0;
                         }
-                        await pos.save(pos);
+                        await pos.save(MainWindow.posLogIn);
                         await cashTransfer.Save(cashTransfer); //add cash transfer  
                         await invoice.saveInvoice(invoice);
                     }
@@ -1650,21 +1650,21 @@ namespace POS.View
             {
                 case "cash":// cash: update pos balance
                     pos = MainWindow.posLogIn;
-                    if (pos.balance > 0)
+                    if (MainWindow.posLogIn.balance > 0)
                     {
-                        if (pos.balance >= invoice.totalNet)
+                        if (MainWindow.posLogIn.balance >= invoice.totalNet)
                         {
-                            pos.balance -= invoice.totalNet;
+                            MainWindow.posLogIn.balance -= invoice.totalNet;
                             invoice.paid = cashTransfer.cash = invoice.totalNet;
                             invoice.deserved = 0;
                         }
                         else
                         {
-                            invoice.paid = cashTransfer.cash = pos.balance;
-                            invoice.deserved -= pos.balance;
-                            pos.balance = 0;
+                            invoice.paid = cashTransfer.cash = MainWindow.posLogIn.balance;
+                            invoice.deserved -= MainWindow.posLogIn.balance;
+                            MainWindow.posLogIn.balance = 0;
                         }
-                        await pos.save(pos);
+                        await pos.save(MainWindow.posLogIn);
                         await cashTransfer.Save(cashTransfer); //add cash transfer  
                         await invoice.saveInvoice(invoice);
                     }

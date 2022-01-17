@@ -1653,10 +1653,15 @@ namespace POS.View
                             #region Save
                             if (_InvoiceType == "sbd") //sbd means sale bounse draft
                             {
-                                await addInvoice("sb"); // sb means sale bounce
-                                await saveBounceCash();
-                                await clearInvoice();
-                                refreshDraftNotification();
+                                if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < invoice.totalNet )
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                                else
+                                {
+                                    await addInvoice("sb"); // sb means sale bounce
+                                    await saveBounceCash();
+                                    await clearInvoice();
+                                    refreshDraftNotification();
+                                }
                             }
                             else if (_InvoiceType == "or")
                             {
@@ -1681,11 +1686,12 @@ namespace POS.View
                                 }
                                 else
                                     await saveCashTransfers();
+                                await clearInvoice();
+                                refreshDraftNotification();
+                                refreshInvoiceNotification();
 
                             }
-                            await clearInvoice();
-                            refreshDraftNotification();
-                            refreshInvoiceNotification();
+                            
 
                             //thread  + purchases
                             prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
@@ -1740,8 +1746,10 @@ namespace POS.View
             switch (cb_paymentProcessType.SelectedIndex)
             {
                 case 0:// cash: update pos balance
-                    pos.balance += invoice.totalNet;
-                    await pos.save(pos);
+                    MainWindow.posLogIn.balance += invoice.totalNet;
+                    await MainWindow.posLogIn.save(MainWindow.posLogIn);
+                    //pos.balance += invoice.totalNet;
+                    //await pos.save(pos);
                     // cach transfer model
                     cashTrasnfer = new CashTransfer();
                     cashTrasnfer.transType = "d"; //deposit
@@ -1791,9 +1799,11 @@ namespace POS.View
         {
             switch (cashTransfer.processType)
             {
-                case "cash":// cash: update pos balance        
-                    pos.balance += invoice.totalNet;
-                    await pos.save(pos);
+                case "cash":// cash: update pos balance   
+                    MainWindow.posLogIn.balance += invoice.totalNet;
+                    await MainWindow.posLogIn.save(MainWindow.posLogIn);
+                    //pos.balance += invoice.totalNet;
+                    //await pos.save(pos);
                     cashTransfer.transType = "d"; //deposit
                     cashTransfer.posId = MainWindow.posID;
                     cashTransfer.agentId = invoice.agentId;
@@ -1828,8 +1838,8 @@ namespace POS.View
                 case 0:
                 case 2: // cash:card: update pos balance
 
-                    pos.balance -= invoice.totalNet;
-                    await pos.save(pos);
+                    MainWindow.posLogIn.balance -= invoice.totalNet;
+                    await MainWindow.posLogIn.save(MainWindow.posLogIn);
                     // cach transfer model
                     CashTransfer cashTrasnfer = new CashTransfer();
                     cashTrasnfer.transType = "p"; //pull
@@ -2279,7 +2289,16 @@ namespace POS.View
             tb_barcode.Clear();
             tb_barcode.Focus();
 
-            if (invoice.invType == "s")//get payment information          
+            if(invoice.invType == "s" && _InvoiceType == "sbd")
+            {
+                gd_theRest.Visibility = Visibility.Visible;
+                tb_cashPaid.Text = txt_theRest.Text = "0";
+                gd_card.Visibility = Visibility.Collapsed;
+                _SelectedCard = -1;
+                txt_card.Text = "";
+                tb_processNum.Clear();
+            }
+            else if (invoice.invType == "s")//get payment information          
             {
                 CashTransfer cashTrasnfer = new CashTransfer();// cach transfer model
                 cashTrasnfer = await cashTrasnfer.GetByInvId(invoice.invoiceId);
