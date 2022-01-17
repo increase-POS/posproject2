@@ -172,7 +172,7 @@ namespace POS.View.Settings
             txt_versionTitle.Text = MainWindow.resourcemanager.GetString("trVersion");
 
             txt_activationDetails.Text = MainWindow.resourcemanager.GetString("trActivationDetails");
-            txt_serialsTitle.Text = MainWindow.resourcemanager.GetString("trSerials");
+            txt_serialsTitle.Text = MainWindow.resourcemanager.GetString("trSerial");
             txt_activationCodeTitle.Text = MainWindow.resourcemanager.GetString("trActivationCode");
 
             txt_packageLimits.Text = MainWindow.resourcemanager.GetString("trPackageLimits");
