@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:POS"
         mc:Ignorable="d" Icon="/pic/increaseLogo.ico"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Increase" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Increase POS" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         WindowStartupLocation="CenterScreen"  WindowStyle="None"
         WindowState="Maximized"  Loaded="Window_Loaded" Closing="Window_Closing" Unloaded="Window_Unloaded">
     <Window.Resources>
