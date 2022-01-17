@@ -1577,7 +1577,7 @@ namespace POS
                 else if (tag == "salesReports")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSales");
                 else if (tag == "accountsReports")
-                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trAccounts");
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trAccounting");
                 else if (tag == "usersReports")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trUsers");
                 #endregion
