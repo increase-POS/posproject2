@@ -121,14 +121,21 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsItems, MainWindow.resourcemanager.GetString("trItemHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsToBranches, MainWindow.resourcemanager.GetString("trToBranch/StoreHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsUnits, MainWindow.resourcemanager.GetString("trUnitHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_InternalItemsEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_internalItemsStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalOperaterFromBranches, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalOperaterType, MainWindow.resourcemanager.GetString("trOperator") + "...");
 
             chk_internalItemsFromAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_internalItemsAllItems.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_internalItemsToAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_internalItemsAllUnits.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_internalOperaterFromAllBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_internalOperatorAllTypes.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_internalItemsTwoWay.Content = MainWindow.resourcemanager.GetString("trTwoWays");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_InternalItemsEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_internalItemsStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_InternalOperatorEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_internalOperatorStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");

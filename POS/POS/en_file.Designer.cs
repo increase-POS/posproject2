@@ -1600,6 +1600,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date is not compitable with server.
+        /// </summary>
+        internal static string trDateNotCompatible {
+            get {
+                return ResourceManager.GetString("trDateNotCompatible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Day.
         /// </summary>
         internal static string trDay {
@@ -1879,6 +1888,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Destroyed Count.
+        /// </summary>
+        internal static string trDestroyedCount {
+            get {
+                return ResourceManager.GetString("trDestroyedCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destructive.
         /// </summary>
         internal static string trDestructive {
@@ -1911,6 +1929,15 @@ namespace POS {
         internal static string trDetailsHint {
             get {
                 return ResourceManager.GetString("trDetailsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diffrence Percentage.
+        /// </summary>
+        internal static string trDiffrencePercentage {
+            get {
+                return ResourceManager.GetString("trDiffrencePercentage", resourceCulture);
             }
         }
         
@@ -3589,6 +3616,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From Branch.
+        /// </summary>
+        internal static string trFromBranch {
+            get {
+                return ResourceManager.GetString("trFromBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From Branch/Store....
+        /// </summary>
+        internal static string trFromBranch_StoreHint {
+            get {
+                return ResourceManager.GetString("trFromBranch/StoreHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From location ....
         /// </summary>
         internal static string trFromLocationHint {
@@ -4264,6 +4309,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item - Unit.
+        /// </summary>
+        internal static string trItemsUnits {
+            get {
+                return ResourceManager.GetString("trItemsUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Type.
         /// </summary>
         internal static string trItemType {
@@ -4273,7 +4327,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item - Unit.
+        ///   Looks up a localized string similar to Item-Unit.
         /// </summary>
         internal static string trItemUnit {
             get {
@@ -4949,6 +5003,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NO..
+        /// </summary>
+        internal static string trNom {
+            get {
+                return ResourceManager.GetString("trNom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Notifications There!.
         /// </summary>
         internal static string trNoNotifications {
@@ -5602,6 +5665,15 @@ namespace POS {
         internal static string trPermissionsGroup {
             get {
                 return ResourceManager.GetString("trPermissionsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to per month.
+        /// </summary>
+        internal static string trPerMonth {
+            get {
+                return ResourceManager.GetString("trPerMonth", resourceCulture);
             }
         }
         
@@ -6367,6 +6439,15 @@ namespace POS {
         internal static string trRealDeliveryCostHint {
             get {
                 return ResourceManager.GetString("trRealDeliveryCostHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reason.
+        /// </summary>
+        internal static string trReason {
+            get {
+                return ResourceManager.GetString("trReason", resourceCulture);
             }
         }
         
@@ -7919,6 +8000,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To Branch.
+        /// </summary>
+        internal static string trToBranch {
+            get {
+                return ResourceManager.GetString("trToBranch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To Branch/Store....
+        /// </summary>
+        internal static string trToBranch_StoreHint {
+            get {
+                return ResourceManager.GetString("trToBranch/StoreHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deposit POS.
         /// </summary>
         internal static string trToPos {
@@ -8122,6 +8221,15 @@ namespace POS {
         internal static string trTransfersAdmin {
             get {
                 return ResourceManager.GetString("trTransfersAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Two ways.
+        /// </summary>
+        internal static string trTwoWays {
+            get {
+                return ResourceManager.GetString("trTwoWays", resourceCulture);
             }
         }
         

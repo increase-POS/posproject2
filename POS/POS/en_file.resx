@@ -1522,7 +1522,7 @@
     <value>Inventory Amount</value>
   </data>
   <data name="trItemUnit" xml:space="preserve">
-    <value>Item - Unit</value>
+    <value>Item-Unit</value>
   </data>
   <data name="trRealAmount" xml:space="preserve">
     <value>Real Amount</value>
@@ -3028,8 +3028,44 @@ Please add Email in setting</value>
   <data name="trEmptyServerStatus" xml:space="preserve">
     <value>Server status can not be empty</value>
   </data>
+  <data name="trDateNotCompatible" xml:space="preserve">
+    <value>Date is not compitable with server</value>
+  </data>
+  <data name="trDestroyedCount" xml:space="preserve">
+    <value>Destroyed Count</value>
+  </data>
+  <data name="trDiffrencePercentage" xml:space="preserve">
+    <value>Diffrence Percentage</value>
+  </data>
+  <data name="trFromBranch" xml:space="preserve">
+    <value>From Branch</value>
+  </data>
+  <data name="trFromBranch/StoreHint" xml:space="preserve">
+    <value>From Branch/Store...</value>
+  </data>
+  <data name="trItemsUnits" xml:space="preserve">
+    <value>Item - Unit</value>
+  </data>
+  <data name="trPerMonth" xml:space="preserve">
+    <value>per month</value>
+  </data>
+  <data name="trReason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="trToBranch" xml:space="preserve">
+    <value>To Branch</value>
+  </data>
+  <data name="trToBranch/StoreHint" xml:space="preserve">
+    <value>To Branch/Store...</value>
+  </data>
+  <data name="trTwoWays" xml:space="preserve">
+    <value>Two ways</value>
+  </data>
   <data name="trInvoicesPerMonth" xml:space="preserve">
     <value>Invoices Per Month</value>
+  </data>
+  <data name="trNom" xml:space="preserve">
+    <value>NO.</value>
   </data>
   <data name="trServerType" xml:space="preserve">
     <value>Server type</value>
