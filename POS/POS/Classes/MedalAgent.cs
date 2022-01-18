@@ -46,7 +46,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medalAgent/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -94,7 +94,7 @@ namespace POS.Classes
                 request.RequestUri = new Uri(Global.APIUri
                                              + "medalAgent/Save?medalAgent="
                                              + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -127,7 +127,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medalAgent/GetByID");
                 request.Headers.Add("id", id.ToString());
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -162,7 +162,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medalAgent/Delete?Id=" + Id + "&userId=" + userId + "&final=" + final);
 
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
 
                 request.Method = HttpMethod.Post;
 
@@ -198,7 +198,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri + "medalAgent/UpdateAgentsByMedalId?newagentlist=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("medalId", medalId.ToString());
                 request.Headers.Add("userId", userId.ToString());
                 request.Method = HttpMethod.Post;

@@ -38,7 +38,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Sections/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -78,7 +78,7 @@ namespace POS.Classes
                 // encoding parameter to get special characters
                 myContent = HttpUtility.UrlEncode(myContent);
                 request.RequestUri = new Uri(Global.APIUri + "Sections/Save?sectionObject=" + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -109,7 +109,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Sections/GetSectionByID");
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("sectionId", sectionId.ToString());
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -142,7 +142,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Sections/Delete?sectionId=" + sectionId + "&userId=" + userId + "&final=" + final);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                
                 request.Method = HttpMethod.Post;
                 //set content type

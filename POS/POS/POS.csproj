@@ -265,7 +265,6 @@
     <Compile Include="Classes\ReportsHelp.cs" />
     <Compile Include="Classes\rptSectionData.cs" />
     <Compile Include="Classes\Section.cs" />
-    <Compile Include="Classes\SectionCls.cs" />
     <Compile Include="Classes\SectionData.cs" />
     <Compile Include="Classes\Serial.cs" />
     <Compile Include="Classes\Service.cs" />
