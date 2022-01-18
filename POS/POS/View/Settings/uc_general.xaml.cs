@@ -604,6 +604,7 @@ namespace POS.View.Settings
             txt_language.Text = MainWindow.resourcemanager.GetString("trLanguage");
             txt_currency.Text = MainWindow.resourcemanager.GetString("trCurrency");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_taxHint.Text = MainWindow.resourcemanager.GetString("trInvoice")+", "+ MainWindow.resourcemanager.GetString("trItem")+"...";
             txt_itemsCost.Text = MainWindow.resourcemanager.GetString("trItemCost");
             txt_dateForm.Text = MainWindow.resourcemanager.GetString("trDateForm");
             txt_accuracy.Text = MainWindow.resourcemanager.GetString("trAccuracy");

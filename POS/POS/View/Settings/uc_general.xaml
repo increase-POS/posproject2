@@ -262,6 +262,7 @@
 	l-16.7-25.6l15.4-23.9h-13.3l-9.4,14.7l-9.4-14.7h-13.2L253.2,273.9z"/>
                         <StackPanel Grid.Column="1"   Grid.ColumnSpan="2" VerticalAlignment="Top" Margin="5,20,0,0" HorizontalAlignment="Left"  >
                             <TextBlock x:Name="txt_tax" HorizontalAlignment="Right" Width="135" Foreground="#6e6e6e" Text="Tax" FontSize="18" FontWeight="SemiBold" ></TextBlock>
+                            <TextBlock x:Name="txt_taxHint" Text="Invoice, Item ..." Foreground="#949494" FontSize="10" Margin="5,2,0,0"></TextBlock>
                             <!--#region  Edit-->
                             <!--Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                      materialDesign:HintAssist.Hint="Tax..."-->
