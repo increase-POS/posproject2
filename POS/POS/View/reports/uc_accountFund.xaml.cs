@@ -459,7 +459,7 @@ namespace POS.View.reports
 
             secondTitle = "branch";
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
-            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);

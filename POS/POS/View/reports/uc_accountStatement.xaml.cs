@@ -975,7 +975,7 @@ namespace POS.View.reports
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
 
             clsReports.cashTransferStsStatement(temp, rep, reppath, paramarr);

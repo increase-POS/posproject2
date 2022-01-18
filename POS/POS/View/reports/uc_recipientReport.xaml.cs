@@ -1279,7 +1279,7 @@ namespace POS.View.reports
 
             ReportCls.checkLang();
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
-            Title = MainWindow.resourcemanagerreport.GetString("trAccountantReport") + " / " + subTitle;
+            Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
             clsReports.cashTransferStsRecipient(temp, rep, reppath,paramarr);
             clsReports.setReportLanguage(paramarr);
