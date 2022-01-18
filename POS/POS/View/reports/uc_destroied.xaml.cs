@@ -126,7 +126,7 @@ namespace POS.View.reports
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
             col_use.Header = MainWindow.resourcemanager.GetString("trUser");
-            col_destroiedNumber.Header = MainWindow.resourcemanager.GetString("trNo");
+            col_destroiedNumber.Header = MainWindow.resourcemanager.GetString("trNom");
             col_destroiedDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_destroiedItemsUnits.Header = MainWindow.resourcemanager.GetString("trItemUnit");
