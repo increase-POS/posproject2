@@ -190,7 +190,8 @@ var strP = TokenManager.GetPrincipal(token);
                                 newObject.createDate = DateTime.Now;
                                 newObject.updateDate = DateTime.Now;
                                 newObject.updateUserId = newObject.createUserId;
-
+                                newObject.balance = 0;
+                                newObject.balanceAll = 0;
                                 tmpPos = unitEntity.Add(newObject);
                                 entity.SaveChanges();
                                 message = tmpPos.posId.ToString();

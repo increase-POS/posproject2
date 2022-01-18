@@ -7293,7 +7293,7 @@ namespace POS_Server.Controllers
                                             posName = p.name,
                                             posIsActive = p.isActive,
                                             posCode = p.code,
-                                            p.balance,
+                                            balance=   p.balance==null?0: p.balance,
                                             branchName = b.name,
                                             b.branchId,
                                             branchType = b.type,
