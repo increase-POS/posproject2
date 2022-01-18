@@ -407,7 +407,7 @@ namespace POS.View.Settings
                     SectionData.StartAwait(grid_main);
 
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_companyInfo w = new wd_companyInfo();
@@ -526,7 +526,6 @@ namespace POS.View.Settings
             itemCost = settingsValues.Where(i => i.settingId == itemCostId).FirstOrDefault();
             return itemCost;
         }
-
         public static async Task<SetValues> getDefaultPrintCount()
         {
             //settingsCls = await setModel.GetAll();
@@ -536,7 +535,6 @@ namespace POS.View.Settings
             printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
             return printCount;
         }
-
         public static async Task<SetValues> getDefaultDateForm()
         {
             //settingsCls = await setModel.GetAll();
@@ -562,7 +560,6 @@ namespace POS.View.Settings
                 }
             return usLanguage;
         }
-
         int usValueId = 0;
         private async Task fillCurrencies()
         {
@@ -570,7 +567,6 @@ namespace POS.View.Settings
             cb_currency.DisplayMemberPath = "currency";
             cb_currency.SelectedValuePath = "countryId";
         }
-
         private async Task fillLanguages()
         {
             var lanSettings = await setModel.GetAll();
@@ -588,14 +584,12 @@ namespace POS.View.Settings
             cb_language.SelectedValuePath = "valId";
 
         }
-
         private async Task fillRegions()
         {
             cb_region.ItemsSource = await countryModel.GetAllRegion();
             cb_region.DisplayMemberPath = "name";
             cb_region.SelectedValuePath = "countryId";
         }
-
         private void translate()
         {
             txt_comInfo.Text = MainWindow.resourcemanager.GetString("trComInfo");
@@ -636,7 +630,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     // string s = "";
                     int s = 0;
@@ -673,12 +667,12 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void Btn_saveLanguage_Click(object sender, RoutedEventArgs e)
         {//save language
             try
             {
-                if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") ||
+                    MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
                 {
                     SectionData.validateEmptyComboBox(cb_language, p_errorLanguage, tt_errorLanguage, "trEmptyLanguage");
                     if (!cb_language.Text.Equals(""))
@@ -770,7 +764,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     #region old
                     //SectionData.validateEmptyTextBox(tb_tax, p_errorTax, tt_errorTax, "trEmptyTax");
@@ -821,7 +815,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                 }
                 else
@@ -941,7 +935,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     SectionData.validateEmptyComboBox(cb_dateForm, p_errorDateForm, tt_errorDateForm, "trEmptyDateFormat");
                     if (!cb_dateForm.Text.Equals(""))
@@ -987,7 +981,7 @@ namespace POS.View.Settings
                     SectionData.StartAwait(grid_main);
 
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_favorite w = new wd_favorite();
@@ -1011,15 +1005,16 @@ namespace POS.View.Settings
         {
             try
             {
-                //if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
-                //{
-                Window.GetWindow(this).Opacity = 0.2;
+                if (MainWindow.groupObject.HasPermissionAction(usersSettingsPermission, MainWindow.groupObjects, "one") ||
+                    MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
                 wd_userPath w = new wd_userPath();
                 w.ShowDialog();
                 Window.GetWindow(this).Opacity = 1;
-                //}
-                //else
-                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
@@ -1145,7 +1140,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     SectionData.validateEmptyTextBox(tb_activationSite, p_errorActivationSite , tt_errorActivationSite, "trEmptyActivationSite");
                     if (!tb_activationSite.Text.Equals(""))
@@ -1231,7 +1226,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     SectionData.validateEmptyTextBox(tb_itemsCost, p_errorItemsCost, tt_errorItemsCost, "trEmptyItemCost");
                     if (!tb_itemsCost.Text.Equals(""))
@@ -1277,7 +1272,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     saveFileDialog.Filter = "File|*.er;";
                     if (saveFileDialog.ShowDialog() == true)
@@ -1350,7 +1345,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     SectionData.validateEmptyComboBox(cb_accuracy, p_errorAccuracy, tt_errorAccuracy, "trEmptyAccuracy");
                     if (!cb_accuracy.Text.Equals(""))
@@ -1416,7 +1411,7 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
                 {
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_adminChangePassword w = new wd_adminChangePassword();
