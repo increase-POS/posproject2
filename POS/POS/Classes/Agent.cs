@@ -286,7 +286,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "Agent/GetImage?imageName=" + imageName);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Headers.Add("type", type);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

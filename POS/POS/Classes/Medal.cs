@@ -42,7 +42,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medal/Get");
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -83,7 +83,7 @@ namespace POS.Classes
                 client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medal/GetByisActive?isActive=" + isActive);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -129,7 +129,7 @@ namespace POS.Classes
                 request.RequestUri = new Uri(Global.APIUri
                                              + "medal/Save?medalObject="
                                              + myContent);
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Post;
                 //set content type
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -162,7 +162,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medal/GetByID");
                 request.Headers.Add("id", medalId.ToString());
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
                 request.Method = HttpMethod.Get;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await client.SendAsync(request);
@@ -199,7 +199,7 @@ namespace POS.Classes
                 HttpRequestMessage request = new HttpRequestMessage();
                 request.RequestUri = new Uri(Global.APIUri + "medal/Delete?medalId=" + medalId + "&userId=" + userId + "&final=" + final);
 
-                request.Headers.Add("APIKey", Global.APIKey);
+                //request.Headers.Add("APIKey", Global.APIKey);
 
                 request.Method = HttpMethod.Post;
 
