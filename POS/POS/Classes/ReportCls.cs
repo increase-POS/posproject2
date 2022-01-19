@@ -10,6 +10,8 @@ using System.Resources;
 using System.Reflection;
 using System.Globalization;
 using System.Collections;
+using System.Windows;
+
 namespace POS.Classes
 {
     class ReportCls
@@ -93,11 +95,21 @@ namespace POS.Classes
             //}
 
             string newPath = path + addtopath;
-            string finalDir = Path.GetDirectoryName(newPath);
-            if (!Directory.Exists(finalDir))
-                Directory.CreateDirectory(finalDir);
-            if (!File.Exists(newPath))
-                File.Create(newPath);
+            try
+            {
+                FileAttributes attr = File.GetAttributes(newPath);
+                if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+                    MessageBox.Show("Its a directory");
+                else
+                {
+                    string finalDir = Path.GetDirectoryName(newPath);
+                    if (!Directory.Exists(finalDir))
+                        Directory.CreateDirectory(finalDir);
+                    if (!File.Exists(newPath))
+                        File.Create(newPath);
+                }
+            }
+            catch { }
             return newPath;
         }
 
