@@ -99,7 +99,7 @@ namespace POS.Classes
             {
                 FileAttributes attr = File.GetAttributes(newPath);
                 if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                    MessageBox.Show("Its a directory");
+                { }
                 else
                 {
                     string finalDir = Path.GetDirectoryName(newPath);
