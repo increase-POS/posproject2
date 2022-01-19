@@ -973,33 +973,33 @@ namespace POS.View.Settings
             }
         }
 
-        private void Btn_backup_Click(object sender, RoutedEventArgs e)
-        {//drag&drop
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+        //private void Btn_backup_Click(object sender, RoutedEventArgs e)
+        //{//drag&drop
+        //    try
+        //    {
+        //        if (sender != null)
+        //            SectionData.StartAwait(grid_main);
 
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
-                {
-                    Window.GetWindow(this).Opacity = 0.2;
-                    wd_favorite w = new wd_favorite();
-                    w.ShowDialog();
-                    Window.GetWindow(this).Opacity = 1;
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //        if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
+        //        {
+        //            Window.GetWindow(this).Opacity = 0.2;
+        //            wd_favorite w = new wd_favorite();
+        //            w.ShowDialog();
+        //            Window.GetWindow(this).Opacity = 1;
+        //        }
+        //        else
+        //            Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_main);
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
 
         private void Btn_userPath_Click(object sender, RoutedEventArgs e)
         {
@@ -1063,7 +1063,9 @@ namespace POS.View.Settings
         {
             try
             {
-                if (sender != null)
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
+                {
+                    if (sender != null)
                     SectionData.StartAwait(grid_main);
                 if (cb_backup.SelectedValue.ToString() == "backup")
                 {
@@ -1114,7 +1116,9 @@ namespace POS.View.Settings
                         }
                     }
                 }
-
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
