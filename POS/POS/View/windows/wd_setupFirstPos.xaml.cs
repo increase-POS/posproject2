@@ -435,7 +435,7 @@ namespace POS.View.windows
                     company.Add(new SetValues { name = "com_email", value = comInfoInstance.email });
                     company.Add(new SetValues { name = "com_mobile", value = comInfoInstance.mobile });
                     company.Add(new SetValues { name = "com_phone", value = comInfoInstance.phone });
-                    company.Add(new SetValues { name = "com_fax", value = comInfoInstance.fax });
+                    company.Add(new SetValues { name = "com_fax", value = string.IsNullOrWhiteSpace(comInfoInstance.fax)  ? "" : comInfoInstance.fax });
                     Global.APIUri = url + "/api/";
                     int res = await setupConfiguration.setConfiguration(activationkey, deviceCode, countryId, userName, password, branchName, branchCode, branchMobile, posName, company);
                     if (res == -2 || res == -3) // invalid or resrved activation key
