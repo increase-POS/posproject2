@@ -1831,14 +1831,14 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>10.37153cm</Height>
+        <Height>9.83178cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>5.7cm</Width>
+      <Width>5.5857cm</Width>
       <Page>
         <PageHeader>
           <Height>2.34093cm</Height>
@@ -1866,7 +1866,7 @@
               <rd:DefaultName>ExecutionTime</rd:DefaultName>
               <Top>1.56844cm</Top>
               <Left>0.20991cm</Left>
-              <Height>0.45183cm</Height>
+              <Height>0.66666cm</Height>
               <Width>1.66981cm</Width>
               <Style>
                 <Border>
@@ -1928,7 +1928,7 @@
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
@@ -1936,7 +1936,7 @@
               <Top>0.35047in</Top>
               <Left>1.08213in</Left>
               <Height>0.21147in</Height>
-              <Width>1.09694in</Width>
+              <Width>1.08436in</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -2008,7 +2008,7 @@
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>1.56844cm</Top>
               <Left>4.04429cm</Left>
-              <Height>0.46771cm</Height>
+              <Height>0.77249cm</Height>
               <Width>1.45857cm</Width>
               <ZIndex>4</ZIndex>
               <Style>
@@ -2042,7 +2042,7 @@
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>1.56844cm</Top>
               <Left>2.28519cm</Left>
-              <Height>0.46771cm</Height>
+              <Height>0.77249cm</Height>
               <Width>1.7591cm</Width>
               <ZIndex>5</ZIndex>
               <Style>
