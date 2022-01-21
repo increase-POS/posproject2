@@ -1367,6 +1367,9 @@
     <Content Include="EmailTemplates\images\req2.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Thumb\report\temp.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="pic\subIncrease-logo.png" />
     <Content Include="Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2236,9 +2239,7 @@
     <Resource Include="pic\no-image-icon-512x512.png" />
     <Resource Include="pic\no-image-icon-90x90.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Thumb\report\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\netoaster\netoaster.csproj">
       <Project>{211d37ef-74f8-4e4f-9ed0-da4566f423f5}</Project>
