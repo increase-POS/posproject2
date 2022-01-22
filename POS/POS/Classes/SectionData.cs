@@ -729,7 +729,8 @@ namespace POS.Classes
         }
         public static bool chkImgChng(string imageName, DateTime updateDate, string TMPFolder)
         {
-            string dir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+           // string dir = System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string dir = System.IO.Directory.GetCurrentDirectory();
             string tmpPath = System.IO.Path.Combine(dir, Global.TMPFolder);
             tmpPath = System.IO.Path.Combine(tmpPath, imageName);
             DateTime mofdifyDate;
@@ -748,7 +749,8 @@ namespace POS.Classes
         public static byte[] readLocalImage(string imageName, string TMPFolder)
         {
             byte[] data = null;
-            string dir =System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+           // string dir =System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.FullName;
+            string dir = System.IO.Directory.GetCurrentDirectory();
             string tmpPath = System.IO.Path.Combine(dir, TMPFolder);
             if (!System.IO.Directory.Exists(tmpPath))
                 System.IO.Directory.CreateDirectory(tmpPath);

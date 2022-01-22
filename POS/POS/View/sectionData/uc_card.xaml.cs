@@ -1000,7 +1000,8 @@ namespace POS.View.sectionData
 
                         img_card.Background = new ImageBrush(bitmapImage);
                         // configure trmporary path
-                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string dir = Directory.GetCurrentDirectory();
                         string tmpPath = System.IO.Path.Combine(dir, Global.TMPCardsFolder);
                         tmpPath = System.IO.Path.Combine(tmpPath, card.image);
                         openFileDialog.FileName = tmpPath;

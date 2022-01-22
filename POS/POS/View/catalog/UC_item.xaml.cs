@@ -2393,7 +2393,8 @@ namespace POS.View
                         img_item.Background = new ImageBrush(bitmapImage);
                     }
                     // configure trmporary path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
                     tmpPath = System.IO.Path.Combine(tmpPath, item.image);
                     openFileDialog.FileName = tmpPath;

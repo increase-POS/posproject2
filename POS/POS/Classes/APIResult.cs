@@ -115,8 +115,9 @@ namespace POS.Classes
        
         public static string writeToTmpFile(string text)
         {
-            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-        string tmpPath = Path.Combine(dir, Global.TMPFolder);
+            //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string dir = Directory.GetCurrentDirectory();
+            string tmpPath = Path.Combine(dir, Global.TMPFolder);
             if (!Directory.Exists(tmpPath))
                 Directory.CreateDirectory(tmpPath);
             //check if file in use

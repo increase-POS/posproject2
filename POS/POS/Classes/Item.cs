@@ -282,7 +282,8 @@ namespace POS.Classes
                 try
                 {
                     // configure trmporery path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPItemsFolder);
                     string[] files = System.IO.Directory.GetFiles(tmpPath, imageName + ".*");
                     foreach (string f in files)
@@ -370,7 +371,8 @@ namespace POS.Classes
                     byteImg = await response.Content.ReadAsByteArrayAsync();
 
                     // configure trmporery path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPItemsFolder);
                     if (!Directory.Exists(tmpPath))
                         Directory.CreateDirectory(tmpPath);

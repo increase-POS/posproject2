@@ -1384,7 +1384,7 @@ namespace POS.View.purchases
             }
 
 
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath); 
 
             ReportCls.checkLang();
             Title = MainWindow.resourcemanagerreport.GetString("trPurchasesReport") + " / " + subTitle;

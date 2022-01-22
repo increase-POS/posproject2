@@ -321,7 +321,8 @@ namespace POS.View.windows
 
                         img_upload.Background = new ImageBrush(bitmapImage);
                         // configure trmporary path
-                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string dir = Directory.GetCurrentDirectory();
                         string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
 
                         tmpPath = System.IO.Path.Combine(tmpPath, docImgModel.image);
@@ -396,7 +397,8 @@ namespace POS.View.windows
                             img_upload.Background = new ImageBrush(bitmapImage);
                         }
                         // configure trmporery path
-                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string dir = Directory.GetCurrentDirectory();
                         string tmpPath = System.IO.Path.Combine(dir, Global.ScannedImageLocation);
                         if (System.IO.File.Exists(tmpPath))
                         {

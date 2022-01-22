@@ -82,7 +82,8 @@ namespace POS.Classes
                 try
                 {
                     // configure trmporery path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPFolder);
                     tmpPath = Path.Combine(tmpPath, imageName + extension);
                     if (System.IO.File.Exists(tmpPath))
@@ -151,7 +152,8 @@ namespace POS.Classes
                 try
                 {
                     // configure trmporery path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPFolder);
                     tmpPath = Path.Combine(tmpPath, imageName + extension);
                     if (System.IO.File.Exists(tmpPath))

@@ -19,6 +19,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/agents/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/cards/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/items/tmp.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/report/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/scan/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/setting/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/tmp.txt")]

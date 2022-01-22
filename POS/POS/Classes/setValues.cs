@@ -425,7 +425,8 @@ namespace POS.Classes
                 try
                 {
                     // configure trmporery path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPSettingFolder);
                     tmpPath = Path.Combine(tmpPath, imageName + extension);
                     if (System.IO.File.Exists(tmpPath))
@@ -554,7 +555,8 @@ namespace POS.Classes
                     byteImg = await response.Content.ReadAsByteArrayAsync();
 
                     // configure trmporery path
-                    string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPSettingFolder);
                     if (!Directory.Exists(tmpPath))
                         Directory.CreateDirectory(tmpPath);
@@ -596,8 +598,9 @@ namespace POS.Classes
                             bitmapImage.StreamSource = memoryStream;
                             bitmapImage.EndInit();
                          Bitmap serial_bitmap = new Bitmap(memoryStream);
-                         string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                         string tmpPath = System.IO.Path.Combine(dir, Global.TMPSettingFolder);
+                         //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                            string dir = Directory.GetCurrentDirectory();
+                            string tmpPath = System.IO.Path.Combine(dir, Global.TMPSettingFolder);
                          tmpPath = System.IO.Path.Combine(tmpPath, imageName);
                          serial_bitmap.Save(tmpPath);
                         }

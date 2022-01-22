@@ -610,7 +610,8 @@ namespace POS.Classes
         public string GetLogoImagePath()
         {
             string imageName = MainWindow.logoImage;
-            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string dir = Directory.GetCurrentDirectory();
             string tmpPath = Path.Combine(dir, @"Thumb\setting");
             tmpPath = Path.Combine(tmpPath, imageName);
             /*
@@ -628,7 +629,8 @@ namespace POS.Classes
         public string GetPath(string localpath)
         {
             //string imageName = MainWindow.logoImage;
-            string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            string dir = Directory.GetCurrentDirectory();
             string tmpPath = Path.Combine(dir, localpath);
 
 

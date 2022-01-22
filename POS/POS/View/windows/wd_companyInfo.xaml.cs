@@ -647,6 +647,7 @@ namespace POS.View.windows
                             MainWindow.logoImage = setVLogo.value;
                             string b = await setVLogo.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + sLogo), sLogo);
                             setVLogo.value = b;
+                            MainWindow.logoImage = b;
                             sLogo = await valueModel.Save(setVLogo);
                             await valueModel.getImg(setVLogo.value);
                         }
@@ -695,7 +696,8 @@ namespace POS.View.windows
 
                         img_customer.Background = new ImageBrush(bitmapImage);
                         // configure trmporary path
-                        string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                       // string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                        string dir = Directory.GetCurrentDirectory();
                         string tmpPath = System.IO.Path.Combine(dir, Global.TMPAgentsFolder);
                         tmpPath = System.IO.Path.Combine(tmpPath, setVLogo.value);
                         openFileDialog.FileName = tmpPath;
