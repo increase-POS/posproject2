@@ -1483,7 +1483,11 @@ namespace POS.View.sales
             #region invoice - item tax
             if (MainWindow.invoiceTax_bool == true)
             {
-                taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+                try
+                {
+                    taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+                }
+                catch { }
             }
             if (MainWindow.itemsTax_bool == true)
             {
