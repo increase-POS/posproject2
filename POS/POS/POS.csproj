@@ -1399,6 +1399,9 @@
     <Content Include="Thumb\Scan\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Thumb\setting\emptylogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Thumb\setting\tmp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

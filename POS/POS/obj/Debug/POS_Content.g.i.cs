@@ -21,6 +21,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/items/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/report/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/scan/tmp.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/setting/emptylogo.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/setting/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/tmp.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/users/tmp.txt")]
