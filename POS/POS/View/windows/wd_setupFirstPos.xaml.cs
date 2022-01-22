@@ -345,8 +345,6 @@ namespace POS.View.windows
                         if (string.IsNullOrWhiteSpace(comInfoInstance.address))
                         {
                             item.value = "";
-                            isValid = false;
-                            break;
                         }
                         else
                         {
@@ -358,8 +356,6 @@ namespace POS.View.windows
                         if (string.IsNullOrWhiteSpace(comInfoInstance.email))
                         {
                             item.value = "";
-                            isValid = false;
-                            break;
                         }
                         else
                         {
@@ -384,8 +380,6 @@ namespace POS.View.windows
                         if (string.IsNullOrWhiteSpace(comInfoInstance.phone))
                         {
                             item.value = "";
-                            isValid = false;
-                            break;
                         }
                         else
                         {
@@ -397,8 +391,6 @@ namespace POS.View.windows
                         if (string.IsNullOrWhiteSpace(comInfoInstance.fax))
                         {
                             item.value = "";
-                            isValid = false;
-                            break;
                         }
                         else
                         {
@@ -431,11 +423,11 @@ namespace POS.View.windows
                     // company INFO
                     List<SetValues> company = new List<SetValues>();
                     company.Add(new SetValues { name = "com_name", value = comInfoInstance.companyName });
-                    company.Add(new SetValues { name = "com_address", value = comInfoInstance.address });
-                    company.Add(new SetValues { name = "com_email", value = comInfoInstance.email });
+                    company.Add(new SetValues { name = "com_address", value = string.IsNullOrWhiteSpace(comInfoInstance.address) ? "" : comInfoInstance.address });
+                    company.Add(new SetValues { name = "com_email", value = string.IsNullOrWhiteSpace(comInfoInstance.email) ? "" : comInfoInstance.email });
                     company.Add(new SetValues { name = "com_mobile", value = comInfoInstance.mobile });
-                    company.Add(new SetValues { name = "com_phone", value = comInfoInstance.phone });
-                    company.Add(new SetValues { name = "com_fax", value = string.IsNullOrWhiteSpace(comInfoInstance.fax)  ? "" : comInfoInstance.fax });
+                    company.Add(new SetValues { name = "com_phone", value = string.IsNullOrWhiteSpace(comInfoInstance.phone) ? "" :  comInfoInstance.phone });
+                    company.Add(new SetValues { name = "com_fax", value = string.IsNullOrWhiteSpace(comInfoInstance.fax)  ? "" :  comInfoInstance.fax });
                     Global.APIUri = url + "/api/";
                     int res = await setupConfiguration.setConfiguration(activationkey, deviceCode, countryId, userName, password, branchName, branchCode, branchMobile, posName, company);
                     if (res == -2 || res == -3) // invalid or resrved activation key

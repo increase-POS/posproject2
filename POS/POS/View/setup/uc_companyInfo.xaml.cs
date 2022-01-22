@@ -61,6 +61,7 @@ namespace POS.View.setup
         IEnumerable<CountryCode> countrynum;
         IEnumerable<City> citynum;
         IEnumerable<City> citynumofcountry;
+        City cityCodes = new City();
         int? countryid;
         Boolean firstchange = false;
         Boolean firstchangefax = false;
@@ -68,8 +69,26 @@ namespace POS.View.setup
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             await fillCountries();
+            await fillLocalArea();
+           
+            if (citynumofcountry.Count() > 0)
+            {
+                cb_areaFaxLocal.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                cb_areaFaxLocal.Visibility = Visibility.Collapsed;
+            }
         }
-        
+
+        private async Task fillLocalArea()
+        {
+            citynum = await cityCodes.Get();
+            citynumofcountry = citynum.Where(b => b.countryId == countryid).OrderBy(b => b.cityCode).ToList();
+            cb_areaFaxLocal.ItemsSource = citynumofcountry;
+            cb_areaFaxLocal.SelectedValuePath = "cityId";
+            cb_areaFaxLocal.DisplayMemberPath = "cityCode";
+        }
         //area code methods
         async Task<IEnumerable<CountryCode>> RefreshCountry()
         {
@@ -128,17 +147,16 @@ namespace POS.View.setup
                 }
                 else if (textBox.Name.Equals("tb_phone"))
                 {
-                    phone = cb_areaPhone.Text + cb_areaPhoneLocal.Text + tb_phone.Text;
+                    phone = cb_areaPhone.Text + "-"+cb_areaPhoneLocal.Text + "-"+ tb_phone.Text;
 
                 }
                 else if (textBox.Name.Equals("tb_fax"))
                 {
-                    fax = cb_areaFax.Text + cb_areaFaxLocal.Text + tb_fax.Text;
-
+                    if(cb_areaFaxLocal.Visibility == Visibility.Visible)
+                        fax = cb_areaFax.Text + "-" + cb_areaFaxLocal.Text + "-" + tb_fax.Text;
+                    else 
+                        fax = cb_areaFax.Text +  "-" + tb_fax.Text;
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -151,19 +169,14 @@ namespace POS.View.setup
             {
                 if ((sender as TextBox).Name == "tb_name")
                     SectionData.validateEmptyTextBox_setupFirstPos(tb_name, p_errorName, tt_errorName, "trEmptyError");
-                else if ((sender as TextBox).Name == "tb_address")
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_address, p_errorAddress, tt_errorAddress, "trEmptyError");
+              
                 else if ((sender as TextBox).Name == "tb_email")
                 {
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_email, p_errorEmail, tt_errorEmail, "trEmptyError");
+                 
                     validateEmail(tb_email, p_errorEmail, tt_errorEmail);
                 }
                 else if ((sender as TextBox).Name == "tb_mobile")
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyError");
-                else if ((sender as TextBox).Name == "tb_phone")
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_phone, p_errorPhone, tt_errorPhone, "trEmptyError");
-                else if ((sender as TextBox).Name == "tb_fax")
-                    SectionData.validateEmptyTextBox_setupFirstPos(tb_fax, p_errorFax, tt_errorFax, "trEmptyError");
+                    SectionData.validateEmptyTextBox_setupFirstPos(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyError");               
               
             }
         }
