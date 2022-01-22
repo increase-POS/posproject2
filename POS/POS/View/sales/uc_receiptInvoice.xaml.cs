@@ -2882,13 +2882,21 @@ namespace POS.View
                 #endregion
                 totalDiscount = _Discount + manualDiscount;
             }
-            decimal taxValue = _Tax;
-            decimal total = _Sum - totalDiscount + _DeliveryCost;
+            
+           
+            decimal taxValue = 0;
 
-            taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.invoiceTax_decimal);
-
-            total += taxValue;
-
+            #region invoice - item tax
+            if (MainWindow.invoiceTax_bool == true)
+            {               
+                taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));              
+            }
+            if (MainWindow.itemsTax_bool == true)
+            {
+                taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
+            }
+            #endregion
+            decimal total = _Sum - totalDiscount + _DeliveryCost + taxValue;
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
@@ -3204,6 +3212,7 @@ namespace POS.View
                 int count = 1;
                 decimal total = count * price;
                 decimal tax = (decimal)(count * item.taxes);
+
                 int offerId = 0;
                 if (item.offerId != null)
                     offerId = (int)item.offerId;
@@ -3323,60 +3332,45 @@ namespace POS.View
                     decimal itemTax = 0;
                     //if (item.taxes != null)
                     //    itemTax = (decimal)item.taxes;
-                    decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
+                    //decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
                     //decimal newPrice = (decimal)unit.price;
-                    decimal newPrice = price;
+                    decimal newPrice = 0;
                     oldCount = billDetails[_datagridSelectedIndex].Count;
                     oldPrice = billDetails[_datagridSelectedIndex].Price;
                     newCount = oldCount;
+                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    //validateAvailableAmount(row, newCount, index, tb );
+                    int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, unit.itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
+                        if (availableAmount < newCount && billDetails[_datagridSelectedIndex].type != "sr")
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
+                            //newCount = newCount + availableAmount;
+                            if (unit.offerId != null && (int)unit.offerId != 0)
+                            {
+                                offer = new ItemUnitOffer();
+                                int remainAmount = await offer.getRemain((int)unit.offerId, unit.itemUnitId);
+                                if (remainAmount < availableAmount)
+                                    availableAmount = remainAmount;
+                            }
+                            newCount = availableAmount;
+                            tb.Text = newCount.ToString();
+                        billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                        }
+                        else if (unit.offerId != null && (int)unit.offerId != 0)
+                        {
+                            offer = new ItemUnitOffer();
+                            int remainAmount = await offer.getRemain((int)unit.offerId, unit.itemUnitId);
+                            if (remainAmount < newCount)
+                            {
+                                availableAmount = remainAmount;
+                                newCount = availableAmount;
+                                tb.Text = newCount.ToString();
+                            billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                            }
+                        }
 
 
-                    //if (_InvoiceType == "sbd")
-                    //{
-                    //    ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                    //    if (newCount > item.quantity)
-                    //    {
-                    //        // return old value 
-                    //        t.Text = item.quantity.ToString();
-
-                    //        newCount = (long)item.quantity;
-                    //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    //validateAvailableAmount(row, newCount, index, tb );
-                    //    int availableAmount = await getAvailableAmount(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
-                    //    if (availableAmount < newCount && row.type != "sr")
-                    //    {
-                    //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                    //        //newCount = newCount + availableAmount;
-                    //        if ((int)row.offerId != 0)
-                    //        {
-                    //            offer = new ItemUnitOffer();
-                    //            int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
-                    //            if (remainAmount < availableAmount)
-                    //                availableAmount = remainAmount;
-                    //        }
-                    //        newCount = availableAmount;
-                    //        tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                    //        tb.Text = newCount.ToString();
-                    //        row.Count = (int)newCount;
-                    //    }
-                    //    else if ((int)row.offerId != 0)
-                    //    {
-                    //        offer = new ItemUnitOffer();
-                    //        int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
-                    //        if (remainAmount < newCount)
-                    //        {
-                    //            availableAmount = remainAmount;
-                    //            newCount = availableAmount;
-                    //            tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
-                    //            tb.Text = newCount.ToString();
-                    //            row.Count = (int)newCount;
-                    //        }
-                    //    }
-                    //}
+                    newPrice = unit.price;
                     tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
                     tb.Text = newPrice.ToString();
 
@@ -3389,6 +3383,7 @@ namespace POS.View
                     total = newCount * newPrice;
                     _Sum += total;
 
+                    #region items tax
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     // old tax for changed item
@@ -3397,6 +3392,7 @@ namespace POS.View
                     // new tax for changed item
                     tax = (decimal)itemTax * newCount;
                     _Tax += tax;
+                    #endregion
 
                     refreshTotalValue();
 
@@ -3616,7 +3612,7 @@ namespace POS.View
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
                             //newCount = newCount + availableAmount;
-                            if ((int)row.offerId != 0)
+                            if (row.offerId != null && (int)row.offerId != 0)
                             {
                                 offer = new ItemUnitOffer();
                                 int remainAmount = await offer.getRemain((int)row.offerId, row.itemUnitId);
@@ -5215,11 +5211,14 @@ namespace POS.View
                 else
                 {
                     companyModel = new ShippingCompanies();
+                    cb_paymentProcessType.IsEnabled = true;
+                    tb_cashPaid.IsEnabled = true;
                     cb_user.SelectedIndex = -1;
                     _DeliveryCost = 0;
                     _RealDeliveryCost = 0;
                     cb_user.Visibility = Visibility.Collapsed;
                     p_errorUser.Visibility = Visibility.Collapsed;
+
                 }
                 tb_deliveryCost.Text = _DeliveryCost.ToString();
                 if (sender != null)

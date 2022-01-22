@@ -1480,17 +1480,28 @@ namespace POS.View.sales
             }
 
             decimal taxValue = 0;
-            try
+            #region invoice - item tax
+            if (MainWindow.invoiceTax_bool == true)
             {
                 taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
             }
-            catch { }
+            if (MainWindow.itemsTax_bool == true)
+            {
+                taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
+            }
+            #endregion
+            //try
+            //{
+            //    taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+            //}
+            //catch { }
             decimal total = _Sum - totalDiscount + taxValue + _DeliveryCost;
 
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
                 tb_sum.Text = "0";
+
 
             if (total < 0)
                 total = 0;
@@ -2647,6 +2658,8 @@ namespace POS.View.sales
                 else if (cb_company.SelectedIndex == -1 || cb_company.SelectedIndex == 0)
                 {
                     companyModel = new ShippingCompanies();
+                    cb_paymentProcessType.IsEnabled = true;
+                    tb_cashPaid.IsEnabled = true;
                     cb_company.SelectedItem = "";
                     cb_user.SelectedIndex = -1;
                     _DeliveryCost = 0;
