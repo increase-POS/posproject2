@@ -2658,8 +2658,6 @@ namespace POS.View.sales
                 else if (cb_company.SelectedIndex == -1 || cb_company.SelectedIndex == 0)
                 {
                     companyModel = new ShippingCompanies();
-                    cb_paymentProcessType.IsEnabled = true;
-                    tb_cashPaid.IsEnabled = true;
                     cb_company.SelectedItem = "";
                     cb_user.SelectedIndex = -1;
                     _DeliveryCost = 0;
