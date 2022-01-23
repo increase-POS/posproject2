@@ -31,6 +31,7 @@ namespace POS.View.windows
             InitializeComponent();
         }
         public static ResourceManager resourcemanager;
+        SetValues setVLogo = new SetValues();
         public bool isValid = false;
         int _pageIndex;
         uc_serverConfig serverConfigInstance;
@@ -421,6 +422,7 @@ namespace POS.View.windows
                     string hardCode = setupConfiguration.GetHDDSerialNo();
                     string deviceCode = motherCode + "-" + hardCode;
                     // company INFO
+                    string imageFileName = string.IsNullOrWhiteSpace(imgFileName) ? "" : Md5Encription.MD5Hash("Inc-m" + imgFileName);
                     List<SetValues> company = new List<SetValues>();
                     company.Add(new SetValues { name = "com_name", value = comInfoInstance.companyName });
                     company.Add(new SetValues { name = "com_address", value = string.IsNullOrWhiteSpace(comInfoInstance.address) ? "" : comInfoInstance.address });
@@ -428,6 +430,7 @@ namespace POS.View.windows
                     company.Add(new SetValues { name = "com_mobile", value = comInfoInstance.mobile });
                     company.Add(new SetValues { name = "com_phone", value = string.IsNullOrWhiteSpace(comInfoInstance.phone) ? "" :  comInfoInstance.phone });
                     company.Add(new SetValues { name = "com_fax", value = string.IsNullOrWhiteSpace(comInfoInstance.fax)  ? "" :  comInfoInstance.fax });
+                    company.Add(new SetValues { name = "com_logo", value = imageFileName });
                     Global.APIUri = url + "/api/";
                     int res = await setupConfiguration.setConfiguration(activationkey, deviceCode, countryId, userName, password, branchName, branchCode, branchMobile, posName, company);
                     if (res == -2 || res == -3) // invalid or resrved activation key
@@ -440,6 +443,10 @@ namespace POS.View.windows
                     }
                     else if (res > 0)
                     {
+                        #region upload image
+                        if(imageFileName != "")
+                             await setVLogo.uploadImage(imgFileName, imageFileName,0);
+                        #endregion
                         Properties.Settings.Default.APIUri = Global.APIUri;
                         Properties.Settings.Default.posId = res.ToString();
                         Properties.Settings.Default.Save();
