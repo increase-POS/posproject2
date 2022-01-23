@@ -1352,8 +1352,8 @@ namespace POS.View.reports
                     SectionData.StartAwait(grid_main);
 
                 #region
-                Thread t1 = new Thread(() =>
-            {
+            //    Thread t1 = new Thread(() =>
+            //{
                 BuildReport();
                 this.Dispatcher.Invoke(() =>
                 {
@@ -1366,8 +1366,8 @@ namespace POS.View.reports
                 });
 
 
-            });
-                t1.Start();
+            //});
+            //    t1.Start();
 
                 #endregion
 

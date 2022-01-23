@@ -295,8 +295,8 @@ namespace POS.View.storage
                     #region
                     if (itemLocationListQuery != null)
                     {
-                        Thread t1 = new Thread(() =>
-                        {
+                        //Thread t1 = new Thread(() =>
+                        //{
                             BuildReport();
                             this.Dispatcher.Invoke(() =>
                             {
@@ -308,8 +308,8 @@ namespace POS.View.storage
                                 }
                             });
 
-                        });
-                        t1.Start();
+                        //});
+                        //t1.Start();
                     }
                     #endregion
                 }

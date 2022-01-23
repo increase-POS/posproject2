@@ -1051,12 +1051,12 @@ namespace POS.View.catalog
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
-                    Thread t1 = new Thread(() =>
-                    {
+                    //Thread t1 = new Thread(() =>
+                    //{
                         ExcelService();
 
-                    });
-                    t1.Start();
+                    //});
+                    //t1.Start();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

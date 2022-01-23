@@ -940,8 +940,8 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 {
                     #region
-                    Thread t1 = new Thread(() =>
-                    {
+                    //Thread t1 = new Thread(() =>
+                    //{
                         List<ReportParameter> paramarr = new List<ReportParameter>();
 
                         string addpath;
@@ -973,8 +973,8 @@ namespace POS.View
                             }
                         });
 
-                    });
-                    t1.Start();
+                    //});
+                    //t1.Start();
                     #endregion
                 }
                 else

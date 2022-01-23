@@ -2154,11 +2154,11 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                Thread t1 = new Thread(() =>
-                {
+                //Thread t1 = new Thread(() =>
+                //{
                     ExcelUser();
-                });
-                t1.Start();
+                //});
+                //t1.Start();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

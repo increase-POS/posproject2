@@ -715,8 +715,8 @@ namespace POS.View.sectionData
                     //    t1.Start();
                     //});
                     #region
-                    Thread t1 = new Thread(() =>
-                    {
+                    //Thread t1 = new Thread(() =>
+                    //{
                         List<ReportParameter> paramarr = new List<ReportParameter>();
 
                         string addpath;
@@ -748,8 +748,8 @@ namespace POS.View.sectionData
                         });
 
 
-                    });
-                    t1.Start();
+                    //});
+                    //t1.Start();
                     #endregion
                 }
                 else

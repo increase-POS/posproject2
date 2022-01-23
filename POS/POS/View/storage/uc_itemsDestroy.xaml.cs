@@ -230,8 +230,8 @@ namespace POS.View.storage
                     #region
                     if (invItemsQuery != null)
                     {
-                        Thread t1 = new Thread(() =>
-                    {
+                    //    Thread t1 = new Thread(() =>
+                    //{
                         List<ReportParameter> paramarr = new List<ReportParameter>();
 
                         string addpath;
@@ -261,8 +261,8 @@ namespace POS.View.storage
                                 LocalReportExtensions.ExportToExcel(rep, filepath);
                             }
                         });
-                    });
-                        t1.Start();
+                    //});
+                    //    t1.Start();
                     }
                     #endregion
                 }

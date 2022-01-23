@@ -602,8 +602,8 @@ namespace POS.View.accounts
                 if (MainWindow.groupObject.HasPermissionAction(reportsPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     #region
-                    Thread t1 = new Thread(() =>
-                    {
+                    //Thread t1 = new Thread(() =>
+                    //{
                         List<ReportParameter> paramarr = new List<ReportParameter>();
                         BuildReport();
                       
@@ -618,8 +618,8 @@ namespace POS.View.accounts
                         });
 
 
-                    });
-                    t1.Start();
+                    //});
+                    //t1.Start();
                     #endregion
                 }
                 else
