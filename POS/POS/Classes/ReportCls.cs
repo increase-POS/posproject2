@@ -609,19 +609,31 @@ namespace POS.Classes
 
         public string GetLogoImagePath()
         {
-            string imageName = MainWindow.logoImage;
-            //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-            string dir = Directory.GetCurrentDirectory();
-            string tmpPath = Path.Combine(dir, @"Thumb\setting");
-            tmpPath = Path.Combine(tmpPath, imageName);
-            /*
-                  
-                  
-             * */
+            try
+            {
+                string imageName = MainWindow.logoImage;
+                string dir = Directory.GetCurrentDirectory();
+                string tmpPath = Path.Combine(dir, @"Thumb\setting");
+                tmpPath = Path.Combine(tmpPath, imageName);
+                if (File.Exists(tmpPath))
+                {
 
-            //string addpath = @"\Thumb\setting\" ;
+                    return tmpPath;
+                }
+                else
+                {
+                    return Path.Combine(Directory.GetCurrentDirectory(), @"Thumb\setting\emptylogo.png");
+                }
 
-            return tmpPath;
+
+
+                //string addpath = @"\Thumb\setting\" ;
+
+            }
+            catch
+            {
+                return Path.Combine(Directory.GetCurrentDirectory(), @"Thumb\setting\emptylogo.png");
+            }
         }
 
         //
