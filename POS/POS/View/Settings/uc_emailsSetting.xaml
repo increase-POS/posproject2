@@ -331,15 +331,7 @@
                                  BorderBrush="AliceBlue"  MaxLength="50"
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"   Grid.ColumnSpan="2" Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_name" 
-                                              Placement="left" 
-                                              HorizontalOffset="5"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
+                  Height="40"   Grid.ColumnSpan="2" Margin="10,5,10,5" />
                         <Path Fill="#E81123" Grid.Row="1" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorName"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -355,15 +347,7 @@
                                      BorderBrush="AliceBlue" MaxLength="100"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
-                                     LostFocus="Tb_email_LostFocus" TabIndex="1" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_email" Content="Email"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
+                                     LostFocus="Tb_email_LostFocus" TabIndex="1"/>
                         <Path Grid.Row="2" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
                                   x:Name="p_errorEmail"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
@@ -389,15 +373,7 @@
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                  Height="40"   Margin="10,5,10,5" Grid.ColumnSpan="2" 
                                  LostFocus="Tb_password_LostFocus" 
-                                         PasswordChanged="Pb_password_PasswordChanged" >
-                            <PasswordBox.ToolTip>
-                                <ToolTip x:Name="tt_password" Content="Password"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </PasswordBox.ToolTip>
-                        </PasswordBox>
+                                         PasswordChanged="Pb_password_PasswordChanged"/>
                         <Path Fill="#E81123" Grid.Row="3" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -424,15 +400,7 @@
                                  PreviewKeyDown="Tb_PreventSpaces" 
                                  PreviewTextInput="Tb_Numbers_PreviewTextInput" 
            MaxLength="6" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_port" 
-                                              Placement="left" 
-                                              HorizontalOffset="5"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
+                  Height="40"    Margin="10,5,10,5" Grid.ColumnSpan="2" />
                         <Path Fill="#E81123" Grid.Row="4" Stretch="Fill" Margin="5,5,15,5" x:Name="p_errorPort"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -459,15 +427,7 @@
                                  BorderBrush="AliceBlue"    TabIndex="5" 
                                  LostFocus="validationControl_LostFocus" TextChanged="validationTextbox_TextChanged"
                       MaxLength="20" materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                  Height="40"    Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_smtpClient" 
-                                              Placement="left" 
-                                              HorizontalOffset="5"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
+                  Height="40"    Margin="10,5,10,5" />
                         <Path Fill="#E81123" Stretch="Fill" Grid.Row="6" Margin="5,5,15,5" x:Name="p_errorSmtpClient"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -485,15 +445,7 @@
                                                   Background="#f8f8f8" 
                                                   BorderBrush="#737373"       BorderThickness="0" 
                                                   FontFamily="Segoe UI"   
-                                                  LostFocus="Tb_validateEmptyLostFocus">
-                            <ComboBox.ToolTip>
-                                <ToolTip x:Name="tt_side" Content="Discount Type"
-                                                         Placement="left" 
-                                                         HorizontalOffset="35"
-                                                         PlacementRectangle="50,0,0,0"
-                                                         VerticalOffset="20"/>
-                            </ComboBox.ToolTip>
-                        </ComboBox>
+                                                  LostFocus="Tb_validateEmptyLostFocus"/>
                         <Path Fill="#E81123" Stretch="Fill" Grid.Row="7" Margin="5,5,15,5" x:Name="p_errorSide"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -516,15 +468,7 @@
                                                   Background="#f8f8f8" 
                                                   BorderBrush="#737373"       BorderThickness="0" 
                                                   FontFamily="Segoe UI"   
-                                                  LostFocus="Tb_validateEmptyLostFocus">
-                                <ComboBox.ToolTip>
-                                    <ToolTip x:Name="tt_branchId" Content="Discount Type"
-                                                         Placement="left" 
-                                                         HorizontalOffset="35"
-                                                         PlacementRectangle="50,0,0,0"
-                                                         VerticalOffset="20"/>
-                                </ComboBox.ToolTip>
-                            </ComboBox>
+                                                  LostFocus="Tb_validateEmptyLostFocus"/>
                             <Path Fill="#E81123" Stretch="Fill"  Margin="5,5,15,5" x:Name="p_errorBranchId"
                               HorizontalAlignment="Right"  Grid.Column="0"  Visibility="Collapsed" 
                          VerticalAlignment="Center" Width="15"  Height="15"
@@ -543,7 +487,7 @@
                                       Margin="0" Height="13" Width="28"    />
                             </DockPanel>
                         </Grid>
-                       
+
 
                         <TextBox x:Name="tb_notes"  Grid.Row="9" Text="{Binding notes, Mode=OneWay}" 
                                  Padding="10,0,5,0"  TabIndex="9" 
@@ -553,15 +497,7 @@
                                  BorderBrush="AliceBlue"  TextWrapping="Wrap" AcceptsReturn="True"
                        
                                  materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                            MinHeight="70"  Margin="10,5,10,5" >
-                            <TextBox.ToolTip>
-                                <ToolTip x:Name="tt_notes" Content="Notes"
-                                              Placement="left" 
-                                              HorizontalOffset="35"
-                                              PlacementRectangle="50,0,0,0"
-                                              VerticalOffset="20"/>
-                            </TextBox.ToolTip>
-                        </TextBox>
+                            MinHeight="70"  Margin="10,5,10,5"/>
                         <Path Fill="#E81123" Grid.Row="9" Stretch="Fill" Margin="15,12,15,5"
                               HorizontalAlignment="Right"  Grid.Column="2"  Visibility="Collapsed"  
                          VerticalAlignment="Top" Width="15"  Height="15" 

@@ -693,8 +693,6 @@ namespace POS.View.Settings
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_password, MainWindow.resourcemanager.GetString("trPasswordHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_email, MainWindow.resourcemanager.GetString("trEmailHint"));
 
-            tt_name.Content = MainWindow.resourcemanager.GetString("trName");
-            tt_notes.Content = MainWindow.resourcemanager.GetString("trNote");
         }
 
         private void Tb_PreventSpaces(object sender, KeyEventArgs e)
