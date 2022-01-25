@@ -70,18 +70,38 @@ namespace POS.View.Settings
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_title, MainWindow.resourcemanager.GetString("trTitle")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_text1, MainWindow.resourcemanager.GetString("trText1")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_text2, MainWindow.resourcemanager.GetString("trText2")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_link1text, MainWindow.resourcemanager.GetString("trLinkText1")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_link1url, MainWindow.resourcemanager.GetString("trUrlLink1")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_link2text, MainWindow.resourcemanager.GetString("trLinkText2") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_link2url, MainWindow.resourcemanager.GetString("trUrlLink1") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_link3text, MainWindow.resourcemanager.GetString("trLinkText3") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_link3url, MainWindow.resourcemanager.GetString("trUrlLink3") + "...");
+
             btn_refresh.ToolTip = MainWindow.resourcemanager.GetString("trRefresh");
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
-
-
 
             tt_search.Content = MainWindow.resourcemanager.GetString("trSearch");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
+            txt_emailTemplates.Text = MainWindow.resourcemanager.GetString("trEmailTemplates");
+            txt_infoTitle.Text = MainWindow.resourcemanager.GetString("trTitle");
+            txt_infoBody.Text = MainWindow.resourcemanager.GetString("trBody");
+            txt_infoEmailSupport.Text = MainWindow.resourcemanager.GetString("trEmailSupport");
+
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
             dg_setValues.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
+
+            setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
+            setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
+            setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
+            setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
+            setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -92,6 +112,16 @@ namespace POS.View.Settings
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
+                setQuery = await setModel.GetByNotes("emailtemp");
+                setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
+                setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
+                setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
+                setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trQuotationsEmailTemplate");
+                setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
+                setQuery.ToList()[5].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
+                dg_setValues.ItemsSource = setQuery;
+
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -107,14 +137,9 @@ namespace POS.View.Settings
 
                 //btn_addRange.IsEnabled = false;
 
-
                 SectionData.clearValidate(tb_title, p_errorTitle);
 
-                setQuery = await setModel.GetByNotes("emailtemp");
-
-                dg_setValues.ItemsSource = setQuery;
-
-                    Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
