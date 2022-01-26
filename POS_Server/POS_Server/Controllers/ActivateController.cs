@@ -1214,7 +1214,7 @@ namespace POS_Server.Controllers
                              // -6 : package changed but not payed ==noch
                                  //"0" :  catch error
                                  // -7  method not match // online or offline
-//-8 the current updat is newr than the offline update
+//-8->18 the current updat is newr than the offline update
 //-9 the client command is different from activate file 
 
 
@@ -1392,7 +1392,7 @@ namespace POS_Server.Controllers
                     {
                         skey = c.Value;
                     }
-                    break;
+                 
 
                 }
                 packagesSend ps = new packagesSend();
@@ -1820,7 +1820,7 @@ namespace POS_Server.Controllers
                                 else
                                 {
                                     // the current updat is newr than the offline update
-                                    package.result = -8;
+                                    package.result = -18;
                                     senditem.packageSend = package;
                                     return senditem;
                                 }
