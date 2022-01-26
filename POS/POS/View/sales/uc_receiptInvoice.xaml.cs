@@ -1611,6 +1611,7 @@ namespace POS.View
 
                     if (valid)
                     {
+                        refreshTotalValue();
                         bool multipleValid = true;
                         List<CashTransfer> listPayments = new List<CashTransfer>();
 
