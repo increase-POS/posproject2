@@ -480,7 +480,8 @@
                 <TextBlock Grid.Row="7" Grid.Column="0"  FontSize="12" Grid.ColumnSpan="6" 
                    FontWeight="Normal" Foreground="#9B9B9B"
                        VerticalAlignment="Center" Margin="25,5,5,5"
-                   Text="2021 © All Right Reserved for Increase"/>
+                x:Name="txt_rightReserved"
+                           Text="2021 © All Right Reserved for Increase"/>
                 <!--#endregion-->
 
             </Grid>

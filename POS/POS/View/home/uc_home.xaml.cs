@@ -122,7 +122,7 @@ namespace POS.View
                 else cb_branch.IsEnabled = false;
 
 
-
+                txt_rightReserved.Text =DateTime.Now.Date.Year + " © All Right Reserved for Increase";
             starTimerAfter10();
             starTimerAfter30();
                 //if (sender != null)

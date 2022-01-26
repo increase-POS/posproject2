@@ -3070,4 +3070,55 @@ Please add Email in setting</value>
   <data name="trServerType" xml:space="preserve">
     <value>Server type</value>
   </data>
+  <data name="trBody" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="trEmailSupport" xml:space="preserve">
+    <value>Email Support</value>
+  </data>
+  <data name="trLinkText1" xml:space="preserve">
+    <value>Link text1</value>
+  </data>
+  <data name="trLinkText2" xml:space="preserve">
+    <value>Link text2</value>
+  </data>
+  <data name="trLinkText3" xml:space="preserve">
+    <value>Link text3</value>
+  </data>
+  <data name="trPurchaseOrdersEmailTemplate" xml:space="preserve">
+    <value>purchase orders email template</value>
+  </data>
+  <data name="trPurchasesEmailTemplate" xml:space="preserve">
+    <value>Purchases email template</value>
+  </data>
+  <data name="trQuotationsEmailTemplate" xml:space="preserve">
+    <value>Quotations email template</value>
+  </data>
+  <data name="trRequirementsEmailTemplate" xml:space="preserve">
+    <value>Requirements email template</value>
+  </data>
+  <data name="trSalesEmailTemplate" xml:space="preserve">
+    <value>Sales email template</value>
+  </data>
+  <data name="trSalesOrdersEmailTemplate" xml:space="preserve">
+    <value>Sales orders email template</value>
+  </data>
+  <data name="trText1" xml:space="preserve">
+    <value>Text1</value>
+  </data>
+  <data name="trText2" xml:space="preserve">
+    <value>Text2</value>
+  </data>
+  <data name="trTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="trUrlLink1" xml:space="preserve">
+    <value>Url link1</value>
+  </data>
+  <data name="trUrlLink2" xml:space="preserve">
+    <value>Url link2</value>
+  </data>
+  <data name="trUrlLink3" xml:space="preserve">
+    <value>Url link3</value>
+  </data>
 </root>

@@ -3049,4 +3049,55 @@
   <data name="trServerType" xml:space="preserve">
     <value>نوع السيرفر</value>
   </data>
+  <data name="trBody" xml:space="preserve">
+    <value>الجسم</value>
+  </data>
+  <data name="trEmailSupport" xml:space="preserve">
+    <value>دعم البريد الإلكتروني</value>
+  </data>
+  <data name="trLinkText1" xml:space="preserve">
+    <value>نص الارتباط1</value>
+  </data>
+  <data name="trLinkText2" xml:space="preserve">
+    <value>نص الارتباط2</value>
+  </data>
+  <data name="trLinkText3" xml:space="preserve">
+    <value>نص الارتباط3</value>
+  </data>
+  <data name="trPurchaseOrdersEmailTemplate" xml:space="preserve">
+    <value>قالب بريد طلبات الشراء</value>
+  </data>
+  <data name="trPurchasesEmailTemplate" xml:space="preserve">
+    <value>قالب بريد فاتورة المشتريات</value>
+  </data>
+  <data name="trQuotationsEmailTemplate" xml:space="preserve">
+    <value>قالب بريد عروض الأسعار</value>
+  </data>
+  <data name="trRequirementsEmailTemplate" xml:space="preserve">
+    <value>قالب بريد المطالبة بالمستحقات</value>
+  </data>
+  <data name="trSalesEmailTemplate" xml:space="preserve">
+    <value>قالب بريد فاتورة المبيعات</value>
+  </data>
+  <data name="trSalesOrdersEmailTemplate" xml:space="preserve">
+    <value>قالب بريد طلبات المبيعات</value>
+  </data>
+  <data name="trText1" xml:space="preserve">
+    <value>النص1</value>
+  </data>
+  <data name="trText2" xml:space="preserve">
+    <value>النص2</value>
+  </data>
+  <data name="trTitle" xml:space="preserve">
+    <value>العنوان</value>
+  </data>
+  <data name="trUrlLink1" xml:space="preserve">
+    <value>رابط url1</value>
+  </data>
+  <data name="trUrlLink2" xml:space="preserve">
+    <value>رابط url2</value>
+  </data>
+  <data name="trUrlLink3" xml:space="preserve">
+    <value>رابط url3</value>
+  </data>
 </root>
