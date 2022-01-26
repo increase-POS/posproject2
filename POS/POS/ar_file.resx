@@ -1555,7 +1555,7 @@
     <value>يجب اختيار مكان تخزين جديد للنقل</value>
   </data>
   <data name="trEmptyAddress" xml:space="preserve">
-    <value>العنوان لا ينمكن أن يكون فارغ</value>
+    <value>العنوان لا يمكن أن يكون فارغ</value>
   </data>
   <data name="trEmptyLanguage" xml:space="preserve">
     <value>اللغة لا يمكن أن تكون فارغة</value>
@@ -1874,7 +1874,7 @@
     <value>لا يوجد بريد الكتروني للمورد</value>
   </data>
   <data name="trEmailTemplates" xml:space="preserve">
-    <value>قوالب الايميلات</value>
+    <value>قوالب الإيميل</value>
   </data>
   <data name="trShortage" xml:space="preserve">
     <value>نقص</value>
@@ -3099,5 +3099,53 @@
   </data>
   <data name="trUrlLink3" xml:space="preserve">
     <value>رابط url3</value>
+  </data>
+  <data name="trCopyCount" xml:space="preserve">
+    <value>عدد النسخ</value>
+  </data>
+  <data name="trDocPaperSize" xml:space="preserve">
+    <value>قياس ورق المستند</value>
+  </data>
+  <data name="trEmailOnSavePurchase" xml:space="preserve">
+    <value>إرسال إيميل عند حفظ فاتورة مشتريات</value>
+  </data>
+  <data name="trEmailOnSaveSale" xml:space="preserve">
+    <value>إرسال إيميل عند حفظ فاتورة مبيعات</value>
+  </data>
+  <data name="trEmailSettings" xml:space="preserve">
+    <value>إعدادات الإيميل</value>
+  </data>
+  <data name="trOffer_" xml:space="preserve">
+    <value>العرض</value>
+  </data>
+  <data name="trPrinterSettings" xml:space="preserve">
+    <value>إعدادات الطابعة</value>
+  </data>
+  <data name="trPrintOnSavePurchase" xml:space="preserve">
+    <value>طباعة عند حفظ فاتورة مشتريات</value>
+  </data>
+  <data name="trPrintOnSaveSale" xml:space="preserve">
+    <value>طباعة عند حفظ فاتورة مبيعات</value>
+  </data>
+  <data name="trPurchasesCopyCount" xml:space="preserve">
+    <value>عدد نسخ فاتورة المشتريات</value>
+  </data>
+  <data name="trReportPrinterName" xml:space="preserve">
+    <value>طابعة التقرير</value>
+  </data>
+  <data name="trReportSalesName" xml:space="preserve">
+    <value>طابعة فاتورة المبيعات</value>
+  </data>
+  <data name="trReportsCopyCount" xml:space="preserve">
+    <value>عدد نسخ التقارير</value>
+  </data>
+  <data name="trSalesCopyCount" xml:space="preserve">
+    <value>عدد نسخ فاتورة المبيعات</value>
+  </data>
+  <data name="trSalesPaperSize" xml:space="preserve">
+    <value>قياس ورق فاتورة المبيعات</value>
+  </data>
+  <data name="trSystemSetting" xml:space="preserve">
+    <value>إعدادات النظام</value>
   </data>
 </root>

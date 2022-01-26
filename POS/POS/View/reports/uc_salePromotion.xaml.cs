@@ -27,6 +27,8 @@ using System.IO;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 using System.Threading;
+using System.Resources;
+using System.Reflection;
 
 namespace POS.View.reports
 {
@@ -99,6 +101,20 @@ namespace POS.View.reports
 
                 Offers = await statisticModel.GetPromoOffer((int)MainWindow.branchID, (int)MainWindow.userID);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 comboCoupon = statisticModel.GetCopComboList(coupons);
                 comboOffer = statisticModel.GetOfferComboList(Offers);
 
@@ -131,6 +147,50 @@ namespace POS.View.reports
                         SectionData.EndAwait(grid_main);
                     SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void translate()
+        {
+            tt_coupon.Content = MainWindow.resourcemanager.GetString("trCoupon");
+            tt_offers.Content = MainWindow.resourcemanager.GetString("trOffer_");
+
+            chk_couponInvoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
+            chk_couponReturn.Content = MainWindow.resourcemanager.GetString("trReturned");
+            chk_couponDrafs.Content = MainWindow.resourcemanager.GetString("trDraft");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_Coupons, MainWindow.resourcemanager.GetString("trCouponHint"));
+
+            chk_allCoupon.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_couponEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_couponStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dt_couponEndTime, MainWindow.resourcemanager.GetString("trEndTime") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dt_couponStartTime, MainWindow.resourcemanager.GetString("trStartTime") + "...");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_No.Header = MainWindow.resourcemanager.GetString("trNo.");
+            col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
+            col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
+            col_date.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_coupon.Header = MainWindow.resourcemanager.GetString("trCoupon");
+            col_code.Header = MainWindow.resourcemanager.GetString("trCode");
+            col_coupoValue.Header = MainWindow.resourcemanager.GetString("trValue");
+            col_offersValue.Header = MainWindow.resourcemanager.GetString("trValue");
+            col_couponTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
+            col_offersTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
+            col_offers.Header = MainWindow.resourcemanager.GetString("trOffer");
+            col_item.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_offerCode.Header = MainWindow.resourcemanager.GetString("trCode");
+            col_itQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+            col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
 
         private void fillComboCoupon()

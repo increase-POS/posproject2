@@ -90,7 +90,7 @@ namespace POS.View.windows
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
-                //translate();
+                translate();
                 #endregion
 
                 //
@@ -111,7 +111,12 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trInstallationSettings");
+            txt_title.Text = winLogIn.resourcemanager.GetString("trCopyCount");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_purCopyCount, MainWindow.resourcemanager.GetString("trPurchasesCopyCount"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_saleCopyCount, MainWindow.resourcemanager.GetString("trSalesCopyCount"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_repPrintCount, MainWindow.resourcemanager.GetString("trReportsCopyCount"));
+
+            btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
 
         }
 

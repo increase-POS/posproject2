@@ -1357,6 +1357,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copies Count.
+        /// </summary>
+        internal static string trCopyCount {
+            get {
+                return ResourceManager.GetString("trCopyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cost.
         /// </summary>
         internal static string trCost {
@@ -2050,6 +2059,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Document paper size.
+        /// </summary>
+        internal static string trDocPaperSize {
+            get {
+                return ResourceManager.GetString("trDocPaperSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Document.
         /// </summary>
         internal static string trDocument {
@@ -2221,11 +2239,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send an email when saving a purchases invoice.
+        /// </summary>
+        internal static string trEmailOnSavePurchase {
+            get {
+                return ResourceManager.GetString("trEmailOnSavePurchase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send an email when saving a sales invoice.
+        /// </summary>
+        internal static string trEmailOnSaveSale {
+            get {
+                return ResourceManager.GetString("trEmailOnSaveSale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emails.
         /// </summary>
         internal static string trEmails {
             get {
                 return ResourceManager.GetString("trEmails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email Settings.
+        /// </summary>
+        internal static string trEmailSettings {
+            get {
+                return ResourceManager.GetString("trEmailSettings", resourceCulture);
             }
         }
         
@@ -2779,7 +2824,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End date.
+        ///   Looks up a localized string similar to End time.
         /// </summary>
         internal static string trEndTime {
             get {
@@ -6092,6 +6137,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Printer Settings.
+        /// </summary>
+        internal static string trPrinterSettings {
+            get {
+                return ResourceManager.GetString("trPrinterSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print when saving a purchases invoice.
+        /// </summary>
+        internal static string trPrintOnSavePurchase {
+            get {
+                return ResourceManager.GetString("trPrintOnSavePurchase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Print when saving a sales invoice.
+        /// </summary>
+        internal static string trPrintOnSaveSale {
+            get {
+                return ResourceManager.GetString("trPrintOnSaveSale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Process not confirmed.
         /// </summary>
         internal static string trProcessNotConfirmed {
@@ -6376,6 +6448,15 @@ namespace POS {
         internal static string trPurchases {
             get {
                 return ResourceManager.GetString("trPurchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchases invoice copies count.
+        /// </summary>
+        internal static string trPurchasesCopyCount {
+            get {
+                return ResourceManager.GetString("trPurchasesCopyCount", resourceCulture);
             }
         }
         
@@ -6686,11 +6767,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report printer.
+        /// </summary>
+        internal static string trReportPrinterName {
+            get {
+                return ResourceManager.GetString("trReportPrinterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reports.
         /// </summary>
         internal static string trReports {
             get {
                 return ResourceManager.GetString("trReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales invoice printer.
+        /// </summary>
+        internal static string trReportSalesName {
+            get {
+                return ResourceManager.GetString("trReportSalesName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reports copies count.
+        /// </summary>
+        internal static string trReportsCopyCount {
+            get {
+                return ResourceManager.GetString("trReportsCopyCount", resourceCulture);
             }
         }
         
@@ -6884,6 +6992,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sales invoice copies count.
+        /// </summary>
+        internal static string trSalesCopyCount {
+            get {
+                return ResourceManager.GetString("trSalesCopyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sales Draft.
         /// </summary>
         internal static string trSalesDraft {
@@ -6970,6 +7087,15 @@ namespace POS {
         internal static string trSalesOrdersEmailTemplate {
             get {
                 return ResourceManager.GetString("trSalesOrdersEmailTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sales invoice paper size.
+        /// </summary>
+        internal static string trSalesPaperSize {
+            get {
+                return ResourceManager.GetString("trSalesPaperSize", resourceCulture);
             }
         }
         
@@ -7676,6 +7802,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start time....
+        /// </summary>
+        internal static string trStartTimeHint {
+            get {
+                return ResourceManager.GetString("trStartTimeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to State.
         /// </summary>
         internal static string trState {
@@ -7951,6 +8086,15 @@ namespace POS {
         internal static string trSupport {
             get {
                 return ResourceManager.GetString("trSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Settings.
+        /// </summary>
+        internal static string trSystemSetting {
+            get {
+                return ResourceManager.GetString("trSystemSetting", resourceCulture);
             }
         }
         
