@@ -83,14 +83,26 @@ namespace POS.Classes
         }
         public static String GetHDDSerialNo()
         {
-            ManagementClass mangnmt = new ManagementClass("Win32_LogicalDisk");
-            ManagementObjectCollection mcol = mangnmt.GetInstances();
-            string result = "";
-            foreach (ManagementObject strt in mcol)
+            //ManagementClass mangnmt = new ManagementClass("Win32_LogicalDisk");
+            //ManagementObjectCollection mcol = mangnmt.GetInstances();
+            //string result = "";
+            //foreach (ManagementObject strt in mcol)
+            //{
+            //    result += Convert.ToString(strt["VolumeSerialNumber"]);
+            //}
+            //return result;
+            string systemLogicalDiskDeviceId = Environment.GetFolderPath(Environment.SpecialFolder.System).Substring(0, 2);
+
+            // Start by enumerating the logical disks
+            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DeviceID='" + systemLogicalDiskDeviceId + "'"))
             {
-                result += Convert.ToString(strt["VolumeSerialNumber"]);
+                foreach (ManagementObject logicalDisk in searcher.Get())
+                    foreach (ManagementObject partition in logicalDisk.GetRelated("Win32_DiskPartition"))
+                        foreach (ManagementObject diskDrive in partition.GetRelated("Win32_DiskDrive"))
+                            return diskDrive["SerialNumber"].ToString();
             }
-            return result;
+
+            return null;
         }
         public async static Task<int> getInstallationNum()
         {
