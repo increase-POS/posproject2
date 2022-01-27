@@ -151,8 +151,8 @@ namespace POS.View.reports
 
         private void translate()
         {
-            tt_coupon.Content = MainWindow.resourcemanager.GetString("trCoupon");
-            tt_offers.Content = MainWindow.resourcemanager.GetString("trOffer_");
+            tt_coupon.Content = MainWindow.resourcemanager.GetString("trCoupons");
+            tt_offers.Content = MainWindow.resourcemanager.GetString("trOffer");
 
             chk_couponInvoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
             chk_couponReturn.Content = MainWindow.resourcemanager.GetString("trReturned");

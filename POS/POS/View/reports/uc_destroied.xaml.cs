@@ -111,7 +111,7 @@ namespace POS.View.reports
 
         private void translate()
         {
-            tt_destroied.Content = MainWindow.resourcemanager.GetString("trDestructive");
+            tt_destroied.Content = MainWindow.resourcemanager.GetString("trDestructives");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_destroiedBranch, MainWindow.resourcemanager.GetString("trBranchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_destroiedItemsUnits, MainWindow.resourcemanager.GetString("trItemUnitHint"));

@@ -103,10 +103,42 @@ namespace POS.View.reports
 
         private void translate()
         {
-            //dgPayments.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //dgPayments.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            //dgPayments.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            //dgPayments.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            tt_vendor.Content = MainWindow.resourcemanager.GetString("trVendors");
+            tt_customer.Content = MainWindow.resourcemanager.GetString("trCustomers");
+            tt_user.Content = MainWindow.resourcemanager.GetString("trUsers");
+            tt_administrativeDeposit.Content = MainWindow.resourcemanager.GetString("trAdministrativeDeposits");
+            tt_shipping.Content = MainWindow.resourcemanager.GetString("trShippingCompanies");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendors, MainWindow.resourcemanager.GetString("trVendor") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorPayType, MainWindow.resourcemanager.GetString("trPaymentType") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorAccountant, MainWindow.resourcemanager.GetString("trPaymentType") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorAccountant, MainWindow.resourcemanager.GetString("trAccoutant") + "...");//
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_vendorStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_vendorEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+
+            chk_allVendors.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allVendorsPaymentType.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allVendorsAccountant.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_processType.Header = MainWindow.resourcemanager.GetString("trPaymentType");
+            col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
+            col_agentName.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            col_customer.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            col_user.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_company.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_shipping.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)

@@ -115,7 +115,7 @@ namespace POS.View.reports
         {
             tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
             tt_location.Content = MainWindow.resourcemanager.GetString("trLocations");
-            tt_collect.Content = MainWindow.resourcemanager.GetString("trCollect");
+            tt_collect.Content = MainWindow.resourcemanager.GetString("trBestSeller");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchesItem, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_itemsItem, MainWindow.resourcemanager.GetString("trItemHint"));

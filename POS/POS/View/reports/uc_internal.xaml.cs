@@ -115,7 +115,7 @@ namespace POS.View.reports
         private void translate()
         {
             tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
-            tt_operator.Content = MainWindow.resourcemanager.GetString("trOperator");
+            tt_operator.Content = MainWindow.resourcemanager.GetString("trOperators");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsFromBranches, MainWindow.resourcemanager.GetString("trFromBranch/StoreHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_internalItemsItems, MainWindow.resourcemanager.GetString("trItemHint"));

@@ -130,8 +130,8 @@ namespace POS.View.reports
 
         private void translate()
         {
-            tt_items.Content = MainWindow.resourcemanager.GetString("trItem");
-            tt_collect.Content = MainWindow.resourcemanager.GetString("trCollect");
+            tt_items.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_collect.Content = MainWindow.resourcemanager.GetString("trBestSeller");
 
             chk_itemInvoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
             chk_itemReturn.Content = MainWindow.resourcemanager.GetString("trReturned");

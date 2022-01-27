@@ -3148,4 +3148,40 @@
   <data name="trSystemSetting" xml:space="preserve">
     <value>إعدادات النظام</value>
   </data>
+  <data name="trAccoutant" xml:space="preserve">
+    <value>المحاسب</value>
+  </data>
+  <data name="trAdministrativeDeposits" xml:space="preserve">
+    <value>مقبوضات إدارية</value>
+  </data>
+  <data name="trAdministrativePulls" xml:space="preserve">
+    <value>سحوبات إدارية</value>
+  </data>
+  <data name="trArchives" xml:space="preserve">
+    <value>أرشيف</value>
+  </data>
+  <data name="trDestroy" xml:space="preserve">
+    <value>إتلاف</value>
+  </data>
+  <data name="trDestructionInfo" xml:space="preserve">
+    <value>معلومات الإتلاف</value>
+  </data>
+  <data name="trDestructiveItem" xml:space="preserve">
+    <value>العنصر المتلف</value>
+  </data>
+  <data name="trManually" xml:space="preserve">
+    <value>يدوي</value>
+  </data>
+  <data name="trOperators" xml:space="preserve">
+    <value>العمليات</value>
+  </data>
+  <data name="trPaymentType" xml:space="preserve">
+    <value>طريقة الدفع</value>
+  </data>
+  <data name="trQuotations_" xml:space="preserve">
+    <value>عروض الأسعار</value>
+  </data>
+  <data name="trSalaries" xml:space="preserve">
+    <value>الرواتب</value>
+  </data>
 </root>

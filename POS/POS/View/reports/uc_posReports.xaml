@@ -118,19 +118,6 @@
                             </Button>
                         </Border>
 
-                        <!--<Border x:Name="bdr_recipient"
-                                Grid.Column="1"
-                                Background="#4E4E4E"
-                                BorderThickness="0"
-                                Height="40"
-                                Width="60"
-                                VerticalAlignment="Bottom"
-                                CornerRadius="7,7,0,0" 
-                                BorderBrush="Transparent"
-                                Margin="0,5,0,-1">
-
-                        </Border>-->
-
                         <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                     </Grid>

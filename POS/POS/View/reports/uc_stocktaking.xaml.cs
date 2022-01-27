@@ -122,7 +122,7 @@ namespace POS.View.reports
 
         private void translate()
         {
-            tt_archives.Content = MainWindow.resourcemanager.GetString("trArchive");
+            tt_archives.Content = MainWindow.resourcemanager.GetString("trArchives");
             tt_shortfalls.Content = MainWindow.resourcemanager.GetString("trShortages");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_stocktakingArchivedBranch, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));

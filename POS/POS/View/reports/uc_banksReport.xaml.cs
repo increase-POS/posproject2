@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -69,6 +71,20 @@ namespace POS.View.reports
                 recipient = await statisticModel.GetReceipt();// Pull
                 //BankChart = await statisticModel.GetBankTrans();
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 Btn_vendor_Click(btn_payments , null);
 
                 if (sender != null)
@@ -80,6 +96,39 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void translate()
+        {
+            tt_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
+            tt_recipient.Content = MainWindow.resourcemanager.GetString("trReceived");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsBank, MainWindow.resourcemanager.GetString("trPayment") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsUser, MainWindow.resourcemanager.GetString("trUser") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsAccountant, MainWindow.resourcemanager.GetString("trAccoutant") + "...");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_paymentsStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_paymentsEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+
+            chk_allPaymentsBanks.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allPyamentsUser.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allpaymentsAccountant.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_Type.Header = MainWindow.resourcemanager.GetString("trType");
+            col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
+            col_Bank.Header = MainWindow.resourcemanager.GetString("trBank");
+            col_user.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
         private void fillBanksCombo(List<CashTransferSts> lst)

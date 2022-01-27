@@ -3169,4 +3169,40 @@ Please add Email in setting</value>
   <data name="trSystemSetting" xml:space="preserve">
     <value>System Settings</value>
   </data>
+  <data name="trAccoutant" xml:space="preserve">
+    <value>Accoutant</value>
+  </data>
+  <data name="trAdministrativeDeposits" xml:space="preserve">
+    <value>Administrative Deposits</value>
+  </data>
+  <data name="trAdministrativePulls" xml:space="preserve">
+    <value>Administrative Pulls</value>
+  </data>
+  <data name="trArchives" xml:space="preserve">
+    <value>Archives</value>
+  </data>
+  <data name="trDestroy" xml:space="preserve">
+    <value>Destroy</value>
+  </data>
+  <data name="trDestructionInfo" xml:space="preserve">
+    <value>Destruction Information</value>
+  </data>
+  <data name="trDestructiveItem" xml:space="preserve">
+    <value>Destructive Item</value>
+  </data>
+  <data name="trManually" xml:space="preserve">
+    <value>Manually</value>
+  </data>
+  <data name="trOperators" xml:space="preserve">
+    <value>Operators</value>
+  </data>
+  <data name="trPaymentType" xml:space="preserve">
+    <value>Payment Type</value>
+  </data>
+  <data name="trQuotations_" xml:space="preserve">
+    <value>Quotations</value>
+  </data>
+  <data name="trSalaries" xml:space="preserve">
+    <value>Salaries</value>
+  </data>
 </root>

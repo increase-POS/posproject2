@@ -151,6 +151,8 @@ namespace POS.View.reports
 
         private void translate()
         {
+            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranches");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tt_branch, MainWindow.resourcemanager.GetString("trBranches"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranch"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, MainWindow.resourcemanager.GetString("trPOS"));

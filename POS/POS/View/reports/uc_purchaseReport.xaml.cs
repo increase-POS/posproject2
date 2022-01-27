@@ -144,10 +144,10 @@ namespace POS.View.purchases
 
         private void translate()
         {
-            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranch");
-            tt_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
-            tt_vendors.Content = MainWindow.resourcemanager.GetString("trVendor");
-            tt_users.Content = MainWindow.resourcemanager.GetString("trUser");
+            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranches");
+            tt_pos.Content = MainWindow.resourcemanager.GetString("trPOSs");
+            tt_vendors.Content = MainWindow.resourcemanager.GetString("trVendors");
+            tt_users.Content = MainWindow.resourcemanager.GetString("trUsers");
 
             chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
             chk_return.Content = MainWindow.resourcemanager.GetString("trReturned");

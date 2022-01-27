@@ -107,7 +107,7 @@ namespace POS.View.reports
         {
             tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
             tt_order.Content = MainWindow.resourcemanager.GetString("trOrders");
-            tt_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations");
+            tt_quotation.Content = MainWindow.resourcemanager.GetString("trQuotations_");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_invoiceDate, MainWindow.resourcemanager.GetString("trDate"));
 

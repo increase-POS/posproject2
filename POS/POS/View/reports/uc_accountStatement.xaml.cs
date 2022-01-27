@@ -111,10 +111,10 @@ namespace POS.View.reports
 
         private void translate()
         {
-            tt_vendor.Content = MainWindow.resourcemanager.GetString("trVendor");
-            tt_customer.Content = MainWindow.resourcemanager.GetString("trCustomer");
-            tt_user.Content = MainWindow.resourcemanager.GetString("trUser");
-            tt_shipping.Content = MainWindow.resourcemanager.GetString("trShippingCompany");
+            tt_vendor.Content = MainWindow.resourcemanager.GetString("trVendors");
+            tt_customer.Content = MainWindow.resourcemanager.GetString("trCustomers");
+            tt_user.Content = MainWindow.resourcemanager.GetString("trUsers");
+            tt_shipping.Content = MainWindow.resourcemanager.GetString("trShippingCompanies");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 

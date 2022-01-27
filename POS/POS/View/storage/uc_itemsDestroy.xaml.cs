@@ -83,6 +83,8 @@ namespace POS.View.storage
                     SectionData.StartAwait(grid_main);
 
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
+
+                #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -93,8 +95,9 @@ namespace POS.View.storage
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
-
                 translate();
+                #endregion
+
                 await refreshDestroyDetails();
                 await fillItemCombo();
                 await fillUsers();
@@ -199,8 +202,31 @@ namespace POS.View.storage
 
         private void translate()
         {
+            txt_itemsDestroyHeader.Text = MainWindow.resourcemanager.GetString("trDestructiveItem");
+            txt_destroy.Text = MainWindow.resourcemanager.GetString("trDestructionInfo");
+            txt_manually.Text = MainWindow.resourcemanager.GetString("trManually");
 
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_itemUnit, MainWindow.resourcemanager.GetString("trItem")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_amount, MainWindow.resourcemanager.GetString("trAmount") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_user, MainWindow.resourcemanager.GetString("trUser")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_reasonOfDestroy, MainWindow.resourcemanager.GetString("trReason") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNote") + "...");
 
+            btn_destroy.Content = MainWindow.resourcemanager.GetString("trDestroy");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            dg_itemDestroy.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo.");
+            dg_itemDestroy.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_itemDestroy.Columns[2].Header = MainWindow.resourcemanager.GetString("trSection")+"-"+ MainWindow.resourcemanager.GetString("trLocation");
+            dg_itemDestroy.Columns[3].Header = MainWindow.resourcemanager.GetString("trItem") + "-" + MainWindow.resourcemanager.GetString("trUnit");
+            dg_itemDestroy.Columns[4].Header = MainWindow.resourcemanager.GetString("trAmount");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
