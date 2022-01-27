@@ -807,13 +807,9 @@ namespace POS_Server.Controllers
         [Route("save")]
         public string save(string token)
         {
-            //string itemLocationObject
             string message = "";
-
-
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -835,9 +831,6 @@ namespace POS_Server.Controllers
                 }
                 if (newObject != null)
                 {
-
-
-
                     try
                     {
                         itemsLocations item;
@@ -1411,13 +1404,9 @@ namespace POS_Server.Controllers
         [Route("receiptOrder")]
         public string receiptOrder(string token)
         {
-            //string itemLocationObject,string orderList, int toBranch, int userId, string objectName, string notificationObj
             string message = "";
-
-
-
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1446,9 +1435,9 @@ namespace POS_Server.Controllers
                     }
                     else if (c.Type == "orderList")
                     {
-                        Object = c.Value.Replace("\\", string.Empty);
-                        Object = Object.Trim('"');
-                        items = JsonConvert.DeserializeObject<List<itemsTransfer>>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        orderList = c.Value.Replace("\\", string.Empty);
+                        orderList = orderList.Trim('"');
+                        items = JsonConvert.DeserializeObject<List<itemsTransfer>>(orderList, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
 
                     }
 
@@ -1474,12 +1463,8 @@ namespace POS_Server.Controllers
                     }
 
                 }
-
                 if (newObject != null)
                 {
-
-
-
                     try
                     {
 
@@ -1537,24 +1522,16 @@ namespace POS_Server.Controllers
                             return TokenManager.GenerateToken("1");
                         }
                     }
-
-
-
-
                     catch
                     {
                         message = "0";
                         return TokenManager.GenerateToken(message);
                     }
-
-
                 }
                 else
                 {
                     return TokenManager.GenerateToken("0");
                 }
-
-
             }
 
             //var re = Request;
