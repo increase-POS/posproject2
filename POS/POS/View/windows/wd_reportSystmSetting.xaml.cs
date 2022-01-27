@@ -137,7 +137,7 @@ namespace POS.View.windows
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
-                //translate();
+                translate();
                 #endregion
 
                 //code
@@ -158,8 +158,14 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trInstallationSettings");
+            txt_title.Text = winLogIn.resourcemanager.GetString("trSystemSetting");
 
+            txt_printOnSavePur.Text = winLogIn.resourcemanager.GetString("trPrintOnSavePurchase");
+            txt_emailOnSavePur.Text = winLogIn.resourcemanager.GetString("trEmailOnSavePurchase");
+            txt_printOnSaveSale.Text = winLogIn.resourcemanager.GetString("trPrintOnSaveSale");
+            txt_emailOnSaveSale.Text = winLogIn.resourcemanager.GetString("trEmailOnSaveSale");
+
+            btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)

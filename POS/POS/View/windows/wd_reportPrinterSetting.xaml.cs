@@ -464,10 +464,9 @@ namespace POS.View.windows
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
-                //translate();
+                translate();
                 #endregion
 
-                //
                 await refreshWindow();
 
                 if (sender != null)
@@ -484,8 +483,13 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trInstallationSettings");
+            txt_title.Text = winLogIn.resourcemanager.GetString("trPrinterSettings");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_repname, winLogIn.resourcemanager.GetString("trReportPrinterName")+"...");//
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_salname, winLogIn.resourcemanager.GetString("trReportSalesName") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_saleInvPaperSize, winLogIn.resourcemanager.GetString("trSalesPaperSize") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_docpapersize, winLogIn.resourcemanager.GetString("trDocPaperSize") + "...");
 
+            btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)

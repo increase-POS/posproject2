@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -101,6 +103,20 @@ namespace POS.View.purchases
 
                 Invoices = await statisticModel.GetPuritemcount((int)MainWindow.branchID, (int)MainWindow.userID);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
                 comboBranches = await branchModel.GetAllWithoutMain("b");
                 comboPoss     = await posModel.Get();
                 comboVendors  = await agentModel.Get("v");
@@ -124,6 +140,53 @@ namespace POS.View.purchases
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void translate()
+        {
+            tt_branch.Content = MainWindow.resourcemanager.GetString("trBranch");
+            tt_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
+            tt_vendors.Content = MainWindow.resourcemanager.GetString("trVendor");
+            tt_users.Content = MainWindow.resourcemanager.GetString("trUser");
+
+            chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
+            chk_return.Content = MainWindow.resourcemanager.GetString("trReturned");
+            chk_drafs.Content = MainWindow.resourcemanager.GetString("trDraft");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branches, MainWindow.resourcemanager.GetString("trBranchHint"));
+
+            chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dt_endTime, MainWindow.resourcemanager.GetString("trEndTime")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dt_startTime, MainWindow.resourcemanager.GetString("trStartTime")+"...");
+
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+
+            col_No.Header = MainWindow.resourcemanager.GetString("trNo.");
+            col_type.Header = MainWindow.resourcemanager.GetString("trType");
+            col_Date.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
+            col_vendor.Header = MainWindow.resourcemanager.GetString("trVendor");
+            col_agentCompany.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_user.Header = MainWindow.resourcemanager.GetString("trUser");
+            col_item.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_count.Header = MainWindow.resourcemanager.GetString("trQTR");
+            col_discount.Header = MainWindow.resourcemanager.GetString("trDiscount");
+            col_itQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+            col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
+            col_tax.Header = MainWindow.resourcemanager.GetString("trTax");
+            col_subTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotal");
+
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
         }
 
         private void fillComboBranches()

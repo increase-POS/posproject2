@@ -141,6 +141,19 @@ namespace POS.View.Settings
         {
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
             tt_printCount.Content = MainWindow.resourcemanager.GetString("trPrintCount");
+
+            txt_reportlang.Text = MainWindow.resourcemanager.GetString("trLanguage");
+
+            txt_systmSetting.Text = MainWindow.resourcemanager.GetString("trSystemSetting");
+            txt_systmSettingHint.Text = MainWindow.resourcemanager.GetString("trSystemSetting") + "...";
+
+            txt_printerSetting.Text = MainWindow.resourcemanager.GetString("trPrinterSettings");
+            txt_printerSettingHint.Text = MainWindow.resourcemanager.GetString("trPrinterSettings") + "...";
+
+            txt_copyCount.Text = MainWindow.resourcemanager.GetString("trCopyCount");
+            txt_copyCountHint.Text = MainWindow.resourcemanager.GetString("trCopyCount") + "...";
+
+            txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
         }
         
         public static async Task<SetValues> getDefaultPrintCount()

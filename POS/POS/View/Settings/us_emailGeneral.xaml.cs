@@ -61,6 +61,7 @@ namespace POS.View.Settings
 
                 translate();
                 #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -73,7 +74,11 @@ namespace POS.View.Settings
         }
         private void translate()
         {
+            txt_emailsSettingInfo.Text = MainWindow.resourcemanager.GetString("trEmailSettings");
+            txt_emailsSettingHint.Text = MainWindow.resourcemanager.GetString("trEmailSettings")+"...";
 
+            txt_emailsTamplatesInfo.Text = MainWindow.resourcemanager.GetString("trEmailTemplates");
+            txt_emailsTamplatesHint.Text = MainWindow.resourcemanager.GetString("trEmailTemplates") + "...";
         }
 
 

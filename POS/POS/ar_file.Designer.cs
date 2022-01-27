@@ -1348,6 +1348,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عدد النسخ.
+        /// </summary>
+        internal static string trCopyCount {
+            get {
+                return ResourceManager.GetString("trCopyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to التكلفة.
         /// </summary>
         internal static string trCost {
@@ -2041,6 +2050,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to قياس ورق المستند.
+        /// </summary>
+        internal static string trDocPaperSize {
+            get {
+                return ResourceManager.GetString("trDocPaperSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مستند.
         /// </summary>
         internal static string trDocument {
@@ -2212,11 +2230,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إرسال إيميل عند حفظ فاتورة مشتريات.
+        /// </summary>
+        internal static string trEmailOnSavePurchase {
+            get {
+                return ResourceManager.GetString("trEmailOnSavePurchase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إرسال إيميل عند حفظ فاتورة مبيعات.
+        /// </summary>
+        internal static string trEmailOnSaveSale {
+            get {
+                return ResourceManager.GetString("trEmailOnSaveSale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to البريد الالكتروني.
         /// </summary>
         internal static string trEmails {
             get {
                 return ResourceManager.GetString("trEmails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إعدادات الإيميل.
+        /// </summary>
+        internal static string trEmailSettings {
+            get {
+                return ResourceManager.GetString("trEmailSettings", resourceCulture);
             }
         }
         
@@ -2230,7 +2275,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to قوالب الايميلات.
+        ///   Looks up a localized string similar to قوالب الإيميل.
         /// </summary>
         internal static string trEmailTemplates {
             get {
@@ -2284,7 +2329,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to العنوان لا ينمكن أن يكون فارغ.
+        ///   Looks up a localized string similar to العنوان لا يمكن أن يكون فارغ.
         /// </summary>
         internal static string trEmptyAddress {
             get {
@@ -5138,6 +5183,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to العرض.
+        /// </summary>
+        internal static string trOffer_ {
+            get {
+                return ResourceManager.GetString("trOffer_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to عرض....
         /// </summary>
         internal static string trOfferHint {
@@ -6038,6 +6092,33 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إعدادات الطابعة.
+        /// </summary>
+        internal static string trPrinterSettings {
+            get {
+                return ResourceManager.GetString("trPrinterSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طباعة عند حفظ فاتورة مشتريات.
+        /// </summary>
+        internal static string trPrintOnSavePurchase {
+            get {
+                return ResourceManager.GetString("trPrintOnSavePurchase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طباعة عند حفظ فاتورة مبيعات.
+        /// </summary>
+        internal static string trPrintOnSaveSale {
+            get {
+                return ResourceManager.GetString("trPrintOnSaveSale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العملية غير مؤكدة.
         /// </summary>
         internal static string trProcessNotConfirmed {
@@ -6322,6 +6403,15 @@ namespace POS {
         internal static string trPurchases {
             get {
                 return ResourceManager.GetString("trPurchases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عدد نسخ فاتورة المشتريات.
+        /// </summary>
+        internal static string trPurchasesCopyCount {
+            get {
+                return ResourceManager.GetString("trPurchasesCopyCount", resourceCulture);
             }
         }
         
@@ -6641,11 +6731,38 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to طابعة التقرير.
+        /// </summary>
+        internal static string trReportPrinterName {
+            get {
+                return ResourceManager.GetString("trReportPrinterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to التقارير.
         /// </summary>
         internal static string trReports {
             get {
                 return ResourceManager.GetString("trReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طابعة فاتورة المبيعات.
+        /// </summary>
+        internal static string trReportSalesName {
+            get {
+                return ResourceManager.GetString("trReportSalesName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to عدد نسخ التقارير.
+        /// </summary>
+        internal static string trReportsCopyCount {
+            get {
+                return ResourceManager.GetString("trReportsCopyCount", resourceCulture);
             }
         }
         
@@ -6839,6 +6956,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to عدد نسخ فاتورة المبيعات.
+        /// </summary>
+        internal static string trSalesCopyCount {
+            get {
+                return ResourceManager.GetString("trSalesCopyCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مسودة مبيعات.
         /// </summary>
         internal static string trSalesDraft {
@@ -6925,6 +7051,15 @@ namespace POS {
         internal static string trSalesOrdersEmailTemplate {
             get {
                 return ResourceManager.GetString("trSalesOrdersEmailTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to قياس ورق فاتورة المبيعات.
+        /// </summary>
+        internal static string trSalesPaperSize {
+            get {
+                return ResourceManager.GetString("trSalesPaperSize", resourceCulture);
             }
         }
         
@@ -7897,6 +8032,15 @@ namespace POS {
         internal static string trSupport {
             get {
                 return ResourceManager.GetString("trSupport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إعدادات النظام.
+        /// </summary>
+        internal static string trSystemSetting {
+            get {
+                return ResourceManager.GetString("trSystemSetting", resourceCulture);
             }
         }
         

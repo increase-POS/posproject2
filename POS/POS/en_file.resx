@@ -916,7 +916,7 @@
     <value>Start date</value>
   </data>
   <data name="trEndTime" xml:space="preserve">
-    <value>End date</value>
+    <value>End time</value>
   </data>
   <data name="trStartTime" xml:space="preserve">
     <value>Start time</value>
@@ -3120,5 +3120,53 @@ Please add Email in setting</value>
   </data>
   <data name="trUrlLink3" xml:space="preserve">
     <value>Url link3</value>
+  </data>
+  <data name="trCopyCount" xml:space="preserve">
+    <value>Copies Count</value>
+  </data>
+  <data name="trDocPaperSize" xml:space="preserve">
+    <value>Document paper size</value>
+  </data>
+  <data name="trEmailOnSavePurchase" xml:space="preserve">
+    <value>Send an email when saving a purchases invoice</value>
+  </data>
+  <data name="trEmailOnSaveSale" xml:space="preserve">
+    <value>Send an email when saving a sales invoice</value>
+  </data>
+  <data name="trEmailSettings" xml:space="preserve">
+    <value>Email Settings</value>
+  </data>
+  <data name="trPrinterSettings" xml:space="preserve">
+    <value>Printer Settings</value>
+  </data>
+  <data name="trPrintOnSavePurchase" xml:space="preserve">
+    <value>Print when saving a purchases invoice</value>
+  </data>
+  <data name="trPrintOnSaveSale" xml:space="preserve">
+    <value>Print when saving a sales invoice</value>
+  </data>
+  <data name="trPurchasesCopyCount" xml:space="preserve">
+    <value>Purchases invoice copies count</value>
+  </data>
+  <data name="trReportPrinterName" xml:space="preserve">
+    <value>Report printer</value>
+  </data>
+  <data name="trReportSalesName" xml:space="preserve">
+    <value>Sales invoice printer</value>
+  </data>
+  <data name="trReportsCopyCount" xml:space="preserve">
+    <value>Reports copies count</value>
+  </data>
+  <data name="trSalesCopyCount" xml:space="preserve">
+    <value>Sales invoice copies count</value>
+  </data>
+  <data name="trSalesPaperSize" xml:space="preserve">
+    <value>Sales invoice paper size</value>
+  </data>
+  <data name="trStartTimeHint" xml:space="preserve">
+    <value>Start time...</value>
+  </data>
+  <data name="trSystemSetting" xml:space="preserve">
+    <value>System Settings</value>
   </data>
 </root>

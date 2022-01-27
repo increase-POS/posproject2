@@ -59,12 +59,11 @@ namespace POS.View.Settings
         SettingCls setModel = new SettingCls();
         SettingCls sett = new SettingCls();
         IEnumerable<SettingCls> setQuery;
+        IEnumerable<SettingCls> setQueryView;
 
+        int tgl_setValuesState;
 
-        byte tgl_setValuesState;
         string searchText = "";
-        BrushConverter bc = new BrushConverter();
-
         private void translate()
         {
 
@@ -97,11 +96,6 @@ namespace POS.View.Settings
 
             dg_setValues.Columns[0].Header = MainWindow.resourcemanager.GetString("trName");
 
-            setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
-            setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
-            setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
-            setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
-            setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
         }
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -113,15 +107,7 @@ namespace POS.View.Settings
 
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
 
-                setQuery = await setModel.GetByNotes("emailtemp");
-                setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
-                setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
-                setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
-                setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trQuotationsEmailTemplate");
-                setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
-                setQuery.ToList()[5].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
-                dg_setValues.ItemsSource = setQuery;
-
+                #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -134,12 +120,12 @@ namespace POS.View.Settings
                 }
 
                 translate();
+                #endregion
 
-                //btn_addRange.IsEnabled = false;
+                await RefreshSettingsList();
+                RefreshSetttingsView();
 
                 SectionData.clearValidate(tb_title, p_errorTitle);
-
-                Tb_search_TextChanged(null, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -236,13 +222,15 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-
                 if (dg_setValues.SelectedIndex != -1)
                 {
                     if (dg_setValues.SelectedIndex != -1)
                     {
                         sett = dg_setValues.SelectedItem as SettingCls;
-                        setValuessQuery = await setValuesModel.GetBySetName(sett.name);
+                        
+                        List<SettingCls> settLst = await setModel.GetAll();
+                        SettingCls setting = settLst.Where(s => s.settingId == sett.settingId).FirstOrDefault();
+                        setValuessQuery = await setValuesModel.GetBySetName(setting.name);
                         tb_title.Text = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
                         : setValuessQuery.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
                         tb_text1.Text = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
@@ -265,7 +253,6 @@ namespace POS.View.Settings
 
                         tb_link3url.Text = setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault() is null ? ""
                                : setValuessQuery.Where(x => x.notes == "link3url").FirstOrDefault().value.ToString();
-
 
                         this.DataContext = setValues;
                     }
@@ -339,93 +326,60 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private   void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
+       
+        async Task<IEnumerable<SettingCls>> RefreshSettingsList()
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                if (setValuess is null)
-                      RefreshSetValuessList();
-                tgl_setValuesState = 1;
-                Tb_search_TextChanged(null, null);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-
+            setQuery = await setModel.GetByNotes("emailtemp");
+            return setQuery;
         }
-        private   void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
+        void RefreshSetttingsView()
         {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                if (setValuess is null)
-                      RefreshSetValuessList();
-                tgl_setValuesState = 0;
-                Tb_search_TextChanged(null, null);
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-
-        }
-          IEnumerable<SetValues>  RefreshSetValuessList()
-        {
-            //setValuess = await setValuesModel.Get();
-            return setValuess;
-        }
-        void RefreshSetValuesView()
-        {
-            dg_setValues.ItemsSource = setValuessQuery;
-            //txt_count.Text = setValuessQuery.Count().ToString();
+            setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
+            setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
+            setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
+            setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trQuotationsEmailTemplate");
+            setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
+            setQuery.ToList()[5].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
+            dg_setValues.ItemsSource = setQuery;
         }
 
-        private   void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                 
+        //private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        //{//search
+        //    //try
+        //    //{
+        //    //    if (sender != null)
+        //    //        SectionData.StartAwait(grid_main);
 
+        //        if (setQuery is null)
+        //            await RefreshSettingsList();
 
+        //        searchText = tb_search.Text.ToLower();
+        //        setQuery = setQuery.Where(s => (s.name.ToLower().Contains(searchText)));
+               
+        //        RefreshSetttingsView();
 
+        //    //    if (sender != null)
+        //    //        SectionData.EndAwait(grid_main);
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    if (sender != null)
+        //    //        SectionData.EndAwait(grid_main);
+        //    //    SectionData.ExceptionMessage(ex, this);
+        //    //}
 
+        //}
 
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-
-        }
-
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                RefreshSetValuessList();
-                Tb_search_TextChanged(null, null);
+                await RefreshSettingsList();
+                RefreshSetttingsView();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -440,7 +394,9 @@ namespace POS.View.Settings
 
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {
-            tb_title.Text = 
+            try
+            { 
+                tb_title.Text = 
                 tb_text1.Text =
                 tb_text2.Text =
                 tb_link1text.Text =
@@ -449,7 +405,12 @@ namespace POS.View.Settings
                 tb_link1url.Text =
                 tb_link2url.Text =
                 tb_link3url.Text =  "";
-            this.DataContext = new SetValues(); 
+                this.DataContext = new SetValues();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }
