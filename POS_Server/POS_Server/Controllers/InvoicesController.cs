@@ -2997,9 +2997,15 @@ var strP = TokenManager.GetPrincipal(token);
                                       where (itemUnits.Contains((int)u.itemUnitId))
                                       select u.itemUnitId).FirstOrDefault();
                 }
+                var lst = entity.itemsTransfer.Where(x => x.itemUnitId == smallestUnitId && invoiceIds.Contains((int)x.invoiceId))
+                           .Select(t => new ItemLocationModel
+                           {
+                               quantity = t.quantity,
+                           }).ToList();
+                long sumNum = 0;
+                if (lst.Count > 0)
+                    sumNum = (long)lst.Sum(x => x.quantity);
 
-                var sumNum = (from s in entity.itemsTransfer.Where(x => x.itemUnitId == smallestUnitId && invoiceIds.Contains((int)x.invoiceId)) 
-                              select s.quantity).Sum();
 
                 if (sumNum == null)
                     sumNum = 0;
@@ -3010,19 +3016,30 @@ var strP = TokenManager.GetPrincipal(token);
                 if (upperUnit != null && upperUnit.itemUnitId != smallestUnitId)
                     sumNum += (int)upperUnit.unitValue * getLastNum(upperUnit.itemUnitId, invoiceIds);
 
-                if (sumNum != null)
+                try
+                {
                     return (int)sumNum;
-                else
+                }
+                catch
+                {
                     return 0;
+                }
             }
         }
         private long getLastNum(int itemUnitId, List<int> invoiceIds)
         {
             using (incposdbEntities entity = new incposdbEntities())
             {
-                var sumNum = (from s in entity.itemsTransfer.Where(x => x.itemUnitId == itemUnitId && invoiceIds.Contains((int)x.invoiceId))
-                              select s.quantity).Sum();
-
+                //var sumNum = (from s in entity.itemsTransfer.Where(x => x.itemUnitId == itemUnitId && invoiceIds.Contains((int)x.invoiceId))
+                //              select s.quantity).Sum();
+                var lst = entity.itemsTransfer.Where(x => x.itemUnitId == itemUnitId && invoiceIds.Contains((int)x.invoiceId))
+                           .Select(t => new ItemLocationModel
+                           {
+                               quantity = t.quantity,
+                           }).ToList();
+                long sumNum = 0;
+                if (lst.Count > 0)
+                    sumNum = (long)lst.Sum(x => x.quantity);
                 if (sumNum == null)
                     sumNum = 0;
 
