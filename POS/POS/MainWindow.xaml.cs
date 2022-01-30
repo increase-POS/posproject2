@@ -1088,7 +1088,7 @@ namespace POS
             {
                 if (IdleClass.IdleTime.Minutes >= Idletime)
                 {
-                    BTN_logOut_Click(null, null);
+                    BTN_Close_Click(null, null);
                     idletimer.Stop();
                 }
             }
@@ -1110,7 +1110,7 @@ namespace POS
                 //if (thrlog.sOutDate != null)
                 if(go_out)
                 {
-                    BTN_logOut_Click(null, null);
+                    BTN_Close_Click(null, null);
                     threadtimer.Stop();
                 }
             }
@@ -1175,28 +1175,28 @@ namespace POS
                 T.Visibility = Visibility.Hidden;
             else T.Visibility = Visibility.Visible;
         }
-        private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_mainWindow);
+        //private async void BTN_logOut_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (sender != null)
+        //            SectionData.StartAwait(grid_mainWindow);
 
-                await close();
-                Application.Current.Shutdown();
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                await Task.Delay(3000);
+        //        await close();
+        //        Application.Current.Shutdown();
+        //        System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+        //        await Task.Delay(3000);
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_mainWindow);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        if (sender != null)
+        //            SectionData.EndAwait(grid_mainWindow);
+        //        SectionData.ExceptionMessage(ex, this);
+        //    }
+        //}
       async Task close()
         {
             //log out

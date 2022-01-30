@@ -203,7 +203,7 @@
                               Header="Change Password" Click="Mi_changePassword_Click"
                               Icon="{materialDesign:PackIcon Kind=Password}"></MenuItem>
                             <Separator />
-                            <MenuItem Header="Logout"  Foreground="White"  x:Name="BTN_logOut" Click="BTN_logOut_Click" 
+                            <MenuItem Header="Logout"  Foreground="White"  x:Name="BTN_logOut" Click="BTN_Close_Click" 
                          Icon="{materialDesign:PackIcon Kind=ExitToApp}" />
                         </MenuItem>
                     </Menu>
