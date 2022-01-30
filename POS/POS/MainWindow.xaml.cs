@@ -1185,9 +1185,9 @@ namespace POS
                 await close();
 
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                await Task.Delay(3000);
                 Application.Current.Shutdown();
 
-                //await Task.Delay(1000);
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
             }
