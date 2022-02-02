@@ -6803,6 +6803,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مسجل لحساب.
+        /// </summary>
+        internal static string trRegisteredFor {
+            get {
+                return ResourceManager.GetString("trRegisteredFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الكمية المتبقية.
         /// </summary>
         internal static string trRemainQuantity {
@@ -8653,6 +8662,15 @@ namespace POS {
         internal static string trUnKnown {
             get {
                 return ResourceManager.GetString("trUnKnown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to غير محدود.
+        /// </summary>
+        internal static string trUnlimited {
+            get {
+                return ResourceManager.GetString("trUnlimited", resourceCulture);
             }
         }
         

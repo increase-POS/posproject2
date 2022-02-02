@@ -6839,6 +6839,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registered For.
+        /// </summary>
+        internal static string trRegisteredFor {
+            get {
+                return ResourceManager.GetString("trRegisteredFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remain Quantity.
         /// </summary>
         internal static string trRemainQuantity {
@@ -8716,6 +8725,15 @@ namespace POS {
         internal static string trUnKnown {
             get {
                 return ResourceManager.GetString("trUnKnown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unlimited.
+        /// </summary>
+        internal static string trUnlimited {
+            get {
+                return ResourceManager.GetString("trUnlimited", resourceCulture);
             }
         }
         

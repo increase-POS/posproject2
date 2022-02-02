@@ -3205,4 +3205,10 @@ Please add Email in setting</value>
   <data name="trSalaries" xml:space="preserve">
     <value>Salaries</value>
   </data>
+  <data name="trRegisteredFor" xml:space="preserve">
+    <value>Registered For</value>
+  </data>
+  <data name="trUnlimited" xml:space="preserve">
+    <value>Unlimited</value>
+  </data>
 </root>
