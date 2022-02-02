@@ -326,6 +326,7 @@
     <Compile Include="converters\TaxVisibilityConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
+    <Compile Include="converters\unlimitedCouponConverter.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
     <Compile Include="Keyboard\EnvironmentEx.cs" />
     <Compile Include="Keyboard\HardwareKeyboard.cs" />
