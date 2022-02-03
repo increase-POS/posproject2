@@ -96,14 +96,14 @@ namespace POS.View.reports
 
         public string[] Formatter { get; set; }
 
-        private static uc_saleReport _instance;
+        private static uc_saleOrders _instance;
 
-        public static uc_saleReport Instance
+        public static uc_saleOrders Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_saleReport();
+                    _instance = new uc_saleOrders();
                 return _instance;
             }
         }

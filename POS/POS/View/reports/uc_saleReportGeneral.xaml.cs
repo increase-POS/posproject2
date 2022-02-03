@@ -23,9 +23,27 @@ namespace POS.View.reports
     /// </summary>
     public partial class uc_saleReportGeneral : UserControl
     {
+        private static uc_saleReportGeneral _instance;
+
+        public static uc_saleReportGeneral Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_saleReportGeneral();
+                return _instance;
+            }
+        }
         public uc_saleReportGeneral()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_invoice_Click(object sender, RoutedEventArgs e)

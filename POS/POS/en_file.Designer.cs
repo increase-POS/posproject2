@@ -1024,6 +1024,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Credit cards.
+        /// </summary>
+        internal static string trCards {
+            get {
+                return ResourceManager.GetString("trCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to credit cards count.
         /// </summary>
         internal static string trCardsCount {
@@ -1119,6 +1128,15 @@ namespace POS {
         internal static string trCashtransferCount {
             get {
                 return ResourceManager.GetString("trCashtransferCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cashtransfers.
+        /// </summary>
+        internal static string trCashtransfers {
+            get {
+                return ResourceManager.GetString("trCashtransfers", resourceCulture);
             }
         }
         
@@ -4939,6 +4957,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Month.
+        /// </summary>
+        internal static string trMonth {
+            get {
+                return ResourceManager.GetString("trMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to month count.
         /// </summary>
         internal static string trMonthCount {
@@ -7397,6 +7424,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sections.
+        /// </summary>
+        internal static string trSections {
+            get {
+                return ResourceManager.GetString("trSections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select.
         /// </summary>
         internal static string trSelect {
@@ -9274,6 +9310,15 @@ namespace POS {
         internal static string trY {
             get {
                 return ResourceManager.GetString("trY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year.
+        /// </summary>
+        internal static string trYear {
+            get {
+                return ResourceManager.GetString("trYear", resourceCulture);
             }
         }
         

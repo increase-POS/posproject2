@@ -39,21 +39,17 @@ namespace POS.View.reports
 
         Statistics statisticModel = new Statistics();
 
-        List<Branch> comboBranches;
-
-        Branch branchModel = new Branch();
-
         List<DestroiedCombo> comboDestroiedItemmsUnits;
 
         IEnumerable<ItemTransferInvoice> temp = null;
 
-        private static uc_storageReports _instance;
-        public static uc_storageReports Instance
+        private static uc_destroied _instance;
+        public static uc_destroied Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_storageReports();
+                    _instance = new uc_destroied();
                 return _instance;
             }
         }

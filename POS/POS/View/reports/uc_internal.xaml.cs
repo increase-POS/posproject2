@@ -44,17 +44,16 @@ namespace POS.View.reports
         Statistics statisticModel = new Statistics();
 
         List<Branch> comboBranches;
-        Branch branchModel = new Branch();
 
         private int selectedTab = 0;
 
-        private static uc_storageReports _instance;
-        public static uc_storageReports Instance
+        private static uc_internal _instance;
+        public static uc_internal Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_storageReports();
+                    _instance = new uc_internal();
                 return _instance;
             }
         }

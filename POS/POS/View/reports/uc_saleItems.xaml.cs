@@ -76,7 +76,15 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private static uc_saleItems _instance;
+        public static uc_saleItems Instance
+        {
+            get
+            {
+                if (_instance == null) _instance = new uc_saleItems();
+                return _instance;
+            }
+        }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try

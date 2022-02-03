@@ -43,6 +43,7 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+
         private static uc_accountProfits _instance;
 
         public static uc_accountProfits Instance

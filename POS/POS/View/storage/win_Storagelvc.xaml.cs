@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -100,6 +102,22 @@ namespace POS.View.storage
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+
+                translate();
+                #endregion
+
                 chartList = new List<double>();
                 PiechartList = new List<double>();
                 ColumnchartList = new List<double>();
@@ -115,6 +133,16 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void translate()
+        {
+            txt_title.Text = MainWindow.resourcemanager.GetString("trReports");
+            rdoMonth.Content = MainWindow.resourcemanager.GetString("trMonth");
+            rdoYear.Content = MainWindow.resourcemanager.GetString("trYear");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dpStrtDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dpEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+        }
+
         public void fillDates()
         {
             dpEndDate.SelectedDate = DateTime.Now;
@@ -172,25 +200,29 @@ namespace POS.View.storage
                         {
                             var Draw = invItemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             chartList.Add(Draw);
-                            label = "Items count";
+                            //label = "Items count";
+                            label = MainWindow.resourcemanager.GetString("trItems");
                         }
                         else if (sectionDate == 2)
                         {
                             var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             chartList.Add(Draw);
-                            label = "Items count";
+                            //label = "Items count";
+                            label = MainWindow.resourcemanager.GetString("trItems");
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             chartList.Add(Draw);
-                            label = "Locations count";
+                            //label = "Locations count";
+                            label = MainWindow.resourcemanager.GetString("trLocations");
                         }
                         else if (sectionDate == 4)
                         {
                             var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             chartList.Add(Draw);
-                            label = "Sections count";
+                            //label = "Sections count";
+                            label = MainWindow.resourcemanager.GetString("trSections");
                         }
                         MyAxis.Separator.Step = 2;
                         MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -216,25 +248,29 @@ namespace POS.View.storage
                     {
                         var Draw = invItemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                       label = "Items count";
+                       //label = "Items count";
+                        label = MainWindow.resourcemanager.GetString("trItems");
                     }
                     else if (sectionDate == 2)
                     {
                         var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Items count";
+                        //label = "Items count";
+                        label = MainWindow.resourcemanager.GetString("trItems");
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Locations count";
+                        //label = "Locations count";
+                        label = MainWindow.resourcemanager.GetString("trLocations");
                     }
                     else if (sectionDate == 4)
                     {
                         var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         chartList.Add(Draw);
-                        label = "Sections count";
+                        //label = "Sections count";
+                        label = MainWindow.resourcemanager.GetString("trSections");
                     }
                     MyAxis.Separator.Step = 1;
                     MyAxis.Labels.Add(year.ToString());
@@ -290,25 +326,29 @@ namespace POS.View.storage
                         {
                             var Draw = invItemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Items count";
+                            //label = "Items count";
+                            label = MainWindow.resourcemanager.GetString("trItems");
                         }
                         else if (sectionDate == 2)
                         {
                             var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Items count";
+                            //label = "Items count";
+                            label = MainWindow.resourcemanager.GetString("trItems");
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Locations count";
+                            //label = "Locations count";
+                            label = MainWindow.resourcemanager.GetString("trLocations");
                         }
                         else if (sectionDate == 4)
                         {
                             var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             PiechartList.Add(Draw);
-                            label = "Sections count";
+                            //label = "Sections count";
+                            label = MainWindow.resourcemanager.GetString("trsections");
                         }
                         titles.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
                         if (year == dpEndDate.SelectedDate.Value.Year && month == dpEndDate.SelectedDate.Value.Month)
@@ -333,25 +373,29 @@ namespace POS.View.storage
                     {
                         var Draw = invItemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Items count";
+                        //label = "Items count";
+                        label = MainWindow.resourcemanager.GetString("trItems");
                     }
                     else if (sectionDate == 2)
                     {
                         var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Items count";
+                        //label = "Items count";
+                        label = MainWindow.resourcemanager.GetString("trItems");
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Locations count";
+                        //label = "Locations count";
+                        label = MainWindow.resourcemanager.GetString("trLocations");
                     }
                     else if (sectionDate == 4)
                     {
                         var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         PiechartList.Add(Draw);
-                        label = "Sections count";
+                        //label = "Sections count";
+                        label = MainWindow.resourcemanager.GetString("trSections");
                     }
                     titles.Add(year.ToString());
                 }
@@ -410,25 +454,29 @@ namespace POS.View.storage
                         {
                             var Draw = invItemsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Items count";
+                            //label = "Items count";
+                            label = MainWindow.resourcemanager.GetString("trItems");
                         }
                         else if (sectionDate == 2)
                         {
                             var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Items count";
+                            //label = "Items count";
+                            label = MainWindow.resourcemanager.GetString("trItems");
                         }
                         else if (sectionDate == 3)
                         {
                             var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Locations count";
+                            //label = "Locations count";
+                            label = MainWindow.resourcemanager.GetString("trLocations");
                         }
                         else if (sectionDate == 4)
                         {
                             var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisMonth && c.createDate <= firstOfNextMonth).Count();
                             ColumnchartList.Add(Draw);
-                            label = "Sections count";
+                            //label = "Sections count";
+                            label = MainWindow.resourcemanager.GetString("trSections");
                         }
                         columnAxis.Separator.Step = 2;
                         columnAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
@@ -454,25 +502,29 @@ namespace POS.View.storage
                     {
                         var Draw = invItemsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Items count";
+                        //label = "Items count";
+                        label = MainWindow.resourcemanager.GetString("trItems");
                     }
                     else if (sectionDate == 2)
                     {
                         var Draw = itemLocationListQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Items count";
+                        //label = "Items count";
+                        label = MainWindow.resourcemanager.GetString("trItems");
                     }
                     else if (sectionDate == 3)
                     {
                         var Draw = locationsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Locations count";
+                        //label = "Locations count";
+                        label = MainWindow.resourcemanager.GetString("trLocations");
                     }
                     else if (sectionDate == 4)
                     {
                         var Draw = sectionsQuery.ToList().Where(c => c.createDate > firstOfThisYear && c.createDate <= firstOfNextMYear).Count();
                         ColumnchartList.Add(Draw);
-                        label = "Sections count";
+                        //label = "Sections count";
+                        label = MainWindow.resourcemanager.GetString("trSections");
                     }
                     columnAxis.Separator.Step = 1;
                     columnAxis.Labels.Add(year.ToString());
