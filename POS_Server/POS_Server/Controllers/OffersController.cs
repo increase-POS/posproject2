@@ -162,6 +162,7 @@ var strP = TokenManager.GetPrincipal(token);
                         var offerEntity = entity.Set<offers>();
                         if (newObject.offerId == 0)
                         {
+                            newObject.updateDate = newObject.createDate;
                             oldObject = offerEntity.Add(newObject);
                             entity.SaveChanges();
                             message = oldObject.offerId.ToString();
