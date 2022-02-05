@@ -20,6 +20,17 @@ namespace POS.View.reports
 {
     public partial class uc_accountant : UserControl
     {
+        private static uc_accountant _instance;
+
+        public static uc_accountant Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_accountant();
+                return _instance;
+            }
+        }
         public uc_accountant()
         {
             try

@@ -91,14 +91,14 @@ namespace POS.View.reports
         ObservableCollection<int> selectedVendorsId = new ObservableCollection<int>();
         ObservableCollection<int> selectedUserId = new ObservableCollection<int>();
 
-        private static uc_purchaseReport _instance;
+        private static uc_purchaseOrders _instance;
 
-        public static uc_purchaseReport Instance
+        public static uc_purchaseOrders Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_purchaseReport();
+                    _instance = new uc_purchaseOrders();
                 return _instance;
             }
         }

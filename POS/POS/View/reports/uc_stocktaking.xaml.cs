@@ -55,13 +55,13 @@ namespace POS.View.reports
         IEnumerable<InventoryClass> RepInventory;
         IEnumerable<ItemTransferInvoice> RepItemtrans;
 
-        private static uc_storageReports _instance;
-        public static uc_storageReports Instance
+        private static uc_stocktaking _instance;
+        public static uc_stocktaking Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_storageReports();
+                    _instance = new uc_stocktaking();
                 return _instance;
             }
         }

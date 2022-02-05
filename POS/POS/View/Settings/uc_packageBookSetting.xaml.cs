@@ -157,12 +157,11 @@ namespace POS.View.Settings
         }
         private void translate()
         {
-
             txt_packageDetails.Text = MainWindow.resourcemanager.GetString("trPackageDetails");
             txt_packageCodeTitle.Text = MainWindow.resourcemanager.GetString("trCode");
             txt_packageNameTitle.Text = MainWindow.resourcemanager.GetString("trName");
             txt_agentTitle.Text = MainWindow.resourcemanager.GetString("trAgent");
-            txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trCustomer");
+            txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trRegisteredFor");////????
             txt_expiredTitle.Text = MainWindow.resourcemanager.GetString("trExpiredDate");
             txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trServerStatus");
             txt_serverStatusTitle.Text = MainWindow.resourcemanager.GetString("trServerType");

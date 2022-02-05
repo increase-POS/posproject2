@@ -51,13 +51,13 @@ namespace POS.View.reports
         List<InvTypeCombo> comboExternalInvType;
         List<InvCombo> comboExternalInvoiceInvoice;
 
-        private static uc_storageReports _instance;
-        public static uc_storageReports Instance
+        private static uc_external _instance;
+        public static uc_external Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_storageReports();
+                    _instance = new uc_external();
                 return _instance;
             }
         }

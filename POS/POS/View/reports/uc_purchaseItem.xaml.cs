@@ -68,6 +68,17 @@ namespace POS.View.reports
         ObservableCollection<int> selectedBranchId = new ObservableCollection<int>();
 
         ObservableCollection<int> selectedItemId = new ObservableCollection<int>();
+
+        private static uc_purchaseItem _instance;
+        public static uc_purchaseItem Instance
+        {
+            get
+            {
+                if (_instance == null) _instance = new uc_purchaseItem();
+                return _instance;
+            }
+        }
+
         public uc_purchaseItem()
         {
             try

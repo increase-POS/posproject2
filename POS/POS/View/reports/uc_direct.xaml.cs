@@ -56,13 +56,13 @@ namespace POS.View.reports
             }
         }
 
-        private static uc_storageReports _instance;
-        public static uc_storageReports Instance
+        private static uc_direct _instance;
+        public static uc_direct Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_storageReports();
+                    _instance = new uc_direct();
                 return _instance;
             }
         }

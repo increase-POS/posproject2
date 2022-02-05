@@ -37,8 +37,6 @@ namespace POS.View.reports
     /// </summary>
     public partial class uc_saleReport : UserControl
     {
-
-
         //prin & pdf
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -76,8 +74,6 @@ namespace POS.View.reports
         Pos posModel = new Pos();
         Agent agentModel = new Agent();
         User userModel = new User();
-
-        Func<ChartPoint, string> labelPoint = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
 
         ObservableCollection<int> selectedBranchId = new ObservableCollection<int>();
         ObservableCollection<int> selectedPosId = new ObservableCollection<int>();

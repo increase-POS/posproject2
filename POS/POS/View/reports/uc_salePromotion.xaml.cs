@@ -67,14 +67,14 @@ namespace POS.View.reports
         ObservableCollection<int> selectedcouponId = new ObservableCollection<int>();
         ObservableCollection<int> selectedOfferId = new ObservableCollection<int>();
 
-        private static uc_saleReport _instance;
+        private static uc_salePromotion _instance;
 
-        public static uc_saleReport Instance
+        public static uc_salePromotion Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_saleReport();
+                    _instance = new uc_salePromotion();
                 return _instance;
             }
         }

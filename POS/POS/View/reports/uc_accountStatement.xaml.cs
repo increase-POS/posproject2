@@ -63,12 +63,12 @@ namespace POS.View.reports
             }
         }
 
-        private static uc_recipientReport _instance;
-        public static uc_recipientReport Instance
+        private static uc_accountStatement _instance;
+        public static uc_accountStatement Instance
         {
             get
             {
-                if (_instance == null) _instance = new uc_recipientReport();
+                if (_instance == null) _instance = new uc_accountStatement();
                 return _instance;
             }
         }

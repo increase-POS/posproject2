@@ -878,7 +878,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>0lAhOtomo+WMg/d/xECwysmrWY4IIKMc4XuZ+LdXgAk=</dsig:DigestValue>
+        <dsig:DigestValue>o4cUa1I5C3KLv/Y174Cut0ATTlP6KTdv169eoyIkDMo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -907,14 +907,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="10937864">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="POS.exe" size="10967048">
       <assemblyIdentity name="POS" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>aEq1NK8EdlR2U2WFEkS7wzzQAhDGJJ1QIiwXtuXU900=</dsig:DigestValue>
+        <dsig:DigestValue>oKAeK4IzNNHoqdmROITLkeFHzi7iOEkmbgloUaHguIw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -1419,13 +1419,13 @@
       <dsig:DigestValue>TcF64ZnCCzmZ8zrd1pd5xrVbz7tEYFuBhPyNadMIda4=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="POS.exe.config" size="2337">
+  <file name="POS.exe.config" size="2341">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>9R71zI9EnzLTWRyVAvGwQOXyoDyYPrUQC2AGQTu2EdQ=</dsig:DigestValue>
+      <dsig:DigestValue>WXEm4RJgv+MpKZu8aZ8dpUM/sAS4CPWmvkWhm7/WkPs=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Reports\Account\Ar\ArBankAccReport.rdlc" size="400716">
@@ -3561,13 +3561,13 @@
       <dsig:DigestValue>47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Thumb\report\temp.pdf" size="5119">
+  <file name="Thumb\report\tmp.txt" size="0">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>sV3ySMKkFDdj3ljqxVKfpjHXp17Ge2milSCoaVBdN4k=</dsig:DigestValue>
+      <dsig:DigestValue>47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Thumb\Scan\tmp.txt" size="0">
@@ -3577,6 +3577,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Thumb\setting\emptylogo.png" size="513">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LBbKw1FnthdMfY5xGPoZboF3yt1R6hk6nr//l+0GR5w=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Thumb\setting\tmp.txt" size="0">

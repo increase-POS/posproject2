@@ -62,8 +62,6 @@ namespace POS.View.reports
 
         List<ItemTransferInvoice> Invoices;
 
-        List<ItemTransferInvoice> rowChartInvoice;
-
         //for combo boxes
         /*************************/
         Branch selectedBranch;
@@ -97,14 +95,14 @@ namespace POS.View.reports
         ObservableCollection<int> selectedVendorsId = new ObservableCollection<int>();
         ObservableCollection<int> selectedUserId = new ObservableCollection<int>();
 
-        private static uc_saleReport _instance;
+        private static uc_saleQuotation _instance;
 
-        public static uc_saleReport Instance
+        public static uc_saleQuotation Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_saleReport();
+                    _instance = new uc_saleQuotation();
                 return _instance;
             }
         }

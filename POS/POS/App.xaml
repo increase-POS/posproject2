@@ -8,6 +8,7 @@
     <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
+            <converters:unlimitedCouponConverter x:Key="unlimitedCouponConverter"/>
             <converters:isOnlineConverter x:Key="isOnlineConverter"/>
             <converters:expiredDateConverter x:Key="expiredDateConverter"/>
             <converters:dateFrameConverter x:Key="dateFrameConverter"/>

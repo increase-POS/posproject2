@@ -3184,4 +3184,25 @@
   <data name="trSalaries" xml:space="preserve">
     <value>الرواتب</value>
   </data>
+  <data name="trRegisteredFor" xml:space="preserve">
+    <value>مسجل لحساب</value>
+  </data>
+  <data name="trUnlimited" xml:space="preserve">
+    <value>غير محدود</value>
+  </data>
+  <data name="trCards" xml:space="preserve">
+    <value>بطاقات الدفع</value>
+  </data>
+  <data name="trCashtransfers" xml:space="preserve">
+    <value>التحويلات النقدية</value>
+  </data>
+  <data name="trSections" xml:space="preserve">
+    <value>الأقسام</value>
+  </data>
+  <data name="trMonth" xml:space="preserve">
+    <value>شهر</value>
+  </data>
+  <data name="trYear" xml:space="preserve">
+    <value>عام</value>
+  </data>
 </root>

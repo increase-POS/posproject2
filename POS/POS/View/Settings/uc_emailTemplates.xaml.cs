@@ -122,8 +122,8 @@ namespace POS.View.Settings
                 translate();
                 #endregion
 
-                await RefreshSettingsList();
-                RefreshSetttingsView();
+                RefreshSettingsList();
+               // RefreshSetttingsView();
 
                 SectionData.clearValidate(tb_title, p_errorTitle);
 
@@ -227,10 +227,12 @@ namespace POS.View.Settings
                     if (dg_setValues.SelectedIndex != -1)
                     {
                         sett = dg_setValues.SelectedItem as SettingCls;
-                        
-                        List<SettingCls> settLst = await setModel.GetAll();
-                        SettingCls setting = settLst.Where(s => s.settingId == sett.settingId).FirstOrDefault();
-                        setValuessQuery = await setValuesModel.GetBySetName(setting.name);
+                        setValuessQuery = await setValuesModel.GetBySetName(sett.name);
+
+                        //List<SettingCls> settLst = await setModel.GetAll();
+                        //SettingCls setting = settLst.Where(s => s.settingId == sett.settingId).FirstOrDefault();
+                        //setValuessQuery = await setValuesModel.GetBySetName(setting.name);
+
                         tb_title.Text = setValuessQuery.Where(x => x.notes == "title").FirstOrDefault() is null ? ""
                         : setValuessQuery.Where(x => x.notes == "title").FirstOrDefault().value.ToString();
                         tb_text1.Text = setValuessQuery.Where(x => x.notes == "text1").FirstOrDefault() is null ? ""
@@ -327,21 +329,50 @@ namespace POS.View.Settings
             }
         }
        
-        async Task<IEnumerable<SettingCls>> RefreshSettingsList()
+   
+        async void RefreshSettingsList()
         {
             setQuery = await setModel.GetByNotes("emailtemp");
-            return setQuery;
-        }
-        void RefreshSetttingsView()
-        {
-            setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
-            setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
-            setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
-            setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trQuotationsEmailTemplate");
-            setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
-            setQuery.ToList()[5].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
+            foreach (SettingCls row in setQuery)
+            {
+                switch (row.name)
+                {
+                    case "pur_email_temp":
+                        row.trName = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
+                        break;
+                    case "pur_order_email_temp":
+                        row.trName = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
+                        break;
+                    case "sale_email_temp":
+                        row.trName = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
+                        break;
+                    case "sale_order_email_temp":
+                        row.trName = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
+                        break;
+                    case "quotation_email_temp":
+                        row.trName = MainWindow.resourcemanager.GetString("trQuotationsEmailTemplate");
+                        break;
+                    case "required_email_temp":
+                        row.trName = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
+                        break;
+
+                }
+            }
+
             dg_setValues.ItemsSource = setQuery;
+
         }
+        //void RefreshSetttingsView()
+        //{
+        //    setQuery.ToList()[0].name = MainWindow.resourcemanager.GetString("trPurchaseOrdersEmailTemplate");
+        //    setQuery.ToList()[1].name = MainWindow.resourcemanager.GetString("trSalesEmailTemplate");
+        //    setQuery.ToList()[2].name = MainWindow.resourcemanager.GetString("trSalesOrdersEmailTemplate");
+        //    setQuery.ToList()[3].name = MainWindow.resourcemanager.GetString("trQuotationsEmailTemplate");
+        //    setQuery.ToList()[4].name = MainWindow.resourcemanager.GetString("trRequirementsEmailTemplate");
+        //    setQuery.ToList()[5].name = MainWindow.resourcemanager.GetString("trPurchasesEmailTemplate");
+        //    dg_setValues.ItemsSource = setQuery;
+        //}
+
 
         //private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         //{//search
@@ -377,8 +408,8 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                await RefreshSettingsList();
-                RefreshSetttingsView();
+              RefreshSettingsList();
+               // RefreshSetttingsView();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

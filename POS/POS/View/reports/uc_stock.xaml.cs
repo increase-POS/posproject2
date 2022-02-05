@@ -47,13 +47,13 @@ namespace POS.View.reports
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-        private static uc_storageReports _instance;
-        public static uc_storageReports Instance
+        private static uc_stock _instance;
+        public static uc_stock Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new uc_storageReports();
+                    _instance = new uc_stock();
                 return _instance;
             }
         }

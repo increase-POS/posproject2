@@ -11,7 +11,6 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("emailtemplates/images/logo.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("emailtemplates/images/req1.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("emailtemplates/images/req2.gif")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("thumb/report/temp.pdf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/internal/ar/aritem.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/internal/ar/aroperator.rdlc")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("reports/statisticreport/storage/internal/en/item.rdlc")]
