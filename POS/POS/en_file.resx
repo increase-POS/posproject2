@@ -970,7 +970,7 @@
     <value>Deposit To</value>
   </data>
   <data name="trDepositToHint" xml:space="preserve">
-    <value>DepositTo...</value>
+    <value>Deposit To...</value>
   </data>
   <data name="trDocumentNumber" xml:space="preserve">
     <value>Document Number</value>

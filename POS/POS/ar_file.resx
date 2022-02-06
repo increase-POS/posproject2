@@ -2462,7 +2462,7 @@
     <value>مبيعات</value>
   </data>
   <data name="trDaily" xml:space="preserve">
-    <value>يومي</value>
+    <value>اليومية</value>
   </data>
   <data name="trPrintBarcode" xml:space="preserve">
     <value>طباعة باركود</value>
@@ -2591,7 +2591,7 @@
     <value>مخزون</value>
   </data>
   <data name="trDepositeNum" xml:space="preserve">
-    <value>رقم الايداع</value>
+    <value>رقم الإيداع</value>
   </data>
   <data name="trRecieptNum" xml:space="preserve">
     <value>رقم السحب</value>

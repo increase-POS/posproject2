@@ -1906,7 +1906,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DepositTo....
+        ///   Looks up a localized string similar to Deposit To....
         /// </summary>
         internal static string trDepositToHint {
             get {

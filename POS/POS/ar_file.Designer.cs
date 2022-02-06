@@ -1591,7 +1591,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to يومي.
+        ///   Looks up a localized string similar to اليومية.
         /// </summary>
         internal static string trDaily {
             get {
@@ -1816,7 +1816,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to رقم الايداع.
+        ///   Looks up a localized string similar to رقم الإيداع.
         /// </summary>
         internal static string trDepositeNum {
             get {

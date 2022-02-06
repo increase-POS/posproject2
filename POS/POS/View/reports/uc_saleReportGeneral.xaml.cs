@@ -192,7 +192,7 @@ namespace POS.View.reports
             txt_quotationInfo.Text = MainWindow.resourcemanager.GetString("trQuotation");
             txt_quotationHint.Text = MainWindow.resourcemanager.GetString("trBranch") + ", " + MainWindow.resourcemanager.GetString("trPOS") + ", " +
                                  MainWindow.resourcemanager.GetString("trCustomer") + "...";
-            txt_dailySalesInfo.Text = MainWindow.resourcemanager.GetString("trDailySales");
+            txt_dailySalesInfo.Text = MainWindow.resourcemanager.GetString("trDaily");
             txt_dailySalesHint.Text = MainWindow.resourcemanager.GetString("trDailySales")+"...";
         }
     }
