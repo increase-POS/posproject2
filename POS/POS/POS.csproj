@@ -614,6 +614,9 @@
     <Compile Include="View\windows\wd_adminChangePassword.xaml.cs">
       <DependentUpon>wd_adminChangePassword.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_applicationStop.xaml.cs">
+      <DependentUpon>wd_applicationStop.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_branchesList.xaml.cs">
       <DependentUpon>wd_branchesList.xaml</DependentUpon>
     </Compile>
@@ -1157,6 +1160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_adminChangePassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_applicationStop.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
