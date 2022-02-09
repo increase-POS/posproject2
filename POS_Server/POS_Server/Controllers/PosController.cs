@@ -59,6 +59,8 @@ var strP = TokenManager.GetPrincipal(token);
                                       balanceAll=p.balanceAll,
                                        note = p.note,
                                        branchCode = x.code,
+                                       boxState = p.boxState,
+                                       isAdminClose = p.isAdminClose,
                                    }).ToList();
 
                     if (posList.Count > 0)
@@ -89,8 +91,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetPosByID")]
         public string GetPosByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -127,6 +129,8 @@ var strP = TokenManager.GetPrincipal(token);
                                     balanceAll = p.balanceAll,
                                     note = p.note,
                                     branchCode = x.code,
+                                    isAdminClose = p.isAdminClose,
+                                    boxState = p.boxState,
                                 }).FirstOrDefault();
                     return TokenManager.GenerateToken(pos);
                 }
@@ -192,6 +196,8 @@ var strP = TokenManager.GetPrincipal(token);
                                 newObject.updateUserId = newObject.createUserId;
                                 newObject.balance = 0;
                                 newObject.balanceAll = 0;
+                                newObject.boxState = "c";
+                                newObject.isAdminClose = 0;
                                 tmpPos = unitEntity.Add(newObject);
                                 entity.SaveChanges();
                                 message = tmpPos.posId.ToString();
@@ -227,9 +233,9 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("Delete")]
         public string Delete(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -286,6 +292,69 @@ var strP = TokenManager.GetPrincipal(token);
                         message = entity.SaveChanges().ToString();
                         return TokenManager.GenerateToken(message);
                     }
+                }
+            }
+        }
+         [HttpPost]
+        [Route("updateBoxState")]
+        public string updateBoxState(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "";
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int posId = 0;
+                int userId = 0;
+                string boxState = "";
+                string cashObject = "";
+                int isAdminClose = 0;
+                cashTransfer cashTransfer = new cashTransfer() ;
+                CashTransferController cc = new CashTransferController();
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "posId")
+                    {
+                        posId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "isAdminClose")
+                    {
+                        isAdminClose = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "state")
+                    {
+                        boxState = c.Value;
+                    }
+                    if (c.Type == "cashTransfer")
+                    {
+                        cashObject = c.Value.Replace("\\", string.Empty);
+                        cashObject = cashObject.Trim('"');
+                        cashTransfer = JsonConvert.DeserializeObject<cashTransfer>(cashObject, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                        break;
+                    }
+                }
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    pos pos = entity.pos.Find(posId);
+
+                    pos.boxState = boxState;
+                    pos.isAdminClose = (byte)isAdminClose;
+                    pos.updateUserId = userId;
+                    pos.updateDate = DateTime.Now;
+                    message = entity.SaveChanges().ToString();
+
+                    cc.addCashTransfer(cashTransfer);
+                    return TokenManager.GenerateToken(message);
                 }
             }
         }

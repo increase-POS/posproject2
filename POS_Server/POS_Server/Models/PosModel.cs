@@ -22,5 +22,7 @@ namespace POS_Server.Models
         public Boolean canDelete { get; set; }
         public string note { get; set; }
         public Nullable<decimal> balanceAll { get; set; }
+        public string boxState { get; set; }
+        public byte isAdminClose { get; set; }
     }
 }
