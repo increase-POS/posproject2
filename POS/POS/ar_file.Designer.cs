@@ -997,6 +997,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لا يمكنك فتح الصندوق.
+        /// </summary>
+        internal static string trCantOpenBox {
+            get {
+                return ResourceManager.GetString("trCantOpenBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to بطاقات.
         /// </summary>
         internal static string trCard {
@@ -1119,6 +1128,15 @@ namespace POS {
         internal static string trCashTooltip {
             get {
                 return ResourceManager.GetString("trCashTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ترصيد الحساب.
+        /// </summary>
+        internal static string trCashTransfer {
+            get {
+                return ResourceManager.GetString("trCashTransfer", resourceCulture);
             }
         }
         
@@ -1605,6 +1623,15 @@ namespace POS {
         internal static string trDaily {
             get {
                 return ResourceManager.GetString("trDaily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اغلاق اليومية.
+        /// </summary>
+        internal static string trDailyClosing {
+            get {
+                return ResourceManager.GetString("trDailyClosing", resourceCulture);
             }
         }
         
@@ -5395,6 +5422,15 @@ namespace POS {
         internal static string trOnlineType {
             get {
                 return ResourceManager.GetString("trOnlineType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فتح.
+        /// </summary>
+        internal static string trOpen {
+            get {
+                return ResourceManager.GetString("trOpen", resourceCulture);
             }
         }
         
@@ -9310,6 +9346,15 @@ namespace POS {
         internal static string trZeroAmmount {
             get {
                 return ResourceManager.GetString("trZeroAmmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الرصيد صفر.
+        /// </summary>
+        internal static string trZeroBalance {
+            get {
+                return ResourceManager.GetString("trZeroBalance", resourceCulture);
             }
         }
         

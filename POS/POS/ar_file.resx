@@ -3208,7 +3208,22 @@
   <data name="trActive_" xml:space="preserve">
     <value>فعال</value>
   </data>
+  <data name="trCashTransfer" xml:space="preserve">
+    <value>ترصيد الحساب</value>
+  </data>
+  <data name="trDailyClosing" xml:space="preserve">
+    <value>اغلاق اليومية</value>
+  </data>
   <data name="trNotActive" xml:space="preserve">
     <value>غير فعال</value>
+  </data>
+  <data name="trOpen" xml:space="preserve">
+    <value>فتح</value>
+  </data>
+  <data name="trZeroBalance" xml:space="preserve">
+    <value>الرصيد صفر</value>
+  </data>
+  <data name="trCantOpenBox" xml:space="preserve">
+    <value>لا يمكنك فتح الصندوق</value>
   </data>
 </root>

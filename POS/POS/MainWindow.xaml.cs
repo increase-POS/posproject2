@@ -1119,7 +1119,11 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this);
             }
 
+            refreshBalance();
+        }
 
+       public async Task refreshBalance()
+        {
             try
             {
                 posLogIn = await posLogIn.getById(posID.Value);
@@ -1131,9 +1135,7 @@ namespace POS
                 SectionData.ExceptionMessage(ex, this);
             }
 
-
         }
-
         void timer_Tick(object sender, EventArgs e)
         {
             try
