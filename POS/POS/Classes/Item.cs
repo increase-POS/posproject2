@@ -279,64 +279,57 @@ namespace POS.Classes
                 // get file extension
                 var ext = imagePath.Substring(imagePath.LastIndexOf('.'));
                 var extension = ext.ToLower();
+                string fileName = imageName + extension;
                 try
                 {
                     // configure trmporery path
-                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
                     string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPItemsFolder);
+                    
                     string[] files = System.IO.Directory.GetFiles(tmpPath, imageName + ".*");
                     foreach (string f in files)
                     {
                         System.IO.File.Delete(f);
                     }
                     tmpPath = Path.Combine(tmpPath, imageName + extension);
-                    //if (System.IO.File.Exists(tmpPath))
-                    //{
-                    //    System.IO.File.Delete(tmpPath);
-                    //}
-                    // resize image
-                    ImageProcess imageP = new ImageProcess(150, imagePath);
-                    imageP.ScaleImage(tmpPath);
 
-                    // read image file
-                    var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
-
-                    // create http client request
-                    using (var client = new HttpClient())
+                    if (imagePath != tmpPath) // edit mode
                     {
-                        client.BaseAddress = new Uri(Global.APIUri);
-                        client.Timeout = System.TimeSpan.FromSeconds(3600);
-                        string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
-                        HttpContent content = new StreamContent(stream);
-                        content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                        content.Headers.Add("client", "true");
+                        // resize image
+                        ImageProcess imageP = new ImageProcess(150, imagePath);
+                        imageP.ScaleImage(tmpPath);
 
-                        string fileName = imageName + extension;
-                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        // read image file
+                        var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
+
+                        // create http client request
+                        using (var client = new HttpClient())
                         {
-                            Name = imageName,
-                            FileName = fileName
-                        };
-                        form.Add(content, "fileToUpload");
+                            client.BaseAddress = new Uri(Global.APIUri);
+                            client.Timeout = System.TimeSpan.FromSeconds(3600);
+                            string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                            HttpContent content = new StreamContent(stream);
+                            content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                            content.Headers.Add("client", "true");
 
-                        var response = await client.PostAsync(@"items/PostItemImage", form);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            // save image name in DB
-                            Item item = new Item();
-                            item.itemId = itemId;
-                            item.image = fileName;
-                            await updateImage(item);
+                            
+                            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                            {
+                                Name = imageName,
+                                FileName = fileName
+                            };
+                            form.Add(content, "fileToUpload");
 
+                            var response = await client.PostAsync(@"items/PostItemImage", form);
                         }
+                        stream.Dispose();
                     }
-                    stream.Dispose();
-                    //delete tmp image
-                    //if (System.IO.File.Exists(tmpPath))
-                    //{
-                    //    System.IO.File.Delete(tmpPath);
-                    //}
+                    // save image name in DB
+                    Item item = new Item();
+                    item.itemId = itemId;
+                    item.image = fileName;
+                    await updateImage(item);
+
                     return true;
                 }
                 catch

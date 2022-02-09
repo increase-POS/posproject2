@@ -50,7 +50,7 @@ namespace POS.View
         ItemUnit itemUnitModel = new ItemUnit();
         Service serviceModel = new Service();
         IEnumerable<Category> categoriesQuery;
-        IEnumerable<Item> items;
+        List<Item> items;
         IEnumerable<Item> allItems;
         IEnumerable<Item> itemsQuery;
         Category category = new Category();
@@ -610,13 +610,12 @@ namespace POS.View
                         {
                             item.itemId = res;
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                            int itemId = res;
+
+                            if (openFileDialog.FileName != "")
+                                await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
                         }
                        
-                        int itemId = res;
-
-                        if (openFileDialog.FileName != "")
-                            await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
-
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
                         // btn_clear_Click(null, null);
@@ -699,15 +698,19 @@ namespace POS.View
                         item.maxUnitId = maxUnitId;
                         // };
 
-                        int res = await itemModel.saveItem(item);
-                        if (!res.Equals("0"))
+                        int itemId = await itemModel.saveItem(item);
+                        if (!itemId.Equals("0"))
+                        {
+                            if (openFileDialog.FileName != "")
+                            {
+                                await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+                            }
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                        }
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
-                        int itemId =  res ;
-
-                        await itemModel.uploadImage(openFileDialog.FileName, Md5Encription.MD5Hash("Inc-m" + itemId.ToString()), itemId);
+                        
 
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
@@ -1671,6 +1674,13 @@ namespace POS.View
         async Task fillCategories()
         {
             categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
+            foreach (Category cat in categories)
+            {
+                if (cat.isActive == 1)
+                    cat.name = cat.name + " - " + MainWindow.resourcemanager.GetString("trActive_");
+                else
+                    cat.name = cat.name + " - " + MainWindow.resourcemanager.GetString("trNotActive");
+            }
             if (categories != null)
                 cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
@@ -2227,7 +2237,7 @@ namespace POS.View
             if(category.categoryId != 0)
                 items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             else
-                items = allItems;
+                items = allItems.ToList();
             items = items.Where(x => x.type != "p" && x.type != "sr").ToList();
 
             return items;
@@ -2927,7 +2937,7 @@ namespace POS.View
                 //await RefrishItems();
                 #region 
                 allItems = await itemModel.GetAllItems();
-                items = allItems;
+                items = allItems.ToList();
                 items = items.Where(x => x.type != "p" && x.type != "sr").ToList();
                 #endregion
                 Txb_searchitems_TextChanged(null, null);
@@ -3238,12 +3248,19 @@ namespace POS.View
                 await RefrishItems();
 
 
-            var listCa = items.Where(x => x.isActive == 1).ToList();
+            //var listCa = items.Where(x => x.isActive == 1).ToList();
+            foreach (Item it in items)
+            {
+                if (it.isActive == 1)
+                    it.name = it.name + " - " + MainWindow.resourcemanager.GetString("trActive_");
+                else
+                    it.name = it.name + " - " + MainWindow.resourcemanager.GetString("trNotActive");
+            }
             var cat = new Item();
             cat.itemId = 0;
             cat.name = "-";
-            listCa.Insert(0, cat);
-            cb_parentItem.ItemsSource = listCa;
+            items.Insert(0, cat);
+            cb_parentItem.ItemsSource = items;
             cb_parentItem.SelectedValuePath = "itemId";
             cb_parentItem.DisplayMemberPath = "name";
 

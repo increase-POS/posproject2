@@ -277,6 +277,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فعال.
+        /// </summary>
+        internal static string trActive_ {
+            get {
+                return ResourceManager.GetString("trActive_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إضافة.
         /// </summary>
         internal static string trAdd {
@@ -5197,6 +5206,15 @@ namespace POS {
         internal static string trNormals {
             get {
                 return ResourceManager.GetString("trNormals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to غير فعال.
+        /// </summary>
+        internal static string trNotActive {
+            get {
+                return ResourceManager.GetString("trNotActive", resourceCulture);
             }
         }
         

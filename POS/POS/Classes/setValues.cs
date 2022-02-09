@@ -413,7 +413,6 @@ namespace POS.Classes
 
 
         public async Task<string> uploadImage(string imagePath, string imageName, int valId)
-        //public async Task<Boolean> uploadImage(string imagePath, int userId)
         {
             if (imagePath != "")
             {
@@ -422,59 +421,65 @@ namespace POS.Classes
                 // get file extension
                 var ext = imagePath.Substring(imagePath.LastIndexOf('.'));
                 var extension = ext.ToLower();
+                string fileName = imageName + extension;
                 try
                 {
                     // configure trmporery path
-                    //string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
                     string dir = Directory.GetCurrentDirectory();
                     string tmpPath = Path.Combine(dir, Global.TMPSettingFolder);
+
+                    string[] files = System.IO.Directory.GetFiles(tmpPath, imageName + ".*");
+                    foreach (string f in files)
+                    {
+                        System.IO.File.Delete(f);
+                    }
+
                     tmpPath = Path.Combine(tmpPath, imageName + extension);
-                    if (System.IO.File.Exists(tmpPath))
+                    if (imagePath != tmpPath) // edit mode
                     {
-                        System.IO.File.Delete(tmpPath);
-                    }
-                    // resize image
-                    ImageProcess imageP = new ImageProcess(150, imagePath);
-                    imageP.ScaleImage(tmpPath);
+                        // resize image
+                        ImageProcess imageP = new ImageProcess(150, imagePath);
+                        imageP.ScaleImage(tmpPath);
 
-                    // read image file
-                    var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
+                        // read image file
+                        var stream = new FileStream(tmpPath, FileMode.Open, FileAccess.Read);
 
-                    // create http client request
-                    using (var client = new HttpClient())
-                    {
-                        client.BaseAddress = new Uri(Global.APIUri);
-                        client.Timeout = System.TimeSpan.FromSeconds(3600);
-                        string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
-                        HttpContent content = new StreamContent(stream);
-                        content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                        content.Headers.Add("client", "true");
-
-                        string fileName = imageName + extension;
-                        content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                        // create http client request
+                        using (var client = new HttpClient())
                         {
-                            Name = imageName,
-                            FileName = fileName
-                        };
-                        form.Add(content, "fileToUpload");
+                            client.BaseAddress = new Uri(Global.APIUri);
+                            client.Timeout = System.TimeSpan.FromSeconds(3600);
+                            string boundary = string.Format("----WebKitFormBoundary{0}", DateTime.Now.Ticks.ToString("x"));
+                            HttpContent content = new StreamContent(stream);
+                            content.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                            content.Headers.Add("client", "true");
 
-                        var response = await client.PostAsync(@"setValues/PostImage", form);
-                        if (response.IsSuccessStatusCode)
-                        {
-                            // save image name in DB
-                            SetValues setValues = new SetValues();
-                            setValues.valId = valId;
-                            setValues.value = fileName;
-                            await updateImage(setValues);
-                            return fileName;
+                            content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+                            {
+                                Name = imageName,
+                                FileName = fileName
+                            };
+                            form.Add(content, "fileToUpload");
+
+                            var response = await client.PostAsync(@"setValues/PostImage", form);
+                            //if (response.IsSuccessStatusCode)
+                            //{
+                            //    // save image name in DB
+                            //    SetValues setValues = new SetValues();
+                            //    setValues.valId = valId;
+                            //    setValues.value = fileName;
+                            //    await updateImage(setValues);
+                            //    return fileName;
+                            //}
                         }
+                        stream.Dispose();
                     }
-                    stream.Dispose();
-                    //delete tmp image
-                    if (System.IO.File.Exists(tmpPath))
-                    {
-                        System.IO.File.Delete(tmpPath);
-                    }
+                    // save image name in DB
+                    SetValues setValues = new SetValues();
+                    setValues.valId = valId;
+                    setValues.value = fileName;
+                    await updateImage(setValues);
+                    return fileName;
                 }
                 catch
                 { return ""; }

@@ -3205,4 +3205,10 @@
   <data name="trYear" xml:space="preserve">
     <value>عام</value>
   </data>
+  <data name="trActive_" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="trNotActive" xml:space="preserve">
+    <value>غير فعال</value>
+  </data>
 </root>

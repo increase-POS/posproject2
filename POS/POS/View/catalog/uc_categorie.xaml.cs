@@ -104,8 +104,15 @@ namespace POS.View
         {
             if (categories is null)
                 await RefrishCategories();
-            var listCa = categories.ToList();
+            var listCa = categories.ToList();           
 
+            foreach(Category cate in listCa)
+            {
+                if (cate.isActive == 1)
+                    cate.name = cate.name + " - " + MainWindow.resourcemanager.GetString("trActive_");
+                else
+                    cate.name = cate.name + " - " + MainWindow.resourcemanager.GetString("trNotActive");
+            }
             var cat = new Category();
             cat.categoryId = 0;
             cat.name = "-";
@@ -329,8 +336,9 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
+                    
+                    category = new Category();
                     category.categoryId = 0;
-                    //category = new Category();
                     //duplicate
                     bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", 0);
                     //chk empty name
@@ -369,6 +377,17 @@ namespace POS.View
                             if (s>0)  //{SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopAdd")); Btn_clear_Click(null, null);  }
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                if (openFileDialog.FileName != "")
+                                {
+                                    int categoryId = s;
+                                    bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+                                    isImgPressed = false;
+                                    if (b)
+                                    {
+                                        brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                                        img_category.Background = brush;
+                                    }
+                                }
                                 Btn_clear_Click(null, null);
                             }
                             else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
@@ -376,23 +395,23 @@ namespace POS.View
 
 
 
-                            if (isImgPressed)
-                            {
-                                int categoryId =s;
-                                bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
-                                isImgPressed = false;
-                                if (b)
-                                {
-                                    brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
-                                    img_category.Background = brush;
-                                }
-                                else
-                                {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
-                                }
+                            //if (isImgPressed)
+                            //{
+                            //    int categoryId =s;
+                            //    bool b = await categoryModel.uploadImage(imgFileName, Md5Encription.MD5Hash("Inc-m" + categoryId.ToString()), categoryId);
+                            //    isImgPressed = false;
+                            //    if (b)
+                            //    {
+                            //        brush.ImageSource = new BitmapImage(new Uri(openFileDialog.FileName, UriKind.Relative));
+                            //        img_category.Background = brush;
+                            //    }
+                            //    else
+                            //    {
+                            //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trThereWasAnErrorLoadingTheImage"), animation: ToasterAnimation.FadeIn);
+                            //    }
                                 
-                            }
-                            ////////categoryParentId = parentCategorieSelctedValue;???????????????????
+                            //}
+                           
                             ///
 
                             await RefrishCategories();
@@ -517,7 +536,9 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-
+                category = new Category();
+                dg_categories.SelectedIndex = -1;
+                openFileDialog.FileName = "";
                 tb_name.Clear();
                 tb_taxes.Clear();
                 tb_details.Clear();
