@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -40,6 +41,7 @@ namespace POS.View.windows
         string status = "";
         public int settingsPoSId = 0;
         public int userId;
+        bool flag = false;
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -97,28 +99,45 @@ namespace POS.View.windows
             cashesQuery = cashes.Where(s => s.posIdCreator == MainWindow.posID.Value
                                 && s.isConfirm == 0).ToList();
 
+            if (cashesQuery.Count() == 0)
+            {
+                txt_balanceState.Text = MainWindow.resourcemanager.GetString("trAvailable");
+                btn_save.IsEnabled = true;
+            }
+            else
+            {
+                txt_balanceState.Text = MainWindow.resourcemanager.GetString("trWaiting");
+                btn_save.IsEnabled = false;
+            }
+
             if (MainWindow.posLogIn.balance != 0)
                 txt_cashValue.Text = SectionData.DecTostring(MainWindow.posLogIn.balance);
             else
                 txt_cashValue.Text = "0";
 
+            status = MainWindow.posLogIn.boxState;
             if (MainWindow.posLogIn.boxState == "c")
             {
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trClosed");
-                txt_isClose.Text = MainWindow.resourcemanager.GetString("trOpen");              
+                tgl_isClose.IsChecked = false;
+                btn_save.IsEnabled = false;
+
             }
             else
             {
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trOpen");
-                txt_isClose.Text = MainWindow.resourcemanager.GetString("trClose");
+                tgl_isClose.IsChecked = true;
+
             }
         }
         private void translate()
         {
             txt_title.Text = winLogIn.resourcemanager.GetString("trDailyClosing");
+            txt_cash.Text = winLogIn.resourcemanager.GetString("trCash");
             txt_boxState.Text = winLogIn.resourcemanager.GetString("trBoxState");
-            txt_balance.Text = winLogIn.resourcemanager.GetString("trBalance");
-            txt_isClose.Text = winLogIn.resourcemanager.GetString("trCashTransfer");
+            txt_cashBalance.Text = winLogIn.resourcemanager.GetString("trCashBalance");
+            txt_transfer.Text = winLogIn.resourcemanager.GetString("trTransfer");
+
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, winLogIn.resourcemanager.GetString("trPosHint"));
 
             tt_pos.Content = winLogIn.resourcemanager.GetString("trPosTooltip");
@@ -216,34 +235,69 @@ namespace POS.View.windows
 
         private async void Tgl_isClose_Checked(object sender, RoutedEventArgs e)
         {
-            #region Accept
-            MainWindow.mainWindow.Opacity = 0.2;
-            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
-            w.ShowDialog();
-            MainWindow.mainWindow.Opacity = 1;
-            #endregion
-            if (w.isOk)
+            if (flag)
+                return;
+
+            flag = true;
+            ToggleButton cb = sender as ToggleButton;
+            if (cb.IsFocused == true)
             {
-                if (MainWindow.posLogIn.boxState == "c")
+                #region Accept
+                MainWindow.mainWindow.Opacity = 0.2;
+                wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
+                w.ShowDialog();
+                MainWindow.mainWindow.Opacity = 1;
+                #endregion
+                if (w.isOk)
                 {
                     status = "o";
+
+                    await openCloseBox(status);
+                    await MainWindow.refreshBalance();
+                    await fillPosInfo();
+                }
+                else
+                    tgl_isClose.IsChecked = false;
+            }
+            flag = false;
+        }
+
+        private async void Tgl_isClose_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (flag)
+                return;
+            flag = true;
+            ToggleButton cb = sender as ToggleButton;
+            if (cb.IsFocused == true)
+            {
+                if (cashesQuery.Count() > 0)
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCantDoProcess"), animation: ToasterAnimation.FadeIn);
+                    tgl_isClose.IsChecked = true;
                 }
                 else
                 {
-                    status = "c";
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                    {
+                        status = "c";
+
+                        await openCloseBox(status);
+                        await MainWindow.refreshBalance();
+                        await fillPosInfo();
+                    }
+                    else
+                        tgl_isClose.IsChecked = true;
                 }
-                await openCloseBox(status);
-                await MainWindow.refreshBalance();
-                await fillPosInfo();
             }
-            else
-                tgl_isClose.IsChecked = false;
-        }
-
-        private void Tgl_isClose_Unchecked(object sender, RoutedEventArgs e)
-        {
-
+            flag = false;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

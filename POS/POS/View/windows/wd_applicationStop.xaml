@@ -85,7 +85,7 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock  Grid.Column="0"
+                    <TextBlock  Grid.Column="0" x:Name="txt_cashBalance"
                                    Margin="5" Text="cash balance" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                  FontWeight="SemiBold"  FontSize="12"/>
