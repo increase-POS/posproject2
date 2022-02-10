@@ -1599,136 +1599,140 @@ namespace POS.View
                     || (invoice.invType != "sd" && invoice.invType != "s"))
                 {
 
-
-                    if (sender != null)
-                        SectionData.StartAwait(grid_main);
-                    //if (logInProcessing)
-                    //{
-                    //    logInProcessing = false;
-                    //awaitSaveBtn(true);
-                    //check mandatory inputs
-                    bool valid = await validateInvoiceValues();
-
-                    if (valid)
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
                     {
-                        refreshTotalValue();
-                        bool multipleValid = true;
-                        List<CashTransfer> listPayments = new List<CashTransfer>();
+                        if (sender != null)
+                            SectionData.StartAwait(grid_main);
+                        //if (logInProcessing)
+                        //{
+                        //    logInProcessing = false;
+                        //awaitSaveBtn(true);
+                        //check mandatory inputs
+                        bool valid = await validateInvoiceValues();
 
-                        if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                        if (valid)
                         {
-                            Window.GetWindow(this).Opacity = 0.2;
-                            wd_multiplePayment w = new wd_multiplePayment();
-                            w.isPurchase = false;
-                            if (cb_customer.SelectedValue != null)
-                            //w.invoice.agentId = (int)cb_customer.SelectedValue;
+                            refreshTotalValue();
+                            bool multipleValid = true;
+                            List<CashTransfer> listPayments = new List<CashTransfer>();
 
+                            if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                             {
-                                Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
-                                if (customer != null)
+                                Window.GetWindow(this).Opacity = 0.2;
+                                wd_multiplePayment w = new wd_multiplePayment();
+                                w.isPurchase = false;
+                                if (cb_customer.SelectedValue != null)
+                                //w.invoice.agentId = (int)cb_customer.SelectedValue;
+
                                 {
-                                    decimal remain = 0;
-                                    if (customer.maxDeserve != 0)
-                                        remain = getCusAvailableBlnc(customer);
-                                    w.hasCredit = true;
-                                    w.creditValue = remain;
+                                    Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
+                                    if (customer != null)
+                                    {
+                                        decimal remain = 0;
+                                        if (customer.maxDeserve != 0)
+                                            remain = getCusAvailableBlnc(customer);
+                                        w.hasCredit = true;
+                                        w.creditValue = remain;
+                                    }
+                                    else
+                                    {
+                                        w.hasCredit = false;
+                                        w.creditValue = 0;
+                                    }
                                 }
-                                else
-                                {
-                                    w.hasCredit = false;
-                                    w.creditValue = 0;
-                                }
+
+                                w.invoice.invType = _InvoiceType;
+                                w.invoice.totalNet = decimal.Parse(tb_total.Text);
+                                w.cards = cards;
+                                w.ShowDialog();
+                                Window.GetWindow(this).Opacity = 1;
+                                multipleValid = w.isOk;
+                                listPayments = w.listPayments;
                             }
 
-                            w.invoice.invType = _InvoiceType;
-                            w.invoice.totalNet = decimal.Parse(tb_total.Text);
-                            w.cards = cards;
-                            w.ShowDialog();
-                            Window.GetWindow(this).Opacity = 1;
-                            multipleValid = w.isOk;
-                            listPayments = w.listPayments;
-                        }
-
-                        if (multipleValid)
-                        {
-                            #region Save
-                            if (_InvoiceType == "sbd") //sbd means sale bounse draft
+                            if (multipleValid)
                             {
-                                if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < invoice.totalNet)
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
-                                else
+                                #region Save
+                                if (_InvoiceType == "sbd") //sbd means sale bounse draft
                                 {
-                                    await addInvoice("sb"); // sb means sale bounce
-                                    await saveBounceCash();
+                                    if (cb_paymentProcessType.SelectedValue.ToString() == "cash" && MainWindow.posLogIn.balance < invoice.totalNet)
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                                    else
+                                    {
+                                        await addInvoice("sb"); // sb means sale bounce
+                                        await saveBounceCash();
+                                        await clearInvoice();
+                                        refreshDraftNotification();
+                                    }
+                                }
+                                else if (_InvoiceType == "or")
+                                {
+                                    await saveOrder("s");
+                                    await clearInvoice();
+                                    refreshOrdersWaitNotification();
+                                }
+                                else//s  sale invoice
+                                {
+                                    await saveSaleInvoice("s");
+                                    if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                                    {
+                                        foreach (var item in listPayments)
+                                        {
+                                            await saveConfiguredCashTrans(item);
+                                            invoice.paid += item.cash;
+                                            invoice.deserved -= item.cash;
+                                        }
+
+                                        prinvoiceId = await invoice.saveInvoice(invoice);
+
+                                    }
+                                    else
+                                        await saveCashTransfers();
                                     await clearInvoice();
                                     refreshDraftNotification();
+                                    refreshInvoiceNotification();
+
                                 }
-                            }
-                            else if (_InvoiceType == "or")
-                            {
-                                await saveOrder("s");
-                                await clearInvoice();
-                                refreshOrdersWaitNotification();
-                            }
-                            else//s  sale invoice
-                            {
-                                await saveSaleInvoice("s");
-                                if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+
+
+                                //thread  + purchases
+                                prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
+                                if (prInvoice.invType == "s")
                                 {
-                                    foreach (var item in listPayments)
+
+                                    if (MainWindow.print_on_save_sale == "1")
                                     {
-                                        await saveConfiguredCashTrans(item);
-                                        invoice.paid += item.cash;
-                                        invoice.deserved -= item.cash;
+                                        // printInvoice();
+                                        Thread t1 = new Thread(() =>
+                                        {
+                                            printInvoice();
+                                        });
+                                        t1.Start();
                                     }
-
-                                    prinvoiceId = await invoice.saveInvoice(invoice);
-
-                                }
-                                else
-                                    await saveCashTransfers();
-                                await clearInvoice();
-                                refreshDraftNotification();
-                                refreshInvoiceNotification();
-
-                            }
-
-
-                            //thread  + purchases
-                            prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
-                            if (prInvoice.invType == "s")
-                            {
-
-                                if (MainWindow.print_on_save_sale == "1")
-                                {
-                                    // printInvoice();
-                                    Thread t1 = new Thread(() =>
+                                    if (MainWindow.email_on_save_sale == "1")
                                     {
-                                        printInvoice();
-                                    });
-                                    t1.Start();
+                                        //sendsaleEmail();
+                                        Thread t1 = new Thread(() =>
+                                        {
+                                            sendsaleEmail();
+                                        });
+                                        t1.Start();
+                                    }
                                 }
-                                if (MainWindow.email_on_save_sale == "1")
-                                {
-                                    //sendsaleEmail();
-                                    Thread t1 = new Thread(() =>
-                                    {
-                                        sendsaleEmail();
-                                    });
-                                    t1.Start();
-                                }
+
+                                //    prinvoiceId = 0;
+
+                                #endregion
                             }
-
-                            //    prinvoiceId = 0;
-
-                            #endregion
                         }
+                        await MainWindow.refreshBalance();
+                        if (sender != null)
+                            SectionData.EndAwait(grid_main);
                     }
-                    //awaitSaveBtn(false);
-                    //logInProcessing = true;
-                    //}
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

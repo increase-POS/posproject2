@@ -1591,10 +1591,11 @@ namespace POS.View
                             /////////////////////////////////////////
 
                         }
+                        await MainWindow.refreshBalance();
                     }
                     else //box is closed
                     {
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
                     }
                 }
                 else
