@@ -233,10 +233,12 @@ namespace POS.View.windows
                 {
                     status = "c";
                 }
-               await openCloseBox(status);
+                await openCloseBox(status);
                 await MainWindow.refreshBalance();
                 await fillPosInfo();
             }
+            else
+                tgl_isClose.IsChecked = false;
         }
 
         private void Tgl_isClose_Unchecked(object sender, RoutedEventArgs e)

@@ -3247,6 +3247,9 @@ Please add Email in setting</value>
   <data name="trCantDoProcess" xml:space="preserve">
     <value>Can't complete the process</value>
   </data>
+  <data name="trBoxIsClosed" xml:space="preserve">
+    <value>Box is closed</value>
+  </data>
   <data name="trBoxState" xml:space="preserve">
     <value>Box State</value>
   </data>

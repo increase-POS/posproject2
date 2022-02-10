@@ -3226,6 +3226,9 @@
   <data name="trCantDoProcess" xml:space="preserve">
     <value>لا يمكنك إتمام العملية</value>
   </data>
+  <data name="trBoxIsClosed" xml:space="preserve">
+    <value>الصندوق مغلق</value>
+  </data>
   <data name="trBoxState" xml:space="preserve">
     <value>حالة الصندوق</value>
   </data>

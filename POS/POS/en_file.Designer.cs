@@ -844,6 +844,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Box is closed.
+        /// </summary>
+        internal static string trBoxIsClosed {
+            get {
+                return ResourceManager.GetString("trBoxIsClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Box State.
         /// </summary>
         internal static string trBoxState {
