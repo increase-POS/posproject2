@@ -37,6 +37,7 @@ namespace POS.View.windows
         IEnumerable<CashTransfer> cashes;
         CashTransfer cashModel = new CashTransfer();
         bool isAdmin;
+        string status = "";
         public int settingsPoSId = 0;
         public int userId;
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
@@ -91,32 +92,37 @@ namespace POS.View.windows
         }
         private async Task fillPosInfo()
         {
-            txt_cashValue.Text = MainWindow.posLogIn.balance.ToString();
-            if(MainWindow.posLogIn.boxState == "c")
+            await MainWindow.refreshBalance();
+            cashes = await cashModel.GetCashTransfer("d", "p");
+            cashesQuery = cashes.Where(s => s.posIdCreator == MainWindow.posID.Value
+                                && s.isConfirm == 0).ToList();
+
+            if (MainWindow.posLogIn.balance != 0)
+                txt_cashValue.Text = SectionData.DecTostring(MainWindow.posLogIn.balance);
+            else
+                txt_cashValue.Text = "0";
+
+            if (MainWindow.posLogIn.boxState == "c")
             {
-                btn_save.Content = MainWindow.resourcemanager.GetString("trOpen");
-                tgl_isClose.IsEnabled = false;
-                cb_pos.Visibility = Visibility.Collapsed;
-
-                cashes = await cashModel.GetCashTransfer("d", "p");
-                cashesQuery = cashes.Where(s => s.posIdCreator == MainWindow.posID.Value
-                                    && s.isConfirm == 0).ToList();
-
+                txt_stateValue.Text = MainWindow.resourcemanager.GetString("trClosed");
+                txt_isClose.Text = MainWindow.resourcemanager.GetString("trOpen");              
             }
             else
             {
-                tgl_isClose.IsEnabled = true;
-                btn_save.Content = MainWindow.resourcemanager.GetString("trClose");
-
+                txt_stateValue.Text = MainWindow.resourcemanager.GetString("trOpen");
+                txt_isClose.Text = MainWindow.resourcemanager.GetString("trClose");
             }
         }
         private void translate()
         {
             txt_title.Text = winLogIn.resourcemanager.GetString("trDailyClosing");
+            txt_boxState.Text = winLogIn.resourcemanager.GetString("trBoxState");
+            txt_balance.Text = winLogIn.resourcemanager.GetString("trBalance");
             txt_isClose.Text = winLogIn.resourcemanager.GetString("trCashTransfer");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos, winLogIn.resourcemanager.GetString("trPosHint"));
 
             tt_pos.Content = winLogIn.resourcemanager.GetString("trPosTooltip");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trTransfer");
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
@@ -136,28 +142,18 @@ namespace POS.View.windows
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_changePassword);
-                if(MainWindow.posLogIn.boxState == "c") // status is closed and we want to open the box
-                {
-                    if(cashesQuery.Count() > 0)
-                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCantOpenBox"), animation: ToasterAnimation.FadeIn);
-                    else//open box
-                    await openBox();
-                }
-                else //status is open and we want to close the box
-                {
-                    if (tgl_isClose.IsChecked == true)// close with cash transfer to pos
+                if (cashesQuery.Count() > 0)
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCantDoProcess"), animation: ToasterAnimation.FadeIn);
+                else
+                { 
+                    bool valid = validate();
+                    if (valid)
                     {
-                        bool valid = validate();
-                        if (valid)
-                        {
-                            await closeWithTransfer();
-                        }
+                        await transfer();
+                        await fillPosInfo();
                     }
-                    else
-                        await closeBox();
                 }
-
-                this.Close();
+                
                 if (sender != null)
                     SectionData.EndAwait(grid_changePassword);
 
@@ -215,20 +211,37 @@ namespace POS.View.windows
             {
                 cb.Background = (Brush)bc.ConvertFrom("#f8f8f8");
                 p_error.Visibility = Visibility.Collapsed;
-
             }
         }
 
-        private void Tgl_isClose_Checked(object sender, RoutedEventArgs e)
+        private async void Tgl_isClose_Checked(object sender, RoutedEventArgs e)
         {
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
-            cb_pos.Visibility = Visibility.Visible;
+            #region Accept
+            MainWindow.mainWindow.Opacity = 0.2;
+            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
+            w.ShowDialog();
+            MainWindow.mainWindow.Opacity = 1;
+            #endregion
+            if (w.isOk)
+            {
+                if (MainWindow.posLogIn.boxState == "c")
+                {
+                    status = "o";
+                }
+                else
+                {
+                    status = "c";
+                }
+               await openCloseBox(status);
+                await MainWindow.refreshBalance();
+                await fillPosInfo();
+            }
         }
 
         private void Tgl_isClose_Unchecked(object sender, RoutedEventArgs e)
         {
-            btn_save.Content = MainWindow.resourcemanager.GetString("trClose");
-            cb_pos.Visibility = Visibility.Collapsed;
+
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -243,28 +256,17 @@ namespace POS.View.windows
             }
         }
         #region open - close - validate
-        private async Task openBox()
+        private async Task openCloseBox(string status)
         {
             CashTransfer cashTransfer = new CashTransfer();
             cashTransfer.processType = "box";
-            cashTransfer.transType = "o";
+            cashTransfer.transType = status;
             cashTransfer.cash = MainWindow.posLogIn.balance;
             cashTransfer.createUserId = MainWindow.userID.Value;
-            int res = await posModel.updateBoxState((int)MainWindow.posID,"o",Convert.ToInt32(isAdmin),MainWindow.userLogin.userId,cashTransfer);
-        }
-        private async Task closeBox()
+            int res = await posModel.updateBoxState((int)MainWindow.posID,status,Convert.ToInt32(isAdmin),MainWindow.userLogin.userId,cashTransfer);
+        }       
+        private async Task transfer()
         {
-            CashTransfer cashTransfer = new CashTransfer();
-            cashTransfer.processType = "box";
-            cashTransfer.transType = "c";
-            cashTransfer.cash = MainWindow.posLogIn.balance;
-            cashTransfer.createUserId = MainWindow.userID.Value;
-            int res = await posModel.updateBoxState((int)MainWindow.posID,"c",Convert.ToInt32(isAdmin),MainWindow.userLogin.userId,cashTransfer);
-        }
-
-        private async Task closeWithTransfer()
-        {
-            await closeBox();
             //add cash transfer
             CashTransfer cash1 = new CashTransfer();
 

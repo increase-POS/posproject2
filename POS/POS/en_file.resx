@@ -3244,7 +3244,16 @@ Please add Email in setting</value>
   <data name="trZeroBalance" xml:space="preserve">
     <value>Balance is zero</value>
   </data>
-  <data name="trCantOpenBox" xml:space="preserve">
-    <value>Can't open the box</value>
+  <data name="trCantDoProcess" xml:space="preserve">
+    <value>Can't complete the process</value>
+  </data>
+  <data name="trBoxState" xml:space="preserve">
+    <value>Box State</value>
+  </data>
+  <data name="trClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="trMessageBoxConfirm" xml:space="preserve">
+    <value>Are you sure you want to continue?</value>
   </data>
 </root>

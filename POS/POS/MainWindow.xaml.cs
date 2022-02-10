@@ -1122,20 +1122,21 @@ namespace POS
             refreshBalance();
         }
 
-       public async Task refreshBalance()
+       public static async Task refreshBalance()
         {
             try
             {
                 posLogIn = await posLogIn.getById(posID.Value);
-                txt_cashValue.Text = SectionData.DecTostring(posLogIn.balance);
-                txt_cashSympol.Text = MainWindow.Currency;
+                mainWindow.txt_cashValue.Text = SectionData.DecTostring(posLogIn.balance);
+                mainWindow.txt_cashSympol.Text = MainWindow.Currency;
             }
             catch (Exception ex)
             {
-                SectionData.ExceptionMessage(ex, this);
+                SectionData.ExceptionMessage(ex, mainWindow);
             }
 
         }
+
         void timer_Tick(object sender, EventArgs e)
         {
             try

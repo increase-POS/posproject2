@@ -835,6 +835,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حالة الصندوق.
+        /// </summary>
+        internal static string trBoxState {
+            get {
+                return ResourceManager.GetString("trBoxState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الفرع.
         /// </summary>
         internal static string trBranch {
@@ -997,11 +1006,11 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to لا يمكنك فتح الصندوق.
+        ///   Looks up a localized string similar to لا يمكنك إتمام العملية.
         /// </summary>
-        internal static string trCantOpenBox {
+        internal static string trCantDoProcess {
             get {
-                return ResourceManager.GetString("trCantOpenBox", resourceCulture);
+                return ResourceManager.GetString("trCantDoProcess", resourceCulture);
             }
         }
         
@@ -1254,6 +1263,15 @@ namespace POS {
         internal static string trClose {
             get {
                 return ResourceManager.GetString("trClose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مغلق.
+        /// </summary>
+        internal static string trClosed {
+            get {
+                return ResourceManager.GetString("trClosed", resourceCulture);
             }
         }
         
@@ -4845,6 +4863,15 @@ namespace POS {
         internal static string trMessageBoxActivate {
             get {
                 return ResourceManager.GetString("trMessageBoxActivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to هل أنت متأكد من إتمام العملية؟.
+        /// </summary>
+        internal static string trMessageBoxConfirm {
+            get {
+                return ResourceManager.GetString("trMessageBoxConfirm", resourceCulture);
             }
         }
         

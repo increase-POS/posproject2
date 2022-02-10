@@ -3223,7 +3223,16 @@
   <data name="trZeroBalance" xml:space="preserve">
     <value>الرصيد صفر</value>
   </data>
-  <data name="trCantOpenBox" xml:space="preserve">
-    <value>لا يمكنك فتح الصندوق</value>
+  <data name="trCantDoProcess" xml:space="preserve">
+    <value>لا يمكنك إتمام العملية</value>
+  </data>
+  <data name="trBoxState" xml:space="preserve">
+    <value>حالة الصندوق</value>
+  </data>
+  <data name="trClosed" xml:space="preserve">
+    <value>مغلق</value>
+  </data>
+  <data name="trMessageBoxConfirm" xml:space="preserve">
+    <value>هل أنت متأكد من إتمام العملية؟</value>
   </data>
 </root>

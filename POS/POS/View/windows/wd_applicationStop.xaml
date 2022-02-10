@@ -11,7 +11,7 @@
         Title="Increase POS"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-         Height="210" Width="300"  
+         Height="250" Width="300"  
         Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid Grid.Column="1" Grid.Row="1"  x:Name="grid_changePassword">
         <Grid.RowDefinitions>
@@ -73,19 +73,33 @@
                     <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="1500.00"  Foreground="#6e6e6e" Name="txt_cashValue"
+                    <TextBlock   x:Name="txt_boxState"
+                                   Margin="0,6,5,6" Text="Box State " Foreground="#6e6e6e"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="12"/>
+                    <TextBlock Text="open"  Foreground="#6e6e6e" x:Name="txt_stateValue"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,5,5,5"
                            FontWeight="SemiBold" FontSize="14"/>
-                    <TextBlock Text="KWD"  Foreground="#6e6e6e" Name="txt_moneyIcon"
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock   x:Name="txt_balance"
+                                   Margin="0,6,5,6" Text="Balance " Foreground="#6e6e6e"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                                   FontSize="12"/>
+                    <TextBlock Text="1500.00"  Foreground="#6e6e6e" x:Name="txt_cashValue"
+                                   HorizontalAlignment="Left" VerticalAlignment="Center" 
+                              Grid.Column="1"      Margin="10,5,5,5"
+                           FontWeight="SemiBold" FontSize="14"/>
+                    <TextBlock Text="KWD"  Foreground="#6e6e6e" x:Name="txt_moneyIcon"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="0,5"
                            FontWeight="SemiBold" FontSize="14"/>
                 </StackPanel>
-                
-                <DockPanel Grid.Row="1"  Margin="10,5,10,5" >
+
+                <DockPanel Grid.Row="2"  Margin="10,5,10,5" >
                     <TextBlock   x:Name="txt_isClose"
-                                   Margin="0,0,5,0" Text="account closing " Foreground="#6e6e6e"
+                                   Margin="0,0,5,0" Text="open/close" Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                     <ToggleButton   x:Name="tgl_isClose"  
@@ -94,15 +108,14 @@
                                         VerticalAlignment="Center" HorizontalAlignment="Left" 
                                     Padding="10,15,5,5"  
                                       Margin="0" Height="13" Width="28"  TabIndex="15" />
-                   </DockPanel>
-                <ComboBox x:Name="cb_pos"  Grid.Row="2"
+                </DockPanel>
+                <ComboBox x:Name="cb_pos"  Grid.Row="3"
                                   Padding="10,5,5,0"  TextBlock.Foreground="#4E4E4E"
                                   materialDesign:HintAssist.Hint="pos..."  
                                   TextBlock.FontSize="12"   Background="#f8f8f8"
                                   Grid.Column="0" Height="40"  Margin="10,5,10,5"
                                   BorderBrush="#737373" BorderThickness="0" 
-                                  LostFocus="Tb_validateEmptyLostFocus"
-                                    Visibility="Collapsed">
+                                  LostFocus="Tb_validateEmptyLostFocus">
                     <ComboBox.ToolTip>
                         <ToolTip x:Name="tt_pos" Content="pos"
                                                           Placement="left" 
@@ -112,14 +125,14 @@
                     </ComboBox.ToolTip>
                 </ComboBox>
                 <Path Fill="#E81123" x:Name="p_errorPos" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Row="2" Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Row="3" Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                     <Path.ToolTip>
                         <ToolTip x:Name="tt_errorPos" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                     </Path.ToolTip>
                 </Path>
-                <Button   Grid.Row="4"   Content="save/close/open"
+                <Button   Grid.Row="4"   Content="transfer"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}" />
 
