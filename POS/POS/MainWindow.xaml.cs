@@ -1139,7 +1139,8 @@ namespace POS
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
-            }           
+            }
+            refreshBalance();
         }
 
        public static async Task refreshBalance()
