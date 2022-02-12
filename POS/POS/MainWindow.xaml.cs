@@ -332,6 +332,26 @@ namespace POS
                 }
             }
         }
+        async void loading_getBalance()
+        {
+            //get print count
+            try
+            {
+               await refreshBalance();
+            }
+            catch
+            {
+
+            }
+            foreach (var item in loadingList)
+            {
+                if (item.key.Equals("loading_getBalance"))
+                {
+                    item.value = true;
+                    break;
+                }
+            }
+        }
         async void loading_getDateForm()
         {
             //get dateform
@@ -840,6 +860,7 @@ namespace POS
                 loadingList.Add(new keyValueBool { key = "loading_GlobalUnitsList", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_POSList", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_getPrintCount", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_getBalance", value = false });
 
                 loading_getUserPath();
                 //loading_getTax();
@@ -858,6 +879,7 @@ namespace POS
                 loading_GlobalUnitsList();
                 loading_POSList();
                 loading_getPrintCount();
+                loading_getBalance();
                 do
                 {
                     isDone = true;
@@ -1117,9 +1139,7 @@ namespace POS
             catch (Exception ex)
             {
                 SectionData.ExceptionMessage(ex, this);
-            }
-
-            refreshBalance();
+            }           
         }
 
        public static async Task refreshBalance()
