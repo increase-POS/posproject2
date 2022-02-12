@@ -3259,4 +3259,7 @@ Please add Email in setting</value>
   <data name="trMessageBoxConfirm" xml:space="preserve">
     <value>Are you sure you want to continue?</value>
   </data>
+  <data name="trUnavailable" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
 </root>

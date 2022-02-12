@@ -522,72 +522,74 @@ namespace POS.View.accounts
                 int s1 = 0;
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    #region validate
-
-                    //chk empty cash
-                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-
-                    //chk empty doc num
-                    if (grid_doc.IsVisible)
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
                     {
-                        TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+                        #region validate
 
-                        SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
-                        SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
-                    }
-                    else
-                    {
-                    }
+                        //chk empty cash
+                        SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
 
-                    //chk empty cheque num
-                    if (grid_cheque.IsVisible)
-                    {
-                        SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
-                    }
-                    else
-                    {
-                    }
-                    ////chk empty process num
-                    //if (tb_docNumCard.IsVisible)
-                    //{
-                    //    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
-                    //}
-                    //else
-                    //{
-                    //    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                    //}
-                    //chk empty deposit from
-                    SectionData.validateEmptyComboBox(cb_depositFrom, p_errorDepositFrom, tt_errorDepositFrom, "trErrorEmptyDepositFromToolTip");
+                        //chk empty doc num
+                        if (grid_doc.IsVisible)
+                        {
+                            TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
 
-                    //chk empty depositor
-                    if (cb_depositorV.IsVisible)
-                        SectionData.validateEmptyComboBox(cb_depositorV, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                    else
-                        SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
-                    if (cb_depositorC.IsVisible)
-                        SectionData.validateEmptyComboBox(cb_depositorC, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                    else
-                        SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
-                    if (cb_depositorU.IsVisible)
-                        SectionData.validateEmptyComboBox(cb_depositorU, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                    else
-                        SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
-                    if (cb_depositorSh.IsVisible)
-                        SectionData.validateEmptyComboBox(cb_depositorSh, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
-                    else
-                        SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                            SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
+                            SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
+                        }
+                        else
+                        {
+                        }
 
-                    //chk empty payment type
-                    SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                        //chk empty cheque num
+                        if (grid_cheque.IsVisible)
+                        {
+                            SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
+                        }
+                        else
+                        {
+                        }
+                        ////chk empty process num
+                        //if (tb_docNumCard.IsVisible)
+                        //{
+                        //    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_docNumCard, "trEmptyProcessNumToolTip");
+                        //}
+                        //else
+                        //{
+                        //    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //}
+                        //chk empty deposit from
+                        SectionData.validateEmptyComboBox(cb_depositFrom, p_errorDepositFrom, tt_errorDepositFrom, "trErrorEmptyDepositFromToolTip");
 
-                    //chk empty card 
-                    if (gd_card.IsVisible)
-                        SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
-                    else
-                        SectionData.clearTextBlockValidate(txt_card, p_errorCard);
-                    #endregion
+                        //chk empty depositor
+                        if (cb_depositorV.IsVisible)
+                            SectionData.validateEmptyComboBox(cb_depositorV, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                        else
+                            SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
+                        if (cb_depositorC.IsVisible)
+                            SectionData.validateEmptyComboBox(cb_depositorC, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                        else
+                            SectionData.clearComboBoxValidate(cb_depositorC, p_errordepositor);
+                        if (cb_depositorU.IsVisible)
+                            SectionData.validateEmptyComboBox(cb_depositorU, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                        else
+                            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
+                        if (cb_depositorSh.IsVisible)
+                            SectionData.validateEmptyComboBox(cb_depositorSh, p_errordepositor, tt_errordepositor, "trErrorEmptyDepositorToolTip");
+                        else
+                            SectionData.clearComboBoxValidate(cb_depositorU, p_errordepositor);
 
-                    #region save
+                        //chk empty payment type
+                        SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+
+                        //chk empty card 
+                        if (gd_card.IsVisible)
+                            SectionData.validateEmptyTextBlock(txt_card, p_errorCard, tt_errorCard, "trSelectCreditCard");
+                        else
+                            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
+                        #endregion
+
+                        #region save
                         if ((!tb_cash.Text.Equals("")) && (!cb_depositFrom.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
                         (((cb_depositorV.IsVisible) && (!cb_depositorV.Text.Equals(""))) || (!cb_depositorV.IsVisible)) &&
                         (((cb_depositorC.IsVisible) && (!cb_depositorC.Text.Equals(""))) || (!cb_depositorC.IsVisible)) &&
@@ -598,91 +600,101 @@ namespace POS.View.accounts
                         (((gd_card.IsVisible) && (!txt_card.Text.Equals(""))) || (!gd_card.IsVisible))
                         )
                         {
-                        string depositor = cb_depositFrom.SelectedValue.ToString();
-                        int agentid = 0;
+                            string depositor = cb_depositFrom.SelectedValue.ToString();
+                            int agentid = 0;
 
-                        CashTransfer cash = new CashTransfer();
+                            CashTransfer cash = new CashTransfer();
 
-                        cash.transType = "d";
-                        cash.posId = MainWindow.posID.Value;
-                        cash.transNum = await cashModel.generateCashNumber(cash.transType + cb_depositFrom.SelectedValue.ToString());
-                        cash.cash = decimal.Parse(tb_cash.Text);
-                        cash.notes = tb_note.Text;
-                        cash.createUserId = MainWindow.userID;
-                        cash.side = cb_depositFrom.SelectedValue.ToString();
-                        cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+                            cash.transType = "d";
+                            cash.posId = MainWindow.posID.Value;
+                            cash.transNum = await cashModel.generateCashNumber(cash.transType + cb_depositFrom.SelectedValue.ToString());
+                            cash.cash = decimal.Parse(tb_cash.Text);
+                            cash.notes = tb_note.Text;
+                            cash.createUserId = MainWindow.userID;
+                            cash.side = cb_depositFrom.SelectedValue.ToString();
+                            cash.processType = cb_paymentProcessType.SelectedValue.ToString();
 
-                        if (cb_depositorV.IsVisible)
-                        { cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue); agentid = Convert.ToInt32(cb_depositorV.SelectedValue); }
+                            if (cb_depositorV.IsVisible)
+                            { cash.agentId = Convert.ToInt32(cb_depositorV.SelectedValue); agentid = Convert.ToInt32(cb_depositorV.SelectedValue); }
 
-                        if (cb_depositorC.IsVisible)
-                        { cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
-                            agentid = Convert.ToInt32(cb_depositorC.SelectedValue);
-                        }
+                            if (cb_depositorC.IsVisible)
+                            {
+                                cash.agentId = Convert.ToInt32(cb_depositorC.SelectedValue);
+                                agentid = Convert.ToInt32(cb_depositorC.SelectedValue);
+                            }
 
-                        if (cb_depositorU.IsVisible)
-                            cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
+                            if (cb_depositorU.IsVisible)
+                                cash.userId = Convert.ToInt32(cb_depositorU.SelectedValue);
 
-                        if (cb_depositorSh.IsVisible)
-                            cash.shippingCompanyId = Convert.ToInt32(cb_depositorSh.SelectedValue);
+                            if (cb_depositorSh.IsVisible)
+                                cash.shippingCompanyId = Convert.ToInt32(cb_depositorSh.SelectedValue);
 
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
-                        {
-                            cash.cardId = _SelectedCard;
-                            cash.docNum = tb_docNumCard.Text;
-                        }
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            {
+                                cash.cardId = _SelectedCard;
+                                cash.docNum = tb_docNumCard.Text;
+                            }
 
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                            cash.docNum = tb_docNum.Text;
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                                cash.docNum = tb_docNum.Text;
 
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
-                            cash.docNum = tb_docNumCheque.Text;
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
+                                cash.docNum = tb_docNumCheque.Text;
 
-                        if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                        {
-                            int res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
-                            cash.bondId = res;
-                        }
+                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                            {
+                                int res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                                cash.bondId = res;
+                            }
 
-                        if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
-                        {
-                            if (tb_cash.IsReadOnly)
-                                s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
+                            if (cb_depositorV.IsVisible || cb_depositorC.IsVisible)
+                            {
+                                if (tb_cash.IsReadOnly)
+                                    s1 = await cashModel.PayListOfInvoices(cash.agentId.Value, invoicesLst, "feed", cash);
+                                else
+                                    s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                            }
+                            else if (cb_depositorU.IsVisible)
+                            {
+                                if (tb_cash.IsReadOnly)
+                                    s1 = await cashModel.PayUserListOfInvoices(cash.userId.Value, invoicesLst, "feed", cash);
+                                else
+                                    s1 = await cashModel.PayUserByAmmount(cash.userId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                            }
+                            else if (cb_depositorSh.IsVisible)
+                            {
+                                if (tb_cash.IsReadOnly)
+                                    s1 = await cashModel.PayShippingCompanyListOfInvoices(cash.shippingCompanyId.Value, invoicesLst, "feed", cash);
+                                else
+                                    s1 = await cashModel.payShippingCompanyByAmount(cash.shippingCompanyId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                            }
                             else
-                                s1 = await cashModel.PayByAmmount(cash.agentId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                        }
-                        else if (cb_depositorU.IsVisible)
-                        {
-                            if (tb_cash.IsReadOnly)
-                                s1 = await cashModel.PayUserListOfInvoices(cash.userId.Value, invoicesLst, "feed", cash);
+                                s = await cashModel.Save(cash);
+
+                            if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
+                            {
+                                if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                                {
+                                    await calcBalance(cash.cash.Value, depositor, agentid);
+                                    await MainWindow.refreshBalance();
+                                }
+
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                Btn_clear_Click(null, null);
+
+                                await RefreshCashesList();
+                                Tb_search_TextChanged(null, null);
+
+                            }
                             else
-                                s1 = await cashModel.PayUserByAmmount(cash.userId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
-                        else if (cb_depositorSh.IsVisible)
-                        {
-                            if (tb_cash.IsReadOnly)
-                                s1 = await cashModel.PayShippingCompanyListOfInvoices(cash.shippingCompanyId.Value, invoicesLst, "feed", cash);
-                            else
-                                s1 = await cashModel.payShippingCompanyByAmount(cash.shippingCompanyId.Value, decimal.Parse(tb_cash.Text), "feed", cash);
-                        }
-                        else
-                            s = await cashModel.Save(cash);
-
-                        if ((!s.Equals("0")) || (!s1.Equals("")) || (s1.Equals("-1")))
-                        {
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                                await calcBalance(cash.cash.Value, depositor, agentid);
-
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                            Btn_clear_Click(null, null);
-
-                            await RefreshCashesList();
-                            Tb_search_TextChanged(null, null);
-                        }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        #endregion
                     }
-                    #endregion
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
+                    }
 
                 }
                 else

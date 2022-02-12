@@ -231,9 +231,11 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucBonds);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    //chk empty payment type
-                    SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
+                    {
+                        #region validate
+                        //chk empty payment type
+                        SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
                     //chk empty card 
                     if (gd_card.IsVisible)
                     {
@@ -266,7 +268,7 @@ namespace POS.View.accounts
                     }
                     #endregion
 
-                    #region pay
+                        #region pay
 
                     if ((!cb_paymentProcessType.Text.Equals("")) &&
                         
@@ -318,8 +320,11 @@ namespace POS.View.accounts
 
                             if (!s.Equals(0))
                             {
-                                if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                                    await calcBalance(bond.type, cash.cash.Value);
+                                    if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                                    {
+                                        await calcBalance(bond.type, cash.cash.Value);
+                                        await MainWindow.refreshBalance();
+                                    }
 
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
 
@@ -327,12 +332,19 @@ namespace POS.View.accounts
 
                                 await RefreshBondsList();
                                 Tb_search_TextChanged(null, null);
-                            }
+
+                                    
+                                }
                         }
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    #endregion
+                        #endregion
+                    }
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

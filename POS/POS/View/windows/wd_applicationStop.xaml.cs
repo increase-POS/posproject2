@@ -101,11 +101,13 @@ namespace POS.View.windows
 
             if (cashesQuery.Count() == 0)
             {
+                //yasin
                 txt_balanceState.Text = MainWindow.resourcemanager.GetString("trAvailable");
                 btn_save.IsEnabled = true;
             }
             else
             {
+                //yasin
                 txt_balanceState.Text = MainWindow.resourcemanager.GetString("trWaiting");
                 btn_save.IsEnabled = false;
             }
@@ -118,15 +120,20 @@ namespace POS.View.windows
             status = MainWindow.posLogIn.boxState;
             if (MainWindow.posLogIn.boxState == "c")
             {
+                //yasin
+                txt_balanceState.Text = MainWindow.resourcemanager.GetString("trUnavailable");
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trClosed");
                 tgl_isClose.IsChecked = false;
                 btn_save.IsEnabled = false;
+                cb_pos.IsEnabled = false;
 
             }
             else
             {
+                //yasin
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trOpen");
                 tgl_isClose.IsChecked = true;
+                cb_pos.IsEnabled = true;
 
             }
         }
@@ -243,22 +250,21 @@ namespace POS.View.windows
             if (cb.IsFocused == true)
             {
                 #region Accept
-                MainWindow.mainWindow.Opacity = 0.2;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                 w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
                 w.ShowDialog();
-                MainWindow.mainWindow.Opacity = 1;
+                
                 #endregion
                 if (w.isOk)
                 {
                     status = "o";
 
-                    await openCloseBox(status);
-                    await MainWindow.refreshBalance();
+                    await openCloseBox(status);                   
                     await fillPosInfo();
                 }
                 else
                     tgl_isClose.IsChecked = false;
+
             }
             flag = false;
         }
@@ -279,22 +285,20 @@ namespace POS.View.windows
                 else
                 {
                     #region Accept
-                    MainWindow.mainWindow.Opacity = 0.2;
                     wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                     w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
                     w.ShowDialog();
-                    MainWindow.mainWindow.Opacity = 1;
                     #endregion
                     if (w.isOk)
                     {
                         status = "c";
 
                         await openCloseBox(status);
-                        await MainWindow.refreshBalance();
                         await fillPosInfo();
                     }
                     else
                         tgl_isClose.IsChecked = true;
+
                 }
             }
             flag = false;
@@ -320,7 +324,15 @@ namespace POS.View.windows
             cashTransfer.cash = MainWindow.posLogIn.balance;
             cashTransfer.createUserId = MainWindow.userID.Value;
             int res = await posModel.updateBoxState((int)MainWindow.posID,status,Convert.ToInt32(isAdmin),MainWindow.userLogin.userId,cashTransfer);
-        }       
+            if (res > 0)
+            {
+                await MainWindow.refreshBalance();
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+        }
         private async Task transfer()
         {
             //add cash transfer
@@ -353,7 +365,11 @@ namespace POS.View.windows
                 cash2.cashTransIdSource = s1;//id from first operation
 
                 int s2 = await cash2.Save(cash2);
-            }
+                if(s2 > 0)
+                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+        }
         }
         private Boolean validate()
         {

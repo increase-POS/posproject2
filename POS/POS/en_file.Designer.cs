@@ -8774,6 +8774,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unavailable.
+        /// </summary>
+        internal static string trUnavailable {
+            get {
+                return ResourceManager.GetString("trUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unconfirmed.
         /// </summary>
         internal static string trUnConfirmed {

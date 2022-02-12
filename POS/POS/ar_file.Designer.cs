@@ -8720,6 +8720,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to غير متاح.
+        /// </summary>
+        internal static string trUnavailable {
+            get {
+                return ResourceManager.GetString("trUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to غير مؤكدة.
         /// </summary>
         internal static string trUnConfirmed {

@@ -496,106 +496,112 @@ namespace POS.View.accounts
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
-
-                    #region validate
-                    //chk empty cash
-                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                    //chk empty pos1
-                    SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
-                    //chk empty pos2
-                    SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
-                    //chk if 2 pos is the same
-                    bool isSame = false;
-                    if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
-                        isSame = true;
-                    if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue == cb_pos2.SelectedValue))
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
                     {
-                        SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
-                        SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
-                    }
-
-                    #endregion
-
-                    #region add
-
-                    if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame /*&& !validTransAdmin()*/)
-                    {
-                        Pos pos = await posModel.getById(Convert.ToInt32(cb_pos1.SelectedValue));
-                        if (pos.balance < decimal.Parse(tb_cash.Text))
-                        { Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn); }
-                        else
+                        #region validate
+                        //chk empty cash
+                        SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                        //chk empty pos1
+                        SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
+                        //chk empty pos2
+                        SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
+                        //chk if 2 pos is the same
+                        bool isSame = false;
+                        if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
+                            isSame = true;
+                        if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue == cb_pos2.SelectedValue))
                         {
-                            //first operation
-                            CashTransfer cash1 = new CashTransfer();
+                            SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
+                            SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
+                        }
 
-                            cash1.transType = "p";//pull
-                            cash1.transNum = await cashModel.generateCashNumber(cash1.transType + "p");
-                            cash1.cash = decimal.Parse(tb_cash.Text);
-                            cash1.createUserId = MainWindow.userID.Value;
-                            cash1.notes = tb_note.Text;
-                            cash1.posIdCreator = MainWindow.posID.Value;
-                            if (Convert.ToInt32(cb_pos1.SelectedValue) == MainWindow.posID)
-                                cash1.isConfirm = 1;
-                            else cash1.isConfirm = 0;
-                            cash1.side = "p";//pos
-                            cash1.posId = Convert.ToInt32(cb_pos1.SelectedValue);
+                        #endregion
 
-                            int s1 = await cashModel.Save(cash1);
+                        #region add
 
-                            if (!s1.Equals(0))
+                        if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame /*&& !validTransAdmin()*/)
+                        {
+                            Pos pos = await posModel.getById(Convert.ToInt32(cb_pos1.SelectedValue));
+                            if (pos.balance < decimal.Parse(tb_cash.Text))
+                            { Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn); }
+                            else
                             {
-                                //second operation
-                                CashTransfer cash2 = new CashTransfer();
+                                //first operation
+                                CashTransfer cash1 = new CashTransfer();
 
-                                cash2.transType = "d";//deposite
-                                cash2.transNum = await cashModel.generateCashNumber(cash2.transType + "p");
-                                cash2.cash = decimal.Parse(tb_cash.Text);
-                                cash2.createUserId = MainWindow.userID.Value;
-                                cash2.posIdCreator = MainWindow.posID.Value;
-                                if (Convert.ToInt32(cb_pos2.SelectedValue) == MainWindow.posID)
-                                    cash2.isConfirm = 1;
-                                else cash2.isConfirm = 0;
-                                cash2.side = "p";//pos
-                                cash2.posId = Convert.ToInt32(cb_pos2.SelectedValue);
-                                cash2.cashTransIdSource = s1;//id from first operation
+                                cash1.transType = "p";//pull
+                                cash1.transNum = await cashModel.generateCashNumber(cash1.transType + "p");
+                                cash1.cash = decimal.Parse(tb_cash.Text);
+                                cash1.createUserId = MainWindow.userID.Value;
+                                cash1.notes = tb_note.Text;
+                                cash1.posIdCreator = MainWindow.posID.Value;
+                                if (Convert.ToInt32(cb_pos1.SelectedValue) == MainWindow.posID)
+                                    cash1.isConfirm = 1;
+                                else cash1.isConfirm = 0;
+                                cash1.side = "p";//pos
+                                cash1.posId = Convert.ToInt32(cb_pos1.SelectedValue);
 
-                                int s2 = await cashModel.Save(cash2);
+                                int s1 = await cashModel.Save(cash1);
 
-                                if (!s2.Equals(0))
+                                if (!s1.Equals(0))
                                 {
-                                    #region notification Object
-                                    int pos1 = 0;
-                                    int pos2 = 0;
-                                    if ((int)cb_pos1.SelectedValue != MainWindow.posID.Value)
-                                        pos1 = (int)cb_pos1.SelectedValue;
-                                    if ((int)cb_pos2.SelectedValue != MainWindow.posID.Value)
-                                        pos2 = (int)cb_pos2.SelectedValue;
-                                    Notification not = new Notification()
+                                    //second operation
+                                    CashTransfer cash2 = new CashTransfer();
+
+                                    cash2.transType = "d";//deposite
+                                    cash2.transNum = await cashModel.generateCashNumber(cash2.transType + "p");
+                                    cash2.cash = decimal.Parse(tb_cash.Text);
+                                    cash2.createUserId = MainWindow.userID.Value;
+                                    cash2.posIdCreator = MainWindow.posID.Value;
+                                    if (Convert.ToInt32(cb_pos2.SelectedValue) == MainWindow.posID)
+                                        cash2.isConfirm = 1;
+                                    else cash2.isConfirm = 0;
+                                    cash2.side = "p";//pos
+                                    cash2.posId = Convert.ToInt32(cb_pos2.SelectedValue);
+                                    cash2.cashTransIdSource = s1;//id from first operation
+
+                                    int s2 = await cashModel.Save(cash2);
+
+                                    if (!s2.Equals(0))
                                     {
-                                        title = "trTransferAlertTilte",
-                                        ncontent = "trTransferAlertContent",
-                                        msgType = "alert",
-                                        createUserId = MainWindow.userID.Value,
-                                        updateUserId = MainWindow.userID.Value,
-                                    };
-                                    if (pos1 != 0)
-                                        await not.save(not, (int)cb_pos1.SelectedValue, "accountsAlerts_transfers", cb_pos2.Text, 0, pos1);
-                                    if (pos2 != 0)
-                                        await not.save(not, (int)cb_pos2.SelectedValue, "accountsAlerts_transfers", cb_pos1.Text, 0, pos2);
+                                        #region notification Object
+                                        int pos1 = 0;
+                                        int pos2 = 0;
+                                        if ((int)cb_pos1.SelectedValue != MainWindow.posID.Value)
+                                            pos1 = (int)cb_pos1.SelectedValue;
+                                        if ((int)cb_pos2.SelectedValue != MainWindow.posID.Value)
+                                            pos2 = (int)cb_pos2.SelectedValue;
+                                        Notification not = new Notification()
+                                        {
+                                            title = "trTransferAlertTilte",
+                                            ncontent = "trTransferAlertContent",
+                                            msgType = "alert",
+                                            createUserId = MainWindow.userID.Value,
+                                            updateUserId = MainWindow.userID.Value,
+                                        };
+                                        if (pos1 != 0)
+                                            await not.save(not, (int)cb_pos1.SelectedValue, "accountsAlerts_transfers", cb_pos2.Text, 0, pos1);
+                                        if (pos2 != 0)
+                                            await not.save(not, (int)cb_pos2.SelectedValue, "accountsAlerts_transfers", cb_pos1.Text, 0, pos2);
 
-                                    #endregion
+                                        #endregion
 
-                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                                    Btn_clear_Click(null, null);
+                                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                        Btn_clear_Click(null, null);
 
-                                    await RefreshCashesList();
-                                    Tb_search_TextChanged(null, null);
+                                        await RefreshCashesList();
+                                        Tb_search_TextChanged(null, null);
+                                    }
+                                    else
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                                 }
-                                else
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }
                         #endregion
+                    }
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
                     }
                 }
                 else
@@ -618,56 +624,62 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucposAccounts);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update"))
                 {
-
-                    #region validate
-                    //chk empty cash
-                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                    //chk empty user
-                    SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
-                    //chk empty bank
-                    SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
-                    //chk if 2 pos is the same
-                    bool isSame = false;
-                    if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
-                        isSame = true;
-                    if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue == cb_pos2.SelectedValue))
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
                     {
-                        SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
-                        SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
-                    }
-                    #endregion
-
-                    #region update
-                    if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
-                    {
-                        //first operation (pull)
-                        cashtrans2.cash = decimal.Parse(tb_cash.Text);
-                        cashtrans2.notes = tb_note.Text;
-                        cashtrans2.posId = Convert.ToInt32(cb_pos1.SelectedValue);
-
-                        int s1 = await cashModel.Save(cashtrans2);
-
-                        if (!s1.Equals(0))
+                        #region validate
+                        //chk empty cash
+                        SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                        //chk empty user
+                        SectionData.validateEmptyComboBox(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorEmptyFromPosToolTip");
+                        //chk empty bank
+                        SectionData.validateEmptyComboBox(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorEmptyToPosToolTip");
+                        //chk if 2 pos is the same
+                        bool isSame = false;
+                        if (cb_pos1.SelectedValue == cb_pos2.SelectedValue)
+                            isSame = true;
+                        if ((cb_pos1.SelectedIndex != -1) && (cb_pos2.SelectedIndex != -1) && (cb_pos1.SelectedValue == cb_pos2.SelectedValue))
                         {
-                            //second operation (deposit)
-                            cashtrans3.cash = decimal.Parse(tb_cash.Text);
-                            cashtrans3.posId = Convert.ToInt32(cb_pos2.SelectedValue);
-                            cashtrans3.notes = tb_note.Text;
-
-                            int s2 = await cashModel.Save(cashtrans3);
-
-                            if (!s2.Equals(0))
-                            {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-
-                                await RefreshCashesList();
-                                Tb_search_TextChanged(null, null);
-                            }
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            SectionData.showComboBoxValidate(cb_pos1, p_errorPos1, tt_errorPos1, "trErrorSamePos");
+                            SectionData.showComboBoxValidate(cb_pos2, p_errorPos2, tt_errorPos2, "trErrorSamePos");
                         }
+                        #endregion
+
+                        #region update
+                        if ((!tb_cash.Text.Equals("")) && (!cb_pos1.Text.Equals("")) && (!cb_pos2.Text.Equals("")) && !isSame)
+                        {
+                            //first operation (pull)
+                            cashtrans2.cash = decimal.Parse(tb_cash.Text);
+                            cashtrans2.notes = tb_note.Text;
+                            cashtrans2.posId = Convert.ToInt32(cb_pos1.SelectedValue);
+
+                            int s1 = await cashModel.Save(cashtrans2);
+
+                            if (!s1.Equals(0))
+                            {
+                                //second operation (deposit)
+                                cashtrans3.cash = decimal.Parse(tb_cash.Text);
+                                cashtrans3.posId = Convert.ToInt32(cb_pos2.SelectedValue);
+                                cashtrans3.notes = tb_note.Text;
+
+                                int s2 = await cashModel.Save(cashtrans3);
+
+                                if (!s2.Equals(0))
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+
+                                    await RefreshCashesList();
+                                    Tb_search_TextChanged(null, null);
+                                }
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                            }
+                        }
+                        #endregion
                     }
-                    #endregion
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
+                    }
 
                 }
                 else
@@ -691,33 +703,40 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucposAccounts);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "delete") || SectionData.isAdminPermision())
                 {
-                    if (cashtrans.cashTransId != 0)
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
                     {
-                        #region
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-                        #endregion
-                        if (w.isOk)
+                        if (cashtrans.cashTransId != 0)
                         {
-                            int b = await cashModel.deletePosTrans(cashtrans.cashTransId);
-
-                            if (b == 1)
+                            #region
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                            w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                            #endregion
+                            if (w.isOk)
                             {
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-                                //clear textBoxs
-                                Btn_clear_Click(sender, e);
-                            }
-                            else if (b == 0)
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                int b = await cashModel.deletePosTrans(cashtrans.cashTransId);
 
-                            await RefreshCashesList();
-                            Tb_search_TextChanged(null, null);
+                                if (b == 1)
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
+                                    //clear textBoxs
+                                    Btn_clear_Click(sender, e);
+                                }
+                                else if (b == 0)
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanNotDeleteRequest"), animation: ToasterAnimation.FadeIn);
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                                await RefreshCashesList();
+                                Tb_search_TextChanged(null, null);
+                            }
                         }
+                    }
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
                     }
                 }
                 else
@@ -738,37 +757,45 @@ namespace POS.View.accounts
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucposAccounts);
-                if (cashtrans.cashTransId != 0)
+                if (MainWindow.posLogIn.boxState == "o")
                 {
-                    //if another operation not confirmed then just confirm this
-                    ////if another operation is confirmed then chk balance before confirm
-                    bool confirm = false;
-                    if (cashtrans2.cashTransId == cashtrans.cashTransId)//chk which record is selected
-                    { if (cashtrans3.isConfirm == 0) confirm = false; else confirm = true; }
-                    else//chk which record is selected
-                    { if (cashtrans2.isConfirm == 0) confirm = false; else confirm = true; }
-
-                    if (!confirm) await confirmOpr();
-                    else
+                    if (cashtrans.cashTransId != 0)
                     {
-                        Pos pos = await posModel.getById(cashtrans2.posId.Value);
-                        //there is enough balance
-                        if (pos.balance >= cashtrans2.cash)
-                        {
-                            cashtrans2.isConfirm = 1;
-                            int s = await cashModel.Save(cashtrans2);
-                            s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
-                            //   if (s.Equals("transdone"))//tras done so confirm
-                            if (s.Equals(1))//tras done so confirm
-                                await confirmOpr();
-                            else//error then do not confirm
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        //if another operation not confirmed then just confirm this
+                        ////if another operation is confirmed then chk balance before confirm
+                        bool confirm = false;
+                        if (cashtrans2.cashTransId == cashtrans.cashTransId)//chk which record is selected
+                        { if (cashtrans3.isConfirm == 0) confirm = false; else confirm = true; }
+                        else//chk which record is selected
+                        { if (cashtrans2.isConfirm == 0) confirm = false; else confirm = true; }
 
-                        }
-                        //there is not enough balance
+                        if (!confirm) await confirmOpr();
                         else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                        {
+                            Pos pos = await posModel.getById(cashtrans2.posId.Value);
+                            //there is enough balance
+                            if (pos.balance >= cashtrans2.cash)
+                            {
+                                cashtrans2.isConfirm = 1;
+                                int s = await cashModel.Save(cashtrans2);
+                                s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
+                                //   if (s.Equals("transdone"))//tras done so confirm
+                                if (s.Equals(1))//tras done so confirm
+                                    await confirmOpr();
+                                else//error then do not confirm
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                            }
+                            //there is not enough balance
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                        }
+                        await MainWindow.refreshBalance();
                     }
+                }
+                else //box is closed
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_ucposAccounts);

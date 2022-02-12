@@ -3238,4 +3238,7 @@
   <data name="trMessageBoxConfirm" xml:space="preserve">
     <value>هل أنت متأكد من إتمام العملية؟</value>
   </data>
+  <data name="trUnavailable" xml:space="preserve">
+    <value>غير متاح</value>
+  </data>
 </root>

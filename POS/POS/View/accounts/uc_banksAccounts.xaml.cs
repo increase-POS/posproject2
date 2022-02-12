@@ -390,92 +390,101 @@ namespace POS.View.accounts
 
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    if (cashtrans.cashTransId == 0)
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
                     {
-                        #region validate
-                        //chk empty cash
-                        SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                        //chk empty dicount type
-                        SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
-                        //chk empty user
-                        SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
-                        //chk empty bank
-                        SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
-                        //chk user confirmation
-                        bool isuserConfirmed = w.isOk;
-                        #endregion
-
-                        #region add
-                        if ((!tb_cash.Text.Equals("")) &&
-                            (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
-                            (!cb_bank.Text.Equals("")) &&
-                            (isuserConfirmed)
-                            )
-
+                        if (cashtrans.cashTransId == 0)
                         {
-                            CashTransfer cash = new CashTransfer();
+                            #region validate
+                            //chk empty cash
+                            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                            //chk empty dicount type
+                            SectionData.validateEmptyComboBox(cb_opperationType, p_errorOpperationType, tt_errorOpperationType, "trErrorEmptyOpperationTypeToolTip");
+                            //chk empty user
+                            SectionData.validateEmptyComboBox(cb_user, p_errorUser, tt_errorUser, "trErrorEmptyUserToolTip");
+                            //chk empty bank
+                            SectionData.validateEmptyComboBox(cb_bank, p_errorBank, tt_errorBank, "trErrorEmptyBankToolTip");
+                            //chk user confirmation
+                            bool isuserConfirmed = w.isOk;
+                            #endregion
 
-                            cash.transType = cb_opperationType.SelectedValue.ToString();
-                            cash.userId = Convert.ToInt32(cb_user.SelectedValue);
-                            try
+                            #region add
+                            if ((!tb_cash.Text.Equals("")) &&
+                                (!cb_opperationType.Text.Equals("")) && (!cb_user.Text.Equals("")) &&
+                                (!cb_bank.Text.Equals("")) &&
+                                (isuserConfirmed)
+                                )
+
                             {
-                                cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
-                            }
-                            catch { }
-                            cash.cash = decimal.Parse(tb_cash.Text);
-                            cash.createUserId = MainWindow.userID.Value;
-                            cash.notes = tb_note.Text;
-                            cash.posId = MainWindow.posID.Value;
-                            cash.side = "bn";
-                            cash.isConfirm = 0;
-                            cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
+                                CashTransfer cash = new CashTransfer();
 
-                            int s = await cashModel.Save(cash);
+                                cash.transType = cb_opperationType.SelectedValue.ToString();
+                                cash.userId = Convert.ToInt32(cb_user.SelectedValue);
+                                try
+                                {
+                                    cash.transNum = await cashModel.generateCashNumber(cb_opperationType.SelectedValue.ToString() + "bn");
+                                }
+                                catch { }
+                                cash.cash = decimal.Parse(tb_cash.Text);
+                                cash.createUserId = MainWindow.userID.Value;
+                                cash.notes = tb_note.Text;
+                                cash.posId = MainWindow.posID.Value;
+                                cash.side = "bn";
+                                cash.isConfirm = 0;
+                                cash.bankId = Convert.ToInt32(cb_bank.SelectedValue);
 
-                            if (!s.Equals(0))
-                            {
-
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                                Btn_clear_Click(null, null);
-
-                                dg_bankAccounts.ItemsSource = await RefreshCashesList();
-                                Tb_search_TextChanged(null, null);
-                            }
-                            else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                        }
-                    }
-                    else
-                    {
-                        if (cashtrans.isConfirm == 0)
-                        {
-                            //chk empty deposite number
-                            SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
-                            if (!tb_depositNumber.Text.Equals(""))
-                            {
-                                cashtrans.isConfirm = 1;
-                                cashtrans.docNum = tb_depositNumber.Text;
-
-                                int s = await cashModel.Save(cashtrans);
+                                int s = await cashModel.Save(cash);
 
                                 if (!s.Equals(0))
                                 {
-                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
-                                    btn_add.IsEnabled = false;
-                                    btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                                    Btn_clear_Click(null, null);
 
                                     dg_bankAccounts.ItemsSource = await RefreshCashesList();
                                     Tb_search_TextChanged(null, null);
-
-                                    decimal ammount = cashtrans.cash.Value;
-                                    if (cashtrans.transType.Equals("d")) ammount *= -1;
-                                    await calcBalance(ammount);
+                                    await MainWindow.refreshBalance();
                                 }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }
-                        #endregion
+                        else
+                        {
+                            if (cashtrans.isConfirm == 0)
+                            {
+                                //chk empty deposite number
+                                SectionData.validateEmptyTextBox(tb_depositNumber, p_errorDepositNumber, tt_errorDepositNumber, "trEmptyDepositNumberToolTip");
+                                if (!tb_depositNumber.Text.Equals(""))
+                                {
+                                    cashtrans.isConfirm = 1;
+                                    cashtrans.docNum = tb_depositNumber.Text;
+
+                                    int s = await cashModel.Save(cashtrans);
+
+                                    if (!s.Equals(0))
+                                    {
+                                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCompleted"), animation: ToasterAnimation.FadeIn);
+                                        btn_add.IsEnabled = false;
+                                        btn_add.Content = MainWindow.resourcemanager.GetString("trCompleted");
+
+                                        dg_bankAccounts.ItemsSource = await RefreshCashesList();
+                                        Tb_search_TextChanged(null, null);
+
+                                        decimal ammount = cashtrans.cash.Value;
+                                        if (cashtrans.transType.Equals("d")) ammount *= -1;
+                                        await calcBalance(ammount);
+                                        await MainWindow.refreshBalance();
+                                    }
+                                    else
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                }
+                            }
+                            #endregion
+                        }
+                    }
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
                     }
                 }
                 else

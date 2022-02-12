@@ -533,9 +533,11 @@ namespace POS.View.accounts
                 s = 0; s1 = 0;
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    //chk empty cash
-                    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                    if (MainWindow.posLogIn.boxState == "o") // box is open
+                    {
+                        #region validate
+                        //chk empty cash
+                        SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
 
                     //chk empty doc date
                     TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
@@ -612,7 +614,7 @@ namespace POS.View.accounts
                     }
                     #endregion
 
-                    #region save
+                        #region save
 
                         if ((!tb_cash.Text.Equals("")) && (!cb_depositTo.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
                        (((cb_recipientV.IsVisible) && (!cb_recipientV.Text.Equals(""))) || (!cb_recipientV.IsVisible)) &&
@@ -694,11 +696,17 @@ namespace POS.View.accounts
 
                             await RefreshCashesList();
                             await Search();
+                            await MainWindow.refreshBalance();
                         }
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
-                    #endregion
+                        #endregion
+                    }
+                    else //box is closed
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trBoxIsClosed"), animation: ToasterAnimation.FadeIn);
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
