@@ -323,6 +323,7 @@ namespace POS.View.windows
             cashTransfer.transType = status;
             cashTransfer.cash = MainWindow.posLogIn.balance;
             cashTransfer.createUserId = MainWindow.userID.Value;
+            cashTransfer.posId = (int)MainWindow.posID;
             int res = await posModel.updateBoxState((int)MainWindow.posID,status,Convert.ToInt32(isAdmin),MainWindow.userLogin.userId,cashTransfer);
             if (res > 0)
             {

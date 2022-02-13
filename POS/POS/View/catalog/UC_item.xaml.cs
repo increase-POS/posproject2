@@ -1674,13 +1674,6 @@ namespace POS.View
         async Task fillCategories()
         {
             categories = await categoryModel.GetAllCategories(MainWindow.userID.Value);
-            foreach (Category cat in categories)
-            {
-                if (cat.isActive == 1)
-                    cat.name = cat.name + " - " + MainWindow.resourcemanager.GetString("trActive_");
-                else
-                    cat.name = cat.name + " - " + MainWindow.resourcemanager.GetString("trNotActive");
-            }
             if (categories != null)
                 cb_categorie.ItemsSource = categories.ToList();
             cb_categorie.SelectedValuePath = "categoryId";
@@ -3249,13 +3242,7 @@ namespace POS.View
 
 
             //var listCa = items.Where(x => x.isActive == 1).ToList();
-            foreach (Item it in items)
-            {
-                if (it.isActive == 1)
-                    it.name = it.name + " - " + MainWindow.resourcemanager.GetString("trActive_");
-                else
-                    it.name = it.name + " - " + MainWindow.resourcemanager.GetString("trNotActive");
-            }
+
             var cat = new Item();
             cat.itemId = 0;
             cat.name = "-";

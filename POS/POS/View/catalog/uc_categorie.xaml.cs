@@ -105,14 +105,7 @@ namespace POS.View
             if (categories is null)
                 await RefrishCategories();
             var listCa = categories.ToList();           
-
-            foreach(Category cate in listCa)
-            {
-                if (cate.isActive == 1)
-                    cate.name = cate.name + " - " + MainWindow.resourcemanager.GetString("trActive_");
-                else
-                    cate.name = cate.name + " - " + MainWindow.resourcemanager.GetString("trNotActive");
-            }
+           
             var cat = new Category();
             cat.categoryId = 0;
             cat.name = "-";
@@ -129,7 +122,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_name, MainWindow.resourcemanager.GetString("trNameHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categoryCode, MainWindow.resourcemanager.GetString("trCodeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_details, MainWindow.resourcemanager.GetString("trDetailsHint"));
-            txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
+           // txt_secondaryInformation.Text = MainWindow.resourcemanager.GetString("trSecondaryInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_parentCategorie, MainWindow.resourcemanager.GetString("trParentCategorieHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxes, MainWindow.resourcemanager.GetString("trTaxHint"));
             // MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_categorie, MainWindow.resourcemanager.GetString("trCategorie"));

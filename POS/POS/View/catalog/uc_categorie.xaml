@@ -643,13 +643,13 @@
 
 
                         </Grid>
-                        <DockPanel Grid.Row="2">
+                        <!--<DockPanel Grid.Row="2">
                             <TextBlock Text="Secondary Infomation" x:Name="txt_secondaryInformation" Foreground="#737373"
                                  FontSize="10"   
                                         Margin="5,5,0,5"/>
                             <Separator Background="#999999"   Margin="5,0,5,0"
                                       />
-                        </DockPanel>
+                        </DockPanel>-->
 
                         <ComboBox x:Name="cb_parentCategorie"  Grid.Row="3"
                                            Style="{StaticResource MaterialDesignFloatingHintComboBox}"

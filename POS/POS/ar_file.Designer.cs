@@ -835,7 +835,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الصندوق مغلق.
+        ///   Looks up a localized string similar to الدفع متوقف.
         /// </summary>
         internal static string trBoxIsClosed {
             get {

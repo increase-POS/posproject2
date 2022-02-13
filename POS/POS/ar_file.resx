@@ -3227,7 +3227,7 @@
     <value>لا يمكنك إتمام العملية</value>
   </data>
   <data name="trBoxIsClosed" xml:space="preserve">
-    <value>الصندوق مغلق</value>
+    <value>الدفع متوقف</value>
   </data>
   <data name="trBoxState" xml:space="preserve">
     <value>حالة الصندوق</value>

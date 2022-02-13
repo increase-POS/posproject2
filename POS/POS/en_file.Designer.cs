@@ -844,7 +844,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Box is closed.
+        ///   Looks up a localized string similar to Payment is suspended.
         /// </summary>
         internal static string trBoxIsClosed {
             get {
@@ -1204,7 +1204,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Categorie.
+        ///   Looks up a localized string similar to Category.
         /// </summary>
         internal static string trCategorie {
             get {
@@ -5714,7 +5714,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Parent Item.
+        ///   Looks up a localized string similar to Select Category.
         /// </summary>
         internal static string trParentCategorieHint {
             get {
@@ -7559,7 +7559,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select Categorie.
+        ///   Looks up a localized string similar to Select Category.
         /// </summary>
         internal static string trSelectCategorieHint {
             get {
