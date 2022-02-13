@@ -286,6 +286,7 @@ namespace POS.View.windows
                 {
                     #region Accept
                     //this.Visibility = Visibility.Collapsed;
+                    this.Opacity = 0;
                     wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                     w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
                     w.ShowDialog();
@@ -299,6 +300,7 @@ namespace POS.View.windows
                     }
                     else
                         tgl_isClose.IsChecked = true;
+                    this.Opacity = 1;
                     //this.Visibility = Visibility.Visible;
                 }
             }
