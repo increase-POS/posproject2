@@ -96,18 +96,16 @@ namespace POS.View.windows
         {
             await MainWindow.refreshBalance();
             cashes = await cashModel.GetCashTransfer("d", "p");
-            cashesQuery = cashes.Where(s => s.posIdCreator == MainWindow.posID.Value
-                                && s.isConfirm == 0).ToList();
+            cashesQuery = cashes.Where(s => 
+                                s.isConfirm == 0 && s.posId == MainWindow.posID.Value).ToList();
 
             if (cashesQuery.Count() == 0)
             {
-                //yasin
                 txt_balanceState.Text = MainWindow.resourcemanager.GetString("trAvailable");
                 btn_save.IsEnabled = true;
             }
             else
             {
-                //yasin
                 txt_balanceState.Text = MainWindow.resourcemanager.GetString("trWaiting");
                 btn_save.IsEnabled = false;
             }
@@ -123,6 +121,7 @@ namespace POS.View.windows
                 //yasin
                 txt_balanceState.Text = MainWindow.resourcemanager.GetString("trUnavailable");
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trClosed");
+                txt_stateValue.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush; ;
                 tgl_isClose.IsChecked = false;
                 btn_save.IsEnabled = false;
                 cb_pos.IsEnabled = false;
@@ -132,6 +131,7 @@ namespace POS.View.windows
             {
                 //yasin
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trOpen");
+                txt_stateValue.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush; ;
                 tgl_isClose.IsChecked = true;
                 cb_pos.IsEnabled = true;
 
@@ -285,6 +285,7 @@ namespace POS.View.windows
                 else
                 {
                     #region Accept
+                    //this.Visibility = Visibility.Collapsed;
                     wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                     w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
                     w.ShowDialog();
@@ -298,7 +299,7 @@ namespace POS.View.windows
                     }
                     else
                         tgl_isClose.IsChecked = true;
-
+                    //this.Visibility = Visibility.Visible;
                 }
             }
             flag = false;

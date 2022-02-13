@@ -18,11 +18,10 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid   >
+        <Grid>
             <Border  BorderThickness="0" Grid.Row="0" 
                     CornerRadius="7,7,0,0"  Background="#178DD2">
                 <Grid>
-
                     <Button   IsCancel="true"  HorizontalAlignment="Right" VerticalAlignment="Center" Background="{x:Null}" 
                              BorderBrush="{x:Null}"  Foreground="White" Margin="7.5,0"  x:Name="btn_colse" Click="Btn_colse_Click"
                              FontWeight="SemiBold" Width="24" Padding="0" ToolTip="Close"  FontSize="14">
@@ -91,7 +90,7 @@
                                  FontWeight="SemiBold"  FontSize="12"/>
                     <TextBlock  Grid.Column="1"
                         x:Name="txt_balanceState"
-                                   Margin="5" Text="State " Foreground="{StaticResource MainColor}"
+                                   Margin="5" Text="State " Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontSize="12"/>
                     <TextBlock Grid.Column="2"
@@ -115,7 +114,7 @@
                                    Margin="5" Text="Box State " Foreground="#6e6e6e"
                                    HorizontalAlignment="Left" VerticalAlignment="Center"
                                    FontWeight="SemiBold" FontSize="12"/>
-                    <TextBlock Text="open"  Foreground="{StaticResource MainColor}" x:Name="txt_stateValue"
+                    <TextBlock Text="open"  Foreground="{StaticResource mediumGreen}" x:Name="txt_stateValue"
                                    HorizontalAlignment="Left" VerticalAlignment="Center" 
                               Grid.Column="1"      Margin="10,5,5,5"
                             FontSize="12"/>
