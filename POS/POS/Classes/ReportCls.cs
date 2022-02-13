@@ -26,7 +26,7 @@ namespace POS.Classes
             {
                 filename = fi.FullName;
 
-                if (!FileIsLocked(filename) && (fi.Extension == "PDF" || fi.Extension == "pdf"))
+                if (!FileIsLocked(filename) && (fi.Extension == ".PDF" || fi.Extension == ".pdf"))
                 {
                     fi.Delete();
                 }
