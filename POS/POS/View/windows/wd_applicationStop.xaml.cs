@@ -118,7 +118,6 @@ namespace POS.View.windows
             status = MainWindow.posLogIn.boxState;
             if (MainWindow.posLogIn.boxState == "c")
             {
-                //yasin
                 txt_balanceState.Text = MainWindow.resourcemanager.GetString("trUnavailable");
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trClosed");
                 txt_stateValue.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush; ;
@@ -129,7 +128,6 @@ namespace POS.View.windows
             }
             else
             {
-                //yasin
                 txt_stateValue.Text = MainWindow.resourcemanager.GetString("trOpen");
                 txt_stateValue.Foreground = Application.Current.Resources["mediumGreen"] as SolidColorBrush; ;
                 tgl_isClose.IsChecked = true;
@@ -250,6 +248,7 @@ namespace POS.View.windows
             if (cb.IsFocused == true)
             {
                 #region Accept
+                this.Opacity = 0;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                 w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
                 w.ShowDialog();
@@ -264,6 +263,7 @@ namespace POS.View.windows
                 }
                 else
                     tgl_isClose.IsChecked = false;
+                this.Opacity = 1;
 
             }
             flag = false;
