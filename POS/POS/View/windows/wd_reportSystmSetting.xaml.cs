@@ -34,7 +34,8 @@ namespace POS.View.windows
             { SectionData.ExceptionMessage(ex, this); }
         }
         BrushConverter bc = new BrushConverter();
-
+        // r/e
+        public string windowType = "";
         // print
         SetValues print_on_save_salerow = new SetValues();
         SetValues print_on_save_purrow = new SetValues();
@@ -139,7 +140,31 @@ namespace POS.View.windows
 
                 translate();
                 #endregion
+                if(windowType == "r")
+                {
+                    txt_printOnSavePur.Visibility =
+                    tgl_printOnSavePur.Visibility =
+                    txt_printOnSaveSale.Visibility =
+                    tgl_printOnSaveSale.Visibility = Visibility.Visible;
 
+                    txt_emailOnSavePur.Visibility =
+                    tgl_emailOnSavePur.Visibility =
+                    txt_emailOnSaveSale.Visibility =
+                    tgl_emailOnSaveSale.Visibility = Visibility.Collapsed;
+                }
+                else if (windowType == "e")
+                {
+                    txt_printOnSavePur.Visibility =
+                     tgl_printOnSavePur.Visibility =
+                     txt_printOnSaveSale.Visibility =
+                     tgl_printOnSaveSale.Visibility = Visibility.Collapsed;
+
+                    txt_emailOnSavePur.Visibility =
+                    tgl_emailOnSavePur.Visibility =
+                    txt_emailOnSaveSale.Visibility =
+                    tgl_emailOnSaveSale.Visibility = Visibility.Visible;
+
+                }
                 //code
                 await Getprintparameter();
 

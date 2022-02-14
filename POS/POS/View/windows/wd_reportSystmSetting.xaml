@@ -9,7 +9,7 @@
         Title="Increase POS"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize" Margin="0"
-        Height="260" Width="300"  Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
+        Height="175" Width="300"  Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
         Loaded="Window_Loaded" Closing="Window_Closing" >
     <Grid Grid.Column="1" Grid.Row="1"    x:Name="grid_main">
         <Grid.RowDefinitions>
@@ -58,7 +58,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="txt_printOnSavePur" Grid.Row="0" Grid.Column="0" 
+                <TextBlock x:Name="txt_printOnSavePur" Grid.Row="0" Grid.Column="0" 
                                 Margin="10" Text="print On Save Purchase" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>

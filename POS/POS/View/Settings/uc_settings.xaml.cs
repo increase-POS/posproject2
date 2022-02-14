@@ -121,7 +121,7 @@ namespace POS.View.Settings
         public void translate()
         {
             btn_general.Content = MainWindow.resourcemanager.GetString("trGeneral");
-            btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trReports");
+            btn_reportsSettings.Content = MainWindow.resourcemanager.GetString("trPrint");
             btn_permissions.Content = MainWindow.resourcemanager.GetString("trPermission");
             btn_emails.Content = MainWindow.resourcemanager.GetString("trEmail");
             //btn_packageBookSetting.Content = MainWindow.resourcemanager.GetString("trEmail");
