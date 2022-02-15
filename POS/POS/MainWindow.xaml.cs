@@ -2041,6 +2041,20 @@ namespace POS
             if (sender != null)
                 SectionData.EndAwait(grid_mainWindow);
         }
+        private void Btn_transfers_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_mainWindow);
+
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_transfers w = new wd_transfers();
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+
+            if (sender != null)
+                SectionData.EndAwait(grid_mainWindow);
+        }
+
 
         public void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {

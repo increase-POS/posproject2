@@ -319,6 +319,7 @@
     <Compile Include="converters\notificationsTitleConverter.cs" />
     <Compile Include="converters\orderStatusConverter.cs" />
     <Compile Include="converters\permissionsNameConverter.cs" />
+    <Compile Include="converters\posTransfersStatusConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />
     <Compile Include="converters\SectionFreeZoneConverter.cs" />
     <Compile Include="converters\sectionFreeZoneStorageReportConverter.cs" />
@@ -724,6 +725,9 @@
     </Compile>
     <Compile Include="View\windows\wd_taxSetting.xaml.cs">
       <DependentUpon>wd_taxSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_transfers.xaml.cs">
+      <DependentUpon>wd_transfers.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_transItemsLocation.xaml.cs">
       <DependentUpon>wd_transItemsLocation.xaml</DependentUpon>
@@ -1310,6 +1314,10 @@
     <Page Include="View\windows\wd_taxSetting.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\windows\wd_transfers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_transItemsLocation.xaml">
       <SubType>Designer</SubType>
