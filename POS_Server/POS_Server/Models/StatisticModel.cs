@@ -74,4 +74,93 @@ namespace POS_Server.Models
         public decimal totalNetNoShip { get; set; }
 
     }
+
+    public class ItemTransferInvoiceTax
+    {// new properties
+        public Nullable<System.DateTime> updateDate { get; set; }
+ 
+        public string agentCompany { get; set; }
+
+        // ItemTransfer
+        public int ITitemsTransId { get; set; }
+        public Nullable<int> ITitemUnitId { get; set; }
+        public Nullable<int> updateUserId { get; set; }
+        public Nullable<int> ITitemId { get; set; }
+        public Nullable<int> ITunitId { get; set; }
+        public string ITitemName { get; set; }
+        public string ITunitName { get; set; }
+ 
+        public Nullable<long> ITquantity { get; set; }
+        public Nullable<decimal> ITprice { get; set; }
+
+        public string ITnotes { get; set; }
+
+        public string ITbarcode { get; set; }
+    
+        //invoice
+        public int invoiceId { get; set; }
+        public string invNumber { get; set; }
+        public Nullable<int> agentId { get; set; }
+
+        public string invType { get; set; }
+        public string discountType { get; set; }
+  
+        public Nullable<decimal> discountValue { get; set; }
+        public Nullable<decimal> total { get; set; }
+        public Nullable<decimal> totalNet { get; set; }
+        public Nullable<decimal> paid { get; set; }
+        public Nullable<decimal> deserved { get; set; }
+        public Nullable<System.DateTime> deservedDate { get; set; }
+        public Nullable<System.DateTime> invDate { get; set; }
+        public Nullable<System.DateTime> IupdateDate { get; set; }
+        public Nullable<int> IupdateUserId { get; set; }
+    
+        public string invCase { get; set; }
+   
+        public string Inotes { get; set; }
+        public string vendorInvNum { get; set; }
+       
+        public string branchName { get; set; }
+        public string posName { get; set; }
+        public Nullable<System.DateTime> vendorInvDate { get; set; }
+        public Nullable<int> branchId { get; set; }
+
+        public Nullable<decimal> tax { get; set; }
+        public Nullable<int> taxtype { get; set; }
+        public Nullable<int> posId { get; set; }
+
+        public string ITtype { get; set; }
+
+        public string branchType { get; set; }
+       
+        public string posCode { get; set; }
+        public string agentName { get; set; }
+
+        public string agentType { get; set; }
+        public string agentCode { get; set; }
+      
+        public string uuserName { get; set; }
+        public string uuserLast { get; set; }
+        public string uUserAccName { get; set; }
+        public Nullable<decimal> itemUnitPrice { get; set; }
+
+        public Nullable<decimal> totalwithTax { get; set; }
+        public Nullable<decimal> totalNoTax { get; set; }
+        public Nullable<decimal> subTotalTax { get; set; }
+        public Nullable<decimal> subTotalNotax { get; set; }
+     
+        public Nullable<decimal> OneitemUnitTax { get; set; }
+        public Nullable<decimal> itemUnitTaxwithQTY { get; set; }
+        public Nullable<decimal> invTaxVal { get; set; }
+        public Nullable<decimal> OneItemOfferVal { get; set; }
+        public Nullable<decimal> OneItemPriceNoTax { get; set; }
+        public Nullable<decimal> ItemTaxes { get; set; }
+        public Nullable<decimal> OneItemPricewithTax { get; set; }
+
+
+        // public Nullable<decimal> totalNet { get; set; }
+
+
+
+    }
 }
