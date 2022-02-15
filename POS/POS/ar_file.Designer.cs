@@ -979,6 +979,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إلغاء.
+        /// </summary>
+        internal static string trCancel_ {
+            get {
+                return ResourceManager.GetString("trCancel_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ملغى.
+        /// </summary>
+        internal static string trCanceled {
+            get {
+                return ResourceManager.GetString("trCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن حذف الفرع الرئيسي.
         /// </summary>
         internal static string trCannotDeleteTheMainBranch {
@@ -1578,6 +1596,15 @@ namespace POS {
         internal static string trCreateInvocie {
             get {
                 return ResourceManager.GetString("trCreateInvocie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المنشئ.
+        /// </summary>
+        internal static string trCreator {
+            get {
+                return ResourceManager.GetString("trCreator", resourceCulture);
             }
         }
         
@@ -6826,6 +6853,15 @@ namespace POS {
         internal static string trReceiptVoucher {
             get {
                 return ResourceManager.GetString("trReceiptVoucher", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to استلام.
+        /// </summary>
+        internal static string trReceive {
+            get {
+                return ResourceManager.GetString("trReceive", resourceCulture);
             }
         }
         

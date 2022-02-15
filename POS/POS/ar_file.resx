@@ -3241,4 +3241,16 @@
   <data name="trUnavailable" xml:space="preserve">
     <value>غير متاح</value>
   </data>
+  <data name="trCanceled" xml:space="preserve">
+    <value>ملغى</value>
+  </data>
+  <data name="trCancel_" xml:space="preserve">
+    <value>إلغاء</value>
+  </data>
+  <data name="trCreator" xml:space="preserve">
+    <value>المنشئ</value>
+  </data>
+  <data name="trReceive" xml:space="preserve">
+    <value>استلام</value>
+  </data>
 </root>

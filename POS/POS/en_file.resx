@@ -3262,4 +3262,16 @@ Please add Email in setting</value>
   <data name="trUnavailable" xml:space="preserve">
     <value>Unavailable</value>
   </data>
+  <data name="trCanceled" xml:space="preserve">
+    <value>Canceled</value>
+  </data>
+  <data name="trCancel_" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="trCreator" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="trReceive" xml:space="preserve">
+    <value>Receive</value>
+  </data>
 </root>

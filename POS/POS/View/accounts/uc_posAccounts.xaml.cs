@@ -73,18 +73,30 @@ namespace POS.View.accounts
             txt_posAccounts.Text = MainWindow.resourcemanager.GetString("trTransfers");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos1, MainWindow.resourcemanager.GetString("trFromPosHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos2, MainWindow.resourcemanager.GetString("trToPosHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos1, MainWindow.resourcemanager.GetString("trDepositor")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos2, MainWindow.resourcemanager.GetString("trRecepient")+"...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
+
+            chk_deposit.Content = MainWindow.resourcemanager.GetString("trDeposit");
+            chk_receive.Content = MainWindow.resourcemanager.GetString("trReceive");
 
             dg_posAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trFromPos");
-            dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trToPos");
-            dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trOpperationTypeToolTip");
-            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trDate");
-            dg_posAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
-
+            dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trCreator");
+            if (chk_deposit.IsChecked == true)
+            {
+                dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trDepositor");
+                dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trRecepient");
+            }
+            else if(chk_receive.IsChecked == true)
+            {
+                dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecepient");
+                dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDepositor");
+            }
+            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trStatus");
+            dg_posAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_posAccounts.Columns[6].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+           
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -94,9 +106,10 @@ namespace POS.View.accounts
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
             tt_startDate.Content = MainWindow.resourcemanager.GetString("trStartDate");
             tt_endDate.Content = MainWindow.resourcemanager.GetString("trEndDate");
-            tt_state.Content = MainWindow.resourcemanager.GetString("trStateToolTip");
+            //tt_state.Content = MainWindow.resourcemanager.GetString("trStateToolTip");
 
             btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
+            btn_confirm.Content = MainWindow.resourcemanager.GetString("trCancel_");
             btn_add.Content = MainWindow.resourcemanager.GetString("trAdd");
             btn_update.Content = MainWindow.resourcemanager.GetString("trUpdate");
             btn_delete.Content = MainWindow.resourcemanager.GetString("trDelete");
@@ -180,16 +193,16 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill operation state
-                var dislist = new[] {
-                new { Text = MainWindow.resourcemanager.GetString("trUnConfirmed")  , Value = "0" },
-                new { Text = MainWindow.resourcemanager.GetString("trWaiting")      , Value = "1" },
-                new { Text = MainWindow.resourcemanager.GetString("trConfirmed")    , Value = "2" },
-                new { Text = MainWindow.resourcemanager.GetString("trCreatedOper")  , Value = "3" }
-                 };
-                cb_state.DisplayMemberPath = "Text";
-                cb_state.SelectedValuePath = "Value";
-                cb_state.ItemsSource = dislist;
-                cb_state.SelectedIndex = 0;
+                //var dislist = new[] {
+                //new { Text = MainWindow.resourcemanager.GetString("trUnConfirmed")  , Value = "0" },
+                //new { Text = MainWindow.resourcemanager.GetString("trWaiting")      , Value = "1" },
+                //new { Text = MainWindow.resourcemanager.GetString("trConfirmed")    , Value = "2" },
+                //new { Text = MainWindow.resourcemanager.GetString("trCreatedOper")  , Value = "3" }
+                // };
+                //cb_state.DisplayMemberPath = "Text";
+                //cb_state.SelectedValuePath = "Value";
+                //cb_state.ItemsSource = dislist;
+                //cb_state.SelectedIndex = 0;
                 #endregion
 
                 //this.Dispatcher.Invoke(() =>
@@ -276,21 +289,62 @@ namespace POS.View.accounts
                             btn_delete.IsEnabled = false;
                         }
                         //login pos is operation pos
+                        #region old
+                        //if (cashtrans.posId == MainWindow.posID.Value)
+                        //{
+                        //    if (cashtrans.isConfirm != 1)
+                        //    { btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm"); btn_confirm.IsEnabled = true; }
+                        //    else
+                        //    { btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed"); btn_confirm.IsEnabled = false; }
+                        //}
+                        //else
+                        //{
+                        //    btn_confirm.IsEnabled = false;
+                        //    if (cashtrans.isConfirm != 1)
+                        //        btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
+                        //    else
+                        //        btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
+                        //}
+                        #endregion
                         if (cashtrans.posId == MainWindow.posID.Value)
                         {
-                            if (cashtrans.isConfirm != 1)
-                            { btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm"); btn_confirm.IsEnabled = true; }
-                            else
-                            { btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed"); btn_confirm.IsEnabled = false; }
+                            if (cashtrans.isConfirm == 0)
+                            {
+                                btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm"); btn_confirm.IsEnabled = true;
+                                btn_cancel.Content = MainWindow.resourcemanager.GetString("trCancel_");  btn_cancel.IsEnabled = true;
+                            }
+                            else if (cashtrans.isConfirm == 1)
+                            {
+                                btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed"); btn_confirm.IsEnabled = false;
+                                btn_cancel.Content = MainWindow.resourcemanager.GetString("trCancel_");      btn_cancel.IsEnabled = false;
+                            }
+                            else if (cashtrans.isConfirm == 2)
+                            {
+                                btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirm"); btn_confirm.IsEnabled = false;
+                                btn_cancel.Content = MainWindow.resourcemanager.GetString("trCanceled"); btn_cancel.IsEnabled = false;
+                            }
                         }
                         else
                         {
-
                             btn_confirm.IsEnabled = false;
-                            if (cashtrans.isConfirm != 1)
+                            btn_cancel.IsEnabled = false;
+                            if (cashtrans.isConfirm == 0)
+                            {
                                 btn_confirm.Content = MainWindow.resourcemanager.GetString("trConfirm");
-                            else
+                                btn_cancel.Content = MainWindow.resourcemanager.GetString("trCancel_");
+                            }
+                            else if (cashtrans.isConfirm == 1)
+                            {
                                 btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
+                                btn_cancel.Content = MainWindow.resourcemanager.GetString("trCancel_");
+                                btn_cancel.IsEnabled = false;
+                            }
+                            else if (cashtrans.isConfirm == 2)
+                            {
+                                btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirm");
+                                btn_confirm.IsEnabled = false;
+                                btn_cancel.Content = MainWindow.resourcemanager.GetString("trCanceled");
+                            }
                         }
 
                         #region get two pos
@@ -348,126 +402,176 @@ namespace POS.View.accounts
                         searchText = tb_search.Text;
                         if (chb_all.IsChecked == false)
                         {
-                            switch (Convert.ToInt32(cb_state.SelectedValue))
+                            #region old
+                            //switch (Convert.ToInt32(cb_state.SelectedValue))
+                            //{
+                            //    case 0://inconfirmed
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //         || s.transType.Contains(searchText)
+                            //         || s.cash.ToString().Contains(searchText)
+                            //         || s.posName.Contains(searchText)
+                            //         )
+                            //        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                            //        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                            //        && s.posId == MainWindow.posID.Value
+                            //        && s.isConfirm == 0
+                            //        );
+                            //        break;
+                            //    case 1://waiting
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                            //        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                            //        && s.posId == MainWindow.posID.Value
+                            //        && s.isConfirm == 1
+                            //        //&& another is not confirmed 
+                            //        && s.isConfirm2 == 0
+                            //        );
+                            //        break;
+                            //    case 2://confirmed
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                            //        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                            //        && s.posId == MainWindow.posID.Value
+                            //        && s.isConfirm == 1
+                            //        //&& another is confirmed
+                            //        && s.isConfirm2 == 1
+                            //        );
+                            //        break;
+                            //    case 3://created by me
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //        && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                            //        && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                            //        && s.posIdCreator == MainWindow.posID.Value
+                            //        );
+                            //        break;
+                            //    default://no select
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //       && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                            //       && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                            //       );
+                            //        break;
+                            //}
+                            #endregion
+                            if (chk_deposit.IsChecked == true)
                             {
-                                case 0://inconfirmed
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                     || s.transType.Contains(searchText)
-                                     || s.cash.ToString().Contains(searchText)
-                                     || s.posName.Contains(searchText)
-                                     )
-                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                    && s.posId == MainWindow.posID.Value
-                                    && s.isConfirm == 0
-                                    );
-                                    break;
-                                case 1://waiting
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                                     || s.transType.Contains(searchText)
                                     || s.cash.ToString().Contains(searchText)
                                     || s.posName.Contains(searchText)
                                     )
-                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                    && s.posId == MainWindow.posID.Value
-                                    && s.isConfirm == 1
-                                    //&& another is not confirmed 
-                                    && s.isConfirm2 == 0
-                                    );
-                                    break;
-                                case 2://confirmed
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                    || s.transType.Contains(searchText)
-                                    || s.cash.ToString().Contains(searchText)
-                                    || s.posName.Contains(searchText)
-                                    )
-                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                    && s.posId == MainWindow.posID.Value
-                                    && s.isConfirm == 1
-                                    //&& another is confirmed
-                                    && s.isConfirm2 == 1
-                                    );
-                                    break;
-                                case 3://created by me
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                    || s.transType.Contains(searchText)
-                                    || s.cash.ToString().Contains(searchText)
-                                    || s.posName.Contains(searchText)
-                                    )
-                                    && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                    && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                    && s.posIdCreator == MainWindow.posID.Value
-                                    );
-                                    break;
-                                default://no select
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                    || s.transType.Contains(searchText)
-                                    || s.cash.ToString().Contains(searchText)
-                                    || s.posName.Contains(searchText)
-                                    )
-                                   && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                   && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                                   );
-                                    break;
+                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                && s.transType == "d"
+                                );
+                            }
+                            else if (chk_receive.IsChecked == true)
+                            {
+                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                || s.transType.Contains(searchText)
+                                || s.cash.ToString().Contains(searchText)
+                                || s.posName.Contains(searchText)
+                                )
+                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                && s.posId == MainWindow.posID.Value
+                                && s.transType == "p"
+                                );
                             }
                         }
                         else
                         {
-                            switch (Convert.ToInt32(cb_state.SelectedValue))
+                            #region old
+                            //switch (Convert.ToInt32(cb_state.SelectedValue))
+                            //{
+                            //    case 0://inconfirmed
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //         || s.transType.Contains(searchText)
+                            //         || s.cash.ToString().Contains(searchText)
+                            //         || s.posName.Contains(searchText)
+                            //         )
+                            //        && s.posId == MainWindow.posID.Value
+                            //        && s.isConfirm == 0
+                            //        );
+                            //        break;
+                            //    case 1://waiting
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //        && s.posId == MainWindow.posID.Value
+                            //        && s.isConfirm == 1
+                            //        //&& another is not confirmed 
+                            //        && s.isConfirm2 == 0
+                            //        );
+                            //        break;
+                            //    case 2://confirmed
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //        && s.posId == MainWindow.posID.Value
+                            //        && s.isConfirm == 1
+                            //        //&& another is confirmed
+                            //        && s.isConfirm2 == 1
+                            //        );
+                            //        break;
+                            //    case 3://created by me
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //        && s.posIdCreator == MainWindow.posID.Value
+                            //        );
+                            //        break;
+                            //    default://no select
+                            //        cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                            //        || s.transType.Contains(searchText)
+                            //        || s.cash.ToString().Contains(searchText)
+                            //        || s.posName.Contains(searchText)
+                            //        )
+                            //       );
+                            //        break;
+                            //}
+                            #endregion
+                            if (chk_deposit.IsChecked == true)
                             {
-                                case 0://inconfirmed
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                     || s.transType.Contains(searchText)
-                                     || s.cash.ToString().Contains(searchText)
-                                     || s.posName.Contains(searchText)
-                                     )
-                                    && s.posId == MainWindow.posID.Value
-                                    && s.isConfirm == 0
-                                    );
-                                    break;
-                                case 1://waiting
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
                                     || s.transType.Contains(searchText)
                                     || s.cash.ToString().Contains(searchText)
                                     || s.posName.Contains(searchText)
                                     )
-                                    && s.posId == MainWindow.posID.Value
-                                    && s.isConfirm == 1
-                                    //&& another is not confirmed 
-                                    && s.isConfirm2 == 0
-                                    );
-                                    break;
-                                case 2://confirmed
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                    || s.transType.Contains(searchText)
-                                    || s.cash.ToString().Contains(searchText)
-                                    || s.posName.Contains(searchText)
-                                    )
-                                    && s.posId == MainWindow.posID.Value
-                                    && s.isConfirm == 1
-                                    //&& another is confirmed
-                                    && s.isConfirm2 == 1
-                                    );
-                                    break;
-                                case 3://created by me
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                    || s.transType.Contains(searchText)
-                                    || s.cash.ToString().Contains(searchText)
-                                    || s.posName.Contains(searchText)
-                                    )
-                                    && s.posIdCreator == MainWindow.posID.Value
-                                    );
-                                    break;
-                                default://no select
-                                    cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
-                                    || s.transType.Contains(searchText)
-                                    || s.cash.ToString().Contains(searchText)
-                                    || s.posName.Contains(searchText)
-                                    )
-                                   );
-                                    break;
+                                && s.transType == "d"
+                                );
+                            }
+                            else if (chk_receive.IsChecked == true)
+                            {
+                                cashesQuery = cashes.Where(s => (s.transNum.Contains(searchText)
+                                || s.transType.Contains(searchText)
+                                || s.cash.ToString().Contains(searchText)
+                                || s.posName.Contains(searchText)
+                                )
+                                && s.posId == MainWindow.posID.Value
+                                && s.transType == "p"
+                                );
                             }
                         }
 
@@ -529,7 +633,7 @@ namespace POS.View.accounts
                                 //first operation
                                 CashTransfer cash1 = new CashTransfer();
 
-                                cash1.transType = "p";//pull
+                                cash1.transType = "d";//deposit
                                 cash1.transNum = await cashModel.generateCashNumber(cash1.transType + "p");
                                 cash1.cash = decimal.Parse(tb_cash.Text);
                                 cash1.createUserId = MainWindow.userID.Value;
@@ -548,7 +652,7 @@ namespace POS.View.accounts
                                     //second operation
                                     CashTransfer cash2 = new CashTransfer();
 
-                                    cash2.transType = "d";//deposite
+                                    cash2.transType = "p";//pull
                                     cash2.transNum = await cashModel.generateCashNumber(cash2.transType + "p");
                                     cash2.cash = decimal.Parse(tb_cash.Text);
                                     cash2.createUserId = MainWindow.userID.Value;
@@ -1286,7 +1390,7 @@ namespace POS.View.accounts
             try
             {
                 dp_startSearchDate.IsEnabled =
-            dp_endSearchDate.IsEnabled = false;
+                dp_endSearchDate.IsEnabled = false;
 
                 Btn_refresh_Click(btn_refresh, null);
 
@@ -1304,6 +1408,56 @@ namespace POS.View.accounts
                 dp_endSearchDate.IsEnabled = true;
 
                 Btn_refresh_Click(btn_refresh, null);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+
+        private async void search_Checking(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckBox cb = sender as CheckBox;
+                if (cb.IsFocused)
+                {
+                    if (cb.Name == "chk_deposit")
+                    {
+                        chk_receive.IsChecked = false;
+                    }
+                    else if (cb.Name == "chk_receive")
+                    {
+                        chk_deposit.IsChecked = false;
+                    }
+                }
+                SectionData.StartAwait(grid_ucposAccounts);
+
+                translate();
+                await RefreshCashesList();
+                Tb_search_TextChanged(null, null);
+
+                SectionData.EndAwait(grid_ucposAccounts);
+            }
+            catch (Exception ex)
+            {
+                SectionData.EndAwait(grid_ucposAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void chk_uncheck(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckBox cb = sender as CheckBox;
+                if (cb.IsFocused)
+                {
+                    if (cb.Name == "chk_deposit")
+                        chk_deposit.IsChecked = true;
+                    else if (cb.Name == "chk_receive")
+                        chk_receive.IsChecked = true;
+                }
             }
             catch (Exception ex)
             {
