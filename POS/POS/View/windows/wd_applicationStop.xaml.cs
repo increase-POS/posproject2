@@ -95,9 +95,12 @@ namespace POS.View.windows
         private async Task fillPosInfo()
         {
             await MainWindow.refreshBalance();
-            cashes = await cashModel.GetCashTransfer("d", "p");
-            cashesQuery = cashes.Where(s => 
-                                s.isConfirm == 0 && s.posId == MainWindow.posID.Value).ToList();
+            //cashes = await cashModel.GetCashTransfer("d", "p");
+            cashes = await cashModel.GetCashTransferForPosAsync("all", "p");
+            cashesQuery = cashes.Where(s => s.isConfirm == 1 
+                                                && s.posId == MainWindow.posID.Value
+                                                && s.isConfirm2 == 0).ToList();
+
 
             if (cashesQuery.Count() == 0)
             {
