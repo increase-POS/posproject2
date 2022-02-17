@@ -96,7 +96,7 @@ namespace POS.View.windows
         {
             await MainWindow.refreshBalance();
             //cashes = await cashModel.GetCashTransfer("d", "p");
-            cashes = await cashModel.GetCashTransferForPosAsync("all", "p");
+            cashes = await cashModel.GetCashTransferForPosById("all", "p",(int)MainWindow.posID);
             cashesQuery = cashes.Where(s => s.isConfirm == 1 
                                                 && s.posId == MainWindow.posID.Value
                                                 && s.isConfirm2 == 0).ToList();
