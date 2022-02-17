@@ -26,6 +26,8 @@ namespace POS.converters
                 case "card": return MainWindow.resourcemanager.GetString("trAnotherPaymentMethods");
                 //break;
                 case "inv": return MainWindow.resourcemanager.GetString("trInv");
+                case "multiple": return MainWindow.resourcemanager.GetString("trMultiplePayment");
+
                 //break;
                 default: return s;
                     //break;

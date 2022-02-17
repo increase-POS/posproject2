@@ -605,6 +605,15 @@ Parameters!trValueDiscount.Value)
             }
             paramarr.Add(new ReportParameter("isTax", MainWindow.invoiceTax_bool.ToString()));
             paramarr.Add(new ReportParameter("invDate", date));
+            
+            paramarr.Add(new ReportParameter("trPaymentMethodsheader", MainWindow.resourcemanagerreport.GetString("trPaymentMethods")));
+
+            paramarr.Add(new ReportParameter("trCash", MainWindow.resourcemanagerreport.GetString("trCash")));
+            paramarr.Add(new ReportParameter("trDocument", MainWindow.resourcemanagerreport.GetString("trDocument")));
+            paramarr.Add(new ReportParameter("trCheque", MainWindow.resourcemanagerreport.GetString("trCheque")));
+            paramarr.Add(new ReportParameter("trCredit", MainWindow.resourcemanagerreport.GetString("trCredit")));
+            paramarr.Add(new ReportParameter("trMultiplePayment", MainWindow.resourcemanagerreport.GetString("trMultiplePayment")));
+            
             itemTransferInvTypeConv(paramarr);
 
         }
