@@ -3274,4 +3274,7 @@ Please add Email in setting</value>
   <data name="trReceive" xml:space="preserve">
     <value>Receive</value>
   </data>
+  <data name="trPopCanceled" xml:space="preserve">
+    <value>Operation canceled successfully</value>
+  </data>
 </root>

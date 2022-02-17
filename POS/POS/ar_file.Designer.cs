@@ -6020,6 +6020,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تم إلغاء العملية بنجاح.
+        /// </summary>
+        internal static string trPopCanceled {
+            get {
+                return ResourceManager.GetString("trPopCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكن الحذف بسبب تأكيد العملية.
         /// </summary>
         internal static string trPopCanNotDeleteRequest {
