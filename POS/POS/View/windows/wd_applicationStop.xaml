@@ -123,7 +123,7 @@
                                       Unchecked="Tgl_isClose_Unchecked"
                                         VerticalAlignment="Center" HorizontalAlignment="Left" 
                                     Padding="10,15,5,5"  
-                                      Margin="5" Height="13" Width="28"  TabIndex="15" />
+                                      Margin="5"   TabIndex="15" />
                 </Grid>
                
 
