@@ -356,6 +356,7 @@
                         <DataGridTextColumn x:Name="col_tax" Width="*" Header="Tax" Binding="{Binding tax ,Converter={StaticResource accuracyConverter}}" Visibility="Visible"/>
                         <DataGridTextColumn x:Name="col_totalNet" Width="*" Header="Total" Binding="{Binding totalNet ,Converter={StaticResource accuracyConverter}}" />
 
+                        <DataGridTextColumn x:Name="col_processType" Width="*" Header="processType" Binding="{Binding processType ,Converter={StaticResource processTypeConverter}}" />
 
                     </DataGrid.Columns>
                 </DataGrid>

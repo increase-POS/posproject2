@@ -768,6 +768,7 @@ namespace POS.Classes
         public string ITitemUnitName1 { get => ITitemUnitName = ITitemName + " - " + ITunitName; set => ITitemUnitName = value; }
         public int ImportCount { get => importCount; set => importCount = value; }
         public int ExportCount { get => exportCount; set => exportCount = value; }
+        public string processType { get; set; }
     }
     class Statistics
     {

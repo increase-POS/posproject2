@@ -143,7 +143,8 @@ namespace POS.View.sales
             col_discount.Header = MainWindow.resourcemanager.GetString("trDiscount");
             col_tax.Header = MainWindow.resourcemanager.GetString("trTax");
             col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotal");
-
+            col_processType.Header = MainWindow.resourcemanager.GetString("trPaymentMethods");
+           
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
