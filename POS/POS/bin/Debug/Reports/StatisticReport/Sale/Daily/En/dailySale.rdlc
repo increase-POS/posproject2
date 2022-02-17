@@ -549,6 +549,10 @@
           <DataField>price</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="processType">
+          <DataField>processType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="quantity">
           <DataField>quantity</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
@@ -717,10 +721,10 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>5.13934cm</Width>
+                  <Width>3.827cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.56368cm</Width>
+                  <Width>3.52652cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>4.50434cm</Width>
@@ -729,13 +733,16 @@
                   <Width>3.57187cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.55834cm</Width>
+                  <Width>2.97626cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.39416cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.36724cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.93159cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -973,6 +980,41 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox15</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox12">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Parameters!trPaymentMethodsheader.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1254,12 +1296,53 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox13">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>= Switch(Fields!processType.Value="cash",Parameters!trCash.Value
+,Fields!processType.Value="doc",Parameters!trDocument.Value
+,Fields!processType.Value="cheque",Parameters!trCheque.Value
+,Fields!processType.Value="balance",Parameters!trCredit.Value
+,Fields!processType.Value="multiple",Parameters!trMultiplePayment.Value
+,1=1,Fields!processType.Value
+)</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox13</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -1369,22 +1452,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>5.16051cm</Width>
+                  <Width>3.84116cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.58485cm</Width>
+                  <Width>3.52652cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.79551cm</Width>
+                  <Width>5.13405cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.98991cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.57951cm</Width>
+                  <Width>3.25139cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>4.00286cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3.36724cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1587,6 +1673,41 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox15</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>WhiteSmoke</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Parameters!trPaymentMethodsheader.Value</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -1810,12 +1931,53 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox11">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>= Switch(Fields!processType.Value="cash",Parameters!trCash.Value
+,Fields!processType.Value="doc",Parameters!trDocument.Value
+,Fields!processType.Value="cheque",Parameters!trCheque.Value
+,Fields!processType.Value="balance",Parameters!trCredit.Value
+,Fields!processType.Value="multiple",Parameters!trMultiplePayment.Value
+,1=1,Fields!processType.Value
+)</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox11</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -1838,7 +2000,7 @@
             <Top>2.08346cm</Top>
             <Left>1.17352cm</Left>
             <Height>1.2cm</Height>
-            <Width>27.11315cm</Width>
+            <Width>27.11313cm</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
               <Hidden>=Parameters!isTax.Value=true</Hidden>
@@ -2467,11 +2629,53 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="trPaymentMethodsheader">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trCash">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trDocument">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trCheque">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trCredit">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trMultiplePayment">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trInv">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>12</NumberOfRows>
+      <NumberOfRows>13</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>3</ColumnIndex>
@@ -2662,6 +2866,41 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>11</RowIndex>
           <ParameterName>trTitle</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>trPaymentMethodsheader</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>trCash</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>trDocument</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>12</RowIndex>
+          <ParameterName>trCheque</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>12</RowIndex>
+          <ParameterName>trCredit</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>12</RowIndex>
+          <ParameterName>trMultiplePayment</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>12</RowIndex>
+          <ParameterName>trInv</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
