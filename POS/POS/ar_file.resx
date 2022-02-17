@@ -3253,4 +3253,7 @@
   <data name="trReceive" xml:space="preserve">
     <value>استلام</value>
   </data>
+  <data name="trPopCanceled" xml:space="preserve">
+    <value>تم إلغاء العملية بنجاح</value>
+  </data>
 </root>

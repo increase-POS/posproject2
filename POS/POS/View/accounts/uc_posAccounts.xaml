@@ -606,12 +606,12 @@
                     <Button x:Name="btn_delete" Grid.Row="0" Grid.Column="2" TabIndex="12"
                         Background="#4E4E4E" BorderBrush="{x:Null}" Visibility="Collapsed"
                     Margin="1,1"    Content="Delete" Click="Btn_delete_Click" />
-                    <Button x:Name="btn_confirm" Grid.Row="1" Grid.Column="1" TabIndex="10"
+                    <Button x:Name="btn_confirm" Grid.Row="1" Grid.Column="0" TabIndex="10"
                           Background="#4E4E4E" BorderBrush="{x:Null}" IsEnabled="False"
-                    Margin="1,1"    Content="Cancel" Click="Btn_confirm_Click" />
-                    <Button x:Name="btn_cancel" Grid.Row="1" Grid.Column="0" TabIndex="11"
+                    Margin="1,1"    Content="Confirm" Click="Btn_confirm_Click"  />
+                    <Button x:Name="btn_cancel" Grid.Row="1" Grid.Column="1" TabIndex="11"
                           Background="#4E4E4E" BorderBrush="{x:Null}" IsEnabled="False"
-                    Margin="1,1"    Content="Confirm"  />
+                    Margin="1,1"    Content="Cancel" Click="Btn_cancel_Click"  />
 
                 </Grid>
             </Grid>

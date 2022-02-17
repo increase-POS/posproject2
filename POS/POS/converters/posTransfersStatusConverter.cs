@@ -15,8 +15,8 @@ namespace POS.converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            int isConfirm1 = (int)values[0];
-            int isConfirm2 = (int)values[1];
+            byte isConfirm1 = (byte)values[0];
+            byte isConfirm2 = (byte)values[1];
 
             if ((isConfirm1 == 1) && (isConfirm2 == 1))
                 return MainWindow.resourcemanager.GetString("trConfirmed");

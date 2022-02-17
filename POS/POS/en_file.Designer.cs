@@ -6065,6 +6065,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation canceled successfully.
+        /// </summary>
+        internal static string trPopCanceled {
+            get {
+                return ResourceManager.GetString("trPopCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can not delete because the operation is confirmed.
         /// </summary>
         internal static string trPopCanNotDeleteRequest {
