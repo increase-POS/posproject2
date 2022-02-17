@@ -139,58 +139,112 @@ namespace POS.View.windows
                 for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                 if (vis is DataGridRow)
                 {
+                        Pos posModel = new Pos();
                         CashTransfer row = (CashTransfer) dg_transfers.SelectedItems[0];
+                        #region old
+                        //#region get two pos
+                        //cashes2 = await cashModel.GetbySourcId("p", row.cashTransId);
+                        ////to insure that the pull operation is in cashtrans2 
+                        //if (row.transType == "p")
+                        //{
+                        //    cashtrans2 = cashes2.ToList()[0] as CashTransfer;
+                        //    cashtrans3 = cashes2.ToList()[1] as CashTransfer;
+                        //}
+                        //else if (row.transType == "d")
+                        //{
+                        //    cashtrans2 = cashes2.ToList()[1] as CashTransfer;
+                        //    cashtrans3 = cashes2.ToList()[0] as CashTransfer;
+                        //}
 
-                        #region get two pos
-                        cashes2 = await cashModel.GetbySourcId("p", row.cashTransId);
-                        //to insure that the pull operation is in cashtrans2 
-                        if (row.transType == "p")
-                        {
-                            cashtrans2 = cashes2.ToList()[0] as CashTransfer;
-                            cashtrans3 = cashes2.ToList()[1] as CashTransfer;
-                        }
-                        else if (row.transType == "d")
-                        {
-                            cashtrans2 = cashes2.ToList()[1] as CashTransfer;
-                            cashtrans3 = cashes2.ToList()[0] as CashTransfer;
-                        }
+                        //#endregion
 
+                        //#region confirm
+
+                        ////if another operation not confirmed then just confirm this
+                        //////if another operation is confirmed then chk balance before confirm
+                        //bool confirm = false;
+                        //if (cashtrans2.cashTransId == row.cashTransId)//chk which record is selected
+                        //{ if (cashtrans3.isConfirm == 0) confirm = false; else confirm = true; }
+                        //else//chk which record is selected
+                        //{ if (cashtrans2.isConfirm == 0) confirm = false; else confirm = true; }
+
+                        //if (!confirm) await confirmOpr(row);
+                        //else
+                        //{
+                        //    Pos posModel = new Pos();
+                        //    Pos pos = await posModel.getById(cashtrans2.posId.Value);
+                        //    //there is enough balance
+                        //    if (pos.balance >= cashtrans2.cash)
+                        //    {
+                        //        cashtrans2.isConfirm = 1;
+                        //        int s = await cashModel.Save(cashtrans2);
+                        //        s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
+                        //        //   if (s.Equals("transdone"))//tras done so confirm
+                        //        if (s.Equals(1))//tras done so confirm
+                        //            await confirmOpr(row);
+                        //        else//error then do not confirm
+                        //            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                        //    }
+                        //    //there is not enough balance
+                        //    else
+                        //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                        //}
+                        //await MainWindow.refreshBalance();
+                        //#endregion
                         #endregion
 
-                        #region confirm
-                        //if another operation not confirmed then just confirm this
-                        ////if another operation is confirmed then chk balance before confirm
-                        bool confirm = false;
-                        if (cashtrans2.cashTransId == row.cashTransId)//chk which record is selected
-                        { if (cashtrans3.isConfirm == 0) confirm = false; else confirm = true; }
-                        else//chk which record is selected
-                        { if (cashtrans2.isConfirm == 0) confirm = false; else confirm = true; }
-
-                        if (!confirm) await confirmOpr(row);
+                        if (row.isConfirm2 == 0)
+                            await confirmOpr(row);
                         else
                         {
-                            Pos posModel = new Pos();
-                            Pos pos = await posModel.getById(cashtrans2.posId.Value);
-                            //there is enough balance
-                            if (pos.balance >= cashtrans2.cash)
+                            Pos pos = await posModel.getById(row.posId.Value);
+                            Pos pos2 = await posModel.getById(row.pos2Id.Value);
+                            int s1 = 0;
+                            if (row.transType == "d")
                             {
-                                cashtrans2.isConfirm = 1;
-                                int s = await cashModel.Save(cashtrans2);
-                                s = await cashModel.MovePosCash(cashtrans2.cashTransId, MainWindow.userID.Value);
-                                //   if (s.Equals("transdone"))//tras done so confirm
-                                if (s.Equals(1))//tras done so confirm
-                                    await confirmOpr(row);
-                                else//error then do not confirm
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                //there is enough balance
+                                if (pos.balance >= row.cash)
+                                {
+                                    pos.balance -= row.cash;
+                                    int s = await posModel.save(pos);
 
+                                    pos2.balance += row.cash;
+                                    s1 = await posModel.save(pos2);
+                                    if (!s1.Equals(0))//tras done so confirm
+                                        await confirmOpr(row);
+                                    else//error then do not confirm
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                                }
+                                //there is not enough balance
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
                             }
-                            //there is not enough balance
                             else
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                            {
+                                //there is enough balance
+                                if (pos2.balance >= row.cash)
+                                {
+                                    pos2.balance -= row.cash;
+                                    int s = await posModel.save(pos2);
+
+                                    pos.balance += row.cash;
+                                    s1 = await posModel.save(pos);
+                                    if (!s1.Equals(0))//tras done so confirm
+                                        await confirmOpr(row);
+                                    else//error then do not confirm
+                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                                }
+
+                                //there is not enough balance
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                            }
+                            await MainWindow.refreshBalance();
                         }
-                        await MainWindow.refreshBalance();
-                    #endregion
-                }
+                    }
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
