@@ -324,20 +324,29 @@ namespace POS.Classes
 
                 c.cash = decimal.Parse(SectionData.DecTostring(c.cash));
             }
-            paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
-            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
-
-            paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
 
             paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
-            paramarr.Add(new ReportParameter("trFromPos", MainWindow.resourcemanagerreport.GetString("trFromPos")));
-            paramarr.Add(new ReportParameter("trToPos", MainWindow.resourcemanagerreport.GetString("trToPos")));
-            paramarr.Add(new ReportParameter("trOpperationTypeToolTip", MainWindow.resourcemanagerreport.GetString("trOpperationTypeToolTip")));
+            paramarr.Add(new ReportParameter("trCreator", MainWindow.resourcemanagerreport.GetString("trCreator")));
+            paramarr.Add(new ReportParameter("trStatus", MainWindow.resourcemanagerreport.GetString("trStatus")));
             paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
             paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+            paramarr.Add(new ReportParameter("trConfirmed", MainWindow.resourcemanagerreport.GetString("trConfirmed")));
+            paramarr.Add(new ReportParameter("trCanceled", MainWindow.resourcemanagerreport.GetString("trCanceled")));
+            paramarr.Add(new ReportParameter("trWaiting", MainWindow.resourcemanagerreport.GetString("trWaiting")));
+
             DateFormConv(paramarr);
           
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
+        }
+        public string posTransfersStatusConverter(byte isConfirm1, byte isConfirm2)
+        {
+
+            if ((isConfirm1 == 1) && (isConfirm2 == 1))
+                return MainWindow.resourcemanager.GetString("trConfirmed");
+            else if ((isConfirm1 == 2) || (isConfirm2 == 2))
+                return MainWindow.resourcemanager.GetString("trCanceled");
+            else
+                return MainWindow.resourcemanager.GetString("trWaiting");
         }
         public static void invItem(IEnumerable<InventoryItemLocation> itemLocations, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {

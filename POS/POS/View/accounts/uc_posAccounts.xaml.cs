@@ -1275,7 +1275,30 @@ namespace POS.View.accounts
             clsReports.posAccReport(cashesQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
+            string title = MainWindow.resourcemanagerreport.GetString("trTransfers");
 
+     
+
+            if (chk_deposit.IsChecked == true)
+            {
+                title = title + "/" + MainWindow.resourcemanagerreport.GetString("trDeposit");
+         
+
+                paramarr.Add(new ReportParameter("trCol2Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
+                paramarr.Add(new ReportParameter("trCol3Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
+            }
+            else if (chk_receive.IsChecked == true)
+            {
+
+                title = title + "/" + MainWindow.resourcemanagerreport.GetString("trReceive");
+                paramarr.Add(new ReportParameter("trCol2Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
+                paramarr.Add(new ReportParameter("trCol3Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
+             
+
+
+
+            }
+            paramarr.Add(new ReportParameter("trTitle", title));
             rep.SetParameters(paramarr);
 
             rep.Refresh();
