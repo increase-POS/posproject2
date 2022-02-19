@@ -16,6 +16,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows;
 
 namespace POS.Classes
 {
@@ -100,7 +101,10 @@ namespace POS.Classes
                         if (validAuth != null && s[2].Value == "-7") // invalid authintication
                             return null;
                         else if (validAuth != null && s[2].Value == "-8")
+                        {
                             MainWindow.go_out = true;
+                            MessageBox.Show("logOut");
+                        }
                         return claims;
                     }
                 }
@@ -211,7 +215,11 @@ namespace POS.Classes
 
                         string validAuth = claims.Where(f => f.Type == "scopes").Select(x => x.Value).FirstOrDefault();
                         if (validAuth != null && s[2].Value == "-8")
+                        {
                             MainWindow.go_out = true;
+                            MessageBox.Show("logOut");
+
+                        }
                         foreach (Claim c in claims)
                         {
                             if (c.Type == "scopes")
