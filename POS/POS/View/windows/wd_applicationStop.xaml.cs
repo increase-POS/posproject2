@@ -330,6 +330,10 @@ namespace POS.View.windows
             cashTransfer.cash = MainWindow.posLogIn.balance;
             cashTransfer.createUserId = MainWindow.userID.Value;
             cashTransfer.posId = (int)MainWindow.posID;
+            if (status == "o")
+                cashTransfer.transNum = await cashTransfer.generateCashNumber("bc");
+            else
+                cashTransfer.transNum = await cashTransfer.getLastOpenTransNum((int)MainWindow.posID);
             int res = await posModel.updateBoxState((int)MainWindow.posID,status,Convert.ToInt32(isAdmin),MainWindow.userLogin.userId,cashTransfer);
             if (res > 0)
             {
