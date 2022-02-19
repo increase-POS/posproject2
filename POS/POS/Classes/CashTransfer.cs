@@ -952,7 +952,7 @@ namespace POS.Classes
             string transNum = cashNum + "-" + strSeq;
             return transNum;
         }
-
+       
         public async Task<int> GetLastNumOfCash(string cashNum)
         {
             int message = 0;
@@ -971,33 +971,25 @@ namespace POS.Classes
                 }
             }
             return message;
+        }
+        public async Task<string> getLastOpenTransNum(int posId)
+        {
+            string message = "";
 
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("posId", posId.ToString());
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/getLastOpenTransNum", parameters);
 
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    request.RequestUri = new Uri(Global.APIUri + "Cashtransfer/GetLastNumOfCash?cashCode=" + cashNum);
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Get;
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    HttpResponseMessage response = await client.SendAsync(request);
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        string message = await response.Content.ReadAsStringAsync();
-            //        message = JsonConvert.DeserializeObject<string>(message);
-            //        return int.Parse(message);
-            //    }
-
-            //    return 0;
-            //}
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    message = c.Value ;
+                    break;
+                }
+            }
+            return message;
         }
 
         public async Task<string> generateDocNumber(string docNum)
