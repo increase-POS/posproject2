@@ -125,6 +125,8 @@ namespace POS
          public Unit GlobalUnit = new Unit();
          public List<Unit> GlobalUnitsList = new List<Unit>();
 
+        public static int posCachTransfers = 0;
+
         public static async Task Getprintparameter()
         {
             List<SetValues> printList = new List<SetValues>();
@@ -803,6 +805,14 @@ namespace POS
 
                 uc_general.settingsCls = await setModel.GetAll();
                 uc_general.settingsValues = await valueModel.GetAll();
+
+                #region get cachtransfers for current pos
+                CashTransfer cashModel = new CashTransfer();
+                IEnumerable<CashTransfer> cashesQuery;
+                cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID);
+                cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0);
+                posCachTransfers = cashesQuery.Count();
+                #endregion
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
