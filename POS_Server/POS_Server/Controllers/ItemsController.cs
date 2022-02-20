@@ -30,8 +30,8 @@ namespace POS_Server.Controllers
         [Route("GetAllItems")]
         public string GetAllItems(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -46,7 +46,7 @@ var strP = TokenManager.GetPrincipal(token);
 
                                                  join c in entity.categories on I.categoryId equals c.categoryId into lj
                                                  from x in lj.DefaultIfEmpty()
-                                                 select new ItemModel()
+                                                 select new ItemSalePurModel()
                                                  {
                                                      itemId = I.itemId,
                                                      name = I.name,
@@ -144,6 +144,8 @@ var strP = TokenManager.GetPrincipal(token);
                     {
                         for (int i = 0; i < itemsList.Count; i++)
                         {
+                            itemsList[i].priceTax = itemsList[i].priceTax + Calc.percentValue(itemsList[i].price, itemsList[i].taxes);
+
                             canDelete = false;
                             if (itemsList[i].isActive == 1)
                             {
@@ -204,6 +206,8 @@ var strP = TokenManager.GetPrincipal(token);
                                     itemsList[i].priceTax = itemsList[i].price + (itemsList[i].price * itemsList[i].taxes / 100);
                                     
                                     itemsList[i].avgPurchasePrice = itemsList[i].avgPurchasePrice;
+                                    itemsList[i].discountType = itofflist.discountType;
+                                    itemsList[i].discountValue = itofflist.discountValue;
                                 }
                             }
                             //itemsList[i].desPrice = itemsList[i].priceTax - totaldis;

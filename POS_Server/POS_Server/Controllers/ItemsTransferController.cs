@@ -20,9 +20,6 @@ namespace POS_Server.Controllers
         [Route("Get")]
         public string Get(string token)
         {
-            //int invoiceId
-
-            // public string GetUsersByGroupId(string token)
           token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
@@ -31,8 +28,6 @@ namespace POS_Server.Controllers
             else
             {
                 int invoiceId = 0;
-
-
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -41,10 +36,8 @@ namespace POS_Server.Controllers
                         invoiceId = int.Parse(c.Value);
                     }
 
-
                 }
 
-                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -77,6 +70,10 @@ namespace POS_Server.Controllers
                                                 itemSerial = t.itemSerial,
                                                 itemType = i.type,
                                                 offerId = t.offerId,
+                                                itemUnitPrice = t.itemUnitPrice,
+                                                offerType = t.offerType,
+                                                offerValue = t.offerValue,
+                                                itemTax = t.itemTax,
                                             })
                                             .ToList();
 

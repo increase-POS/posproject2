@@ -146,6 +146,9 @@ namespace POS.View.sales
             public decimal Price { get; set; }
             public decimal Total { get; set; }
             public decimal Tax { get; set; }
+            public decimal basicPrice { get; set; }
+            public decimal OfferValue { get; set; }
+            public string OfferType { get; set; }
         }
 
         #endregion
@@ -686,7 +689,7 @@ namespace POS.View.sales
                         int index = dg_billDetails.SelectedIndex;
                         // calculate new sum
                         _Sum -= row.Total;
-                        _Tax -= row.Tax;
+                      //  _Tax -= row.Tax;
 
                         // remove item from bill
                         billDetails.RemoveAt(index);
@@ -699,12 +702,12 @@ namespace POS.View.sales
                     }
                 _SequenceNum = 0;
                 _Sum = 0;
-                _Tax = 0;
+               // _Tax = 0;
                 for (int i = 0; i < billDetails.Count; i++)
                 {
                     _SequenceNum++;
                     _Sum += billDetails[i].Total;
-                    _Tax += billDetails[i].Tax;
+                   // _Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
                 //refrishBillDetails();
@@ -817,7 +820,7 @@ namespace POS.View.sales
                             if (unit1.itemId != 0)
                             {
                                 int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-
+                                decimal basicPrice = (decimal)unit1.price;
                                 if (index == -1)//item doesn't exist in bill
                                 {
                                     // get item units
@@ -826,12 +829,32 @@ namespace POS.View.sales
                                     item = items.ToList().Find(i => i.itemId == itemId);
 
                                     int count = 1;
+                                    //if (unit1.price != null)
+                                       // price = (decimal)unit1.price;
+
                                     decimal price = 0;
-                                    if (unit1.price != null)
+                                    decimal tax = 0;
+                                    if (MainWindow.itemsTax_bool == true)
+                                    {
+                                        price = (decimal)unit1.priceTax;
+                                        tax = (decimal)(count * item.taxes);
+                                    }
+                                    else
+                                    {
                                         price = (decimal)unit1.price;
+                                    }
                                     decimal total = count * price;
-                                    decimal tax = (decimal)(count * item.taxes);
-                                      addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax,item.offerId);
+
+                                    int offerId = 0;
+                                    string discountType = "1";
+                                    decimal discountValue = 0;
+                                    if (item.offerId != null)
+                                    {
+                                        offerId = (int)item.offerId;
+                                        discountType = item.discountType;
+                                        discountValue = (decimal)item.discountValue;
+                                    }
+                                    addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total, tax,item.offerId,discountType,discountValue,basicPrice);
                                 }
                                 else // item exist prevoiusly in list
                                 {
@@ -840,10 +863,13 @@ namespace POS.View.sales
                                         itemTax = (decimal)item.taxes;
                                     billDetails[index].Count++;
                                     billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
-                                    billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
+                                    if (MainWindow.itemsTax_bool == true)
+                                        billDetails[index].Tax = (decimal)(billDetails[index].Count * itemTax);
+                                    else
+                                        billDetails[index].Tax = 0;
 
-                                    _Sum += billDetails[index].Price;
-                                    _Tax += billDetails[index].Tax;
+                                   _Sum += billDetails[index].Price;
+                                   //_Tax += billDetails[index].Tax;
 
                                 }
                                 refreshTotalValue();
@@ -1360,6 +1386,10 @@ namespace POS.View.sales
                     itemT.itemUnitId = billDetails[i].itemUnitId;
                     itemT.createUserId = MainWindow.userID;
                     itemT.offerId = billDetails[i].offerId;
+                    itemT.offerType = decimal.Parse(billDetails[i].OfferType);
+                    itemT.offerValue = billDetails[i].OfferValue;
+                    itemT.itemTax = billDetails[i].Tax;
+                    itemT.itemUnitPrice = billDetails[i].basicPrice;
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1394,21 +1424,46 @@ namespace POS.View.sales
             if (item != null)
             {
                 // get item units
-               // itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
                 itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
-                // search for default unit for purchase
+                decimal itemTax = 0;
+                if (MainWindow.itemsTax_bool == true)
+                {
+                    if (item.taxes != null)
+                        itemTax = (decimal)(item.taxes);
+                }
+                else
+                    itemTax = 0;
+
+                int? offerId;
+                string discountType = "1";
+                decimal discountValue = 0;
+                if (item.offerId != null)
+                {
+                    offerId = (int)item.offerId;
+                    discountType = item.discountType;
+                    discountValue = (decimal)item.discountValue;
+                }
+                else
+                    offerId = null;
+                // search for default unit for sales
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
+                    decimal basicPrice = (decimal)defaultsaleUnit.price;
                     int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultsaleUnit.itemUnitId).FirstOrDefault());                   
                     // create new row in bill details data grid
                     if (index == -1)//item doesn't exist in bill
                     {
-                        decimal itemTax = 0;
-                        if (item.taxes != null)
-                            itemTax = (decimal)item.taxes;
-                        decimal price = (decimal)defaultsaleUnit.price + SectionData.calcPercentage((decimal)defaultsaleUnit.price, itemTax);
-                        addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, (decimal)defaultsaleUnit.price, (decimal)defaultsaleUnit.price, itemTax,item.offerId);
+                        decimal price = 0;
+                        if (MainWindow.itemsTax_bool == true)
+                        {
+                            price = (decimal)defaultsaleUnit.priceTax;
+                        }
+                        else
+                        {
+                            price = (decimal)defaultsaleUnit.price;
+                        }
+                        addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, price,price, itemTax,item.offerId,discountType,discountValue,basicPrice);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -1416,6 +1471,7 @@ namespace POS.View.sales
                         billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
 
                         _Sum += billDetails[index].Price;
+                        //_Tax += billDetails[index].Tax;
                     }
 
                     //refreshTotalValue();
@@ -1423,7 +1479,7 @@ namespace POS.View.sales
                 }
                 else
                 {
-                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, (decimal)item.taxes,item.offerId);
+                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, itemTax,offerId,discountType,discountValue,0);
                     //refreshTotalValue();
                     //refrishBillDetails();
                 }
@@ -1489,10 +1545,10 @@ namespace POS.View.sales
                 }
                 catch { }
             }
-            if (MainWindow.itemsTax_bool == true)
-            {
-                taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
-            }
+            //if (MainWindow.itemsTax_bool == true)
+            //{
+            //    taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
+            //}
             #endregion
             //try
             //{
@@ -1714,7 +1770,8 @@ namespace POS.View.sales
             }
         }
 
-        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, int? offerId)
+        private void addRowToBill(string itemName, int itemId, string unitName, int itemUnitId, int count, decimal price, decimal total, decimal tax, int? offerId,
+                                     string offerType, decimal offerValue, decimal basicPrice)
         {
             // increase sequence for each read
             _SequenceNum++;
@@ -1731,9 +1788,12 @@ namespace POS.View.sales
                 Total = total,
                 Tax = tax,
                 offerId = offerId,
+                OfferType = offerType,
+                OfferValue = offerValue,
+                basicPrice = basicPrice,
             });
             _Sum += total;
-            _Tax += tax;
+           // _Tax += tax;
         }
         #endregion billdetails
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -1877,6 +1937,10 @@ namespace POS.View.sales
                     Price = (decimal)itemT.price,
                     Total = total,
                     offerId = itemT.offerId,
+                    OfferType = itemT.offerType.ToString(),
+                    OfferValue = (decimal)itemT.offerValue,
+                    basicPrice = (decimal)itemT.itemUnitPrice,
+                    Tax = (decimal)itemT.itemTax,
                 });
             }
 
@@ -2165,11 +2229,11 @@ namespace POS.View.sales
                     _Sum += total;
              
                     // old tax for changed item
-                    decimal tax = (decimal)itemTax * oldCount;
-                    _Tax -= tax;
+                    //decimal tax = (decimal)itemTax * oldCount;
+                    //_Tax -= tax;
                     // new tax for changed item
-                    tax = (decimal)itemTax * newCount;
-                    _Tax += tax;
+                   // tax = (decimal)itemTax * newCount;
+                   // _Tax += tax;
 
                     //refresh Price cell
                     tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
@@ -2346,11 +2410,11 @@ namespace POS.View.sales
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     // old tax for changed item
-                    decimal tax = (decimal)itemTax * oldCount;
-                    _Tax -= tax;
+                    //decimal tax = (decimal)itemTax * oldCount;
+                   // _Tax -= tax;
                     // new tax for changed item
-                    tax = (decimal)itemTax * newCount;
-                    _Tax += tax;
+                    //tax = (decimal)itemTax * newCount;
+                   // _Tax += tax;
 
                     //refresh total cell
                     tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;

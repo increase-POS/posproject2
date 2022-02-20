@@ -64,7 +64,8 @@ namespace POS.Classes
         public Nullable<decimal> priceTax { get; set; }
         public Nullable<short> defaultSale { get; set; }
         public bool canUpdate { get; set; }
-
+        public string discountType { get; set; }
+        public Nullable<decimal> discountValue { get; set; }
         public async Task<int> saveItem(Item item)
         {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
