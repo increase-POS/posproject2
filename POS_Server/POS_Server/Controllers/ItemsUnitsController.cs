@@ -1080,17 +1080,18 @@ namespace POS_Server.Controllers
                                     if (row.discountType == "1") // value
                                     {
 
-                                        totaldis = totaldis + row.discountValue;
+                                        totaldis =  row.discountValue;
                                     }
                                     else if (row.discountType == "2") // percent
                                     {
 
-                                        totaldis = totaldis + Calc.percentValue(row.price, row.discountValue);
+                                        totaldis = Calc.percentValue(row.price, row.discountValue);
 
                                     }
+                                    row.priceTax = row.priceTax - totaldis;
                                 }
                             }
-                            row.priceTax = row.priceTax - totaldis;
+                            
                         }
                         return TokenManager.GenerateToken(itemUnitsList);
                     }
