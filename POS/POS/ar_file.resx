@@ -3256,4 +3256,7 @@
   <data name="trPopCanceled" xml:space="preserve">
     <value>تم إلغاء العملية بنجاح</value>
   </data>
+  <data name="trUserLoginFromOtherPos" xml:space="preserve">
+    <value>المستخدم  سجل دخول في نقطة مبيعات أخرى</value>
+  </data>
 </root>

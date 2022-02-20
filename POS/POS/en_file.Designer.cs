@@ -9053,6 +9053,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to user login from other POS.
+        /// </summary>
+        internal static string trUserLoginFromOtherPos {
+            get {
+                return ResourceManager.GetString("trUserLoginFromOtherPos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Name.
         /// </summary>
         internal static string trUserName {

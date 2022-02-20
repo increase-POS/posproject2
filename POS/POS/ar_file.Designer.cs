@@ -8990,6 +8990,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المستخدم  سجل دخول في نقطة مبيعات أخرى.
+        /// </summary>
+        internal static string trUserLoginFromOtherPos {
+            get {
+                return ResourceManager.GetString("trUserLoginFromOtherPos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اسم المستخدم.
         /// </summary>
         internal static string trUserName {

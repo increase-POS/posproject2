@@ -103,7 +103,7 @@ namespace POS.Classes
                         else if (validAuth != null && s[2].Value == "-8")
                         {
                             MainWindow.go_out = true;
-                            MessageBox.Show("logOut");
+                            //MessageBox.Show("logOut");
                         }
                         return claims;
                     }
@@ -217,7 +217,7 @@ namespace POS.Classes
                         if (validAuth != null && s[2].Value == "-8")
                         {
                             MainWindow.go_out = true;
-                            MessageBox.Show("logOut");
+                            //MessageBox.Show("logOut");
 
                         }
                         foreach (Claim c in claims)

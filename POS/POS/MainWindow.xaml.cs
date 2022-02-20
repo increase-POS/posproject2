@@ -1256,9 +1256,25 @@ namespace POS
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
-                await close();
+                if (go_out == false)
+                {
+                    await close();
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    await close();
+                    this.Visibility = Visibility.Hidden;
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_messageBox w = new wd_messageBox();
+                    w.contentText = MainWindow.resourcemanager.GetString("trUserLoginFromOtherPos");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
 
-                Application.Current.Shutdown();
+                    Application.Current.Shutdown();
+                }
 
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
