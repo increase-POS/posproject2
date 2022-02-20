@@ -884,7 +884,8 @@ namespace POS.View
         }
         async Task RefrishItems()
         {
-            items = await itemModel.GetAllItems();
+            //items = await itemModel.GetAllItems();
+            items = await itemModel.GetSaleOrPurItems(0, 1, 0, MainWindow.branchID.Value);
         }
         async Task fillBarcodeList()
         {
@@ -1098,7 +1099,7 @@ namespace POS.View
                     decimal price = 0;
                     decimal basicPrice = (decimal)defaultsaleUnit.price;
                     if (MainWindow.itemsTax_bool == true)
-                        price = (decimal)defaultsaleUnit.priceTax;
+                        price = (decimal)item.priceTax;
                     else
                         price = (decimal)defaultsaleUnit.price;
                     addItemToBill(itemId, (int)defaultsaleUnit.itemUnitId, defaultsaleUnit.unitName, price,basicPrice, false);
