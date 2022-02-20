@@ -1051,34 +1051,36 @@ namespace POS.View.sales
                 int? offerId;
                 string discountType = "1";
                 decimal discountValue = 0;
-                if (item.offerId != null)
-                {
-                    offerId = (int)item.offerId;
-                    discountType = item.discountType;
-                    discountValue = (decimal)item.discountValue;
-                }
-                else
-                    offerId = null;
+                
                 // search for default unit for sales
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {                  
                     decimal price = 0;
-                    decimal basicPrice = (decimal)defaultsaleUnit.price;
+                    decimal basicPrice = (decimal)item.price;
                     if (MainWindow.itemsTax_bool == true)
                     {
-                        price = (decimal)item.priceTax;                       
+                        price = (decimal)defaultsaleUnit.priceTax;                       
                     }
                     else
                     {
                         price = (decimal)defaultsaleUnit.price;                      
                     }
+
+                    if (item.offerId != null)
+                    {
+                        offerId = (int)item.offerId;
+                        discountType = item.discountType;
+                        discountValue = (decimal)item.discountValue;
+                    }
+                    else
+                        offerId = null;
                     // create new row in bill details data grid
                     addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, price, price, itemTax,offerId,discountType,discountValue,basicPrice);
                 }
                 else
                 {
-                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, itemTax,offerId,discountType,discountValue,0);
+                      addRowToBill(item.name, itemId, null, 0, 1, 0, 0, itemTax,null,"1",0,0);
                 }
                 //refreshTotalValue();
                 //refrishBillDetails();
@@ -1568,9 +1570,19 @@ namespace POS.View.sales
                     billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     int itemUnitId = (int)cmb.SelectedValue;
                     billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                    //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
-                    var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
-                    //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
+                    billDetails[_datagridSelectedIndex].OfferType = "1";
+                    billDetails[_datagridSelectedIndex].OfferValue = 0;
+                    billDetails[_datagridSelectedIndex].offerId = null;
+
+                   // var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
+                   var unit =  MainWindow.InvoiceGlobalSaleUnitsList.Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+
+                    if (unit.offerId != null && (int)unit.offerId != 0)
+                    {
+                        billDetails[_datagridSelectedIndex].OfferType = unit.discountType;
+                        billDetails[_datagridSelectedIndex].OfferValue = (decimal)unit.discountValue;
+                        billDetails[_datagridSelectedIndex].offerId = unit.offerId;
+                    }
 
                     int oldCount = 0;
                     long newCount = 0;
@@ -1606,15 +1618,7 @@ namespace POS.View.sales
 
                     // new total for changed item
                     total = newCount * newPrice;
-                    _Sum += total;
-
-                   
-                    // old tax for changed item
-                    //decimal tax = (decimal)itemTax * oldCount;
-                    //_Tax -= tax;
-                    // new tax for changed item
-                    //tax = (decimal)itemTax * newCount;
-                    //_Tax += tax;
+                    _Sum += total;                 
 
 
                     //refresh Price cell

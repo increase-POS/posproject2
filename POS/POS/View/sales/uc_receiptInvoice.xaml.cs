@@ -1097,9 +1097,9 @@ namespace POS.View
                 if (defaultsaleUnit != null)
                 {
                     decimal price = 0;
-                    decimal basicPrice = (decimal)defaultsaleUnit.price;
+                    decimal basicPrice = (decimal)item.price;
                     if (MainWindow.itemsTax_bool == true)
-                        price = (decimal)item.priceTax;
+                        price = (decimal)defaultsaleUnit.priceTax;
                     else
                         price = (decimal)defaultsaleUnit.price;
                     addItemToBill(itemId, (int)defaultsaleUnit.itemUnitId, defaultsaleUnit.unitName, price,basicPrice, false);
@@ -1111,17 +1111,17 @@ namespace POS.View
                     if (item.type == "sn")
                         valid = false;
                     int? offerId;
-                    string discountType = "1";
-                    decimal discountValue = 0;
-                    if (item.offerId != null)
-                    {
-                        offerId = (int)item.offerId;
-                        discountType = item.discountType;
-                        discountValue = (decimal)item.discountValue;
-                    }
-                    else
+                    //string discountType = "1";
+                    //decimal discountValue = 0;
+                    //if (item.offerId != null)
+                    //{
+                    //    offerId = (int)item.offerId;
+                    //    discountType = item.discountType;
+                    //    discountValue = (decimal)item.discountValue;
+                    //}
+                    //else
                         offerId = null;
-                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0,itemTax, item.type, valid, offerId,discountType, discountValue,0);
+                    addRowToBill(item.name, itemId, null, 0, 1, 0, 0,itemTax, item.type, valid, offerId,"1", 0,0);
                 }
             }
         }
@@ -3393,6 +3393,9 @@ namespace POS.View
                     oldPrice = billDetails[_datagridSelectedIndex].Price;
                     newCount = oldCount;
                     tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    billDetails[_datagridSelectedIndex].OfferType = "1";
+                    billDetails[_datagridSelectedIndex].OfferValue = 0;
+                    billDetails[_datagridSelectedIndex].offerId = null;
                     //validateAvailableAmount(row, newCount, index, tb );
                     int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, unit.itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
                         if (availableAmount < newCount && billDetails[_datagridSelectedIndex].type != "sr")
@@ -3420,11 +3423,19 @@ namespace POS.View
                                 newCount = availableAmount;
                                 tb.Text = newCount.ToString();
                             billDetails[_datagridSelectedIndex].Count = (int)newCount;
-                            }
+                            billDetails[_datagridSelectedIndex].OfferType = unit.discountType;
+                            billDetails[_datagridSelectedIndex].OfferValue = unit.discountValue;
+                            billDetails[_datagridSelectedIndex].offerId = unit.offerId;
+                           
                         }
+                       
+                    }
 
-
-                    newPrice = unit.price;
+                    if (MainWindow.itemsTax_bool == true)
+                        newPrice = unit.priceTax;
+                    else
+                        newPrice = unit.price;
+                   // newPrice = unit.price;
                     tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
                     tb.Text = newPrice.ToString();
 
@@ -3454,7 +3465,7 @@ namespace POS.View
                     billDetails[_datagridSelectedIndex].Count = (int)newCount;
                     billDetails[_datagridSelectedIndex].Price = newPrice;
                     billDetails[_datagridSelectedIndex].Total = total;
-                    //refrishBillDetails();
+                    refrishBillDetails();
                     #endregion
                 }
                 //if (sender != null)
