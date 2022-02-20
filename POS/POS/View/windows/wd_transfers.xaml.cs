@@ -95,7 +95,7 @@ namespace POS.View.windows
         {
             //   cashesQuery = await cashModel.GetCashTransferForPosAsync("all", "p");
             cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID); 
-            cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && (c.isConfirm == 0 || c.isConfirm2 == 0));
+            cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0 );
 
             foreach (var c in cashesQuery)
             {

@@ -111,6 +111,7 @@ namespace POS
         public static string rep_print_count;
         public static string docPapersize;
         public static string Allow_print_inv_count;
+        public static string show_header;
         public static Boolean go_out = false;
         static public PosSetting posSetting = new PosSetting();
         internal static List<Pos> posList = new List<Pos>();
@@ -124,6 +125,8 @@ namespace POS
          public List<ItemUnit> GlobalItemUnitsList = new List<ItemUnit>();
          public Unit GlobalUnit = new Unit();
          public List<Unit> GlobalUnitsList = new List<Unit>();
+
+        public static int posCachTransfers = 0;
 
         public static async Task Getprintparameter()
         {
@@ -148,6 +151,12 @@ namespace POS
             rep_print_count = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault().value;
 
             Allow_print_inv_count = printList.Where(X => X.name == "Allow_print_inv_count").FirstOrDefault().value;
+            show_header = printList.Where(X => X.name == "show_header").FirstOrDefault().value;
+            if(show_header==null|| show_header == "")
+            {
+                show_header = "1";
+            }
+         
         }
         public static async Task GetReportlang()
         {
@@ -803,6 +812,14 @@ namespace POS
 
                 uc_general.settingsCls = await setModel.GetAll();
                 uc_general.settingsValues = await valueModel.GetAll();
+
+                #region get cachtransfers for current pos
+                CashTransfer cashModel = new CashTransfer();
+                IEnumerable<CashTransfer> cashesQuery;
+                cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID);
+                cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0);
+                posCachTransfers = cashesQuery.Count();
+                #endregion
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type

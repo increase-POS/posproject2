@@ -2834,6 +2834,16 @@ namespace POS.Classes
             return iulist;
 
         }
+
+        public List<branchFromCombo> getFromCombo(List<CashTransfer> ITInvoice)
+        {
+            List<branchFromCombo> iulist = new List<branchFromCombo>();
+
+            //iulist = ITInvoice.GroupBy(g => g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
+            return iulist;
+
+        }
+
         public class branchToCombo
         {
             private string branchToName;
@@ -3627,6 +3637,29 @@ namespace POS.Classes
                 case "inv": return MainWindow.resourcemanager.GetString("trInv");
                 default: return value;
             }
+        }
+
+        public async Task<List<CashTransfer>> GetCashTransferForPosAsync(string type, string side)
+        {
+            // string type, string side
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type", type.ToString());
+            parameters.Add("side", side.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetBytypeAndSideForPos", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+
         }
 
     }

@@ -32,9 +32,13 @@ namespace POS.View.reports
     {
         Statistics statisticModel = new Statistics();
         List<CashTransferSts> list;
+        List<CashTransfer> listCash;
 
-        List<branchFromCombo> fromBranches = new List<branchFromCombo>();
-        List<branchToCombo> toBranches = new List<branchToCombo>();
+        //List<branchFromCombo> fromBranches = new List<branchFromCombo>();
+        //List<branchToCombo> toBranches = new List<branchToCombo>();
+
+        List<Branch> fromBranches = new List<Branch>();
+        List<Branch> toBranches = new List<Branch>();
 
         List<posFromCombo> fromPos;
         List<posToCombo> toPos;
@@ -83,13 +87,15 @@ namespace POS.View.reports
                 #endregion
 
                 list = await statisticModel.GetPosTrans();
+                listCash = await statisticModel.GetCashTransferForPosAsync("all" , "p");
 
-                fromBranches = statisticModel.getFromCombo(list);
-                toBranches = statisticModel.getToCombo(list);
+                //fromBranches = statisticModel.getFromCombo(list);
+                //toBranches = statisticModel.getToCombo(list);
 
-                fromPos = statisticModel.getFromPosCombo(list);
-                toPos = statisticModel.getToPosCombo(list);
-                accCombo = list.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+                //fromBranches = getFromCombo(listCash);
+                //fromPos = statisticModel.getFromPosCombo(list);
+                //toPos = statisticModel.getToPosCombo(list);
+                //accCombo = list.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
 
                 chk_twoWay.IsChecked = false;
                 chk_twoWay.IsEnabled = false;
@@ -119,14 +125,25 @@ namespace POS.View.reports
             }
         }
 
+        //private List<Branch> getFromCombo(List<CashTransfer> listCash)
+        //{
+        //    //foreach(var c in listCash)
+        //    //{
+
+        //    //}
+        //    //fromBranches = 
+        //    return;
+        //}
+
         private void translate()
         {
-            tt_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
+            tt_payments.Content = MainWindow.resourcemanager.GetString("trDeposit");
+            tt_pulls.Content = MainWindow.resourcemanager.GetString("trPull");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formBranch, MainWindow.resourcemanager.GetString("trStartDateHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toBranch, MainWindow.resourcemanager.GetString("trEndDateHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trStartDateHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formBranch, MainWindow.resourcemanager.GetString("trFromBranch")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toBranch, MainWindow.resourcemanager.GetString("trToBranch")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trDepositor")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trRecepient") +"...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_Accountant, MainWindow.resourcemanager.GetString("trAccoutant")+"...");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_StartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
@@ -143,9 +160,9 @@ namespace POS.View.reports
 
             col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
             col_fromBranch.Header = MainWindow.resourcemanager.GetString("trFromBranch");
-            col_fromPos.Header = MainWindow.resourcemanager.GetString("trFromPos");
+            col_fromPos.Header = MainWindow.resourcemanager.GetString("trDepositor");
             col_toBranch.Header = MainWindow.resourcemanager.GetString("trToBranch");
-            col_toPos.Header = MainWindow.resourcemanager.GetString("trToPos");
+            col_toPos.Header = MainWindow.resourcemanager.GetString("trRecepient");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
             col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
@@ -1056,7 +1073,7 @@ namespace POS.View.reports
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {
-            SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+           // SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
         }
 
