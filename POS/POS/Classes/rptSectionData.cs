@@ -29,8 +29,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("Address", MainWindow.Address));
             paramarr.Add(new ReportParameter("Email", MainWindow.Email));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
-          
-            
+            paramarr.Add(new ReportParameter("show_header", MainWindow.show_header));
+
+
         }
         public static void bankReport(IEnumerable<Bank> banksQuery, LocalReport rep, string reppath)
         {

@@ -28,6 +28,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("Address", MainWindow.Address));
             paramarr.Add(new ReportParameter("Email", MainWindow.Email));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + rep.GetLogoImagePath()));
+            paramarr.Add(new ReportParameter("show_header", MainWindow.show_header));
 
         }
         public static void HeaderNoLogo(List<ReportParameter> paramarr)
@@ -39,6 +40,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("Tel", MainWindow.Mobile));
             paramarr.Add(new ReportParameter("Address", MainWindow.Address));
             paramarr.Add(new ReportParameter("Email", MainWindow.Email));
+            paramarr.Add(new ReportParameter("show_header", MainWindow.show_header));
 
 
         }
@@ -1205,16 +1207,16 @@ Parameters!trValueDiscount.Value)
         //    rep.DataSources.Add(new ReportDataSource("DataSetItem", itemQuery));
 
         //}
-        public static void itemReport(IEnumerable<Item> itemQuery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        public static void itemReport(IEnumerable<Item> _items, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            foreach (var r in itemQuery)
-            {
-                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
-            }
-            rep.DataSources.Add(new ReportDataSource("DataSetItem", itemQuery));
+            //foreach (Item r in _items)
+            //{
+            //    r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+            //}
+            rep.DataSources.Add(new ReportDataSource("DataSetItem", _items));
             paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trItems")));
             paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
             paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));

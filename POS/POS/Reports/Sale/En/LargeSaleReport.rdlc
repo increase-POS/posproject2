@@ -2268,6 +2268,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="show_header">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2443,6 +2449,11 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>8</RowIndex>
           <ParameterName>shippingCost</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>8</RowIndex>
+          <ParameterName>show_header</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
