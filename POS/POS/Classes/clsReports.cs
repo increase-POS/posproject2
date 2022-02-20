@@ -1212,10 +1212,10 @@ Parameters!trValueDiscount.Value)
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            //foreach (Item r in _items)
-            //{
-            //    r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
-            //}
+            foreach (Item r in _items)
+            {
+                r.taxes = decimal.Parse(SectionData.DecTostring(r.taxes));
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetItem", _items));
             paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trItems")));
             paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trCode")));
