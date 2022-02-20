@@ -144,7 +144,6 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < itemsList.Count; i++)
                         {
-                            itemsList[i].priceTax = itemsList[i].price + Calc.percentValue(itemsList[i].price, itemsList[i].taxes);
 
                             canDelete = false;
                             if (itemsList[i].isActive == 1)
@@ -789,8 +788,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetItemsByType")]
         public string GetItemsByType(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -829,8 +828,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetItemByID")]
         public string GetItemByID(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -882,8 +881,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetItemsCodes")]
         public string GetItemsCodes(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);

@@ -1059,7 +1059,7 @@ namespace POS_Server.Controllers
 
                         foreach (var row in itemUnitsList)
                         {
-                             row.priceTax = row.price + Calc.percentValue(row.price, row.taxes);
+                             row.priceTax = row.price + (row.price * row.taxes / 100);
                             decimal? totaldis = 0;
                             foreach (var itofflist in itemsofferslist)
                             {
@@ -1080,18 +1080,20 @@ namespace POS_Server.Controllers
                                     if (row.discountType == "1") // value
                                     {
 
-                                        totaldis =  row.discountValue;
+                                        totaldis +=  row.discountValue;
                                     }
                                     else if (row.discountType == "2") // percent
                                     {
 
-                                        totaldis = Calc.percentValue(row.price, row.discountValue);
+                                        totaldis += Calc.percentValue(row.price, row.discountValue);
 
                                     }
-                                    row.priceTax = row.priceTax - totaldis;
+                                    
                                 }
                             }
-                            
+                            row.priceTax = row.priceTax - totaldis;
+                            row.price = row.price - totaldis;
+
                         }
                         return TokenManager.GenerateToken(itemUnitsList);
                     }
