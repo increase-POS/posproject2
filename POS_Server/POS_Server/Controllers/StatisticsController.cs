@@ -6844,6 +6844,8 @@ namespace POS_Server.Controllers
                                                             join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
                                                             join u in entity.users on C.userId equals u.userId into ju
                                                             join uc in entity.users on C.createUserId equals uc.userId into juc
+                                                          join uu in entity.users on C.createUserId equals uu.userId into jup
+
                                                             join cr in entity.cards on C.cardId equals cr.cardId into jcr
                                                             join bo in entity.bondes on C.bondId equals bo.bondId into jbo
                                                             join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
@@ -6853,6 +6855,8 @@ namespace POS_Server.Controllers
                                                             from juu in ju.DefaultIfEmpty()
                                                             from jpcc in jpcr.DefaultIfEmpty()
                                                             from jucc in juc.DefaultIfEmpty()
+                                                            from jupdateusr in jup.DefaultIfEmpty()
+
                                                             from jcrd in jcr.DefaultIfEmpty()
                                                             from jbbo in jbo.DefaultIfEmpty()
                                                             from jssh in jsh.DefaultIfEmpty()
@@ -6904,6 +6908,7 @@ namespace POS_Server.Controllers
                                                                 branchName = jpp.branches.name,
                                                                 branch2Id = 0,
                                                                 branch2Name = "",
+                                                               updateUserAcc= jupdateusr.username,
 
                                                             }).Where(C => ((type == "all") ? true : C.transType == type) && (C.processType != "balance")
                 && ((side == "all") ? true : C.side == side)).ToList();
