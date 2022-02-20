@@ -144,6 +144,8 @@ namespace POS_Server.Controllers
                     {
                         for (int i = 0; i < itemsList.Count; i++)
                         {
+                            itemsList[i].priceTax = itemsList[i].priceTax + Calc.percentValue(itemsList[i].price, itemsList[i].taxes);
+
                             canDelete = false;
                             if (itemsList[i].isActive == 1)
                             {
