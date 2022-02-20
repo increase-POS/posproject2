@@ -41,7 +41,7 @@
                         Background="#4E4E4E">
 
                     <!--Grid Tab Control-->
-                    <Grid >
+                    <Grid x:Name="grid_tabControl">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -60,12 +60,11 @@
                                 BorderBrush="Transparent" 
                                 Margin="10,5,0,-1">
 
-                            <Button x:Name="btn_payments"
+                            <Button x:Name="btn_payments" Tag="deposit"
                                     Background="Transparent"  
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent"
-                                    Height="auto" Click="Btn_payments_Click" 
-                                    >
+                                    Height="auto" Click="Btn_payments_Click" >
                               
                                 <Button.Triggers>
                                     <EventTrigger x:Name="trig" RoutedEvent="Button.Click">
@@ -109,7 +108,7 @@
 	h14.4v-7.2h-14.4V214.8z M369.5,232.8h43.2v-14.4h-43.2V232.8z" >
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_payments"
-                                                 Content="Deposite"
+                                                 Content="Deposit"
                                                  Placement="left" 
                                                  HorizontalOffset="35"
                                                  PlacementRectangle="50,0,0,0"
@@ -120,7 +119,7 @@
                         </Border>
                         <Border x:Name="bdr_pulls"
                                 Grid.Column="1"
-                                Background="White"
+                                Background="#4E4E4E"
                                 BorderThickness="0"
                                 Height="40"
                                 Width="60"
@@ -129,11 +128,11 @@
                                 BorderBrush="Transparent" 
                                 Margin="10,5,0,-1">
 
-                            <Button x:Name="btn_pulls"
+                            <Button x:Name="btn_pulls" Tag="receive"
                                     Background="Transparent"  
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent"
-                                    Height="auto"  
+                                    Height="auto" Click="Btn_pulls_Click"  
                                     >
 
                                 <Button.Triggers>
@@ -150,7 +149,7 @@
                                     </EventTrigger>
                                 </Button.Triggers>
                                 <Path Name="path_pulls"
-                                      Fill="#4E4E4E"
+                                      Fill="White"
                                       Stretch="Fill"
                                       VerticalAlignment="Top"
                                       HorizontalAlignment="Center"
@@ -167,7 +166,7 @@
 	H26.3L22.6,17.1z" >
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_pulls"
-                                                 Content="Pull"
+                                                 Content="Receive"
                                                  Placement="left" 
                                                  HorizontalOffset="35"
                                                  PlacementRectangle="50,0,0,0"
@@ -177,8 +176,10 @@
                             </Button>
                         </Border>
 
+                        <Border Grid.Column="3" >
                         <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
+                        </Border>
                     </Grid>
                 </Border>
 
@@ -254,7 +255,8 @@
                                               Unchecked="Chk_allFromPos_Unchecked"
                                                ></CheckBox>
 
-                                    <CheckBox x:Name="chk_twoWay"
+                                    <CheckBox x:Name="chk_twoWay" 
+                                              Visibility="Collapsed"
                                               Background="{StaticResource MainColorBlue}"
                                               Grid.Row="0"
                                               Grid.Column="5"
@@ -458,6 +460,7 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_tansNum" Width="*"    Header="Transfer Number" Binding="{Binding transNum}"/>
+                        <DataGridTextColumn x:Name="col_creatorBranch" Width="*" Header="From Branch" Binding="{Binding branchCreatorname}"/>
                         <DataGridTextColumn x:Name="col_fromBranch" Width="*" Header="From Branch" Binding="{Binding frombranchName}"/>
                         <DataGridTextColumn x:Name="col_fromPos" Width="*"    Header="From Pos" Binding="{Binding fromposName}"/>
                         <DataGridTextColumn x:Name="col_toBranch" Width="*"   Header="To Branch" Binding="{Binding tobranchName}"/>

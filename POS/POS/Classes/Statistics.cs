@@ -2826,20 +2826,20 @@ namespace POS.Classes
             public string BranchFromName { get => branchFromName; set => branchFromName = value; }
             public int? BranchFromId { get => branchFromId; set => branchFromId = value; }
         }
-        public List<branchFromCombo> getFromCombo(List<CashTransferSts> ITInvoice)
-        {
-            List<branchFromCombo> iulist = new List<branchFromCombo>();
+        //public List<branchFromCombo> getFromCombo(List<CashTransferSts> ITInvoice)
+        //{
+        //    List<branchFromCombo> iulist = new List<branchFromCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
-            return iulist;
+        //    iulist = ITInvoice.GroupBy(g => g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
+        //    return iulist;
 
-        }
+        //}
 
         public List<branchFromCombo> getFromCombo(List<CashTransfer> ITInvoice)
         {
             List<branchFromCombo> iulist = new List<branchFromCombo>();
 
-            //iulist = ITInvoice.GroupBy(g => g.frombranchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().frombranchId, BranchFromName = g.FirstOrDefault().frombranchName }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.branchId).Select(g => new branchFromCombo { BranchFromId = g.FirstOrDefault().branchId, BranchFromName = g.FirstOrDefault().branchName }).ToList();
             return iulist;
 
         }
@@ -2852,11 +2852,19 @@ namespace POS.Classes
             public string BranchToName { get => branchToName; set => branchToName = value; }
             public int? BranchToId { get => branchToId; set => branchToId = value; }
         }
-        public List<branchToCombo> getToCombo(List<CashTransferSts> ITInvoice)
+        //public List<branchToCombo> getToCombo(List<CashTransferSts> ITInvoice)
+        //{
+        //    List<branchToCombo> iulist = new List<branchToCombo>();
+
+        //    iulist = ITInvoice.GroupBy(g => g.tobranchId).Select(g => new branchToCombo { BranchToId = g.FirstOrDefault().tobranchId, BranchToName = g.FirstOrDefault().tobranchName }).ToList();
+        //    return iulist;
+
+        //}
+        public List<branchToCombo> getToCombo(List<CashTransfer> ITInvoice)
         {
             List<branchToCombo> iulist = new List<branchToCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.tobranchId).Select(g => new branchToCombo { BranchToId = g.FirstOrDefault().tobranchId, BranchToName = g.FirstOrDefault().tobranchName }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.branch2Id).Select(g => new branchToCombo { BranchToId = g.FirstOrDefault().branch2Id, BranchToName = g.FirstOrDefault().branch2Name }).ToList();
             return iulist;
 
         }
@@ -2870,13 +2878,21 @@ namespace POS.Classes
             public int? PosFromId { get => posFromId; set => posFromId = value; }
             public int? BranchId { get => branchId; set => branchId = value; }
         }
-        public List<posFromCombo> getFromPosCombo(List<CashTransferSts> ITInvoice)
+        //public List<posFromCombo> getFromPosCombo(List<CashTransferSts> ITInvoice)
+        //{
+        //    List<posFromCombo> iulist = new List<posFromCombo>();
+
+        //    iulist = ITInvoice.GroupBy(g => g.fromposId).Select(g => new posFromCombo { PosFromId = g.FirstOrDefault().fromposId, PosFromName = g.FirstOrDefault().fromposName, BranchId = g.FirstOrDefault().frombranchId }).ToList();
+        //    return iulist;
+
+        //}
+
+        public List<posFromCombo> getFromPosCombo(List<CashTransfer> ITInvoice)
         {
             List<posFromCombo> iulist = new List<posFromCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.fromposId).Select(g => new posFromCombo { PosFromId = g.FirstOrDefault().fromposId, PosFromName = g.FirstOrDefault().fromposName, BranchId = g.FirstOrDefault().frombranchId }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.posId).Select(g => new posFromCombo { PosFromId = g.FirstOrDefault().posId, PosFromName = g.FirstOrDefault().posName, BranchId = g.FirstOrDefault().branchId }).ToList();
             return iulist;
-
         }
         public class posToCombo
         {
@@ -2888,11 +2904,11 @@ namespace POS.Classes
             public int? PosToId { get => posToId; set => posToId = value; }
             public int? BranchId { get => branchId; set => branchId = value; }
         }
-        public List<posToCombo> getToPosCombo(List<CashTransferSts> ITInvoice)
+        public List<posToCombo> getToPosCombo(List<CashTransfer> ITInvoice)
         {
             List<posToCombo> iulist = new List<posToCombo>();
 
-            iulist = ITInvoice.GroupBy(g => g.toposId).Select(g => new posToCombo { PosToId = g.FirstOrDefault().toposId, PosToName = g.FirstOrDefault().toposName, BranchId = g.FirstOrDefault().tobranchId }).ToList();
+            iulist = ITInvoice.GroupBy(g => g.pos2Id).Select(g => new posToCombo { PosToId = g.FirstOrDefault().pos2Id, PosToName = g.FirstOrDefault().pos2Name, BranchId = g.FirstOrDefault().branch2Id }).ToList();
             //iulist = ITInvoice.Where(g => g.toposId != posFromId).GroupBy(g => g.toposId).Select(g => new posToCombo { PosToId = g.FirstOrDefault().toposId, PosToName = g.FirstOrDefault().toposName, BranchId = g.FirstOrDefault().tobranchId }).ToList();
             return iulist;
 
@@ -3639,7 +3655,28 @@ namespace POS.Classes
             }
         }
 
-        public async Task<List<CashTransfer>> GetCashTransferForPosAsync(string type, string side)
+        //public async Task<List<CashTransfer>> GetCashTransferForPosAsync(string type, string side)
+        //{
+        //    // string type, string side
+        //    List<CashTransfer> list = new List<CashTransfer>();
+        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
+        //    parameters.Add("type", type.ToString());
+        //    parameters.Add("side", side.ToString());
+
+        //    //#################
+        //    IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetBytypeAndSideForPos", parameters);
+
+        //    foreach (Claim c in claims)
+        //    {
+        //        if (c.Type == "scopes")
+        //        {
+        //            list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+        //        }
+        //    }
+        //    return list;
+        //}
+
+        public async Task<List<CashTransfer>> GetBytypeAndSideForPos(string type, string side)
         {
             // string type, string side
             List<CashTransfer> list = new List<CashTransfer>();
@@ -3648,7 +3685,7 @@ namespace POS.Classes
             parameters.Add("side", side.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("Cashtransfer/GetBytypeAndSideForPos", parameters);
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetBytypeAndSideForPos", parameters);
 
             foreach (Claim c in claims)
             {

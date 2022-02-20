@@ -76,6 +76,15 @@ namespace POS.Classes
         public string shippingCompanyName { get; set; }
         public string userAcc { get; set; }
 
+        //for reports
+        public Nullable<int> branchCreatorId { get; set; }
+        public string branchCreatorname { get; set; }
+        public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
+        public Nullable<int> branch2Id { get; set; }
+        public string branch2Name { get; set; }
+        public string updateUserAcc { get; set; }
+
         public async Task<List<CashTransfer>> GetCashTransferAsync(string type, string side)
         {
             // string type, string side

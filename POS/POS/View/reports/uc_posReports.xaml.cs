@@ -34,11 +34,11 @@ namespace POS.View.reports
         List<CashTransferSts> list;
         List<CashTransfer> listCash;
 
-        //List<branchFromCombo> fromBranches = new List<branchFromCombo>();
-        //List<branchToCombo> toBranches = new List<branchToCombo>();
+        List<branchFromCombo> fromBranches = new List<branchFromCombo>();
+        List<branchToCombo> toBranches = new List<branchToCombo>();
 
-        List<Branch> fromBranches = new List<Branch>();
-        List<Branch> toBranches = new List<Branch>();
+        //List<Branch> fromBranches = new List<Branch>();
+        //List<Branch> toBranches = new List<Branch>();
 
         List<posFromCombo> fromPos;
         List<posToCombo> toPos;
@@ -67,10 +67,10 @@ namespace POS.View.reports
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -87,21 +87,19 @@ namespace POS.View.reports
                 #endregion
 
                 list = await statisticModel.GetPosTrans();
-                listCash = await statisticModel.GetCashTransferForPosAsync("all" , "p");
+                listCash = await statisticModel.GetBytypeAndSideForPos("all" , "p");
 
-                //fromBranches = statisticModel.getFromCombo(list);
-                //toBranches = statisticModel.getToCombo(list);
+                fromBranches = statisticModel.getFromCombo(listCash);
+                toBranches = statisticModel.getToCombo(listCash);
 
-                //fromBranches = getFromCombo(listCash);
-                //fromPos = statisticModel.getFromPosCombo(list);
-                //toPos = statisticModel.getToPosCombo(list);
-                //accCombo = list.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+                fromPos = statisticModel.getFromPosCombo(listCash);
+                toPos = statisticModel.getToPosCombo(listCash);
 
-                chk_twoWay.IsChecked = false;
-                chk_twoWay.IsEnabled = false;
-                fillComboBranches();
-                fillComboFromPos();
-                fillComboToPos();
+                accCombo = listCash.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
+                
+                //fillComboBranches();
+                //fillComboFromPos();
+                //fillComboToPos();
                 fillAccCombo();
 
                 chk_allFromBranch.IsChecked = true;
@@ -110,35 +108,23 @@ namespace POS.View.reports
                 chk_allToPos.IsChecked = true;
                 chk_allAccountant.IsChecked = true;
 
-                fillEvents();
+                Btn_payments_Click(btn_payments , null);
 
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_payments.Tag.ToString());
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-                catch (Exception ex)
-                {
-                    if (sender != null)
-                        SectionData.EndAwait(grid_main);
-                    SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //    catch (Exception ex)
+            //    {
+            //        if (sender != null)
+            //            SectionData.EndAwait(grid_main);
+            //        SectionData.ExceptionMessage(ex, this);
+            //}
         }
-
-        //private List<Branch> getFromCombo(List<CashTransfer> listCash)
-        //{
-        //    //foreach(var c in listCash)
-        //    //{
-
-        //    //}
-        //    //fromBranches = 
-        //    return;
-        //}
 
         private void translate()
         {
             tt_payments.Content = MainWindow.resourcemanager.GetString("trDeposit");
-            tt_pulls.Content = MainWindow.resourcemanager.GetString("trPull");
+            tt_pulls.Content = MainWindow.resourcemanager.GetString("trReceive");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formBranch, MainWindow.resourcemanager.GetString("trFromBranch")+"...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toBranch, MainWindow.resourcemanager.GetString("trToBranch")+"...");
@@ -159,6 +145,7 @@ namespace POS.View.reports
             chk_twoWay.Content = MainWindow.resourcemanager.GetString("trTwoWays");
 
             col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_creatorBranch.Header = MainWindow.resourcemanager.GetString("trCreator");
             col_fromBranch.Header = MainWindow.resourcemanager.GetString("trFromBranch");
             col_fromPos.Header = MainWindow.resourcemanager.GetString("trDepositor");
             col_toBranch.Header = MainWindow.resourcemanager.GetString("trToBranch");
@@ -180,69 +167,83 @@ namespace POS.View.reports
             var result = list
           .Where(s =>
           //start date
-          (dp_StartDate.SelectedDate    != null  ? s.updateDate  >= dp_StartDate.SelectedDate : true)
+          (dp_StartDate.SelectedDate != null ? s.updateDate >= dp_StartDate.SelectedDate : true)
           &&
           //end date
-          (dp_EndDate.SelectedDate      != null ? s.updateDate <= dp_EndDate.SelectedDate : true)
+          (dp_EndDate.SelectedDate != null ? s.updateDate <= dp_EndDate.SelectedDate : true)
           &&
           //fromBranch
-          ( cb_formBranch.SelectedIndex != -1 ? s.frombranchId  == Convert.ToInt32(cb_formBranch.SelectedValue) : true)
+          (cb_formBranch.SelectedIndex != -1 ? s.frombranchId == Convert.ToInt32(cb_formBranch.SelectedValue) : true)
           &&
           //toBranch
-          ( cb_toBranch.SelectedIndex != -1   ? s.tobranchId    == Convert.ToInt32(cb_toBranch.SelectedValue)   : true)
+          (cb_toBranch.SelectedIndex != -1 ? s.tobranchId == Convert.ToInt32(cb_toBranch.SelectedValue) : true)
           &&
           //accountant
           (cb_Accountant.SelectedIndex != -1 ? s.updateUserAcc == cb_Accountant.SelectedValue.ToString() : true)
-          &&
-          //twoWay
-          (
-          chk_twoWay.IsChecked == true ?
-              //fromPos
-              (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
-              &&
-              //toPos
-              (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) || s.fromposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
-         :
-              //fromPos
-              (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
-              &&
-              //toPos
-              (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
-          )
-          );
+         // &&
+         // //twoWay
+         // (
+         // chk_twoWay.IsChecked == true ?
+         //     //fromPos
+         //     (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+         //     &&
+         //     //toPos
+         //     (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) || s.fromposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+         //:
+         //     //fromPos
+         //     (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+         //     &&
+         //     //toPos
+         //     (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+         // )
+          && s.transType == _transtype
+          ) ;
             posLst = result.ToList();
             return result.ToList();
         }
-        private void fillComboBranches()
-        {
-            cb_formBranch.SelectedValuePath = "BranchFromId";
-            cb_formBranch.DisplayMemberPath = "BranchFromName";
-            cb_formBranch.ItemsSource = fromBranches;
+        //private void fillComboBranches()
+        //{
+        //    cb_formBranch.SelectedValuePath = "BranchFromId";
+        //    cb_formBranch.DisplayMemberPath = "BranchFromName";
+        //    cb_formBranch.ItemsSource = fromBranches;
 
-            cb_toBranch.SelectedValuePath = "BranchToId";
-            cb_toBranch.DisplayMemberPath = "BranchToName";
-            cb_toBranch.ItemsSource = toBranches;
-        }
-        private void fillComboFromPos()
+        //    cb_toBranch.SelectedValuePath = "BranchToId";
+        //    cb_toBranch.DisplayMemberPath = "BranchToName";
+        //    cb_toBranch.ItemsSource = toBranches;
+        //}
+        private void fillComboFromBranch(ComboBox cb)
         {
-            cb_formPos.SelectedValuePath = "PosFromId";
-            cb_formPos.DisplayMemberPath = "PosFromName";
-            cb_formPos.ItemsSource = fromPos;
-            if (cb_formBranch.SelectedItem != null)
+            cb.SelectedValuePath = "BranchFromId";
+            cb.DisplayMemberPath = "BranchFromName";
+            cb.ItemsSource = fromBranches;
+        }
+
+        private void fillComboToBranch(ComboBox cb)
+        {
+            cb.SelectedValuePath = "BranchToId";
+            cb.DisplayMemberPath = "BranchToName";
+            cb.ItemsSource = toBranches;
+        }
+        private void fillComboFromPos(ComboBox cb , ComboBox cb_branch)
+        {
+            cb.SelectedValuePath = "PosFromId";
+            cb.DisplayMemberPath = "PosFromName";
+            cb.ItemsSource = fromPos;
+            if (cb_branch.SelectedItem != null)
             {
-                var temp = cb_formBranch.SelectedItem as branchFromCombo;
-                cb_formPos.ItemsSource = fromPos.Where(x => x.BranchId == temp.BranchFromId);
+                var temp = cb_branch.SelectedItem as branchFromCombo;
+                cb.ItemsSource = fromPos.Where(x => x.BranchId == temp.BranchFromId);
             }
         }
-        private void fillComboToPos()
+        private void fillComboToPos(ComboBox cb, ComboBox cb_branch)
         {
-            cb_toPos.SelectedValuePath = "PosToId";
-            cb_toPos.DisplayMemberPath = "PosToName";
-            cb_toPos.ItemsSource = toPos;
-            if (cb_toBranch.SelectedItem != null)
+            cb.SelectedValuePath = "PosToId";
+            cb.DisplayMemberPath = "PosToName";
+            cb.ItemsSource = toPos;
+            if (cb_branch.SelectedItem != null)
             {
-                var temp = cb_toBranch.SelectedItem as branchToCombo;
-                cb_toPos.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
+                var temp = cb_branch.SelectedItem as branchToCombo;
+                cb.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
             }
         }
 
@@ -271,7 +272,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillComboFromPos();
+                fillComboFromPos(cb_formPos , cb_formBranch);
                 fillEvents();
 
                 if (sender != null)
@@ -487,7 +488,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillComboToPos();
+                fillComboToPos(cb_toPos , cb_toBranch);
                
                 fillEvents();
 
@@ -1072,14 +1073,109 @@ namespace POS.View.reports
         }
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
-        {
-           // SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+        {//deposit
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formBranch, MainWindow.resourcemanager.GetString("trFromBranch") + "...");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toBranch, MainWindow.resourcemanager.GetString("trToBranch") + "...");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trDepositor") + "...");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trRecepient") + "...");
+
+                fillComboFromBranch(cb_formBranch);
+                fillComboToBranch(cb_toBranch);
+                fillComboFromPos(cb_formPos , cb_formBranch);
+                fillComboToPos(cb_toPos , cb_toBranch);
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_payments);
+                path_payments.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                txt_search.Text = "";
+
+                _transtype = "d";
+
+                chk_allFromBranch.IsChecked = true;
+                chk_allFromPos.IsChecked = true;
+                chk_allToBranch.IsChecked = true;
+                chk_allToPos.IsChecked = true;
+                chk_allAccountant.IsChecked = true;
+
+                fillEvents();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
+        }
+
+       
+        string _transtype = "d";
+        private void Btn_pulls_Click(object sender, RoutedEventArgs e)
+        {//pull
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
+
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formBranch, MainWindow.resourcemanager.GetString("trToBranch") + "...");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toBranch, MainWindow.resourcemanager.GetString("trFromBranch") + "...");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trRecepient") + "...");
+                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trDepositor") + "...");
+
+                fillComboFromBranch(cb_toBranch);
+                fillComboToBranch(cb_formBranch);
+                fillComboFromPos(cb_toPos, cb_toBranch);//////?????????????
+                fillComboToPos(cb_formPos, cb_formBranch);//////?????????????????????
+
+                paint();
+                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_pulls);
+                path_pulls.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+
+                txt_search.Text = "";
+
+                _transtype = "p";
+
+                chk_allFromBranch.IsChecked = true;
+                chk_allFromPos.IsChecked = true;
+                chk_allToBranch.IsChecked = true;
+                chk_allToPos.IsChecked = true;
+                chk_allAccountant.IsChecked = true;
+
+                fillEvents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        public void paint()
+        {
+            path_payments.Fill = Brushes.White;
+            path_pulls.Fill = Brushes.White;
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
         }
+
     }
 }
