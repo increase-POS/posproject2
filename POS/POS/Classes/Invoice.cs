@@ -36,6 +36,10 @@ namespace POS.Classes
         public Nullable<decimal> price { get; set; }
         public Nullable<int> itemUnitId { get; set; }
         public Nullable<int> offerId { get; set; }
+        public Nullable<decimal> offerValue { get; set; }
+        public Nullable<decimal> offerType { get; set; }
+        public Nullable<decimal> itemTax { get; set; }
+        public Nullable<decimal> itemUnitPrice { get; set; }
         public string itemSerial { get; set; }
         public string unitName { get; set; }
         public string barcode { get; set; }    
