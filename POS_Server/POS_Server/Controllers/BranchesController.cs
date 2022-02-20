@@ -239,6 +239,51 @@ namespace POS_Server.Controllers
                 }
             }
         }
+
+        
+        public branches GetBranchByPosId(int? posId)
+        {
+            branches branch = new branches();
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<pos> poslist = entity.pos.ToList();
+                    pos posrow = poslist.Where(p => p.posId == posId).Select(p => new pos
+                    {
+                        branchId = p.branchId,
+                    }).FirstOrDefault();
+
+                    List<branches> branchList = entity.branches.ToList();
+                 branch = branchList
+                   .Where(b => b.branchId == posrow.branchId)
+                   .Select(b => new branches
+                   {
+                       branchId = b.branchId,
+                       address = b.address,
+                       createDate = b.createDate,
+                       createUserId = b.createUserId,
+                       email = b.email,
+                       mobile = b.mobile,
+                       name = b.name,
+                       code = b.code,
+                       notes = b.notes,
+                       parentId = b.parentId,
+                       phone = b.phone,
+                       updateDate = b.updateDate,
+                       updateUserId = b.updateUserId
+                   })
+                   .FirstOrDefault();
+                    return branch;
+                }
+            }
+            catch (Exception ex)
+            {
+                branch.name = ex.ToString();
+                return branch;
+            }
+            
+        }
         [HttpPost]
         [Route("GetBranchTreeByID")]
         public string GetBranchTreeByID(string token)
