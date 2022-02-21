@@ -7685,17 +7685,17 @@ namespace POS_Server.Controllers
                                                                        //  itemUnitTax = (ITEM.taxes * IU.price / 100),//1
                                                                        //  itemTaxValue= (ITEM.taxes * IU.price / 100) * IT.quantity,//n
                                                                         
-                                                                         subTotalTax = IT.price * IT.quantity,
-                                                                          subTotalNotax = (IT.price * IT.quantity)- (ITEM.taxes * IU.price / 100) * IT.quantity,
+                                                                         //subTotalTax = IT.price * IT.quantity,
+                                                                         // subTotalNotax = (IT.price * IT.quantity)- (ITEM.taxes * IU.price / 100) * IT.quantity,
 
                                                                          totalNet= I.totalNet,//calc in clint
 
-                                                                        OneItemOfferVal=IT.offerId==null?0:( (O.discountType == "1" || O.discountType == null) ? (O.discountValue ) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price)) : 0)),
+                                                                        OneItemOfferVal=IT.offerId==null?0:( (IT.offerType == 1 || IT.offerType == null) ? (IT.offerValue ) : (IT.offerType == 2 ? ((IT.offerValue / 100) * (IT.itemUnitPrice)) : 0)),
 
                                                                        //  offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
 
-                                                                        itemUnitPrice= IU.price,
-                                                                         ItemTaxes= ITEM.taxes,
+                                                                        itemUnitPrice= IT.itemUnitPrice,
+                                                                         ItemTaxes= IT.itemTax,
                                                                          //shippingCost = I.shippingCost,
                                                                          //realShippingCost = I.realShippingCost,
                                                                          //shippingProfit = I.shippingCost - I.realShippingCost,
@@ -7716,13 +7716,15 @@ namespace POS_Server.Controllers
                             row.totalNoTax = row.total - row.discountValue;
 
                             row.invTaxVal = calc.percentValue(row.totalNoTax, row.tax);
-                            row.totalwithTax = row.totalNoTax + row.invTaxVal;
+                            row.totalwithTax = row.totalNoTax + row.invTaxVal;//=totalNet
 
+                            //item tax
                             row.OneItemPriceNoTax = row.itemUnitPrice - row.OneItemOfferVal;
-                            row.OneitemUnitTax= calc.percentValue(row.OneItemPriceNoTax, row.ItemTaxes);
+                            row.OneitemUnitTax= calc.percentValue(row.OneItemPriceNoTax, row.ItemTaxes);//قيمة الضريبة للعنصر الواحد
                             row.OneItemPricewithTax = row.OneItemPriceNoTax + row.OneitemUnitTax;
                             row.itemUnitTaxwithQTY = row.OneitemUnitTax * row.ITquantity;
-
+                            row.subTotalNotax = row.OneItemPriceNoTax * row.ITquantity;
+                            row.subTotalTax = row.OneItemPricewithTax * row.ITquantity;
                             //item tax
 
                         }
