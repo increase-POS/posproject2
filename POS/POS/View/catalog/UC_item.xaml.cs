@@ -352,6 +352,10 @@ namespace POS.View
                     tb_taxes.Visibility = Visibility.Collapsed;
                 else
                     tb_taxes.Visibility = Visibility.Visible;
+
+                await RefrishItems();
+                Txb_searchitems_TextChanged(null, null);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 tb_code.Focus();
