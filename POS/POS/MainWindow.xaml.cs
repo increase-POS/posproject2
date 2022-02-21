@@ -126,7 +126,7 @@ namespace POS
          public Unit GlobalUnit = new Unit();
          public List<Unit> GlobalUnitsList = new List<Unit>();
 
-        public static int posCachTransfers = 0;
+        public static int _CachTransfersCount = 0;
 
         public static async Task Getprintparameter()
         {
@@ -811,15 +811,7 @@ namespace POS
                     SectionData.StartAwait(grid_mainWindow);
 
                 uc_general.settingsCls = await setModel.GetAll();
-                uc_general.settingsValues = await valueModel.GetAll();
-
-                #region get cachtransfers for current pos
-                CashTransfer cashModel = new CashTransfer();
-                IEnumerable<CashTransfer> cashesQuery;
-                cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID);
-                cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0);
-                posCachTransfers = cashesQuery.Count();
-                #endregion
+                uc_general.settingsValues = await valueModel.GetAll();                
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
@@ -990,6 +982,25 @@ namespace POS
             bdrMain.Margin = new Thickness(0, 70, thickness.Right + stp_userName.ActualWidth, 0);
             #endregion
         }
+        private async Task setCashTransferNotification()
+        {
+            try
+            {
+                #region get cachtransfers for current pos
+                CashTransfer cashModel = new CashTransfer();
+                IEnumerable<CashTransfer> cashesQuery;
+                cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID);
+                cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0);
+                int posCachTransfers =  cashesQuery.Count();
+                #endregion
+
+                SectionData.refreshNotification(md_transfers, ref _CachTransfersCount, posCachTransfers);              
+            }
+            catch (Exception ex)
+            {
+                //SectionData.ExceptionMessage(ex, this);
+            }
+        }
         void SelectAllText(object sender, RoutedEventArgs e)
         {
             var textBox = sender as System.Windows.Controls.TextBox;
@@ -1094,6 +1105,7 @@ namespace POS
             try
             {
                 await refreshNotificationCount();
+                await setCashTransferNotification();
             }
             catch (Exception ex)
             {

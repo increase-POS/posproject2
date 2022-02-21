@@ -138,7 +138,7 @@
                                Margin="2.5,1" x:Name="txt_thirdLevelTrack"/>
                     </StackPanel>
                 </Grid>
-                <materialDesign:Badged Grid.Column="1" VerticalAlignment="Center" Margin="10 0" Badge="1"
+                <materialDesign:Badged Grid.Column="1" VerticalAlignment="Center" Margin="10 0"
                     BadgeBackground="{StaticResource MainColorRed}"   BadgeForeground="White" Name="md_transfers" >
                     <Button  x:Name="btn_transfers" Click="Btn_transfers_Click"
                     Background="{x:Null}" BorderBrush="{x:Null}"  
