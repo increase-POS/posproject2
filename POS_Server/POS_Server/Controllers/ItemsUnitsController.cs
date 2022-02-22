@@ -522,6 +522,7 @@ namespace POS_Server.Controllers
                                            unitId = i.unitId,
                                            itemUnitId = i.itemUnitId,
                                            mainUnit = u.name,
+                                           cost = i.cost,
                                        }).ToList();
 
                         return TokenManager.GenerateToken(barcods);

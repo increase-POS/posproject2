@@ -667,7 +667,7 @@ namespace POS.View.storage
                                     item = items.ToList().Find(i => i.itemId == itemId);
 
                                     int count = 1;
-                                    decimal price = 0; //?????
+                                    decimal price = (decimal)unit1.cost;
                                     decimal total = count * price;
                                     addRowToBill(item.name, item.itemId, unit1.mainUnit, unit1.itemUnitId, count, price, total);
                                 }
@@ -1197,7 +1197,9 @@ namespace POS.View.storage
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
-                        addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, 0, 0);
+                        decimal price = (decimal)defaultPurUnit.cost; //?????
+                        decimal total = price;
+                        addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1, price, total);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -1448,6 +1450,65 @@ namespace POS.View.storage
                         cmb.IsEnabled = false;
                     else
                         cmb.IsEnabled = true;
+
+                    #region change price of unit
+               
+                    TextBlock tb;
+
+                    int _datagridSelectedIndex = dg_billDetails.SelectedIndex;
+                    int itemUnitId = (int)cmb.SelectedValue;
+                    billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
+
+                    dynamic unit;
+                    if (MainWindow.InvoiceGlobalItemUnitsList == null)
+                    {
+                        unit = new Item();
+                        unit = barcodesList.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+                    }
+                    else
+                    {
+                        unit = new ItemUnit();
+                        unit = MainWindow.InvoiceGlobalItemUnitsList.Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+                    }
+
+                    int oldCount = 0;
+                    long newCount = 0;
+                    decimal oldPrice = 0;
+                    decimal itemTax = 0;
+
+                    decimal newPrice = 0;
+                    oldCount = billDetails[_datagridSelectedIndex].Count;
+                    oldPrice = billDetails[_datagridSelectedIndex].Price;
+                    newCount = oldCount;
+                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+
+                    newPrice = unit.cost;
+
+                    tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    tb.Text = newPrice.ToString();
+
+                    // old total for changed item
+                    decimal total = oldPrice * oldCount;
+                    _Sum -= total;
+
+
+                    // new total for changed item
+                    total = newCount * newPrice;
+                    _Sum += total;
+
+                    #region items tax
+                    if (item.taxes != null)
+                        itemTax = (decimal)item.taxes;
+                    #endregion
+
+                    refreshTotalValue();
+
+                    // update item in billdetails           
+                    billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                    billDetails[_datagridSelectedIndex].Price = newPrice;
+                    billDetails[_datagridSelectedIndex].Total = total;
+                    refrishBillDetails();
+                    #endregion
                 }
 
             }

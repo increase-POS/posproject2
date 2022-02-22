@@ -1899,6 +1899,7 @@ namespace POS.View
                     tb_count.Text = itemUnit.unitValue.ToString();
                     //tb_price.Text = itemUnit.price.ToString();
                     tb_price.Text = SectionData.DecTostring(itemUnit.price);
+                    tb_cost.Text = SectionData.DecTostring(itemUnit.cost);
                     tb_barcode.Text = itemUnit.barcode;
 
                     drawBarcode(itemUnit.barcode.Substring(1));
