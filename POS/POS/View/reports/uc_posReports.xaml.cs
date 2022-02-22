@@ -152,6 +152,7 @@ namespace POS.View.reports
             col_toPos.Header = MainWindow.resourcemanager.GetString("trRecepient");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
             col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
+            col_status.Header = MainWindow.resourcemanager.GetString("trStatus");
             col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
 
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
