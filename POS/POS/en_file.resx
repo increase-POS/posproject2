@@ -3316,4 +3316,10 @@ Please add Email in setting</value>
   <data name="trPrinterSettingsHint" xml:space="preserve">
     <value>Reports and Sales ,Paper Size</value>
   </data>
+  <data name="trPrintHeader" xml:space="preserve">
+    <value>Print Header</value>
+  </data>
+  <data name="trShowOption" xml:space="preserve">
+    <value>Show</value>
+  </data>
 </root>

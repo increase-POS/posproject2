@@ -6434,6 +6434,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to طباعة الترويسة.
+        /// </summary>
+        internal static string trPrintHeader {
+            get {
+                return ResourceManager.GetString("trPrintHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاتورة المشتريات.
         /// </summary>
         internal static string trPrintOnSavePurchase {
@@ -8068,6 +8077,15 @@ namespace POS {
         internal static string trShowAll {
             get {
                 return ResourceManager.GetString("trShowAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اظهار.
+        /// </summary>
+        internal static string trShowOption {
+            get {
+                return ResourceManager.GetString("trShowOption", resourceCulture);
             }
         }
         

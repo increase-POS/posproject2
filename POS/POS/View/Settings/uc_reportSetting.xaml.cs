@@ -155,14 +155,16 @@ namespace POS.View.Settings
             txt_copyCountHint.Text = MainWindow.resourcemanager.GetString("trCopyCountHint") + "...";
 
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
+            txt_printHeader.Text = MainWindow.resourcemanager.GetString("trPrintHeader");
+
         }
         private void fillPrintHeader()
         {
             cb_printHeader.DisplayMemberPath = "Text";
             cb_printHeader.SelectedValuePath = "Value";
             var typelist = new[] {
-                 new { Text = MainWindow.resourcemanager.GetString("trShow")       , Value = "show" },
-                 new { Text = MainWindow.resourcemanager.GetString("trHide")       , Value = "hide" },
+                 new { Text = MainWindow.resourcemanager.GetString("trShowOption")       , Value = "1" },
+                 new { Text = MainWindow.resourcemanager.GetString("trHide")       , Value = "0" },
                 };
             cb_printHeader.ItemsSource = typelist;
             cb_printHeader.SelectedIndex = 0;
@@ -175,6 +177,7 @@ namespace POS.View.Settings
             printCountId = set.settingId;
             printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
             return printCount;
+          
         }
         private void Btn_systmSetting_Click(object sender, RoutedEventArgs e)
         {
@@ -431,7 +434,38 @@ namespace POS.View.Settings
 
         private void Btn_savePrintHeader_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+              //  SectionData.validateEmptyComboBox(cb_serverStatus, p_errorServerStatus, tt_errorServerStatus, "trEmptyServerStatus");
+                if (!cb_printHeader.Text.Equals(""))
+                {
+
+                    string showheader = "";
+                    showheader =  cb_printHeader.SelectedValue.ToString();
+                    //   int res = await progDetailsModel.updateIsonline(isOnline);
+                    int res = 0;
+
+                    if (res > 0)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                         
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }

@@ -6479,6 +6479,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Print Header.
+        /// </summary>
+        internal static string trPrintHeader {
+            get {
+                return ResourceManager.GetString("trPrintHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Purchases invoice.
         /// </summary>
         internal static string trPrintOnSavePurchase {
@@ -8113,6 +8122,15 @@ namespace POS {
         internal static string trShowAll {
             get {
                 return ResourceManager.GetString("trShowAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        internal static string trShowOption {
+            get {
+                return ResourceManager.GetString("trShowOption", resourceCulture);
             }
         }
         

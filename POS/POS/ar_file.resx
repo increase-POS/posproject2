@@ -3295,4 +3295,10 @@
   <data name="trPrinterSettingsHint" xml:space="preserve">
     <value>التقارير و فاتورة المبيعات, حجم الورق</value>
   </data>
+  <data name="trPrintHeader" xml:space="preserve">
+    <value>طباعة الترويسة</value>
+  </data>
+  <data name="trShowOption" xml:space="preserve">
+    <value>اظهار</value>
+  </data>
 </root>
