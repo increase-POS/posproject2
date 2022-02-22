@@ -119,6 +119,7 @@ namespace POS.View.Settings
 
                 ///naji code
                 ///
+                fillPrintHeader();
                 await  fillRepLang();
                 #region get default print count
                 await getDefaultPrintCount();
@@ -155,7 +156,17 @@ namespace POS.View.Settings
 
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
         }
-        
+        private void fillPrintHeader()
+        {
+            cb_printHeader.DisplayMemberPath = "Text";
+            cb_printHeader.SelectedValuePath = "Value";
+            var typelist = new[] {
+                 new { Text = MainWindow.resourcemanager.GetString("trShow")       , Value = "show" },
+                 new { Text = MainWindow.resourcemanager.GetString("trHide")       , Value = "hide" },
+                };
+            cb_printHeader.ItemsSource = typelist;
+            cb_printHeader.SelectedIndex = 0;
+        }
         public static async Task<SetValues> getDefaultPrintCount()
         {
             List<SettingCls> settingsCls = await setModel.GetAll();
@@ -415,8 +426,12 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
         #endregion
 
-       
+        private void Btn_savePrintHeader_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
