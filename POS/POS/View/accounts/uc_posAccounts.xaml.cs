@@ -93,8 +93,8 @@ namespace POS.View.accounts
                 dg_posAccounts.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecepient");
                 dg_posAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDepositor");
             }
-            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trStatus");
-            dg_posAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trDate");
+            dg_posAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trStatus");
+            dg_posAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trDate");
             dg_posAccounts.Columns[6].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
            
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
