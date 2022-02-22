@@ -340,6 +340,18 @@ namespace POS.Classes
           
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
+
+        public static void posAccReportSTS(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            posAccReport(cash, rep, reppath, paramarr);
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+      
+            paramarr.Add(new ReportParameter("trAccoutant", MainWindow.resourcemanagerreport.GetString("trAccoutant")));
+            paramarr.Add(new ReportParameter("trAmount", MainWindow.resourcemanagerreport.GetString("trAmount")));
+           
+
+
+        }
         public string posTransfersStatusConverter(byte isConfirm1, byte isConfirm2)
         {
 
@@ -710,7 +722,7 @@ Parameters!trValueDiscount.Value)
             if (secondTitle == "branch")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trBranches");
             else if (secondTitle == "pos")
-                secondTitle = MainWindow.resourcemanagerreport.GetString("trPOS");
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trPOSs");
             else if (secondTitle == "vendors" || secondTitle == "vendor")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trVendors");
             else if (secondTitle == "customers" || secondTitle == "customer")
