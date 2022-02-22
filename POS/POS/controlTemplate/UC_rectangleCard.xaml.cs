@@ -128,7 +128,10 @@ namespace POS.controlTemplate
                 //priceText.Text = cardViewitem.item.priceTax.ToString();
                 try
                 {
-                    priceText.Text = SectionData.DecTostring(cardViewitem.item.priceTax) ;
+                    if (MainWindow.itemsTax_bool == true)
+                        priceText.Text = SectionData.DecTostring(cardViewitem.item.priceTax) ; 
+                    else
+                        priceText.Text = SectionData.DecTostring(cardViewitem.item.price);
                 }
                 catch
                 {
