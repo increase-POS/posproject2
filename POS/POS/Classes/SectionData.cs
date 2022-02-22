@@ -1404,6 +1404,8 @@ namespace POS.Classes
                 firstTitle = MainWindow.resourcemanager.GetString("trProfits");
             else if (firstTitle == "accountFund")
                 firstTitle = MainWindow.resourcemanager.GetString("trCashBalance");
+            else if (firstTitle == "saleTax")
+                firstTitle = MainWindow.resourcemanager.GetString("trTax");
 
             //////////////////////////////////////////////////////////////////////////////
 
@@ -1475,6 +1477,8 @@ namespace POS.Classes
                 secondTitle = MainWindow.resourcemanager.GetString("trDeposit");
             else if (secondTitle == "receive")
                 secondTitle = MainWindow.resourcemanager.GetString("trReceive");
+            else if (secondTitle == "invoice")
+                secondTitle = MainWindow.resourcemanager.GetString("trInvoice");
             //////////////////////////////////////////////////////////////////////////////
 
             textBlock.Text = firstTitle + " / " + secondTitle;

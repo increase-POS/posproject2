@@ -460,6 +460,9 @@
     <Compile Include="View\reports\us_dailySalesStatistic.xaml.cs">
       <DependentUpon>us_dailySalesStatistic.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\reports\us_saleTax.xaml.cs">
+      <DependentUpon>us_saleTax.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\sales\uc_orders.xaml.cs">
       <DependentUpon>uc_orders.xaml</DependentUpon>
     </Compile>
@@ -955,6 +958,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\us_dailySalesStatistic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\reports\us_saleTax.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -147,13 +147,28 @@ namespace POS.View.reports
             }
         }
 
+        private void Btn_taxSales_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                us_saleTax uc = new us_saleTax();
+                sc_main.Visibility = Visibility.Collapsed;
+                main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 #region translate
@@ -169,6 +184,11 @@ namespace POS.View.reports
                 }
                 translate();
                 #endregion
+
+                if ((!MainWindow.invoiceTax_bool.Value)&&(!MainWindow.itemsTax_bool.Value))
+                    bdr_taxSales.Visibility = Visibility.Hidden;
+                else
+                    bdr_taxSales.Visibility = Visibility.Visible;
 
             }
             catch (Exception ex)
@@ -194,6 +214,11 @@ namespace POS.View.reports
                                  MainWindow.resourcemanager.GetString("trCustomer") + "...";
             txt_dailySalesInfo.Text = MainWindow.resourcemanager.GetString("trDaily");
             txt_dailySalesHint.Text = MainWindow.resourcemanager.GetString("trDailySales")+"...";
+
+            txt_taxSalesInfo.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_taxSalesHint.Text = MainWindow.resourcemanager.GetString("trTax") + ", " + MainWindow.resourcemanager.GetString("trInvoice") + "...";
         }
+
+       
     }
 }

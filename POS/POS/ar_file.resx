@@ -3259,7 +3259,16 @@
   <data name="trUserLoginFromOtherPos" xml:space="preserve">
     <value>المستخدم  سجل دخول في نقطة مبيعات أخرى</value>
   </data>
-  <data name="trCostHint" xml:space="preserve">
-    <value>التكلفة...</value>
+  <data name="trHide" xml:space="preserve">
+    <value>إخفاء</value>
+  </data>
+  <data name="trOnInvoice" xml:space="preserve">
+    <value>على الفاتورة</value>
+  </data>
+  <data name="trOnItem" xml:space="preserve">
+    <value>على العنصر</value>
+  </data>
+  <data name="trTaxNet" xml:space="preserve">
+    <value>صافي الضرائب</value>
   </data>
 </root>

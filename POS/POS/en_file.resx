@@ -3280,7 +3280,16 @@ Please add Email in setting</value>
   <data name="trUserLoginFromOtherPos" xml:space="preserve">
     <value>user login from other POS</value>
   </data>
-  <data name="trCostHint" xml:space="preserve">
-    <value>Cost...</value>
+  <data name="trHide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="trOnInvoice" xml:space="preserve">
+    <value>On Invoice</value>
+  </data>
+  <data name="trOnItem" xml:space="preserve">
+    <value>On Item</value>
+  </data>
+  <data name="trTaxNet" xml:space="preserve">
+    <value>Tax Net</value>
   </data>
 </root>

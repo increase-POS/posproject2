@@ -1492,15 +1492,6 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to التكلفة....
-        /// </summary>
-        internal static string trCostHint {
-            get {
-                return ResourceManager.GetString("trCostHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to العدد.
         /// </summary>
         internal static string trCount {
@@ -4030,6 +4021,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إخفاء.
+        /// </summary>
+        internal static string trHide {
+            get {
+                return ResourceManager.GetString("trHide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الرئيسية.
         /// </summary>
         internal static string trHome {
@@ -5467,6 +5467,24 @@ namespace POS {
         internal static string trOnePayment {
             get {
                 return ResourceManager.GetString("trOnePayment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to على الفاتورة.
+        /// </summary>
+        internal static string trOnInvoice {
+            get {
+                return ResourceManager.GetString("trOnInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to على العنصر.
+        /// </summary>
+        internal static string trOnItem {
+            get {
+                return ResourceManager.GetString("trOnItem", resourceCulture);
             }
         }
         
@@ -8365,6 +8383,15 @@ namespace POS {
         internal static string trTaxHint {
             get {
                 return ResourceManager.GetString("trTaxHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to صافي الضرائب.
+        /// </summary>
+        internal static string trTaxNet {
+            get {
+                return ResourceManager.GetString("trTaxNet", resourceCulture);
             }
         }
         
