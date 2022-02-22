@@ -1009,8 +1009,16 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                categoryParentId = 0;
-                await RefrishCategoriesCard();
+                ///
+
+                //categoryParentId = 0;
+                //await RefrishCategoriesCard();
+                categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == 0);
+                catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+                generateCoulmnCategoriesGrid(categoriesQuery.Count());
+                catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+
+                ///
                 grid_categoryControlPath.Children.Clear();
                 #region 
                 items = await packageModel.GetPackages();
