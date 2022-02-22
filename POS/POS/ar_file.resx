@@ -3259,4 +3259,7 @@
   <data name="trUserLoginFromOtherPos" xml:space="preserve">
     <value>المستخدم  سجل دخول في نقطة مبيعات أخرى</value>
   </data>
+  <data name="trCostHint" xml:space="preserve">
+    <value>التكلفة...</value>
+  </data>
 </root>

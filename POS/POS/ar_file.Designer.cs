@@ -1492,6 +1492,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to التكلفة....
+        /// </summary>
+        internal static string trCostHint {
+            get {
+                return ResourceManager.GetString("trCostHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to العدد.
         /// </summary>
         internal static string trCount {

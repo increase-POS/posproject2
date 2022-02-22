@@ -80,7 +80,6 @@ namespace POS.View
         List<ItemsProp> itemsProp;
         List<Serial> itemSerials;
         List<ItemUnit> itemUnits;
-        List<Service> services;
         List<ItemUnit> barcodesList;
         public byte tglCategoryState = 1;
         public byte tglItemState;
@@ -166,14 +165,15 @@ namespace POS.View
             ///////////////////////////Barcode
             txt_unit.Text = MainWindow.resourcemanager.GetString("trUnit");
             dg_unit.Columns[0].Header = MainWindow.resourcemanager.GetString("trUnit");
-            dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trCountUnit");
-            dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trSmallUnit");
+            dg_unit.Columns[1].Header = MainWindow.resourcemanager.GetString("trBarcode");
+           // dg_unit.Columns[2].Header = MainWindow.resourcemanager.GetString("trSmallUnit");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_selectUnit, MainWindow.resourcemanager.GetString("trSelectUnitHint"));
             txt_isDefaultPurchases.Text = MainWindow.resourcemanager.GetString("trPurchase");
             tb_isDefaultSales.Text = MainWindow.resourcemanager.GetString("trSales");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_count, MainWindow.resourcemanager.GetString("trCountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_unit, MainWindow.resourcemanager.GetString("trUnitHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPriceHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cost, MainWindow.resourcemanager.GetString("trCostHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
 
             btn_addBarcode.Content = MainWindow.resourcemanager.GetString("trAdd");
@@ -1122,17 +1122,23 @@ namespace POS.View
 
         #region barcode
         //*****************************************8
-        private void validateUnitValues()
+        private bool validateUnitValues()
         {
-
+            bool valid = false;
             SectionData.validateEmptyComboBox(cb_selectUnit, p_errorSelectUnit, tt_errorSelectUnit, "trErrorEmptyUnitToolTip");
             //SectionData.validateEmptyComboBox(cb_storageCost, p_errorStorageCost, tt_errorStorageCost, "trEmptyStoreCost");
             SectionData.validateEmptyTextBox(tb_count, p_errorCount, tt_errorCount, "trErrorEmptyCountToolTip");
             SectionData.validateEmptyComboBox(cb_unit, p_errorUnit, tt_errorUnit, "trErrorEmptyUnitToolTip");
             SectionData.validateEmptyTextBox(tb_price, p_errorPrice, tt_errorPrice, "trErrorEmptyPriceToolTip");
             SectionData.validateEmptyTextBox(tb_barcode, p_errorBarcode, tt_errorBarcode, "trEmptyBarcodeToolTip");
+            SectionData.validateEmptyTextBox(tb_cost, p_errorCost, tt_errorCost, "trEmptyValueToolTip");
 
-
+            if ((cb_selectUnit.SelectedIndex != -1 && !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_cost.Text.Equals("") && !tb_barcode.Text.Equals(""))
+                       || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
+                valid = true;
+            else
+                valid = false;
+           return valid;
         }
         // add barcode to item
         async void Btn_addBarcode_Click(object sender, RoutedEventArgs e)
@@ -1144,10 +1150,9 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "add") || SectionData.isAdminPermision())
                 {
                     //check mandatory values
-                    validateUnitValues();
+                   bool validate =  validateUnitValues();
                     //cb_storageCost.SelectedIndex != -1 &&
-                    if ((cb_selectUnit.SelectedIndex != -1 &&  !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
-                        || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
+                    if (validate)
                     {
                         if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
                         {
@@ -1197,21 +1202,17 @@ namespace POS.View
                                     if (tbtn_isDefaultSales.IsChecked == true)
                                         defaultSale = 1;
 
-                                    int unitValue = int.Parse(tb_count.Text);
-                                    Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
-                                    decimal price = decimal.Parse(tb_price.Text);
-                                    string barcode = tb_barcode.Text;
-
                                     itemUnit.itemUnitId = 0;
                                     itemUnit.itemId = item.itemId;
                                     itemUnit.unitId = unitId;
                                     itemUnit.storageCostId = storageCostId;
-                                    itemUnit.unitValue = unitValue;
-                                    itemUnit.subUnitId = smallUnitId;
+                                    itemUnit.unitValue = int.Parse(tb_count.Text);
+                                    itemUnit.subUnitId = (int)cb_unit.SelectedValue;
                                     itemUnit.defaultSale = defaultSale;
                                     itemUnit.defaultPurchase = defaultBurchase;
-                                    itemUnit.price = price;
-                                    itemUnit.barcode = barcode;
+                                    itemUnit.price = decimal.Parse(tb_price.Text);
+                                    itemUnit.cost = decimal.Parse(tb_cost.Text);
+                                    itemUnit.barcode = tb_barcode.Text;
                                     itemUnit.createUserId = MainWindow.userID;
                                     itemUnit.updateUserId = MainWindow.userID;
 
@@ -1259,10 +1260,8 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     //check mandatory values
-                    validateUnitValues();
-                    //cb_storageCost.SelectedIndex != -1 &&
-                    if ((cb_selectUnit.SelectedIndex != -1 &&  !tb_count.Text.Equals("") && cb_unit.SelectedIndex != -1 && !tb_price.Text.Equals("") && !tb_barcode.Text.Equals(""))
-                        || (!tb_price.Text.Equals("") && !tb_barcode.Text.Equals("") && cb_itemType.SelectedIndex == 3))
+                    bool validate = validateUnitValues();
+                    if (validate)
                     {
                         if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
                         {
@@ -1313,20 +1312,16 @@ namespace POS.View
                                     if (tbtn_isDefaultSales.IsChecked == true)
                                         defaultSale = 1;
 
-                                    int unitValue = int.Parse(tb_count.Text);
-                                    Nullable<int> smallUnitId = (int)cb_unit.SelectedValue;
-                                    decimal price = decimal.Parse(tb_price.Text);
-                                    string barcode = tb_barcode.Text;
-
                                     itemUnit.itemId = item.itemId;
                                     itemUnit.unitId = unitId;
                                     itemUnit.storageCostId = storageCostId;
-                                    itemUnit.unitValue = unitValue;
-                                    itemUnit.subUnitId = smallUnitId;
+                                    itemUnit.unitValue = int.Parse(tb_count.Text);
+                                    itemUnit.subUnitId = (int)cb_unit.SelectedValue;
                                     itemUnit.defaultSale = defaultSale;
                                     itemUnit.defaultPurchase = defaultBurchase;
-                                    itemUnit.price = price;
-                                    itemUnit.barcode = barcode;
+                                    itemUnit.price = decimal.Parse(tb_price.Text);
+                                    itemUnit.cost = decimal.Parse(tb_cost.Text);
+                                    itemUnit.barcode = tb_barcode.Text;
                                     itemUnit.updateUserId = MainWindow.userID;
 
                                     int res = await itemUnit.saveItemUnit(itemUnit);

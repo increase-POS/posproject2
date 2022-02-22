@@ -3280,4 +3280,7 @@ Please add Email in setting</value>
   <data name="trUserLoginFromOtherPos" xml:space="preserve">
     <value>user login from other POS</value>
   </data>
+  <data name="trCostHint" xml:space="preserve">
+    <value>Cost...</value>
+  </data>
 </root>

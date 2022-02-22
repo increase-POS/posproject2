@@ -566,7 +566,7 @@
 
 
                 <!--////////////////////////////////  Item Data ////////////////////////////////////////////////////////-->
-                <Grid x:Name="grid_itemData" Grid.Row="1"   Visibility="Visible">
+                <Grid x:Name="grid_itemData" Grid.Row="1"   Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -1333,7 +1333,7 @@
                 </Grid>
                 <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
                 <Grid  Grid.Row="1"
-                      x:Name="grid_barcode"  Visibility="Collapsed" >
+                      x:Name="grid_barcode"  Visibility="Visible" >
                     <Grid.RowDefinitions >
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
@@ -1394,7 +1394,7 @@
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
                                     </DataGridTextColumn>
-                                    <DataGridTextColumn Width="*"  Header="Count Unit" Binding="{Binding Path=unitValue}">
+                                    <!--<DataGridTextColumn Width="*"  Header="Count Unit" Binding="{Binding Path=unitValue}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1404,8 +1404,8 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Width="*"  Header="Small Unit" Binding="{Binding Path=smallUnit}">
+                                    </DataGridTextColumn>-->
+                                    <!--<DataGridTextColumn Width="*"  Header="Small Unit" Binding="{Binding Path=smallUnit}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1415,9 +1415,9 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    </DataGridTextColumn>-->
                                     <!--Binding="{Binding Path=price}"-->
-                                    <DataGridTextColumn Width="*"  Header="Price"  Binding="{Binding Path =price,Converter={StaticResource accuracyConverter }}">
+                                    <!--<DataGridTextColumn Width="*"  Header="Price"  Binding="{Binding Path =price,Converter={StaticResource accuracyConverter }}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
                                                 <Style.Triggers>
@@ -1427,7 +1427,7 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </DataGridTextColumn.ElementStyle>
-                                    </DataGridTextColumn>
+                                    </DataGridTextColumn>-->
                                     <DataGridTextColumn Width="*"  Header="Barcode" Binding="{Binding Path=barcode}">
                                         <DataGridTextColumn.ElementStyle>
                                             <Style TargetType="{x:Type TextBlock}">
@@ -1556,7 +1556,7 @@
 
                                 </Grid.ColumnDefinitions>
                                 <TextBox x:Name="tb_price" Grid.Row="3"   Text="{Binding test, Mode=OneWay}"
-                                          Padding="10,0,5,0" 
+                                          Padding="10,0,5,0" Grid.Column="0"
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             BorderThickness="1"  materialDesign:HintAssist.Hint="Price..."   
                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
@@ -1567,13 +1567,35 @@
                   Height="40"  Margin="10,5,0,5" >
                                 </TextBox>
                                 <Path x:Name="p_errorPrice" Grid.Row="3" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
-                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                              HorizontalAlignment="Right" Grid.Column="0"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
                                     <Path.ToolTip>
                                         <ToolTip x:Name="tt_errorPrice"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                                     </Path.ToolTip>
                                 </Path>
+                                <TextBox x:Name="tb_cost" Grid.Row="3" Grid.Column="1"   Text="{Binding cost, Mode=OneWay}"
+                                          Padding="10,0,5,0" 
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            BorderThickness="1"  materialDesign:HintAssist.Hint="Cost..."   
+                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                 BorderBrush="AliceBlue" PreviewTextInput="DecimalValidationTextBox"
+                            PreviewKeyDown="space_PreviewKeyDown"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                     
+                  Height="40"  Margin="10,5,0,5" >
+                                </TextBox>
+                                <Path x:Name="p_errorCost" Grid.Row="3" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
+                         VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                                    <Path.ToolTip>
+                                        <ToolTip x:Name="tt_errorCost"  Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                                    </Path.ToolTip>
+                                </Path>
+
+                            </Grid>
+                            <Grid Grid.Row="4">
                                 <ComboBox x:Name="cb_storageCost" Grid.Column ="1"
                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
                                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -1592,8 +1614,7 @@
                                 </Path>
 
                             </Grid>
-
-                            <TextBox x:Name="tb_barcode"  Grid.Row="4" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
+                            <TextBox x:Name="tb_barcode"  Grid.Row="5" Text="{Binding test, Mode=OneWay}" Padding="10,0,5,0" 
                                         BorderThickness="1"  materialDesign:HintAssist.Hint="Barcode..." 
                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
@@ -1611,7 +1632,7 @@
                                 </Path.ToolTip>
                             </Path>
 
-                            <Image x:Name="img_barcode" Margin="10,5,10,5" Height="50" MaxWidth="250" Grid.Row="5"
+                            <Image x:Name="img_barcode" Margin="10,5,10,5" Height="50" MaxWidth="250" Grid.Row="6"
                                Stretch="Fill"  />
 
 
