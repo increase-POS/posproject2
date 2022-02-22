@@ -1065,6 +1065,7 @@ namespace POS_Server.Controllers
                             {
                                 if (row.itemUnitId == itofflist.itemUnitId)
                                 {
+                                   // return row.itemUnitId.ToString();
                                     row.isOffer = 1;
                                     row.offerId = itofflist.offerId;
                                     row.price = itofflist.price;
@@ -1091,9 +1092,11 @@ namespace POS_Server.Controllers
                                     
                                 }
                             }
-                            row.priceTax = row.priceTax - totaldis;
-                            row.price = row.price - totaldis;
-
+                            
+                           row.price = row.price - totaldis;
+                           row.priceTax =  row.price + (row.price * row.taxes / 100);
+                            //if(row.itemUnitId == 2)
+                            //return row.priceTax.ToString() +" "+ row.price.ToString();
                         }
                         return TokenManager.GenerateToken(itemUnitsList);
                     }

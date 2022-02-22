@@ -1383,7 +1383,9 @@ var strP = TokenManager.GetPrincipal(token);
                                         }
                                     }
                                 }
-                                iunlist.priceTax = iunlist.priceTax - totaldis;
+                                //iunlist.priceTax = iunlist.priceTax - totaldis;
+                                iunlist.price = iunlist.price - totaldis;
+                                iunlist.priceTax = iunlist.price + (iunlist.price * iunlist.taxes / 100);
                             }
                             searchPredicate = searchPredicate.And(x => x.type == "sr");
                             var serviceItems = (from I in entity.items.Where(searchPredicate)
