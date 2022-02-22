@@ -3292,4 +3292,10 @@ Please add Email in setting</value>
   <data name="trTaxNet" xml:space="preserve">
     <value>Tax Net</value>
   </data>
+  <data name="trDeposits" xml:space="preserve">
+    <value>Deposits</value>
+  </data>
+  <data name="trReceives" xml:space="preserve">
+    <value>Receives</value>
+  </data>
 </root>

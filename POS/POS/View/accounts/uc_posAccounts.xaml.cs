@@ -1281,8 +1281,7 @@ namespace POS.View.accounts
 
             if (chk_deposit.IsChecked == true)
             {
-                title = title + "/" + MainWindow.resourcemanagerreport.GetString("trDeposit");
-         
+                title = title + "/" + MainWindow.resourcemanagerreport.GetString("trDeposits");
 
                 paramarr.Add(new ReportParameter("trCol2Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
                 paramarr.Add(new ReportParameter("trCol3Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
@@ -1290,7 +1289,7 @@ namespace POS.View.accounts
             else if (chk_receive.IsChecked == true)
             {
 
-                title = title + "/" + MainWindow.resourcemanagerreport.GetString("trReceive");
+                title = title + "/" + MainWindow.resourcemanagerreport.GetString("trReceives");
                 paramarr.Add(new ReportParameter("trCol2Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
                 paramarr.Add(new ReportParameter("trCol3Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
              

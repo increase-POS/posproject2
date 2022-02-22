@@ -3271,4 +3271,10 @@
   <data name="trTaxNet" xml:space="preserve">
     <value>صافي الضرائب</value>
   </data>
+  <data name="trDeposits" xml:space="preserve">
+    <value>الايداعات</value>
+  </data>
+  <data name="trReceives" xml:space="preserve">
+    <value>السحوبات</value>
+  </data>
 </root>

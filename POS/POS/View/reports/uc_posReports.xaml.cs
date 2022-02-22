@@ -905,7 +905,7 @@ namespace POS.View.reports
             Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             if (_transtype=="d")
             {
-                Title = Title + "/" + MainWindow.resourcemanagerreport.GetString("trDeposit");
+                Title = Title + "/" + MainWindow.resourcemanagerreport.GetString("trDeposits");
 
                 paramarr.Add(new ReportParameter("trPos1Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
                 paramarr.Add(new ReportParameter("trPos2Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
@@ -916,7 +916,7 @@ namespace POS.View.reports
              else if ( _transtype == "p")
             {
 
-                Title = Title + "/" + MainWindow.resourcemanagerreport.GetString("trReceive");
+                Title = Title + "/" + MainWindow.resourcemanagerreport.GetString("trReceives");
                 paramarr.Add(new ReportParameter("trPos1Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
                 paramarr.Add(new ReportParameter("trPos2Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
 

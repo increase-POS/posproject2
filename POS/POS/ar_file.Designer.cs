@@ -1978,6 +1978,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الايداعات.
+        /// </summary>
+        internal static string trDeposits {
+            get {
+                return ResourceManager.GetString("trDeposits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إيداع إلى.
         /// </summary>
         internal static string trDepositTo {
@@ -6916,6 +6925,15 @@ namespace POS {
         internal static string trReceivedToggle {
             get {
                 return ResourceManager.GetString("trReceivedToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to السحوبات.
+        /// </summary>
+        internal static string trReceives {
+            get {
+                return ResourceManager.GetString("trReceives", resourceCulture);
             }
         }
         

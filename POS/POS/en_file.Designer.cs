@@ -1987,6 +1987,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deposits.
+        /// </summary>
+        internal static string trDeposits {
+            get {
+                return ResourceManager.GetString("trDeposits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deposit To.
         /// </summary>
         internal static string trDepositTo {
@@ -6961,6 +6970,15 @@ namespace POS {
         internal static string trReceivedToggle {
             get {
                 return ResourceManager.GetString("trReceivedToggle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Receives.
+        /// </summary>
+        internal static string trReceives {
+            get {
+                return ResourceManager.GetString("trReceives", resourceCulture);
             }
         }
         
