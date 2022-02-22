@@ -86,14 +86,14 @@ namespace POS.View.reports
                 translate();
                 #endregion
 
-                list = await statisticModel.GetPosTrans();
+                //list = await statisticModel.GetPosTrans();
                 listCash = await statisticModel.GetBytypeAndSideForPos("all" , "p");
 
-                fromBranches = statisticModel.getFromCombo(listCash);
-                toBranches = statisticModel.getToCombo(listCash);
+                //fromBranches = statisticModel.getFromCombo(listCash);
+                //toBranches = statisticModel.getToCombo(listCash);
 
-                fromPos = statisticModel.getFromPosCombo(listCash);
-                toPos = statisticModel.getToPosCombo(listCash);
+                //fromPos = statisticModel.getFromPosCombo(listCash);
+                //toPos = statisticModel.getToPosCombo(listCash);
 
                 accCombo = listCash.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
                 
@@ -102,11 +102,11 @@ namespace POS.View.reports
                 //fillComboToPos();
                 fillAccCombo();
 
-                chk_allFromBranch.IsChecked = true;
-                chk_allToBranch.IsChecked = true;
-                chk_allFromPos.IsChecked = true;
-                chk_allToPos.IsChecked = true;
-                chk_allAccountant.IsChecked = true;
+                //chk_allFromBranch.IsChecked = true;
+                //chk_allToBranch.IsChecked = true;
+                //chk_allFromPos.IsChecked = true;
+                //chk_allToPos.IsChecked = true;
+                //chk_allAccountant.IsChecked = true;
 
                 Btn_payments_Click(btn_payments , null);
 
@@ -161,10 +161,10 @@ namespace POS.View.reports
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
         }
 
-        List<CashTransferSts> posLst;
-        private List<CashTransferSts> fillList()
+        List<CashTransfer> posLst;
+        private List<CashTransfer> fillList()
         {
-            var result = list
+            var result = listCash
           .Where(s =>
           //start date
           (dp_StartDate.SelectedDate != null ? s.updateDate >= dp_StartDate.SelectedDate : true)
@@ -173,77 +173,84 @@ namespace POS.View.reports
           (dp_EndDate.SelectedDate != null ? s.updateDate <= dp_EndDate.SelectedDate : true)
           &&
           //fromBranch
-          (cb_formBranch.SelectedIndex != -1 ? s.frombranchId == Convert.ToInt32(cb_formBranch.SelectedValue) : true)
+          (cb_formBranch.SelectedIndex != -1 ? s.branchId == Convert.ToInt32(cb_formBranch.SelectedValue) : true)
           &&
           //toBranch
-          (cb_toBranch.SelectedIndex != -1 ? s.tobranchId == Convert.ToInt32(cb_toBranch.SelectedValue) : true)
+          (cb_toBranch.SelectedIndex != -1 ? s.branch2Id == Convert.ToInt32(cb_toBranch.SelectedValue) : true)
           &&
           //accountant
           (cb_Accountant.SelectedIndex != -1 ? s.updateUserAcc == cb_Accountant.SelectedValue.ToString() : true)
-         // &&
-         // //twoWay
-         // (
-         // chk_twoWay.IsChecked == true ?
-         //     //fromPos
-         //     (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
-         //     &&
-         //     //toPos
-         //     (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) || s.fromposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
-         //:
-         //     //fromPos
-         //     (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
-         //     &&
-         //     //toPos
-         //     (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
-         // )
+          &&
+          //fromPos
+          (cb_formPos.SelectedIndex != -1 ? s.posId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+          &&
+          //toPos
+          (cb_toPos.SelectedIndex != -1 ? s.pos2Id == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+          // &&
+          // //twoWay
+          // (
+          // chk_twoWay.IsChecked == true ?
+          //     //fromPos
+          //     (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) || s.toposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+          //     &&
+          //     //toPos
+          //     (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) || s.fromposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+          //:
+          //     //fromPos
+          //     (cb_formPos.SelectedIndex != -1 ? s.fromposId == Convert.ToInt32(cb_formPos.SelectedValue) : true)
+          //     &&
+          //     //toPos
+          //     (cb_toPos.SelectedIndex != -1 ? s.toposId == Convert.ToInt32(cb_toPos.SelectedValue) : true)
+          // )
           && s.transType == _transtype
           ) ;
             posLst = result.ToList();
             return result.ToList();
         }
-        //private void fillComboBranches()
+
+        private void fillComboBranches()
+        {
+            cb_formBranch.SelectedValuePath = "BranchFromId";
+            cb_formBranch.DisplayMemberPath = "BranchFromName";
+            cb_formBranch.ItemsSource = fromBranches;
+
+            cb_toBranch.SelectedValuePath = "BranchToId";
+            cb_toBranch.DisplayMemberPath = "BranchToName";
+            cb_toBranch.ItemsSource = toBranches;
+        }
+        //private void fillComboFromBranch(ComboBox cb)
         //{
-        //    cb_formBranch.SelectedValuePath = "BranchFromId";
-        //    cb_formBranch.DisplayMemberPath = "BranchFromName";
-        //    cb_formBranch.ItemsSource = fromBranches;
-
-        //    cb_toBranch.SelectedValuePath = "BranchToId";
-        //    cb_toBranch.DisplayMemberPath = "BranchToName";
-        //    cb_toBranch.ItemsSource = toBranches;
+        //    cb.SelectedValuePath = "BranchFromId";
+        //    cb.DisplayMemberPath = "BranchFromName";
+        //    cb.ItemsSource = fromBranches;
         //}
-        private void fillComboFromBranch(ComboBox cb)
-        {
-            cb.SelectedValuePath = "BranchFromId";
-            cb.DisplayMemberPath = "BranchFromName";
-            cb.ItemsSource = fromBranches;
-        }
 
-        private void fillComboToBranch(ComboBox cb)
+        //private void fillComboToBranch(ComboBox cb)
+        //{
+        //    cb.SelectedValuePath = "BranchToId";
+        //    cb.DisplayMemberPath = "BranchToName";
+        //    cb.ItemsSource = toBranches;
+        //}
+        private void fillComboFromPos()
         {
-            cb.SelectedValuePath = "BranchToId";
-            cb.DisplayMemberPath = "BranchToName";
-            cb.ItemsSource = toBranches;
-        }
-        private void fillComboFromPos(ComboBox cb , ComboBox cb_branch)
-        {
-            cb.SelectedValuePath = "PosFromId";
-            cb.DisplayMemberPath = "PosFromName";
-            cb.ItemsSource = fromPos;
-            if (cb_branch.SelectedItem != null)
+            cb_formPos.SelectedValuePath = "PosFromId";
+            cb_formPos.DisplayMemberPath = "PosFromName";
+            cb_formPos.ItemsSource = fromPos;
+            if (cb_formBranch.SelectedItem != null)
             {
-                var temp = cb_branch.SelectedItem as branchFromCombo;
-                cb.ItemsSource = fromPos.Where(x => x.BranchId == temp.BranchFromId);
+                var temp = cb_formBranch.SelectedItem as branchFromCombo;
+                cb_formPos.ItemsSource = fromPos.Where(x => x.BranchId == temp.BranchFromId);
             }
         }
-        private void fillComboToPos(ComboBox cb, ComboBox cb_branch)
+        private void fillComboToPos()
         {
-            cb.SelectedValuePath = "PosToId";
-            cb.DisplayMemberPath = "PosToName";
-            cb.ItemsSource = toPos;
-            if (cb_branch.SelectedItem != null)
+            cb_toPos.SelectedValuePath = "PosToId";
+            cb_toPos.DisplayMemberPath = "PosToName";
+            cb_toPos.ItemsSource = toPos;
+            if (cb_toBranch.SelectedItem != null)
             {
-                var temp = cb_branch.SelectedItem as branchToCombo;
-                cb.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
+                var temp = cb_toBranch.SelectedItem as branchToCombo;
+                cb_toPos.ItemsSource = toPos.Where(x => x.BranchId == temp.BranchToId);
             }
         }
 
@@ -254,7 +261,7 @@ namespace POS.View.reports
             cb_Accountant.ItemsSource = accCombo;
         }
 
-        IEnumerable<CashTransferSts> temp = null;
+        IEnumerable<CashTransfer> temp = null;
         private void fillEvents()
         {
             temp = fillList();
@@ -272,7 +279,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillComboFromPos(cb_formPos , cb_formBranch);
+                fillComboFromPos();
                 fillEvents();
 
                 if (sender != null)
@@ -488,7 +495,7 @@ namespace POS.View.reports
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                fillComboToPos(cb_toPos , cb_toBranch);
+                fillComboToPos();
                
                 fillEvents();
 
@@ -645,35 +652,24 @@ namespace POS.View.reports
 
             var temp = posLst;
 
-            var res = temp.GroupBy(x => new { x.fromposId }).Select(x => new CashTransferSts
+            var res = temp.GroupBy(x => new { x.posId }).Select(x => new CashTransfer
             {
-                transType = "p",
-                posId = x.FirstOrDefault().fromposId,
-                posName = x.FirstOrDefault().fromposName + "/" + x.FirstOrDefault().frombranchName,
-                cash = x.Sum(g => g.cash)
-            });
-            var res1 = temp.GroupBy(x => new { x.toposId }).Select(x => new CashTransferSts
-            {
-                transType = "d",
-                posId = x.FirstOrDefault().toposId,
-                posName = x.FirstOrDefault().toposName + "/" + x.FirstOrDefault().tobranchName,
+                transType = _transtype,
+                posId = x.FirstOrDefault().posId,
+                posName = x.FirstOrDefault().posName + "/" + x.FirstOrDefault().branchName,
                 cash = x.Sum(g => g.cash)
             });
            
-            List<CashTransferSts> result = new List<CashTransferSts>();
+            List<CashTransfer> result = new List<CashTransfer>();
 
             result.AddRange(res.ToList());
-
-            if (chk_twoWay.IsChecked == true)
-                result.AddRange(res1.ToList());
 
             var finalResult = result.GroupBy(x => new { x.posId }).Select(x => new CashTransferSts
             {
                 transType = x.FirstOrDefault().transType,
                 posId = x.FirstOrDefault().posId,
                 posName = x.FirstOrDefault().posName,
-                depositSum = x.Where(g => g.transType == "d").Sum(g => (decimal)g.cash),
-                pullSum    = x.Where(g => g.transType == "p").Sum(g => (decimal)g.cash)
+                depositSum = x.Where(g => g.transType == _transtype).Sum(g => (decimal)g.cash),
             });
             var tempName = finalResult.Select(s => new
             {
@@ -684,7 +680,6 @@ namespace POS.View.reports
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> cP = new List<decimal>();
-            List<decimal> cPb = new List<decimal>();
 
             int xCount = 6;
 
@@ -694,42 +689,36 @@ namespace POS.View.reports
             for (int i = 0; i < xCount; i++)
             {
                 cP.Add(finalResult.ToList().Skip(i).FirstOrDefault().depositSum);
-                cPb.Add(finalResult.ToList().Skip(i).FirstOrDefault().pullSum);
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             if (names.Count() > 6)
             {
-                decimal depositSum = 0, pullSum = 0;
+                decimal depositSum = 0;
                 for (int i = 6; i < names.Count(); i++)
                 {
                     depositSum = depositSum + finalResult.ToList().Skip(i).FirstOrDefault().depositSum;
-                    pullSum = pullSum + finalResult.ToList().Skip(i).FirstOrDefault().pullSum;
                 }
-                if (!((depositSum == 0) && (pullSum == 0)))
+                if (!(depositSum == 0))
                 {
                     cP.Add(depositSum);
-                    cPb.Add(pullSum);
 
                     axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
                 }
             }
+
+            string title = "";
+            if (_transtype == "d") title = MainWindow.resourcemanager.GetString("trDeposit");
+            else if(_transtype == "p") title = MainWindow.resourcemanager.GetString("trPull");
 
             columnChartData.Add(
             new StackedColumnSeries
             {
                 Values = cP.AsChartValues(),
                 DataLabels = true,
-                Title = MainWindow.resourcemanager.GetString("trDeposit")
+                Title = title
             });
-            columnChartData.Add(
-            new StackedColumnSeries
-            {
-                Values = cPb.AsChartValues(),
-                DataLabels = true,
-                Title = MainWindow.resourcemanager.GetString("trPull")
-            });
-
+           
             DataContext = this;
             cartesianChart.Series = columnChartData;
         }
@@ -738,46 +727,33 @@ namespace POS.View.reports
         {
             MyAxis.Labels = new List<string>();
             List<string> names = new List<string>();
-            List<CashTransferSts> resultList = new List<CashTransferSts>();
+            List<CashTransfer> resultList = new List<CashTransfer>();
 
             SeriesCollection rowChartData = new SeriesCollection();
 
             SeriesCollection columnChartData = new SeriesCollection();
-            List<decimal> pull = new List<decimal>();
             List<decimal> deposit = new List<decimal>();
 
             var temp = posLst;
 
-            var res = temp.GroupBy(x => new { x.frombranchId }).Select(x => new CashTransferSts
+            var res = temp.GroupBy(x => new { x.branchId }).Select(x => new CashTransfer
             {
-                transType = "p",
-                branchId = x.FirstOrDefault().frombranchId,
-                branchName = x.FirstOrDefault().frombranchName,
+                transType = _transtype,
+                branchId = x.FirstOrDefault().branchId,
+                branchName = x.FirstOrDefault().branchName,
                 cash = x.Sum(g => g.cash)
             });
-            
-            var res1 = temp.GroupBy(x => new { x.tobranchId }).Select(x => new CashTransferSts
-            {
-                transType = "d",
-                branchId = x.FirstOrDefault().tobranchId,
-                branchName = x.FirstOrDefault().tobranchName,
-                cash = x.Sum(g => g.cash)
-            });
-
-            List<CashTransferSts> result = new List<CashTransferSts>();
+           
+            List<CashTransfer> result = new List<CashTransfer>();
 
             result.AddRange(res.ToList());
-
-            if (chk_twoWay.IsChecked == true)
-                result.AddRange(res1.ToList());
 
             var finalResult = result.GroupBy(x => new { x.branchId }).Select(x => new CashTransferSts
             {
                 transType = x.FirstOrDefault().transType,
                 branchId = x.FirstOrDefault().branchId,
                 branchName = x.FirstOrDefault().branchName,
-                depositSum = x.Where(g => g.transType == "d").Sum(g => (decimal)g.cash),
-                pullSum = x.Where(g => g.transType == "p").Sum(g => (decimal)g.cash)
+                depositSum = x.Where(g => g.transType == _transtype).Sum(g => (decimal)g.cash),
             });
             var tempName = finalResult.Select(s => new
             {
@@ -792,44 +768,40 @@ namespace POS.View.reports
 
             for (int i = 0; i < xCount; i++)
             {
-                pull.Add(finalResult.ToList().Skip(i).FirstOrDefault().depositSum);
-                deposit.Add(finalResult.ToList().Skip(i).FirstOrDefault().pullSum);
+                deposit.Add(finalResult.ToList().Skip(i).FirstOrDefault().depositSum);
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
 
             if (names.Count() > 6)
             {
-                decimal depositSum = 0, pullSum = 0;
+                decimal depositSum = 0;
                 for (int i = 6; i < names.Count(); i++)
                 {
                     depositSum = depositSum + finalResult.ToList().Skip(i).FirstOrDefault().depositSum;
-                    pullSum = pullSum + finalResult.ToList().Skip(i).FirstOrDefault().pullSum;
                 }
-                if (!((depositSum == 0) && (pullSum == 0)))
+                if (!(depositSum == 0))
                 {
-                    pull.Add(depositSum);
-                    deposit.Add(pullSum);
+                    deposit.Add(depositSum);
 
                     axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
                 }
             }
-            for (int i = 0; i < pull.Count(); i++)
+            for (int i = 0; i < deposit.Count(); i++)
             {
                 MyAxis.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
+
+            string title = "";
+            if (_transtype == "d") title = MainWindow.resourcemanager.GetString("trDeposit");
+            else if (_transtype == "p") title = MainWindow.resourcemanager.GetString("trPull");
+
             rowChartData.Add(
           new LineSeries
           {
-              Values = pull.AsChartValues(),
-              Title = MainWindow.resourcemanager.GetString("trPull")
+              Values = deposit.AsChartValues(),
+              Title = title
           }); 
-            rowChartData.Add(
-         new LineSeries
-         {
-             Values = deposit.AsChartValues(),
-             Title = MainWindow.resourcemanager.GetString("trDeposit")
-         });
-
+       
             DataContext = this;
             rowChart.Series = rowChartData;
         }
@@ -880,10 +852,10 @@ namespace POS.View.reports
                 dgPayments.ItemsSource = posLst
                                             .Where(obj => (
                                             obj.transNum.Contains(txt_search.Text) ||
-                                            obj.frombranchName.Contains(txt_search.Text) ||
-                                            obj.tobranchName.Contains(txt_search.Text) ||
-                                            obj.fromposName.Contains(txt_search.Text) ||
-                                            obj.toposName.Contains(txt_search.Text) ||
+                                            obj.branchName.Contains(txt_search.Text) ||
+                                            obj.branch2Name.Contains(txt_search.Text) ||
+                                            obj.posName.Contains(txt_search.Text) ||
+                                            obj.pos2Name.Contains(txt_search.Text) ||
                                             obj.updateUserAcc.Contains(txt_search.Text)
                                             ));
 
@@ -931,7 +903,7 @@ namespace POS.View.reports
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
             Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
-            clsReports.cashTransferStsPos(temp, rep, reppath, paramarr);
+            //clsReports.cashTransferStsPos(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
@@ -1074,10 +1046,10 @@ namespace POS.View.reports
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
         {//deposit
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
 
@@ -1086,10 +1058,10 @@ namespace POS.View.reports
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trDepositor") + "...");
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trRecepient") + "...");
 
-                fillComboFromBranch(cb_formBranch);
-                fillComboToBranch(cb_toBranch);
-                fillComboFromPos(cb_formPos , cb_formBranch);
-                fillComboToPos(cb_toPos , cb_toBranch);
+                col_fromBranch.Header = MainWindow.resourcemanager.GetString("trFromBranch");
+                col_fromPos.Header = MainWindow.resourcemanager.GetString("trDepositor");
+                col_toBranch.Header = MainWindow.resourcemanager.GetString("trToBranch");
+                col_toPos.Header = MainWindow.resourcemanager.GetString("trRecepient");
 
                 paint();
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_payments);
@@ -1107,18 +1079,28 @@ namespace POS.View.reports
 
                 fillEvents();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                fromBranches = statisticModel.getFromCombo(posLst);
+                toBranches = statisticModel.getToCombo(posLst);
+                fromPos = statisticModel.getFromPosCombo(posLst);
+                toPos = statisticModel.getToPosCombo(posLst);
+
+                fillComboBranches();
+                fillComboFromPos();
+                fillComboToPos();
+
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-       
+
         string _transtype = "d";
         private void Btn_pulls_Click(object sender, RoutedEventArgs e)
         {//pull
@@ -1134,10 +1116,10 @@ namespace POS.View.reports
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_formPos, MainWindow.resourcemanager.GetString("trRecepient") + "...");
                 MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_toPos, MainWindow.resourcemanager.GetString("trDepositor") + "...");
 
-                fillComboFromBranch(cb_toBranch);
-                fillComboToBranch(cb_formBranch);
-                fillComboFromPos(cb_toPos, cb_toBranch);//////?????????????
-                fillComboToPos(cb_formPos, cb_formBranch);//////?????????????????????
+                col_fromBranch.Header = MainWindow.resourcemanager.GetString("trToBranch");
+                col_fromPos.Header = MainWindow.resourcemanager.GetString("trRecepient");
+                col_toBranch.Header = MainWindow.resourcemanager.GetString("trFromBranch");
+                col_toPos.Header = MainWindow.resourcemanager.GetString("trDepositor");
 
                 paint();
                 ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_pulls);
@@ -1154,6 +1136,16 @@ namespace POS.View.reports
                 chk_allAccountant.IsChecked = true;
 
                 fillEvents();
+
+                fromBranches = statisticModel.getFromCombo(posLst);
+                toBranches = statisticModel.getToCombo(posLst);
+                fromPos = statisticModel.getFromPosCombo(posLst);
+                toPos = statisticModel.getToPosCombo(posLst);
+
+                fillComboBranches();
+                fillComboFromPos();
+                fillComboToPos();
+
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
