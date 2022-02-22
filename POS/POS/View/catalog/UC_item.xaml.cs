@@ -2226,8 +2226,9 @@ namespace POS.View
 
         async Task<IEnumerable<Item>> RefrishItems()
         {
+
             allItems = await itemModel.GetAllItems();
-            if(category.categoryId != 0)
+            if(category.categoryId != 0 && !allCategory)
                 items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
             else
                 items = allItems.ToList();
@@ -2412,6 +2413,8 @@ namespace POS.View
         }
         public async Task ChangeCategoryIdEvent(int categoryId)
         {
+            allCategory = false;
+
             category = categories.ToList().Find(c => c.categoryId == categoryId);
             if (categories.Where(x =>
             x.isActive == tglCategoryState && x.parentId == category.categoryId).Count() != 0)
@@ -2889,6 +2892,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 Button b = (Button)sender;
+                allCategory = false;
 
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
                 {
@@ -2915,6 +2919,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        bool allCategory = true;
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
 
@@ -2922,6 +2927,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                allCategory = true;
                 //category.categoryId = 0;
                 ///
                 //categoryParentId = 0;

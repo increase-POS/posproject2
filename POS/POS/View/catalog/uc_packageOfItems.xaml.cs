@@ -437,9 +437,11 @@ namespace POS.View
         Package packageModel = new Package();
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            if (category.categoryId == 0)
-                items = await packageModel.GetPackages();
-            else items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            if (category.categoryId != 0 && !allCategory)
+                items = await itemModel.GetItemsInCategoryAndSub(category.categoryId);
+            else
+            items = await packageModel.GetPackages();
+
             items = items.Where(x => x.type == "p");
             return items;
         }
@@ -558,6 +560,7 @@ namespace POS.View
         }
         public async Task ChangeCategoryIdEvent(int categoryId)
         {
+            allCategory = false;
             category = categories.ToList().Find(c => c.categoryId == categoryId);
 
             if (categories.Where(x =>
@@ -982,6 +985,7 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                allCategory = false;
                 Button b = (Button)sender;
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
                 {
@@ -1003,6 +1007,8 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        bool allCategory = true;
+
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1010,7 +1016,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 ///
-
+                allCategory = true;
                 //categoryParentId = 0;
                 //await RefrishCategoriesCard();
                 categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == 0);

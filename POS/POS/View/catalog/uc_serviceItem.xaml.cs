@@ -428,9 +428,10 @@ namespace POS.View.catalog
         /// <returns></returns>
         async Task<IEnumerable<Item>> RefrishItems()
         {
-            if (category.categoryId == 0)
+            if (category.categoryId != 0 && !allCategory)
+                items = await itemModel.GetSrItemsInCategoryAndSub(category.categoryId);
+            else
                 items = await item.GetAllSrItems();
-            else items = await itemModel.GetSrItemsInCategoryAndSub(category.categoryId);
             //items = items.Where(x => x.type == "sr");
             return items;
         }
@@ -551,6 +552,8 @@ namespace POS.View.catalog
         }
         public async Task ChangeCategoryIdEvent(int categoryId)
         {
+            allCategory = false;
+
             category = categories.ToList().Find(c => c.categoryId == categoryId);
 
             if (categories.Where(x =>
@@ -977,6 +980,8 @@ namespace POS.View.catalog
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                allCategory = false;
+
                 Button b = (Button)sender;
                 if (!string.IsNullOrEmpty(b.Tag.ToString()))
                 {
@@ -998,12 +1003,14 @@ namespace POS.View.catalog
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+        bool allCategory = true;
         private async void Btn_getAllCategory_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+                allCategory = true;
                 ///
                 //categoryParentId = 0;
                 //await RefrishCategoriesCard();
