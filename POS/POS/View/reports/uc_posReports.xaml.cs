@@ -888,12 +888,12 @@ namespace POS.View.reports
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPos.rdlc";
+                addpath = @"\Reports\StatisticReport\Accounts\Pos\Ar\ArPosAccReport.rdlc";
 
             }
             else
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Pos\En\Pos.rdlc";
+                addpath = @"\Reports\StatisticReport\Accounts\Pos\En\PosAccReport.rdlc";
             }
             secondTitle = "pos";
 
@@ -903,8 +903,32 @@ namespace POS.View.reports
             ReportCls.checkLang();
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
             Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
+            if (_transtype=="d")
+            {
+                Title = Title + "/" + MainWindow.resourcemanagerreport.GetString("trDeposit");
+
+                paramarr.Add(new ReportParameter("trPos1Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
+                paramarr.Add(new ReportParameter("trPos2Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
+
+                paramarr.Add(new ReportParameter("trBranch1Header", MainWindow.resourcemanagerreport.GetString("trFromBranch")));
+                paramarr.Add(new ReportParameter("trBranch2Header", MainWindow.resourcemanagerreport.GetString("trToBranch")));
+            }
+             else if ( _transtype == "p")
+            {
+
+                Title = Title + "/" + MainWindow.resourcemanagerreport.GetString("trReceive");
+                paramarr.Add(new ReportParameter("trPos1Header", MainWindow.resourcemanagerreport.GetString("trRecepient")));
+                paramarr.Add(new ReportParameter("trPos2Header", MainWindow.resourcemanagerreport.GetString("trDepositor")));
+
+                paramarr.Add(new ReportParameter("trBranch1Header", MainWindow.resourcemanagerreport.GetString("trToBranch")));  
+                paramarr.Add(new ReportParameter("trBranch2Header", MainWindow.resourcemanagerreport.GetString("trFromBranch")));
+
+            }
+
+      
             paramarr.Add(new ReportParameter("trTitle", Title));
             //clsReports.cashTransferStsPos(temp, rep, reppath, paramarr);
+            clsReports.posAccReportSTS(temp, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
