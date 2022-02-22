@@ -2923,8 +2923,14 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 //category.categoryId = 0;
-                categoryParentId = 0;
-                await RefrishCategoriesCard();
+                //categoryParentId = 0;
+                ///
+                //await RefrishCategoriesCard();
+                categoriesQuery = categories.Where(x => x.isActive == tglCategoryState && x.parentId == 0).ToList();
+                catigoriesAndItemsView.gridCatigories = grid_categoryCards;
+                generateCoulmnCategoriesGrid(categoriesQuery.Count());
+                catigoriesAndItemsView.FN_refrishCatalogCard(categoriesQuery.ToList(), -1);
+                ///
                 grid_categoryControlPath.Children.Clear();
                 //category.categoryId = 0;
                 //await RefrishItems();
