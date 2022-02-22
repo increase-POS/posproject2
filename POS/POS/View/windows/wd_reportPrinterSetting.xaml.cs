@@ -483,13 +483,13 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trPrinterSettings");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_repname, winLogIn.resourcemanager.GetString("trReportPrinterName")+"...");//
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_salname, winLogIn.resourcemanager.GetString("trReportSalesName") + "...");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_saleInvPaperSize, winLogIn.resourcemanager.GetString("trSalesPaperSize") + "...");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_docpapersize, winLogIn.resourcemanager.GetString("trDocPaperSize") + "...");
+            txt_title.Text = MainWindow.resourcemanager.GetString("trPrinterSettings");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_repname, MainWindow.resourcemanager.GetString("trReportPrinterName")+"...");//
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_salname, MainWindow.resourcemanager.GetString("trReportSalesName") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_saleInvPaperSize, MainWindow.resourcemanager.GetString("trSalesPaperSize") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_docpapersize, MainWindow.resourcemanager.GetString("trDocPaperSize") + "...");
 
-            btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)

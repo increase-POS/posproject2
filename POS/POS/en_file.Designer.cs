@@ -1492,6 +1492,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Purchases,Sales,Reports.
+        /// </summary>
+        internal static string trCopyCountHint {
+            get {
+                return ResourceManager.GetString("trCopyCountHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cost.
         /// </summary>
         internal static string trCost {
@@ -2140,11 +2149,47 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Email.
+        /// </summary>
+        internal static string trDirectEmail {
+            get {
+                return ResourceManager.GetString("trDirectEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchases,Sales invoice.
+        /// </summary>
+        internal static string trDirectEmailHint {
+            get {
+                return ResourceManager.GetString("trDirectEmailHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direct Entry.
         /// </summary>
         internal static string trDirectEntry {
             get {
                 return ResourceManager.GetString("trDirectEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Direct Printing.
+        /// </summary>
+        internal static string trDirectPrinting {
+            get {
+                return ResourceManager.GetString("trDirectPrinting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchases,Sales invoice.
+        /// </summary>
+        internal static string trDirectPrintingHint {
+            get {
+                return ResourceManager.GetString("trDirectPrintingHint", resourceCulture);
             }
         }
         
@@ -2419,7 +2464,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send an email when saving a purchases invoice.
+        ///   Looks up a localized string similar to Purchases invoice.
         /// </summary>
         internal static string trEmailOnSavePurchase {
             get {
@@ -2428,7 +2473,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send an email when saving a sales invoice.
+        ///   Looks up a localized string similar to Sales invoice.
         /// </summary>
         internal static string trEmailOnSaveSale {
             get {
@@ -6389,7 +6434,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prints count.
+        ///   Looks up a localized string similar to Print limits.
         /// </summary>
         internal static string trPrintCount {
             get {
@@ -6425,7 +6470,16 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Print when saving a purchases invoice.
+        ///   Looks up a localized string similar to Reports and Sales ,Paper Size.
+        /// </summary>
+        internal static string trPrinterSettingsHint {
+            get {
+                return ResourceManager.GetString("trPrinterSettingsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purchases invoice.
         /// </summary>
         internal static string trPrintOnSavePurchase {
             get {
@@ -6434,7 +6488,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Print when saving a sales invoice.
+        ///   Looks up a localized string similar to Sales invoice.
         /// </summary>
         internal static string trPrintOnSaveSale {
             get {
@@ -6731,7 +6785,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Purchases invoice copies count.
+        ///   Looks up a localized string similar to Purchases invoice.
         /// </summary>
         internal static string trPurchasesCopyCount {
             get {
@@ -6974,7 +7028,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Receives.
+        ///   Looks up a localized string similar to Cash receipts.
         /// </summary>
         internal static string trReceives {
             get {
@@ -7082,7 +7136,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Report printer.
+        ///   Looks up a localized string similar to Reports printer.
         /// </summary>
         internal static string trReportPrinterName {
             get {
@@ -7109,7 +7163,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reports copies count.
+        ///   Looks up a localized string similar to Reports.
         /// </summary>
         internal static string trReportsCopyCount {
             get {
@@ -7316,7 +7370,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sales invoice copies count.
+        ///   Looks up a localized string similar to Sales invoice.
         /// </summary>
         internal static string trSalesCopyCount {
             get {

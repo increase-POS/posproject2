@@ -145,14 +145,14 @@ namespace POS.View.Settings
 
             txt_reportlang.Text = MainWindow.resourcemanager.GetString("trLanguage");
 
-            txt_systmSetting.Text = MainWindow.resourcemanager.GetString("trSystemSetting");
-            txt_systmSettingHint.Text = MainWindow.resourcemanager.GetString("trSystemSetting") + "...";
+            txt_systmSetting.Text = MainWindow.resourcemanager.GetString("trDirectPrinting");
+            txt_systmSettingHint.Text = MainWindow.resourcemanager.GetString("trDirectPrintingHint") + "...";
 
             txt_printerSetting.Text = MainWindow.resourcemanager.GetString("trPrinterSettings");
-            txt_printerSettingHint.Text = MainWindow.resourcemanager.GetString("trPrinterSettings") + "...";
+            txt_printerSettingHint.Text = MainWindow.resourcemanager.GetString("trPrinterSettingsHint") + "...";
 
             txt_copyCount.Text = MainWindow.resourcemanager.GetString("trCopyCount");
-            txt_copyCountHint.Text = MainWindow.resourcemanager.GetString("trCopyCount") + "...";
+            txt_copyCountHint.Text = MainWindow.resourcemanager.GetString("trCopyCountHint") + "...";
 
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
         }

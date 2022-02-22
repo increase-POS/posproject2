@@ -1483,6 +1483,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مبيعات,مشتريات,تقارير.
+        /// </summary>
+        internal static string trCopyCountHint {
+            get {
+                return ResourceManager.GetString("trCopyCountHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to التكلفة.
         /// </summary>
         internal static string trCost {
@@ -2131,11 +2140,47 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ايميل مباشر.
+        /// </summary>
+        internal static string trDirectEmail {
+            get {
+                return ResourceManager.GetString("trDirectEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة مشتريات,مبيعات.
+        /// </summary>
+        internal static string trDirectEmailHint {
+            get {
+                return ResourceManager.GetString("trDirectEmailHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إدخال مباشر.
         /// </summary>
         internal static string trDirectEntry {
             get {
                 return ResourceManager.GetString("trDirectEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to طباعة مباشرة.
+        /// </summary>
+        internal static string trDirectPrinting {
+            get {
+                return ResourceManager.GetString("trDirectPrinting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة مشتريات,مبيعات.
+        /// </summary>
+        internal static string trDirectPrintingHint {
+            get {
+                return ResourceManager.GetString("trDirectPrintingHint", resourceCulture);
             }
         }
         
@@ -2410,7 +2455,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to إرسال إيميل عند حفظ فاتورة مشتريات.
+        ///   Looks up a localized string similar to فاتورة المشتريات.
         /// </summary>
         internal static string trEmailOnSavePurchase {
             get {
@@ -2419,7 +2464,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to إرسال إيميل عند حفظ فاتورة مبيعات.
+        ///   Looks up a localized string similar to فاتورة المبيعات.
         /// </summary>
         internal static string trEmailOnSaveSale {
             get {
@@ -6344,7 +6389,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to عدد الطباعات.
+        ///   Looks up a localized string similar to النسخ المتاحة.
         /// </summary>
         internal static string trPrintCount {
             get {
@@ -6380,7 +6425,16 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to طباعة عند حفظ فاتورة مشتريات.
+        ///   Looks up a localized string similar to التقارير و فاتورة المبيعات, حجم الورق.
+        /// </summary>
+        internal static string trPrinterSettingsHint {
+            get {
+                return ResourceManager.GetString("trPrinterSettingsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة المشتريات.
         /// </summary>
         internal static string trPrintOnSavePurchase {
             get {
@@ -6389,7 +6443,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to طباعة عند حفظ فاتورة مبيعات.
+        ///   Looks up a localized string similar to فاتورة المبيعات.
         /// </summary>
         internal static string trPrintOnSaveSale {
             get {
@@ -6686,7 +6740,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to عدد نسخ فاتورة المشتريات.
+        ///   Looks up a localized string similar to فاتورة المشتريات.
         /// </summary>
         internal static string trPurchasesCopyCount {
             get {
@@ -7046,7 +7100,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to طابعة التقرير.
+        ///   Looks up a localized string similar to طابعة التقارير.
         /// </summary>
         internal static string trReportPrinterName {
             get {
@@ -7073,7 +7127,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to عدد نسخ التقارير.
+        ///   Looks up a localized string similar to التقارير.
         /// </summary>
         internal static string trReportsCopyCount {
             get {
@@ -7280,7 +7334,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to عدد نسخ فاتورة المبيعات.
+        ///   Looks up a localized string similar to فاتورة المبيعات.
         /// </summary>
         internal static string trSalesCopyCount {
             get {

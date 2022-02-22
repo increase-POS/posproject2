@@ -79,6 +79,8 @@ namespace POS.View.Settings
 
             txt_emailsTamplatesInfo.Text = MainWindow.resourcemanager.GetString("trEmailTemplates");
             txt_emailsTamplatesHint.Text = MainWindow.resourcemanager.GetString("trEmailTemplates") + "...";
+            txt_systmSetting.Text = MainWindow.resourcemanager.GetString("trDirectEmail");
+            txt_systmSettingHint.Text = MainWindow.resourcemanager.GetString("trDirectEmailHint") + "...";
         }
 
 

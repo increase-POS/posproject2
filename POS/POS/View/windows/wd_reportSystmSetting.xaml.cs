@@ -202,14 +202,20 @@ namespace POS.View.windows
 
         private void translate()
         {
-            txt_title.Text = winLogIn.resourcemanager.GetString("trSystemSetting");
+            if (windowType == "r")
+            {
+                txt_title.Text = MainWindow.resourcemanager.GetString("trDirectPrinting");
+            }
+            else if (windowType == "e")
+            {
+                txt_title.Text = MainWindow.resourcemanager.GetString("trDirectEmail");
+            }
+            txt_printOnSavePur.Text = MainWindow.resourcemanager.GetString("trPrintOnSavePurchase");
+            txt_emailOnSavePur.Text = MainWindow.resourcemanager.GetString("trEmailOnSavePurchase");
+            txt_printOnSaveSale.Text = MainWindow.resourcemanager.GetString("trPrintOnSaveSale");
+            txt_emailOnSaveSale.Text = MainWindow.resourcemanager.GetString("trEmailOnSaveSale");
 
-            txt_printOnSavePur.Text = winLogIn.resourcemanager.GetString("trPrintOnSavePurchase");
-            txt_emailOnSavePur.Text = winLogIn.resourcemanager.GetString("trEmailOnSavePurchase");
-            txt_printOnSaveSale.Text = winLogIn.resourcemanager.GetString("trPrintOnSaveSale");
-            txt_emailOnSaveSale.Text = winLogIn.resourcemanager.GetString("trEmailOnSaveSale");
-
-            btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
