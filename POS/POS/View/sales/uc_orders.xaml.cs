@@ -1538,13 +1538,15 @@ namespace POS.View.sales
                 totalDiscount = _Discount + manualDiscount;
             }
 
+            decimal total = _Sum - totalDiscount + _DeliveryCost;
+
+            #region invoice tax
             decimal taxValue = 0;
-            #region invoice - item tax
             if (MainWindow.invoiceTax_bool == true)
             {
                 try
                 {
-                    taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+                    taxValue = SectionData.calcPercentage(total, decimal.Parse(tb_taxValue.Text));
                 }
                 catch { }
             }
@@ -1553,12 +1555,8 @@ namespace POS.View.sales
             //    taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
             //}
             #endregion
-            //try
-            //{
-            //    taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
-            //}
-            //catch { }
-            decimal total = _Sum - totalDiscount + taxValue + _DeliveryCost;
+
+            total +=  taxValue;
 
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);

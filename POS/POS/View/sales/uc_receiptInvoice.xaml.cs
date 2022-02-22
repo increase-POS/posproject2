@@ -2913,25 +2913,21 @@ namespace POS.View
                 #endregion
                 totalDiscount = _Discount + manualDiscount;
             }
-            
-           
-            decimal taxValue = 0;
 
-            #region invoice - item tax
+            decimal total = _Sum - totalDiscount + _DeliveryCost;
+
+            #region invoice tax value 
+            decimal taxValue = 0;
             if (MainWindow.invoiceTax_bool == true)
             {
                 try
                 {
-                    taxValue = SectionData.calcPercentage(_Sum, decimal.Parse(tb_taxValue.Text));
+                    taxValue = SectionData.calcPercentage(total, decimal.Parse(tb_taxValue.Text));
                 }
                 catch { }
             }
-            //if (MainWindow.itemsTax_bool == true)
-            //{
-            //    taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
-            //}
             #endregion
-            decimal total = _Sum - totalDiscount + _DeliveryCost + taxValue;
+           total += taxValue;
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
