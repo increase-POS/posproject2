@@ -956,8 +956,7 @@
                     </Grid>
                 </Grid>
                 <!--////////////////////////////////////   Properties   ////////////////////////////////////////////////////-->
-                <Grid  Grid.Row="1"
-                         x:Name="grid_properties"  Visibility="Collapsed">
+                <Grid  Grid.Row="1" x:Name="grid_properties" Visibility="Collapsed">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="auto"></RowDefinition>
@@ -1332,8 +1331,7 @@
                     </Grid>
                 </Grid>
                 <!--////////////////////////////////////    Barcode    ////////////////////////////////////////////////////-->
-                <Grid  Grid.Row="1"
-                      x:Name="grid_barcode"  Visibility="Collapsed" >
+                <Grid  Grid.Row="1"  x:Name="grid_barcode"  Visibility="Collapsed" >
                     <Grid.RowDefinitions >
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
@@ -1343,6 +1341,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
                                 <RowDefinition Height="auto"></RowDefinition>
@@ -1623,7 +1622,7 @@
                                         MaxLength="13" Height="40"  Margin="10,5,10,5" LostFocus="cb_barcode_LostFocus"
                                         Grid.ColumnSpan="2" PreviewTextInput="NumberValidationTextBox"
                                         KeyDown="Tb_barcode_KeyDown" />
-                            <Path x:Name="p_errorBarcode" Grid.Row="4" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
+                            <Path x:Name="p_errorBarcode" Grid.Row="5" Fill="#E81123" Stretch="Fill" Margin="0,15,15,15"
                               HorizontalAlignment="Right" Grid.Column="1"  Visibility="Collapsed"   
                          VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
