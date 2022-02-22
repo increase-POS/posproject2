@@ -1623,6 +1623,8 @@ namespace POS.View.storage
                         };
                         #endregion
                         await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
+                        if(_InvoiceType == "is")
+                          invoiceModel.saveAvgPurchasePrice(invoiceItems);
                         clearInvoice();
                         refreshDraftNotification();
                     }
