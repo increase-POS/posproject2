@@ -197,10 +197,26 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void Btn_closing_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                uc_accountClosing uc = new uc_accountClosing();
+                sc_main.Visibility = Visibility.Collapsed;
+                main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             GC.Collect();
         }
+
+       
     }
 }

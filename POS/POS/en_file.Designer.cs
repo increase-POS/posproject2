@@ -8540,6 +8540,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tax Percentage.
+        /// </summary>
+        internal static string trTaxPercentage {
+            get {
+                return ResourceManager.GetString("trTaxPercentage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text1.
         /// </summary>
         internal static string trText1 {

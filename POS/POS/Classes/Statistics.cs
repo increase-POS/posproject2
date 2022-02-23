@@ -109,10 +109,8 @@ namespace POS.Classes
         public Nullable<decimal> ItemTaxes { get; set; }
         public Nullable<decimal> OneItemPricewithTax { get; set; }
 
-
+        public Nullable<int> itemsRowsCount { get; set; }
         // public Nullable<decimal> totalNet { get; set; }
-
-
 
     }
     public class ItemUnitInvoiceProfit

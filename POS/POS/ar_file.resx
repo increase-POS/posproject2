@@ -3301,4 +3301,7 @@
   <data name="trShowOption" xml:space="preserve">
     <value>اظهار</value>
   </data>
+  <data name="trTaxPercentage" xml:space="preserve">
+    <value>نسبة الضريبة</value>
+  </data>
 </root>
