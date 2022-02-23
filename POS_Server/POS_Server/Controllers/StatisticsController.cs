@@ -7807,12 +7807,13 @@ namespace POS_Server.Controllers
                 // DateTime cmpdate = DateTime.Now.AddDays(newdays);
                 try
                 {
+                    List<POSOpenCloseModel> cachlist = new List<POSOpenCloseModel>();
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        List<POSOpenCloseModel> cachlist = (from C in entity.cashTransfer
+                         cachlist = (from C in entity.cashTransfer
 
-                                                            join p in entity.pos on C.posId equals p.posId into jp 
+                                                            join p in entity.pos on C.posId equals p.posId into jp
 
                                                             from jpp in jp.DefaultIfEmpty()
                                                             select new POSOpenCloseModel()
@@ -7820,35 +7821,54 @@ namespace POS_Server.Controllers
                                                                 cashTransId = C.cashTransId,
                                                                 transType = C.transType,
                                                                 posId = C.posId,
-
+                                                                updateDate = C.updateDate,
                                                                 transNum = C.transNum,
-                                                               
+
                                                                 cash = C.cash,
-                                                             
+
                                                                 notes = C.notes,
-                                                             
+
                                                                 isConfirm = C.isConfirm,
                                                                 cashTransIdSource = C.cashTransIdSource,
                                                                 side = C.side,
 
                                                                 posName = jpp.name,
-                                                           
+
                                                                 processType = C.processType,
 
                                                                 branchId = jpp.branchId,
                                                                 branchName = jpp.branches.name,
+                                                                openDate = null,
+                                                                openCash = null,
+                                                                //  }).Where(C => (C.transType == "c" || C.transType == "o")  ).ToList();
+                                                            }).Where(C => (C.transType == "c" || C.transType == "o") && (brIds.Contains((int)C.branchId))).ToList();
 
-                                                            }).Where(C => (C.transType == "c" || C.transType == "o") &&  (brIds.Contains((int)C.branchId))).ToList();
-
-                     
-                        List<POSOpenCloseModel> closelist = cachlist.Where(C => C.transType == "c").ToList();
-                        foreach (POSOpenCloseModel row in closelist)
+                      //  List<POSOpenCloseModel> closelist = cachlist.Where(C => C.transType == "c").ToList();
+                        POSOpenCloseModel openrow = new POSOpenCloseModel();
+                        List<POSOpenCloseModel> tmplist = null;
+                        foreach (POSOpenCloseModel row in cachlist)
                         {
-                            POSOpenCloseModel openrow = new POSOpenCloseModel();
-                            openrow= cachlist.Where(C => C.posId==row.posId && C.transNum == row.transNum && C.transType == "o"  ).FirstOrDefault();
-                            row.openDate = openrow.updateDate;
-                            row.openCash = openrow.openCash;
-                            row.openCashTransId = openrow.cashTransId;
+                            if(row.transType == "c")
+                            {
+
+                           
+                            openrow = new POSOpenCloseModel();
+                            //   openrow = cachlist.Where(C => C.posId == row.posId && C.transNum == row.transNum && C.transType == "o").FirstOrDefault();
+
+                             tmplist = cachlist.Where(X => X.posId == row.posId && X.transNum==row.transNum  ).ToList();
+                                tmplist = tmplist.Where(X => X.transType.ToString() == "o").ToList();
+                            if (tmplist != null  )
+                            {
+                                openrow = tmplist.FirstOrDefault();
+                                if (openrow.cashTransId > 0)
+                                {
+                                    row.openDate = openrow.updateDate;
+                                    row.openCash = openrow.cash;
+                                    row.openCashTransId = openrow.cashTransId;
+                                }
+                            }
+
+                            }
 
                             //  row.openDate=
                         }
@@ -7856,13 +7876,21 @@ namespace POS_Server.Controllers
 
 
                         //   branchmodel = branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
-
-                        return TokenManager.GenerateToken(cachlist);
+                      
                     }
+                    List<POSOpenCloseModel> closelist = new List<POSOpenCloseModel>();
+                    closelist = cachlist.Where(X => X.transType == "c").ToList();
+                    return TokenManager.GenerateToken(closelist);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    return TokenManager.GenerateToken("0");
+                    List<POSOpenCloseModel> tmplis = new List<POSOpenCloseModel>();
+                    POSOpenCloseModel  enrow = new POSOpenCloseModel();
+                    enrow.posName = ex.ToString();
+                    tmplis.Add(enrow);
+
+                    return TokenManager.GenerateToken(tmplis);
+                    //  return TokenManager.GenerateToken("0");
                 }
 
             }

@@ -215,7 +215,7 @@ namespace POS_Server.Models
 
         public Nullable<System.DateTime> updateDate { get; set; }
         public Nullable<System.DateTime> openDate { get; set; }
-        public Nullable<System.DateTime> openCash { get; set; }
+        public Nullable<decimal> openCash { get; set; }
         public Nullable<int> openCashTransId { get; set; }
          
 

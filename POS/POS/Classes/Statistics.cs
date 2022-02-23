@@ -45,7 +45,7 @@ namespace POS.Classes
 
         public Nullable<System.DateTime> updateDate { get; set; }//close
         public Nullable<System.DateTime> openDate { get; set; }
-        public Nullable<System.DateTime> openCash { get; set; }
+        public Nullable<decimal> openCash { get; set; }
         public Nullable<int> openCashTransId { get; set; }
 
 
