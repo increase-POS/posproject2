@@ -501,9 +501,11 @@ namespace POS.View.sectionData
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    //chk empty name
-                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+                    if (shCompany.shippingCompanyId > 0)
+                    {
+                        #region validate
+                        //chk empty name
+                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
                     //chk empty mobile
                     SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
                     //validate email
@@ -527,7 +529,6 @@ namespace POS.View.sectionData
                             emailError = true;
 
                     #endregion
-
                     if ((!tb_name.Text.Equals("")) && (!tb_realDeliveryCost.Text.Equals("")) && (!tb_deliveryCost.Text.Equals("")) && (!cb_deliveryType.Text.Equals("")))
                     {
                         if (emailError)
@@ -559,6 +560,10 @@ namespace POS.View.sectionData
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -617,9 +622,11 @@ namespace POS.View.sectionData
 
                                 int b = await shCompaniesModel.delete(shCompany.shippingCompanyId, MainWindow.userID.Value, shCompany.canDelete);
 
-                                if (b>0)
+                                if (b > 0)
+                                {
+                                    shCompany.shippingCompanyId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
+                                }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }

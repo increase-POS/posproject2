@@ -649,8 +649,10 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    //validate values
-                    validateItemValues();
+                    if (item.itemId > 0)
+                    {
+                        //validate values
+                        validateItemValues();
 
                     // check if code available
                     Boolean codeAvailable = await checkCodeAvailabiltiy(item.code);
@@ -720,6 +722,10 @@ namespace POS.View
                         Txb_searchitems_TextChanged(null, null);
                     }
                     tb_code.Focus();
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -814,7 +820,10 @@ namespace POS.View
                             int res = await itemModel.deleteItem(item.itemId, userId, item.canDelete);
 
                             if (res > 0)
+                            {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                item.itemId = 0;
+                            }
                             else
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
@@ -1259,8 +1268,10 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(unitBasicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    //check mandatory values
-                    bool validate = validateUnitValues();
+                    if (itemUnit.itemUnitId > 0)
+                    {
+                        //check mandatory values
+                        bool validate = validateUnitValues();
                     if (validate)
                     {
                         if (tb_barcode.Text.Length == 12 || tb_barcode.Text.Length == 13)
@@ -1340,6 +1351,10 @@ namespace POS.View
                     tb_barcode.Focus();
                 }
                 else
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
+            }
+                else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1411,8 +1426,11 @@ namespace POS.View
                                 int userId = (int)MainWindow.userID;
                                 int res = await itemUnit.Delete(itemUnit.itemUnitId, userId, itemUnit.canDelete);
 
-                                if (res>0)
+                                if (res > 0)
+                                {
+                                    itemUnit.itemUnitId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                }
                                 else
                                     Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }

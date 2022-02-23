@@ -555,8 +555,11 @@ namespace POS.View
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "b", "Branch", branch.branchId);
+                    if (branch.branchId > 0)
+                    {
+
+                        #region validate
+                        bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "b", "Branch", branch.branchId);
 
                     //chk empty branch
                     SectionData.validateEmptyComboBox(cb_branch, p_errorBranch, tt_errorBranch, "trEmptyBranchToolTip");
@@ -620,6 +623,10 @@ namespace POS.View
                             SectionData.getPhone(branch.phone, cb_areaPhone, cb_areaPhoneLocal, tb_phone);
                         }
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -680,7 +687,10 @@ namespace POS.View
                                 int b = await branchModel.delete(branch.branchId, MainWindow.userID.Value, branch.canDelete);
 
                                 if (b>0)
+                                {
+                                    branch.branchId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }

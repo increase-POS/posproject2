@@ -280,7 +280,9 @@ namespace POS.View
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
                     //update
-                    property.name = tb_name.Text;
+                    if (property.propertyId > 0)
+                    {
+                        property.name = tb_name.Text;
                     property.createUserId = MainWindow.userID;
                     property.updateUserId = MainWindow.userID;
 
@@ -293,9 +295,13 @@ namespace POS.View
 
                     await RefreshPropertiesList();
                     Tb_search_TextChanged(null, null);
-                    //var poss = await propertyModel.getProperty();
-                    //dg_property.ItemsSource = poss;
-                 }
+                        //var poss = await propertyModel.getProperty();
+                        //dg_property.ItemsSource = poss;
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
+                }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
                 if (sender != null)
@@ -371,9 +377,11 @@ namespace POS.View
                             if ((!property.canDelete) && (property.isActive == 1)) popupContent = MainWindow.resourcemanager.GetString("trPopInActive");
                             int userId = (int)MainWindow.userID;
                             int res = await propertyModel.delete(property.propertyId, userId, property.canDelete);
-
-                            if (res>0)
+                            if (res > 0)
+                            {
+                                property.propertyId = 0;
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                            }
                             else
                                 Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
@@ -565,8 +573,11 @@ namespace POS.View
                         int userId = (int)MainWindow.userID;
                         int res = await propertiesItemsModel.delete(propertyItem.propertyItemId, userId, propertyItem.canDelete);
 
-                        if (res>0)
+                        if (res > 0)
+                        {
+                            propertyItem.propertyItemId = 0;
                             Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                        }
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
@@ -658,8 +669,10 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    //check mandatory values
-                    var bc = new BrushConverter();
+                    if (propertyItem.propertyItemId > 0)
+                    {
+                        //check mandatory values
+                        var bc = new BrushConverter();
                     if (tb_valueName.Text.Equals(""))
                     {
                         p_errorNameSub.Visibility = Visibility.Visible;
@@ -687,6 +700,10 @@ namespace POS.View
                         var propertiesItemss = await propertiesItemsModel.GetPropertyItems(property.propertyId);
                         dg_subProperty.ItemsSource = propertiesItemss;
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

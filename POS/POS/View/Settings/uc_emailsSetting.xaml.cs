@@ -413,7 +413,9 @@ namespace POS.View.Settings
 
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    if (isValid())
+                    if (sysEmail.emailId > 0)
+                    {
+                        if (isValid())
                     {
                         sysEmail.email = tb_email.Text;
                         //   sysEmail.password = pb_password.Password;
@@ -442,6 +444,10 @@ namespace POS.View.Settings
                         else
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -501,8 +507,10 @@ namespace POS.View.Settings
                                int b = await sysEmail.Delete(sysEmail.emailId, MainWindow.userID.Value, sysEmail.canDelete);
 
                                 if (!b.Equals(0))
+                                {
+                                    sysEmail.emailId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
+                                }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }

@@ -438,9 +438,12 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    //chk empty name
-                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
+
+                    if (agent.agentId > 0)
+                    {
+                        #region validate
+                        //chk empty name
+                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_mobile, p_errorMobile, tt_errorMobile, "trEmptyMobileToolTip");
                     //validate email
@@ -466,7 +469,6 @@ namespace POS.View
                     if (cb_payType.SelectedIndex != -1)
                         payType = cb_payType.SelectedValue.ToString();
                     #endregion
-
                     if ((!tb_name.Text.Equals("")) && (!tb_mobile.Text.Equals("")))
                     {
                         if (emailError)
@@ -514,6 +516,11 @@ namespace POS.View
                         }
 
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -611,9 +618,12 @@ namespace POS.View
 
                                 int b = await agentModel.delete(agent.agentId, (int)MainWindow.userID, agent.canDelete);
 
-                                if (b > 0) 
+                                if (b > 0)
+                                {
+                                    agent.agentId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                                else  
+                                }
+                                else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }

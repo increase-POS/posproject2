@@ -1336,18 +1336,16 @@ namespace POS.View
                 //update
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    validateEmptyEntries();
-
+                    if (item.itemId > 0)
+                    {
+                        validateEmptyEntries();
                     Boolean codeAvailable = await checkCodeAvailabiltiy(tb_code.Text);
-
                     decimal tax = 0;
                     if (tb_taxes.Text != "")
                         tax = decimal.Parse(tb_taxes.Text);
-
                     decimal price = 0;
                     if (tb_price.Text != "")
                         price = decimal.Parse(tb_price.Text);
-
                     if ((!tb_code.Text.Equals("")) && (!tb_name.Text.Equals("")) && (!cb_categorie.Text.Equals("")) &&
                         //(!tb_taxes.Text.Equals("")) && 
                         (!tb_price.Text.Equals("")) &&
@@ -1400,9 +1398,11 @@ namespace POS.View
                         await RefrishItems();
                         Txb_searchitems_TextChanged(null, null);
                     }
-
                     tb_code.Focus();
                     SectionData.clearValidate(tb_code, p_errorCode);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
 
                 }
                 else
@@ -1461,8 +1461,10 @@ namespace POS.View
                                 int b = await itemModel.deleteItem(item.itemId, MainWindow.userID.Value, item.canDelete);
 
                                 if (b > 0)
+                                {
+                                    item.itemId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
+                                }
                                 else if (b == -1)
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
                                 else  
