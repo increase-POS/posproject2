@@ -173,7 +173,7 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_count, MainWindow.resourcemanager.GetString("trCountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_unit, MainWindow.resourcemanager.GetString("trUnitHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_price, MainWindow.resourcemanager.GetString("trPriceHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cost, MainWindow.resourcemanager.GetString("trCostHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cost, MainWindow.resourcemanager.GetString("trCost"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_barcode, MainWindow.resourcemanager.GetString("trBarcodeHint"));
 
             btn_addBarcode.Content = MainWindow.resourcemanager.GetString("trAdd");

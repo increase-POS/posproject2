@@ -38,14 +38,16 @@ namespace POS.View.windows
         IEnumerable<CashTransfer> cashes;
         CashTransfer cashModel = new CashTransfer();
         bool isAdmin;
-        string status = "";
+        public string status = "";
         public int settingsPoSId = 0;
         public int userId;
         bool flag = false;
+
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
@@ -58,13 +60,9 @@ namespace POS.View.windows
                 #region translate
 
                 if (winLogIn.lang.Equals("en"))
-                {
                      grid_changePassword.FlowDirection = FlowDirection.LeftToRight;
-                }
                 else
-                {
                      grid_changePassword.FlowDirection = FlowDirection.RightToLeft;
-                }
 
                 translate();
                 #endregion

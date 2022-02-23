@@ -1179,6 +1179,11 @@ namespace POS
                 posLogIn = await posLogIn.getById(posID.Value);
                 mainWindow.txt_cashValue.Text = SectionData.DecTostring(posLogIn.balance);
                 mainWindow.txt_cashSympol.Text = MainWindow.Currency;
+
+                if (posLogIn.boxState == "o")
+                    mainWindow.txt_cashTitle.Foreground = Application.Current.Resources["MainColor"] as SolidColorBrush;
+                else
+                    mainWindow.txt_cashTitle.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
             }
             catch (Exception ex)
             {
@@ -2081,6 +2086,11 @@ namespace POS
             Window.GetWindow(this).Opacity = 0.2;
             wd_applicationStop w = new wd_applicationStop();
             w.ShowDialog();
+            if(w.status == "o")
+                txt_cashTitle.Foreground = Application.Current.Resources["MainColor"] as SolidColorBrush;
+            else
+                txt_cashTitle.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+
             Window.GetWindow(this).Opacity = 1;
 
             if (sender != null)
