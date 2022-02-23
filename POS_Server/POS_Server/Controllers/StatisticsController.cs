@@ -7722,13 +7722,39 @@ namespace POS_Server.Controllers
                             row.OneItemPriceNoTax = row.itemUnitPrice - row.OneItemOfferVal;
                             row.OneitemUnitTax= calc.percentValue(row.OneItemPriceNoTax, row.ItemTaxes);//قيمة الضريبة للعنصر الواحد
                             row.OneItemPricewithTax = row.OneItemPriceNoTax + row.OneitemUnitTax;
+                          
                             row.itemUnitTaxwithQTY = row.OneitemUnitTax * row.ITquantity;
-                            row.subTotalNotax = row.OneItemPriceNoTax * row.ITquantity;
-                            row.subTotalTax = row.OneItemPricewithTax * row.ITquantity;
+                            row.subTotalNotax = row.OneItemPriceNoTax * row.ITquantity;//قبل الضريبة
+                           // row.subTotalTax = row.OneItemPricewithTax * row.ITquantity;//
+                            row.subTotalTax = row.ITprice * row.ITquantity;//
+                            row.itemsRowsCount = invListm.Where(x => x.invoiceId == row.invoiceId).ToList().Count();
+                           
+                           
+                            
                             //item tax
 
                         }
+                  
 
+                    
+
+                        //List<ItemTransferInvoiceTax> listtaxgroup = new List<ItemTransferInvoiceTax>();
+                        //listtaxgroup = invListm.GroupBy(g => g.invoiceId).Select(g => new ItemTransferInvoiceTax
+                        //{
+                        //    invoiceId=g.FirstOrDefault().invoiceId,
+                        //    invNumber= g.FirstOrDefault().invNumber,
+                        //    agentId = g.FirstOrDefault().agentId,
+                        //    posId = g.FirstOrDefault().posId,
+                        //    invType = g.FirstOrDefault().invType,
+                        //    branchName = g.FirstOrDefault().branchName,
+                        //    updateDate = g.FirstOrDefault().updateDate,
+                        //    branchId = g.FirstOrDefault().branchId,
+                        //    posName = g.FirstOrDefault().posName,
+                        //    posCode = g.FirstOrDefault().posCode,
+                        //    totalNet= g.FirstOrDefault().totalNet,
+
+
+                        //}).ToList();
                         return TokenManager.GenerateToken(invListm);
 
                     }
