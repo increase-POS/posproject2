@@ -461,7 +461,7 @@ namespace POS_Server.Controllers
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= (( I.invType == "pd" || I.invType == "pbd") ? dt:dt1)) ? 0 : 1,
+                                            archived = ((DateTime)I.updateDate >= ((I.invType == "pd" || I.invType == "pbd") ? dt : dt1)) ? 0 : 1,
                                             //username
 
                                             //  I.invoiceId,
@@ -1071,7 +1071,7 @@ namespace POS_Server.Controllers
 
                                             //  I.invoiceId,
                                             //    JBB.name
-                                            archived = ((DateTime)I.updateDate >= (( I.invType == "pbd" || I.invType == "pd" ) ? dt:dt1)) ?0:1,
+                                            archived = ((DateTime)I.updateDate >= ((I.invType == "pbd" || I.invType == "pd") ? dt : dt1)) ? 0 : 1,
                                         }).ToList();
 
                         // archived = ((DateTime)I.updateDate >= dt) ?0:1,
@@ -1082,24 +1082,24 @@ namespace POS_Server.Controllers
                     }
 
                 }
-                catch 
+                catch
                 {
                     return TokenManager.GenerateToken("0");
 
                 }
 
             }
-       
+
         }
 
 
 
-       
+
 
 
         // المبيعات
         #region sales
-     
+
 
         // فواتير المبيعات مع العناصر
         [HttpPost]
@@ -1312,9 +1312,9 @@ namespace POS_Server.Controllers
                 try
                 {
                     // archived = ((DateTime)I.updateDate >= dt) ?0:1,
-                     DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
+                    DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-2).ToShortDateString());
                     DateTime dt1 = Convert.ToDateTime(DateTime.Today.AddDays(-1).ToShortDateString());
-                   // archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd") ? dt : dt1)) ? 0 : 1,
+                    // archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd") ? dt : dt1)) ? 0 : 1,
                     List<int> brIds = AllowedBranchsId(mainBranchId, userId);
                     using (incposdbEntities entity = new incposdbEntities())
                     {
@@ -1336,7 +1336,7 @@ namespace POS_Server.Controllers
                                         from JIMM in JIM.DefaultIfEmpty()
                                         from JAA in JA.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
-                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb"|| I.invType == "sd" || I.invType == "sbd")
+                                        where (brIds.Contains(JBCC.branchId)) && (I.invType == "s" || I.invType == "sb" || I.invType == "sd" || I.invType == "sbd")
 
                                         select new
                                         {
@@ -1403,7 +1403,7 @@ namespace POS_Server.Controllers
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd")? dt:dt1)) ? 0 : 1,
+                                            archived = ((DateTime)I.updateDate >= ((I.invType == "sd" || I.invType == "sbd") ? dt : dt1)) ? 0 : 1,
 
 
 
@@ -3787,7 +3787,7 @@ namespace POS_Server.Controllers
                                         where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
 
-                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb" )// exw
+                                        && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
 
                                         select new
                                         {
@@ -3858,18 +3858,18 @@ namespace POS_Server.Controllers
                                             //posCode = JPP.code,
                                             //agentCode = JAA.code,
                                             //   agentName =  JAA.name,
-                                            agentName = ((I.agentId==null|| I.agentId == 0) && (I.invType == "s" || I.invType == "sb"|| I.invType == "p" || I.invType == "pb" )) ?"unknown" : JAA.name,
+                                            agentName = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb" || I.invType == "p" || I.invType == "pb")) ? "unknown" : JAA.name,
 
 
                                             //   agentType = JAA.type,
                                             //agentType = ((JAA.name == null || JAA.name == "") && (I.invType == "s" || I.invType == "sb"))
                                             //? "c" : JAA.type,
-                                            agentType = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb" ))? "c" :
-                                                                           ((I.agentId == null || I.agentId == 0) && (I.invType == "p" || I.invType == "pb"))? "v" : JAA.type ,
-                                         
-                                              
-                                            agentId = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb" || I.invType == "p" || I.invType == "pb"))  ? 0 : I.agentId,
-                                           
+                                            agentType = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb")) ? "c" :
+                                                                           ((I.agentId == null || I.agentId == 0) && (I.invType == "p" || I.invType == "pb")) ? "v" : JAA.type,
+
+
+                                            agentId = ((I.agentId == null || I.agentId == 0) && (I.invType == "s" || I.invType == "sb" || I.invType == "p" || I.invType == "pb")) ? 0 : I.agentId,
+
                                             //cuserName = JUU.name,
                                             //cuserLast = JUU.lastname,
                                             cUserAccName = JUU.username,
@@ -4122,7 +4122,7 @@ namespace POS_Server.Controllers
                                         where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
 
 
-                                        && ( I.invType == "is")// exw
+                                        && (I.invType == "is")// exw
 
                                         select new
                                         {
@@ -4131,7 +4131,7 @@ namespace POS_Server.Controllers
 
                                             itemName = ITEM.name,
                                             unitName = UNIT.name,
-                                       
+
                                             IT.itemUnitId,
 
                                             IU.itemId,
@@ -4143,33 +4143,33 @@ namespace POS_Server.Controllers
                                             I.invNumber,
                                             I.invDate,
                                             I.invType,
-                                        
+
                                             discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0))
                                                                          + ((I.manualDiscountType == "1" || I.discountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * I.total) : 0))
                                                                           ,
-                                          
+
                                             I.isApproved,
 
                                             //
                                             I.branchCreatorId,
                                             branchCreatorName = JBCC.name,
                                             //
-                                            branchName = JBB.name ,
-                                            branchId =  I.branchId,
-                                   
+                                            branchName = JBB.name,
+                                            branchId = I.branchId,
+
 
                                             branchType = JBB.type,
-                                         
-                                            agentName = (I.agentId == null || I.agentId ==0 )? "unknown" : JAA.name,
+
+                                            agentName = (I.agentId == null || I.agentId == 0) ? "unknown" : JAA.name,
 
 
-                                         
+
                                             agentType = JAA.type,
-                                        
-                                            agentId = I.agentId==null?0: I.agentId,
-                                          
+
+                                            agentId = I.agentId == null ? 0 : I.agentId,
+
                                             cUserAccName = JUU.username,
-                                        
+
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
 
@@ -4194,7 +4194,7 @@ namespace POS_Server.Controllers
 
             }
 
-          
+
         }
 
         // حركة الاصناف الداخلية -بين الفروع والمخازن
@@ -6844,7 +6844,7 @@ namespace POS_Server.Controllers
                                                             join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
                                                             join u in entity.users on C.userId equals u.userId into ju
                                                             join uc in entity.users on C.createUserId equals uc.userId into juc
-                                                          join uu in entity.users on C.createUserId equals uu.userId into jup
+                                                            join uu in entity.users on C.createUserId equals uu.userId into jup
 
                                                             join cr in entity.cards on C.cardId equals cr.cardId into jcr
                                                             join bo in entity.bondes on C.bondId equals bo.bondId into jbo
@@ -6902,19 +6902,19 @@ namespace POS_Server.Controllers
                                                                 bondIsRecieved = jbbo.isRecieved,
                                                                 shippingCompanyId = C.shippingCompanyId,
                                                                 shippingCompanyName = jssh.name,
-                                                                branchCreatorId= jpcc.branchId,
-                                                                branchCreatorname= jpcc.branches.name,
-                                                                branchId= jpp.branchId,
+                                                                branchCreatorId = jpcc.branchId,
+                                                                branchCreatorname = jpcc.branches.name,
+                                                                branchId = jpp.branchId,
                                                                 branchName = jpp.branches.name,
                                                                 branch2Id = 0,
                                                                 branch2Name = "",
-                                                               updateUserAcc= jupdateusr.username,
+                                                                updateUserAcc = jupdateusr.username,
 
                                                             }).Where(C => ((type == "all") ? true : C.transType == type) && (C.processType != "balance")
                 && ((side == "all") ? true : C.side == side)).ToList();
 
                         BranchesController branchCntrlr = new BranchesController();
-                      
+
 
                         if (cachlist.Count > 0 && side == "p")
                         {
@@ -6930,7 +6930,7 @@ namespace POS_Server.Controllers
                                 cashtItem.pos2Name = tempitem.posName;
                                 cashtItem.isConfirm2 = tempitem.isConfirm;
 
-                                branchmodel= branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
+                                branchmodel = branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
                                 cashtItem.branch2Id = branchmodel.branchId;
                                 cashtItem.branch2Name = branchmodel.name;
 
@@ -6951,7 +6951,7 @@ namespace POS_Server.Controllers
 
             }
 
-    
+
         }
 
 
@@ -7065,7 +7065,7 @@ namespace POS_Server.Controllers
                                             //*createUserJob = jucc.job,
                                             cardName = jcrd.name,
                                             //*bondDeserveDate = jbbo.deserveDate,
-                                            bondIsRecieved = jbbo.isRecieved ,
+                                            bondIsRecieved = jbbo.isRecieved,
 
                                             //*agentCompany = jaa.company,
                                             shippingCompanyId = C.shippingCompanyId,
@@ -7091,11 +7091,11 @@ namespace POS_Server.Controllers
                                             //invAgentId = jinvv.agentId,
                                             //invAgentName = jinvv.agents.name,
 
-                                            invAgentId = C.invId==null? C.agentId: jinvv.agentId,
+                                            invAgentId = C.invId == null ? C.agentId : jinvv.agentId,
                                             invAgentName = C.invId == null ? jaa.name : jinvv.agents.name,
 
-                                           // invShippingCompanyName = jinvv.shippingCompanies.name,
-                                         
+                                            // invShippingCompanyName = jinvv.shippingCompanies.name,
+
 
                                         }).ToList();
                         /*
@@ -7448,7 +7448,7 @@ namespace POS_Server.Controllers
                                             posName = p.name,
                                             posIsActive = p.isActive,
                                             posCode = p.code,
-                                            balance=   p.balance==null?0: p.balance,
+                                            balance = p.balance == null ? 0 : p.balance,
                                             branchName = b.name,
                                             b.branchId,
                                             branchType = b.type,
@@ -7579,137 +7579,137 @@ namespace POS_Server.Controllers
                     {
 
                         List<ItemTransferInvoiceTax> invListm = (from IT in entity.itemsTransfer
-                                                                     from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
+                                                                 from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
 
-                                                                     from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-                                                                         //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-                                                                     join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-                                                                     join ITEM in entity.items on IU.itemId equals ITEM.itemId
-                                                                     join UNIT in entity.units on IU.unitId equals UNIT.unitId
-                                                                     //    join B in entity.branches on I.branchId equals B.branchId into JB
-                                                                     join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-                                                                     join A in entity.agents on I.agentId equals A.agentId into JA
-                                                                     // join U in entity.users on I.createUserId equals U.userId into JU
-                                                                     join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-                                                                     // join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
-                                                                     join P in entity.pos on I.posId equals P.posId into JP
+                                                                 from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
+                                                                     //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
+                                                                 join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
+                                                                 join ITEM in entity.items on IU.itemId equals ITEM.itemId
+                                                                 join UNIT in entity.units on IU.unitId equals UNIT.unitId
+                                                                 //    join B in entity.branches on I.branchId equals B.branchId into JB
+                                                                 join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
+                                                                 join A in entity.agents on I.agentId equals A.agentId into JA
+                                                                 // join U in entity.users on I.createUserId equals U.userId into JU
+                                                                 join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
+                                                                 // join IM in entity.invoices on I.invoiceMainId equals IM.invoiceId into JIM
+                                                                 join P in entity.pos on I.posId equals P.posId into JP
                                                                  join JOF in entity.offers on IT.offerId equals JOF.offerId into JO
                                                                  // from JBB in JB
                                                                  from JPP in JP.DefaultIfEmpty()
-                                                                         // from JUU in JU.DefaultIfEmpty()
-                                                                     from JUPUS in JUPUSR.DefaultIfEmpty()
-                                                                         // from JIMM in JIM.DefaultIfEmpty()
-                                                                     from JAA in JA.DefaultIfEmpty()
-                                                                     from JBCC in JBC.DefaultIfEmpty()
+                                                                     // from JUU in JU.DefaultIfEmpty()
+                                                                 from JUPUS in JUPUSR.DefaultIfEmpty()
+                                                                     // from JIMM in JIM.DefaultIfEmpty()
+                                                                 from JAA in JA.DefaultIfEmpty()
+                                                                 from JBCC in JBC.DefaultIfEmpty()
                                                                  from O in JO.DefaultIfEmpty()
                                                                  where (brIds.Contains(JBCC.branchId)) && (I.invType == "s")
 
-                                                                     select new ItemTransferInvoiceTax
-                                                                     {
+                                                                 select new ItemTransferInvoiceTax
+                                                                 {
 
-                                                                         ITitemName = ITEM.name,
-                                                                         ITunitName = UNIT.name,
-                                                                         ITitemsTransId = IT.itemsTransId,
-                                                                         ITitemUnitId = IT.itemUnitId,
+                                                                     ITitemName = ITEM.name,
+                                                                     ITunitName = UNIT.name,
+                                                                     ITitemsTransId = IT.itemsTransId,
+                                                                     ITitemUnitId = IT.itemUnitId,
 
-                                                                         ITitemId = IU.itemId,
-                                                                         ITunitId = IU.unitId,
-                                                                         ITquantity = IT.quantity,
-                                                                         //avgPurchasePrice = ITEM.avgPurchasePrice,
-                                                                         // ITcreateDate = IT.createDate,
-                                                                         //ITupdateDate = IT.updateDate,
-                                                                         //  ITcreateUserId = IT.createUserId,
-                                                                         //ITupdateUserId = IT.updateUserId,
-                                                                         // ITnotes = IT.notes,
-                                                                         ITprice = IT.price,//no tax
-                                                                         ITbarcode = IU.barcode,
-                                                                         //  ITCreateuserName = ITCUSER.name,
-                                                                         // ITCreateuserLName = ITCUSER.lastname,
-                                                                         //  ITCreateuserAccName = ITCUSER.username,
+                                                                     ITitemId = IU.itemId,
+                                                                     ITunitId = IU.unitId,
+                                                                     ITquantity = IT.quantity,
+                                                                     //avgPurchasePrice = ITEM.avgPurchasePrice,
+                                                                     // ITcreateDate = IT.createDate,
+                                                                     //ITupdateDate = IT.updateDate,
+                                                                     //  ITcreateUserId = IT.createUserId,
+                                                                     //ITupdateUserId = IT.updateUserId,
+                                                                     // ITnotes = IT.notes,
+                                                                     ITprice = IT.price,//no tax
+                                                                     ITbarcode = IU.barcode,
+                                                                     //  ITCreateuserName = ITCUSER.name,
+                                                                     // ITCreateuserLName = ITCUSER.lastname,
+                                                                     //  ITCreateuserAccName = ITCUSER.username,
 
 
-                                                                         invoiceId = I.invoiceId,
-                                                                         invNumber = I.invNumber,
-                                                                         agentId = I.agentId,
-                                                                         posId = I.posId,
-                                                                         invType = I.invType,
-                                                                         total = I.total - I.shippingCost,
-                                                                        branchName=I.pos.branches.name,
-                                                                     
-                                                                       //  I.updateUserId,
-                                                                         //  I.paid,
-                                                                         // I.deserved,
-                                                                         //I.deservedDate,
-                                                                         // I.invDate,
-                                                                         //  I.invoiceMainId,
-                                                                         // I.invCase,
-                                                                         //  I.invTime,
-                                                                         // I.notes,
-                                                                         //  I.vendorInvNum,
-                                                                         // I.vendorInvDate,
-                                                                         // I.createUserId,
-                                                                         updateDate = I.updateDate,
-                                                                         updateUserId = I.updateUserId,
-                                                                         branchId = I.branchId,
-                                                                         //calc coupon + manual discount
-                                                                         discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * (I.total - I.shippingCost)) : 0))
-                                                                         + ((I.manualDiscountType == "1" || I.manualDiscountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * (I.total - I.shippingCost)) : 0))
-                                                                          ,
-                                                                         discountType = I.discountType,
-                                                                         tax = I.tax,
-                                                                         //  I.name,
-                                                                         // I.isApproved,
+                                                                     invoiceId = I.invoiceId,
+                                                                     invNumber = I.invNumber,
+                                                                     agentId = I.agentId,
+                                                                     posId = I.posId,
+                                                                     invType = I.invType,
+                                                                     total = I.total - I.shippingCost,
+                                                                     branchName = I.pos.branches.name,
 
-                                                                         //
-                                                                         //branchCreatorId = I.branchCreatorId,
-                                                                         //branchCreatorName = JBCC.name,
-                                                                         //
-                                                                         //  branchName = JBB.name,
+                                                                     //  I.updateUserId,
+                                                                     //  I.paid,
+                                                                     // I.deserved,
+                                                                     //I.deservedDate,
+                                                                     // I.invDate,
+                                                                     //  I.invoiceMainId,
+                                                                     // I.invCase,
+                                                                     //  I.invTime,
+                                                                     // I.notes,
+                                                                     //  I.vendorInvNum,
+                                                                     // I.vendorInvDate,
+                                                                     // I.createUserId,
+                                                                     updateDate = I.updateDate,
+                                                                     updateUserId = I.updateUserId,
+                                                                     branchId = I.branchId,
+                                                                     //calc coupon + manual discount
+                                                                     discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * (I.total - I.shippingCost)) : 0))
+                                                                     + ((I.manualDiscountType == "1" || I.manualDiscountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * (I.total - I.shippingCost)) : 0))
+                                                                      ,
+                                                                     discountType = I.discountType,
+                                                                     tax = I.tax,
+                                                                     //  I.name,
+                                                                     // I.isApproved,
 
-                                                                         //  branchType = JBB.type,
-                                                                         posName = JPP.name,
-                                                                         posCode = JPP.code,
-                                                                         agentName = JAA.name,
-                                                                         agentCode = JAA.code,
-                                                                         agentType = JAA.type,
-                                                                         //  cuserName = JUU.name,
-                                                                         //  cuserLast = JUU.lastname,
-                                                                         // cUserAccName = JUU.username,
-                                                                         uuserName = JUPUS.name,
-                                                                         uuserLast = JUPUS.lastname,
-                                                                         uUserAccName = JUPUS.username,
-                                                                         agentCompany = JAA.company,
-                                                                      //   subTotal = ((IT.price - (ITEM.taxes * IU.price / 100)) * IT.quantity),
-                                                                         //   subTotalNet = ((IT.price - (ITEM.taxes * IU.price / 100)) * IT.quantity),
-                                                                       
-                                                                       //  itemUnitTax = (ITEM.taxes * IU.price / 100),//1
-                                                                       //  itemTaxValue= (ITEM.taxes * IU.price / 100) * IT.quantity,//n
-                                                                        
-                                                                         //subTotalTax = IT.price * IT.quantity,
-                                                                         // subTotalNotax = (IT.price * IT.quantity)- (ITEM.taxes * IU.price / 100) * IT.quantity,
+                                                                     //
+                                                                     //branchCreatorId = I.branchCreatorId,
+                                                                     //branchCreatorName = JBCC.name,
+                                                                     //
+                                                                     //  branchName = JBB.name,
 
-                                                                         totalNet= I.totalNet,//calc in clint
+                                                                     //  branchType = JBB.type,
+                                                                     posName = JPP.name,
+                                                                     posCode = JPP.code,
+                                                                     agentName = JAA.name,
+                                                                     agentCode = JAA.code,
+                                                                     agentType = JAA.type,
+                                                                     //  cuserName = JUU.name,
+                                                                     //  cuserLast = JUU.lastname,
+                                                                     // cUserAccName = JUU.username,
+                                                                     uuserName = JUPUS.name,
+                                                                     uuserLast = JUPUS.lastname,
+                                                                     uUserAccName = JUPUS.username,
+                                                                     agentCompany = JAA.company,
+                                                                     //   subTotal = ((IT.price - (ITEM.taxes * IU.price / 100)) * IT.quantity),
+                                                                     //   subTotalNet = ((IT.price - (ITEM.taxes * IU.price / 100)) * IT.quantity),
 
-                                                                        OneItemOfferVal=IT.offerId==null?0:( (IT.offerType == 1 || IT.offerType == null) ? (IT.offerValue ) : (IT.offerType == 2 ? ((IT.offerValue / 100) * (IT.itemUnitPrice)) : 0)),
+                                                                     //  itemUnitTax = (ITEM.taxes * IU.price / 100),//1
+                                                                     //  itemTaxValue= (ITEM.taxes * IU.price / 100) * IT.quantity,//n
 
-                                                                       //  offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
+                                                                     //subTotalTax = IT.price * IT.quantity,
+                                                                     // subTotalNotax = (IT.price * IT.quantity)- (ITEM.taxes * IU.price / 100) * IT.quantity,
 
-                                                                        itemUnitPrice= IT.itemUnitPrice,
-                                                                         ItemTaxes= IT.itemTax,
-                                                                         //shippingCost = I.shippingCost,
-                                                                         //realShippingCost = I.realShippingCost,
-                                                                         //shippingProfit = I.shippingCost - I.realShippingCost,
-                                                                         //totalNetNoShip = (decimal)I.totalNet - I.shippingCost,
-                                                                         //totalNoShip = (decimal)I.total - I.shippingCost,
-                                                                         //(ITEM.taxes *IU.price/100) = tax value
-                                                                         //username
+                                                                     totalNet = I.totalNet,//calc in clint
 
-                                                                         //  I.invoiceId,
-                                                                         //    JBB.name
-                                                                     }).ToList();
+                                                                     OneItemOfferVal = IT.offerId == null ? 0 : ((IT.offerType == 1 || IT.offerType == null) ? (IT.offerValue) : (IT.offerType == 2 ? ((IT.offerValue / 100) * (IT.itemUnitPrice)) : 0)),
+
+                                                                     //  offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
+
+                                                                     itemUnitPrice = IT.itemUnitPrice,
+                                                                     ItemTaxes = IT.itemTax,
+                                                                     //shippingCost = I.shippingCost,
+                                                                     //realShippingCost = I.realShippingCost,
+                                                                     //shippingProfit = I.shippingCost - I.realShippingCost,
+                                                                     //totalNetNoShip = (decimal)I.totalNet - I.shippingCost,
+                                                                     //totalNoShip = (decimal)I.total - I.shippingCost,
+                                                                     //(ITEM.taxes *IU.price/100) = tax value
+                                                                     //username
+
+                                                                     //  I.invoiceId,
+                                                                     //    JBB.name
+                                                                 }).ToList();
 
                         Calculate calc = new Calculate();
-                        
+
                         foreach (ItemTransferInvoiceTax row in invListm)
                         {
                             // invoice tax
@@ -7720,23 +7720,23 @@ namespace POS_Server.Controllers
 
                             //item tax
                             row.OneItemPriceNoTax = row.itemUnitPrice - row.OneItemOfferVal;
-                            row.OneitemUnitTax= calc.percentValue(row.OneItemPriceNoTax, row.ItemTaxes);//قيمة الضريبة للعنصر الواحد
+                            row.OneitemUnitTax = calc.percentValue(row.OneItemPriceNoTax, row.ItemTaxes);//قيمة الضريبة للعنصر الواحد
                             row.OneItemPricewithTax = row.OneItemPriceNoTax + row.OneitemUnitTax;
-                          
+
                             row.itemUnitTaxwithQTY = row.OneitemUnitTax * row.ITquantity;
                             row.subTotalNotax = row.OneItemPriceNoTax * row.ITquantity;//قبل الضريبة
-                           // row.subTotalTax = row.OneItemPricewithTax * row.ITquantity;//
+                                                                                       // row.subTotalTax = row.OneItemPricewithTax * row.ITquantity;//
                             row.subTotalTax = row.ITprice * row.ITquantity;//
                             row.itemsRowsCount = invListm.Where(x => x.invoiceId == row.invoiceId).ToList().Count();
-                           
-                           
-                            
+
+
+
                             //item tax
 
                         }
-                  
 
-                    
+
+
 
                         //List<ItemTransferInvoiceTax> listtaxgroup = new List<ItemTransferInvoiceTax>();
                         //listtaxgroup = invListm.GroupBy(g => g.invoiceId).Select(g => new ItemTransferInvoiceTax
@@ -7760,16 +7760,116 @@ namespace POS_Server.Controllers
                     }
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
 
                     return TokenManager.GenerateToken(ex.ToString());
-                   // return TokenManager.GenerateToken("0");
+                    // return TokenManager.GenerateToken("0");
                 }
 
             }
 
         }
+
+
+
+        //عمليات الفتح والاغلاق للصندوق
+        [HttpPost]
+        [Route("GetPosCashOpenClose")]
+        public string GetPosCashOpenClose(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+
+                int mainBranchId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        List<POSOpenCloseModel> cachlist = (from C in entity.cashTransfer
+
+                                                            join p in entity.pos on C.posId equals p.posId into jp 
+
+                                                            from jpp in jp.DefaultIfEmpty()
+                                                            select new POSOpenCloseModel()
+                                                            {
+                                                                cashTransId = C.cashTransId,
+                                                                transType = C.transType,
+                                                                posId = C.posId,
+
+                                                                transNum = C.transNum,
+                                                               
+                                                                cash = C.cash,
+                                                             
+                                                                notes = C.notes,
+                                                             
+                                                                isConfirm = C.isConfirm,
+                                                                cashTransIdSource = C.cashTransIdSource,
+                                                                side = C.side,
+
+                                                                posName = jpp.name,
+                                                           
+                                                                processType = C.processType,
+
+                                                                branchId = jpp.branchId,
+                                                                branchName = jpp.branches.name,
+
+                                                            }).Where(C => (C.transType == "c" || C.transType == "o") &&  (brIds.Contains((int)C.branchId))).ToList();
+
+                     
+                        List<POSOpenCloseModel> closelist = cachlist.Where(C => C.transType == "c").ToList();
+                        foreach (POSOpenCloseModel row in closelist)
+                        {
+                            POSOpenCloseModel openrow = new POSOpenCloseModel();
+                            openrow= cachlist.Where(C => C.posId==row.posId && C.transNum == row.transNum && C.transType == "o"  ).FirstOrDefault();
+                            row.openDate = openrow.updateDate;
+                            row.openCash = openrow.openCash;
+                            row.openCashTransId = openrow.cashTransId;
+
+                            //  row.openDate=
+                        }
+
+
+
+                        //   branchmodel = branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
+
+                        return TokenManager.GenerateToken(cachlist);
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+
+            }
+
+
+        }
+
 
         #endregion
 
@@ -7921,7 +8021,7 @@ namespace POS_Server.Controllers
                                             "unknown" : JAA.company,
 
                                             archived = ((DateTime)I.updateDate >=
-                                            ((I.invType == "sd" || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "qd")?dt:dt1)) ? 0 : 1,
+                                            ((I.invType == "sd" || I.invType == "sbd" || I.invType == "sd" || I.invType == "ord" || I.invType == "qd") ? dt : dt1)) ? 0 : 1,
                                             //username
 
                                             //  I.invoiceId,
@@ -8232,7 +8332,7 @@ namespace POS_Server.Controllers
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
 
-                                            archived = ((DateTime)I.updateDate >= (( I.invType == "pd" || I.invType == "pbd" || I.invType == "pod" )?dt:dt1) ? 0 : 1),
+                                            archived = ((DateTime)I.updateDate >= ((I.invType == "pd" || I.invType == "pbd" || I.invType == "pod") ? dt : dt1) ? 0 : 1),
                                             //username
 
                                             //  I.invoiceId,
@@ -8520,21 +8620,21 @@ namespace POS_Server.Controllers
                                             uUserAccName = JUPUS.username,
                                             agentCompany = ((JAA.company == null || JAA.company == "") && (I.invType == "s" || I.invType == "sb")) ?
                                             "unknown" : JAA.company,
-                                            processType = entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").ToList().Count() >0 ? 
-                                            entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").ToList().Count()>1 
-                                            ?"multiple" :
-                                            entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").FirstOrDefault().processType =="card"?
-                                             entity.cards.Where(C => C.cardId == entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").FirstOrDefault().cardId ).FirstOrDefault().name
+                                            processType = entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").ToList().Count() > 0 ?
+                                            entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").ToList().Count() > 1
+                                            ? "multiple" :
+                                            entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").FirstOrDefault().processType == "card" ?
+                                             entity.cards.Where(C => C.cardId == entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").FirstOrDefault().cardId).FirstOrDefault().name
                                              : entity.cashTransfer.Where(x => x.invId == I.invoiceId && x.processType != "inv").FirstOrDefault().processType
                                              : "balance",
-                                     
+
 
                                             //username
 
                                             //  I.invoiceId,
                                             //    JBB.name
                                         }).ToList();
- 
+
 
 
                         return TokenManager.GenerateToken(invListm);
@@ -9361,7 +9461,7 @@ namespace POS_Server.Controllers
                                                                          ITitemId = IU.itemId,
                                                                          ITunitId = IU.unitId,
                                                                          ITquantity = IT.quantity,
-                                                                         avgPurchasePrice= ITEM. avgPurchasePrice,
+                                                                         avgPurchasePrice = ITEM.avgPurchasePrice,
                                                                          // ITcreateDate = IT.createDate,
                                                                          ITupdateDate = IT.updateDate,
                                                                          //  ITcreateUserId = IT.createUserId,
@@ -9379,12 +9479,12 @@ namespace POS_Server.Controllers
                                                                          agentId = I.agentId,
                                                                          posId = I.posId,
                                                                          invType = I.invType,
-                                                                         total = I.total-I.shippingCost,
+                                                                         total = I.total - I.shippingCost,
                                                                          totalNet = I.totalNet,
                                                                          //  I.paid,
                                                                          // I.deserved,
                                                                          //I.deservedDate,
-                                                                        // I.invDate,
+                                                                         // I.invDate,
                                                                          //  I.invoiceMainId,
                                                                          // I.invCase,
                                                                          //  I.invTime,
@@ -9396,8 +9496,8 @@ namespace POS_Server.Controllers
                                                                          updateUserId = I.updateUserId,
                                                                          branchId = I.branchId,
                                                                          //calc coupon + manual discount
-                                                                         discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * (I.total-I.shippingCost)) : 0))
-                                                                         +( (I.manualDiscountType == "1" || I.manualDiscountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * (I.total- I.shippingCost)) : 0))
+                                                                         discountValue = ((I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * (I.total - I.shippingCost)) : 0))
+                                                                         + ((I.manualDiscountType == "1" || I.manualDiscountType == null) ? I.manualDiscountValue : (I.manualDiscountType == "2" ? ((I.manualDiscountValue / 100) * (I.total - I.shippingCost)) : 0))
                                                                           ,
                                                                          discountType = I.discountType,
                                                                          tax = I.tax,
@@ -9424,10 +9524,10 @@ namespace POS_Server.Controllers
                                                                          uUserAccName = JUPUS.username,
                                                                          agentCompany = JAA.company,
                                                                          subTotal = ((IT.price - (ITEM.taxes * IU.price / 100)) * IT.quantity),
-                                                                         shippingCost= I.shippingCost,
-                                                                         realShippingCost= I.realShippingCost,
-                                                                         shippingProfit= I.shippingCost- I.realShippingCost,
-                                                                         totalNetNoShip=(decimal)I.totalNet - I.shippingCost,
+                                                                         shippingCost = I.shippingCost,
+                                                                         realShippingCost = I.realShippingCost,
+                                                                         shippingProfit = I.shippingCost - I.realShippingCost,
+                                                                         totalNetNoShip = (decimal)I.totalNet - I.shippingCost,
                                                                          totalNoShip = (decimal)I.total - I.shippingCost,
                                                                          //(ITEM.taxes *IU.price/100) = tax value
                                                                          //username
@@ -9441,7 +9541,7 @@ namespace POS_Server.Controllers
                         {
                             decimal unitpurchasePrice = 0;
                             //   unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
-                            unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId,row.avgPurchasePrice);
+                            unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice);
                             row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
 
                             if (row.discountValue > 0)
@@ -9478,27 +9578,27 @@ namespace POS_Server.Controllers
 
             }
 
-           
+
         }
-        public decimal AvgPurPrice(int itemUnitId, int itemId,decimal? smallavgprice)
+        public decimal AvgPurPrice(int itemUnitId, int itemId, decimal? smallavgprice)
         {
-          
+
 
             decimal avgPrice = 0;
-            
+
             using (incposdbEntities entity = new incposdbEntities())
             {
                 var itemUnits = (from i in entity.itemsUnits where (i.itemId == itemId) select (i.itemUnitId)).ToList();
 
-           
+
 
                 var smallestUnitId = (from iu in entity.itemsUnits
                                       where (itemUnits.Contains((int)iu.itemUnitId) && iu.unitId == iu.subUnitId)
                                       select iu.itemUnitId).FirstOrDefault();
 
-              
+
                 if (itemUnitId == smallestUnitId || smallestUnitId == null || smallestUnitId == 0)
-                    return ( decimal) smallavgprice;
+                    return (decimal)smallavgprice;
                 else
                 {
                     avgPrice = ((decimal)smallavgprice) * getUpperUnitValue(smallestUnitId, itemUnitId);

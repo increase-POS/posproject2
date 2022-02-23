@@ -17,7 +17,40 @@ using System.Windows;
 namespace POS.Classes
 {
 
+    public class POSOpenCloseModel
+    {
+        public int cashTransId { get; set; }
+        public string transType { get; set; }
+        public Nullable<int> posId { get; set; }
 
+        public string transNum { get; set; }
+
+        public Nullable<decimal> cash { get; set; }//close
+
+        public string notes { get; set; }
+
+        public Nullable<byte> isConfirm { get; set; }
+        public Nullable<int> cashTransIdSource { get; set; }
+        public string side { get; set; }
+
+        public string posName { get; set; }
+
+
+
+        public string processType { get; set; }
+
+
+        public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
+
+        public Nullable<System.DateTime> updateDate { get; set; }//close
+        public Nullable<System.DateTime> openDate { get; set; }
+        public Nullable<System.DateTime> openCash { get; set; }
+        public Nullable<int> openCashTransId { get; set; }
+
+
+
+    }
     public class ItemTransferInvoiceTax
     {// new properties
         public Nullable<System.DateTime> updateDate { get; set; }
@@ -2692,7 +2725,52 @@ namespace POS.Classes
 
         }
 
+        public async Task<List<CashTransfer>> GetBytypeAndSideForPos(string type, string side)
+        {
+            // string type, string side
+            List<CashTransfer> list = new List<CashTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("type", type.ToString());
+            parameters.Add("side", side.ToString());
 
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetBytypeAndSideForPos", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+
+        }
+
+
+        public async Task<List<POSOpenCloseModel>> GetPosCashOpenClose(int mainBranchId, int userId)
+        {
+
+            List<POSOpenCloseModel> list = new List<POSOpenCloseModel>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("mainBranchId", mainBranchId.ToString());
+            parameters.Add("userId", userId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetPosCashOpenClose", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<POSOpenCloseModel>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+
+        }
         // combo
         #region
         public class VendorCombo
@@ -3674,28 +3752,7 @@ namespace POS.Classes
         //    return list;
         //}
 
-        public async Task<List<CashTransfer>> GetBytypeAndSideForPos(string type, string side)
-        {
-            // string type, string side
-            List<CashTransfer> list = new List<CashTransfer>();
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("type", type.ToString());
-            parameters.Add("side", side.ToString());
-
-            //#################
-            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetBytypeAndSideForPos", parameters);
-
-            foreach (Claim c in claims)
-            {
-                if (c.Type == "scopes")
-                {
-                    list.Add(JsonConvert.DeserializeObject<CashTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
-                }
-            }
-            return list;
-
-
-        }
+      
 
     }
 }

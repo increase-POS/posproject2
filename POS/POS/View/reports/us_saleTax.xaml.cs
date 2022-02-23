@@ -304,7 +304,7 @@ namespace POS.View.reports
 
                 col_itemunitName.Visibility = Visibility.Visible;
                 col_taxOnItems.Visibility = Visibility.Visible;
-                col_taxNet.Visibility = Visibility.Visible;
+                col_taxNet.Visibility = Visibility.Collapsed;
                 col_price.Visibility = Visibility.Visible;
                 col_itemsQuantity.Visibility = Visibility.Visible;
                 col_taxOnItems.Visibility = Visibility.Visible;

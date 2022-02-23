@@ -185,6 +185,39 @@ namespace POS_Server.Models
         //public Nullable<int> itemsRowsCount { get; set; }//عدداسطر الفاتورة
         // public Nullable<decimal> totalNet { get; set; }
 
+    }
+
+    public class POSOpenCloseModel
+    {
+        public int cashTransId { get; set; }
+        public string transType { get; set; }
+        public Nullable<int> posId { get; set; }
+   
+        public string transNum { get; set; }
+      
+        public Nullable<decimal> cash { get; set; }
+       
+        public string notes { get; set; }
+       
+        public Nullable<byte> isConfirm { get; set; }
+        public Nullable<int> cashTransIdSource { get; set; }
+        public string side { get; set; }
+        
+        public string posName { get; set; }
+       
+
+        
+        public string processType { get; set; }
+
+        
+        public Nullable<int> branchId { get; set; }
+        public string branchName { get; set; }
+
+        public Nullable<System.DateTime> updateDate { get; set; }
+        public Nullable<System.DateTime> openDate { get; set; }
+        public Nullable<System.DateTime> openCash { get; set; }
+        public Nullable<int> openCashTransId { get; set; }
+         
 
 
     }

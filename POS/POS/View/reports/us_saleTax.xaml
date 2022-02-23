@@ -328,10 +328,12 @@
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="col_price"          Width="*" Header="Price"        Binding="{Binding subTotalNotax      ,Converter={StaticResource accuracyConverter}}" />
+                        <DataGridTextColumn x:Name="col_price"          Width="*" Header="Price"        Binding="{Binding OneItemPriceNoTax      ,Converter={StaticResource accuracyConverter}}" />
                         <DataGridTextColumn x:Name="col_itemsQuantity"  Width="*" Header="QTY"          Binding="{Binding ITquantity }" />
-                        <DataGridTextColumn x:Name="col_taxOnItems"     Width="*" Header="On Items"     Binding="{Binding itemUnitTaxwithQTY ,Converter={StaticResource accuracyConverter}}" />
+                        <DataGridTextColumn x:Name="col_itemsTotal"  Width="*" Header="Total"          Binding="{Binding subTotalNotax }" />
                         <DataGridTextColumn x:Name="col_itemTaxPercent" Width="*" Header="Item Percent" Binding="{Binding ItemTaxes          ,Converter={StaticResource accuracyConverter}}" />
+                        <DataGridTextColumn x:Name="col_taxOnItems"     Width="*" Header="On Items"     Binding="{Binding itemUnitTaxwithQTY ,Converter={StaticResource accuracyConverter}}" />
+               
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
