@@ -316,9 +316,10 @@
 
                         <DataGridTextColumn x:Name="col_invQuantity"   Width="*" Header="QTY"         Binding="{Binding itemsRowsCount }" />
                         <DataGridTextColumn x:Name="col_invTotal"      Width="*" Header="Total"       Binding="{Binding totalNoTax   ,Converter={StaticResource accuracyConverter}}" />
+                         <DataGridTextColumn x:Name="col_invTaxPercent" Width="*" Header="Tax Percent" Binding="{Binding tax          ,Converter={StaticResource accuracyConverter}}" />
                         <DataGridTextColumn x:Name="col_taxOnInvoice"  Width="*" Header="On Invoice"  Binding="{Binding invTaxVal    ,Converter={StaticResource accuracyConverter}}" />
-                        <DataGridTextColumn x:Name="col_invTaxPercent" Width="*" Header="Tax Percent" Binding="{Binding tax          ,Converter={StaticResource accuracyConverter}}" />
-                        <DataGridTextColumn x:Name="col_taxNet"        Width="*" Header="Tax Net"     Binding="{Binding totalNet     ,Converter={StaticResource accuracyConverter}}" />
+
+                        <DataGridTextColumn x:Name="col_totalNet"        Width="*" Header="Total Net"     Binding="{Binding totalNet     ,Converter={StaticResource accuracyConverter}}" />
 
                         <DataGridTextColumn x:Name="col_itemunitName"   Width="*" Header="Item-Unit" >
                             <DataGridTextColumn.Binding>

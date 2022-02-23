@@ -193,18 +193,19 @@ namespace POS.View.reports
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             ////invoice
             col_invQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
-            col_invTotal.Header = MainWindow.resourcemanager.GetString("trInvoice");
+            col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");/////////////////////
             col_taxOnInvoice.Header = MainWindow.resourcemanager.GetString("trTax");
             col_invTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
-            col_taxNet.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
             ////item
             col_itemunitName.Header = MainWindow.resourcemanager.GetString("trItemUnit");
             col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trOnItem");
-            col_taxNet.Header = MainWindow.resourcemanager.GetString("trTaxNet");
+          //  col_taxNet.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
             col_itemsQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trTax");
             col_itemTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
+            col_itemsTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
             //////////////////////////////////////////////////////////////////////////
 
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -265,7 +266,7 @@ namespace POS.View.reports
                 col_invTotal.Visibility = Visibility.Visible;
                 col_taxOnInvoice.Visibility = Visibility.Visible;
                 col_invTaxPercent.Visibility = Visibility.Visible;
-                col_taxNet.Visibility = Visibility.Visible;
+                col_totalNet.Visibility = Visibility.Visible;
 
                 txt_search.Text = "";
 
@@ -304,11 +305,12 @@ namespace POS.View.reports
 
                 col_itemunitName.Visibility = Visibility.Visible;
                 col_taxOnItems.Visibility = Visibility.Visible;
-                col_taxNet.Visibility = Visibility.Collapsed;
+                col_totalNet.Visibility = Visibility.Collapsed;
                 col_price.Visibility = Visibility.Visible;
                 col_itemsQuantity.Visibility = Visibility.Visible;
                 col_taxOnItems.Visibility = Visibility.Visible;
                 col_itemTaxPercent.Visibility = Visibility.Visible;
+                col_itemsTotal.Visibility = Visibility.Visible;
 
                 txt_search.Text = "";
                 path_invoice.Fill = Brushes.White;

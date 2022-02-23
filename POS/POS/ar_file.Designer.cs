@@ -8486,7 +8486,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to نسبة الضريبة.
+        ///   Looks up a localized string similar to % الضريبة.
         /// </summary>
         internal static string trTaxPercentage {
             get {
@@ -8689,6 +8689,15 @@ namespace POS {
         internal static string trTotal_ {
             get {
                 return ResourceManager.GetString("trTotal:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اجمالي الفاتورة.
+        /// </summary>
+        internal static string trTotalInvoice {
+            get {
+                return ResourceManager.GetString("trTotalInvoice", resourceCulture);
             }
         }
         
