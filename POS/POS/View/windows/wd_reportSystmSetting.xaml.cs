@@ -157,13 +157,15 @@ namespace POS.View.windows
                 #endregion
                 if(windowType == "r")
                 {
-                    txt_showHeader.Visibility =
-                    tgl_showHeader.Visibility =
+                    //txt_showHeader.Visibility =
+                    //tgl_showHeader.Visibility =
                      txt_printOnSavePur.Visibility =
                     tgl_printOnSavePur.Visibility =
                     txt_printOnSaveSale.Visibility =
                     tgl_printOnSaveSale.Visibility = Visibility.Visible;
 
+                    txt_showHeader.Visibility =
+                    tgl_showHeader.Visibility =
                     txt_emailOnSavePur.Visibility =
                     tgl_emailOnSavePur.Visibility =
                     txt_emailOnSaveSale.Visibility =
@@ -312,7 +314,7 @@ namespace POS.View.windows
             msg = await setvalueModel.Save(print_on_save_salerow);
             msg = await setvalueModel.Save(email_on_save_purrow);
             msg = await setvalueModel.Save(email_on_save_salerow);
-            msg = await setvalueModel.Save(show_header_row);
+         //   msg = await setvalueModel.Save(show_header_row);
 
             await Getprintparameter();
             await MainWindow.Getprintparameter();

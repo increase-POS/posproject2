@@ -50,6 +50,12 @@ namespace POS.View.Settings
         static SetValues valueModel = new SetValues();
         static SetValues printCount = new SetValues();
         static int printCountId = 0;
+        List<SetValues> printList = new List<SetValues>();
+
+        SetValues show_header_row = new SetValues();
+  
+        string show_header;
+
         public class Replang
         {
             public int langId { get; set; }
@@ -119,7 +125,7 @@ namespace POS.View.Settings
 
                 ///naji code
                 ///
-                fillPrintHeader();
+             await   fillPrintHeader();
                 await  fillRepLang();
                 #region get default print count
                 await getDefaultPrintCount();
@@ -158,7 +164,7 @@ namespace POS.View.Settings
             txt_printHeader.Text = MainWindow.resourcemanager.GetString("trPrintHeader");
 
         }
-        private void fillPrintHeader()
+        private async Task<int> fillPrintHeader()
         {
             cb_printHeader.DisplayMemberPath = "Text";
             cb_printHeader.SelectedValuePath = "Value";
@@ -168,6 +174,19 @@ namespace POS.View.Settings
                 };
             cb_printHeader.ItemsSource = typelist;
             cb_printHeader.SelectedIndex = 0;
+
+            await getshowHeader();
+            if (show_header_row.value == "1")
+            {
+                cb_printHeader.SelectedIndex = 0;
+            }
+            else
+            {
+                cb_printHeader.SelectedIndex = 1;
+            }
+            return 1;
+
+
         }
         public static async Task<SetValues> getDefaultPrintCount()
         {
@@ -176,9 +195,22 @@ namespace POS.View.Settings
             set = settingsCls.Where(s => s.name == "Allow_print_inv_count").FirstOrDefault<SettingCls>();
             printCountId = set.settingId;
             printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
+
             return printCount;
           
         }
+
+        public   async Task<string> getshowHeader()
+        {
+            printList = await setvalueModel.GetBySetvalNote("print");
+            show_header_row = printList.Where(X => X.name == "show_header").FirstOrDefault();
+
+            show_header = show_header_row.value;
+            return show_header;
+
+        }
+        //     printList = await setvalueModel.GetBySetvalNote("print");
+
         private void Btn_systmSetting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -432,7 +464,7 @@ namespace POS.View.Settings
 
         #endregion
 
-        private void Btn_savePrintHeader_Click(object sender, RoutedEventArgs e)
+        private async void Btn_savePrintHeader_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -443,10 +475,12 @@ namespace POS.View.Settings
                 if (!cb_printHeader.Text.Equals(""))
                 {
 
-                    string showheader = "";
-                    showheader =  cb_printHeader.SelectedValue.ToString();
+                    int res =0;
+                    show_header_row.value =  cb_printHeader.SelectedValue.ToString();
+                    res = await setvalueModel.Save(show_header_row);
+
                     //   int res = await progDetailsModel.updateIsonline(isOnline);
-                    int res = 0;
+                  
 
                     if (res > 0)
                     {
@@ -455,6 +489,9 @@ namespace POS.View.Settings
                     }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+
+                  await  fillPrintHeader();
+                    await MainWindow.Getprintparameter();
                 }
 
                 if (sender != null)
