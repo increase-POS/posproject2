@@ -315,19 +315,10 @@ namespace POS.View.sectionData
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-
-                    //byte active;
-                    //try
-                    //{
-                    //    active = byte.Parse((tgl_isActive.IsChecked.Value ? 1 : 0).ToString());
-                    //}
-                    //catch
-                    //{
-                    //    active = 0;
-                    //}
-                    //chk empty name
-                    SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
-
+                    if (card.cardId > 0)
+                    {
+                        //chk empty name
+                        SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
                     if ((!tb_name.Text.Equals("")))
                     {
                         bool isCardExist = await chkDuplicateCard();
@@ -377,6 +368,10 @@ namespace POS.View.sectionData
                             Tb_search_TextChanged(null, null);
                         }
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -432,8 +427,11 @@ namespace POS.View.sectionData
 
                                 int b = await cardModel.delete(card.cardId, MainWindow.userID.Value, card.canDelete);
 
-                                if (b>0)
+                                if (b > 0)
+                                {
+                                    card.cardId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 

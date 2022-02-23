@@ -711,9 +711,11 @@ namespace POS.View
 
                                 int b = await offerModel.delete(offer.offerId, MainWindow.userID.Value, offer.canDelete);
 
-                                if (b>0)
+                                if (b > 0)
+                                {
+                                    offer.offerId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
+                                }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
@@ -871,11 +873,15 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                #region validate
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
 
-                    bool isCodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Offer", offer.offerId);
+                    if (offer.offerId > 0)
+                    {
+                        #region validate
+
+
+                        bool isCodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Offer", offer.offerId);
                     //chk empty code
                     SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
                     //chk empty name
@@ -960,6 +966,10 @@ namespace POS.View
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
                     }
+
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
 
                 }
                 else

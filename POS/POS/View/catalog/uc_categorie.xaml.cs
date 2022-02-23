@@ -433,8 +433,10 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    //duplicate
-                    bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", category.categoryId);
+                    if (category.id > 0)
+                    {
+                        //duplicate
+                        bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", category.categoryId);
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
                     //chk empty code
@@ -507,6 +509,9 @@ namespace POS.View
                         }
                     }
 
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
 
                 }
                 else
@@ -603,9 +608,11 @@ namespace POS.View
 
                                 int b = await categoryModel.delete(category.categoryId, MainWindow.userID.Value, category.canDelete);
 
-                                if (b>0) //SectionData.popUpResponse("", popupContent);
+                                if (b > 0) //SectionData.popUpResponse("", popupContent);
+                                {
+                                    category.id = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
-                                else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
+                                } else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
                         }

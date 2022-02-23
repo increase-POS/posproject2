@@ -414,8 +414,10 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Pos", pos.posId);
+                    if (pos.posId > 0)
+                    {
+                        #region validate
+                        bool iscodeExist = await SectionData.isCodeExist(tb_code.Text, "", "Pos", pos.posId);
                     //chk empty name
                     SectionData.validateEmptyTextBox(tb_name, p_errorName, tt_errorName, "trEmptyNameToolTip");
                     //chk empty code
@@ -423,7 +425,6 @@ namespace POS.View
                     //chk empty branch
                     SectionData.validateEmptyComboBox(cb_branch, p_errorSelectBranch, tt_errorSelectBranch, "trEmptyBranchToolTip");
                     #endregion
-
                     if ((!tb_name.Text.Equals("")) && (!tb_code.Text.Equals("")) && (!cb_branch.Text.Equals("")))
                     {
                         //duplicate
@@ -448,6 +449,10 @@ namespace POS.View
                             Tb_search_TextChanged(null, null);
                         }
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -507,7 +512,10 @@ namespace POS.View
                                     int b = await posModel.delete(pos.posId, MainWindow.userID.Value, pos.canDelete);
 
                                     if (b>0)
+                                    {
+                                        pos.posId = 0;
                                         Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
+                                    }
                                     else
                                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                                 }

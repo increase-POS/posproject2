@@ -772,9 +772,11 @@ namespace POS.View
 
                                 int b = await couponModel.delete(coupon.cId, MainWindow.userID.Value, coupon.canDelete);
 
-                                if (b>0)
+                                if (b > 0)
+                                {
+                                    coupon.cId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
+                                }
                                 else
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                             }
@@ -824,8 +826,11 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    #region validate
-                    bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text, coupon.cId);
+
+                    if (coupon.cId > 0)
+                    {
+                        #region validate
+                        bool codeNotExist = await SectionData.CouponCodeNotExist(tb_code.Text, coupon.cId);
 
                     //chk empty code
                     SectionData.validateEmptyTextBox(tb_code, p_errorCode, tt_errorCode, "trEmptyCodeToolTip");
@@ -915,6 +920,10 @@ namespace POS.View
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
                     }
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
+
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

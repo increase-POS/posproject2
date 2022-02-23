@@ -1336,7 +1336,9 @@ namespace POS.View.catalog
                 //update
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    validateEmptyEntries();
+                    if (item.itemId > 0)
+                    {
+                        validateEmptyEntries();
 
                     Boolean codeAvailable = await checkCodeAvailabiltiy(tb_code.Text);
 
@@ -1409,6 +1411,9 @@ namespace POS.View.catalog
 
                     tb_code.Focus();
                     SectionData.clearValidate(tb_code, p_errorCode);
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectItemFirst"), animation: ToasterAnimation.FadeIn);
 
                 }
                 else
@@ -1467,8 +1472,10 @@ namespace POS.View.catalog
                                 int b = await itemModel.deleteItem(item.itemId, MainWindow.userID.Value, item.canDelete);
 
                                 if (b > 0)
+                                {
+                                    item.itemId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
-
+                                }
                                 else if (b == -1)
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpgrade"), animation: ToasterAnimation.FadeIn);
                                 else
