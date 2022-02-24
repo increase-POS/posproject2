@@ -821,7 +821,9 @@ namespace POS.View.sales
                             if (unit1.itemId != 0)
                             {
                                 int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
-                                decimal basicPrice = (decimal)unit1.price;
+                                //decimal basicPrice = (decimal)unit1.price;
+                                decimal basicPrice = (decimal)unit1.basicPrice;
+
                                 if (index == -1)//item doesn't exist in bill
                                 {
                                     // get item units
@@ -1434,13 +1436,12 @@ namespace POS.View.sales
                 }
                 else
                     itemTax = 0;
-
-                
+              
                 // search for default unit for sales
                 var defaultsaleUnit = itemUnits.ToList().Find(c => c.defaultSale == 1);
                 if (defaultsaleUnit != null)
                 {
-                    decimal basicPrice = (decimal)item.price;
+                    decimal basicPrice = (decimal)defaultsaleUnit.basicPrice;
                     int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultsaleUnit.itemUnitId).FirstOrDefault());                   
                     // create new row in bill details data grid
                     if (index == -1)//item doesn't exist in bill

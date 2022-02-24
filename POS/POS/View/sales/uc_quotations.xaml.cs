@@ -677,7 +677,9 @@ namespace POS.View.sales
                                     int count = 1;
                                     decimal price = 0;
                                     decimal tax = 0;
-                                    decimal basicPrice = (decimal)unit1.price;
+                                    //decimal basicPrice = (decimal)unit1.price;
+                                    decimal basicPrice = (decimal)unit1.basicPrice;
+
                                     if (MainWindow.itemsTax_bool == true)
                                     {
                                         price = (decimal)unit1.priceTax;
@@ -1057,7 +1059,7 @@ namespace POS.View.sales
                 if (defaultsaleUnit != null)
                 {                  
                     decimal price = 0;
-                    decimal basicPrice = (decimal)item.price;
+                    decimal basicPrice = (decimal)defaultsaleUnit.basicPrice;
                     if (MainWindow.itemsTax_bool == true)
                     {
                         price = (decimal)defaultsaleUnit.priceTax;                       

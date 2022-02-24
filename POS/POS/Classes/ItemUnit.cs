@@ -23,6 +23,8 @@ namespace POS.Classes
         public Nullable<short> defaultSale { get; set; }
         public Nullable<short> defaultPurchase { get; set; }
         public Nullable<decimal> price { get; set; }
+        public Nullable<decimal> basicPrice { get; set; }
+
         public Nullable<decimal> cost { get; set; }
         public Nullable<decimal> priceTax { get; set; }
         public string barcode { get; set; }

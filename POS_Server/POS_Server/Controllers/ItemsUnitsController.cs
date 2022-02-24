@@ -624,12 +624,13 @@ namespace POS_Server.Controllers
                                                  defaultPurchase = IU.defaultPurchase,
                                                  defaultSale = IU.defaultSale,
                                                  price = IU.price,
+                                                 basicPrice = IU.price,
                                                  taxes = i.taxes,
                                                  updateDate = IU.updateDate,
                                                  updateUserId = IU.updateUserId,
                                                  unitName = u.name,
                                                  isActive=IU.isActive,
-                                             }) .ToList();
+                                             }).ToList();
 
                         var itemsofferslist = (from off in entity.offers
 
@@ -795,6 +796,7 @@ namespace POS_Server.Controllers
                                              unitName = u.units.name,
                                              itemUnitId = u.itemUnitId,
                                              price = u.price ,
+                                             basicPrice = u.price,
                                              taxes = u.items.taxes,
                                              
                                          }).ToList();

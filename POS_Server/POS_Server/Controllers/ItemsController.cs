@@ -52,12 +52,13 @@ namespace POS_Server.Controllers
                                                      name = I.name,
                                                      code = I.code,
                                                      categoryId = I.categoryId,
+                                                  
                                                      categoryName = x.name,
                                                      max = I.max,
                                                      maxUnitId = I.maxUnitId,
                                                      minUnitId = I.minUnitId,
                                                      min = I.min,
-
+                                                     
                                                      parentId = I.parentId,
                                                      isActive = I.isActive,
                                                      image = I.image,
