@@ -7730,7 +7730,6 @@ namespace POS_Server.Controllers
                             row.itemsRowsCount = invListm.Where(x => x.invoiceId == row.invoiceId).ToList().Count();
 
 
-
                             //item tax
 
                         }
@@ -7844,20 +7843,26 @@ namespace POS_Server.Controllers
                                                             }).Where(C => (C.transType == "c" || C.transType == "o") && (brIds.Contains((int)C.branchId))).ToList();
 
                       //  List<POSOpenCloseModel> closelist = cachlist.Where(C => C.transType == "c").ToList();
-                        POSOpenCloseModel openrow = new POSOpenCloseModel();
-                        List<POSOpenCloseModel> tmplist = null;
-                        foreach (POSOpenCloseModel row in cachlist)
-                        {
-                            if(row.transType == "c")
-                            {
+                  
 
-                           
+
+                        //   branchmodel = branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
+                      
+                    }
+                    POSOpenCloseModel openrow = new POSOpenCloseModel();
+                    List<POSOpenCloseModel> tmplist = new List<POSOpenCloseModel>() ;
+                    foreach (POSOpenCloseModel row in cachlist)
+                    {
+                        if (row.transType == "c")
+                        {
+
+
                             openrow = new POSOpenCloseModel();
                             //   openrow = cachlist.Where(C => C.posId == row.posId && C.transNum == row.transNum && C.transType == "o").FirstOrDefault();
 
-                             tmplist = cachlist.Where(X => X.posId == row.posId && X.transNum==row.transNum  ).ToList();
-                                tmplist = tmplist.Where(X => X.transType.ToString() == "o").ToList();
-                            if (tmplist != null  )
+                            tmplist = cachlist.Where(X => X.posId == row.posId && X.transNum == row.transNum && X.transType == "o").ToList();
+                            //tmplist = tmplist.Where(X => X.transType.ToString() == "o").ToList();
+                            if (tmplist != null && tmplist.Count()>0)
                             {
                                 openrow = tmplist.FirstOrDefault();
                                 if (openrow.cashTransId > 0)
@@ -7868,18 +7873,13 @@ namespace POS_Server.Controllers
                                 }
                             }
 
-                            }
-
-                            //  row.openDate=
                         }
 
-
-
-                        //   branchmodel = branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
-                      
+                        //  row.openDate=
                     }
+
                     List<POSOpenCloseModel> closelist = new List<POSOpenCloseModel>();
-                    closelist = cachlist.Where(X => X.transType == "c").ToList();
+                    closelist = cachlist.Where(X => X.transType == "c" && X.openCashTransId!= null && X.openCashTransId >0).ToList();
                     return TokenManager.GenerateToken(closelist);
                 }
                 catch (Exception ex)
@@ -7897,6 +7897,179 @@ namespace POS_Server.Controllers
 
 
         }
+
+
+        //العمليات المنفذة بين تاريخ الفتح والاغلاق
+        [HttpPost]
+        [Route("GetTransBetweenOpenClose")]
+        public string GetTransBetweenOpenClose(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int openCashTransId =0;
+                int closeCashTransId = 0;
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "openCashTransId")//openid
+                    {
+                        openCashTransId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "closeCashTransId")//closeid
+                    {
+                        closeCashTransId = int.Parse(c.Value);
+                    }
+
+                }
+
+                // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                try
+                {
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        List<cashTransfer> closecashlist =  entity.cashTransfer.ToList();
+
+                        cashTransfer closrow = closecashlist.Where(X => X.cashTransId == closeCashTransId).FirstOrDefault();
+
+                        List<OpenClosOperatinModel> cachlist = (from C in entity.cashTransfer
+                                                            join b in entity.banks on C.bankId equals b.bankId into jb
+                                                            join a in entity.agents on C.agentId equals a.agentId into ja
+                                                            join p in entity.pos on C.posId equals p.posId into jp
+                                                            join pc in entity.pos on C.posIdCreator equals pc.posId into jpcr
+                                                            join u in entity.users on C.userId equals u.userId into ju
+                                                         //   join uc in entity.users on C.createUserId equals uc.userId into juc
+                                                            join uu in entity.users on C.createUserId equals uu.userId into jup
+
+                                                            join cr in entity.cards on C.cardId equals cr.cardId into jcr
+                                                            join bo in entity.bondes on C.bondId equals bo.bondId into jbo
+                                                            join sh in entity.shippingCompanies on C.shippingCompanyId equals sh.shippingCompanyId into jsh
+                                                            from jbb in jb.DefaultIfEmpty()
+                                                            from jaa in ja.DefaultIfEmpty()
+                                                            from jpp in jp.DefaultIfEmpty()
+                                                            from juu in ju.DefaultIfEmpty()
+                                                            from jpcc in jpcr.DefaultIfEmpty()
+                                                           // from jucc in juc.DefaultIfEmpty()
+                                                            from jupdateusr in jup.DefaultIfEmpty()
+
+                                                            from jcrd in jcr.DefaultIfEmpty()
+                                                            from jbbo in jbo.DefaultIfEmpty()
+                                                            from jssh in jsh.DefaultIfEmpty()
+                                                            select new OpenClosOperatinModel()
+                                                            {
+                                                                cashTransId = C.cashTransId,
+                                                                transType = C.transType,
+                                                                posId = C.posId,
+                                                                userId = C.userId,
+                                                                agentId = C.agentId,
+                                                                invId = C.invId,
+                                                                transNum = C.transNum,
+                                                                createDate = C.createDate,
+                                                                updateDate = C.updateDate,
+                                                                cash = C.cash,
+                                                                updateUserId = C.updateUserId,
+                                                                createUserId = C.createUserId,
+                                                                notes = C.notes,
+                                                                posIdCreator = C.posIdCreator,
+                                                                isConfirm = C.isConfirm,
+                                                                cashTransIdSource = C.cashTransIdSource,
+                                                                side = C.side,
+
+                                                                docName = C.docName,
+                                                                docNum = C.docNum,
+                                                                docImage = C.docImage,
+                                                                bankId = C.bankId,
+                                                                bankName = jbb.name,
+                                                                agentName = jaa.name,
+                                                                usersName = juu.name,// side =u
+
+                                                                posName = jpp.name,
+                                                                posCreatorName = jpcc.name,
+                                                                processType = C.processType,
+                                                                cardId = C.cardId,
+                                                                bondId = C.bondId,
+                                                                usersLName = juu.lastname,// side =u
+                                                                //createUserName = jucc.name,
+                                                                //createUserLName = jucc.lastname,
+                                                                //createUserJob = jucc.job,
+                                                                cardName = jcrd.name,
+                                                                bondDeserveDate = jbbo.deserveDate,
+                                                                bondIsRecieved = jbbo.isRecieved,
+                                                                shippingCompanyId = C.shippingCompanyId,
+                                                                shippingCompanyName = jssh.name,
+                                                                branchCreatorId = jpcc.branchId,
+                                                                branchCreatorname = jpcc.branches.name,
+                                                                branchId = jpp.branchId,
+                                                                branchName = jpp.branches.name,
+                                                                branch2Id = 0,
+                                                                branch2Name = "",
+                                                                updateUserAcc = jupdateusr.username,
+
+                                                            }).Where(C => (C.cashTransId== openCashTransId || C.cashTransId== closeCashTransId)||
+                                                          ( C.transType != "o" && C.transType != "c" 
+                                                            && C.processType != "balance" && C.processType != "box" &&
+                                                            C.processType != "inv" && C.processType != "card" 
+                                                            && C.posId== closrow.posId
+                                                          //  && date
+                                                            )
+                                                            ).ToList();
+
+
+                        BranchesController branchCntrlr = new BranchesController();
+
+                        if (cachlist.Count > 0 )
+                        {
+                            branches branchmodel = new branches();
+
+                            CashTransferModel tempitem = null;
+                            foreach (OpenClosOperatinModel cashtItem in cachlist)
+                            {
+                                if (cashtItem.side=="p") {
+                                tempitem = this.Getpostransmodel(cashtItem.cashTransId)
+                                    .Where(C => C.cashTransId != cashtItem.cashTransId).FirstOrDefault();
+                                cashtItem.cashTrans2Id = tempitem.cashTransId;
+                                cashtItem.pos2Id = tempitem.posId;
+                                cashtItem.pos2Name = tempitem.posName;
+                                cashtItem.isConfirm2 = tempitem.isConfirm;
+
+                                branchmodel = branchCntrlr.GetBranchByPosId(cashtItem.pos2Id);
+                                cashtItem.branch2Id = branchmodel.branchId;
+                                cashtItem.branch2Name = branchmodel.name;
+                                }
+
+                            }
+
+                        }
+
+
+                        return TokenManager.GenerateToken(cachlist);
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    List<OpenClosOperatinModel> tmplis = new List<OpenClosOperatinModel>();
+                    OpenClosOperatinModel enrow = new OpenClosOperatinModel();
+                    enrow.posName = ex.ToString();
+                    tmplis.Add(enrow);
+
+                    return TokenManager.GenerateToken(tmplis);
+                    //  return TokenManager.GenerateToken("0");
+                }
+
+            }
+
+
+        }
+
 
 
         #endregion

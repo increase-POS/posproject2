@@ -1180,7 +1180,7 @@ namespace POS_Server.Controllers
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
-                    if (c.Type == "cashTransId")
+                    if (c.Type == "cashTransferId")
                     {
                         cTId = int.Parse(c.Value);
                     }
@@ -1191,14 +1191,14 @@ namespace POS_Server.Controllers
 
                 try
                 {
+                    cashTransfer item = new cashTransfer();
                     using (incposdbEntities entity = new incposdbEntities())
                     {
 
-                        var cacht = entity.cashTransfer
+                        List<cashTransfer> cacht = entity.cashTransfer.ToList();
+                        item = cacht.Where(C => C.cashTransId == cTId)
 
-          .Where(C => C.cashTransId == cTId)
-
-            .Select(C => new CashTransferModel
+            .Select(C => new cashTransfer
             {
                 cashTransId = C.cashTransId,
                 transType = C.transType,
@@ -1230,7 +1230,7 @@ namespace POS_Server.Controllers
             }).FirstOrDefault();
 
 
-                        return TokenManager.GenerateToken(cacht);
+                        return TokenManager.GenerateToken(item);
 
                     }
 
@@ -2082,16 +2082,18 @@ namespace POS_Server.Controllers
 
 
                 List<CashTransferModel> tempList = null;
+                List<CashTransferModel> tempList2 = null;
                 List<CashTransferModel> allList = null;
                 CashTransferModel cashobject = new CashTransferModel();
+                CashTransferModel cashobject2 = new CashTransferModel();
                 cashTransfer ctObject = new cashTransfer();
-
+                cashTransfer ctObject2 = new cashTransfer();
                 pos posobject = new pos();
                 pos posobjectD = new pos();
                 int? posidPull = 0;
                 int? posidD = 0;
                 decimal? cash = 0;
-
+              
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -2101,6 +2103,7 @@ namespace POS_Server.Controllers
                         {
                             //check if first pos is confirm
                             tempList = allList.Where(C => C.transType == "p" && C.isConfirm == 1).ToList();
+                        //    tempList2= allList.Where(C => C.transType == "d" && C.isConfirm == 1).ToList();
 
                             if (tempList != null)
                             {
@@ -2120,6 +2123,14 @@ namespace POS_Server.Controllers
                                         ctObject.updateUserId = userIdD;
                                         ctObject.updateDate = DateTime.Now;
                                         ctObject.userId = userIdD;
+
+                                        //update date for other row
+                                        cashobject2 = allList.Where(C => C.transType == "p").FirstOrDefault();
+                                        ctObject2 = entity.cashTransfer.Where(C => C.cashTransId == cashobject2.cashTransId).FirstOrDefault();
+
+                                        ctObject2.updateDate = ctObject.updateDate;
+                                        
+
                                         // END in "d" set confirm to 1
 
                                         //START decreas balance from pull pos
