@@ -1105,6 +1105,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المبلغ.
+        /// </summary>
+        internal static string trCash_ {
+            get {
+                return ResourceManager.GetString("trCash_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الرصيد النقدي.
         /// </summary>
         internal static string trCashBalance {
@@ -6956,6 +6965,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المستلمات.
+        /// </summary>
+        internal static string trReceipts {
+            get {
+                return ResourceManager.GetString("trReceipts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سند قبض.
         /// </summary>
         internal static string trReceiptVoucher {
@@ -7015,6 +7033,15 @@ namespace POS {
         internal static string trRecepientHint {
             get {
                 return ResourceManager.GetString("trRecepientHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to المستلمات.
+        /// </summary>
+        internal static string trRecepients {
+            get {
+                return ResourceManager.GetString("trRecepients", resourceCulture);
             }
         }
         
@@ -8495,6 +8522,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to قيمة الضريبة.
+        /// </summary>
+        internal static string trTaxValue {
+            get {
+                return ResourceManager.GetString("trTaxValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to النص1.
         /// </summary>
         internal static string trText1 {
@@ -8711,6 +8747,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إجمالي السعر.
+        /// </summary>
+        internal static string trTotalPrice {
+            get {
+                return ResourceManager.GetString("trTotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to إجمالي المشتريات.
         /// </summary>
         internal static string trTotalPurchases {
@@ -8734,6 +8779,15 @@ namespace POS {
         internal static string trTotalSales {
             get {
                 return ResourceManager.GetString("trTotalSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إجمالي الضريبة.
+        /// </summary>
+        internal static string trTotalTax {
+            get {
+                return ResourceManager.GetString("trTotalTax", resourceCulture);
             }
         }
         

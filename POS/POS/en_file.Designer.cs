@@ -1114,6 +1114,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cash.
+        /// </summary>
+        internal static string trCash_ {
+            get {
+                return ResourceManager.GetString("trCash_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash Balance.
         /// </summary>
         internal static string trCashBalance {
@@ -7001,6 +7010,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Receipts.
+        /// </summary>
+        internal static string trReceipts {
+            get {
+                return ResourceManager.GetString("trReceipts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receipt Voucher.
         /// </summary>
         internal static string trReceiptVoucher {
@@ -7051,6 +7069,15 @@ namespace POS {
         internal static string trRecepient {
             get {
                 return ResourceManager.GetString("trRecepient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recepients.
+        /// </summary>
+        internal static string trRecepients {
+            get {
+                return ResourceManager.GetString("trRecepients", resourceCulture);
             }
         }
         
@@ -8549,6 +8576,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tax Value.
+        /// </summary>
+        internal static string trTaxValue {
+            get {
+                return ResourceManager.GetString("trTaxValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text1.
         /// </summary>
         internal static string trText1 {
@@ -8765,6 +8801,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Price.
+        /// </summary>
+        internal static string trTotalPrice {
+            get {
+                return ResourceManager.GetString("trTotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Purchases.
         /// </summary>
         internal static string trTotalPurchases {
@@ -8788,6 +8833,15 @@ namespace POS {
         internal static string trTotalSales {
             get {
                 return ResourceManager.GetString("trTotalSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total of Tax.
+        /// </summary>
+        internal static string trTotalTax {
+            get {
+                return ResourceManager.GetString("trTotalTax", resourceCulture);
             }
         }
         

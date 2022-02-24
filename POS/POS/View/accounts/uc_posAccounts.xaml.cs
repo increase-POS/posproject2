@@ -45,6 +45,7 @@ namespace POS.View.accounts
         string searchText = "";
         CashTransfer cashtrans2 = new CashTransfer();
         CashTransfer cashtrans3 = new CashTransfer();
+        CashTransfer cashtrans2temp = new CashTransfer();
         IEnumerable<CashTransfer> cashes2;
         string basicsPermission = "posAccounting_basics";
         string transAdminPermission = "posAccounting_transAdmin";
@@ -71,6 +72,7 @@ namespace POS.View.accounts
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             txt_posAccounts.Text = MainWindow.resourcemanager.GetString("trTransfers");
+            txt_Cash.Text = MainWindow.resourcemanager.GetString("trCash_")+" : ";
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos1, MainWindow.resourcemanager.GetString("trDepositor")+"...");
@@ -78,8 +80,8 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
 
-            chk_deposit.Content = MainWindow.resourcemanager.GetString("trDeposit");
-            chk_receive.Content = MainWindow.resourcemanager.GetString("trReceive");
+            chk_deposit.Content = MainWindow.resourcemanager.GetString("trDeposits");
+            chk_receive.Content = MainWindow.resourcemanager.GetString("trReceipts");
 
             dg_posAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trCreator");
@@ -940,6 +942,9 @@ namespace POS.View.accounts
         {
             cashtrans.isConfirm = 1;
             int s = await cashModel.Save(cashtrans);
+            //update date
+            cashtrans2temp = await cashModel.GetByID(cashtrans.cashTrans2Id);
+            int s2 = await cashModel.Save(cashtrans2temp);
             if (!s.Equals(0))
             {
                 await RefreshCashesList();
