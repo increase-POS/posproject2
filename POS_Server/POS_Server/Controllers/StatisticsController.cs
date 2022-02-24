@@ -7935,9 +7935,10 @@ namespace POS_Server.Controllers
 
                     using (incposdbEntities entity = new incposdbEntities())
                     {
-                        List<cashTransfer> closecashlist =  entity.cashTransfer.ToList();
+                        List<cashTransfer> allcashlist =  entity.cashTransfer.ToList();
 
-                        cashTransfer closrow = closecashlist.Where(X => X.cashTransId == closeCashTransId).FirstOrDefault();
+                        cashTransfer closrow = allcashlist.Where(X => X.cashTransId == closeCashTransId).FirstOrDefault();
+                        cashTransfer openrow = allcashlist.Where(X => X.cashTransId == openCashTransId).FirstOrDefault();
 
                         List<OpenClosOperatinModel> cachlist = (from C in entity.cashTransfer
                                                             join b in entity.banks on C.bankId equals b.bankId into jb
@@ -8013,13 +8014,13 @@ namespace POS_Server.Controllers
                                                                 updateUserAcc = jupdateusr.username,
 
                                                             }).Where(C => (C.cashTransId== openCashTransId || C.cashTransId== closeCashTransId)||
+
                                                           ( C.transType != "o" && C.transType != "c" 
                                                             && C.processType != "balance" && C.processType != "box" &&
                                                             C.processType != "inv" && C.processType != "card" 
                                                             && C.posId== closrow.posId
-                                                          //  && date
-                                                            )
-                                                            ).ToList();
+                                                            && C.updateDate>=openrow.updateDate && C.updateDate<=closrow.updateDate)
+                                                            ).OrderBy(X=>X.updateDate).ToList();
 
 
                         BranchesController branchCntrlr = new BranchesController();
