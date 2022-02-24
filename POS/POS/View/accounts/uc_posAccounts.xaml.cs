@@ -71,6 +71,7 @@ namespace POS.View.accounts
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trTransaferDetails");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             txt_posAccounts.Text = MainWindow.resourcemanager.GetString("trTransfers");
+            txt_Cash.Text = MainWindow.resourcemanager.GetString("trCash_")+" : ";
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_pos1, MainWindow.resourcemanager.GetString("trDepositor")+"...");
@@ -78,8 +79,8 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
 
-            chk_deposit.Content = MainWindow.resourcemanager.GetString("trDeposit");
-            chk_receive.Content = MainWindow.resourcemanager.GetString("trReceive");
+            chk_deposit.Content = MainWindow.resourcemanager.GetString("trDeposits");
+            chk_receive.Content = MainWindow.resourcemanager.GetString("trRecepients");
 
             dg_posAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trCreator");

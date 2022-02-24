@@ -1114,6 +1114,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cash.
+        /// </summary>
+        internal static string trCash_ {
+            get {
+                return ResourceManager.GetString("trCash_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cash Balance.
         /// </summary>
         internal static string trCashBalance {
@@ -7051,6 +7060,15 @@ namespace POS {
         internal static string trRecepient {
             get {
                 return ResourceManager.GetString("trRecepient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recepients.
+        /// </summary>
+        internal static string trRecepients {
+            get {
+                return ResourceManager.GetString("trRecepients", resourceCulture);
             }
         }
         

@@ -234,7 +234,7 @@ namespace POS.View.windows
                     iUO.iuId = itemUnit.itemUnitId;
                     iUO.offerId = offerId;
                     iUO.createUserId = MainWindow.userID;
-                    iUO.quantity = 0;
+                    iUO.quantity = 1;
                     iUO.offerName = offer.name;
                     iUO.unitName = itemUnit.unitName;
                     iUO.itemName = itemUnit.itemName;

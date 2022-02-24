@@ -565,22 +565,22 @@ namespace POS.View.reports
             if (selectedTab == 0)
             {
                 title = MainWindow.resourcemanager.GetString("trInvoice");
-                resultList = taxTemp.GroupBy(x => x.invoiceId).Select(x => new ItemTransferInvoiceTax
-                {
-                    invTaxVal = x.Sum(g => (decimal)g.invTaxVal),
-                }
-                ).ToList();
+                //resultList = taxTemp.GroupBy(x => x.invoiceId).Select(x => new ItemTransferInvoiceTax
+                //{
+                //    invTaxVal = x.Sum(g => (decimal)g.invTaxVal),
+                //}
+                //).ToList();
 
             }
             else if (selectedTab == 1)
             {
                 title = MainWindow.resourcemanager.GetString("trItems");
                 
-                resultList = taxTemp.GroupBy(x => x.ITitemsTransId).Select(x => new ItemTransferInvoiceTax
-                {
-                    itemUnitTaxwithQTY = x.Sum(g => (decimal)g.itemUnitTaxwithQTY),
-                }
-                ).ToList();
+                //resultList = taxTemp.GroupBy(x => x.ITitemsTransId).Select(x => new ItemTransferInvoiceTax
+                //{
+                //    itemUnitTaxwithQTY = x.Sum(g => (decimal)g.itemUnitTaxwithQTY),
+                //}
+                //).ToList();
 
             }
 
@@ -590,13 +590,15 @@ namespace POS.View.reports
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> tax = new List<decimal>();
 
-            for (int i = 0; i < resultList.Count(); i++)
-            {
-                if(selectedTab == 0)
-                    tax.Add(resultList.ToList().Skip(i).FirstOrDefault().invTaxVal.Value);
-                //else if(selectedTab == 1)
-                //    tax.Add(resultList.ToList().Skip(i).FirstOrDefault().itemUnitTaxwithQTY.Value);
-            }
+            //for (int i = 0; i < resultList.Count(); i++)
+            //{
+            //    if(selectedTab == 0)
+            //        tax.Add(resultList.ToList().Skip(i).FirstOrDefault().invTaxVal.Value);
+            //    //else if(selectedTab == 1)
+            //    //    tax.Add(resultList.ToList().Skip(i).FirstOrDefault().itemUnitTaxwithQTY.Value);
+            //}
+            if (selectedTab == 0)
+                tax.Add(taxTemp.Select(b => b.invTaxVal.Value).Sum());
             if (selectedTab == 1)
                 tax.Add(taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum());
             columnChartData.Add(

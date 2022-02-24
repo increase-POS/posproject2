@@ -244,7 +244,7 @@
                         AutoGenerateColumns="False"   BeginningEdit="Grid_BeginningEdit" 
                         ColumnWidth="SizeToHeader" MouseDoubleClick="Dg_selectedItems_MouseDoubleClick" SelectionChanged="Dg_selectedItems_SelectionChanged"  >
                         <DataGrid.Columns >
-                            <DataGridTextColumn Width="*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=itemName}"/>
+                            <DataGridTextColumn Width="3*" IsReadOnly="True"  Header="Item" Binding="{Binding Path=itemName}"/>
                             <DataGridTextColumn Width="*" Header="Quantity" Binding="{Binding Path=quantity}"/>
                         </DataGrid.Columns>
                     </DataGrid>

@@ -3337,4 +3337,10 @@ Please add Email in setting</value>
   <data name="trTotalTax" xml:space="preserve">
     <value>Total of Tax</value>
   </data>
+  <data name="trCash_" xml:space="preserve">
+    <value>Cash</value>
+  </data>
+  <data name="trRecepients" xml:space="preserve">
+    <value>Recepients</value>
+  </data>
 </root>
