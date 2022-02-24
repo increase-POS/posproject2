@@ -45,6 +45,7 @@ namespace POS.View.accounts
         string searchText = "";
         CashTransfer cashtrans2 = new CashTransfer();
         CashTransfer cashtrans3 = new CashTransfer();
+        CashTransfer cashtrans2temp = new CashTransfer();
         IEnumerable<CashTransfer> cashes2;
         string basicsPermission = "posAccounting_basics";
         string transAdminPermission = "posAccounting_transAdmin";
@@ -941,6 +942,9 @@ namespace POS.View.accounts
         {
             cashtrans.isConfirm = 1;
             int s = await cashModel.Save(cashtrans);
+            //update date
+            cashtrans2temp = await cashModel.GetByID(cashtrans.cashTrans2Id);
+            int s2 = await cashModel.Save(cashtrans2temp);
             if (!s.Equals(0))
             {
                 await RefreshCashesList();
