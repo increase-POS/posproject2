@@ -3156,7 +3156,7 @@ namespace POS.View
                                 ci.discountType = couponModel.discountType;
                                 ci.discountValue = couponModel.discountValue;
 
-                                lst_coupons.Items.Add(couponModel.code);
+                                lst_coupons.Items.Add(couponModel.name);
                                 selectedCoupons.Add(ci);
                                 refreshTotalValue();
                             }

@@ -569,6 +569,7 @@ namespace POS_Server.Controllers
                                                  defaultPurchase = IU.defaultPurchase,
                                                  defaultSale = IU.defaultSale,
                                                  price = IU.price,
+                                                 basicPrice = IU.price,
                                                  cost = IU.cost,
                                                  subUnitId = IU.subUnitId,
                                                  unitValue = IU.unitValue,

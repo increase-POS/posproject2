@@ -288,7 +288,7 @@ namespace POS.View.windows
             }
             items = await itemModel.GetSaleOrPurItems(category.categoryId,defaultSale,defaultPurchase,branchId);
             MainWindow.InvoiceGlobalItemsList = items.ToList();
-            if (defaultSale == 1)
+            if (CardType == "order" || CardType == "sales")
                 MainWindow.InvoiceGlobalSaleUnitsList = await itemUnitModel.GetForSale();
             else
                 MainWindow.InvoiceGlobalItemUnitsList = await itemUnitModel.Getall();
@@ -787,7 +787,7 @@ namespace POS.View.windows
                 }
                 items = await itemModel.GetSaleOrPurItems(0, defaultSale, defaultPurchase, branchId);
                 MainWindow.InvoiceGlobalItemsList = items.ToList();
-                if (defaultSale == 1)
+                if (CardType == "order" || CardType == "sales")
                     MainWindow.InvoiceGlobalSaleUnitsList = await itemUnitModel.GetForSale();
                 else
                     MainWindow.InvoiceGlobalItemUnitsList = await itemUnitModel.Getall();

@@ -77,7 +77,7 @@ namespace POS.View.sales
         IEnumerable<Agent> customers;
         ItemUnit itemUnitModel = new ItemUnit();
         List<ItemUnit> barcodesList;
-        List<ItemUnit> itemUnits;
+        List<Item> itemUnits;
         Invoice invoiceModel = new Invoice();
         public Invoice invoice = new Invoice();
         ItemLocation itemLocationModel = new ItemLocation();
@@ -771,7 +771,7 @@ namespace POS.View.sales
                                 ci.discountType = couponModel.discountType;
                                 ci.discountValue = couponModel.discountValue;
 
-                                lst_coupons.Items.Add(couponModel.code);
+                                lst_coupons.Items.Add(couponModel.name);
                                 selectedCoupons.Add(ci);
                                 refreshTotalValue();
                             }
@@ -827,7 +827,8 @@ namespace POS.View.sales
                                 if (index == -1)//item doesn't exist in bill
                                 {
                                     // get item units
-                                    itemUnits = await itemUnitModel.GetItemUnits(itemId);
+                                    itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
+                                    //itemUnits = await itemUnitModel.GetItemUnits(itemId);
                                     //get item from list
                                     item = items.ToList().Find(i => i.itemId == itemId);
 
@@ -1427,7 +1428,7 @@ namespace POS.View.sales
             if (item != null)
             {
                 // get item units
-                itemUnits = MainWindow.InvoiceGlobalItemUnitsList.Where(a => a.itemId == item.itemId).ToList();
+                itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 decimal itemTax = 0;
                 if (MainWindow.itemsTax_bool == true)
                 {
@@ -1446,6 +1447,7 @@ namespace POS.View.sales
                     // create new row in bill details data grid
                     if (index == -1)//item doesn't exist in bill
                     {
+                        //ItemUnit unit1 = barcodesList.ToList().Find(c => c.barcode == tb_barcode.Text.Trim());
                         decimal price = 0;
                         if (MainWindow.itemsTax_bool == true)
                         {
@@ -1467,7 +1469,7 @@ namespace POS.View.sales
                         }
                         else
                             offerId = null;
-                        addRowToBill(item.name, itemId, defaultsaleUnit.mainUnit, defaultsaleUnit.itemUnitId, 1, price,price, itemTax,item.offerId,discountType,discountValue,basicPrice);
+                        addRowToBill(item.name, itemId, defaultsaleUnit.unitName, (int)defaultsaleUnit.itemUnitId, 1, price,price, itemTax,item.offerId,discountType,discountValue,basicPrice);
                     }
                     else // item exist prevoiusly in list
                     {
@@ -2616,6 +2618,7 @@ namespace POS.View.sales
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_items w = new wd_items();
                     w.CardType = "order";
+               
                     w.ShowDialog();
                     if (w.isActive)
                     {
