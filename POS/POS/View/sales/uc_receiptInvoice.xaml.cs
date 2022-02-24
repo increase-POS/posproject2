@@ -1097,7 +1097,7 @@ namespace POS.View
                 if (defaultsaleUnit != null)
                 {
                     decimal price = 0;
-                    decimal basicPrice = (decimal)item.price;
+                    decimal basicPrice = (decimal)defaultsaleUnit.basicPrice;
                     if (MainWindow.itemsTax_bool == true)
                         price = (decimal)defaultsaleUnit.priceTax;
                     else
@@ -3207,7 +3207,7 @@ namespace POS.View
                             if (unit1.itemId != 0)
                             {
                                 decimal price = 0;
-                                decimal basicPrice = (decimal)unit1.price;
+                                decimal basicPrice = (decimal)unit1.basicPrice;
                                 if (MainWindow.itemsTax_bool == true)
                                     price = (decimal)unit1.priceTax;
                                 else

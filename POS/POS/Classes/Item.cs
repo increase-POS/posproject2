@@ -51,6 +51,7 @@ namespace POS.Classes
         public Nullable<int> unitId { get; set; }
         public string unitName { get; set; }
         public Nullable<decimal> price { get; set; }
+        public Nullable<decimal> basicPrice { get; set; }
         //offer
         public Nullable<decimal> desPrice { get; set; }
         public Nullable<int> isNew { get; set; }
