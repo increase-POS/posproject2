@@ -8017,8 +8017,9 @@ namespace POS_Server.Controllers
 
                                                           ( C.transType != "o" && C.transType != "c" 
                                                             && C.processType != "balance" && C.processType != "box" &&
-                                                            C.processType != "inv" && C.processType != "card" 
+                                                            C.processType != "inv" && C.processType != "card" && C.processType != "cheque" && C.processType != "doc"
                                                             && C.posId== closrow.posId
+                                                            && (C.side=="bn"?C.isConfirm==1:true)
                                                             && C.updateDate>=openrow.updateDate && C.updateDate<=closrow.updateDate)
                                                             ).OrderBy(X=>X.updateDate).ToList();
 
@@ -8048,7 +8049,7 @@ namespace POS_Server.Controllers
                             }
 
                         }
-
+                        cachlist = cachlist.Where(X => X.side == "p"?(X.isConfirm==1 && X.isConfirm2==1) : true).ToList();
 
                         return TokenManager.GenerateToken(cachlist);
 
