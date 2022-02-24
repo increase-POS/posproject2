@@ -90,6 +90,7 @@ namespace POS.View.reports
                 if (!MainWindow.invoiceTax_bool.Value)
                 {
                     bdr_invoice.Visibility = Visibility.Collapsed;
+                    bdr_item.Margin = new Thickness(10, 5, 0, -1);
                     bdr_item.Visibility = Visibility.Visible;
                     Btn_item_Click(btn_item, null);
                 }
@@ -97,12 +98,14 @@ namespace POS.View.reports
                 {
                     bdr_invoice.Visibility = Visibility.Visible;
                     bdr_item.Visibility = Visibility.Collapsed;
+                    bdr_item.Margin = new Thickness(0, 5, 0, -1);
                     Btn_invoice_Click(btn_invoice, null);
                 }
                 else
                 {
                     bdr_invoice.Visibility = Visibility.Visible;
                     bdr_item.Visibility = Visibility.Visible;
+                    bdr_item.Margin = new Thickness(0, 5, 0, -1);
                     Btn_invoice_Click(btn_invoice, null);
                 }
 
@@ -194,7 +197,7 @@ namespace POS.View.reports
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             ////invoice
             col_invQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
-            col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");/////////////////////
+            col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_taxOnInvoice.Header = MainWindow.resourcemanager.GetString("trTaxValue");
             col_invTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
             col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
@@ -206,7 +209,7 @@ namespace POS.View.reports
             col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trTaxValue");
             col_itemTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
             col_itemsTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
-            col_totalNetItem.Header = MainWindow.resourcemanager.GetString("trTotalPrice");
+            col_totalNetItem.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
             //////////////////////////////////////////////////////////////////////////
 
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
