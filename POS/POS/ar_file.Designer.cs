@@ -6965,6 +6965,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to المستلمات.
+        /// </summary>
+        internal static string trReceipts {
+            get {
+                return ResourceManager.GetString("trReceipts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to سند قبض.
         /// </summary>
         internal static string trReceiptVoucher {

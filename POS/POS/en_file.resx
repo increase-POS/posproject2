@@ -3343,4 +3343,7 @@ Please add Email in setting</value>
   <data name="trRecepients" xml:space="preserve">
     <value>Recepients</value>
   </data>
+  <data name="trReceipts" xml:space="preserve">
+    <value>Receipts</value>
+  </data>
 </root>

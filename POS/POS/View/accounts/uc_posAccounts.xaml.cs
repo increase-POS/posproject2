@@ -80,7 +80,7 @@ namespace POS.View.accounts
             //MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_state, MainWindow.resourcemanager.GetString("trStateHint"));
 
             chk_deposit.Content = MainWindow.resourcemanager.GetString("trDeposits");
-            chk_receive.Content = MainWindow.resourcemanager.GetString("trRecepients");
+            chk_receive.Content = MainWindow.resourcemanager.GetString("trReceipts");
 
             dg_posAccounts.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_posAccounts.Columns[1].Header = MainWindow.resourcemanager.GetString("trCreator");

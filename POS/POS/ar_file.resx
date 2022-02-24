@@ -3322,4 +3322,7 @@
   <data name="trRecepients" xml:space="preserve">
     <value>المستلمات</value>
   </data>
+  <data name="trReceipts" xml:space="preserve">
+    <value>المستلمات</value>
+  </data>
 </root>
