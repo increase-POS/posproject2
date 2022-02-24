@@ -43,7 +43,7 @@ namespace POS.View.reports
             }
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
+        {//load
             try
             {
                 #region translate
@@ -60,6 +60,10 @@ namespace POS.View.reports
                 translate();
                 #endregion
 
+                if ((!MainWindow.invoiceTax_bool.Value) && (!MainWindow.itemsTax_bool.Value))
+                    bdr_taxSales.Visibility = Visibility.Hidden;
+                else
+                    bdr_taxSales.Visibility = Visibility.Visible;
             }
             catch (Exception ex)
             {
@@ -84,6 +88,9 @@ namespace POS.View.reports
             txt_fundHint.Text = MainWindow.resourcemanager.GetString("trBranchPosHint");
             txt_profitInfo.Text = MainWindow.resourcemanager.GetString("trProfits");
             txt_profitHint.Text = MainWindow.resourcemanager.GetString("trInvoiceItemHint");
+
+            txt_taxSalesInfo.Text = MainWindow.resourcemanager.GetString("trTax");
+            txt_taxSalesHint.Text = MainWindow.resourcemanager.GetString("trTax") + ", " + MainWindow.resourcemanager.GetString("trInvoice") + "...";
         }
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)
@@ -202,6 +209,23 @@ namespace POS.View.reports
             try
             {
                 uc_accountClosing uc = new uc_accountClosing();
+                sc_main.Visibility = Visibility.Collapsed;
+                main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 2);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+
+        private void Btn_taxSales_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                us_saleTax uc = new us_saleTax();
                 sc_main.Visibility = Visibility.Collapsed;
                 main.Children.Add(uc);
                 Button button = sender as Button;

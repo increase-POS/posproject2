@@ -3328,4 +3328,13 @@ Please add Email in setting</value>
   <data name="trTotalInvoice" xml:space="preserve">
     <value>Total Net</value>
   </data>
+  <data name="trTaxValue" xml:space="preserve">
+    <value>Tax Value</value>
+  </data>
+  <data name="trTotalPrice" xml:space="preserve">
+    <value>Total Price</value>
+  </data>
+  <data name="trTotalTax" xml:space="preserve">
+    <value>Total of Tax</value>
+  </data>
 </root>

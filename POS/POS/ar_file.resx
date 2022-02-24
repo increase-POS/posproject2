@@ -3307,4 +3307,13 @@
   <data name="trTotalInvoice" xml:space="preserve">
     <value>اجمالي الفاتورة</value>
   </data>
+  <data name="trTaxValue" xml:space="preserve">
+    <value>قيمة الضريبة</value>
+  </data>
+  <data name="trTotalPrice" xml:space="preserve">
+    <value>إجمالي السعر</value>
+  </data>
+  <data name="trTotalTax" xml:space="preserve">
+    <value>إجمالي الضريبة</value>
+  </data>
 </root>

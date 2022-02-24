@@ -8549,6 +8549,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tax Value.
+        /// </summary>
+        internal static string trTaxValue {
+            get {
+                return ResourceManager.GetString("trTaxValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Text1.
         /// </summary>
         internal static string trText1 {
@@ -8765,6 +8774,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Price.
+        /// </summary>
+        internal static string trTotalPrice {
+            get {
+                return ResourceManager.GetString("trTotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Purchases.
         /// </summary>
         internal static string trTotalPurchases {
@@ -8788,6 +8806,15 @@ namespace POS {
         internal static string trTotalSales {
             get {
                 return ResourceManager.GetString("trTotalSales", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total of Tax.
+        /// </summary>
+        internal static string trTotalTax {
+            get {
+                return ResourceManager.GetString("trTotalTax", resourceCulture);
             }
         }
         
