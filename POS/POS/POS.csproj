@@ -296,6 +296,7 @@
     <Compile Include="converters\agentTypeConverter.cs" />
     <Compile Include="converters\BooleanReverseConverter.cs" />
     <Compile Include="converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="converters\closingDescriptonConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
@@ -304,6 +305,7 @@
     <Compile Include="converters\discountTypeConverter.cs" />
     <Compile Include="converters\enabledCouponConverter.cs" />
     <Compile Include="converters\expiredDateConverter.cs" />
+    <Compile Include="converters\getDateFrameConveter.cs" />
     <Compile Include="converters\inventoryTypeConverter.cs" />
     <Compile Include="converters\invoiceStatusConverter.cs" />
     <Compile Include="converters\invoiceTypeConverter.cs" />
@@ -325,6 +327,7 @@
     <Compile Include="converters\sectionFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
     <Compile Include="converters\TaxVisibilityConverter.cs" />
+    <Compile Include="converters\transTypeClosingConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="converters\unlimitedCouponConverter.cs" />
@@ -687,9 +690,6 @@
     <Compile Include="View\windows\wd_multiplePayment.xaml.cs">
       <DependentUpon>wd_multiplePayment.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\windows\wd_notes.xaml.cs">
-      <DependentUpon>wd_notes.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\windows\wd_notifications.xaml.cs">
       <DependentUpon>wd_notifications.xaml</DependentUpon>
     </Compile>
@@ -737,6 +737,9 @@
     </Compile>
     <Compile Include="View\windows\wd_taxSetting.xaml.cs">
       <DependentUpon>wd_taxSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_transBetweenOpenClose.xaml.cs">
+      <DependentUpon>wd_transBetweenOpenClose.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_transfers.xaml.cs">
       <DependentUpon>wd_transfers.xaml</DependentUpon>
@@ -1275,10 +1278,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\windows\wd_notes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="View\windows\wd_notifications.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1340,6 +1339,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_taxSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\windows\wd_transBetweenOpenClose.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
