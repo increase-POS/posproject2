@@ -531,15 +531,17 @@ namespace POS
         {
             try
             {
-                List<SettingCls> settingsCls = await setModel.GetAll();
-                List<SetValues> settingsValues = await valueModel.GetAll();
-                SettingCls set = new SettingCls();
+               
+               // List<SettingCls> settingsCls = await setModel.GetAll();
+              //  List<SetValues> settingsValues = await valueModel.GetAll();
+                List<SetValues> settingsValues= await valueModel.GetBySetvalNote("tax");
+            //    SettingCls set = new SettingCls();
                 SetValues setV = new SetValues();
 
             #region get invoice tax bool
             //get invoice tax bool
-            set = settingsCls.Where(s => s.name == "invoiceTax_bool").FirstOrDefault<SettingCls>();
-            setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+         //   set = settingsCls.Where(s => s.name == "invoiceTax_bool").FirstOrDefault<SettingCls>();
+            setV = settingsValues.Where(i => i.name == "invoiceTax_bool").FirstOrDefault();
             if (setV != null)
                 invoiceTax_bool = bool.Parse(setV.value);
             else
@@ -549,8 +551,9 @@ namespace POS
 
             #region  get invoice tax decimal
             //get invoice tax decimal
-            set = settingsCls.Where(s => s.name == "invoiceTax_decimal").FirstOrDefault<SettingCls>();
-            setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+          //  set = settingsCls.Where(s => s.name == "invoiceTax_decimal").FirstOrDefault<SettingCls>();
+
+            setV = settingsValues.Where(i => i.name == "invoiceTax_decimal").FirstOrDefault();
             if (setV != null)
                 invoiceTax_decimal = decimal.Parse(setV.value);
             else
@@ -559,8 +562,8 @@ namespace POS
 
             #region  get item tax bool
             //get item tax bool
-            set = settingsCls.Where(s => s.name == "itemsTax_bool").FirstOrDefault<SettingCls>();// itemsTax_bool
-            setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+          //  set = settingsCls.Where(s => s.name == "itemsTax_bool").FirstOrDefault<SettingCls>();// itemsTax_bool
+            setV = settingsValues.Where(i => i.name == "itemsTax_bool").FirstOrDefault();
             if (setV != null)
                 itemsTax_bool = bool.Parse(setV.value);
             else
@@ -570,13 +573,13 @@ namespace POS
 
             #region get item tax decimal
             
-            //get item tax decimal
-            set = settingsCls.Where(s => s.name == "itemsTax_decimal").FirstOrDefault<SettingCls>();
-            setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
-            if (setV != null)
-                itemsTax_decimal = decimal.Parse(setV.value);
-            else
-                itemsTax_decimal = 0;
+            ////get item tax decimal
+            //set = settingsCls.Where(s => s.name == "itemsTax_decimal").FirstOrDefault<SettingCls>();
+            //setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+            //if (setV != null)
+            //    itemsTax_decimal = decimal.Parse(setV.value);
+            //else
+            //    itemsTax_decimal = 0;
           
             #endregion
 
