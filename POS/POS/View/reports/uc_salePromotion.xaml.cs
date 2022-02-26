@@ -182,6 +182,9 @@ namespace POS.View.reports
             col_offersTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
             col_offers.Header = MainWindow.resourcemanager.GetString("trOffer");
             col_item.Header = MainWindow.resourcemanager.GetString("trItem");
+            col_price.Header = MainWindow.resourcemanager.GetString("trPrice"); 
+             
+
             col_offerCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_itQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
@@ -510,6 +513,7 @@ namespace POS.View.reports
             col_offersValue.Visibility = Visibility.Hidden;
             col_offersTotalValue.Visibility = Visibility.Hidden;
             col_couponTotalValue.Visibility = Visibility.Hidden;
+            col_price.Visibility = Visibility.Hidden;
         }
         
         private void btn_coupons_Click(object sender, RoutedEventArgs e)
@@ -578,11 +582,13 @@ namespace POS.View.reports
                 col_offersType.Visibility = Visibility.Visible;
                 col_offersValue.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
+                col_price.Visibility = Visibility.Visible;
                 col_itQuantity.Visibility = Visibility.Visible;
                 col_offersTotalValue.Visibility = Visibility.Visible;
                 col_total.Visibility = Visibility.Visible;
+     
 
-               
+
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

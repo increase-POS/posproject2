@@ -325,6 +325,8 @@
                         <DataGridTextColumn x:Name="col_coupoValue" Width="*" Header="Value" Binding="{Binding CopdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_couponTotalValue" Width="*" Header="Discount Amount" Binding="{Binding couponTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_item" Width="*" Header="Item" Binding="{Binding ITitemUnitName1}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding price ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
+
                         <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="QTY" Binding="{Binding ITquantity}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offers" Width="*" Header="Offer" Binding="{Binding Oname}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_offerCode" Width="*" Header="Code" Binding="{Binding Ocode}" Visibility="Visible"/>
