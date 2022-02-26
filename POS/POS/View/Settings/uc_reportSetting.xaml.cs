@@ -172,7 +172,10 @@ namespace POS.View.Settings
 
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
             txt_printHeader.Text = MainWindow.resourcemanager.GetString("trPrintHeader");
-
+            txt_itemsTaxNote.Text= MainWindow.resourcemanager.GetString("trItemsTaxNote");
+            txt_salesInvoiceNote.Text = MainWindow.resourcemanager.GetString("trSalesInvoiceNote");
+            txt_itemsTaxNoteHint.Text = "";// MainWindow.resourcemanager.GetString("trItemsTaxNote");
+            txt_salesInvoiceNoteHint.Text = "";// MainWindow.resourcemanager.GetString("trSalesInvoiceNote");
         }
         private int fillPrintHeader()
         {
@@ -524,10 +527,11 @@ namespace POS.View.Settings
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_notes w = new wd_notes();
-
-             //   w.note = "Test note...";
-               itemtax_note_row= printList.Where(X => X.name == "itemtax_note").FirstOrDefault();
+                w.maxLength = 100;
+                //   w.note = "Test note...";
+                itemtax_note_row = printList.Where(X => X.name == "itemtax_note").FirstOrDefault();
                 itemtax_note = itemtax_note_row.value;
+            
                 w.note=itemtax_note;
                 w.ShowDialog();
                 if (w.isOk)
@@ -574,6 +578,7 @@ namespace POS.View.Settings
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_notes w = new wd_notes();
+                w.maxLength = 100;
                 sales_invoice_note_row = printList.Where(X => X.name == "sales_invoice_note").FirstOrDefault();
                 sales_invoice_note  = sales_invoice_note_row.value;
                 w.note = sales_invoice_note;

@@ -3334,4 +3334,10 @@
   <data name="trTo" xml:space="preserve">
     <value>إلى</value>
   </data>
+  <data name="trItemsTaxNote" xml:space="preserve">
+    <value>ملاحظة ضريبة المواد</value>
+  </data>
+  <data name="trSalesInvoiceNote" xml:space="preserve">
+    <value>ملاحظة فاتورة المبيعات</value>
+  </data>
 </root>

@@ -4615,6 +4615,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Items Tax Note.
+        /// </summary>
+        internal static string trItemsTaxNote {
+            get {
+                return ResourceManager.GetString("trItemsTaxNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item storage.
         /// </summary>
         internal static string trItemStorage {
@@ -7447,6 +7456,15 @@ namespace POS {
         internal static string trSalesInvoice {
             get {
                 return ResourceManager.GetString("trSalesInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Sales Invoice Note.
+        /// </summary>
+        internal static string trSalesInvoiceNote {
+            get {
+                return ResourceManager.GetString("trSalesInvoiceNote", resourceCulture);
             }
         }
         

@@ -22,6 +22,7 @@ namespace POS.View.windows
     {
         public bool isOk;
         public string note;
+        public int maxLength=500;
         public wd_notes()
         {
             try
@@ -45,6 +46,7 @@ namespace POS.View.windows
             try
             {
                     SectionData.StartAwait(grid_main);
+                tb_notes.MaxLength = maxLength;
 
                 #region translate
 

@@ -3355,4 +3355,10 @@ Please add Email in setting</value>
   <data name="trTo" xml:space="preserve">
     <value>To</value>
   </data>
+  <data name="trItemsTaxNote" xml:space="preserve">
+    <value>Items Tax Note</value>
+  </data>
+  <data name="trSalesInvoiceNote" xml:space="preserve">
+    <value> Sales Invoice Note</value>
+  </data>
 </root>
