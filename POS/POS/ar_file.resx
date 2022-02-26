@@ -3325,4 +3325,13 @@
   <data name="trReceipts" xml:space="preserve">
     <value>المستلمات</value>
   </data>
+  <data name="trTime" xml:space="preserve">
+    <value>الوقت</value>
+  </data>
+  <data name="trFrom" xml:space="preserve">
+    <value>من</value>
+  </data>
+  <data name="trTo" xml:space="preserve">
+    <value>إلى</value>
+  </data>
 </root>

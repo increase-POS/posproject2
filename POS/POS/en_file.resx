@@ -3346,4 +3346,13 @@ Please add Email in setting</value>
   <data name="trReceipts" xml:space="preserve">
     <value>Receipts</value>
   </data>
+  <data name="trTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="trFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="trTo" xml:space="preserve">
+    <value>To</value>
+  </data>
 </root>

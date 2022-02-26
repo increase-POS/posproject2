@@ -3913,6 +3913,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        internal static string trFrom {
+            get {
+                return ResourceManager.GetString("trFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to From Branch.
         /// </summary>
         internal static string trFromBranch {
@@ -8720,11 +8729,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time.
+        /// </summary>
+        internal static string trTime {
+            get {
+                return ResourceManager.GetString("trTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title.
         /// </summary>
         internal static string trTitle {
             get {
                 return ResourceManager.GetString("trTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        internal static string trTo {
+            get {
+                return ResourceManager.GetString("trTo", resourceCulture);
             }
         }
         

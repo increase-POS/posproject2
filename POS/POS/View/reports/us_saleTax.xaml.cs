@@ -114,8 +114,8 @@ namespace POS.View.reports
             }
             catch (Exception ex)
             {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -424,41 +424,6 @@ namespace POS.View.reports
 
         private void fillRowChart()
         {
-            #region old
-            //MyAxis.Labels = new List<string>();
-            //List<string> names = new List<string>();
-            //List<int> ids = new List<int>();
-            //List<int> otherIds = new List<int>();
-
-            //List<ItemUnitInvoiceProfit> resultList = new List<ItemUnitInvoiceProfit>();
-            //SeriesCollection rowChartData = new SeriesCollection();
-
-            //var tempName = taxTemp.GroupBy(s => new { s.branchId }).Select(s => new
-            //{
-            //    id = s.Key,
-            //    name = s.FirstOrDefault().branchName
-            //});
-            //names.AddRange(tempName.Select(nn => nn.name.ToString()));
-            //ids.AddRange(tempName.Select(mm => mm.id.branchId.Value));
-
-            ////LineSeries[] ls = new LineSeries[names.Count];
-            //int x = 6;
-            //if (names.Count() < 6) x = names.Count();
-            //for (int i = 0; i < x; i++)
-            //{
-            //    drawPoints(names[i], ids[i], rowChartData, 'n', otherIds);
-            //}
-            ////others
-            //if (names.Count() > 6)
-            //{
-            //    for (int i = names.Count - x; i < names.Count; i++)
-            //        otherIds.Add(ids[i]);
-            //    drawPoints(MainWindow.resourcemanager.GetString("trOthers"), 0, rowChartData, 'o', otherIds);
-            //}
-            ////rowChartData.AddRange(ls);
-            //DataContext = this;
-            //rowChart.Series = rowChartData;
-            #endregion
             int endYear = DateTime.Now.Year;
             int startYear = endYear - 1;
             int startMonth = DateTime.Now.Month;
@@ -484,9 +449,9 @@ namespace POS.View.reports
             names.AddRange(tempName.Select(nn => nn.Name.ToString()));
             string title = "";
             if (selectedTab == 0)
-                title = MainWindow.resourcemanager.GetString("trInvoice");
+                title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trInvoice");
             else if(selectedTab == 1)
-               title = MainWindow.resourcemanager.GetString("trItems");
+               title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -566,11 +531,11 @@ namespace POS.View.reports
             #region group data by selected tab
             if (selectedTab == 0)
             {
-                title = MainWindow.resourcemanager.GetString("trInvoice");
+                title = MainWindow.resourcemanager.GetString("trTax") +" / "+ MainWindow.resourcemanager.GetString("trInvoice");
             }
             else if (selectedTab == 1)
             {
-                title = MainWindow.resourcemanager.GetString("trItems");
+                title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
             }
             #endregion
 
@@ -599,7 +564,7 @@ namespace POS.View.reports
             }
             else
             {
-                int count = 0;
+                int count = 0; 
                 if (selectedTab == 0)
                 {
                     var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
@@ -626,9 +591,9 @@ namespace POS.View.reports
                 List<decimal> cS = new List<decimal>();
 
                 List<string> titles = new List<string>()
-            {
-               MainWindow.resourcemanager.GetString("trProfits")
-            };
+                {
+                   title
+                };
                 int x = 6;
                 if (count <= 6) x = count;
                 for (int i = 0; i < x; i++)

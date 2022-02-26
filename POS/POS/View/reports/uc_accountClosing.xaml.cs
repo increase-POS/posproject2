@@ -1,4 +1,8 @@
-﻿using System;
+﻿using LiveCharts.Helpers;
+using LiveCharts.Wpf;
+using POS.Classes;
+using POS.View.windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,19 +24,381 @@ namespace POS.View.reports
     /// </summary>
     public partial class uc_accountClosing : UserControl
     {
+        IEnumerable<POSOpenCloseModel> closings;
+        IEnumerable<POSOpenCloseModel> closingTemp = null;
+        //IEnumerable<POSOpenCloseModel> taxTab;
+        Statistics statisticsModel = new Statistics();
+        string searchText = "";
+
+        private static uc_accountClosing _instance;
+
+        public static uc_accountClosing Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new uc_accountClosing();
+                return _instance;
+            }
+        }
         public uc_accountClosing()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
+                #region translate
+                if (MainWindow.lang.Equals("en"))
+                {
+                    //MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.LeftToRight;
+                }
+                else
+                {
+                    //MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
+                    grid_main.FlowDirection = FlowDirection.RightToLeft;
+                }
+                translate();
+                #endregion
+
+                txt_search.Text = "";
+
+                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_closing.Tag.ToString());
+
+                await Search();
+
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
+        #region methods
+        private void translate()
+        {
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            //MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+
+            //chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+
+            //tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
+            //tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
+            //////////////////////////////////grid//////////////////////////////////////
+            //col_invNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            //col_Date.Header = MainWindow.resourcemanager.GetString("trDate");
+            //col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
+            //////invoice
+            //col_invQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+            //col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
+            //col_taxOnInvoice.Header = MainWindow.resourcemanager.GetString("trTaxValue");
+            //col_invTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
+            //col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
+            //////item
+            //col_itemunitName.Header = MainWindow.resourcemanager.GetString("trItemUnit");
+            //col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trOnItem");
+            //col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
+            //col_itemsQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
+            //col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trTaxValue");
+            //col_itemTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
+            //col_itemsTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
+            //col_totalNetItem.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
+            ////////////////////////////////////////////////////////////////////////////
+
+            //tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            //tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            //tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            //tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
+            //txt_total.Text = MainWindow.resourcemanager.GetString("trTotalTax");
+        }
+        async Task Search()
+        {
+            if (closings is null)
+                await RefreshClosingList();
+
+            searchText = txt_search.Text.ToLower();
+
+            closingTemp = closings;
+            //if (selectedTab == 0)
+            //    taxTab = taxes.GroupBy(t => t.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
+            //else
+            //    taxTab = taxes;
+
+            //taxTemp = taxTab.Where(t =>
+            ////start date
+            //(dp_startDate.SelectedDate != null ? t.updateDate >= dp_startDate.SelectedDate : true)
+            //&&
+            ////end date
+            //(dp_endDate.SelectedDate != null ? t.updateDate <= dp_endDate.SelectedDate : true)
+            //&&
+            ////branchID
+            //(cb_branches.SelectedIndex != -1 ? t.branchId == Convert.ToInt32(cb_branches.SelectedValue) : true)
+            //);
+
+            RefreshClosingView();
+            //fillBranches();
+            fillColumnChart();
+            fillRowChart();
+        }
+
+        private void RefreshClosingView()
+        {
+            dgClosing.ItemsSource = closingTemp;
+            txt_count.Text = closingTemp.Count().ToString();
+
+            //decimal total = 0;
+
+            //if (selectedTab == 0)
+            //    total = taxTemp.Select(b => b.invTaxVal.Value).Sum();
+            //else
+            //    total = taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum();
+
+            //tb_total.Text = SectionData.DecTostring(total);
+        }
+
+
+        async Task<IEnumerable<POSOpenCloseModel>> RefreshClosingList()
+        {
+            closings = await statisticsModel.GetPosCashOpenClose(MainWindow.branchID.Value, MainWindow.userID.Value);
+            return closings;
+        }
+
+        #endregion
+
+        #region charts
+
+        private void fillRowChart()
+        {
+          //  int endYear = DateTime.Now.Year;
+          //  int startYear = endYear - 1;
+          //  int startMonth = DateTime.Now.Month;
+          //  int endMonth = startMonth;
+          //  if (dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)
+          //  {
+          //      startYear = dp_startDate.SelectedDate.Value.Year;
+          //      endYear = dp_endDate.SelectedDate.Value.Year;
+          //      startMonth = dp_startDate.SelectedDate.Value.Month;
+          //      endMonth = dp_endDate.SelectedDate.Value.Month;
+          //  }
+
+          //  MyAxis.Labels = new List<string>();
+          //  List<string> names = new List<string>();
+          //  List<CashTransferSts> resultList = new List<CashTransferSts>();
+
+          //  SeriesCollection rowChartData = new SeriesCollection();
+
+          //  var tempName = taxTemp.GroupBy(s => new { s.branchId }).Select(s => new
+          //  {
+          //      Name = s.FirstOrDefault().updateDate,
+          //  });
+          //  names.AddRange(tempName.Select(nn => nn.Name.ToString()));
+          //  string title = "";
+          //  if (selectedTab == 0)
+          //      title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trInvoice");
+          //  else if (selectedTab == 1)
+          //      title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
+
+          //  List<string> lable = new List<string>();
+          //  SeriesCollection columnChartData = new SeriesCollection();
+          //  List<decimal> taxLst = new List<decimal>();
+
+          //  if (endYear - startYear <= 1)
+          //  {
+          //      for (int year = startYear; year <= endYear; year++)
+          //      {
+          //          for (int month = startMonth; month <= 12; month++)
+          //          {
+          //              var firstOfThisMonth = new DateTime(year, month, 1);
+          //              var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
+          //              if (selectedTab == 0)
+          //              {
+          //                  var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(c => c.invTaxVal.Value).Sum();
+
+          //                  taxLst.Add(drawTax);
+          //              }
+          //              if (selectedTab == 1)
+          //              {
+          //                  var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(c => c.itemUnitTaxwithQTY.Value).Sum();
+
+          //                  taxLst.Add(drawTax);
+          //              }
+          //              MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
+
+          //              if (year == endYear && month == endMonth)
+          //              {
+          //                  break;
+          //              }
+          //              if (month == 12)
+          //              {
+          //                  startMonth = 1;
+          //                  break;
+          //              }
+          //          }
+          //      }
+          //  }
+          //  else
+          //  {
+          //      for (int year = startYear; year <= endYear; year++)
+          //      {
+          //          var firstOfThisYear = new DateTime(year, 1, 1);
+          //          var firstOfNextMYear = firstOfThisYear.AddYears(1);
+          //          if (selectedTab == 0)
+          //          {
+          //              var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Select(c => c.invTaxVal.Value).Sum();
+          //              taxLst.Add(drawTax);
+          //          }
+          //          if (selectedTab == 1)
+          //          {
+          //              var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Select(c => c.itemUnitTaxwithQTY.Value).Sum();
+          //              taxLst.Add(drawTax);
+          //          }
+          //          MyAxis.Labels.Add(year.ToString());
+          //      }
+          //  }
+          //  rowChartData.Add(
+          //new LineSeries
+          //{
+          //    Values = taxLst.AsChartValues(),
+          //    Title = title
+          //}); ;
+
+          //  DataContext = this;
+          //  rowChart.Series = rowChartData;
+        }
+
+        private void fillColumnChart()
+        {
+            //axcolumn.Labels = new List<string>();
+            //List<string> names = new List<string>();
+            //List<ItemTransferInvoiceTax> resultList = new List<ItemTransferInvoiceTax>();
+            //string title = "";
+
+            //#region group data by selected tab
+            //if (selectedTab == 0)
+            //{
+            //    title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trInvoice");
+            //}
+            //else if (selectedTab == 1)
+            //{
+            //    title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
+            //}
+            //#endregion
+
+            //List<string> lable = new List<string>();
+            //SeriesCollection columnChartData = new SeriesCollection();
+            //List<decimal> tax = new List<decimal>();
+
+            //if ((chk_allBranches.IsChecked == false) && (cb_branches.SelectedIndex != -1))
+            //{
+            //    if (selectedTab == 0)
+            //        tax.Add(taxTemp.Select(b => b.invTaxVal.Value).Sum());
+            //    if (selectedTab == 1)
+            //        tax.Add(taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum());
+
+            //    names.AddRange(taxTemp.Where(nn => nn.branchId == (int)cb_branches.SelectedValue).Select(nn => nn.branchName));
+            //    axcolumn.Labels.Add(names.ToList().Skip(0).FirstOrDefault());
+
+            //    columnChartData.Add(
+            //      new StackedColumnSeries
+            //      {
+            //          Values = tax.AsChartValues(),
+            //          DataLabels = true,
+            //          Title = title
+            //      });
+
+            //}
+            //else
+            //{
+            //    int count = 0;
+            //    if (selectedTab == 0)
+            //    {
+            //        var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
+            //        {
+            //            invTaxVal = t.Sum(p => decimal.Parse(SectionData.DecTostring(p.invTaxVal))),
+            //            branchName = t.FirstOrDefault().branchName
+            //        });
+            //        names.AddRange(temp.Select(nn => nn.branchName));
+            //        tax.AddRange(temp.Select(nn => nn.invTaxVal));
+            //        count = names.Count();
+            //    }
+            //    if (selectedTab == 1)
+            //    {
+            //        var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
+            //        {
+            //            itemUnitTaxwithQTY = t.Sum(p => decimal.Parse(SectionData.DecTostring(p.itemUnitTaxwithQTY))),
+            //            branchName = t.FirstOrDefault().branchName
+            //        });
+            //        names.AddRange(temp.Select(nn => nn.branchName));
+            //        tax.AddRange(temp.Select(nn => nn.itemUnitTaxwithQTY));
+            //        count = names.Count();
+            //    }
+
+            //    List<decimal> cS = new List<decimal>();
+
+            //    List<string> titles = new List<string>()
+            //    {
+            //       title
+            //    };
+            //    int x = 6;
+            //    if (count <= 6) x = count;
+            //    for (int i = 0; i < x; i++)
+            //    {
+            //        cS.Add(tax.ToList().Skip(i).FirstOrDefault());
+            //        axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            //    }
+
+            //    if (count > 6)
+            //    {
+            //        decimal taxSum = 0;
+            //        for (int i = 6; i < count; i++)
+            //        {
+            //            taxSum = taxSum + tax.ToList().Skip(i).FirstOrDefault();
+            //        }
+            //        if (!((taxSum == 0)))
+            //        {
+            //            cS.Add(taxSum);
+
+            //            axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+            //        }
+            //    }
+            //    columnChartData.Add(
+            //    new StackedColumnSeries
+            //    {
+            //        Values = cS.AsChartValues(),
+            //        Title = titles[0],
+            //        DataLabels = true,
+            //    });
+            //}
+            //DataContext = this;
+            //cartesianChart.Series = columnChartData;
+        }
+
+        #endregion
+
+        #region events
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {//unload
-
+            GC.Collect();
         }
 
         private void Cb_closingBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -54,7 +420,9 @@ namespace POS.View.reports
         {//refresh
 
         }
+        #endregion
 
+        #region reports
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
 
@@ -74,5 +442,139 @@ namespace POS.View.reports
         {//preview
 
         }
+        #endregion
+
+        #region dataGrid events
+        private void moveRowinDatagrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                    if (vis is DataGridRow)
+                    {
+                        POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
+
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_transBetweenOpenClose w = new wd_transBetweenOpenClose();
+                        w.openCashTransID = row.openCashTransId.Value;
+                        w.closeCashTransID = row.cashTransId;
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+
+                    }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        int cashTransID = 0, openCashTransID = 0;
+        private void printRowinDatagrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                    if (vis is DataGridRow)
+                    {
+                        POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
+                        cashTransID = row.cashTransId;
+                        openCashTransID = row.openCashTransId.Value;
+                    }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void pdfRowinDatagrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                    if (vis is DataGridRow)
+                    {
+                        POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
+                        cashTransID = row.cashTransId;
+                        openCashTransID = row.openCashTransId.Value;
+                    }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void previewRowinDatagrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                    if (vis is DataGridRow)
+                    {
+                        POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
+                        cashTransID = row.cashTransId;
+                        openCashTransID = row.openCashTransId.Value;
+                    }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void excelRowinDatagrid(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
+                    if (vis is DataGridRow)
+                    {
+                        POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
+                        cashTransID = row.cashTransId;
+                        openCashTransID = row.openCashTransId.Value;
+                    }
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        #endregion
     }
 }
