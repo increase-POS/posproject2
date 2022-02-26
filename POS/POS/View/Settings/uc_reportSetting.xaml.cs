@@ -53,8 +53,13 @@ namespace POS.View.Settings
         List<SetValues> printList = new List<SetValues>();
 
         SetValues show_header_row = new SetValues();
-  
         string show_header;
+        SetValues itemtax_note_row = new SetValues();
+        string itemtax_note;
+        SetValues sales_invoice_note_row = new SetValues();
+        string sales_invoice_note;
+
+
 
         public class Replang
         {
@@ -76,7 +81,7 @@ namespace POS.View.Settings
                 Replang comborow = new Replang();
                 comborow.langId = reprow.valId;
                 comborow.lang = reprow.value;
-             
+
                 if (reprow.value == "ar")
                 {
                     comborow.trlang = MainWindow.resourcemanager.GetString("trArabic");
@@ -125,8 +130,10 @@ namespace POS.View.Settings
 
                 ///naji code
                 ///
-             await   fillPrintHeader();
-                await  fillRepLang();
+                await FillprintList();
+                fillPrintHeader();
+                await fillRepLang();
+
                 #region get default print count
                 await getDefaultPrintCount();
                 if (printCount != null)
@@ -143,7 +150,10 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        public async Task FillprintList()
+        {
+            printList = await setvalueModel.GetBySetvalNote("print");
+        }
         private void translate()
         {
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
@@ -164,7 +174,7 @@ namespace POS.View.Settings
             txt_printHeader.Text = MainWindow.resourcemanager.GetString("trPrintHeader");
 
         }
-        private async Task<int> fillPrintHeader()
+        private int fillPrintHeader()
         {
             cb_printHeader.DisplayMemberPath = "Text";
             cb_printHeader.SelectedValuePath = "Value";
@@ -175,7 +185,7 @@ namespace POS.View.Settings
             cb_printHeader.ItemsSource = typelist;
             cb_printHeader.SelectedIndex = 0;
 
-            await getshowHeader();
+            getshowHeader();
             if (show_header_row.value == "1")
             {
                 cb_printHeader.SelectedIndex = 0;
@@ -197,12 +207,12 @@ namespace POS.View.Settings
             printCount = settingsValues.Where(i => i.settingId == printCountId).FirstOrDefault();
 
             return printCount;
-          
+
         }
 
-        public   async Task<string> getshowHeader()
+        public string getshowHeader()
         {
-            printList = await setvalueModel.GetBySetvalNote("print");
+
             show_header_row = printList.Where(X => X.name == "show_header").FirstOrDefault();
 
             show_header = show_header_row.value;
@@ -266,7 +276,7 @@ namespace POS.View.Settings
             }
         }
 
-       
+
         private async void Btn_printCount_Click(object sender, RoutedEventArgs e)
         {//save print count
             try
@@ -277,7 +287,7 @@ namespace POS.View.Settings
                 SectionData.validateEmptyTextBox(tb_printCount, p_errorPrintCount, tt_errorPrintCount, "trEmptyPrintCount");
                 if (!tb_printCount.Text.Equals(""))
                 {
-                   
+
                     if (printCount == null)
                         printCount = new SetValues();
                     printCount.value = tb_printCount.Text;
@@ -337,8 +347,8 @@ namespace POS.View.Settings
 
         private async void Btn_saveReportlang_Click(object sender, RoutedEventArgs e)
         {
-          //  string msg = "";
-           int msg = 0;
+            //  string msg = "";
+            int msg = 0;
             if (cb_reportlang.SelectedIndex != -1)
             {
                 replangrow = replangList.Where(r => r.valId == (int)cb_reportlang.SelectedValue).FirstOrDefault();
@@ -452,7 +462,7 @@ namespace POS.View.Settings
         {
             try
             {
-                if(NumValue > 1)
+                if (NumValue > 1)
                     NumValue--;
 
             }
@@ -471,26 +481,26 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-              //  SectionData.validateEmptyComboBox(cb_serverStatus, p_errorServerStatus, tt_errorServerStatus, "trEmptyServerStatus");
+                //  SectionData.validateEmptyComboBox(cb_serverStatus, p_errorServerStatus, tt_errorServerStatus, "trEmptyServerStatus");
                 if (!cb_printHeader.Text.Equals(""))
                 {
 
-                    int res =0;
-                    show_header_row.value =  cb_printHeader.SelectedValue.ToString();
+                    int res = 0;
+                    show_header_row.value = cb_printHeader.SelectedValue.ToString();
                     res = await setvalueModel.Save(show_header_row);
 
                     //   int res = await progDetailsModel.updateIsonline(isOnline);
-                  
+
 
                     if (res > 0)
                     {
                         Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
-                         
+
                     }
                     else
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                  await  fillPrintHeader();
+                    await FillprintList();
+                    fillPrintHeader();
                     await MainWindow.Getprintparameter();
                 }
 
@@ -505,7 +515,7 @@ namespace POS.View.Settings
             }
         }
 
-        private void Btn_itemsTaxNote_Click(object sender, RoutedEventArgs e)
+        private async void Btn_itemsTaxNote_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -514,11 +524,34 @@ namespace POS.View.Settings
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_notes w = new wd_notes();
-                w.note = "Test note...";
+
+             //   w.note = "Test note...";
+               itemtax_note_row= printList.Where(X => X.name == "itemtax_note").FirstOrDefault();
+                itemtax_note = itemtax_note_row.value;
+                w.note=itemtax_note;
                 w.ShowDialog();
                 if (w.isOk)
                 {
-                    MessageBox.Show(w.note);
+                   // MessageBox.Show(w.note);
+                    //save
+                    int res = 0;
+                    itemtax_note_row.value = w.note.Trim();
+                    res = await setvalueModel.Save(itemtax_note_row);
+
+
+
+                    if (res > 0)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    await FillprintList();
+                  
+                    await MainWindow.Getprintparameter();
+
+
                 }
 
                 Window.GetWindow(this).Opacity = 1;
@@ -532,7 +565,7 @@ namespace POS.View.Settings
             }
         }
 
-        private void Btn_salesInvoiceNote_Click(object sender, RoutedEventArgs e)
+        private async void Btn_salesInvoiceNote_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -541,11 +574,30 @@ namespace POS.View.Settings
                 Window.GetWindow(this).Opacity = 0.2;
 
                 wd_notes w = new wd_notes();
-                w.note = "Test note...";
+                sales_invoice_note_row = printList.Where(X => X.name == "sales_invoice_note").FirstOrDefault();
+                sales_invoice_note  = sales_invoice_note_row.value;
+                w.note = sales_invoice_note;
                 w.ShowDialog();
                 if (w.isOk)
                 {
-                    MessageBox.Show(w.note);
+                    // MessageBox.Show(w.note);
+                    //save
+                    int res = 0;
+                    sales_invoice_note_row.value = w.note.Trim();
+                    res = await setvalueModel.Save(sales_invoice_note_row);
+
+
+                    if (res > 0)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+
+                    }
+                    else
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    await FillprintList();
+
+                    await MainWindow.Getprintparameter();
+
                 }
 
                 Window.GetWindow(this).Opacity = 1;

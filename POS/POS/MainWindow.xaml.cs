@@ -73,7 +73,7 @@ namespace POS
         internal static bool?    itemsTax_bool;
         internal static decimal? itemsTax_decimal;
         internal static string itemtax_note;
-
+        internal static string sales_invoice_note;
 
         internal static int? itemCost;
         internal static string dateFormat;
@@ -160,7 +160,7 @@ namespace POS
                 show_header = "1";
             }
             itemtax_note = printList.Where(X => X.name == "itemtax_note").FirstOrDefault().value;
-
+            sales_invoice_note = printList.Where(X => X.name == "sales_invoice_note").FirstOrDefault().value;
         }
         public static async Task GetReportlang()
         {

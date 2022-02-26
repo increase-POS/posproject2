@@ -1042,7 +1042,7 @@ namespace POS.Classes
             invoice.discountValue = disval+ manualdisval;
             invoice.discountType ="1";
 
-          //  decimal totalafterdis;
+            //  decimal totalafterdis;
             //if (invoice.total != null)
             //{
             //    totalafterdis = (decimal)invoice.total - disval;
@@ -1057,7 +1057,7 @@ namespace POS.Classes
 
             // decimal totalnet = totalafterdis + taxval;
             //  percentValue(decimal ? value, decimal ? percent);
-
+            paramarr.Add(new ReportParameter("sales_invoice_note", MainWindow.sales_invoice_note));
             paramarr.Add(new ReportParameter("Notes", (invoice.notes == null || invoice.notes == "") ? "-" : invoice.notes.Trim()));
             paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null || invoice.invNumber == "") ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
