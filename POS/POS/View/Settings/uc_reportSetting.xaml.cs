@@ -504,5 +504,59 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        private void Btn_itemsTaxNote_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+
+                wd_notes w = new wd_notes();
+                w.note = "Test note...";
+                w.ShowDialog();
+                if (w.isOk)
+                {
+                    MessageBox.Show(w.note);
+                }
+
+                Window.GetWindow(this).Opacity = 1;
+                SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_salesInvoiceNote_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                SectionData.StartAwait(grid_main);
+                Window.GetWindow(this).Opacity = 0.2;
+
+                wd_notes w = new wd_notes();
+                w.note = "Test note...";
+                w.ShowDialog();
+                if (w.isOk)
+                {
+                    MessageBox.Show(w.note);
+                }
+
+                Window.GetWindow(this).Opacity = 1;
+                SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
     }
 }
