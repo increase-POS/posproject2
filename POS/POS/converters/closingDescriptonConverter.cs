@@ -16,19 +16,19 @@ namespace POS.converters
             string transType = (string)values[0];
             string side = (string)values[1];
 
-            if (transType.Equals("o"))
-                return MainWindow.resourcemanager.GetString("trOpen");
-            else if (transType.Equals("c"))
-                return MainWindow.resourcemanager.GetString("trClose");
-            else if (transType.Equals("p"))
+           if (transType.Equals("p"))
             {
                 if ((side.Equals("bn")) || (side.Equals("p")))
                 {
-                    return MainWindow.resourcemanager.GetString("trFrom") + " " + side;//receive
+                    return MainWindow.resourcemanager.GetString("trReceiptOperation")+" "+ 
+                           MainWindow.resourcemanager.GetString("trFrom") + " " + 
+                           side;//receive
                 }
                 else if ((!side.Equals("bn")) || (!side.Equals("p")))
                 {
-                    return MainWindow.resourcemanager.GetString("trTo") + " " + side;//دفع
+                    return MainWindow.resourcemanager.GetString("trPayment")+" "+
+                           MainWindow.resourcemanager.GetString("trTo") + " " + 
+                           side;//دفع
                 }
                 else return "";
             }
@@ -36,11 +36,15 @@ namespace POS.converters
             {
                 if ((side.Equals("bn")) || (side.Equals("p")))
                 {
-                    return MainWindow.resourcemanager.GetString("trTo") + " " + side;
+                    return MainWindow.resourcemanager.GetString("trDeposit")+" "+
+                           MainWindow.resourcemanager.GetString("trTo") + " " + 
+                           side;
                 }
                 else if ((!side.Equals("bn")) || (!side.Equals("p")))
                 {
-                    return MainWindow.resourcemanager.GetString("trFrom") + " " + side;//قبض
+                    return MainWindow.resourcemanager.GetString("trReceive")+" "+
+                           MainWindow.resourcemanager.GetString("trFrom") + " " + 
+                           side;//قبض
                 }
                 else return "";
             }

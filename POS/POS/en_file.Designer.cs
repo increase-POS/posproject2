@@ -1312,11 +1312,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close Cash.
+        /// </summary>
+        internal static string trCloseCash {
+            get {
+                return ResourceManager.GetString("trCloseCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Closed.
         /// </summary>
         internal static string trClosed {
             get {
                 return ResourceManager.GetString("trClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Date.
+        /// </summary>
+        internal static string trCloseDate {
+            get {
+                return ResourceManager.GetString("trCloseDate", resourceCulture);
             }
         }
         
@@ -5647,6 +5665,33 @@ namespace POS {
         internal static string trOpen {
             get {
                 return ResourceManager.GetString("trOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Cash.
+        /// </summary>
+        internal static string trOpenCash {
+            get {
+                return ResourceManager.GetString("trOpenCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Date.
+        /// </summary>
+        internal static string trOpenDate {
+            get {
+                return ResourceManager.GetString("trOpenDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operations.
+        /// </summary>
+        internal static string trOperations {
+            get {
+                return ResourceManager.GetString("trOperations", resourceCulture);
             }
         }
         

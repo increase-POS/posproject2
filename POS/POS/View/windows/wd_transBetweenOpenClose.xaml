@@ -85,16 +85,17 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn Width="*"  Header="Process number" Binding="{Binding Path=transNum}"/>
-                        <DataGridTextColumn Width="*"  Header="Date"           Binding="{Binding Path=updateDate , StringFormat=d, Converter={StaticResource dateFrameConverter}}"/>
-                        <DataGridTextColumn Width="*"  Header="Time"           Binding="{Binding Path=updateDate , StringFormat=t}"/>
-                        <DataGridTextColumn Width="*" Header="Type" >
+                        <!--<DataGridTextColumn Width="*"  Header="Date"           Binding="{Binding Path=updateDate , StringFormat=d, Converter={StaticResource dateFrameConverter}}"/>
+                        <DataGridTextColumn Width="*"  Header="Time"           Binding="{Binding Path=updateDate , StringFormat=t}"/>-->
+                        <DataGridTextColumn Width="*"  Header="Date"           Binding="{Binding Path=updateDate , Converter={StaticResource dateFrameConverter}}"/>
+                        <!--<DataGridTextColumn Width="*" Header="Type" >
                             <DataGridTextColumn.Binding >
                                 <MultiBinding Converter="{StaticResource transTypeClosingConverter}" >
                                     <Binding Path="transType" />
                                     <Binding Path="side" />
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
-                        </DataGridTextColumn>
+                        </DataGridTextColumn>-->
                         <DataGridTextColumn Width="*"  Header="Description">
                             <DataGridTextColumn.Binding >
                                 <MultiBinding Converter="{StaticResource closingDescriptonConverter}" >

@@ -54,10 +54,10 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    if (sender != null)
+            //        SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -73,21 +73,21 @@ namespace POS.View.windows
 
                 await fillDataGrid();
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (sender != null)
+            //        SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         async Task fillDataGrid()
         {
             cashesQuery = await statisticsModel.GetTransBetweenOpenClose(openCashTransID , closeCashTransID);
-
+            cashesQuery = cashesQuery.Where(c => c.transType != "c" && c.transType != "o");
             dg_transfers.ItemsSource = cashesQuery;
         }
 
@@ -96,10 +96,8 @@ namespace POS.View.windows
             txt_title.Text = MainWindow.resourcemanager.GetString("trCashtransfers");
             dg_transfers.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo");
             dg_transfers.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
-            dg_transfers.Columns[2].Header = MainWindow.resourcemanager.GetString("trTime");
-            dg_transfers.Columns[3].Header = MainWindow.resourcemanager.GetString("trType");
-            dg_transfers.Columns[4].Header = MainWindow.resourcemanager.GetString("trDescription");
-            dg_transfers.Columns[5].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_transfers.Columns[2].Header = MainWindow.resourcemanager.GetString("trDescription");
+            dg_transfers.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

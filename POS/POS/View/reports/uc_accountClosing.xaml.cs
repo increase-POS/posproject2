@@ -26,7 +26,6 @@ namespace POS.View.reports
     {
         IEnumerable<POSOpenCloseModel> closings;
         IEnumerable<POSOpenCloseModel> closingTemp = null;
-        //IEnumerable<POSOpenCloseModel> taxTab;
         Statistics statisticsModel = new Statistics();
         string searchText = "";
 
@@ -78,7 +77,8 @@ namespace POS.View.reports
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_closing.Tag.ToString());
 
-                await Search();
+                chk_closingBranches.IsChecked = true;
+                //Chk_closingBranches_Checked(chk_closingBranches , null);
 
             //    if (sender != null)
             //        SectionData.EndAwait(grid_main);
@@ -92,44 +92,57 @@ namespace POS.View.reports
         }
 
         #region methods
+        private async void callSearch(object sender)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        void fillBranches()
+        {
+            var iulist = closings.GroupBy(g => g.branchId).Select(g => new { branchId = g.FirstOrDefault().branchId, branchName = g.FirstOrDefault().branchName }).ToList();
+            cb_closingBranches.SelectedValuePath = "branchId";
+            cb_closingBranches.DisplayMemberPath = "branchName";
+            cb_closingBranches.ItemsSource = iulist;
+        }
         private void translate()
         {
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_closingBranches, MainWindow.resourcemanager.GetString("trBranchHint"));
 
-            //chk_allBranches.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_closingBranches.Content = MainWindow.resourcemanager.GetString("trAll");
 
-            //tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
-            //tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
-            //////////////////////////////////grid//////////////////////////////////////
-            //col_invNum.Header = MainWindow.resourcemanager.GetString("trNum");
-            //col_Date.Header = MainWindow.resourcemanager.GetString("trDate");
-            //col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
-            //////invoice
-            //col_invQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
-            //col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
-            //col_taxOnInvoice.Header = MainWindow.resourcemanager.GetString("trTaxValue");
-            //col_invTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
-            //col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
-            //////item
-            //col_itemunitName.Header = MainWindow.resourcemanager.GetString("trItemUnit");
-            //col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trOnItem");
-            //col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
-            //col_itemsQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
-            //col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trTaxValue");
-            //col_itemTaxPercent.Header = MainWindow.resourcemanager.GetString("trTaxPercentage");
-            //col_itemsTotal.Header = MainWindow.resourcemanager.GetString("trTotal");
-            //col_totalNetItem.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
-            ////////////////////////////////////////////////////////////////////////////
+            tt_closing.Content = MainWindow.resourcemanager.GetString("trItems");
 
-            //tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
-            //tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
-            //tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
-            //tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
-            //tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            col_Num.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
+            col_openDate.Header = MainWindow.resourcemanager.GetString("trOpenDate");/////add
+            col_openCash.Header = MainWindow.resourcemanager.GetString("trOpenCash");/////add
+            col_closeDate.Header = MainWindow.resourcemanager.GetString("trCloseDate");////add
+            col_closeCash.Header = MainWindow.resourcemanager.GetString("trCloseCash");/////add
+            col_operation.Header = MainWindow.resourcemanager.GetString("trOperations");////add
+           
+            tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
+            tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
+            tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
+            tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
-            //txt_total.Text = MainWindow.resourcemanager.GetString("trTotalTax");
         }
         async Task Search()
         {
@@ -138,25 +151,19 @@ namespace POS.View.reports
 
             searchText = txt_search.Text.ToLower();
 
-            closingTemp = closings;
-            //if (selectedTab == 0)
-            //    taxTab = taxes.GroupBy(t => t.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
-            //else
-            //    taxTab = taxes;
-
-            //taxTemp = taxTab.Where(t =>
-            ////start date
-            //(dp_startDate.SelectedDate != null ? t.updateDate >= dp_startDate.SelectedDate : true)
-            //&&
-            ////end date
-            //(dp_endDate.SelectedDate != null ? t.updateDate <= dp_endDate.SelectedDate : true)
-            //&&
-            ////branchID
-            //(cb_branches.SelectedIndex != -1 ? t.branchId == Convert.ToInt32(cb_branches.SelectedValue) : true)
-            //);
+            closingTemp = closings.Where(t =>
+            //start date
+            (dp_closingStartDate.SelectedDate != null ? t.updateDate >= dp_closingStartDate.SelectedDate : true)
+            &&
+            //end date
+            (dp_closingEndDate.SelectedDate != null ? t.updateDate <= dp_closingEndDate.SelectedDate : true)
+            &&
+            //branchID
+            (cb_closingBranches.SelectedIndex != -1 ? t.branchId == Convert.ToInt32(cb_closingBranches.SelectedValue) : true)
+            );
 
             RefreshClosingView();
-            //fillBranches();
+            fillBranches();
             fillColumnChart();
             fillRowChart();
         }
@@ -166,14 +173,6 @@ namespace POS.View.reports
             dgClosing.ItemsSource = closingTemp;
             txt_count.Text = closingTemp.Count().ToString();
 
-            //decimal total = 0;
-
-            //if (selectedTab == 0)
-            //    total = taxTemp.Select(b => b.invTaxVal.Value).Sum();
-            //else
-            //    total = taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum();
-
-            //tb_total.Text = SectionData.DecTostring(total);
         }
 
 
@@ -401,23 +400,100 @@ namespace POS.View.reports
             GC.Collect();
         }
 
-        private void Cb_closingBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_closingBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Dp_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {//select date
-
+            callSearch(sender);
         }
 
         private void Txt_search_SelectionChanged(object sender, RoutedEventArgs e)
         {//search
+            callSearch(sender);
+        }
+
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                txt_search.Text = "";
+                searchText = "";
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private async void Chk_closingBranches_Checked(object sender, RoutedEventArgs e)
+        {//select all branches
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_closingBranches.SelectedIndex = -1;
+                cb_closingBranches.IsEnabled = false;
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
 
-        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {//refresh
+        private async void Chk_closingBranches_Unchecked(object sender, RoutedEventArgs e)
+        {//unselect all branches
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                cb_closingBranches.IsEnabled = true;
+
+                await Search();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         #endregion
@@ -550,6 +626,8 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+      
 
         private void excelRowinDatagrid(object sender, RoutedEventArgs e)
         {

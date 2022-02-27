@@ -3340,4 +3340,19 @@
   <data name="trSalesInvoiceNote" xml:space="preserve">
     <value>ملاحظة فاتورة المبيعات</value>
   </data>
+  <data name="trCloseCash" xml:space="preserve">
+    <value>مبلغ الإغلاق</value>
+  </data>
+  <data name="trCloseDate" xml:space="preserve">
+    <value>تاريخ الإغلاق</value>
+  </data>
+  <data name="trOpenCash" xml:space="preserve">
+    <value>مبلغ الفتح</value>
+  </data>
+  <data name="trOpenDate" xml:space="preserve">
+    <value>تاريخ الفتح</value>
+  </data>
+  <data name="trOperations" xml:space="preserve">
+    <value>العمليات</value>
+  </data>
 </root>
