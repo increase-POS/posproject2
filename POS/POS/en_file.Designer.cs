@@ -7622,6 +7622,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sales Return Invoice.
+        /// </summary>
+        internal static string trSalesReturnInvTitle {
+            get {
+                return ResourceManager.GetString("trSalesReturnInvTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start date.
         /// </summary>
         internal static string trSartDate {

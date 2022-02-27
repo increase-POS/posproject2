@@ -3382,4 +3382,7 @@ Please add Email in setting</value>
   <data name="trWarning" xml:space="preserve">
     <value>Warning</value>
   </data>
+  <data name="trSalesReturnInvTitle" xml:space="preserve">
+    <value>Sales Return Invoice</value>
+  </data>
 </root>

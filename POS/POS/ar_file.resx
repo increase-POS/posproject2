@@ -3361,4 +3361,7 @@
   <data name="trWarning" xml:space="preserve">
     <value>تحذير</value>
   </data>
+  <data name="trSalesReturnInvTitle" xml:space="preserve">
+    <value>فاتورة مرتجع مبيعات</value>
+  </data>
 </root>

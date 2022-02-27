@@ -7586,6 +7586,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاتورة مرتجع مبيعات.
+        /// </summary>
+        internal static string trSalesReturnInvTitle {
+            get {
+                return ResourceManager.GetString("trSalesReturnInvTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to حفظ.
         /// </summary>
         internal static string trSave {

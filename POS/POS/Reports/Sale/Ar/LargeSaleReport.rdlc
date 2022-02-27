@@ -1939,7 +1939,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>فاتورة مبيعات</Value>
+                      <Value>=Parameters!Title.Value</Value>
                       <Style>
                         <FontFamily>Montserrat</FontFamily>
                         <FontSize>14pt</FontSize>

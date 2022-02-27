@@ -3884,7 +3884,7 @@ namespace POS.View
 
 
                     }
-                    if (totaltax>0)
+                    if (totaltax>0 && prInvoice.invType!= "sbd" &&    prInvoice.invType != "sb")
                     {
                         paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
                         paramarr.Add(new ReportParameter("hasItemTax","1"));
@@ -4050,7 +4050,7 @@ namespace POS.View
 
 
                             }
-                            if (totaltax > 0)
+                            if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
                             {
                                 paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
                                 paramarr.Add(new ReportParameter("hasItemTax", "1"));
@@ -4294,7 +4294,7 @@ namespace POS.View
 
 
                         }
-                        if (totaltax > 0)
+                        if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
                         {
                             paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
                             paramarr.Add(new ReportParameter("hasItemTax", "1"));
@@ -4557,7 +4557,7 @@ namespace POS.View
 
 
                         }
-                        if (totaltax > 0)
+                        if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
                         {
                             paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
                             paramarr.Add(new ReportParameter("hasItemTax", "1"));

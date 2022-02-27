@@ -1101,6 +1101,15 @@ namespace POS.Classes
             }
             paramarr.Add(new ReportParameter("shippingCost", DecTostring(invoice.shippingCost) ));
 
+            if (  invoice.invType == "sbd" || invoice.invType == "sb")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trSalesReturnInvTitle")));
+            }
+            else if (invoice.invType == "s" || invoice.invType == "sd")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trSalesInvoice") ));
+
+            }
             return paramarr;
 
         }
