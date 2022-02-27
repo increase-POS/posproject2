@@ -1303,11 +1303,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to مبلغ الإغلاق.
+        /// </summary>
+        internal static string trCloseCash {
+            get {
+                return ResourceManager.GetString("trCloseCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to مغلق.
         /// </summary>
         internal static string trClosed {
             get {
                 return ResourceManager.GetString("trClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الإغلاق.
+        /// </summary>
+        internal static string trCloseDate {
+            get {
+                return ResourceManager.GetString("trCloseDate", resourceCulture);
             }
         }
         
@@ -5602,6 +5620,33 @@ namespace POS {
         internal static string trOpen {
             get {
                 return ResourceManager.GetString("trOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مبلغ الفتح.
+        /// </summary>
+        internal static string trOpenCash {
+            get {
+                return ResourceManager.GetString("trOpenCash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الفتح.
+        /// </summary>
+        internal static string trOpenDate {
+            get {
+                return ResourceManager.GetString("trOpenDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to العمليات.
+        /// </summary>
+        internal static string trOperations {
+            get {
+                return ResourceManager.GetString("trOperations", resourceCulture);
             }
         }
         
