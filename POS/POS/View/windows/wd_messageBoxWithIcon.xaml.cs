@@ -50,8 +50,8 @@ namespace POS.View.windows
                 {
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
+                translate();
                 #endregion
-                btn_ok.Content = MainWindow.resourcemanager.GetString("trOK");
 
             }
             catch (Exception ex)
@@ -59,7 +59,11 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void translate()
+        {
+                btn_ok.Content = MainWindow.resourcemanager.GetString("trOK");
+            txt_title.Text = MainWindow.resourcemanager.GetString("trWarning");
+        }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
             try
