@@ -935,6 +935,10 @@ namespace POS
 
 
                 SetNotificationsLocation();
+                wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
+                w.contentText =
+                "text example text example text example";
+                w.Show();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
