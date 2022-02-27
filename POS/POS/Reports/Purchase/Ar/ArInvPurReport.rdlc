@@ -1099,7 +1099,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>فاتورة مشتريات</Value>
+                    <Value>=Parameters!Title.Value</Value>
                     <Style>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>

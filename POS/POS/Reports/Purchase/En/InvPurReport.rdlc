@@ -1096,7 +1096,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Purchase Invoice</Value>
+                    <Value>=Parameters!Title.Value</Value>
                     <Style>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>

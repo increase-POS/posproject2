@@ -3364,4 +3364,10 @@
   <data name="trSalesReturnInvTitle" xml:space="preserve">
     <value>فاتورة مرتجع مبيعات</value>
   </data>
+  <data name="trPurchaseReturnInvTitle" xml:space="preserve">
+    <value>فاتورة مرتجع مشتريات</value>
+  </data>
+  <data name="trPurchasesInvoice" xml:space="preserve">
+    <value>فاتورة مشتريات</value>
+  </data>
 </root>

@@ -3385,4 +3385,10 @@ Please add Email in setting</value>
   <data name="trSalesReturnInvTitle" xml:space="preserve">
     <value>Sales Return Invoice</value>
   </data>
+  <data name="trPurchaseReturnInvTitle" xml:space="preserve">
+    <value>Purchases Return Invoice</value>
+  </data>
+  <data name="trPurchasesInvoice" xml:space="preserve">
+    <value>Purchases Invoice</value>
+  </data>
 </root>

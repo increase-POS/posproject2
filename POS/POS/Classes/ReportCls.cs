@@ -985,7 +985,15 @@ namespace POS.Classes
             {
                 paramarr.Add(new ReportParameter("watermark", "0"));
             }
+            if (invoice.invType == "pbd" || invoice.invType == "pb" || invoice.invType == "pbw")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPurchaseReturnInvTitle"))); 
+            }
+            else if (invoice.invType == "p" || invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "pwd")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPurchasesInvoice")));
 
+            }
 
             return paramarr;
         }

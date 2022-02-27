@@ -6821,6 +6821,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to فاتورة مرتجع مشتريات.
+        /// </summary>
+        internal static string trPurchaseReturnInvTitle {
+            get {
+                return ResourceManager.GetString("trPurchaseReturnInvTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to المشتريات.
         /// </summary>
         internal static string trPurchases {
@@ -6844,6 +6853,15 @@ namespace POS {
         internal static string trPurchasesEmailTemplate {
             get {
                 return ResourceManager.GetString("trPurchasesEmailTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to فاتورة مشتريات.
+        /// </summary>
+        internal static string trPurchasesInvoice {
+            get {
+                return ResourceManager.GetString("trPurchasesInvoice", resourceCulture);
             }
         }
         
