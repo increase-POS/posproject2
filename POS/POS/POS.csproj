@@ -686,6 +686,9 @@
     <Compile Include="View\windows\wd_messageBox.xaml.cs">
       <DependentUpon>wd_messageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_messageBoxWithIcon.xaml.cs">
+      <DependentUpon>wd_messageBoxWithIcon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_multiplePayment.xaml.cs">
       <DependentUpon>wd_multiplePayment.xaml</DependentUpon>
     </Compile>
@@ -1273,6 +1276,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_messageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_messageBoxWithIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
