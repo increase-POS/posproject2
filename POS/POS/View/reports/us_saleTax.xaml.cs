@@ -635,13 +635,10 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-
             string addpath;
-
             string firstTitle = "tax";
             string secondTitle = "";
             string subTitle = "";
@@ -654,7 +651,6 @@ namespace POS.View.reports
                 {
                     //invoice
                     addpath = @"\Reports\StatisticReport\Accounts\Tax\Ar\ArTaxInvoice.rdlc";
-                    //ArTaxInvoice
                     secondTitle = "invoice";
                 }
                 else
@@ -663,8 +659,6 @@ namespace POS.View.reports
                     addpath = @"\Reports\StatisticReport\Accounts\Tax\Ar\ArTaxItem.rdlc";
                     secondTitle = "items";
                 }
-             
-                //Reports\StatisticReport\Sale\Daily\Ar
             }
             else
             {
@@ -672,7 +666,6 @@ namespace POS.View.reports
                 {
                     //invoice
                     addpath = @"\Reports\StatisticReport\Accounts\Tax\En\EnTaxInvoice.rdlc";
-                    //ArTaxInvoice
                     secondTitle = "invoice";
                 }
                 else
@@ -682,25 +675,17 @@ namespace POS.View.reports
                     secondTitle = "items";
                 }
             }
-
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
             ReportCls.checkLang();
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
             Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
-
-            // IEnumerable<ItemUnitInvoiceProfit>
           clsReports.AccTaxReport(taxTemp, rep, reppath, paramarr);
             paramarr.Add(new ReportParameter("totalSum", tb_total.Text));
-
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
-
             rep.SetParameters(paramarr);
-
             rep.Refresh();
-           
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -720,9 +705,7 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-
                 #endregion
-
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -733,7 +716,6 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try
