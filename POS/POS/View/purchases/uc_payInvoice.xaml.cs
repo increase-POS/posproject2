@@ -760,6 +760,7 @@ namespace POS.View
             try
             {
                 await refreshOrdersNotification();
+                refreshInvNotification();
                 refreshLackNotification();
                 if (invoice.invoiceId != 0)
                 {
@@ -1501,7 +1502,8 @@ namespace POS.View
                                             }
                                             #endregion
                                         }
-
+                                        refreshDraftNotification();
+                                        refreshInvNotification();
                                         ///// cash Transfer
                                         #region
                                         await invoice.recordPosCashTransfer(invoice, "pi");
@@ -1518,7 +1520,6 @@ namespace POS.View
                                                 item.createUserId = MainWindow.userID;
                                                 await saveConfiguredCashTrans(item);
                                             }
-                                            //await invoice.saveInvoice(invoice);
                                         }
                                         else
                                         {
@@ -1543,18 +1544,14 @@ namespace POS.View
 
                                         clearInvoice();
                                         _InvoiceType = "pd";
-                                        refreshDraftNotification();
-                                        refreshInvNotification();
+                                       
                                     }
                                 }
 
                             }
-                            //if (invoice.invoiceId == 0)
-                            //{
-                            //    clearInvoice();
-                            //    _InvoiceType = "pd";
-                            //}
-                            //
+                            refreshDraftNotification();
+                            refreshInvNotification();
+
                             prInvoice = await invoiceModel.GetByInvoiceId(prInvoiceId);
                             ///////////////////////////////////////
 
@@ -2250,7 +2247,7 @@ namespace POS.View
                 cb_paymentProcessType.IsEnabled = false;
                 tb_processNum.IsEnabled = false;
                 dkp_cards.IsEnabled = false;
-                btn_save.IsEnabled = true;
+                btn_save.IsEnabled = false;
                 tb_invoiceNumber.IsEnabled = false;
                 tb_taxValue.IsEnabled = false;
 
@@ -2294,7 +2291,7 @@ namespace POS.View
                 cb_branch.IsEnabled = true;
                 tb_discount.IsEnabled = true;
                 cb_typeDiscount.IsEnabled = true;
-                btn_save.IsEnabled = true;
+                btn_save.IsEnabled = false;
                 tb_invoiceNumber.IsEnabled = true;
                 tb_taxValue.IsEnabled = true;
                 btn_items.IsEnabled = true;
