@@ -985,7 +985,15 @@ namespace POS.Classes
             {
                 paramarr.Add(new ReportParameter("watermark", "0"));
             }
+            if (invoice.invType == "pbd" || invoice.invType == "pb" || invoice.invType == "pbw")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPurchaseReturnInvTitle"))); 
+            }
+            else if (invoice.invType == "p" || invoice.invType == "pd" || invoice.invType == "pw" || invoice.invType == "pwd")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPurchasesInvoice")));
 
+            }
 
             return paramarr;
         }
@@ -1042,7 +1050,7 @@ namespace POS.Classes
             invoice.discountValue = disval+ manualdisval;
             invoice.discountType ="1";
 
-          //  decimal totalafterdis;
+            //  decimal totalafterdis;
             //if (invoice.total != null)
             //{
             //    totalafterdis = (decimal)invoice.total - disval;
@@ -1057,7 +1065,7 @@ namespace POS.Classes
 
             // decimal totalnet = totalafterdis + taxval;
             //  percentValue(decimal ? value, decimal ? percent);
-
+            paramarr.Add(new ReportParameter("sales_invoice_note", MainWindow.sales_invoice_note));
             paramarr.Add(new ReportParameter("Notes", (invoice.notes == null || invoice.notes == "") ? "-" : invoice.notes.Trim()));
             paramarr.Add(new ReportParameter("invNumber", (invoice.invNumber == null || invoice.invNumber == "") ? "-" : invoice.invNumber.ToString()));//paramarr[6]
             paramarr.Add(new ReportParameter("invoiceId", invoice.invoiceId.ToString()));
@@ -1101,6 +1109,15 @@ namespace POS.Classes
             }
             paramarr.Add(new ReportParameter("shippingCost", DecTostring(invoice.shippingCost) ));
 
+            if (  invoice.invType == "sbd" || invoice.invType == "sb")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trSalesReturnInvTitle")));
+            }
+            else if (invoice.invType == "s" || invoice.invType == "sd")
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trSalesInvoice") ));
+
+            }
             return paramarr;
 
         }

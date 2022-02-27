@@ -660,6 +660,42 @@ Parameters!trValueDiscount.Value)
 
         }
 
+        public static void AccTaxReport(IEnumerable<ItemTransferInvoiceTax> invoiceItems, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", invoiceItems));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));// tt
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trBranch", MainWindow.resourcemanagerreport.GetString("trBranch")));
+            paramarr.Add(new ReportParameter("trQTR", MainWindow.resourcemanagerreport.GetString("trQTR")));
+            paramarr.Add(new ReportParameter("trTotal", MainWindow.resourcemanagerreport.GetString("trTotal")));
+            paramarr.Add(new ReportParameter("trTaxValue", MainWindow.resourcemanagerreport.GetString("trTaxValue")));
+            paramarr.Add(new ReportParameter("trTaxPercentage", MainWindow.resourcemanagerreport.GetString("trTaxPercentage")));
+            paramarr.Add(new ReportParameter("trTotalInvoice", MainWindow.resourcemanagerreport.GetString("trTotalInvoice")));
+            paramarr.Add(new ReportParameter("trItemUnit", MainWindow.resourcemanagerreport.GetString("trItemUnit")));
+            paramarr.Add(new ReportParameter("trOnItem", MainWindow.resourcemanagerreport.GetString("trOnItem")));
+            paramarr.Add(new ReportParameter("trPrice", MainWindow.resourcemanagerreport.GetString("trPrice")));
+
+            paramarr.Add(new ReportParameter("trSum", MainWindow.resourcemanagerreport.GetString("trTotalTax")));
+            foreach (var r in invoiceItems)
+            {
+                r.OneItemPriceNoTax = decimal.Parse(SectionData.DecTostring(r.OneItemPriceNoTax));
+                r.subTotalNotax = decimal.Parse(SectionData.DecTostring(r.subTotalNotax));//
+                r.ItemTaxes = decimal.Parse(SectionData.DecTostring(r.ItemTaxes));
+                r.itemUnitTaxwithQTY = decimal.Parse(SectionData.DecTostring(r.itemUnitTaxwithQTY));
+                r.subTotalTax = decimal.Parse(SectionData.DecTostring(r.subTotalTax));
+
+                r.totalNoTax = decimal.Parse(SectionData.DecTostring(r.totalNoTax));
+                r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                r.invTaxVal = decimal.Parse(SectionData.DecTostring(r.invTaxVal));
+                r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
+
+            }
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
+
+        }
         public static string ReportTabTitle(string firstTitle, string secondTitle)
         {
             string trtext = "";
@@ -715,6 +751,8 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trCashBalance");
             else if (firstTitle == "DirectEntry")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trDirectEntry");
+            else if (firstTitle == "tax")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trTax");
             //trCashBalance trDirectEntry
             //trTransfers administrativePull
             //////////////////////////////////////////////////////////////////////////////
@@ -853,9 +891,12 @@ Parameters!trValueDiscount.Value)
         }
         public static void purchaseInvoiceReport(List<ItemTransfer> invoiceItems, LocalReport rep, string reppath)
         {
+             
             foreach (var i in invoiceItems)
             {
                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
+             
+                
             }
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;

@@ -3346,4 +3346,49 @@ Please add Email in setting</value>
   <data name="trReceipts" xml:space="preserve">
     <value>Receipts</value>
   </data>
+  <data name="trTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="trFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="trTo" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="trItemsTaxNote" xml:space="preserve">
+    <value>Items Tax Note</value>
+  </data>
+  <data name="trSalesInvoiceNote" xml:space="preserve">
+    <value> Sales Invoice Note</value>
+  </data>
+  <data name="trCloseCash" xml:space="preserve">
+    <value>Close Cash</value>
+  </data>
+  <data name="trCloseDate" xml:space="preserve">
+    <value>Close Date</value>
+  </data>
+  <data name="trOpenCash" xml:space="preserve">
+    <value>Open Cash</value>
+  </data>
+  <data name="trOpenDate" xml:space="preserve">
+    <value>Open Date</value>
+  </data>
+  <data name="trOperations" xml:space="preserve">
+    <value>Operations</value>
+  </data>
+  <data name="trMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="trWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="trSalesReturnInvTitle" xml:space="preserve">
+    <value>Sales Return Invoice</value>
+  </data>
+  <data name="trPurchaseReturnInvTitle" xml:space="preserve">
+    <value>Purchases Return Invoice</value>
+  </data>
+  <data name="trPurchasesInvoice" xml:space="preserve">
+    <value>Purchases Invoice</value>
+  </data>
 </root>

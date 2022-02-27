@@ -34,8 +34,7 @@ namespace POS.View.reports
        
         IEnumerable<ItemTransferInvoiceTax> taxes;
         IEnumerable<ItemTransferInvoiceTax> taxTemp = null;
-        //IEnumerable<ItemTransferInvoiceTax> taxQuery;
-        //IEnumerable<ItemTransferInvoiceTax> taxQueryExcel;
+        IEnumerable<ItemTransferInvoiceTax> taxTab;
         Statistics statisticsModel = new Statistics();
         string searchText = "";
         int selectedTab = 0;
@@ -65,10 +64,10 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -83,7 +82,6 @@ namespace POS.View.reports
                 }
                 translate();
                 #endregion
-
 
                 txt_search.Text = "";
 
@@ -111,21 +109,21 @@ namespace POS.View.reports
 
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    //if (sender != null)
-            //    //    SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         #region methods
         void fillBranches()
         {
-            var iulist = taxTemp.GroupBy(g => g.branchId).Select(g => new { branchId = g.FirstOrDefault().branchId, branchName = g.FirstOrDefault().branchName }).ToList();
+            var iulist = taxes.GroupBy(g => g.branchId).Select(g => new { branchId = g.FirstOrDefault().branchId, branchName = g.FirstOrDefault().branchName }).ToList();
             cb_branches.SelectedValuePath = "branchId";
             cb_branches.DisplayMemberPath = "branchName";
             cb_branches.ItemsSource = iulist;
@@ -139,11 +137,11 @@ namespace POS.View.reports
             searchText = txt_search.Text.ToLower();
 
             if(selectedTab == 0)
-                taxTemp = taxes.GroupBy(t => t.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
+                taxTab = taxes.GroupBy(t => t.invoiceId).SelectMany(inv => inv.Take(1)).ToList();
             else
-                taxTemp = taxes;
+                taxTab = taxes;
 
-            taxTemp = taxTemp.Where(t =>
+            taxTemp = taxTab.Where(t =>
             //start date
             (dp_startDate.SelectedDate != null ? t.updateDate >= dp_startDate.SelectedDate : true)
             &&
@@ -362,24 +360,24 @@ namespace POS.View.reports
 
         private async void Chk_allBranches_Checked(object sender, RoutedEventArgs e)
         {//select all branches
-            //try
-            //{
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 cb_branches.SelectedIndex = -1;
                 cb_branches.IsEnabled = false;
                 await Search();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
 
@@ -426,41 +424,6 @@ namespace POS.View.reports
 
         private void fillRowChart()
         {
-            #region old
-            //MyAxis.Labels = new List<string>();
-            //List<string> names = new List<string>();
-            //List<int> ids = new List<int>();
-            //List<int> otherIds = new List<int>();
-
-            //List<ItemUnitInvoiceProfit> resultList = new List<ItemUnitInvoiceProfit>();
-            //SeriesCollection rowChartData = new SeriesCollection();
-
-            //var tempName = taxTemp.GroupBy(s => new { s.branchId }).Select(s => new
-            //{
-            //    id = s.Key,
-            //    name = s.FirstOrDefault().branchName
-            //});
-            //names.AddRange(tempName.Select(nn => nn.name.ToString()));
-            //ids.AddRange(tempName.Select(mm => mm.id.branchId.Value));
-
-            ////LineSeries[] ls = new LineSeries[names.Count];
-            //int x = 6;
-            //if (names.Count() < 6) x = names.Count();
-            //for (int i = 0; i < x; i++)
-            //{
-            //    drawPoints(names[i], ids[i], rowChartData, 'n', otherIds);
-            //}
-            ////others
-            //if (names.Count() > 6)
-            //{
-            //    for (int i = names.Count - x; i < names.Count; i++)
-            //        otherIds.Add(ids[i]);
-            //    drawPoints(MainWindow.resourcemanager.GetString("trOthers"), 0, rowChartData, 'o', otherIds);
-            //}
-            ////rowChartData.AddRange(ls);
-            //DataContext = this;
-            //rowChart.Series = rowChartData;
-            #endregion
             int endYear = DateTime.Now.Year;
             int startYear = endYear - 1;
             int startMonth = DateTime.Now.Month;
@@ -486,9 +449,9 @@ namespace POS.View.reports
             names.AddRange(tempName.Select(nn => nn.Name.ToString()));
             string title = "";
             if (selectedTab == 0)
-                title = MainWindow.resourcemanager.GetString("trInvoice");
+                title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trInvoice");
             else if(selectedTab == 1)
-               title = MainWindow.resourcemanager.GetString("trItems");
+               title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
@@ -564,57 +527,105 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<ItemTransferInvoiceTax> resultList = new List<ItemTransferInvoiceTax>();
             string title = "";
+            
             #region group data by selected tab
             if (selectedTab == 0)
             {
-                title = MainWindow.resourcemanager.GetString("trInvoice");
-                //resultList = taxTemp.GroupBy(x => x.invoiceId).Select(x => new ItemTransferInvoiceTax
-                //{
-                //    invTaxVal = x.Sum(g => (decimal)g.invTaxVal),
-                //}
-                //).ToList();
-
+                title = MainWindow.resourcemanager.GetString("trTax") +" / "+ MainWindow.resourcemanager.GetString("trInvoice");
             }
             else if (selectedTab == 1)
             {
-                title = MainWindow.resourcemanager.GetString("trItems");
-                
-                //resultList = taxTemp.GroupBy(x => x.ITitemsTransId).Select(x => new ItemTransferInvoiceTax
-                //{
-                //    itemUnitTaxwithQTY = x.Sum(g => (decimal)g.itemUnitTaxwithQTY),
-                //}
-                //).ToList();
-
+                title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
             }
-
             #endregion
 
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
             List<decimal> tax = new List<decimal>();
 
-            //for (int i = 0; i < resultList.Count(); i++)
-            //{
-            //    if(selectedTab == 0)
-            //        tax.Add(resultList.ToList().Skip(i).FirstOrDefault().invTaxVal.Value);
-            //    //else if(selectedTab == 1)
-            //    //    tax.Add(resultList.ToList().Skip(i).FirstOrDefault().itemUnitTaxwithQTY.Value);
-            //}
-            if (selectedTab == 0)
-                tax.Add(taxTemp.Select(b => b.invTaxVal.Value).Sum());
-            if (selectedTab == 1)
-                tax.Add(taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum());
-            columnChartData.Add(
-            new StackedColumnSeries
+            if ((chk_allBranches.IsChecked == false)&&(cb_branches.SelectedIndex != -1))
             {
-                Values = tax.AsChartValues(),
-                DataLabels = true,
-                Title = title
-            });
-         
+                if (selectedTab == 0)
+                    tax.Add(taxTemp.Select(b => b.invTaxVal.Value).Sum());
+                if (selectedTab == 1)
+                    tax.Add(taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum());
+
+                names.AddRange(taxTemp.Where(nn => nn.branchId == (int)cb_branches.SelectedValue).Select(nn => nn.branchName));
+                axcolumn.Labels.Add(names.ToList().Skip(0).FirstOrDefault());
+
+                columnChartData.Add(
+                  new StackedColumnSeries
+                  {
+                      Values = tax.AsChartValues(),
+                      DataLabels = true,
+                      Title = title
+                  });
+
+            }
+            else
+            {
+                int count = 0; 
+                if (selectedTab == 0)
+                {
+                    var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
+                    {
+                        invTaxVal  = t.Sum(p => decimal.Parse(SectionData.DecTostring(p.invTaxVal))),
+                        branchName = t.FirstOrDefault().branchName
+                    });
+                    names.AddRange(temp.Select(nn => nn.branchName));
+                    tax.AddRange(temp.Select(nn => nn.invTaxVal));
+                    count = names.Count();
+                }
+                if (selectedTab == 1)
+                {
+                    var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
+                    {
+                        itemUnitTaxwithQTY = t.Sum(p => decimal.Parse(SectionData.DecTostring(p.itemUnitTaxwithQTY))),
+                        branchName = t.FirstOrDefault().branchName
+                    });
+                    names.AddRange(temp.Select(nn => nn.branchName));
+                    tax.AddRange(temp.Select(nn => nn.itemUnitTaxwithQTY));
+                    count = names.Count();
+                }
+
+                List<decimal> cS = new List<decimal>();
+
+                List<string> titles = new List<string>()
+                {
+                   title
+                };
+                int x = 6;
+                if (count <= 6) x = count;
+                for (int i = 0; i < x; i++)
+                {
+                    cS.Add(tax.ToList().Skip(i).FirstOrDefault());
+                    axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+                }
+
+                if (count > 6)
+                {
+                    decimal taxSum = 0;
+                    for (int i = 6; i < count; i++)
+                    {
+                        taxSum = taxSum + tax.ToList().Skip(i).FirstOrDefault();
+                    }
+                    if (!((taxSum == 0)))
+                    {
+                        cS.Add(taxSum);
+
+                        axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+                    }
+                }
+                columnChartData.Add(
+                new StackedColumnSeries
+                {
+                    Values = cS.AsChartValues(),
+                    Title = titles[0],
+                    DataLabels = true,
+                });
+            }
             DataContext = this;
             cartesianChart.Series = columnChartData;
-
         }
        
         #endregion
@@ -624,14 +635,11 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-
             string addpath;
-
-            string firstTitle = "accountProfits";
+            string firstTitle = "tax";
             string secondTitle = "";
             string subTitle = "";
             string Title = "";
@@ -639,35 +647,45 @@ namespace POS.View.reports
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Profit\Ar\Profit.rdlc";
-                secondTitle = "invoice";
-
-                //Reports\StatisticReport\Sale\Daily\Ar
+                if (selectedTab == 0)
+                {
+                    //invoice
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\Ar\ArTaxInvoice.rdlc";
+                    secondTitle = "invoice";
+                }
+                else
+                {
+                    //items
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\Ar\ArTaxItem.rdlc";
+                    secondTitle = "items";
+                }
             }
             else
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Profit\En\Profit.rdlc";
-                secondTitle = "invoice";
+                if (selectedTab == 0)
+                {
+                    //invoice
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\En\EnTaxInvoice.rdlc";
+                    secondTitle = "invoice";
+                }
+                else
+                {
+                    //items
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\En\EnTaxItem.rdlc";
+                    secondTitle = "items";
+                }
             }
-
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
-
             ReportCls.checkLang();
             subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
             Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
             paramarr.Add(new ReportParameter("trTitle", Title));
-
-            // IEnumerable<ItemUnitInvoiceProfit>
-            //clsReports.ProfitReport(profitsQuery, rep, reppath, paramarr);
-            paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
-
+          clsReports.AccTaxReport(taxTemp, rep, reppath, paramarr);
+            paramarr.Add(new ReportParameter("totalSum", tb_total.Text));
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
-
             rep.SetParameters(paramarr);
-
             rep.Refresh();
-           
         }
 
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
@@ -687,9 +705,7 @@ namespace POS.View.reports
                     string filepath = saveFileDialog.FileName;
                     LocalReportExtensions.ExportToPDF(rep, filepath);
                 }
-
                 #endregion
-
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -700,7 +716,6 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
             try

@@ -296,6 +296,7 @@
     <Compile Include="converters\agentTypeConverter.cs" />
     <Compile Include="converters\BooleanReverseConverter.cs" />
     <Compile Include="converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="converters\closingDescriptonConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
@@ -325,6 +326,7 @@
     <Compile Include="converters\sectionFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
     <Compile Include="converters\TaxVisibilityConverter.cs" />
+    <Compile Include="converters\transTypeClosingConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="converters\unlimitedCouponConverter.cs" />
@@ -684,8 +686,14 @@
     <Compile Include="View\windows\wd_messageBox.xaml.cs">
       <DependentUpon>wd_messageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_messageBoxWithIcon.xaml.cs">
+      <DependentUpon>wd_messageBoxWithIcon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_multiplePayment.xaml.cs">
       <DependentUpon>wd_multiplePayment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_notes.xaml.cs">
+      <DependentUpon>wd_notes.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_notifications.xaml.cs">
       <DependentUpon>wd_notifications.xaml</DependentUpon>
@@ -734,6 +742,9 @@
     </Compile>
     <Compile Include="View\windows\wd_taxSetting.xaml.cs">
       <DependentUpon>wd_taxSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\windows\wd_transBetweenOpenClose.xaml.cs">
+      <DependentUpon>wd_transBetweenOpenClose.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\windows\wd_transfers.xaml.cs">
       <DependentUpon>wd_transfers.xaml</DependentUpon>
@@ -1268,9 +1279,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\windows\wd_messageBoxWithIcon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\windows\wd_multiplePayment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_notes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\windows\wd_notifications.xaml">
       <SubType>Designer</SubType>
@@ -1333,6 +1352,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_taxSetting.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\windows\wd_transBetweenOpenClose.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1408,6 +1431,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Reports\StatisticReport\Accounts\Pos\En\PosAccReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Tax\Ar\ArTaxInvoice.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Tax\Ar\ArTaxItem.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Tax\En\EnTaxInvoice.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Tax\En\EnTaxItem.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="pic\subIncrease-logo.png" />
@@ -2268,6 +2303,7 @@
     <None Include="POS_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\POS.Classes.Agent.datasource" />
     <None Include="Properties\DataSources\POS.Classes.Coupon.datasource" />
+    <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoiceTax1.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

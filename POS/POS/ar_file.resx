@@ -3325,4 +3325,49 @@
   <data name="trReceipts" xml:space="preserve">
     <value>المستلمات</value>
   </data>
+  <data name="trTime" xml:space="preserve">
+    <value>الوقت</value>
+  </data>
+  <data name="trFrom" xml:space="preserve">
+    <value>من</value>
+  </data>
+  <data name="trTo" xml:space="preserve">
+    <value>إلى</value>
+  </data>
+  <data name="trItemsTaxNote" xml:space="preserve">
+    <value>ملاحظة ضريبة المواد</value>
+  </data>
+  <data name="trSalesInvoiceNote" xml:space="preserve">
+    <value>ملاحظة فاتورة المبيعات</value>
+  </data>
+  <data name="trCloseCash" xml:space="preserve">
+    <value>مبلغ الإغلاق</value>
+  </data>
+  <data name="trCloseDate" xml:space="preserve">
+    <value>تاريخ الإغلاق</value>
+  </data>
+  <data name="trOpenCash" xml:space="preserve">
+    <value>مبلغ الفتح</value>
+  </data>
+  <data name="trOpenDate" xml:space="preserve">
+    <value>تاريخ الفتح</value>
+  </data>
+  <data name="trOperations" xml:space="preserve">
+    <value>العمليات</value>
+  </data>
+  <data name="trMessage" xml:space="preserve">
+    <value>رسالة</value>
+  </data>
+  <data name="trWarning" xml:space="preserve">
+    <value>تحذير</value>
+  </data>
+  <data name="trSalesReturnInvTitle" xml:space="preserve">
+    <value>فاتورة مرتجع مبيعات</value>
+  </data>
+  <data name="trPurchaseReturnInvTitle" xml:space="preserve">
+    <value>فاتورة مرتجع مشتريات</value>
+  </data>
+  <data name="trPurchasesInvoice" xml:space="preserve">
+    <value>فاتورة مشتريات</value>
+  </data>
 </root>

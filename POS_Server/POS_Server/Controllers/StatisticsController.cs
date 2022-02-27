@@ -3170,8 +3170,8 @@ namespace POS_Server.Controllers
                                             //Oquantity = IUO.quantity,
                                             Ocode = O.code,//*
                                             OisActive = O.isActive,
-                                            OdiscountType = O.discountType,//*
-                                            OdiscountValue = O.discountValue,//*
+                                            OdiscountType =((int)IT.offerType).ToString(),//*
+                                            OdiscountValue = IT.offerValue,//*
                                             OstartDate = O.startDate,
                                             OendDate = O.endDate,
                                             OcreateDate = O.createDate,
@@ -3243,13 +3243,19 @@ namespace POS_Server.Controllers
                                             uuserLast = JUPUS.lastname,
                                             uUserAccName = JUPUS.username,
                                             agentCompany = JAA.company,
+                                            price=IT.itemUnitPrice,
 
-                                            subTotal = (IT.price * IT.quantity),//*
+
+
+                                            //subTotal = (IT.price * IT.quantity),//*
                                             // couponTotalValue = (I.discountType == "1" || I.discountType == null) ? I.discountValue : (I.discountType == "2" ? ((I.discountValue / 100) * I.total) : 0),
-                                            offerTotalValue = (O.discountType == "1" || O.discountType == null) ? (O.discountValue * (IT.quantity)) : (O.discountType == "2" ? ((O.discountValue / 100) * (IT.price * IT.quantity)) : 0),
-
+                                            offerTotalValue =( IT.offerId == null|| IT.offerId == 0) ? 0:(IT.offerType == 1 || IT.offerType == null) ? (IT.offerValue * (IT.quantity)) : (IT.offerType == 2 ? ((IT.offerValue / 100) * (IT.itemUnitPrice * IT.quantity)) : 0),
+                                            //subTotalwithoffer
+                                            subTotal = (IT.itemUnitPrice * IT.quantity)-
+                                            ((IT.offerId == null || IT.offerId == 0) ? 0 : (IT.offerType == 1 || IT.offerType == null) ? (IT.offerValue * (IT.quantity)) : (IT.offerType == 2 ? ((IT.offerValue / 100) * (IT.itemUnitPrice * IT.quantity)) : 0)),
                                         }).ToList();
 
+                        //    OneItemOfferVal = IT.offerId == null ? 0 : ((IT.offerType == 1 || IT.offerType == null) ? (IT.offerValue) : (IT.offerType == 2 ? ((IT.offerValue / 100) * (IT.itemUnitPrice)) : 0)),
 
 
                         return TokenManager.GenerateToken(invListm);
@@ -8017,8 +8023,9 @@ namespace POS_Server.Controllers
 
                                                           ( C.transType != "o" && C.transType != "c" 
                                                             && C.processType != "balance" && C.processType != "box" &&
-                                                            C.processType != "inv" && C.processType != "card" 
+                                                            C.processType != "inv" && C.processType != "card" && C.processType != "cheque" && C.processType != "doc"
                                                             && C.posId== closrow.posId
+                                                            && (C.side=="bn"?C.isConfirm==1:true)
                                                             && C.updateDate>=openrow.updateDate && C.updateDate<=closrow.updateDate)
                                                             ).OrderBy(X=>X.updateDate).ToList();
 
@@ -8048,7 +8055,7 @@ namespace POS_Server.Controllers
                             }
 
                         }
-
+                        cachlist = cachlist.Where(X => X.side == "p"?(X.isConfirm==1 && X.isConfirm2==1) : true).ToList();
 
                         return TokenManager.GenerateToken(cachlist);
 

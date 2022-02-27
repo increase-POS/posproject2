@@ -16,13 +16,14 @@ using System.Windows.Shapes;
 namespace POS.View.windows
 {
     /// <summary>
-    /// Interaction logic for wd_messageBox.xaml
+    /// Interaction logic for wd_messageBoxWithIcon.xaml
     /// </summary>
-    public partial class wd_messageBox : Window
+    public partial class wd_messageBoxWithIcon : Window
     {
+
         public bool isOk;
 
-        public wd_messageBox()
+        public wd_messageBoxWithIcon()
         {
             try
             {
@@ -49,9 +50,8 @@ namespace POS.View.windows
                 {
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
-                #endregion
                 translate();
-
+                #endregion
 
             }
             catch (Exception ex)
@@ -61,8 +61,8 @@ namespace POS.View.windows
         }
         private void translate()
         {
-            txt_title.Text = MainWindow.resourcemanager.GetString("trMessage");
                 btn_ok.Content = MainWindow.resourcemanager.GetString("trOK");
+            txt_title.Text = MainWindow.resourcemanager.GetString("trWarning");
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -76,7 +76,7 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        
+
 
         #region contentText
         public static readonly DependencyProperty contentTextDependencyProperty = DependencyProperty.Register("contentText",
@@ -107,9 +107,9 @@ namespace POS.View.windows
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
-            
+
         }
 
-       
+
     }
 }

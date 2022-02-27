@@ -3872,6 +3872,30 @@ namespace POS.View
                     {
                         prInvoice.branchName = branch.name;
                     }
+                    decimal totaltax = 0;
+                    foreach (var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        if (i.itemTax != null)
+                        {
+                            totaltax += (decimal)i.itemTax;
+
+                        }
+
+
+                    }
+                    if (totaltax>0 && prInvoice.invType!= "sbd" &&    prInvoice.invType != "sb")
+                    {
+                        paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                        paramarr.Add(new ReportParameter("hasItemTax","1"));
+
+                    }
+                    else
+                    {
+                       // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                        paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                    }
+             
 
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
@@ -4012,12 +4036,31 @@ namespace POS.View
                             {
                                 prInvoice.branchName = branch.name;
                             }
+                         
+
+                            decimal totaltax = 0;
                             foreach (var i in invoiceItems)
                             {
                                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                                if (i.itemTax != null)
+                                {
+                                    totaltax += (decimal)i.itemTax;
+
+                                }
+
+
                             }
+                            if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
+                            {
+                                paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                                paramarr.Add(new ReportParameter("hasItemTax", "1"));
 
-
+                            }
+                            else
+                            {
+                                // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                                paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                            }
 
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
@@ -4239,11 +4282,29 @@ namespace POS.View
 
                         ReportCls.checkLang();
 
+                        decimal totaltax = 0;
                         foreach (var i in invoiceItems)
                         {
                             i.price = decimal.Parse(SectionData.DecTostring(i.price));
-                        }
+                            if (i.itemTax != null)
+                            {
+                                totaltax += (decimal)i.itemTax;
 
+                            }
+
+
+                        }
+                        if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
+                        {
+                            paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "1"));
+
+                        }
+                        else
+                        {
+                            // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                        }
 
 
 
@@ -4484,9 +4545,28 @@ namespace POS.View
 
                         invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         ReportCls.checkLang();
+                        decimal totaltax = 0;
                         foreach (var i in invoiceItems)
                         {
                             i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                            if (i.itemTax != null)
+                            {
+                                totaltax += (decimal)i.itemTax;
+
+                            }
+
+
+                        }
+                        if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
+                        {
+                            paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "1"));
+
+                        }
+                        else
+                        {
+                            // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "0"));
                         }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
