@@ -936,6 +936,12 @@ namespace POS
 
                 SetNotificationsLocation();
 
+                #region expire date
+                wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
+                w.contentText = "text example text example text example";
+                w.Show();
+                #endregion
+
                 if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
             }
