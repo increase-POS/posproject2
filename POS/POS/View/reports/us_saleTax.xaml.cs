@@ -642,7 +642,7 @@ namespace POS.View.reports
 
             string addpath;
 
-            string firstTitle = "accountProfits";
+            string firstTitle = "tax";
             string secondTitle = "";
             string subTitle = "";
             string Title = "";
@@ -650,15 +650,37 @@ namespace POS.View.reports
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Profit\Ar\Profit.rdlc";
-                secondTitle = "invoice";
-
+                if (selectedTab == 0)
+                {
+                    //invoice
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\Ar\ArTaxInvoice.rdlc";
+                    //ArTaxInvoice
+                    secondTitle = "invoice";
+                }
+                else
+                {
+                    //items
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\Ar\ArTaxItem.rdlc";
+                    secondTitle = "items";
+                }
+             
                 //Reports\StatisticReport\Sale\Daily\Ar
             }
             else
             {
-                addpath = @"\Reports\StatisticReport\Accounts\Profit\En\Profit.rdlc";
-                secondTitle = "invoice";
+                if (selectedTab == 0)
+                {
+                    //invoice
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\En\EnTaxInvoice.rdlc";
+                    //ArTaxInvoice
+                    secondTitle = "invoice";
+                }
+                else
+                {
+                    //items
+                    addpath = @"\Reports\StatisticReport\Accounts\Tax\En\EnTaxItem.rdlc";
+                    secondTitle = "items";
+                }
             }
 
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
@@ -669,7 +691,7 @@ namespace POS.View.reports
             paramarr.Add(new ReportParameter("trTitle", Title));
 
             // IEnumerable<ItemUnitInvoiceProfit>
-            //clsReports.ProfitReport(profitsQuery, rep, reppath, paramarr);
+          clsReports.AccTaxReport(taxTemp, rep, reppath, paramarr);
             paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
 
             clsReports.setReportLanguage(paramarr);
