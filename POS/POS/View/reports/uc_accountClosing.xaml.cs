@@ -1,4 +1,5 @@
-﻿using LiveCharts.Helpers;
+﻿using LiveCharts;
+using LiveCharts.Helpers;
 using LiveCharts.Wpf;
 using POS.Classes;
 using POS.View.windows;
@@ -62,12 +63,10 @@ namespace POS.View.reports
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
-                    //MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.LeftToRight;
                 }
                 else
                 {
-                    //MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
                 translate();
@@ -120,8 +119,8 @@ namespace POS.View.reports
         }
         private void translate()
         {
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingStartDate, MainWindow.resourcemanager.GetString("trStartDateHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingEndDate, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingStartDate, MainWindow.resourcemanager.GetString("trDaily")+" "+ MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingEndDate, MainWindow.resourcemanager.GetString("trDaily") + " " + MainWindow.resourcemanager.GetString("trEndDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_closingBranches, MainWindow.resourcemanager.GetString("trBranchHint"));
 
@@ -131,18 +130,19 @@ namespace POS.View.reports
 
             col_Num.Header = MainWindow.resourcemanager.GetString("trNum");
             col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
-            col_openDate.Header = MainWindow.resourcemanager.GetString("trOpenDate");/////add
-            col_openCash.Header = MainWindow.resourcemanager.GetString("trOpenCash");/////add
-            col_closeDate.Header = MainWindow.resourcemanager.GetString("trCloseDate");////add
-            col_closeCash.Header = MainWindow.resourcemanager.GetString("trCloseCash");/////add
-            col_operation.Header = MainWindow.resourcemanager.GetString("trOperations");////add
-           
+            col_openDate.Header = MainWindow.resourcemanager.GetString("trOpenDate");
+            col_openCash.Header = MainWindow.resourcemanager.GetString("trOpenCash");
+            col_closeDate.Header = MainWindow.resourcemanager.GetString("trCloseDate");
+            col_closeCash.Header = MainWindow.resourcemanager.GetString("trCloseCash");
+            col_operation.Header = MainWindow.resourcemanager.GetString("trOperations");
+
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-
+            
+            
         }
         async Task Search()
         {
@@ -150,12 +150,16 @@ namespace POS.View.reports
                 await RefreshClosingList();
 
             searchText = txt_search.Text.ToLower();
-
-            closingTemp = closings.Where(t =>
-            //start date
+          
+            closingTemp = closings.Where(t => 
+            (  t.transNum.ToLower().Contains(searchText)
+            || t.posName.ToLower().Contains(searchText)
+            )
+            &&
+            //closing start date
             (dp_closingStartDate.SelectedDate != null ? t.updateDate >= dp_closingStartDate.SelectedDate : true)
             &&
-            //end date
+            //closing end date
             (dp_closingEndDate.SelectedDate != null ? t.updateDate <= dp_closingEndDate.SelectedDate : true)
             &&
             //branchID
@@ -165,7 +169,7 @@ namespace POS.View.reports
             RefreshClosingView();
             fillBranches();
             fillColumnChart();
-            fillRowChart();
+            fillPieChart();
         }
 
         private void RefreshClosingView()
@@ -186,210 +190,109 @@ namespace POS.View.reports
 
         #region charts
 
+        private void fillPieChart()
+        {
+            List<string> titles = new List<string>();
+            IEnumerable<int> x = null;
+            IEnumerable<decimal> cashes = null;
+
+            titles.Clear();
+
+            var titleTemp = closingTemp.GroupBy(m => m.branchName);
+            titles.AddRange(titleTemp.Select(jj => jj.Key));
+            var result = closingTemp.GroupBy(s => s.branchId)
+                        .Select(
+                            g => new
+                            {
+                                branchId = g.Key,
+                                //cash = g.Sum(s => s.cash),
+                                cash = g.LastOrDefault().cash,
+                                count = g.Count()
+                            });
+            cashes = result.Select(m => decimal.Parse(SectionData.DecTostring(m.cash.Value)));
+
+            SeriesCollection piechartData = new SeriesCollection();
+            for (int i = 0; i < cashes.Count(); i++)
+            {
+                List<decimal> final = new List<decimal>();
+                List<string> lable = new List<string>();
+                final.Add(cashes.ToList().Skip(i).FirstOrDefault());
+                piechartData.Add(
+                  new PieSeries
+                  {
+                      Values = final.AsChartValues(),
+                      Title = titles.Skip(i).FirstOrDefault(),
+                      DataLabels = true,
+                  }
+              );
+            }
+            chart1.Series = piechartData;
+        }
+
         private void fillRowChart()
         {
-          //  int endYear = DateTime.Now.Year;
-          //  int startYear = endYear - 1;
-          //  int startMonth = DateTime.Now.Month;
-          //  int endMonth = startMonth;
-          //  if (dp_startDate.SelectedDate != null && dp_endDate.SelectedDate != null)
-          //  {
-          //      startYear = dp_startDate.SelectedDate.Value.Year;
-          //      endYear = dp_endDate.SelectedDate.Value.Year;
-          //      startMonth = dp_startDate.SelectedDate.Value.Month;
-          //      endMonth = dp_endDate.SelectedDate.Value.Month;
-          //  }
 
-          //  MyAxis.Labels = new List<string>();
-          //  List<string> names = new List<string>();
-          //  List<CashTransferSts> resultList = new List<CashTransferSts>();
-
-          //  SeriesCollection rowChartData = new SeriesCollection();
-
-          //  var tempName = taxTemp.GroupBy(s => new { s.branchId }).Select(s => new
-          //  {
-          //      Name = s.FirstOrDefault().updateDate,
-          //  });
-          //  names.AddRange(tempName.Select(nn => nn.Name.ToString()));
-          //  string title = "";
-          //  if (selectedTab == 0)
-          //      title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trInvoice");
-          //  else if (selectedTab == 1)
-          //      title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
-
-          //  List<string> lable = new List<string>();
-          //  SeriesCollection columnChartData = new SeriesCollection();
-          //  List<decimal> taxLst = new List<decimal>();
-
-          //  if (endYear - startYear <= 1)
-          //  {
-          //      for (int year = startYear; year <= endYear; year++)
-          //      {
-          //          for (int month = startMonth; month <= 12; month++)
-          //          {
-          //              var firstOfThisMonth = new DateTime(year, month, 1);
-          //              var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-          //              if (selectedTab == 0)
-          //              {
-          //                  var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(c => c.invTaxVal.Value).Sum();
-
-          //                  taxLst.Add(drawTax);
-          //              }
-          //              if (selectedTab == 1)
-          //              {
-          //                  var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth).Select(c => c.itemUnitTaxwithQTY.Value).Sum();
-
-          //                  taxLst.Add(drawTax);
-          //              }
-          //              MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
-
-          //              if (year == endYear && month == endMonth)
-          //              {
-          //                  break;
-          //              }
-          //              if (month == 12)
-          //              {
-          //                  startMonth = 1;
-          //                  break;
-          //              }
-          //          }
-          //      }
-          //  }
-          //  else
-          //  {
-          //      for (int year = startYear; year <= endYear; year++)
-          //      {
-          //          var firstOfThisYear = new DateTime(year, 1, 1);
-          //          var firstOfNextMYear = firstOfThisYear.AddYears(1);
-          //          if (selectedTab == 0)
-          //          {
-          //              var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Select(c => c.invTaxVal.Value).Sum();
-          //              taxLst.Add(drawTax);
-          //          }
-          //          if (selectedTab == 1)
-          //          {
-          //              var drawTax = taxTemp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear).Select(c => c.itemUnitTaxwithQTY.Value).Sum();
-          //              taxLst.Add(drawTax);
-          //          }
-          //          MyAxis.Labels.Add(year.ToString());
-          //      }
-          //  }
-          //  rowChartData.Add(
-          //new LineSeries
-          //{
-          //    Values = taxLst.AsChartValues(),
-          //    Title = title
-          //}); ;
-
-          //  DataContext = this;
-          //  rowChart.Series = rowChartData;
         }
 
         private void fillColumnChart()
         {
-            //axcolumn.Labels = new List<string>();
-            //List<string> names = new List<string>();
-            //List<ItemTransferInvoiceTax> resultList = new List<ItemTransferInvoiceTax>();
-            //string title = "";
+            axcolumn.Labels = new List<string>();
+            List<string> names = new List<string>();
+            List<decimal> cashes = new List<decimal>();
 
-            //#region group data by selected tab
-            //if (selectedTab == 0)
-            //{
-            //    title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trInvoice");
-            //}
-            //else if (selectedTab == 1)
-            //{
-            //    title = MainWindow.resourcemanager.GetString("trTax") + " / " + MainWindow.resourcemanager.GetString("trItems");
-            //}
-            //#endregion
+            var result = closingTemp.GroupBy(s => s.posId).Select(s => new
+            {
+                posId = s.Key,
+                cash = s.LastOrDefault().cash
+            });
 
-            //List<string> lable = new List<string>();
-            //SeriesCollection columnChartData = new SeriesCollection();
-            //List<decimal> tax = new List<decimal>();
+            var tempName = closingTemp.GroupBy(s => s.posName + "/" + s.branchName).Select(s => new
+            {
+                posName = s.Key
+            });
+            names.AddRange(tempName.Select(nn => nn.posName));
 
-            //if ((chk_allBranches.IsChecked == false) && (cb_branches.SelectedIndex != -1))
-            //{
-            //    if (selectedTab == 0)
-            //        tax.Add(taxTemp.Select(b => b.invTaxVal.Value).Sum());
-            //    if (selectedTab == 1)
-            //        tax.Add(taxTemp.Select(b => b.itemUnitTaxwithQTY.Value).Sum());
+            cashes.AddRange(result.Select(nn => decimal.Parse(SectionData.DecTostring(nn.cash.Value))));
 
-            //    names.AddRange(taxTemp.Where(nn => nn.branchId == (int)cb_branches.SelectedValue).Select(nn => nn.branchName));
-            //    axcolumn.Labels.Add(names.ToList().Skip(0).FirstOrDefault());
+            List<string> lable = new List<string>();
+            SeriesCollection columnChartData = new SeriesCollection();
+            List<decimal> cS = new List<decimal>();
 
-            //    columnChartData.Add(
-            //      new StackedColumnSeries
-            //      {
-            //          Values = tax.AsChartValues(),
-            //          DataLabels = true,
-            //          Title = title
-            //      });
+            List<string> titles = new List<string>()
+            {
+               MainWindow.resourcemanager.GetString("trCloseCash")
+            };
+            int x = 6;
+            if (names.Count() <= 6) x = names.Count();
 
-            //}
-            //else
-            //{
-            //    int count = 0;
-            //    if (selectedTab == 0)
-            //    {
-            //        var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
-            //        {
-            //            invTaxVal = t.Sum(p => decimal.Parse(SectionData.DecTostring(p.invTaxVal))),
-            //            branchName = t.FirstOrDefault().branchName
-            //        });
-            //        names.AddRange(temp.Select(nn => nn.branchName));
-            //        tax.AddRange(temp.Select(nn => nn.invTaxVal));
-            //        count = names.Count();
-            //    }
-            //    if (selectedTab == 1)
-            //    {
-            //        var temp = taxTemp.GroupBy(t => t.branchId).Select(t => new
-            //        {
-            //            itemUnitTaxwithQTY = t.Sum(p => decimal.Parse(SectionData.DecTostring(p.itemUnitTaxwithQTY))),
-            //            branchName = t.FirstOrDefault().branchName
-            //        });
-            //        names.AddRange(temp.Select(nn => nn.branchName));
-            //        tax.AddRange(temp.Select(nn => nn.itemUnitTaxwithQTY));
-            //        count = names.Count();
-            //    }
+            for (int i = 0; i < x; i++)
+            {
+                cS.Add(cashes.ToList().Skip(i).FirstOrDefault());
+                axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
+            }
 
-            //    List<decimal> cS = new List<decimal>();
+            if (names.Count() > 6)
+            {
+                decimal balanceSum = 0;
+                for (int i = 6; i < names.Count(); i++)
+                    balanceSum = balanceSum + cashes.ToList().Skip(i).FirstOrDefault();
 
-            //    List<string> titles = new List<string>()
-            //    {
-            //       title
-            //    };
-            //    int x = 6;
-            //    if (count <= 6) x = count;
-            //    for (int i = 0; i < x; i++)
-            //    {
-            //        cS.Add(tax.ToList().Skip(i).FirstOrDefault());
-            //        axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
-            //    }
+                if (balanceSum != 0)
+                    cS.Add(balanceSum);
 
-            //    if (count > 6)
-            //    {
-            //        decimal taxSum = 0;
-            //        for (int i = 6; i < count; i++)
-            //        {
-            //            taxSum = taxSum + tax.ToList().Skip(i).FirstOrDefault();
-            //        }
-            //        if (!((taxSum == 0)))
-            //        {
-            //            cS.Add(taxSum);
+                axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
+            }
 
-            //            axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
-            //        }
-            //    }
-            //    columnChartData.Add(
-            //    new StackedColumnSeries
-            //    {
-            //        Values = cS.AsChartValues(),
-            //        Title = titles[0],
-            //        DataLabels = true,
-            //    });
-            //}
-            //DataContext = this;
-            //cartesianChart.Series = columnChartData;
+            columnChartData.Add(
+            new StackedColumnSeries
+            {
+                Values = cS.AsChartValues(),
+                Title = titles[0],
+                DataLabels = true,
+            });
+
+            DataContext = this;
+            cartesianChart.Series = columnChartData;
         }
 
         #endregion

@@ -91,6 +91,9 @@ namespace POS.View.reports
 
             txt_taxSalesInfo.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_taxSalesHint.Text = MainWindow.resourcemanager.GetString("trTax") + ", " + MainWindow.resourcemanager.GetString("trInvoice") + "...";
+
+            txt_closingInfo.Text = MainWindow.resourcemanager.GetString("trDailyClosing");
+            txt_closingHint.Text = MainWindow.resourcemanager.GetString("trBranchHint") + ", " + MainWindow.resourcemanager.GetString("trPosHint") + "...";
         }
 
         private void Btn_payments_Click(object sender, RoutedEventArgs e)

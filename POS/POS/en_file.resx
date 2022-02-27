@@ -3376,4 +3376,10 @@ Please add Email in setting</value>
   <data name="trOperations" xml:space="preserve">
     <value>Operations</value>
   </data>
+  <data name="trMessage" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="trWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
 </root>

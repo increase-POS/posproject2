@@ -1406,6 +1406,8 @@ namespace POS.Classes
                 firstTitle = MainWindow.resourcemanager.GetString("trCashBalance");
             else if (firstTitle == "saleTax")
                 firstTitle = MainWindow.resourcemanager.GetString("trTax");
+            else if (firstTitle == "closing")
+                firstTitle = MainWindow.resourcemanager.GetString("trDailyClosing");
 
             //////////////////////////////////////////////////////////////////////////////
 

@@ -3355,4 +3355,10 @@
   <data name="trOperations" xml:space="preserve">
     <value>العمليات</value>
   </data>
+  <data name="trMessage" xml:space="preserve">
+    <value>رسالة</value>
+  </data>
+  <data name="trWarning" xml:space="preserve">
+    <value>تحذير</value>
+  </data>
 </root>

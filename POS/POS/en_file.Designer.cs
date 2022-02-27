@@ -5038,6 +5038,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        internal static string trMessage {
+            get {
+                return ResourceManager.GetString("trMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to activate this?.
         /// </summary>
         internal static string trMessageBoxActivate {
@@ -9652,6 +9661,15 @@ namespace POS {
         internal static string trWaitingExecuteOrder {
             get {
                 return ResourceManager.GetString("trWaitingExecuteOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        internal static string trWarning {
+            get {
+                return ResourceManager.GetString("trWarning", resourceCulture);
             }
         }
         
