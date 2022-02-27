@@ -761,7 +761,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1071,9 +1070,6 @@
             <Height>1.2cm</Height>
             <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
-            <Visibility>
-              <Hidden>=Parameters!isTax.Value=false</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>

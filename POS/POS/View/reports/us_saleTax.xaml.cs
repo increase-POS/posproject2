@@ -692,7 +692,7 @@ namespace POS.View.reports
 
             // IEnumerable<ItemUnitInvoiceProfit>
           clsReports.AccTaxReport(taxTemp, rep, reppath, paramarr);
-            paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
+            paramarr.Add(new ReportParameter("totalSum", tb_total.Text));
 
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);

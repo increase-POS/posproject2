@@ -2303,6 +2303,7 @@
     <None Include="POS_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\POS.Classes.Agent.datasource" />
     <None Include="Properties\DataSources\POS.Classes.Coupon.datasource" />
+    <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoiceTax1.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -924,9 +924,6 @@
             <Height>1.2cm</Height>
             <Width>27.09897cm</Width>
             <ZIndex>1</ZIndex>
-            <Visibility>
-              <Hidden>=Parameters!isTax.Value=true</Hidden>
-            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
