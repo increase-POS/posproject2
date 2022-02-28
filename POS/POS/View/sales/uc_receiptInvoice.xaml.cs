@@ -1486,7 +1486,7 @@ namespace POS.View
                     itemT.quantity = billDetails[i].Count;
                     itemT.price = billDetails[i].Price;
                     itemT.itemUnitId = billDetails[i].itemUnitId;
-                    itemT.offerId = billDetails[i].offerId == null ?0: billDetails[i].offerId;
+                    itemT.offerId = billDetails[i].offerId == null ? 0 : billDetails[i].offerId;
                     itemT.offerType = decimal.Parse(billDetails[i].OfferType);
                     itemT.offerValue = billDetails[i].OfferValue;
                     itemT.itemTax = billDetails[i].Tax;
@@ -1544,7 +1544,7 @@ namespace POS.View
                     #endregion
                     await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // update item quantity in DB
                     await invoice.recordPosCashTransfer(invoice, "sb");
-
+               
                 }
 
                 #region save coupns on invoice
@@ -1654,7 +1654,6 @@ namespace POS.View
                                         await saveBounceCash();
                                         await clearInvoice();
                                         refreshDraftNotification();
-                                        refreshInvoiceNotification();
                                     }
                                 }
                                 else if (_InvoiceType == "or")
@@ -2119,11 +2118,7 @@ namespace POS.View
                         isFromReport = false;
                         archived = false;
                         // set title to bill
-                        if(_InvoiceType == "s")
                         txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-                        else
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
-                        
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                         // orange #FFA926 red #D22A17
@@ -2608,7 +2603,6 @@ namespace POS.View
                     cb_typeDiscount.IsEnabled = true;
                     break;
                 case "s": //sales invoice
-                case "sb":
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
@@ -3847,6 +3841,30 @@ namespace POS.View
                     {
                         prInvoice.branchName = branch.name;
                     }
+                    decimal totaltax = 0;
+                    foreach (var i in invoiceItems)
+                    {
+                        i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        if (i.itemTax != null)
+                        {
+                            totaltax += (decimal)i.itemTax;
+
+                        }
+
+
+                    }
+                    if (totaltax>0 && prInvoice.invType!= "sbd" &&    prInvoice.invType != "sb")
+                    {
+                        paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                        paramarr.Add(new ReportParameter("hasItemTax","1"));
+
+                    }
+                    else
+                    {
+                       // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                        paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                    }
+             
 
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
@@ -3987,12 +4005,31 @@ namespace POS.View
                             {
                                 prInvoice.branchName = branch.name;
                             }
+                         
+
+                            decimal totaltax = 0;
                             foreach (var i in invoiceItems)
                             {
                                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                                if (i.itemTax != null)
+                                {
+                                    totaltax += (decimal)i.itemTax;
+
+                                }
+
+
                             }
+                            if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
+                            {
+                                paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                                paramarr.Add(new ReportParameter("hasItemTax", "1"));
 
-
+                            }
+                            else
+                            {
+                                // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                                paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                            }
 
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
@@ -4214,11 +4251,29 @@ namespace POS.View
 
                         ReportCls.checkLang();
 
+                        decimal totaltax = 0;
                         foreach (var i in invoiceItems)
                         {
                             i.price = decimal.Parse(SectionData.DecTostring(i.price));
-                        }
+                            if (i.itemTax != null)
+                            {
+                                totaltax += (decimal)i.itemTax;
 
+                            }
+
+
+                        }
+                        if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
+                        {
+                            paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "1"));
+
+                        }
+                        else
+                        {
+                            // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                        }
 
 
 
@@ -4459,9 +4514,28 @@ namespace POS.View
 
                         invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         ReportCls.checkLang();
+                        decimal totaltax = 0;
                         foreach (var i in invoiceItems)
                         {
                             i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                            if (i.itemTax != null)
+                            {
+                                totaltax += (decimal)i.itemTax;
+
+                            }
+
+
+                        }
+                        if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
+                        {
+                            paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "1"));
+
+                        }
+                        else
+                        {
+                            // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "0"));
                         }
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
