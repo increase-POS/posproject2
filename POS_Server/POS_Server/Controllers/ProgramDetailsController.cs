@@ -240,6 +240,69 @@ namespace POS_Server.Controllers
         }
 
 
+        [HttpPost]
+        [Route("getRemainDayes")]
+        public async Task<string> getRemainDayes(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                try
+                {
+                    ProgramDetails packrow = new ProgramDetails();
+                    packrow = getCurrentProgDetail();
+                    daysremain daysModel = new daysremain();
+                    int days = 0;
+
+                  if (  packrow.expireDate == null)
+                    {
+                        daysModel.expirestate = "n";
+                        daysModel.days = 0;
+                        return TokenManager.GenerateToken(daysModel);//not regester  =>no alert
+                    }
+                    DateTime expiredate = (DateTime)packrow.expireDate;
+                    DateTime nowdate = DateTime.Now;
+                    TimeSpan diffdate = expiredate - nowdate;
+                      days = diffdate.Days;
+                    if (packrow.isLimitDate == false)
+                    {
+                        daysModel.expirestate = "u";
+                        daysModel.days = 0;
+                        return TokenManager.GenerateToken(daysModel);//unlimited=> no alert
+
+                    }
+                    else
+                    {
+                        daysModel.expirestate = "e";
+                        daysModel.days = days;
+
+                        //if (days > 10 )
+                        // {
+                        //     return TokenManager.GenerateToken("-2");// no alert
+                        //     //return TokenManager.GenerateToken(days.ToString());// no alert
+                        // }
+                        // else
+                        // {
+
+                        return TokenManager.GenerateToken(daysModel );//show alert with days
+                        //}
+                    }
+                 
+                }
+                catch (Exception ex)
+                {
+                  //  return TokenManager.GenerateToken("0");
+                    return TokenManager.GenerateToken(ex.ToString());
+                }
+
+
+            }
+        }
 
     }
 }

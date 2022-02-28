@@ -27,8 +27,12 @@ namespace POS_Server.Models
 
     }
 
-
-    public class packagesSend
+    public class daysremain
+    {
+        public Nullable<int> days { get; set; }
+        public string expirestate { get; set; }
+    }
+        public class packagesSend
     {
         public Nullable<int> packageUserId { get; set; }
         public string packageName { get; set; }
