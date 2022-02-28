@@ -48,17 +48,18 @@ namespace POS.controlTemplate
                 gridContainer.ColumnDefinitions.Add(cd[i]);
             //int rowCount = 3;
             //if (cardViewitem.cardType == "sales")
-            int rowCount = 4;
-            RowDefinition[] rd = new RowDefinition[4];
+            int rowCount = 5;
+            RowDefinition[] rd = new RowDefinition[5];
             for (int i = 0; i < rowCount; i++)
             {
                 rd[i] = new RowDefinition();
             }
-            rd[0].Height = new GridLength(5, GridUnitType.Star);
-            rd[1].Height = new GridLength(25, GridUnitType.Pixel);
-            rd[2].Height = new GridLength(25, GridUnitType.Pixel);
+            rd[0].Height = new GridLength(1, GridUnitType.Star);
+            rd[1].Height = new GridLength(20, GridUnitType.Pixel);
+            rd[2].Height = new GridLength(20, GridUnitType.Pixel);
+            rd[3].Height = new GridLength(20, GridUnitType.Pixel);
             //if (cardViewitem.cardType == "sales")
-                rd[3].Height = new GridLength(20, GridUnitType.Star);
+                rd[4].Height = new GridLength(20, GridUnitType.Star);
             for (int i = 0; i < rowCount; i++)
             {
                 gridContainer.RowDefinitions.Add(rd[i]);
@@ -97,7 +98,7 @@ namespace POS.controlTemplate
             subTitleText.Text = cardViewitem.item.details;
             subTitleText.Margin = new Thickness(5, 0, 5, 0);
             subTitleText.FontWeight = FontWeights.Regular;
-            subTitleText.VerticalAlignment = VerticalAlignment.Top;
+            subTitleText.VerticalAlignment = VerticalAlignment.Center;
             subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
             subTitleText.FontSize = 10;
             subTitleText.TextWrapping = TextWrapping.Wrap;
@@ -106,17 +107,34 @@ namespace POS.controlTemplate
             /////////////////////////////////
 
             #endregion
+            #region  subTitle
+            var countText = new TextBlock();
+            if (cardViewitem.item.type != "sr")
+                countText.Text = cardViewitem.item.itemCount + " " + cardViewitem.item.unitName;
+            else
+                countText.Text = MainWindow.resourcemanager.GetString("trService");
+            countText.Margin = new Thickness(5, 0, 5, 0);
+            countText.FontWeight = FontWeights.Regular;
+            countText.VerticalAlignment = VerticalAlignment.Center;
+            countText.HorizontalAlignment = HorizontalAlignment.Left;
+            countText.FontSize = 10;
+            countText.TextWrapping = TextWrapping.Wrap;
+            countText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+            Grid.SetRow(countText, 3);
+            /////////////////////////////////
+
+            #endregion
             #region Price
             if (cardViewitem.cardType == "sales")
             {
                 Grid gridPrice = new Grid();
-                Grid.SetRow(gridPrice, 3);
+                Grid.SetRow(gridPrice, 4);
                 //70 
                 gridPrice.Width = gridContainer.Width / 2;
                 //25
                 gridPrice.Height = gridContainer.Height / 4;
                 gridPrice.HorizontalAlignment = HorizontalAlignment.Left;
-                gridPrice.Margin = new Thickness(5,5,5,5);
+                gridPrice.Margin = new Thickness(5,2.5,5,5);
                 /////////////////////////////
                 Rectangle rectanglePrice = new Rectangle();
                 rectanglePrice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#178DD2"));
@@ -168,7 +186,7 @@ namespace POS.controlTemplate
             Grid grid_image = new Grid();
             grid_image.Height = buttonImage.Height - 2;
             grid_image.Width = buttonImage.Width - 1;
-            Grid.SetRowSpan(grid_image, 4);
+            Grid.SetRowSpan(grid_image, 5);
             Grid.SetColumn(grid_image, 1);
             grid_image.Children.Add(buttonImage);
 
@@ -182,7 +200,7 @@ namespace POS.controlTemplate
                 #region Path Star
                 //string dataStar = "";
                 Path pathStar = new Path();
-                Grid.SetRowSpan(pathStar, 4);
+                Grid.SetRowSpan(pathStar, 5);
                 pathStar.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                 pathStar.Stretch = Stretch.Fill;
                 Grid.SetColumnSpan(pathStar, 2);
@@ -198,7 +216,7 @@ namespace POS.controlTemplate
                 */
                 #region Path newLabel
                 Path pathNewLabel = new Path();
-                Grid.SetRowSpan(pathNewLabel, 4);
+                Grid.SetRowSpan(pathNewLabel, 5);
                 pathNewLabel.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D20707"));
                 pathNewLabel.Stretch = Stretch.Fill;
                 Grid.SetColumnSpan(pathNewLabel, 2);
@@ -213,7 +231,7 @@ namespace POS.controlTemplate
                 pathNewLabel.Height = pathNewLabel.Width / 3;
                 #region Text
                 Path pathNewLabelText = new Path();
-                Grid.SetRowSpan(pathNewLabelText, 4);
+                Grid.SetRowSpan(pathNewLabelText, 5);
                 pathNewLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
                 pathNewLabelText.Stretch = Stretch.Fill;
                 Grid.SetColumnSpan(pathNewLabelText, 2);
@@ -232,7 +250,7 @@ namespace POS.controlTemplate
                 #endregion
 
                 Grid gridNewContainer = new Grid();
-                Grid.SetRowSpan(gridNewContainer, 4);
+                Grid.SetRowSpan(gridNewContainer, 5);
                 Grid.SetColumnSpan(gridNewContainer, 2);
                 gridNewContainer.VerticalAlignment = VerticalAlignment.Bottom;
                 gridNewContainer.HorizontalAlignment = HorizontalAlignment.Right;
@@ -252,7 +270,7 @@ namespace POS.controlTemplate
                 //string dataStar = "";
                 Path pathOfferLabel = new Path();
                 Grid.SetColumnSpan(pathOfferLabel, 2);
-                Grid.SetRowSpan(pathOfferLabel, 4);
+                Grid.SetRowSpan(pathOfferLabel, 5);
                 pathOfferLabel.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D20707"));
                 pathOfferLabel.VerticalAlignment = VerticalAlignment.Top;
                 pathOfferLabel.Stretch = Stretch.Fill;
@@ -273,7 +291,7 @@ namespace POS.controlTemplate
                 #region Text
                 Path pathOfferLabelText = new Path();
                 Grid.SetColumnSpan(pathOfferLabelText, 2);
-                Grid.SetRowSpan(pathOfferLabelText, 4);
+                Grid.SetRowSpan(pathOfferLabelText, 5);
                 pathOfferLabelText.FlowDirection = FlowDirection.LeftToRight;
                 pathOfferLabelText.VerticalAlignment = VerticalAlignment.Top;
                 pathOfferLabelText.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFD00"));
@@ -305,6 +323,7 @@ namespace POS.controlTemplate
             }
             gridContainer.Children.Add(titleText);
             gridContainer.Children.Add(subTitleText);
+            gridContainer.Children.Add(countText);
         }
 
         void CreateUserCard(string type , string title, string subTitle, string subTitle2, string Img)
@@ -406,7 +425,7 @@ namespace POS.controlTemplate
             grid_image.VerticalAlignment = VerticalAlignment.Top;
             grid_image.HorizontalAlignment = HorizontalAlignment.Right;
             grid_image.Margin = new Thickness(0,10,10,0);
-            Grid.SetRowSpan(grid_image, 4);
+            Grid.SetRowSpan(grid_image, 5);
             Grid.SetColumn(grid_image, 1);
             grid_image.Children.Add(buttonImage);
             gridContainer.Children.Add(grid_image);
