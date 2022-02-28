@@ -2291,7 +2291,7 @@ namespace POS.View
                 cb_branch.IsEnabled = true;
                 tb_discount.IsEnabled = true;
                 cb_typeDiscount.IsEnabled = true;
-                btn_save.IsEnabled = false;
+                btn_save.IsEnabled = true;
                 tb_invoiceNumber.IsEnabled = true;
                 tb_taxValue.IsEnabled = true;
                 btn_items.IsEnabled = true;
