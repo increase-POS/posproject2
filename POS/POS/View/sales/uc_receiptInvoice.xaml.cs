@@ -1654,6 +1654,7 @@ namespace POS.View
                                         await saveBounceCash();
                                         await clearInvoice();
                                         refreshDraftNotification();
+                                        refreshInvoiceNotification();
                                     }
                                 }
                                 else if (_InvoiceType == "or")
@@ -1682,7 +1683,6 @@ namespace POS.View
                                     await clearInvoice();
                                     refreshDraftNotification();
                                     refreshInvoiceNotification();
-
                                 }
 
 
@@ -2118,7 +2118,10 @@ namespace POS.View
                         isFromReport = false;
                         archived = false;
                         // set title to bill
-                        txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                        if (_InvoiceType == "s")
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                        else
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                         btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
                         // orange #FFA926 red #D22A17
@@ -2603,6 +2606,7 @@ namespace POS.View
                     cb_typeDiscount.IsEnabled = true;
                     break;
                 case "s": //sales invoice
+                case "sb":
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
