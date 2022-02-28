@@ -1388,7 +1388,8 @@ namespace POS.View
         }
         private async Task addInvoice(string invType)
         {
-            //branchModel = await branchModel.getBranchById(MainWindow.branchID.Value);
+            invoice.invoiceMainId = 0;
+
             if ((invoice.invType == "s" && (invType == "sb" || invType == "sbd")) || _InvoiceType == "or" || _InvoiceType == "q") // invoice is sale and will be bounce sale  or sale bounce draft  , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
@@ -1524,7 +1525,7 @@ namespace POS.View
                         updateUserId = MainWindow.userID.Value,
                     };
                     #endregion
-                    await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // update item quantity in DB
+                    await itemLocationModel.decreaseAmounts(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not,(int)invoice.invoiceMainId); // update item quantity in DB
                     await invoice.recordPosCashTransfer(invoice, "si");                                                                                                         //if (paid > 0)
                                                                                                                                                                                 //                                                                                                                                                             //}
                 }

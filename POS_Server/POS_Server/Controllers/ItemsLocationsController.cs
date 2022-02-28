@@ -3450,13 +3450,10 @@ namespace POS_Server.Controllers
         [Route("decraseAmounts")]
         public string decraseAmounts(string token)
         {
-            //string itemLocationObject, int branchId, int userId, string objectName, string notificationObj
-
-            //string itemLocationObject, int userId
             string message = "";
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -3467,6 +3464,7 @@ namespace POS_Server.Controllers
 
                 int branchId = 0;
                 int userId = 0;
+                int mainInvId = 0;
                 string objectName = "";
                 string notificationObj = "";
 
@@ -3492,6 +3490,10 @@ namespace POS_Server.Controllers
                         branchId = int.Parse(c.Value);
 
                     }
+                    else if (c.Type == "mainInvId")
+                    {
+                        mainInvId = int.Parse(c.Value);
+                    }
                     else if (c.Type == "objectName")
                     {
                         objectName = c.Value;
@@ -3515,8 +3517,14 @@ namespace POS_Server.Controllers
                         {
                             foreach (itemsTransfer item in newObject)
                             {
-                                updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity, userId);
-
+                                if (mainInvId == null && mainInvId == 0)
+                                    updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity, userId);
+                                else
+                                {
+                                    var itl = entity.itemsLocations.Where(x => x.invoiceId == mainInvId).ToList();
+                                    entity.itemsLocations.RemoveRange(itl);
+                                    entity.SaveChanges();
+                                }
                                 bool isExcedded = isExceddMinQuantity((int)item.itemUnitId, (int)branchId, userId);
                                 if (isExcedded == true) //add notification
                                 {

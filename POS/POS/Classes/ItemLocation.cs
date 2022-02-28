@@ -309,7 +309,7 @@ namespace POS.Classes
             //    return items;
             //}
         }
-        public async Task<int> decreaseAmounts(List<ItemTransfer> invoiceItems, int branchId, int userId, string objectName, Notification not)
+        public async Task<int> decreaseAmounts(List<ItemTransfer> invoiceItems, int branchId, int userId, string objectName, Notification not, int mainInvId)
         {
 
             Dictionary<string, string> parameters = new Dictionary<string, string>();
@@ -319,6 +319,7 @@ namespace POS.Classes
             parameters.Add("Object", myContent);
             parameters.Add("branchId", branchId.ToString());
             parameters.Add("userId", userId.ToString());
+            parameters.Add("mainInvId", mainInvId.ToString());
             parameters.Add("objectName", objectName);
             var myContent1 = JsonConvert.SerializeObject(not);
             parameters.Add("notificationObj", myContent1);

@@ -2519,6 +2519,8 @@ var strP = TokenManager.GetPrincipal(token);
                         var invoiceEntity = entity.Set<invoices>();
                         if (newObject.invoiceId == 0)
                         {
+                            if (newObject.invoiceMainId == 0)
+                                newObject.invoiceMainId = null;
                             if (newObject.invType == "s")
                             {
                                 ProgramInfo programInfo = new ProgramInfo();
