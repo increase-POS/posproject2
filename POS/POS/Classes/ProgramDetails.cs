@@ -15,6 +15,11 @@ using Newtonsoft.Json.Converters;
 namespace POS.Classes
 {
 
+    public class daysremain
+    {
+        public Nullable<int> days { get; set; }
+        public string expirestate { get; set; }
+    }
     public class ProgramDetails
     {
         public int id { get; set; }

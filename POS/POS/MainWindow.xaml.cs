@@ -937,9 +937,24 @@ namespace POS
                 SetNotificationsLocation();
 
                 #region expire date
-                wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
-                w.contentText = "text example text example text example";
-                w.Show();
+                daysremain daysr = await userModel.getRemainDayes();
+                if (daysr.expirestate=="e" && daysr.days<=10 )
+                {
+
+                    wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
+                    if (daysr.days >=0  )
+                    {
+                        w.contentText = "The Application will be expired in " + daysr.days.ToString() + " days";
+                    }
+                    else
+                    {
+                        w.contentText = "The Application has been expired from " + (daysr.days* -1 ).ToString() + " days ago";
+
+                    }
+
+                    w.Show();
+                }
+            
                 #endregion
 
                 if (sender != null)

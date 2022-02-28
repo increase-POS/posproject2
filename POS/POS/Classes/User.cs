@@ -328,7 +328,22 @@ namespace POS.Classes
                 return byteImg;
             }
         }
+        public async Task<daysremain> getRemainDayes()
+        {
+            daysremain items = new daysremain();
 
+            IEnumerable<Claim> claims = await APIResult.getList("ProgramDetails/getRemainDayes");
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+
+                    items = JsonConvert.DeserializeObject<daysremain>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+
+                }
+            }
+            return items;
+        }
 
     }
 }
