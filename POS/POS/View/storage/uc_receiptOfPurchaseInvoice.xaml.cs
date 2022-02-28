@@ -1815,7 +1815,8 @@ namespace POS.View.storage
                     if (invoiceId != 0)
                     {
                         await invoice.recordPosCashTransfer(invoice, "pb");
-                        await invoice.recordCashTransfer(invoice, "pb");
+                        if(invoice.agentId != null)
+                            await invoice.recordCashTransfer(invoice, "pb");
                         await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
 
                         #region notification Object

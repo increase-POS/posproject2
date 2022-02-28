@@ -5141,7 +5141,7 @@ namespace POS_Server.Controllers
                 {
 
                     InvoicesController c = new InvoicesController();
-                    var orders = c.getUnhandeledOrdersList("or", 0, branchId);
+                    var orders = c.getUnhandeledOrdersList("ors", 0, branchId);
 
                     using (incposdbEntities entity = new incposdbEntities())
                     {

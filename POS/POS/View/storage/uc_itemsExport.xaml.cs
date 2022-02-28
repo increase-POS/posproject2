@@ -1078,6 +1078,7 @@ namespace POS.View.storage
             _DeliveryCost = 0;
             _SelectedProcess = "imd";
             _ProcessType = "imd";
+            cb_processType.SelectedIndex = 0;
             isFromReport = false;
             archived = false;
             invoice = new Invoice();
