@@ -494,7 +494,7 @@ namespace POS.View.sales
         async Task RefrishItems()
         {
             //items = await itemModel.GetAllItems();
-            items = await itemModel.GetSaleOrPurItems(0, 1, 0, MainWindow.branchID.Value);
+            items = await itemModel.GetSaleOrPurItems(0, 0, 0, MainWindow.branchID.Value);
         }
         async Task fillBarcodeList()
         {
