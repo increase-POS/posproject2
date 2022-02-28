@@ -942,14 +942,17 @@ namespace POS
                 {
 
                     wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
-                    if (daysr.days >=0  )
+                    if (daysr.days >=1  )
                     {
-                        w.contentText = "The Application will be expired in " + daysr.days.ToString() + " days";
+                        w.contentText = resourcemanager.GetString("trExpireNote1")+" " + daysr.days.ToString() + " "+ resourcemanager.GetString("trExpireDays");
                     }
-                    else
+                    else if(daysr.days ==0)
                     {
-                        w.contentText = "The Application has been expired from " + (daysr.days* -1 ).ToString() + " days ago";
-
+                        w.contentText = resourcemanager.GetString("trExpireNote2");
+                    }
+                    else 
+                    {
+                        w.contentText = resourcemanager.GetString("trExpireNote3")+" " + (daysr.days* -1 ).ToString() + " " + resourcemanager.GetString("trAgo");
                     }
 
                     w.Show();

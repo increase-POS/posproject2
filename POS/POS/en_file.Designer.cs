@@ -421,6 +421,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ago.
+        /// </summary>
+        internal static string trAgo {
+            get {
+                return ResourceManager.GetString("trAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         internal static string trAll {
@@ -3787,11 +3796,47 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to days.
+        /// </summary>
+        internal static string trExpireDays {
+            get {
+                return ResourceManager.GetString("trExpireDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Expired date.
         /// </summary>
         internal static string trExpiredDate {
             get {
                 return ResourceManager.GetString("trExpiredDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Application will be expired in.
+        /// </summary>
+        internal static string trExpireNote1 {
+            get {
+                return ResourceManager.GetString("trExpireNote1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Application has been expired.
+        /// </summary>
+        internal static string trExpireNote2 {
+            get {
+                return ResourceManager.GetString("trExpireNote2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Application has been expired from.
+        /// </summary>
+        internal static string trExpireNote3 {
+            get {
+                return ResourceManager.GetString("trExpireNote3", resourceCulture);
             }
         }
         

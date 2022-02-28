@@ -412,6 +412,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string trAgo {
+            get {
+                return ResourceManager.GetString("trAgo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to الكل.
         /// </summary>
         internal static string trAll {
@@ -3760,11 +3769,47 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ايام.
+        /// </summary>
+        internal static string trExpireDays {
+            get {
+                return ResourceManager.GetString("trExpireDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to تاريخ انتهاء الصلاحية.
         /// </summary>
         internal static string trExpiredDate {
             get {
                 return ResourceManager.GetString("trExpiredDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to سوف تنتهي صلاحية البرنامج خلال.
+        /// </summary>
+        internal static string trExpireNote1 {
+            get {
+                return ResourceManager.GetString("trExpireNote1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to انتهت مدة صلاحية البرنامج.
+        /// </summary>
+        internal static string trExpireNote2 {
+            get {
+                return ResourceManager.GetString("trExpireNote2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to انتهت مدة صلاحية البرنامج من .
+        /// </summary>
+        internal static string trExpireNote3 {
+            get {
+                return ResourceManager.GetString("trExpireNote3", resourceCulture);
             }
         }
         

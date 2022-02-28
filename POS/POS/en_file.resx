@@ -3391,4 +3391,19 @@ Please add Email in setting</value>
   <data name="trPurchasesInvoice" xml:space="preserve">
     <value>Purchases Invoice</value>
   </data>
+  <data name="trAgo" xml:space="preserve">
+    <value>ago</value>
+  </data>
+  <data name="trExpireDays" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="trExpireNote1" xml:space="preserve">
+    <value>The Application will be expired in</value>
+  </data>
+  <data name="trExpireNote2" xml:space="preserve">
+    <value>The Application has been expired</value>
+  </data>
+  <data name="trExpireNote3" xml:space="preserve">
+    <value>The Application has been expired from</value>
+  </data>
 </root>
