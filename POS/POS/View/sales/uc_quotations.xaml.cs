@@ -450,14 +450,15 @@ namespace POS.View.sales
                 try
                 {
                     string invoiceType = "q";
-            int duration = 1;
-            int qoutationCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "q"  && invoice.invoiceId != 0 && !isFromReport)
-                qoutationCount--;
+                    int duration = 1;
+                    //int qoutationCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+                    int qoutationCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value,0,MainWindow.userID.Value,duration);
+                    if (invoice != null && _InvoiceType == "q"  && invoice.invoiceId != 0 && !isFromReport)
+                    qoutationCount--;
 
-            SectionData.refreshNotification(md_qout, ref _QoutationCount, qoutationCount);
-            }
-            catch { }
+                    SectionData.refreshNotification(md_qout, ref _QoutationCount, qoutationCount);
+                }
+                catch { }
         }
         private async void refreshDocCount(int invoiceId)
         {
@@ -809,24 +810,28 @@ namespace POS.View.sales
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                
-                bool valid = validateItemUnits();
-                if (billDetails.Count > 0 && valid)
+
+
+                if (billDetails.Count > 0 && _InvoiceType == "qd")
                 {
-                    #region Accept
-                    MainWindow.mainWindow.Opacity = 0.2;
+                    bool valid = validateItemUnits();
+                    if (valid)
+                    { 
+                        #region Accept
+                        MainWindow.mainWindow.Opacity = 0.2;
                     wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                     w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
                     // w.contentText = "Do you want save pay invoice in drafts?";
                     w.ShowDialog();
                     MainWindow.mainWindow.Opacity = 1;
                     #endregion
-                    if (w.isOk)
-                    {
-                        await addInvoice(_InvoiceType);                     
+                        if (w.isOk)
+                        {
+                            await addInvoice(_InvoiceType);
+                        }
+                        await clearInvoice();
+                        setNotifications();
                     }
-                    await clearInvoice();
-                    setNotifications();
                 }
                 else
                 {
@@ -1529,7 +1534,9 @@ namespace POS.View.sales
                 w.invoiceType = invoiceType;
                 int duration = 1;
                 w.userId = MainWindow.userLogin.userId;
-                w.duration = duration; // view quotations which updated during 1 last days 
+                w.branchCreatorId = MainWindow.branchID.Value;
+                w.condition = "orders";
+                //w.duration = duration; // view quotations which updated during 1 last days 
                 w.title = MainWindow.resourcemanager.GetString("trQuotations");
 
                 if (w.ShowDialog() == true)
