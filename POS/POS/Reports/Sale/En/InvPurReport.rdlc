@@ -176,7 +176,7 @@
             <Height>7.57051cm</Height>
             <Width>16.97713cm</Width>
             <Visibility>
-              <Hidden>=iif(Parameters!isOrginal.Value = "True" Or Parameters!isOrginal.Value = "true" Or  Parameters!isOrginal.Value = "1"  ,True,False)</Hidden>
+              <Hidden>=iif(Parameters!isOrginal.Value = "True" Or Parameters!isOrginal.Value = "true" Or  Parameters!isOrginal.Value = "1" Or Parameters!isSaved.Value="n"  ,True,False)</Hidden>
             </Visibility>
             <RepeatWith>Tablix1</RepeatWith>
             <Style>
@@ -227,7 +227,7 @@
             <Width>13.95646cm</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!watermark.Value="0"</Hidden>
+              <Hidden>=iif( (Parameters!watermark.Value="0" And  Parameters!isSaved.Value&lt;&gt;"n")Or Parameters!isSaved.Value&lt;&gt;"n" ,True,False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -980,6 +980,9 @@
             <Height>0.97083cm</Height>
             <Width>5.41158cm</Width>
             <ZIndex>9</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!isSaved.Value&lt;&gt;"n",False,True)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1584,6 +1587,9 @@
             <Height>0.67938cm</Height>
             <Width>5.12354cm</Width>
             <ZIndex>22</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!isSaved.Value="n",True,False)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2116,6 +2122,46 @@
               <BottomBorder>
                 <Color>LightGrey</Color>
               </BottomBorder>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox35">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!trDraftInv.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>8pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>Red</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>2.4217cm</Top>
+            <Left>14.00248cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>5.12354cm</Width>
+            <ZIndex>36</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!isSaved.Value="n",False,True)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -2750,6 +2796,18 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="isSaved">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trDraftInv">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2940,6 +2998,16 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>9</RowIndex>
           <ParameterName>sales_invoice_note</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>isSaved</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>trDraftInv</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

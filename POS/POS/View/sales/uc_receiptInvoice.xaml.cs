@@ -4667,7 +4667,337 @@ namespace POS.View
                 }
                 else
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
+
+
+                    //     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSaveInvoiceToPreview"), animation: ToasterAnimation.FadeIn);
+                    ////
+                    Invoice tmpinvoice = new Invoice();
+                    tmpinvoice.invType = "s";
+                    if (cb_customer.SelectedValue != null)
+                    {
+                        tmpinvoice.agentId = (int)cb_customer.SelectedValue;
+                    }
+
+
+                    tmpinvoice.branchCreatorId = MainWindow.branchID;
+                    tmpinvoice.branchId = MainWindow.branchID;
+                    tmpinvoice.totalNet = decimal.Parse(tb_total.Text);
+                    tmpinvoice.deserved = tmpinvoice.totalNet;
+                    tmpinvoice.discountValue = decimal.Parse(tb_totalDescount.Text);
+                    tmpinvoice.tax = decimal.Parse(tb_taxValue.Text);
+                    tmpinvoice.total = decimal.Parse(tb_sum.Text);
+                    tmpinvoice.invDate = DateTime.Now;
+
+                    tmpinvoice.deservedDate = dp_desrvedDate.SelectedDate;
+                    tmpinvoice.updateDate = DateTime.Now;
+                    tmpinvoice.invTime = new TimeSpan();
+                    //                         tmpinvoice.vendorInvDate=
+
+                    // prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
+                    //if (int.Parse(MainWindow.Allow_print_inv_count) <= prInvoice.printedcount)
+                    //{
+                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+
+                    //}
+                    //else
+                    {
+
+                        Window.GetWindow(this).Opacity = 0.2;
+
+                        List<ReportParameter> paramarr = new List<ReportParameter>();
+                        string pdfpath = "";
+
+                        ////////////////////////
+                        string folderpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath) + @"\Thumb\report\";
+                        ReportCls.clearFolder(folderpath);
+
+                        pdfpath = @"\Thumb\report\Temp" + DateTime.Now.ToFileTime().ToString() + ".pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                        //////////////////////////////////
+                        List<ItemTransfer> invoiceItems = new List<ItemTransfer>();
+                        ItemTransfer itemtemp = new ItemTransfer();
+                        decimal totaltax = 0;
+                        //foreach (var billrow in billDetails)
+                        //{
+                        //    itemtemp = new ItemTransfer();
+                        //    itemtemp.itemsTransId = billrow.ID;
+                        //    itemtemp.itemName = billrow.Product;
+                        //    itemtemp.unitName = billrow.Unit;
+                        //    itemtemp.quantity = billrow.Count;
+
+                        //    itemtemp.price = decimal.Parse(SectionData.DecTostring(billrow.Price));
+
+                        //    totaltax += billrow.Tax;
+
+
+                        //    // itemtemp.t = billrow.Total;
+                        //    invoiceItems.Add(itemtemp);
+
+
+
+                        //}
+                        ItemUnit tempiu = new ItemUnit();
+                        Item tempI = new Item();
+
+                        for (int i = 0; i < billDetails.Count; i++)
+                        {
+                            itemtemp = new ItemTransfer();
+                            //itemtemp.invoiceId = 0;
+                            itemtemp.quantity = billDetails[i].Count;
+                            itemtemp.price = decimal.Parse(SectionData.DecTostring(billDetails[i].Price));
+
+                            itemtemp.itemUnitId = billDetails[i].itemUnitId;
+                            //  tempiu = InvoiceGlobalSaleUnitsList.Where(x => x.itemUnitId == billDetails[i].itemUnitId).FirstOrDefault();
+                            tempI = InvoiceGlobalSaleUnitsList.Where(X => X.itemUnitId == billDetails[i].itemUnitId).FirstOrDefault();
+
+
+                            itemtemp.unitName = tempI.unitName;
+
+                            //itemtemp.offerId = billDetails[i].offerId == null ? 0 : billDetails[i].offerId;
+                            //itemtemp.offerType = decimal.Parse(billDetails[i].OfferType);
+                            //itemtemp.offerValue = billDetails[i].OfferValue;
+                            itemtemp.itemTax = decimal.Parse(SectionData.DecTostring(billDetails[i].Tax));
+                            itemtemp.itemUnitPrice = decimal.Parse(SectionData.DecTostring(billDetails[i].basicPrice));
+                            string serialNum = "";
+                            if (billDetails[i].serialList != null)
+                            {
+                                List<string> lst = billDetails[i].serialList.ToList();
+                                for (int j = 0; j < lst.Count; j++)
+                                {
+                                    serialNum += lst[j];
+                                    if (j != lst.Count - 1)
+                                        serialNum += ",";
+                                }
+                            }
+                            itemtemp.itemSerial = serialNum;
+                            itemtemp.createUserId = MainWindow.userID;
+                            itemtemp.itemName = billDetails[i].Product;
+
+                            totaltax += billDetails[i].Tax;
+                            invoiceItems.Add(itemtemp);
+                        }
+
+                        //   invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                        itemscount = invoiceItems.Count();
+                        string reppath = reportclass.GetreceiptInvoiceRdlcpath(tmpinvoice);
+                        // MainWindow.userLogin
+                        User employ = new User();
+                        employ = MainWindow.userLogin;
+                        tmpinvoice.uuserName = employ.name;
+                        tmpinvoice.uuserLast = employ.lastname;
+
+                        //  invoiceItems = await invoiceModel.GetInvoicesItems(tmpinvoice.invoiceId);
+                        if (tmpinvoice.agentId != null && tmpinvoice.agentId > 0)
+                        {
+                            Agent agentinv = new Agent();
+                            agentinv = customers.Where(X => X.agentId == tmpinvoice.agentId).FirstOrDefault();
+
+                            tmpinvoice.agentCode = agentinv.code;
+                            //new lines
+                            tmpinvoice.agentName = agentinv.name;
+                            tmpinvoice.agentCompany = agentinv.company;
+                        }
+                        else
+                        {
+                            tmpinvoice.agentCode = "-";
+                            tmpinvoice.agentName = "-";
+                            tmpinvoice.agentCompany = "-";
+                        }
+                        //branch name
+                        Branch branch = new Branch();
+                        branch = MainWindow.loginBranch;
+                        if (branch.branchId > 0)
+                        {
+                            tmpinvoice.branchName = branch.name;
+                        }
+
+                        //  invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                        ReportCls.checkLang();
+
+
+                        if (totaltax > 0)
+                        {
+                            paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "1"));
+
+                        }
+                        else
+                        {
+                            // paramarr.Add(new ReportParameter("itemtax_note", MainWindow.itemtax_note.Trim()));
+                            paramarr.Add(new ReportParameter("hasItemTax", "0"));
+                        }
+                        clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+                        clsReports.setReportLanguage(paramarr);
+                        clsReports.Header(paramarr);
+                        paramarr = reportclass.fillSaleInvReport(tmpinvoice, paramarr);
+
+                        if (tmpinvoice.invType == "pd" || tmpinvoice.invType == "sd" || tmpinvoice.invType == "qd"
+     || tmpinvoice.invType == "sbd" || tmpinvoice.invType == "pbd"
+     || tmpinvoice.invType == "ord" || tmpinvoice.invType == "imd" || tmpinvoice.invType == "exd")
+                        {
+                            paramarr.Add(new ReportParameter("isOrginal", true.ToString()));
+                        }
+                        else
+                        {
+                            paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
+                        }
+                        if ((tmpinvoice.invType == "s" || tmpinvoice.invType == "sd" || tmpinvoice.invType == "sbd" || tmpinvoice.invType == "sb"))
+                        {
+                            CashTransfer cachModel = new CashTransfer();
+                            PayedInvclass PayedInvtemp = new PayedInvclass();
+
+                            List<PayedInvclass> payedList = new List<PayedInvclass>();
+                            decimal sump = 0;
+
+                            //
+                            if (cb_paymentProcessType.SelectedIndex != -1)
+                            {
+                                switch (cb_paymentProcessType.SelectedValue.ToString())
+                                {
+                                    case "cash":
+                                        {
+                                            PayedInvtemp.processType = "cash";
+                                            sump = decimal.Parse(tb_cashPaid.Text);
+                                        }
+                                        break;
+                                    case "balance":
+                                        {
+                                            PayedInvtemp.processType = "balance";
+                                            sump = decimal.Parse(tb_cashPaid.Text);
+                                        }
+                                        break;
+                                    case "card":
+                                        {
+                                            PayedInvtemp.processType = "card";
+                                            sump = decimal.Parse(tb_cashPaid.Text);
+                                        }
+                                        break;
+                                    case "multiple":
+                                        {
+                                            PayedInvtemp.processType = "multiple";
+                                        }
+                                        break;
+
+                                }
+                            }
+                            //
+                            // payedList = await cachModel.GetPayedByInvId(prInvoice.invoiceId);
+                            sump = 0;
+                            payedList.Add(PayedInvtemp);
+
+                            //  sump = payedList.Sum(x => x.cash).Value;
+                            //  decimal deservd = (decimal)tmpinvoice.totalNet - sump;
+                            paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
+
+                            paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
+                            paramarr.Add(new ReportParameter("isSaved", "n"));
+                            paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
+                            //  paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring(deservd)));
+                            rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
+
+
+                        }
+
+
+                        rep.SetParameters(paramarr);
+                        rep.Refresh();
+
+
+
+                        ////copy count
+                        //if (tmpinvoice.invType == "s" || tmpinvoice.invType == "sb" || tmpinvoice.invType == "p" || tmpinvoice.invType == "pb")
+                        //{
+
+                        //    //   paramarr.Add(new ReportParameter("isOrginal", prInvoice.isOrginal.ToString()));
+                        //    // update paramarr->isOrginal
+                        //    foreach (var item in paramarr.Where(x => x.Name == "isOrginal").ToList())
+                        //    {
+                        //        StringCollection myCol = new StringCollection();
+                        //        myCol.Add(tmpinvoice.isOrginal.ToString());
+                        //        item.Values = myCol;
+
+
+                        //    }
+                        //end update
+                        //paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
+
+                        rep.SetParameters(paramarr);
+
+                        rep.Refresh();
+
+                        //if (int.Parse(MainWindow.Allow_print_inv_count) > tmpinvoice.printedcount)
+                        //{
+
+                        if (tmpinvoice.invType == "s" && MainWindow.salePaperSize != "A4")
+                        {
+                            LocalReportExtensions.customExportToPDF(rep, pdfpath, width, height);
+                        }
+                        else
+                        {
+                            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        }
+
+
+                        //int res = 0;
+
+                        // res = await invoiceModel.updateprintstat(prInvoice.invoiceId, 1, false, true);
+
+
+
+                        //tmpinvoice.printedcount = tmpinvoice.printedcount + 1;
+
+                        //tmpinvoice.isOrginal = false;
+
+
+                        //}
+                        //else
+                        //{
+                        //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
+                        //}
+
+
+                        //}
+                        //else
+                        //{
+
+                        //    if (tmpinvoice.invType == "s" && MainWindow.salePaperSize != "A4")
+                        //    {
+                        //        LocalReportExtensions.customExportToPDF(rep, pdfpath, width, height);
+                        //    }
+                        //    else
+                        //    {
+                        //        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        //    }
+
+                        //}
+                        // end copy count
+
+
+
+
+
+
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+
+                            w.wb_pdfWebViewer.Dispose();
+
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: "", animation: ToasterAnimation.FadeIn);
+                        Window.GetWindow(this).Opacity = 1;
+
+                    }
+
+
+
+                    //////
+
+
+
                 }
                 #endregion
 
