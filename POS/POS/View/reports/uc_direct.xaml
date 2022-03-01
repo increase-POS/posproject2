@@ -283,7 +283,7 @@ Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7
 
             <Border Grid.Row="2" Background="White"   Margin="5,0,5,0">
                 <DataGrid  Margin="5"  IsReadOnly="True"  Background="White"
-                     Name="dgDirect" MouseDoubleClick="DgDirect_MouseDoubleClick"
+                     Name="dgDirect" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"
                             AlternatingRowBackground="#f3f3f3" AlternationCount="2">

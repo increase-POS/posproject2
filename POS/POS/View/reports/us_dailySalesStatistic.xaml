@@ -359,7 +359,7 @@
 
             <Border Grid.Row="2" Background="White"   Margin="5,0,5,0">
                 <DataGrid  Margin="5,5,5,17.5"  IsReadOnly="True"  Background="White"
-                     Name="dgInvoice"  MouseDoubleClick="DgInvoice_MouseDoubleClick"
+                     Name="dgInvoice" 
                         AutoGenerateColumns="False" 
                         ColumnWidth="SizeToHeader"
                             AlternatingRowBackground="#f3f3f3" AlternationCount="2">
