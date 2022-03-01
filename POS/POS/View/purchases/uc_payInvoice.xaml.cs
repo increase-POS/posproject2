@@ -4376,12 +4376,18 @@ namespace POS.View
                 _invoiceId = invoice.invoiceId;
                 navigateBtnActivate();
                 await fillInvoiceInputs(invoice);
-               
+
+                #region title text
                 if (_InvoiceType == "pw" || _InvoiceType == "p" )
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
                 else if(_InvoiceType == "pb" || _InvoiceType == "pbw")
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                else if(_InvoiceType == "pd")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                 else if(_InvoiceType == "pbd" )
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
 
+                #endregion
                 if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
                     refreshPaymentsNotification(invoice.invoiceId);
             }

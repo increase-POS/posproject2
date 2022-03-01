@@ -2045,7 +2045,6 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
                         if (_InvoiceType == "sbd")
                         {
@@ -2053,7 +2052,6 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
                         }
                         // orange #FFA926 red #D22A17
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
@@ -2231,10 +2229,10 @@ namespace POS.View
             if (_InvoiceType == "sbd")
             {
                 _Tax = 0;
-                if (_Tax != 0)
-                    tb_taxValue.Text = SectionData.DecTostring(_Tax);
-                else
-                    tb_taxValue.Text = "0";
+                //if (_Tax != 0)
+                //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                //else
+                tb_taxValue.Text = "0";
             }
             else
             {
@@ -5562,9 +5560,20 @@ namespace POS.View
             {
                 await clearNavigation();
                 invoice = invoices[index];
+                _InvoiceType = invoice.invType;
                 _invoiceId = invoice.invoiceId;
                 navigateBtnActivate();
                 await fillInvoiceInputs(invoice);
+
+                if (_InvoiceType == "s")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+                else if(_InvoiceType == "sb")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                else if(_InvoiceType == "sd")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
+                else if(_InvoiceType == "sbd")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+
                 if (_InvoiceType == "s" || _InvoiceType == "sb")
                     refreshPaymentsNotification(invoice.invoiceId);
             }
