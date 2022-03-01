@@ -2274,8 +2274,8 @@ namespace POS.View
                 tb_processNum.IsEnabled = true;
                 dkp_cards.IsEnabled = true;
                 btn_clear.IsEnabled = true;
-                btn_updateVendor.IsEnabled = true;
-                btn_addVendor.IsEnabled = true;
+                //btn_updateVendor.IsEnabled = true;
+                btn_addVendor.IsEnabled = false;
             }
             else if (_InvoiceType == "pd") // purchase draft 
             {
@@ -2299,7 +2299,7 @@ namespace POS.View
                 dkp_cards.IsEnabled = true;
                 tb_processNum.IsEnabled = true;
                 btn_clear.IsEnabled = true;
-                btn_updateVendor.IsEnabled = true;
+               // btn_updateVendor.IsEnabled = true;
                 btn_addVendor.IsEnabled = true;
             }
             else if (_InvoiceType == "po") //  purchase order
@@ -2324,7 +2324,7 @@ namespace POS.View
                 dkp_cards.IsEnabled = true;
                 tb_processNum.IsEnabled = true;
                 btn_clear.IsEnabled = false;
-                btn_updateVendor.IsEnabled = false;
+               // btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;
             }
             else if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || archived)
@@ -2349,7 +2349,7 @@ namespace POS.View
                 dkp_cards.IsEnabled = false;
                 tb_processNum.IsEnabled = false;
                 btn_clear.IsEnabled = false;
-                btn_updateVendor.IsEnabled = false;
+               // btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;
             }
 
@@ -2509,6 +2509,8 @@ namespace POS.View
                 if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
                 {
                     _SelectedVendor = (int)cb_vendor.SelectedValue;
+                    if (_InvoiceType == "pd")
+                        btn_updateVendor.IsEnabled = true;
                     var v = vendorsL.Where(x => x.agentId == _SelectedVendor).FirstOrDefault();
                     if (v.payType != null)
                         cb_paymentProcessType.SelectedValue = v.payType;
