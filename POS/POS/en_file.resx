@@ -3406,4 +3406,10 @@ Please add Email in setting</value>
   <data name="trExpireNote3" xml:space="preserve">
     <value>The Application has been expired from</value>
   </data>
+  <data name="trDirectEntryDraft" xml:space="preserve">
+    <value>Direct Entry - Draft</value>
+  </data>
+  <data name="trSaveProcessDraft" xml:space="preserve">
+    <value>Do you want save the process in drafts?</value>
+  </data>
 </root>

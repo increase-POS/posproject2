@@ -3385,4 +3385,10 @@
   <data name="trExpireNote3" xml:space="preserve">
     <value>انتهت مدة صلاحية البرنامج من </value>
   </data>
+  <data name="trDirectEntryDraft" xml:space="preserve">
+    <value>إدخال مباشر - مسودة</value>
+  </data>
+  <data name="trSaveProcessDraft" xml:space="preserve">
+    <value>هل تريد حفظ العملية في المسودات؟</value>
+  </data>
 </root>

@@ -125,9 +125,11 @@ namespace POS.View.storage
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturnInvoices");
             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDirectEntry");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
             tt_error_previous.Content = MainWindow.resourcemanager.GetString("trPrevious");
             tt_error_next.Content = MainWindow.resourcemanager.GetString("trNext");
+          
         }
         #region loading
         List<keyValueBool> loadingList;
@@ -180,6 +182,9 @@ namespace POS.View.storage
                 MainWindow.mainWindow.KeyDown += HandleKeyPress;
                tb_moneyIcon.Text = MainWindow.Currency;
                 tb_moneyIconTotal.Text = MainWindow.Currency;
+                controls = new List<Control>();
+
+                #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
@@ -192,23 +197,26 @@ namespace POS.View.storage
                 }
 
                 translate();
-                //tb_barcode.Focus();
-                loading_fillBarcodeList();
+                #endregion
+               
                 setNotifications();
                 setTimer();
-                controls = new List<Control>();
-                #region hid tax inputs
-                //txt_tax.Visibility = Visibility.Collapsed;
-                //tb_taxValue.Visibility = Visibility.Collapsed;
-                //tb_percentage.Visibility = Visibility.Collapsed;
+               
+                #region hid - display tax inputs
+                if (MainWindow.tax == 0)
+                    sp_tax.Visibility = Visibility.Collapsed;
+                else
+                    sp_tax.Visibility = Visibility.Visible;
                 #endregion
                 #region loading
                 loadingList = new List<keyValueBool>();
                 bool isDone = true;
                 loadingList.Add(new keyValueBool { key = "loading_RefrishItems", value = false });
                 loadingList.Add(new keyValueBool { key = "loading_RefrishVendors", value = false });
+                loadingList.Add(new keyValueBool { key = "loading_fillBarcodeList", value = false });
                 loading_RefrishItems();
                 loading_RefrishVendors();
+                loading_fillBarcodeList();
                 do
                 {
                     isDone = true;
@@ -226,11 +234,10 @@ namespace POS.View.storage
                     }
                 }
                 while (!isDone);
+
+                
                 #endregion
-                if (MainWindow.tax == 0)
-                    sp_tax.Visibility = Visibility.Collapsed;
-                else
-                    sp_tax.Visibility = Visibility.Visible;
+
                 FindControl(this.grid_main, controls);
 
                 #region datagridChange
@@ -494,6 +501,8 @@ namespace POS.View.storage
                 }
             }
         }
+
+        #region barcode
         private async void HandleKeyPress(object sender, KeyEventArgs e)
         {
             try
@@ -691,6 +700,7 @@ namespace POS.View.storage
                     break;
             }
         }
+        #endregion
         #region Button In DataGrid
         void deleteRowFromInvoiceItems(object sender, RoutedEventArgs e)
         {
@@ -827,6 +837,8 @@ namespace POS.View.storage
             tb_sum.Text = "0";
             btn_items.IsEnabled = true;
             isFromReport = false;
+            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDirectEntry");
+            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             refrishBillDetails();
             inputEditable();
             if (!isFromReport)
@@ -1009,6 +1021,7 @@ namespace POS.View.storage
                         _InvoiceType = invoice.invType;
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
+                        txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDirectEntryDraft");
                         await fillInvoiceInputs(invoice);
                         setNotifications();
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);

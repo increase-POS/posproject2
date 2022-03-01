@@ -2212,6 +2212,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Direct Entry - Draft.
+        /// </summary>
+        internal static string trDirectEntryDraft {
+            get {
+                return ResourceManager.GetString("trDirectEntryDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Direct Printing.
         /// </summary>
         internal static string trDirectPrinting {
@@ -7744,6 +7753,15 @@ namespace POS {
         internal static string trSaveOrderNotification {
             get {
                 return ResourceManager.GetString("trSaveOrderNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want save the process in drafts?.
+        /// </summary>
+        internal static string trSaveProcessDraft {
+            get {
+                return ResourceManager.GetString("trSaveProcessDraft", resourceCulture);
             }
         }
         

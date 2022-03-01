@@ -155,23 +155,7 @@ namespace POS.View.storage
 
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
                 timer.Stop();
-                if (billDetails.Count > 0 && (_ProcessType == "imd" || _ProcessType == "exd"))
-                {
-                    #region Accept
-                    MainWindow.mainWindow.Opacity = 0.2;
-                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                    //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                    w.contentText = "Do you want save sale invoice in drafts?";
-                    w.ShowDialog();
-                    MainWindow.mainWindow.Opacity = 1;
-                    #endregion
-                    if (w.isOk)
-                        Btn_newDraft_Click(null, null);
-                    else
-                        clearProcess();
-                }
-                else
-                    clearProcess();
+                Btn_newDraft_Click(null, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -1054,11 +1038,24 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (billDetails.Count != 0)
+                if (billDetails.Count > 0 && (_ProcessType == "imd" || _ProcessType == "exd"))
                 {
-                    await saveDraft();
-                    setNotifications();
+                    #region Accept
+                    MainWindow.mainWindow.Opacity = 0.2;
+                    wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveProcessDraft");
+                    w.ShowDialog();
+                    MainWindow.mainWindow.Opacity = 1;
+                    #endregion
+                    if (w.isOk)
+                        await saveDraft();
+                    else
+                        clearProcess();                    
                 }
+                else
+                    clearProcess();
+
+                setNotifications();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

@@ -2203,6 +2203,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to إدخال مباشر - مسودة.
+        /// </summary>
+        internal static string trDirectEntryDraft {
+            get {
+                return ResourceManager.GetString("trDirectEntryDraft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to طباعة مباشرة.
         /// </summary>
         internal static string trDirectPrinting {
@@ -7699,6 +7708,15 @@ namespace POS {
         internal static string trSaveOrderNotification {
             get {
                 return ResourceManager.GetString("trSaveOrderNotification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to هل تريد حفظ العملية في المسودات؟.
+        /// </summary>
+        internal static string trSaveProcessDraft {
+            get {
+                return ResourceManager.GetString("trSaveProcessDraft", resourceCulture);
             }
         }
         
