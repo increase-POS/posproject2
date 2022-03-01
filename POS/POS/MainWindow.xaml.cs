@@ -1316,7 +1316,7 @@ namespace POS
                     #region
                     Window.GetWindow(this).Opacity = 0.2;
                     wd_messageBox w = new wd_messageBox();
-                    w.contentText = MainWindow.resourcemanager.GetString("trUserLoginFromOtherPos");
+                    w.contentText2 = MainWindow.resourcemanager.GetString("trUserLoginFromOtherPos");
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
                     #endregion
