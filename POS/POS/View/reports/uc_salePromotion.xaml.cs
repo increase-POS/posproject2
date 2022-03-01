@@ -132,10 +132,11 @@ namespace POS.View.reports
                 chk_couponInvoice.IsChecked = true;
 
                 hidAllColumns();
-                col_code.Visibility = Visibility.Visible;
+                //col_code.Visibility = Visibility.Visible;
                 col_coupon.Visibility = Visibility.Visible;
-                col_couponType.Visibility = Visibility.Visible;
-                col_coupoValue.Visibility = Visibility.Visible;
+                //col_couponType.Visibility = Visibility.Visible;
+                //col_coupoValue.Visibility = Visibility.Visible;
+                col_cTypeValue.Visibility = Visibility.Visible;
                 col_couponTotalValue.Visibility = Visibility.Visible;
 
                 if (sender != null)
@@ -171,11 +172,12 @@ namespace POS.View.reports
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
             col_No.Header = MainWindow.resourcemanager.GetString("trNo.");
-            col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
+            //col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
             col_date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_coupon.Header = MainWindow.resourcemanager.GetString("trCoupon");
-            col_code.Header = MainWindow.resourcemanager.GetString("trCode");
-            col_coupoValue.Header = MainWindow.resourcemanager.GetString("trValue");
+            //col_code.Header = MainWindow.resourcemanager.GetString("trCode");
+            //col_coupoValue.Header = MainWindow.resourcemanager.GetString("trValue");
+            col_cTypeValue.Header = MainWindow.resourcemanager.GetString("trValue");
             //col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
             //col_offersValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_oTypeValue.Header = MainWindow.resourcemanager.GetString("trValue");
@@ -500,15 +502,16 @@ namespace POS.View.reports
         #region tabControl
         private void hidAllColumns()
         {
-            col_code.Visibility = Visibility.Hidden;
+            //col_code.Visibility = Visibility.Hidden;
             //col_offerCode.Visibility = Visibility.Hidden;
             col_item.Visibility = Visibility.Hidden;
             col_itQuantity.Visibility = Visibility.Hidden;
             col_total.Visibility = Visibility.Hidden;
             col_coupon.Visibility = Visibility.Hidden;
             col_offers.Visibility = Visibility.Hidden;
-            col_coupoValue.Visibility = Visibility.Hidden;
-            col_couponType.Visibility = Visibility.Hidden;
+            //col_coupoValue.Visibility = Visibility.Hidden;
+            //col_couponType.Visibility = Visibility.Hidden;
+            col_cTypeValue.Visibility = Visibility.Hidden;
             //col_offersType.Visibility = Visibility.Hidden;
             //col_offersValue.Visibility = Visibility.Hidden;
             col_oTypeValue.Visibility = Visibility.Hidden;
@@ -539,10 +542,11 @@ namespace POS.View.reports
                 fillEvent();
 
                 hidAllColumns();
-                col_code.Visibility = Visibility.Visible;
+                //col_code.Visibility = Visibility.Visible;
                 col_coupon.Visibility = Visibility.Visible;
-                col_couponType.Visibility = Visibility.Visible;
-                col_coupoValue.Visibility = Visibility.Visible;
+                //col_couponType.Visibility = Visibility.Visible;
+                //col_coupoValue.Visibility = Visibility.Visible;
+                col_cTypeValue.Visibility = Visibility.Visible;
                 col_couponTotalValue.Visibility = Visibility.Visible;
 
                 if (sender != null)

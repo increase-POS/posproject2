@@ -445,14 +445,14 @@
                         <DataGridTextColumn x:Name="col_item" Width="*"                          Header="Item" Binding="{Binding itemName}"/>
                         <DataGridTextColumn x:Name="col_unit" Width="*"                          Header="Unit" Binding="{Binding unitName}"/>
                         <DataGridTextColumn x:Name="col_quantity" Width="*"                      Header="QTY" Binding="{Binding quantity}"/>
-                        <DataGridTextColumn x:Name="col_locationSection" Width="*"               Header="Location - Section" Binding="{Binding SectionLoactionName}"/>
+                        <DataGridTextColumn x:Name="col_locationSection" Width="*"               Header="Location - Section" Binding="{Binding SectionLoactionName ,Converter={StaticResource  stockSectionLocationFreeZoneConverter}}"/>
                         <DataGridTextColumn x:Name="col_startDate" Width="*"                     Header="Start Date" Binding="{Binding startDate,Converter={StaticResource dateFrameConverter }}"/>
                         <DataGridTextColumn x:Name="col_endDate" Width="*"                       Header="End Date" Binding="{Binding endDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_Min" Width="*"                           Header="Min" Binding="{Binding MinAll}"/>
-                        <DataGridTextColumn x:Name="col_Max" Width="*"                           Header="Max" Binding="{Binding MaxAll}"/>
+                        <!--<DataGridTextColumn x:Name="col_Min" Width="*"                           Header="Min" Binding="{Binding MinAll}"/>
+                        <DataGridTextColumn x:Name="col_Max" Width="*"                           Header="Max" Binding="{Binding MaxAll}"/>-->
                         <DataGridTextColumn x:Name="col_MinCollect" Width="*"                    Header="Min" Binding="{Binding minUnitName}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_MaxCollect" Width="*"                    Header="Max" Binding="{Binding maxUnitName}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_stockCost" Width="*"                     Header="Stock Cost" Binding="{Binding storageCostValue,Converter={StaticResource accuracyConverter}}"/>
+                        <DataGridTextColumn x:Name="col_stockCost" Width="*"                     Header="Stock Cost" Binding="{Binding storageCostValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         
                     </DataGrid.Columns>
                 </DataGrid>

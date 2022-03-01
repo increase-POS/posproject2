@@ -140,11 +140,11 @@ namespace POS.View.reports
             col_locationSection.Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             col_startDate.Header = MainWindow.resourcemanager.GetString("trStartDate");
             col_endDate.Header = MainWindow.resourcemanager.GetString("trEndDate");
-            col_Min.Header = MainWindow.resourcemanager.GetString("trMin");//??
-            col_Max.Header = MainWindow.resourcemanager.GetString("trMax");//??
+            //col_Min.Header = MainWindow.resourcemanager.GetString("trMin");//??
+            //col_Max.Header = MainWindow.resourcemanager.GetString("trMax");//??
             col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinCollect");//??
             col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxCollect");//??
-            col_stockCost.Header = MainWindow.resourcemanager.GetString("trCost");
+            //col_stockCost.Header = MainWindow.resourcemanager.GetString("trCost");
             col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -1192,15 +1192,15 @@ namespace POS.View.reports
             col_quantity.Visibility = Visibility.Hidden;
             col_startDate.Visibility = Visibility.Hidden;
             col_endDate.Visibility = Visibility.Hidden;
-            col_Min.Visibility = Visibility.Hidden;
-            col_Max.Visibility = Visibility.Hidden;
-            col_stockCost.Visibility = Visibility.Hidden;
+            //col_Min.Visibility = Visibility.Hidden;
+            //col_Max.Visibility = Visibility.Hidden;
+            //col_stockCost.Visibility = Visibility.Hidden;
             col_location.Visibility = Visibility.Hidden;
             col_section.Visibility = Visibility.Hidden;
             col_itemUnits.Visibility = Visibility.Hidden;
             col_MaxCollect.Visibility = Visibility.Hidden;
             col_MinCollect.Visibility = Visibility.Hidden;
-            
+
         }
         private void showSelectedTabColumn()
         {
@@ -1215,9 +1215,9 @@ namespace POS.View.reports
                 col_locationSection.Visibility = Visibility.Visible;
                 col_startDate.Visibility = Visibility.Visible;
                 col_endDate.Visibility = Visibility.Visible;
-                col_Min.Visibility = Visibility.Visible;
-                col_Max.Visibility = Visibility.Visible;
-                col_stockCost.Visibility = Visibility.Visible;
+                //col_Min.Visibility = Visibility.Visible;
+                //col_Max.Visibility = Visibility.Visible;
+                //col_stockCost.Visibility = Visibility.Visible;
             }
             else if (selectedStockTab == 1)
             {
@@ -1228,9 +1228,9 @@ namespace POS.View.reports
                 col_itemUnits.Visibility = Visibility.Visible;
                 col_startDate.Visibility = Visibility.Visible;
                 col_endDate.Visibility = Visibility.Visible;
-                col_Min.Visibility = Visibility.Visible;
-                col_Max.Visibility = Visibility.Visible;
-                col_stockCost.Visibility = Visibility.Visible;
+                //col_Min.Visibility = Visibility.Visible;
+                //col_Max.Visibility = Visibility.Visible;
+                //col_stockCost.Visibility = Visibility.Visible;
             }
             else if (selectedStockTab == 2)
             {

@@ -12,7 +12,10 @@ namespace POS.converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            string oType = (string)values[0];
+            //string oType = (string)values[0];
+            //decimal oValue = (decimal)values[1];
+
+            string oType = values[0].ToString();
             decimal oValue = (decimal)values[1];
 
             if (oType == "1")
