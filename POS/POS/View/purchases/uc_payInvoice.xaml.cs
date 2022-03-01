@@ -735,7 +735,7 @@ namespace POS.View
                     _Sum += billDetails[i].Total;
                     billDetails[i].ID = _SequenceNum;
                 }
-                //refrishBillDetails();
+                refrishBillDetails();
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
             }
@@ -2058,7 +2058,7 @@ namespace POS.View
                 else
                     tb_taxValue.Text = "0";
             }
-            else if(_InvoiceType == "pbw" || _InvoiceType == "pb")
+            else if(_InvoiceType == "pbw" || _InvoiceType == "pb" || _InvoiceType == "pbd")
             {
                 tb_taxValue.Text = "0";
             }
@@ -2094,7 +2094,7 @@ namespace POS.View
 
             // build invoice details grid
             await buildInvoiceDetails();
-
+            refreshTotalValue();
             inputEditable();
         }
         private async void Btn_returnInvoice_Click(object sender, RoutedEventArgs e)
@@ -2565,15 +2565,18 @@ namespace POS.View
         {
             try
             {
+               
                 var txb = sender as TextBox;
-                if ((sender as TextBox).Name == "tb_discount")
-                    SectionData.InputJustNumber(ref txb);
-                if ((sender as TextBox).Name == "tb_taxValue")
-                    SectionData.InputJustNumber(ref txb);
-                _Sender = sender;
-                refreshTotalValue();
-                e.Handled = true;
-
+                if (txb.IsFocused)
+                {
+                    if ((sender as TextBox).Name == "tb_discount")
+                        SectionData.InputJustNumber(ref txb);
+                    if ((sender as TextBox).Name == "tb_taxValue")
+                        SectionData.InputJustNumber(ref txb);
+                    _Sender = sender;
+                    refreshTotalValue();
+                    e.Handled = true;
+                }
 
             }
             catch (Exception ex)
@@ -3106,7 +3109,8 @@ namespace POS.View
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId && p.OrderId == row.OrderId).FirstOrDefault());
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId &&
+                                                                p.OrderId == null ? p.OrderId == null : p.OrderId == row.OrderId).FirstOrDefault()) ;
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -3144,7 +3148,8 @@ namespace POS.View
 
                     if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
                     {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId 
+                                                                        && i.invoiceId == null ? i.invoiceId == null : i.invoiceId == row.OrderId);
                         if (newCount > item.quantity)
                         {
                             // return old value 
