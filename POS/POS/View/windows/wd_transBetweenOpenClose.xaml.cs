@@ -93,7 +93,7 @@ namespace POS.View.windows
 
         private void translat()
         {
-            txt_title.Text = MainWindow.resourcemanager.GetString("trCashtransfers");
+            txt_title.Text = MainWindow.resourcemanager.GetString("trOperations");
             dg_transfers.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo");
             dg_transfers.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
             dg_transfers.Columns[2].Header = MainWindow.resourcemanager.GetString("trDescription");
