@@ -4372,9 +4372,16 @@ namespace POS.View
             {
                 clearNavigation();
                 invoice = invoices[index];
+                _InvoiceType = invoice.invType;
                 _invoiceId = invoice.invoiceId;
                 navigateBtnActivate();
                 await fillInvoiceInputs(invoice);
+               
+                if (_InvoiceType == "pw" || _InvoiceType == "p" )
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                else if(_InvoiceType == "pb" || _InvoiceType == "pbw")
+                    txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+
                 if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
                     refreshPaymentsNotification(invoice.invoiceId);
             }
