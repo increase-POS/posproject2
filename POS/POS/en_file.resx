@@ -3421,4 +3421,7 @@ Please add Email in setting</value>
   <data name="trProcessTypeHint" xml:space="preserve">
     <value>Process Type...</value>
   </data>
+  <data name="trNoChange" xml:space="preserve">
+    <value>No changes</value>
+  </data>
 </root>

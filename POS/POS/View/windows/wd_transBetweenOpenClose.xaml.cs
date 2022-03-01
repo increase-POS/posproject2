@@ -54,10 +54,10 @@ namespace POS.View.windows
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -73,15 +73,15 @@ namespace POS.View.windows
 
                 await fillDataGrid();
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         async Task fillDataGrid()
