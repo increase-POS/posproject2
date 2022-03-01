@@ -117,27 +117,21 @@ namespace POS.View.windows
                 translat();
                 #endregion
                 dg_Invoice.Columns[0].Visibility = Visibility.Collapsed;
+                List<string> invTypeL = invoiceType.Split(',').ToList();
+                bool inCommen = false;
                 #region hide Total column in grid if invoice is import/export order/purchase order
 
                 string[] invTypeArray = new string[] { "imd" ,"exd","im","ex" ,"exw","pod","po" };
                 var invTypes = invTypeArray.ToList();
-                List<string> invTypeL = invoiceType.Split(',').ToList();
-                var inCommen = invTypeL.Any(s => invTypes.Contains(s));
+               
+                inCommen = invTypeL.Any(s => invTypes.Contains(s));
                 if(inCommen)
                     col_total.Visibility = Visibility.Collapsed; //make total column unvisible
                 #endregion
-                #region hide delete column in grid if invoice type not in invTypeArray
-                //invTypeArray = new string[] { "or", "q", "po" };
-                //var orderTypes = invTypeArray.ToList();
-               //invTypeL = invoiceType.Split(',').ToList();
-                //inCommen = invTypeL.Any(s => orderTypes.Contains(s));
-                //if (inCommen)
-                //    dg_Invoice.Columns[0].Visibility = Visibility.Visible; //make total column unvisible
-                #endregion
+               
                 #region display branch & user columns in grid if invoice is sales order and purchase orders
                 invTypeArray = new string[] { "or" };
                 invTypes = invTypeArray.ToList();
-                invTypeL = invoiceType.Split(',').ToList();
                 inCommen = invTypeL.Any(s => invTypes.Contains(s));
                 if (inCommen)
                 {
@@ -159,6 +153,13 @@ namespace POS.View.windows
                     col_user.Visibility = Visibility.Visible; //make user column visible
                     col_agent.Visibility = Visibility.Visible;
                 }
+                #endregion
+                #region display branch if invoice is export process
+                invTypeArray = new string[] { "exw" };
+                invTypes = invTypeArray.ToList();
+                inCommen = invTypeL.Any(s => invTypes.Contains(s));
+                if (inCommen)
+                    col_branch.Visibility = Visibility.Visible; //make total column unvisible
                 #endregion
                 await refreshInvoices();
                 Txb_search_TextChanged(null, null);
@@ -195,6 +196,10 @@ namespace POS.View.windows
             if (condition == "orders")
             {
                 invoices = await invoice.getUnHandeldOrders(invoiceType,branchCreatorId, branchId,duration,userId);
+            }
+            else if (condition == "export")
+            {
+                invoices = await invoice.getExportInvoices(invoiceType, branchId);
             }
             else if(condition == "return")
                 invoices = await invoice.getInvoicesToReturn(invoiceType, userId);

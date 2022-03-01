@@ -3412,4 +3412,13 @@ Please add Email in setting</value>
   <data name="trSaveProcessDraft" xml:space="preserve">
     <value>Do you want save the process in drafts?</value>
   </data>
+  <data name="trOrdersWait" xml:space="preserve">
+    <value>Orders wait</value>
+  </data>
+  <data name="trProcessType" xml:space="preserve">
+    <value>Process Type</value>
+  </data>
+  <data name="trProcessTypeHint" xml:space="preserve">
+    <value>Process Type...</value>
+  </data>
 </root>

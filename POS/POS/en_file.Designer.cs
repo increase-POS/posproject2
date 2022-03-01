@@ -5831,6 +5831,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Orders wait.
+        /// </summary>
+        internal static string trOrdersWait {
+            get {
+                return ResourceManager.GetString("trOrdersWait", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Others.
         /// </summary>
         internal static string trOthers {
@@ -6664,6 +6673,24 @@ namespace POS {
         internal static string trProcessNumTooltip {
             get {
                 return ResourceManager.GetString("trProcessNumTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Type.
+        /// </summary>
+        internal static string trProcessType {
+            get {
+                return ResourceManager.GetString("trProcessType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Type....
+        /// </summary>
+        internal static string trProcessTypeHint {
+            get {
+                return ResourceManager.GetString("trProcessTypeHint", resourceCulture);
             }
         }
         
