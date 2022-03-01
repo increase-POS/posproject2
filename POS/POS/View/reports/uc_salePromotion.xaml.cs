@@ -172,20 +172,20 @@ namespace POS.View.reports
 
             col_No.Header = MainWindow.resourcemanager.GetString("trNo.");
             col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
-            col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
             col_date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_coupon.Header = MainWindow.resourcemanager.GetString("trCoupon");
             col_code.Header = MainWindow.resourcemanager.GetString("trCode");
             col_coupoValue.Header = MainWindow.resourcemanager.GetString("trValue");
-            col_offersValue.Header = MainWindow.resourcemanager.GetString("trValue");
+            //col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
+            //col_offersValue.Header = MainWindow.resourcemanager.GetString("trValue");
+            col_oTypeValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_couponTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
             col_offersTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
             col_offers.Header = MainWindow.resourcemanager.GetString("trOffer");
             col_item.Header = MainWindow.resourcemanager.GetString("trItem");
             col_price.Header = MainWindow.resourcemanager.GetString("trPrice"); 
-             
 
-            col_offerCode.Header = MainWindow.resourcemanager.GetString("trCode");
+            //col_offerCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_itQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
 
@@ -501,7 +501,7 @@ namespace POS.View.reports
         private void hidAllColumns()
         {
             col_code.Visibility = Visibility.Hidden;
-            col_offerCode.Visibility = Visibility.Hidden;
+            //col_offerCode.Visibility = Visibility.Hidden;
             col_item.Visibility = Visibility.Hidden;
             col_itQuantity.Visibility = Visibility.Hidden;
             col_total.Visibility = Visibility.Hidden;
@@ -509,8 +509,9 @@ namespace POS.View.reports
             col_offers.Visibility = Visibility.Hidden;
             col_coupoValue.Visibility = Visibility.Hidden;
             col_couponType.Visibility = Visibility.Hidden;
-            col_offersType.Visibility = Visibility.Hidden;
-            col_offersValue.Visibility = Visibility.Hidden;
+            //col_offersType.Visibility = Visibility.Hidden;
+            //col_offersValue.Visibility = Visibility.Hidden;
+            col_oTypeValue.Visibility = Visibility.Hidden;
             col_offersTotalValue.Visibility = Visibility.Hidden;
             col_couponTotalValue.Visibility = Visibility.Hidden;
             col_price.Visibility = Visibility.Hidden;
@@ -577,10 +578,11 @@ namespace POS.View.reports
 
                 hidAllColumns();
                 
-                col_offerCode.Visibility = Visibility.Visible;
+                //col_offerCode.Visibility = Visibility.Visible;
                 col_offers.Visibility = Visibility.Visible;
-                col_offersType.Visibility = Visibility.Visible;
-                col_offersValue.Visibility = Visibility.Visible;
+                //col_offersType.Visibility = Visibility.Visible;
+                //col_offersValue.Visibility = Visibility.Visible;
+                col_oTypeValue.Visibility = Visibility.Visible;
                 col_item.Visibility = Visibility.Visible;
                 col_price.Visibility = Visibility.Visible;
                 col_itQuantity.Visibility = Visibility.Visible;

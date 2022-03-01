@@ -90,7 +90,7 @@ namespace POS.View.reports
             txt_profitHint.Text = MainWindow.resourcemanager.GetString("trInvoiceItemHint");
 
             txt_taxSalesInfo.Text = MainWindow.resourcemanager.GetString("trTax");
-            txt_taxSalesHint.Text = MainWindow.resourcemanager.GetString("trTax") + ", " + MainWindow.resourcemanager.GetString("trInvoice") + "...";
+            txt_taxSalesHint.Text = MainWindow.resourcemanager.GetString("trInvoice") + ", " + MainWindow.resourcemanager.GetString("trItems") + "...";
 
             txt_closingInfo.Text = MainWindow.resourcemanager.GetString("trDailyClosing");
             txt_closingHint.Text = MainWindow.resourcemanager.GetString("trBranchHint") + ", " + MainWindow.resourcemanager.GetString("trPosHint") + "...";

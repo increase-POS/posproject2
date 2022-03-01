@@ -8,6 +8,7 @@
     <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
+            <converters:offerDiscountConverter x:Key="offerDiscountConverter"/>
             <converters:closingDescriptonConverter x:Key="closingDescriptonConverter"/>
             <converters:transTypeClosingConverter x:Key="transTypeClosingConverter"/>
             <converters:unlimitedCouponConverter x:Key="unlimitedCouponConverter"/>

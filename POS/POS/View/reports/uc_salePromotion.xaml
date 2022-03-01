@@ -328,10 +328,19 @@
                         <DataGridTextColumn x:Name="col_price" Width="*" Header="Price" Binding="{Binding price ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
 
                         <DataGridTextColumn x:Name="col_itQuantity" Width="*" Header="QTY" Binding="{Binding ITquantity}" Visibility="Hidden"/>
+                        <!--<DataGridTextColumn x:Name="col_Oprice" Width="*" Header="Price" Binding="{Binding price ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>-->
                         <DataGridTextColumn x:Name="col_offers" Width="*" Header="Offer" Binding="{Binding Oname}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_offerCode" Width="*" Header="Code" Binding="{Binding Ocode}" Visibility="Visible"/>
-                        <DataGridTextColumn x:Name="col_offersType" Width="*" Header="Type" Binding="{Binding OdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
-                        <DataGridTextColumn x:Name="col_offersValue" Width="*" Header="Value" Binding="{Binding OdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
+                        <!--<DataGridTextColumn x:Name="col_offerCode" Width="*" Header="Code" Binding="{Binding Ocode}" Visibility="Visible"/>-->
+                        <!--<DataGridTextColumn x:Name="col_offersType" Width="*" Header="Type" Binding="{Binding OdiscountType,Converter={StaticResource discountTypeConverter }}" Visibility="Hidden"/>
+                        <DataGridTextColumn x:Name="col_offersValue" Width="*" Header="Value" Binding="{Binding OdiscountValue ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>-->
+                        <DataGridTextColumn x:Name="col_oTypeValue" Width="*" Header="Value" Visibility="Hidden">
+                            <DataGridTextColumn.Binding >
+                                <MultiBinding Converter="{StaticResource offerDiscountConverter}" >
+                                    <Binding Path="OdiscountType" />
+                                    <Binding Path="OdiscountValue" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
                         <DataGridTextColumn x:Name="col_offersTotalValue" Width="*" Header="Discount Amount" Binding="{Binding offerTotalValue,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
                         <DataGridTextColumn x:Name="col_total" Width="*" Header="Total" Binding="{Binding subTotal ,Converter={StaticResource accuracyConverter}}" Visibility="Hidden"/>
 
