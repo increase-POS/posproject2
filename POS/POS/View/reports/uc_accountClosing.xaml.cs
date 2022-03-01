@@ -56,10 +56,10 @@ namespace POS.View.reports
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -78,17 +78,16 @@ namespace POS.View.reports
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_closing.Tag.ToString());
 
                 chk_closingBranches.IsChecked = true;
-                //Chk_closingBranches_Checked(chk_closingBranches , null);
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         #region methods
@@ -431,8 +430,8 @@ namespace POS.View.reports
         #endregion
 
         #region dataGrid events
-        private void moveRowinDatagrid(object sender, RoutedEventArgs e)
-        {
+        private async void moveRowinDatagrid(object sender, RoutedEventArgs e)
+        {//move
             try
             {
                 if (sender != null)
@@ -441,7 +440,12 @@ namespace POS.View.reports
                     if (vis is DataGridRow)
                     {
                         POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
-                        if (row.openCash == row.cash)
+
+                        Statistics statisticsModel = new Statistics();
+                        IEnumerable<OpenClosOperatinModel> cashesQuery;
+                        cashesQuery = await statisticsModel.GetTransBetweenOpenClose(row.openCashTransId.Value, row.cashTransId);
+                        cashesQuery = cashesQuery.Where(c => c.transType != "c" && c.transType != "o");
+                        if (cashesQuery.Count() == 0)
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChange"), animation: ToasterAnimation.FadeIn);
                         else
                         {

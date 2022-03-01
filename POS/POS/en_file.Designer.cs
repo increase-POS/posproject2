@@ -5398,6 +5398,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No changes.
+        /// </summary>
+        internal static string trNoChange {
+            get {
+                return ResourceManager.GetString("trNoChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Changes.
         /// </summary>
         internal static string trNoChanges {

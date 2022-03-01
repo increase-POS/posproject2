@@ -3400,4 +3400,7 @@
   <data name="trProcessTypeHint" xml:space="preserve">
     <value>نوع العملية...</value>
   </data>
+  <data name="trNoChange" xml:space="preserve">
+    <value>لا يوجد تغييرات</value>
+  </data>
 </root>
