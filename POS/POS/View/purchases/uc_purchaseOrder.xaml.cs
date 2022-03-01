@@ -1088,6 +1088,7 @@ namespace POS.View.purchases
             billDetails.Clear();
             tb_total.Text = "";
             btn_updateVendor.IsEnabled = false;
+            btn_addVendor.IsEnabled = false;
             md_docImage.Badge = "";
             isFromReport = false;
             archived = false;
@@ -1260,6 +1261,7 @@ namespace POS.View.purchases
                 tb_barcode.IsEnabled = true;
                 btn_clear.IsEnabled = true;   
                 btn_items.IsEnabled = true;
+                btn_addVendor.IsEnabled = true;
                 tgl_ActiveOffer.Visibility = Visibility.Collapsed;
                 tgl_ActiveOffer.IsEnabled = false;
                 btn_save.IsEnabled = true;
@@ -1270,6 +1272,7 @@ namespace POS.View.purchases
                 dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
                 cb_vendor.IsEnabled = true;
+                btn_addVendor.IsEnabled = true;
                 tb_note.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
                 btn_clear.IsEnabled = true;
@@ -1284,6 +1287,7 @@ namespace POS.View.purchases
                 dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
                 cb_vendor.IsEnabled = false;
+                btn_addVendor.IsEnabled = false;
                 tb_note.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_clear.IsEnabled = false;
@@ -1442,6 +1446,8 @@ namespace POS.View.purchases
                 if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
                 {
                     _SelectedVendor = (int)cb_vendor.SelectedValue;
+                    if (_InvoiceType == "pod" || _InvoiceType == "pos")
+                        btn_updateVendor.IsEnabled = true;
                 }
                 else
                 {
@@ -2519,6 +2525,7 @@ namespace POS.View.purchases
             billDetails.Clear();
             tb_total.Text = "";
             btn_updateVendor.IsEnabled = false;
+            btn_addVendor.IsEnabled = false;
             md_docImage.Badge = "";
             isFromReport = false;
             archived = false;

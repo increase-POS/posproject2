@@ -404,7 +404,7 @@
                                 <Button Grid.Column="1"  Padding="0"    
                                 Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" 
                                             x:Name="btn_addVendor" Click="Btn_addVendor_Click"
-                                Margin="5,1" IsEnabled="True">
+                                Margin="5,1" IsEnabled="False">
                                     <Path Fill="#4E4E4E" Stretch="Fill"  
                     Width="27.5" Height="27.5"
                            Data="M275.8,467c-14.1-21.9-21.7-47.5-21.7-74.4c0-6.3,0.4-12.4,1.2-18.5H121.6v0c-3.4,0-6.8,0-10.3,0c0-15.9,0-31.2,0-47.1
@@ -420,7 +420,7 @@
                                 </Button>
                                 <Button Grid.Column="2"  Padding="0" Width="25"  
                                 Background="{x:Null}" BorderBrush="{x:Null}" HorizontalAlignment="Right" x:Name="btn_updateVendor" Click="Btn_updateVendor_Click"
-                                Margin="5,1" IsEnabled="True">
+                                Margin="5,1" IsEnabled="false">
                                     <materialDesign:PackIcon Foreground="#4E4E4E" Kind="FileDocumentEdit"  
                                   HorizontalAlignment="Center" Grid.Column="0"   
                              VerticalAlignment="Center" Width="30" Height="30"/>
