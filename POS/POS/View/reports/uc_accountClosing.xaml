@@ -43,7 +43,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Border x:Name="bdr_closing" Grid.Column="0" Background="White" BorderThickness="0"  Height="40" Width="60" VerticalAlignment="Bottom" CornerRadius="7,7,0,0" BorderBrush="Transparent" Margin="20,5,0,-1">
-                            <Button x:Name="btn_closing"  Background="Transparent"  Tag=""
+                            <Button x:Name="btn_closing"  Background="Transparent"  Tag="cash"
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" >
                                 <Button.Triggers>
@@ -80,7 +80,7 @@
 	s1-0.4,1-1V4c0-0.1,0-0.3-0.1-0.4C8.8,3.4,8.6,3.2,8.4,3.1C8.1,3,7.9,3,7.6,3.1c-0.1,0-0.2,0.1-0.3,0.2l-1,1c-0.4,0.4-0.4,1,0,1.4
 	C6.5,5.9,6.7,6,7,6z M25,0v13H3V0H25z M23,2H5v9h18V2z">
                                     <Path.ToolTip>
-                                        <ToolTip x:Name="tt_closing" Content="Closing"
+                                        <ToolTip x:Name="tt_closing" Content="Cash"
                                               Placement="left" 
                                               HorizontalOffset="35"
                                               PlacementRectangle="50,0,0,0"
@@ -271,11 +271,18 @@
                     </DataGrid.Resources>
                     <DataGrid.Columns>
                         <DataGridTextColumn x:Name="col_Num"        Width="*" Header="No." Binding="{Binding transNum}"/>
-                        <DataGridTextColumn x:Name="col_pos"        Width="*" Header="POS" Binding="{Binding posName}"/>
-                        <DataGridTextColumn x:Name="col_openDate"   Width="*" Header="Date" Binding="{Binding openDate,Converter={StaticResource dateFrameConverter }}"/>
+                        <DataGridTextColumn x:Name="col_pos" Width="*" Header="POS" >
+                            <DataGridTextColumn.Binding >
+                                <MultiBinding  StringFormat="{}{0} / {1}">
+                                    <Binding Path="branchName" />
+                                    <Binding Path="posName" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn x:Name="col_openDate"   Width="*" Header="Date" Binding="{Binding openDate}"/>
                         <DataGridTextColumn x:Name="col_openCash"   Width="*" Header="Cash" Binding="{Binding Path =openCash,Converter={StaticResource accuracyConverter }}"/>
-                        <DataGridTextColumn x:Name="col_closeDate"  Width="*" Header="Date" Binding="{Binding updateDate,Converter={StaticResource dateFrameConverter }}"/>
-                        <DataGridTextColumn x:Name="col_closeCash"   Width="*" Header="Cash" Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
+                        <DataGridTextColumn x:Name="col_closeDate"  Width="*" Header="Date" Binding="{Binding updateDate}"/>
+                        <DataGridTextColumn x:Name="col_closeCash"  Width="*" Header="Cash" Binding="{Binding Path =cash,Converter={StaticResource accuracyConverter }}"/>
                         <DataGridTemplateColumn Width="40" Header="Operations" IsReadOnly="True" x:Name="col_operation">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -303,7 +310,7 @@
   S272.2,187.3,273.5,187.3z M273.5,196.3h75.2c1.3,0,2.3,1,2.3,2.3s-1,2.3-2.3,2.3h-75.2c-1.3,0-2.3-1-2.3-2.3
   S272.2,196.3,273.5,196.3z M271.2,205.8c0-1.3,1-2.3,2.3-2.3h75.2c1.3,0,2.3,1,2.3,2.3s-1,2.3-2.3,2.3h-75.2
   C272.2,208.2,271.2,207.1,271.2,205.8z" >
-                                           
+
                                         </Path>
                                     </Button>
                                 </DataTemplate>

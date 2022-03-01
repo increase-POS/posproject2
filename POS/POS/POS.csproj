@@ -318,6 +318,7 @@
     <Compile Include="converters\locationFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\notificationsContentConverter.cs" />
     <Compile Include="converters\notificationsTitleConverter.cs" />
+    <Compile Include="converters\offerDiscountConverter.cs" />
     <Compile Include="converters\orderStatusConverter.cs" />
     <Compile Include="converters\permissionsNameConverter.cs" />
     <Compile Include="converters\posTransfersStatusConverter.cs" />

@@ -433,7 +433,7 @@
 	l-16.7-25.6l15.4-23.9h-13.3l-9.4,14.7l-9.4-14.7h-13.2L253.2,273.9z"/>
                             <StackPanel Grid.Column="1" VerticalAlignment="Top"  Grid.ColumnSpan="2" Margin="5,20,0,0" HorizontalAlignment="Left">
                                 <TextBlock x:Name="txt_taxSalesInfo"  Width="auto" Foreground="#6e6e6e" FontWeight="SemiBold" Text="Tax" FontSize="18"></TextBlock>
-                                <TextBlock x:Name="txt_taxSalesHint" Text="Tax, Invoice ..." FontSize="10" Margin="5,2,0,0"   Foreground="#949494"></TextBlock>
+                                <TextBlock x:Name="txt_taxSalesHint" Text="Invoice, Items ..." FontSize="10" Margin="5,2,0,0"   Foreground="#949494"></TextBlock>
                             </StackPanel>
                             <Border Height="25" Width="25" CornerRadius="25" Grid.Column="2" VerticalAlignment="Bottom" Margin="0,0,10,10"
                                 Background="White" HorizontalAlignment="Center">

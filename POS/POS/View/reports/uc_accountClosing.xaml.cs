@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Helpers;
 using LiveCharts.Wpf;
+using netoaster;
 using POS.Classes;
 using POS.View.windows;
 using System;
@@ -126,7 +127,7 @@ namespace POS.View.reports
 
             chk_closingBranches.Content = MainWindow.resourcemanager.GetString("trAll");
 
-            tt_closing.Content = MainWindow.resourcemanager.GetString("trItems");
+            tt_closing.Content = MainWindow.resourcemanager.GetString("trCash");
 
             col_Num.Header = MainWindow.resourcemanager.GetString("trNum");
             col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
@@ -198,16 +199,22 @@ namespace POS.View.reports
 
             titles.Clear();
 
-            var titleTemp = closingTemp.GroupBy(m => m.branchName);
-            titles.AddRange(titleTemp.Select(jj => jj.Key));
-            var result = closingTemp.GroupBy(s => s.branchId)
+            var cashTemp = closingTemp.GroupBy(m => m.posId).Select(
+                g => new
+                {
+                    posId = g.Key,
+                    branchName = g.FirstOrDefault().branchName,
+                    branchId = g.FirstOrDefault().branchId,
+                    cash = g.LastOrDefault().cash
+                });
+            titles.AddRange(cashTemp.Select(jj => jj.branchName));
+
+            var result = cashTemp.GroupBy(m => m.branchId)
                         .Select(
                             g => new
                             {
                                 branchId = g.Key,
-                                //cash = g.Sum(s => s.cash),
-                                cash = g.LastOrDefault().cash,
-                                count = g.Count()
+                                cash = g.Sum(s => s.cash),
                             });
             cashes = result.Select(m => decimal.Parse(SectionData.DecTostring(m.cash.Value)));
 
@@ -434,14 +441,17 @@ namespace POS.View.reports
                     if (vis is DataGridRow)
                     {
                         POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
-
-                        Window.GetWindow(this).Opacity = 0.2;
-                        wd_transBetweenOpenClose w = new wd_transBetweenOpenClose();
-                        w.openCashTransID = row.openCashTransId.Value;
-                        w.closeCashTransID = row.cashTransId;
-                        w.ShowDialog();
-                        Window.GetWindow(this).Opacity = 1;
-
+                        if (row.openCash == row.cash)
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChange"), animation: ToasterAnimation.FadeIn);
+                        else
+                        {
+                            Window.GetWindow(this).Opacity = 0.2;
+                            wd_transBetweenOpenClose w = new wd_transBetweenOpenClose();
+                            w.openCashTransID = row.openCashTransId.Value;
+                            w.closeCashTransID = row.cashTransId;
+                            w.ShowDialog();
+                            Window.GetWindow(this).Opacity = 1;
+                        }
                     }
 
                 if (sender != null)
