@@ -326,6 +326,7 @@
     <Compile Include="converters\SectionFreeZoneConverter.cs" />
     <Compile Include="converters\sectionFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
+    <Compile Include="converters\stockSectionLocationFreeZoneConverter.cs" />
     <Compile Include="converters\TaxVisibilityConverter.cs" />
     <Compile Include="converters\transTypeClosingConverter.cs" />
     <Compile Include="converters\transTypeConverter.cs" />
@@ -1446,6 +1447,18 @@
     <Content Include="Reports\StatisticReport\Accounts\Tax\En\EnTaxItem.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Closing\Ar\ArClosing.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Closing\Ar\ArClosOp.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Closing\En\EnClosing.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Accounts\Closing\En\EnClosOp.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="pic\subIncrease-logo.png" />
     <Content Include="Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -2305,6 +2318,8 @@
     <None Include="Properties\DataSources\POS.Classes.Agent.datasource" />
     <None Include="Properties\DataSources\POS.Classes.Coupon.datasource" />
     <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoiceTax1.datasource" />
+    <None Include="Properties\DataSources\POS.Classes.OpenClosOperatinModel.datasource" />
+    <None Include="Properties\DataSources\POS.Classes.POSOpenCloseModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -753,8 +753,11 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trDirectEntry");
             else if (firstTitle == "tax")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trTax");
+            else if (firstTitle == "closing")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trDailyClosing");
+      
             //trCashBalance trDirectEntry
-            //trTransfers administrativePull
+            //trTransfers administrativePull operations
             //////////////////////////////////////////////////////////////////////////////
 
             if (secondTitle == "branch")
@@ -819,6 +822,10 @@ Parameters!trValueDiscount.Value)
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trBestSeller");
             else if (secondTitle == "MostPurchased")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trMostPurchased");
+            else if (secondTitle == "cash")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trCash_");
+            else if (secondTitle == "operations")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trOperations");
             //////////////////////////////////////////////////////////////////////////////
 
             trtext = firstTitle + " / " + secondTitle;
@@ -1107,7 +1114,64 @@ Parameters!trValueDiscount.Value)
 
 
         }
+        public static void ClosingStsReport(IEnumerable<POSOpenCloseModel> query, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            foreach (var r in query)
+            {
+                r.cash= decimal.Parse(SectionData.DecTostring(r.cash));
+                r.openCash = decimal.Parse(SectionData.DecTostring(r.openCash));
+            
+            }
+            rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+            paramarr.Add(new ReportParameter("trPOS", MainWindow.resourcemanagerreport.GetString("trPOS")));
+            paramarr.Add(new ReportParameter("trOpenDate", MainWindow.resourcemanagerreport.GetString("trOpenDate")));
+            paramarr.Add(new ReportParameter("trOpenCash", MainWindow.resourcemanagerreport.GetString("trOpenCash")));
+            paramarr.Add(new ReportParameter("trCloseDate", MainWindow.resourcemanagerreport.GetString("trCloseDate")));
+            paramarr.Add(new ReportParameter("trCloseCash", MainWindow.resourcemanagerreport.GetString("trCloseCash")));
+         
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
 
+
+        }
+        public static void ClosingOpStsReport(IEnumerable<OpenClosOperatinModel> query, LocalReport rep, string reppath, List<ReportParameter> paramarr, POSOpenCloseModel openclosrow)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+            foreach (var r in query)
+            {
+                r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
+              //  r.openCash = decimal.Parse(SectionData.DecTostring(r.openCash));
+
+            }
+            rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+            paramarr.Add(new ReportParameter("trPOS", MainWindow.resourcemanagerreport.GetString("trPOS")));
+            paramarr.Add(new ReportParameter("trOpenDate", MainWindow.resourcemanagerreport.GetString("trOpenDate")));
+            paramarr.Add(new ReportParameter("trOpenCash", MainWindow.resourcemanagerreport.GetString("trOpenCash")));
+            paramarr.Add(new ReportParameter("trCloseDate", MainWindow.resourcemanagerreport.GetString("trCloseDate")));
+            paramarr.Add(new ReportParameter("trCloseCash", MainWindow.resourcemanagerreport.GetString("trCloseCash")));
+
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
+
+            paramarr.Add(new ReportParameter("OpenDate", openclosrow.openDate.ToString()));
+            paramarr.Add(new ReportParameter("OpenCash",  SectionData.DecTostring(openclosrow.openCash)));
+            paramarr.Add(new ReportParameter("CloseDate", openclosrow.updateDate.ToString()));
+            paramarr.Add(new ReportParameter("CloseCash", SectionData.DecTostring(openclosrow.cash)));
+            paramarr.Add(new ReportParameter("pos", openclosrow.branchName+" / "+ openclosrow.posName));
+
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
+            paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
+            paramarr.Add(new ReportParameter("trDescription", MainWindow.resourcemanagerreport.GetString("trDescription")));
+            paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
+
+
+
+        }
 
         public static void cashTransferStsRecipient(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {

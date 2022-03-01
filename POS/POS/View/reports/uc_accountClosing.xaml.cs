@@ -18,6 +18,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using Microsoft.Win32;
+
 
 namespace POS.View.reports
 {
@@ -30,7 +34,9 @@ namespace POS.View.reports
         IEnumerable<POSOpenCloseModel> closingTemp = null;
         Statistics statisticsModel = new Statistics();
         string searchText = "";
-
+        ReportCls reportclass = new ReportCls();
+        LocalReport rep = new LocalReport();
+        SaveFileDialog saveFileDialog = new SaveFileDialog();
         private static uc_accountClosing _instance;
 
         public static uc_accountClosing Instance
@@ -119,7 +125,7 @@ namespace POS.View.reports
         }
         private void translate()
         {
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingStartDate, MainWindow.resourcemanager.GetString("trDaily")+" "+ MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingStartDate, MainWindow.resourcemanager.GetString("trDaily") + " " + MainWindow.resourcemanager.GetString("trStartDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_closingEndDate, MainWindow.resourcemanager.GetString("trDaily") + " " + MainWindow.resourcemanager.GetString("trEndDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_closingBranches, MainWindow.resourcemanager.GetString("trBranchHint"));
@@ -141,8 +147,8 @@ namespace POS.View.reports
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
-            
-            
+
+
         }
         async Task Search()
         {
@@ -150,9 +156,9 @@ namespace POS.View.reports
                 await RefreshClosingList();
 
             searchText = txt_search.Text.ToLower();
-          
-            closingTemp = closings.Where(t => 
-            (  t.transNum.ToLower().Contains(searchText)
+
+            closingTemp = closings.Where(t =>
+            (t.transNum.ToLower().Contains(searchText)
             || t.posName.ToLower().Contains(searchText)
             )
             &&
@@ -408,28 +414,180 @@ namespace POS.View.reports
         #endregion
 
         #region reports
+
+        private void BuildReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            string firstTitle = "closing";//trDailyClosing
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Accounts\Closing\Ar\ArClosing.rdlc";
+
+            }
+            else
+            {
+                //english
+                addpath = @"\Reports\StatisticReport\Accounts\Closing\En\EnClosing.rdlc";
+            }
+
+            secondTitle = "cash";
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //  getpuritemcount
+            //paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
+
+            clsReports.ClosingStsReport(closingTemp, rep, reppath, paramarr);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
+            //pdf
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+
+                BuildReport();
+                saveFileDialog.Filter = "PDF|*.pdf;";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    string filepath = saveFileDialog.FileName;
+                    LocalReportExtensions.ExportToPDF(rep, filepath);
+                }
+
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_print_Click(object sender, RoutedEventArgs e)
         {//print
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
 
+                #region
+                BuildReport();
+
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+                List<ItemTransferInvoice> query = new List<ItemTransferInvoice>();
 
+                #region
+                BuildReport();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {//preview
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                string pdfpath = "";
+
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                BuildReport();
+
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         #endregion
 
         #region dataGrid events
+
+
         private async void moveRowinDatagrid(object sender, RoutedEventArgs e)
         {//move
             try
@@ -469,7 +627,61 @@ namespace POS.View.reports
             }
         }
         int cashTransID = 0, openCashTransID = 0;
-        private void printRowinDatagrid(object sender, RoutedEventArgs e)
+        IEnumerable<OpenClosOperatinModel> opquery;
+        POSOpenCloseModel openclosrow = new POSOpenCloseModel();
+        public async Task<IEnumerable<OpenClosOperatinModel>> getopquery(POSOpenCloseModel ocrow)
+        {
+
+            Statistics statisticsModel = new Statistics();
+
+            opquery = await statisticsModel.GetTransBetweenOpenClose((int)ocrow.openCashTransId, ocrow.cashTransId);
+            opquery = opquery.Where(c => c.transType != "c" && c.transType != "o");
+
+            openclosrow = ocrow;
+            return opquery;
+        }
+        private void BuildOperationReport()
+        {
+            List<ReportParameter> paramarr = new List<ReportParameter>();
+
+            string addpath = "";
+            string firstTitle = "closing";//trDailyClosing
+            string secondTitle = "";
+            string subTitle = "";
+            string Title = "";
+
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                addpath = @"\Reports\StatisticReport\Accounts\Closing\Ar\ArClosOp.rdlc";
+
+            }
+            else
+            {
+                //english
+                addpath = @"\Reports\StatisticReport\Accounts\Closing\En\EnClosOp.rdlc";
+            }
+
+            secondTitle = "operations";// trOperations
+            subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            Title = MainWindow.resourcemanagerreport.GetString("trAccounting") + " / " + subTitle;
+            paramarr.Add(new ReportParameter("trTitle", Title));
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+
+            ReportCls.checkLang();
+            //  getpuritemcount
+            //paramarr.Add(new ReportParameter("totalBalance", tb_total.Text));
+            //  OpenClosOperatinModel
+            clsReports.ClosingOpStsReport(opquery, rep, reppath, paramarr, openclosrow);
+            clsReports.setReportLanguage(paramarr);
+            clsReports.Header(paramarr);
+
+            rep.SetParameters(paramarr);
+
+            rep.Refresh();
+        }
+        private async void printRowinDatagrid(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -481,6 +693,19 @@ namespace POS.View.reports
                         POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
                         cashTransID = row.cashTransId;
                         openCashTransID = row.openCashTransId.Value;
+                        await getopquery(row);
+                        if (opquery.Count() == 0)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChange"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
+                        {
+                            BuildOperationReport();
+
+                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+
+                        }
                     }
 
                 if (sender != null)
@@ -494,7 +719,7 @@ namespace POS.View.reports
             }
         }
 
-        private void pdfRowinDatagrid(object sender, RoutedEventArgs e)
+        private async void pdfRowinDatagrid(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -506,6 +731,24 @@ namespace POS.View.reports
                         POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
                         cashTransID = row.cashTransId;
                         openCashTransID = row.openCashTransId.Value;
+                        await getopquery(row);
+                        if (opquery.Count() == 0)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChange"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
+                        {
+                            BuildOperationReport();
+
+                            saveFileDialog.Filter = "PDF|*.pdf;";
+
+                            if (saveFileDialog.ShowDialog() == true)
+                            {
+                                string filepath = saveFileDialog.FileName;
+                                LocalReportExtensions.ExportToPDF(rep, filepath);
+                            }
+                        }
                     }
 
                 if (sender != null)
@@ -519,7 +762,7 @@ namespace POS.View.reports
             }
         }
 
-        private void previewRowinDatagrid(object sender, RoutedEventArgs e)
+        private async void previewRowinDatagrid(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -531,6 +774,30 @@ namespace POS.View.reports
                         POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
                         cashTransID = row.cashTransId;
                         openCashTransID = row.openCashTransId.Value;
+                        await getopquery(row);
+                        if (opquery.Count() == 0)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChange"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
+                        {
+                            string pdfpath = "";
+
+                            pdfpath = @"\Thumb\report\temp.pdf";
+                            pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                            BuildOperationReport();
+                            LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                            wd_previewPdf w = new wd_previewPdf();
+                            w.pdfPath = pdfpath;
+                            if (!string.IsNullOrEmpty(w.pdfPath))
+                            {
+                                w.ShowDialog();
+                                w.wb_pdfWebViewer.Dispose();
+                            }
+                            Window.GetWindow(this).Opacity = 1;
+                        }
                     }
 
                 if (sender != null)
@@ -544,9 +811,9 @@ namespace POS.View.reports
             }
         }
 
-      
 
-        private void excelRowinDatagrid(object sender, RoutedEventArgs e)
+
+        private async void excelRowinDatagrid(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -558,6 +825,26 @@ namespace POS.View.reports
                         POSOpenCloseModel row = (POSOpenCloseModel)dgClosing.SelectedItems[0];
                         cashTransID = row.cashTransId;
                         openCashTransID = row.openCashTransId.Value;
+                        await getopquery(row);
+                        if (opquery.Count() == 0)
+                        {
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trNoChange"), animation: ToasterAnimation.FadeIn);
+
+                        }
+                        else
+                        {
+                            BuildOperationReport();
+
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                saveFileDialog.Filter = "EXCEL|*.xls;";
+                                if (saveFileDialog.ShowDialog() == true)
+                                {
+                                    string filepath = saveFileDialog.FileName;
+                                    LocalReportExtensions.ExportToExcel(rep, filepath);
+                                }
+                            });
+                        }
                     }
 
                 if (sender != null)
