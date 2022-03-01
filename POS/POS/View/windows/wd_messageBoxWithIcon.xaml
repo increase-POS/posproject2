@@ -43,7 +43,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <TextBlock  Grid.Row="0"   Text="{Binding contentText }" Foreground="#737373" FontWeight="Bold"  FontSize="14"
+                <TextBlock  Grid.Row="0"   Text="{Binding contentText1 }" Foreground="#737373" FontWeight="Bold"  FontSize="14"
                      TextWrapping="Wrap" TextAlignment="Center"  VerticalAlignment="Center"  HorizontalAlignment="Center"  
                         Margin="5" Grid.Column="1"/>
                 <materialDesign:PackIcon Grid.Column="0"  Foreground="Orange" 

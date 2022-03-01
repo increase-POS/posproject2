@@ -78,17 +78,17 @@ namespace POS.View.windows
         }
         
 
-        #region contentText
-        public static readonly DependencyProperty contentTextDependencyProperty = DependencyProperty.Register("contentText",
+        #region contentText2
+        public static readonly DependencyProperty contentText2DependencyProperty = DependencyProperty.Register("contentText2",
             typeof(string),
             typeof(wd_acceptCancelPopup),
             new PropertyMetadata("DEFAULT"));
-        public string contentText
+        public string contentText2
         {
             set
-            { SetValue(contentTextDependencyProperty, value); }
+            { SetValue(contentText2DependencyProperty, value); }
             get
-            { return (string)GetValue(contentTextDependencyProperty); }
+            { return (string)GetValue(contentText2DependencyProperty); }
         }
         #endregion
 

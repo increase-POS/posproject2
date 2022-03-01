@@ -944,15 +944,15 @@ namespace POS
                     wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
                     if (daysr.days >=1  )
                     {
-                        w.contentText = resourcemanager.GetString("trExpireNote1")+" " + daysr.days.ToString() + " "+ resourcemanager.GetString("trExpireDays");
+                        w.contentText1 = resourcemanager.GetString("trExpireNote1")+" " + daysr.days.ToString() + " "+ resourcemanager.GetString("trExpireDays");
                     }
                     else if(daysr.days ==0)
                     {
-                        w.contentText = resourcemanager.GetString("trExpireNote2");
+                        w.contentText1 = resourcemanager.GetString("trExpireNote2");
                     }
                     else 
                     {
-                        w.contentText = resourcemanager.GetString("trExpireNote3")+" " + (daysr.days* -1 ).ToString() + " " + resourcemanager.GetString("trAgo");
+                        w.contentText1 = resourcemanager.GetString("trExpireNote3")+" " + (daysr.days* -1 ).ToString() + " " + resourcemanager.GetString("trAgo");
                     }
 
                     w.Show();
