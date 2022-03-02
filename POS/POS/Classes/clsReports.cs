@@ -576,9 +576,10 @@ namespace POS.Classes
         public static void SalePromoStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             PurStsReport(tempquery, rep, reppath);
-
+            paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
             itemTransferDiscountTypeConv(paramarr);
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
+
             /*
              =IIF(Fields!CopdiscountType.Value="2",
 Parameters!trPercentageDiscount.Value,
