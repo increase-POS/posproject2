@@ -93,7 +93,7 @@ namespace POS.View
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
             try
-            {
+            {//cb_typeDiscount     tb_discountValue
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
@@ -488,6 +488,10 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                cb_typeDiscount.IsEnabled = true;
+                tb_discountValue.IsEnabled = true;
+
                 tb_code.Clear();
                 tb_name.Clear();
                 tb_barcode.Clear();
@@ -665,7 +669,7 @@ namespace POS.View
                 SectionData.clearValidate(tbStart, p_errorStartDate);
                 TextBox tbEnd = (TextBox)dp_endDate.Template.FindName("PART_TextBox", dp_endDate);
                 SectionData.clearValidate(tbEnd, p_errorEndDate);
-
+               
                 if (dg_coupon.SelectedIndex != -1)
                 {
                     coupon = dg_coupon.SelectedItem as Coupon;
@@ -673,6 +677,10 @@ namespace POS.View
                     this.DataContext = coupon;
                     if (coupon != null)
                     {
+
+                        cb_typeDiscount.IsEnabled = false;
+                        tb_discountValue.IsEnabled = false;
+
                         tb_discountValue.Text = SectionData.DecTostring(coupon.discountValue);
                         tb_MinInvoiceValue.Text = SectionData.DecTostring(coupon.invMin);
                         tb_MaxInvoiceValue.Text = SectionData.DecTostring(coupon.invMax);
@@ -945,15 +953,18 @@ namespace POS.View
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "show") || SectionData.isAdminPermision())
                 {
                     if (coupons is null)
                         await RefreshCouponsList();
+
                     searchText = tb_search.Text.ToLower();
                     couponsQuery = coupons.Where(s => (s.code.ToLower().Contains(searchText) ||
                     s.name.ToLower().Contains(searchText) ||
                     s.barcode.ToLower().Contains(searchText)
                     ) && s.isActive == tgl_couponState);
+
                     RefreshCouponView();
                 }
 

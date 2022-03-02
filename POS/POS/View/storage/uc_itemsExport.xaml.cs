@@ -145,7 +145,6 @@ namespace POS.View.storage
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
             txt_orders.Text = MainWindow.resourcemanager.GetString("trOrders");
             txt_ordersWait.Text = MainWindow.resourcemanager.GetString("trOrdersWait");
-            txt_shortageInvoice.Text = MainWindow.resourcemanager.GetString("trShortages");
             txt_package.Text = MainWindow.resourcemanager.GetString("trPackage");
             txt_unitConversion.Text = MainWindow.resourcemanager.GetString("trUnitConversion");
             txt_processType.Text = MainWindow.resourcemanager.GetString("trProcessType");
