@@ -123,7 +123,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDateItem, MainWindow.resourcemanager.GetString("trStartDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDateItem, MainWindow.resourcemanager.GetString("trEndDateHint"));
 
-            chk_expireDateItem.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_expireDateItem.Content = MainWindow.resourcemanager.GetString("trExpiredDate");
             chk_allBranchesItem.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_allItemsItem.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_allUnitsItem.Content = MainWindow.resourcemanager.GetString("trAll");
