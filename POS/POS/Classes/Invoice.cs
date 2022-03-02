@@ -119,6 +119,9 @@ namespace POS.Classes
         public string createrUserName { get; set; }
         public decimal shippingCost { get; set; }
         public decimal realShippingCost { get; set; }
+        public bool isActive { get; set; }
+
+
         // for report
         public int countP { get; set; }
         public int countS { get; set; }
