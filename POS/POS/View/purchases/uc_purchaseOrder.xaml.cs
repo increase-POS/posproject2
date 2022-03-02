@@ -520,7 +520,7 @@ namespace POS.View.purchases
                     _Sum += billDetails[i].Total;
                     billDetails[i].ID = _SequenceNum;
                 }
-                //refrishBillDetails();
+              refrishBillDetails();
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
             }

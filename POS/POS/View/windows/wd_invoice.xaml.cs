@@ -154,8 +154,8 @@ namespace POS.View.windows
                     col_agent.Visibility = Visibility.Visible;
                 }
                 #endregion
-                #region display branch if invoice is export process
-                invTypeArray = new string[] { "exw" };
+                #region display branch if invoice is export or import process
+                invTypeArray = new string[] { "exw" ,"im","ex" };
                 invTypes = invTypeArray.ToList();
                 inCommen = invTypeL.Any(s => invTypes.Contains(s));
                 if (inCommen)
@@ -193,13 +193,17 @@ namespace POS.View.windows
         }
         private async Task refreshInvoices()
         {
-            if (condition == "orders")
+            if (condition == "orders") 
             {
                 invoices = await invoice.getUnHandeldOrders(invoiceType,branchCreatorId, branchId,duration,userId);
             }
             else if (condition == "export")
             {
                 invoices = await invoice.getExportInvoices(invoiceType, branchId);
+            }
+            else if (condition == "exportImport")
+            {
+                invoices = await invoice.getExportImportInvoices(invoiceType, branchId);
             }
             else if(condition == "return")
                 invoices = await invoice.getInvoicesToReturn(invoiceType, userId);

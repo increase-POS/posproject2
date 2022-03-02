@@ -1880,8 +1880,7 @@ namespace POS.View
                         isFromReport = false;
                         archived = false;
                         await fillInvoiceInputs(invoice);
-                        setNotifications();
-                        refreshDocCount(invoice.invoiceId);
+                        
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
                         navigateBtnActivate();
                         md_payments.Badge = "";
@@ -1897,6 +1896,8 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                         }
+                        setNotifications();
+                        refreshDocCount(invoice.invoiceId);
                     }
                 }
                 Window.GetWindow(this).Opacity = 1;
@@ -1905,6 +1906,7 @@ namespace POS.View
             }
             catch (Exception ex)
             {
+                Window.GetWindow(this).Opacity = 1;
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
@@ -3111,8 +3113,7 @@ namespace POS.View
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId &&
-                                                                p.OrderId == null ? p.OrderId == null : p.OrderId == row.OrderId).FirstOrDefault()) ;
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId && p.OrderId == row.OrderId).FirstOrDefault()) ;
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -3150,8 +3151,7 @@ namespace POS.View
 
                     if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
                     {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId 
-                                                                        && i.invoiceId == null ? i.invoiceId == null : i.invoiceId == row.OrderId);
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId ==  row.OrderId);
                         if (newCount > item.quantity)
                         {
                             // return old value 
@@ -4251,6 +4251,7 @@ namespace POS.View
             try
             {
                 clearVendor();
+                btn_updateVendor.IsEnabled = false;
             }
             catch (Exception ex)
             {

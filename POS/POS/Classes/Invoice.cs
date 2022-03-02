@@ -119,6 +119,9 @@ namespace POS.Classes
         public string createrUserName { get; set; }
         public decimal shippingCost { get; set; }
         public decimal realShippingCost { get; set; }
+        public bool isActive { get; set; }
+
+
         // for report
         public int countP { get; set; }
         public int countS { get; set; }
@@ -307,6 +310,22 @@ namespace POS.Classes
             parameters.Add("branchCreatorId", branchCreatorId.ToString());
             parameters.Add("branchId", branchId.ToString());
             IEnumerable<Claim> claims = await APIResult.getList("Invoices/getBranchInvoices", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Invoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+        public async Task<List<Invoice>> getExportImportInvoices(string invType, int branchId )
+        {
+            List<Invoice> items = new List<Invoice>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invType", invType);
+            parameters.Add("branchId", branchId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/getExportImportInvoices", parameters);
             foreach (Claim c in claims)
             {
                 if (c.Type == "scopes")

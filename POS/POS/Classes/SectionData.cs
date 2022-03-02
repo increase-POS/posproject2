@@ -1454,7 +1454,7 @@ namespace POS.Classes
             else if (secondTitle == "stocktaking")
                 secondTitle = MainWindow.resourcemanager.GetString("trStocktaking");
             else if (secondTitle == "archives")
-                secondTitle = MainWindow.resourcemanager.GetString("trArchive");
+                secondTitle = MainWindow.resourcemanager.GetString("trArchives");
             else if (secondTitle == "shortfalls")
                 secondTitle = MainWindow.resourcemanager.GetString("trShortages");
             else if (secondTitle == "location")

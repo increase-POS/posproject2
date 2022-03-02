@@ -1007,7 +1007,7 @@ namespace POS.View
                     //_Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
-                //refrishBillDetails();
+               refrishBillDetails();
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
             }
@@ -1388,8 +1388,9 @@ namespace POS.View
         }
         private async Task addInvoice(string invType)
         {
+            #region prepare invoice Object
             invoice.invoiceMainId = 0;
-
+            #region invNumber
             if ((invoice.invType == "s" && (invType == "sb" || invType == "sbd")) || _InvoiceType == "or" || _InvoiceType == "q") // invoice is sale and will be bounce sale  or sale bounce draft  , save another invoice in db
             {
                 invoice.invoiceMainId = invoice.invoiceId;
@@ -1414,30 +1415,40 @@ namespace POS.View
                 invoice.branchId = MainWindow.branchID.Value;
                 invoice.invNumber = await invoice.generateInvNumber("sd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
+            #endregion
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
-                invoice.posId = MainWindow.posID.Value;
+                //invoice.posId = MainWindow.posID.Value;
             }
 
             invoice.posId = MainWindow.posID;
             invoice.discountValue = _Discount;
             invoice.discountType = "1";
+            invoice.printedcount = 0;
+            invoice.isOrginal = true;
+            invoice.isActive = true;
+            invoice.invCase = "";
+            invoice.deservedDate = dp_desrvedDate.SelectedDate;
+            invoice.notes = tb_note.Text;
+            invoice.shippingCost = _DeliveryCost;
+            invoice.realShippingCost = _RealDeliveryCost;
+            invoice.createUserId = MainWindow.userID;
+            invoice.updateUserId = MainWindow.userID;
+            invoice.invType = invType;
+
             if (cb_typeDiscount.SelectedIndex != -1)
                 invoice.manualDiscountType = cb_typeDiscount.SelectedValue.ToString();
             if (tb_discount.Text != "")
                 invoice.manualDiscountValue = decimal.Parse(tb_discount.Text);
+            else
+                invoice.manualDiscountValue = 0;
             invoice.total = _Sum;
             invoice.totalNet = decimal.Parse(tb_total.Text);
 
             if (cb_customer.SelectedIndex != -1)
                 invoice.agentId = (int)cb_customer.SelectedValue;
-
-
-            invoice.deservedDate = dp_desrvedDate.SelectedDate;
-            invoice.notes = tb_note.Text;
-            invoice.shippingCost = _DeliveryCost;
-            invoice.realShippingCost = _RealDeliveryCost;
+            
             if (tb_taxValue.Text != "" && MainWindow.invoiceTax_bool == true)
                 invoice.tax = decimal.Parse(tb_taxValue.Text);
             else
@@ -1447,6 +1458,7 @@ namespace POS.View
                 invoice.shippingCompanyId = (int)cb_company.SelectedValue;
             else
                 invoice.shippingCompanyId = null;
+
             if (cb_user.SelectedIndex != -1)
                 invoice.shipUserId = (int)cb_user.SelectedValue;
 
@@ -1459,14 +1471,8 @@ namespace POS.View
             catch
             {
                 invoice.cashReturn = 0;
-            }
-            invoice.createUserId = MainWindow.userID;
-            invoice.updateUserId = MainWindow.userID;
-
-
-
-            invoice.invType = invType;
-
+            }                     
+            #endregion
             // save invoice in DB
             int invoiceId = await invoiceModel.saveInvoice(invoice);
             invoice.invoiceId = invoiceId;
@@ -1984,6 +1990,7 @@ namespace POS.View
             md_docImage.Badge = "";
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
+            btn_updateCustomer.IsEnabled = false;
             if (MainWindow.invoiceTax_decimal != 0)
                 tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             else
@@ -2509,7 +2516,7 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -2536,7 +2543,7 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = true;
                     btn_addCustomer.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = true;
+                   // btn_updateCustomer.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -2573,7 +2580,7 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -2613,7 +2620,7 @@ namespace POS.View
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -2639,7 +2646,7 @@ namespace POS.View
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -2802,6 +2809,10 @@ namespace POS.View
                 if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
                 {
                     _SelectedCustomer = (int)cb_customer.SelectedValue;
+
+                    if (_InvoiceType == "sd")
+                        btn_updateCustomer.IsEnabled = true;
+
                     var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
                     if (cb_company.SelectedIndex == -1)
                     {
@@ -5537,7 +5548,7 @@ namespace POS.View
                 dp_desrvedDate.SelectedDate = null;
                 tb_note.Clear();
 
-                //btn_updateCustomer.IsEnabled = false;
+                btn_updateCustomer.IsEnabled = false;
                 SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

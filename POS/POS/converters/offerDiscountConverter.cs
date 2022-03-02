@@ -19,7 +19,7 @@ namespace POS.converters
             decimal oValue = (decimal)values[1];
 
             if (oType == "1")
-                return oValue + " " + MainWindow.accuracy;
+                return oValue + " " + MainWindow.Currency;
             else if (oType == "2")
                 return oValue + "%";
             else
