@@ -53,7 +53,7 @@ namespace POS_Server.Controllers
                                                 itemId = i.itemId,
                                                 itemName = i.name,
                                                 quantity = t.quantity,
-                                                invoiceId = entity.invoiceOrder.Where(x => x.itemsTransferId == t.itemsTransId).Select(x => x.orderId).FirstOrDefault(),
+                                                invoiceId = entity.invoiceOrder.Where(x => x.itemsTransferId == t.itemsTransId).Select(x => x.orderId).FirstOrDefault() == null? 0 : entity.invoiceOrder.Where(x => x.itemsTransferId == t.itemsTransId).Select(x => x.orderId).FirstOrDefault(),
                                                 invNumber = inv.invNumber,
                                                 locationIdNew = t.locationIdNew,
                                                 locationIdOld = t.locationIdOld,
@@ -123,7 +123,7 @@ namespace POS_Server.Controllers
                 if (newObject != null)
                 {
 
-                try
+             try
                 {
                   // delete old invoice items
                     using (incposdbEntities entity = new incposdbEntities())
@@ -189,11 +189,11 @@ namespace POS_Server.Controllers
                         }
             }
                     catch
-            {
-                message = "0";
-                return TokenManager.GenerateToken(message);
-            }
-        }
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
+                }
                 else
                 {
                     return TokenManager.GenerateToken("0");

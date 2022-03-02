@@ -2581,10 +2581,11 @@ var strP = TokenManager.GetPrincipal(token);
         [HttpPost]
         [Route("Save")]
         public string Save(string token)
-        {
+        {            
             token = TokenManager.readToken(HttpContext.Current.Request);
             string message = "";
             var strP = TokenManager.GetPrincipal(token);
+
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2594,6 +2595,7 @@ var strP = TokenManager.GetPrincipal(token);
                 string invoiceObject = "";
                 invoices newObject = null;
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+
                 foreach (Claim c in claims)
                 {
                     if (c.Type == "itemObject")
@@ -2611,10 +2613,11 @@ var strP = TokenManager.GetPrincipal(token);
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var invoiceEntity = entity.Set<invoices>();
+                        if (newObject.invoiceMainId == 0)
+                            newObject.invoiceMainId = null;
+
                         if (newObject.invoiceId == 0)
-                        {
-                            if (newObject.invoiceMainId == 0)
-                                newObject.invoiceMainId = null;
+                        {                          
                             if (newObject.invType == "s")
                             {
                                 ProgramInfo programInfo = new ProgramInfo();
@@ -2696,11 +2699,11 @@ var strP = TokenManager.GetPrincipal(token);
                     }
             }
 
-            catch
-            {
-                message = "0";
-                return TokenManager.GenerateToken(message);
-            }
+                catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
             }
         }
 
