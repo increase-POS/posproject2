@@ -838,6 +838,7 @@ namespace POS.View.storage
             btn_items.IsEnabled = true;
             isFromReport = false;
             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDirectEntry");
+            txt_titleDataGridInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             refrishBillDetails();
             inputEditable();
