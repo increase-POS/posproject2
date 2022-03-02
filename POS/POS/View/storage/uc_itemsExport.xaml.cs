@@ -741,7 +741,7 @@ namespace POS.View.storage
 
 
 
-                w.condition = "order";
+                w.condition = "exportImport";
                 w.title = MainWindow.resourcemanager.GetString("trOrders");
                 w.branchId = MainWindow.branchID.Value;
 

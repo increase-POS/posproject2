@@ -4251,6 +4251,7 @@ namespace POS.View
             try
             {
                 clearVendor();
+                btn_updateVendor.IsEnabled = false;
             }
             catch (Exception ex)
             {
