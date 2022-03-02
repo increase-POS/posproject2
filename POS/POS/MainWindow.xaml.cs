@@ -79,7 +79,7 @@ namespace POS
         internal static string dateFormat;
         internal static string accuracy;
         internal static decimal? StorageCost;
-        public static int Idletime = 5;
+        public static int Idletime = 15;
         public static int threadtime = 5;
         public static string menuIsOpen = "close";
         public static List<ItemUnitUser> itemUnitsUsers = new List<ItemUnitUser>();
@@ -1172,6 +1172,7 @@ namespace POS
                 {
                     BTN_Close_Click(null, null);
                     idletimer.Stop();
+                    //popup here
                 }
             }
             catch (Exception ex)
