@@ -189,12 +189,13 @@ namespace POS.View
         {
             try
             {
+
                 #region BestSeller
                 if (!firstLoad)
                 {
                     if ((listBestSeller.Count < 4 || SkipBestSeller == 2) || (listBestSeller.Count == 3)
-                      || (listBestSeller.Count == 6 && SkipBestSeller == 1)
-                      || (listBestSeller.Count == 9 && SkipBestSeller == 2))
+                     || (listBestSeller.Count >= 4 && listBestSeller.Count <= 6 && SkipBestSeller == 1)
+                     || (listBestSeller.Count >= 7 && listBestSeller.Count <= 9 && SkipBestSeller == 2))
                         SkipBestSeller = 0;
                     else if (listBestSeller.Count < 7 && SkipBestSeller < 1)
                         SkipBestSeller++;
