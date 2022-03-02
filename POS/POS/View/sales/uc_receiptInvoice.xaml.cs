@@ -1990,6 +1990,7 @@ namespace POS.View
             md_docImage.Badge = "";
             md_payments.Badge = "";
             gd_card.Visibility = Visibility.Collapsed;
+            btn_updateCustomer.IsEnabled = false;
             if (MainWindow.invoiceTax_decimal != 0)
                 tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
             else
@@ -2515,7 +2516,7 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = false; //make price writable
                     cb_customer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
@@ -2542,7 +2543,7 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = true;
                     btn_addCustomer.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = true;
+                   // btn_updateCustomer.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -2579,7 +2580,7 @@ namespace POS.View
                     dg_billDetails.Columns[5].IsReadOnly = true; //make price readonly
                     cb_customer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = true;
@@ -2619,7 +2620,7 @@ namespace POS.View
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = false;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -2645,7 +2646,7 @@ namespace POS.View
                     cb_customer.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
                     btn_addCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                   // btn_updateCustomer.IsEnabled = false;
                     dp_desrvedDate.IsEnabled = true;
                     tb_note.IsEnabled = false;
                     tb_barcode.IsEnabled = false;
@@ -2808,6 +2809,10 @@ namespace POS.View
                 if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
                 {
                     _SelectedCustomer = (int)cb_customer.SelectedValue;
+
+                    if (_InvoiceType == "sd")
+                        btn_updateCustomer.IsEnabled = true;
+
                     var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
                     if (cb_company.SelectedIndex == -1)
                     {
@@ -5543,7 +5548,7 @@ namespace POS.View
                 dp_desrvedDate.SelectedDate = null;
                 tb_note.Clear();
 
-                //btn_updateCustomer.IsEnabled = false;
+                btn_updateCustomer.IsEnabled = false;
                 SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

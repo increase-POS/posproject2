@@ -558,7 +558,7 @@ namespace POS.View.sales
                   //  _Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
-                //refrishBillDetails();
+                refrishBillDetails();
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
             }
@@ -861,6 +861,7 @@ namespace POS.View.sales
             tb_barcode.Clear();
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
+            btn_updateCustomer.IsEnabled = false;
             tb_note.Clear();
             tb_totalDescount.Text = "0";
             billDetails.Clear();
@@ -908,7 +909,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = true;
                     btn_clearCoupon.IsEnabled = true;
                     btn_clearCustomer.IsEnabled = true;
-                    btn_updateCustomer.IsEnabled = true;
+                    //btn_updateCustomer.IsEnabled = true;
                     btn_items.IsEnabled = true;
                     tgl_ActiveOffer.IsEnabled = true;
                     btn_deleteInvoice.Visibility = Visibility.Visible;
@@ -924,7 +925,7 @@ namespace POS.View.sales
                     cb_coupon.IsEnabled = false;
                     btn_clearCoupon.IsEnabled = false;
                     btn_clearCustomer.IsEnabled = false;
-                    btn_updateCustomer.IsEnabled = false;
+                    //btn_updateCustomer.IsEnabled = false;
                     btn_items.IsEnabled = false;
 
                     tgl_ActiveOffer.IsEnabled = true;
@@ -2724,6 +2725,8 @@ namespace POS.View.sales
                 if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
                 {
                     _SelectedCustomer = (int)cb_customer.SelectedValue;
+                    if (_InvoiceType == "qd" || _InvoiceType =="qs")
+                        btn_updateCustomer.IsEnabled = true;
                 }
                 else
                 {
@@ -2751,7 +2754,7 @@ namespace POS.View.sales
                 //dp_desrvedDate.SelectedDate = null;
                 tb_note.Clear();
 
-                //btn_updateCustomer.IsEnabled = false;
+                btn_updateCustomer.IsEnabled = false;
                 SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
