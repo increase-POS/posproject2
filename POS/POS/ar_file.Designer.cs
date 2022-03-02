@@ -3805,7 +3805,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to انتهت مدة صلاحية البرنامج.
+        ///   Looks up a localized string similar to سوف تنتهي صلاحية البرنامج خلال اقل من 24 ساعة.
         /// </summary>
         internal static string trExpireNote2 {
             get {

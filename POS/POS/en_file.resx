@@ -3401,7 +3401,7 @@ Please add Email in setting</value>
     <value>The Application will be expired in</value>
   </data>
   <data name="trExpireNote2" xml:space="preserve">
-    <value>The Application has been expired</value>
+    <value>The Application will be expired in less than 24 hours</value>
   </data>
   <data name="trExpireNote3" xml:space="preserve">
     <value>The Application has been expired from</value>

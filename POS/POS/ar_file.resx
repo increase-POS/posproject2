@@ -3380,7 +3380,7 @@
     <value>سوف تنتهي صلاحية البرنامج خلال</value>
   </data>
   <data name="trExpireNote2" xml:space="preserve">
-    <value>انتهت مدة صلاحية البرنامج</value>
+    <value>سوف تنتهي صلاحية البرنامج خلال اقل من 24 ساعة</value>
   </data>
   <data name="trExpireNote3" xml:space="preserve">
     <value>انتهت مدة صلاحية البرنامج من </value>

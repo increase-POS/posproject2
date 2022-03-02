@@ -317,7 +317,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Parameters!trNo.Value</Value>
+                                  <Value>#</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -352,7 +352,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Parameters!trNum.Value</Value>
+                                  <Value>Number</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -997,7 +997,7 @@
             <Top>5.10883cm</Top>
             <Left>1.18768cm</Left>
             <Height>0.73229cm</Height>
-            <Width>27.09897cm</Width>
+            <Width>27.09898cm</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>

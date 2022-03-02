@@ -3832,7 +3832,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Application has been expired.
+        ///   Looks up a localized string similar to The Application will be expired in less than 24 hours.
         /// </summary>
         internal static string trExpireNote2 {
             get {
