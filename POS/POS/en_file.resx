@@ -3424,4 +3424,7 @@ Please add Email in setting</value>
   <data name="trNoChange" xml:space="preserve">
     <value>No changes</value>
   </data>
+  <data name="trLoggedOutBecauseDidNotDoneAnyProcess" xml:space="preserve">
+    <value>You are logged out because you haven't done any processfor 15 minutes</value>
+  </data>
 </root>

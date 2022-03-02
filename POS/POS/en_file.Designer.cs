@@ -4885,6 +4885,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are logged out because you haven&apos;t done any processfor 15 minutes.
+        /// </summary>
+        internal static string trLoggedOutBecauseDidNotDoneAnyProcess {
+            get {
+                return ResourceManager.GetString("trLoggedOutBecauseDidNotDoneAnyProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log In.
         /// </summary>
         internal static string trLogIn {
