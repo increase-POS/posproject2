@@ -24,6 +24,7 @@ using POS.View.windows;
 using System.Resources;
 using System.Reflection;
 using static POS.Classes.Statistics;
+using POS.View.sales;
 
 namespace POS.View.reports
 {
@@ -990,16 +991,47 @@ namespace POS.View.reports
                         invoice = await invoice.GetByInvoiceId(item.invoiceId);
                         MainWindow.mainWindow.BTN_sales_Click(MainWindow.mainWindow.btn_sales, null);
                         uc_sales.Instance.UserControl_Loaded(null, null);
-                        uc_sales.Instance.Btn_receiptInvoice_Click(uc_sales.Instance.btn_reciptInvoice, null);
-                        uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
-                        uc_receiptInvoice._InvoiceType = invoice.invType;
-                        uc_receiptInvoice.Instance.invoice = invoice;
-                        uc_receiptInvoice.isFromReport = true;
-                        if (item.archived == 0)
-                            uc_receiptInvoice.archived = false;
-                        else
-                            uc_receiptInvoice.archived = true;
-                        await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
+                        if (selectedTab == 0)
+                        {
+                            uc_sales.Instance.Btn_receiptInvoice_Click(uc_sales.Instance.btn_reciptInvoice, null);
+                            uc_receiptInvoice.Instance.UserControl_Loaded(null, null);
+                            uc_receiptInvoice._InvoiceType = invoice.invType;
+                            uc_receiptInvoice.Instance.invoice = invoice;
+                            uc_receiptInvoice.isFromReport = true;
+                            if (item.archived == 0)
+                                uc_receiptInvoice.archived = false;
+                            else
+                                uc_receiptInvoice.archived = true;
+                            await uc_receiptInvoice.Instance.fillInvoiceInputs(invoice);
+                        }
+                        else if (selectedTab == 1)
+                        {
+                            uc_sales.Instance.Btn_orders_Click(uc_sales.Instance.btn_salesOrders, null);
+                            uc_orders.Instance.UserControl_Loaded(null, null);
+                            uc_orders._InvoiceType = invoice.invType;
+                            uc_orders.Instance.invoice = invoice;
+                            uc_orders.isFromReport = true;
+                            if (item.archived == 0)
+                                uc_orders.archived = false;
+                            else
+                                uc_orders.archived = true;
+                            await uc_orders.Instance.fillInvoiceInputs(invoice);
+
+                        }
+                        else if (selectedTab == 2)
+                        {
+                            uc_sales.Instance.Btn_quotations_Click(uc_sales.Instance.btn_quotation, null);
+                            uc_quotations.Instance.UserControl_Loaded(null, null);
+                            uc_quotations._InvoiceType = invoice.invType;
+                            uc_quotations.Instance.invoice = invoice;
+                            uc_quotations.isFromReport = true;
+                            if (item.archived == 0)
+                                uc_quotations.archived = false;
+                            else
+                                uc_quotations.archived = true;
+                            await uc_quotations.Instance.fillInvoiceInputs(invoice);
+
+                        }
                     }
                 }
                 if (sender != null)
