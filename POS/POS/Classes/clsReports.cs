@@ -1145,7 +1145,9 @@ Parameters!trValueDiscount.Value)
             foreach (var r in query)
             {
                 r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-              //  r.openCash = decimal.Parse(SectionData.DecTostring(r.openCash));
+                //  r.openCash = decimal.Parse(SectionData.DecTostring(r.openCash));
+              r.notes=  closingDescriptonConverter(r);
+
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
@@ -1172,7 +1174,72 @@ Parameters!trValueDiscount.Value)
 
 
         }
+        public static string closingDescriptonConverter(OpenClosOperatinModel s)
+        {
+          
+            string name = "";
+            switch (s.side)
+            {
+                case "bnd": break;
+                case "v": name = MainWindow.resourcemanager.GetString("trVendor"); break;
+                case "c": name = MainWindow.resourcemanager.GetString("trCustomer"); break;
+                case "u": name = MainWindow.resourcemanager.GetString("trUser"); break;
+                case "s": name = MainWindow.resourcemanager.GetString("trSalary"); break;
+                case "e": name = MainWindow.resourcemanager.GetString("trGeneralExpenses"); break;
+                case "m":
+                    if (s.transType == "d")
+                        name = MainWindow.resourcemanager.GetString("trAdministrativeDeposit");
+                    if (s.transType == "p")
+                        name = MainWindow.resourcemanager.GetString("trAdministrativePull");
+                    break;
+                case "sh": name = MainWindow.resourcemanager.GetString("trShippingCompany"); break;
+                default: break;
+            }
 
+            if (!string.IsNullOrEmpty(s.agentName))
+                name = name + " " + s.agentName;
+            else if (!string.IsNullOrEmpty(s.usersName) && !string.IsNullOrEmpty(s.usersLName))
+                name = name + " " + s.usersName + " " + s.usersLName;
+            else if (!string.IsNullOrEmpty(s.shippingCompanyName))
+                name = name + " " + s.shippingCompanyName;
+            else if ((s.side != "e") && (s.side != "m"))
+                name = name + " " + MainWindow.resourcemanager.GetString("trUnKnown");
+
+            if (s.transType.Equals("p"))
+            {
+                if ((s.side.Equals("bn")) || (s.side.Equals("p")))
+                {
+                    return MainWindow.resourcemanager.GetString("trPull") + " " +
+                           MainWindow.resourcemanager.GetString("trFrom") + " " +
+                           name;//receive
+                }
+                else if ((!s.side.Equals("bn")) || (!s.side.Equals("p")))
+                {
+                    return MainWindow.resourcemanager.GetString("trPayment") + " " +
+                           MainWindow.resourcemanager.GetString("trTo") + " " +
+                           name;//دفع
+                }
+                else return "";
+            }
+            else if (s.transType.Equals("d"))
+            {
+                if ((s.side.Equals("bn")) || (s.side.Equals("p")))
+                {
+                    return MainWindow.resourcemanager.GetString("trDeposit") + " " +
+                           MainWindow.resourcemanager.GetString("trTo") + " " +
+                           name;
+                }
+                else if ((!s.side.Equals("bn")) || (!s.side.Equals("p")))
+                {
+                    return MainWindow.resourcemanager.GetString("trReceiptOperation") + " " +
+                           MainWindow.resourcemanager.GetString("trFrom") + " " +
+                           name;//قبض
+                }
+                else return "";
+            }
+            else return "";
+
+        }
         public static void cashTransferStsRecipient(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             cashTransferSts(cashTransfers, rep, reppath);
