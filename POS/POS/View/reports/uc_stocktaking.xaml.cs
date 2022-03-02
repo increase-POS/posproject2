@@ -146,7 +146,7 @@ namespace POS.View.reports
 
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_itemUnits.Header = MainWindow.resourcemanager.GetString("trItemUnit");
-            col_stockTakeNum.Header = MainWindow.resourcemanager.GetString("trNO");
+            col_stockTakeNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_stockTakingCoastType.Header = MainWindow.resourcemanager.GetString("trType");
             col_stockTakingDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_diffPercentage.Header = MainWindow.resourcemanager.GetString("trDiffrencePercentage");
