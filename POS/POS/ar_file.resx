@@ -3403,4 +3403,7 @@
   <data name="trNoChange" xml:space="preserve">
     <value>لا يوجد تغييرات</value>
   </data>
+  <data name="trLoggedOutBecauseDidNotDoneAnyProcess" xml:space="preserve">
+    <value>لقد تم تسجيل خروجك لأنك لم تنفذ أي عملية لمدة 15 دقيقة</value>
+  </data>
 </root>
