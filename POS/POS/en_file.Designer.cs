@@ -4885,7 +4885,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You are logged out because you haven&apos;t done any processfor 15 minutes.
+        ///   Looks up a localized string similar to You are logged out because you haven&apos;t done any process for 15 minutes.
         /// </summary>
         internal static string trLoggedOutBecauseDidNotDoneAnyProcess {
             get {
