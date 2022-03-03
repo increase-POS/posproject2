@@ -1205,7 +1205,7 @@ var strP = TokenManager.GetPrincipal(token);
                                              join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
                                              join l in entity.locations on il.locationId equals l.locationId
                                              join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
-                                             where il.quantity > 0
+                                             where ((il.quantity > 0 && I.type != "sr") ||(I.type == "sr"))
                                              select new ItemSalePurModel()
                                              {
                                                  itemId = I.itemId,
@@ -1264,9 +1264,6 @@ var strP = TokenManager.GetPrincipal(token);
                                                        used = itof.used,
 
                                                    }).Where(IO => IO.isActiveOffer == 1 && DateTime.Compare((DateTime)IO.startDate, DateTime.Now) <= 0 && System.DateTime.Compare((DateTime)IO.endDate, DateTime.Now) >= 0 && IO.defaultSale == 1 && IO.itemCount > IO.used).Distinct().ToList();
-                            //.Where(IO => IO.isActiveOffer == 1 && DateTime.Compare(IO.startDate,DateTime.Now)<0 && System.DateTime.Compare(IO.endDate, DateTime.Now) > 0).ToList();
-
-                            // test
 
                             var unt = (from unitm in entity.itemsUnits
                                        join untb in entity.units on unitm.unitId equals untb.unitId
