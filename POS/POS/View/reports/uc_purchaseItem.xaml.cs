@@ -208,12 +208,12 @@ namespace POS.View.reports
             RepQuery = fillList(Items, cb_ItemsBranches, cb_Items, chk_itemInvoice, chk_itemReturn, dp_ItemStartDate, dp_ItemEndDate)
                 .Where(j => (selectedItemId.Count != 0 ? selectedItemId.Contains((int)j.ITitemUnitId) : true));
 
-            txt_count.Text = dgInvoice.Items.Count.ToString();
             fillPieChart(cb_Items, selectedItemId);
             fillColumnChart(cb_Items, selectedItemId);
             fillRowChart(cb_Items, selectedItemId);
 
             dgInvoice.ItemsSource = RepQuery;
+            txt_count.Text = dgInvoice.Items.Count.ToString();
 
         }
 
