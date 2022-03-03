@@ -68,9 +68,9 @@ namespace POS
         internal static int? isInvTax;
         internal static decimal? tax;
         //tax
-        internal static bool?    invoiceTax_bool;
+        internal static bool? invoiceTax_bool;
         internal static decimal? invoiceTax_decimal;
-        internal static bool?    itemsTax_bool;
+        internal static bool? itemsTax_bool;
         internal static decimal? itemsTax_decimal;
         internal static string itemtax_note;
         internal static string sales_invoice_note;
@@ -79,7 +79,7 @@ namespace POS
         internal static string dateFormat;
         internal static string accuracy;
         internal static decimal? StorageCost;
-        public static int Idletime = 15;
+        public static int Idletime = 14;
         public static int threadtime = 5;
         public static string menuIsOpen = "close";
         public static List<ItemUnitUser> itemUnitsUsers = new List<ItemUnitUser>();
@@ -124,10 +124,10 @@ namespace POS
         static public List<Item> InvoiceGlobalSaleUnitsList = new List<Item>();
 
 
-         public ItemUnit GlobalItemUnit = new ItemUnit();
-         public List<ItemUnit> GlobalItemUnitsList = new List<ItemUnit>();
-         public Unit GlobalUnit = new Unit();
-         public List<Unit> GlobalUnitsList = new List<Unit>();
+        public ItemUnit GlobalItemUnit = new ItemUnit();
+        public List<ItemUnit> GlobalItemUnitsList = new List<ItemUnit>();
+        public Unit GlobalUnit = new Unit();
+        public List<Unit> GlobalUnitsList = new List<Unit>();
 
         public static int _CachTransfersCount = 0;
 
@@ -156,7 +156,7 @@ namespace POS
             Allow_print_inv_count = printList.Where(X => X.name == "Allow_print_inv_count").FirstOrDefault().value;
             show_header = printList.Where(X => X.name == "show_header").FirstOrDefault().value;
 
-            if(show_header==null|| show_header == "")
+            if (show_header == null || show_header == "")
             {
                 show_header = "1";
             }
@@ -174,7 +174,7 @@ namespace POS
         {
 
             posSetting = new PosSetting();
-          
+
             posSetting = await posSetting.GetByposId((int)MainWindow.posID);
             posSetting = posSetting.MaindefaultPrinterSetting(posSetting);
 
@@ -236,13 +236,13 @@ namespace POS
         }
 
         #region loading
-       static List<keyValueBool> loadingList;
+        static List<keyValueBool> loadingList;
         //loadingThread[] loadingList = new loadingThread[25];
         async void loading_getUserPath()
         {
             #region get user path
-                try
-                {
+            try
+            {
                 UserSetValues uSetValueModel = new UserSetValues();
                 List<UserSetValues> lst = await uSetValueModel.GetAll();
 
@@ -284,7 +284,7 @@ namespace POS
             {
                 //tax = decimal.Parse(await getDefaultTax());
                 List<string> taxLst = await getDefaultTaxList();
-                invoiceTax_bool = Convert.ToBoolean(taxLst[0]) ;
+                invoiceTax_bool = Convert.ToBoolean(taxLst[0]);
                 invoiceTax_decimal = decimal.Parse(taxLst[1]);
                 itemsTax_bool = Convert.ToBoolean(taxLst[2]);
                 itemsTax_decimal = decimal.Parse(taxLst[3]);
@@ -351,7 +351,7 @@ namespace POS
             //get print count
             try
             {
-               await refreshBalance();
+                await refreshBalance();
             }
             catch
             {
@@ -532,59 +532,59 @@ namespace POS
         {
             try
             {
-               
-               // List<SettingCls> settingsCls = await setModel.GetAll();
-              //  List<SetValues> settingsValues = await valueModel.GetAll();
-                List<SetValues> settingsValues= await valueModel.GetBySetvalNote("tax");
-            //    SettingCls set = new SettingCls();
+
+                // List<SettingCls> settingsCls = await setModel.GetAll();
+                //  List<SetValues> settingsValues = await valueModel.GetAll();
+                List<SetValues> settingsValues = await valueModel.GetBySetvalNote("tax");
+                //    SettingCls set = new SettingCls();
                 SetValues setV = new SetValues();
 
-            #region get invoice tax bool
-            //get invoice tax bool
-         //   set = settingsCls.Where(s => s.name == "invoiceTax_bool").FirstOrDefault<SettingCls>();
-            setV = settingsValues.Where(i => i.name == "invoiceTax_bool").FirstOrDefault();
-            if (setV != null)
-                invoiceTax_bool = bool.Parse(setV.value);
-            else
-                invoiceTax_bool = false;
-              
-            #endregion
+                #region get invoice tax bool
+                //get invoice tax bool
+                //   set = settingsCls.Where(s => s.name == "invoiceTax_bool").FirstOrDefault<SettingCls>();
+                setV = settingsValues.Where(i => i.name == "invoiceTax_bool").FirstOrDefault();
+                if (setV != null)
+                    invoiceTax_bool = bool.Parse(setV.value);
+                else
+                    invoiceTax_bool = false;
 
-            #region  get invoice tax decimal
-            //get invoice tax decimal
-          //  set = settingsCls.Where(s => s.name == "invoiceTax_decimal").FirstOrDefault<SettingCls>();
+                #endregion
 
-            setV = settingsValues.Where(i => i.name == "invoiceTax_decimal").FirstOrDefault();
-            if (setV != null)
-                invoiceTax_decimal = decimal.Parse(setV.value);
-            else
-                invoiceTax_decimal = 0;
-            #endregion
+                #region  get invoice tax decimal
+                //get invoice tax decimal
+                //  set = settingsCls.Where(s => s.name == "invoiceTax_decimal").FirstOrDefault<SettingCls>();
 
-            #region  get item tax bool
-            //get item tax bool
-          //  set = settingsCls.Where(s => s.name == "itemsTax_bool").FirstOrDefault<SettingCls>();// itemsTax_bool
-            setV = settingsValues.Where(i => i.name == "itemsTax_bool").FirstOrDefault();
-            if (setV != null)
-                itemsTax_bool = bool.Parse(setV.value);
-            else
-                itemsTax_bool = false;
-               
-            #endregion
+                setV = settingsValues.Where(i => i.name == "invoiceTax_decimal").FirstOrDefault();
+                if (setV != null)
+                    invoiceTax_decimal = decimal.Parse(setV.value);
+                else
+                    invoiceTax_decimal = 0;
+                #endregion
 
-            #region get item tax decimal
-            
-            ////get item tax decimal
-            //set = settingsCls.Where(s => s.name == "itemsTax_decimal").FirstOrDefault<SettingCls>();
-            //setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
-            //if (setV != null)
-            //    itemsTax_decimal = decimal.Parse(setV.value);
-            //else
-            //    itemsTax_decimal = 0;
-          
-            #endregion
+                #region  get item tax bool
+                //get item tax bool
+                //  set = settingsCls.Where(s => s.name == "itemsTax_bool").FirstOrDefault<SettingCls>();// itemsTax_bool
+                setV = settingsValues.Where(i => i.name == "itemsTax_bool").FirstOrDefault();
+                if (setV != null)
+                    itemsTax_bool = bool.Parse(setV.value);
+                else
+                    itemsTax_bool = false;
 
-        }
+                #endregion
+
+                #region get item tax decimal
+
+                ////get item tax decimal
+                //set = settingsCls.Where(s => s.name == "itemsTax_decimal").FirstOrDefault<SettingCls>();
+                //setV = settingsValues.Where(i => i.settingId == set.settingId).FirstOrDefault();
+                //if (setV != null)
+                //    itemsTax_decimal = decimal.Parse(setV.value);
+                //else
+                //    itemsTax_decimal = 0;
+
+                #endregion
+
+            }
             catch (Exception)
             {
                 invoiceTax_bool = false;
@@ -607,126 +607,126 @@ namespace POS
             try
             {
                 List<SettingCls> settingsCls = await setModel.GetAll();
-            List<SetValues> settingsValues = await valueModel.GetAll();
-            SettingCls set = new SettingCls();
-            SetValues setV = new SetValues();
-            List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
-            #region get company name
-            Thread t1 = new Thread(() =>
-            {
-                this.Dispatcher.Invoke(() =>
+                List<SetValues> settingsValues = await valueModel.GetAll();
+                SettingCls set = new SettingCls();
+                SetValues setV = new SetValues();
+                List<char> charsToRemove = new List<char>() { '@', '_', ',', '.', '-' };
+                #region get company name
+                Thread t1 = new Thread(() =>
                 {
+                    this.Dispatcher.Invoke(() =>
+                    {
                     //get company name
                     set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
-                    nameId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
-                    if (setV != null)
-                        companyName = setV.value;
+                        nameId = set.settingId;
+                        setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
+                        if (setV != null)
+                            companyName = setV.value;
 
+                    });
                 });
-            });
-            t1.Start();
-            #endregion
+                t1.Start();
+                #endregion
 
-            #region  get company address
-            Thread t2 = new Thread(() =>
-            {
-                this.Dispatcher.Invoke(() =>
+                #region  get company address
+                Thread t2 = new Thread(() =>
                 {
+                    this.Dispatcher.Invoke(() =>
+                    {
                     //get company address
                     set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
-                    addressId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
-                    if (setV != null)
-                        Address = setV.value;
+                        addressId = set.settingId;
+                        setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
+                        if (setV != null)
+                            Address = setV.value;
+                    });
                 });
-            });
-            t2.Start();
-            #endregion
+                t2.Start();
+                #endregion
 
-            #region  get company email
-            Thread t3 = new Thread(() =>
-            {
-                this.Dispatcher.Invoke(() =>
+                #region  get company email
+                Thread t3 = new Thread(() =>
                 {
+                    this.Dispatcher.Invoke(() =>
+                    {
                     //get company email
                     set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
-                    emailId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
-                    if (setV != null)
-                        Email = setV.value;
+                        emailId = set.settingId;
+                        setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
+                        if (setV != null)
+                            Email = setV.value;
+                    });
                 });
-            });
-            t3.Start();
-            #endregion
+                t3.Start();
+                #endregion
 
-            #region  get company mobile
-            Thread t4 = new Thread(() =>
-            {
-                this.Dispatcher.Invoke(() =>
+                #region  get company mobile
+                Thread t4 = new Thread(() =>
                 {
+                    this.Dispatcher.Invoke(() =>
+                    {
                     //get company mobile
                     set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
-                    mobileId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
-                    if (setV != null)
-                    {
-                        charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                        Mobile = setV.value;
-                    }
+                        mobileId = set.settingId;
+                        setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
+                        if (setV != null)
+                        {
+                            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                            Mobile = setV.value;
+                        }
+                    });
                 });
-            });
-            t4.Start();
-            #endregion
+                t4.Start();
+                #endregion
 
-            #region  get company phone
-            Thread t5 = new Thread(() =>
-            {
-                this.Dispatcher.Invoke(() =>
+                #region  get company phone
+                Thread t5 = new Thread(() =>
                 {
+                    this.Dispatcher.Invoke(() =>
+                    {
                     //get company phone
                     set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
-                    phoneId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
-                    if (setV != null)
-                    {
-                        charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                        Phone = setV.value;
-                    }
+                        phoneId = set.settingId;
+                        setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
+                        if (setV != null)
+                        {
+                            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                            Phone = setV.value;
+                        }
+                    });
                 });
-            });
-            t5.Start();
-            #endregion
+                t5.Start();
+                #endregion
 
-            #region  get company fax
-            Thread t6 = new Thread(() =>
-            {
-                this.Dispatcher.Invoke(() =>
+                #region  get company fax
+                Thread t6 = new Thread(() =>
                 {
+                    this.Dispatcher.Invoke(() =>
+                    {
                     //get company fax
                     set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
-                    faxId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
-                    if (setV != null)
-                    {
-                        charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
-                        Fax = setV.value;
-                    }
+                        faxId = set.settingId;
+                        setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
+                        if (setV != null)
+                        {
+                            charsToRemove.ForEach(x => setV.value = setV.value.Replace(x.ToString(), String.Empty));
+                            Fax = setV.value;
+                        }
+                    });
                 });
-            });
-            t6.Start();
-            #endregion
+                t6.Start();
+                #endregion
 
-            #region   get company logo
-                    //get company logo
-                    set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
-                    logoId = set.settingId;
-                    setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
-                    if (setV != null)
-                    {
-                        logoImage = setV.value;
-                        await setV.getImg(logoImage);
-                    }
+                #region   get company logo
+                //get company logo
+                set = settingsCls.Where(s => s.name == "com_logo").FirstOrDefault<SettingCls>();
+                logoId = set.settingId;
+                setV = settingsValues.Where(i => i.settingId == logoId).FirstOrDefault();
+                if (setV != null)
+                {
+                    logoImage = setV.value;
+                    await setV.getImg(logoImage);
+                }
                 #endregion
             }
             catch (Exception)
@@ -819,7 +819,7 @@ namespace POS
                     SectionData.StartAwait(grid_mainWindow);
 
                 uc_general.settingsCls = await setModel.GetAll();
-                uc_general.settingsValues = await valueModel.GetAll();                
+                uc_general.settingsValues = await valueModel.GetAll();
 
                 #region bonni
 #pragma warning disable CS0436 // Type conflicts with imported type
@@ -839,7 +839,7 @@ namespace POS
 
                 // idle timer
                 idletimer = new DispatcherTimer();
-                idletimer.Interval = TimeSpan.FromMinutes(Idletime);
+                idletimer.Interval = TimeSpan.FromMinutes(1);
                 idletimer.Tick += timer_Idle;
                 idletimer.Start();
 
@@ -939,26 +939,48 @@ namespace POS
 
                 #region expire date
                 daysremain daysr = await userModel.getRemainDayes();
-                if (daysr.expirestate=="e" && daysr.days<=10 )
+                if (daysr.expirestate == "e" && daysr.days <= 10)
                 {
 
                     wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
-                    if (daysr.days >=1  )
+                    if (daysr.days >= 1)
                     {
-                        w.contentText1 = resourcemanager.GetString("trExpireNote1")+" " + daysr.days.ToString() + " "+ resourcemanager.GetString("trExpireDays");
+                        w.contentText1 = resourcemanager.GetString("trExpireNote1") + " " + daysr.days.ToString() + " " + resourcemanager.GetString("trExpireDays");
+                        w.Show();
                     }
-                    else if(daysr.days ==0)
+                    else if (daysr.days == 0)
                     {
-                        w.contentText1 = resourcemanager.GetString("trExpireNote2");
-                    }
-                    else 
-                    {
-                        w.contentText1 = resourcemanager.GetString("trExpireNote3")+" " + (daysr.days* -1 ).ToString() + " " + resourcemanager.GetString("trAgo");
+
+
+                        if (daysr.hours >= 0 && daysr.hours <= 24)
+                        {
+                            if (daysr.hours == 0)
+                            {
+                                if (daysr.minute >= 0)
+                                {
+                                    w.contentText1 = resourcemanager.GetString("trExpireNote2");
+                                    w.Show();
+                                }
+
+
+                            }
+                            else
+                            {
+                                w.contentText1 = resourcemanager.GetString("trExpireNote2");
+                                w.Show();
+                            }
+
+
+
+                        }
+                        //else 
+                        //{
+                        //    w.contentText1 = resourcemanager.GetString("trExpireNote3")+" " + (daysr.days* -1 ).ToString() + " " + resourcemanager.GetString("trAgo");
+                        //}
                     }
 
-                    w.Show();
                 }
-            
+
                 #endregion
 
                 if (sender != null)
@@ -1023,10 +1045,10 @@ namespace POS
                 IEnumerable<CashTransfer> cashesQuery;
                 cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID);
                 cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0);
-                int posCachTransfers =  cashesQuery.Count();
+                int posCachTransfers = cashesQuery.Count();
                 #endregion
 
-                SectionData.refreshNotification(md_transfers, ref _CachTransfersCount, posCachTransfers);              
+                SectionData.refreshNotification(md_transfers, ref _CachTransfersCount, posCachTransfers);
             }
             catch (Exception ex)
             {
@@ -1049,30 +1071,30 @@ namespace POS
                 foreach (Button button in FindControls.FindVisualChildren<Button>(MainWindow.mainWindow))
                 {
                     if (button.Tag != null)
-                        if (button.Tag.ToString() == first &&( MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects) || SectionData.isAdminPermision() ))
+                        if (button.Tag.ToString() == first && (MainWindow.groupObject.HasPermission(first, MainWindow.groupObjects) || SectionData.isAdminPermision()))
                         {
                             button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                             load = true;
                             break;
                         }
                 }
-               await Task.Delay(0500);
+                await Task.Delay(0500);
                 if (first == "home")
-                     loadingSecondLevel(second, uc_home.Instance);
+                    loadingSecondLevel(second, uc_home.Instance);
                 if (first == "catalog")
-                     loadingSecondLevel(second, UC_catalog.Instance);
+                    loadingSecondLevel(second, UC_catalog.Instance);
                 if (first == "storage")
-                     loadingSecondLevel(second, POS.View.uc_storage.Instance);
+                    loadingSecondLevel(second, POS.View.uc_storage.Instance);
                 if (first == "purchase")
-                     loadingSecondLevel(second, uc_purchases.Instance);
+                    loadingSecondLevel(second, uc_purchases.Instance);
                 if (first == "sales")
-                     loadingSecondLevel(second, uc_sales.Instance);
+                    loadingSecondLevel(second, uc_sales.Instance);
                 if (first == "accounts")
-                     loadingSecondLevel(second, uc_accounts.Instance);
+                    loadingSecondLevel(second, uc_accounts.Instance);
                 if (first == "reports")
-                     loadingSecondLevel(second, uc_reports.Instance);
+                    loadingSecondLevel(second, uc_reports.Instance);
                 if (first == "sectionData")
-                     loadingSecondLevel(second, UC_SectionData.Instance);
+                    loadingSecondLevel(second, UC_SectionData.Instance);
                 if (first == "settings")
                     loadingSecondLevel(second, uc_settings.Instance);
 
@@ -1080,14 +1102,14 @@ namespace POS
             return load;
         }
 
-        static  void loadingSecondLevel(string second, UserControl userControl)
+        static void loadingSecondLevel(string second, UserControl userControl)
         {
             userControl.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));
             var button = userControl.FindName("btn_" + second) as Button;
-            if (button!= null)
-            button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            if (button != null)
+                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         }
-      async  void permission()
+        async void permission()
         {
             bool loadWindow = false;
             loadWindow = await loadingDefaultPath(firstPath, secondPath);
@@ -1190,10 +1212,10 @@ namespace POS
                 //  User thruser = new User();
                 //UsersLogs thrlog = new UsersLogs();
 
-               //thrlog = await thrlog.GetByID((int)userLogInID);
+                //thrlog = await thrlog.GetByID((int)userLogInID);
                 // check go_out == true do logout()
                 //if (thrlog.sOutDate != null)
-                if(go_out)
+                if (go_out)
                 {
                     BTN_Close_Click(null, null);
                     threadtimer.Stop();
@@ -1206,7 +1228,7 @@ namespace POS
             refreshBalance();
         }
 
-       public static async Task refreshBalance()
+        public static async Task refreshBalance()
         {
             try
             {
@@ -1289,7 +1311,7 @@ namespace POS
         //        SectionData.ExceptionMessage(ex, this);
         //    }
         //}
-      async Task close()
+        async Task close()
         {
             //log out
             //update lognin record
@@ -1321,7 +1343,7 @@ namespace POS
 
                     Application.Current.Shutdown();
                 }
-                else if(go_out_didNotAnyProcess)
+                else if (go_out_didNotAnyProcess)
                 {
                     await close();
                     this.Visibility = Visibility.Hidden;
@@ -1341,7 +1363,7 @@ namespace POS
                     Application.Current.Shutdown();
                 }
 
-               if (sender != null)
+                if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
             }
             catch (Exception ex)
@@ -1710,7 +1732,7 @@ namespace POS
 
                 #region  report
 
-                 if (tag == "invoice")
+                if (tag == "invoice")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trInvoice");
                 else if (tag == "order")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trOrders");
@@ -2130,11 +2152,11 @@ namespace POS
         {
             if (sender != null)
                 SectionData.StartAwait(grid_mainWindow);
-           
+
             Window.GetWindow(this).Opacity = 0.2;
             wd_applicationStop w = new wd_applicationStop();
             w.ShowDialog();
-            if(w.status == "o")
+            if (w.status == "o")
                 txt_cashTitle.Foreground = Application.Current.Resources["MainColor"] as SolidColorBrush;
             else
                 txt_cashTitle.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
