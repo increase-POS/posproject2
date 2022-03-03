@@ -31,6 +31,8 @@ namespace POS_Server.Models
     {
         public Nullable<int> days { get; set; }
         public string expirestate { get; set; }
+        public Nullable<int> hours { get; set; }
+        public Nullable<int> minute { get; set; }
     }
         public class packagesSend
     {

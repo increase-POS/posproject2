@@ -268,7 +268,11 @@ namespace POS_Server.Controllers
                     DateTime expiredate = (DateTime)packrow.expireDate;
                     DateTime nowdate = DateTime.Now;
                     TimeSpan diffdate = expiredate - nowdate;
-                      days = diffdate.Days;
+               
+                   days = diffdate.Days;
+                    
+                   
+                    // diffdate.Hours;
                     if (packrow.isLimitDate == false)
                     {
                         daysModel.expirestate = "u";
@@ -278,8 +282,20 @@ namespace POS_Server.Controllers
                     }
                     else
                     {
+                       // daysModel.hours = diffdate.Hours;
                         daysModel.expirestate = "e";
                         daysModel.days = days;
+                        if (days==0)
+                        {
+                            daysModel.hours = diffdate.Hours;
+                            if (daysModel.hours == 0)
+                            {
+                                daysModel.minute = diffdate.Minutes;
+
+                            }
+                            //  daysModel.hours = diffdate.Hours;
+                        }
+                   
 
                         //if (days > 10 )
                         // {
