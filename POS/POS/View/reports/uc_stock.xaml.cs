@@ -116,17 +116,37 @@ namespace POS.View.reports
             tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
             tt_location.Content = MainWindow.resourcemanager.GetString("trLocations");
             tt_collect.Content = MainWindow.resourcemanager.GetString("trBestSeller");
-
+            //items
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchesItem, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_itemsItem, MainWindow.resourcemanager.GetString("trItemHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_unitsItem, MainWindow.resourcemanager.GetString("trUnitHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDateItem, MainWindow.resourcemanager.GetString("trStartDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDateItem, MainWindow.resourcemanager.GetString("trEndDateHint"));
-
-            chk_expireDateItem.Content = MainWindow.resourcemanager.GetString("trExpiredDate");
+            chk_expireDateItem.Content = MainWindow.resourcemanager.GetString("trExpired");
             chk_allBranchesItem.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_allItemsItem.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_allUnitsItem.Content = MainWindow.resourcemanager.GetString("trAll");
+            //sections
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchesLocation, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_sectionsLocation, MainWindow.resourcemanager.GetString("trSection"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_locationsLocation, MainWindow.resourcemanager.GetString("trLocation"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDateLocation, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDateLocation, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            chk_expireDateLocation.Content = MainWindow.resourcemanager.GetString("trExpired");
+            chk_allBranchesLocation.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allSectionsLocation.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allLocationsLocation.Content = MainWindow.resourcemanager.GetString("trAll");
+            //collect
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branchesCollect, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_itemsCollect, MainWindow.resourcemanager.GetString("trItemHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_unitsCollect, MainWindow.resourcemanager.GetString("trUnitHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_startDateCollect, MainWindow.resourcemanager.GetString("trStartDateHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_endDateCollect, MainWindow.resourcemanager.GetString("trEndDateHint"));
+            chk_expireDateCollect.Content = MainWindow.resourcemanager.GetString("trExpired");
+            chk_allBranchesCollect.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allItemsCollect.Content = MainWindow.resourcemanager.GetString("trAll");
+            chk_allUnitsCollect.Content = MainWindow.resourcemanager.GetString("trAll");
+
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -140,17 +160,15 @@ namespace POS.View.reports
             col_locationSection.Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             col_startDate.Header = MainWindow.resourcemanager.GetString("trStartDate");
             col_endDate.Header = MainWindow.resourcemanager.GetString("trEndDate");
-            //col_Min.Header = MainWindow.resourcemanager.GetString("trMin");//??
-            //col_Max.Header = MainWindow.resourcemanager.GetString("trMax");//??
-            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinCollect");//??
-            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxCollect");//??
-            //col_stockCost.Header = MainWindow.resourcemanager.GetString("trCost");
+            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinCollect");
+            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxCollect");
             col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+
 
         }
         public uc_stock()
