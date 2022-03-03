@@ -992,9 +992,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                  updateDate = I.updateDate,
                                                  createUserId = I.createUserId,
                                                  updateUserId = I.updateUserId,
-                                                 isNew = 0,
-                                                 //price = u.price,
-
+                                                 isNew = 0,                                                
                                                  avgPurchasePrice = I.avgPurchasePrice
 
                                              }).DistinctBy(x => x.itemId)
@@ -1038,6 +1036,7 @@ var strP = TokenManager.GetPrincipal(token);
                                                  createUserId = I.createUserId,
                                                  updateUserId = I.updateUserId,
                                                  isNew = 0,
+                                                 isActive = I.isActive,
                                                  //price = u.price,
 
 
