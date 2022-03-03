@@ -57,7 +57,8 @@ namespace POS.View.windows
         }
         private async Task fillItemCombo()
         {
-            items = await item.GetItemsByType("p");     // return items with type = package     
+            items = await item.GetItemsByType("p");     // return items with type = package 
+            items = items.Where(x => x.isActive == 1).ToList();
             cb_item.ItemsSource = items;
             cb_item.SelectedValuePath = "itemId";
             cb_item.DisplayMemberPath = "name";
