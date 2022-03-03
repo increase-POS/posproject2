@@ -1327,8 +1327,8 @@ namespace POS
                     this.Visibility = Visibility.Hidden;
                     #region
                     Window.GetWindow(this).Opacity = 0.2;
-                    wd_messageBox w = new wd_messageBox();
-                    w.contentText2 = MainWindow.resourcemanager.GetString("trLoggedOutBecauseDidNotDoneAnyProcess");
+                    wd_messageBoxWithIcon w = new wd_messageBoxWithIcon();
+                    w.contentText1 = MainWindow.resourcemanager.GetString("trLoggedOutBecauseDidNotDoneAnyProcess");
                     w.ShowDialog();
                     Window.GetWindow(this).Opacity = 1;
                     #endregion
