@@ -246,10 +246,10 @@ namespace POS.View.purchases
                ((chkDraft.IsChecked == true ? (x.invType == "pd" || x.invType == "pbd") : false)
                 || (chkReturn.IsChecked == true ? (x.invType == "pb") : false)
                 || (chkInvoice.IsChecked == true ? ((x.invType == "p") || (x.invType == "pw")) : false))
-                && (startDate.SelectedDate != null ? x.invDate >= startDate.SelectedDate : true)
-                && (endDate.SelectedDate != null ? x.invDate <= endDate.SelectedDate : true)
-                && (startTime.SelectedTime != null ? x.invDate >= startTime.SelectedTime : true)
-                && (endTime.SelectedTime != null ? x.invDate <= endTime.SelectedTime : true)));
+                && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
+                && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)
+                && (startTime.SelectedTime != null ? x.updateDate >= startTime.SelectedTime : true)
+                && (endTime.SelectedTime != null ? x.updateDate <= endTime.SelectedTime : true)));
             invLst = result;
             return result;
         }
