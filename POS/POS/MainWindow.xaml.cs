@@ -115,6 +115,7 @@ namespace POS
         public static string Allow_print_inv_count;
         public static string show_header;
         public static Boolean go_out = false;
+        public static Boolean go_out_didNotAnyProcess = false;
         static public PosSetting posSetting = new PosSetting();
         internal static List<Pos> posList = new List<Pos>();
 
@@ -1170,6 +1171,7 @@ namespace POS
             {
                 if (IdleClass.IdleTime.Minutes >= Idletime)
                 {
+                    go_out_didNotAnyProcess = true;
                     BTN_Close_Click(null, null);
                     idletimer.Stop();
                     //popup here
@@ -1305,12 +1307,7 @@ namespace POS
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_mainWindow);
-                if (go_out == false)
-                {
-                    await close();
-                    Application.Current.Shutdown();
-                }
-                else
+                if (go_out)
                 {
                     await close();
                     this.Visibility = Visibility.Hidden;
@@ -1324,8 +1321,27 @@ namespace POS
 
                     Application.Current.Shutdown();
                 }
+                else if(go_out_didNotAnyProcess)
+                {
+                    await close();
+                    this.Visibility = Visibility.Hidden;
+                    #region
+                    Window.GetWindow(this).Opacity = 0.2;
+                    wd_messageBox w = new wd_messageBox();
+                    w.contentText2 = MainWindow.resourcemanager.GetString("trLoggedOutBecauseDidNotDoneAnyProcess");
+                    w.ShowDialog();
+                    Window.GetWindow(this).Opacity = 1;
+                    #endregion
 
-                if (sender != null)
+                    Application.Current.Shutdown();
+                }
+                else
+                {
+                    await close();
+                    Application.Current.Shutdown();
+                }
+
+               if (sender != null)
                     SectionData.EndAwait(grid_mainWindow);
             }
             catch (Exception ex)
