@@ -172,10 +172,10 @@ namespace POS.View.Settings
 
             txt_printCount.Text = MainWindow.resourcemanager.GetString("trPrintCount");
             txt_printHeader.Text = MainWindow.resourcemanager.GetString("trPrintHeader");
-            txt_itemsTaxNote.Text= MainWindow.resourcemanager.GetString("trItemsTaxNote");
-            txt_salesInvoiceNote.Text = MainWindow.resourcemanager.GetString("trSalesInvoiceNote");
-            txt_itemsTaxNoteHint.Text = "";// MainWindow.resourcemanager.GetString("trItemsTaxNote");
-            txt_salesInvoiceNoteHint.Text = "";// MainWindow.resourcemanager.GetString("trSalesInvoiceNote");
+            txt_itemsTaxNote.Text= MainWindow.resourcemanager.GetString("trItemsTax");
+            txt_itemsTaxNoteHint.Text = MainWindow.resourcemanager.GetString("trItemsTaxNote");
+            txt_salesInvoiceNote.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
+            txt_salesInvoiceNoteHint.Text = MainWindow.resourcemanager.GetString("trSalesInvoiceNote");
         }
         private int fillPrintHeader()
         {
