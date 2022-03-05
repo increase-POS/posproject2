@@ -229,7 +229,8 @@ namespace POS_Server.Controllers
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         List<ItemTransferModel> requiredTransfers = new List<ItemTransferModel>();
-                        var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
+                        var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId &&
+                                            x.itemsUnits.items.type !="sr").ToList();
                         foreach (itemsTransfer tr in itemsTransfer)
                         {
                             var lockedQuantity = entity.itemsLocations
