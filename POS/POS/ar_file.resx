@@ -3406,4 +3406,7 @@
   <data name="trLoggedOutBecauseDidNotDoneAnyProcess" xml:space="preserve">
     <value>لقد تم تسجيل خروجك لأنك لم تنفذ أي عملية لمدة 15 دقيقة</value>
   </data>
+  <data name="trItemsTax" xml:space="preserve">
+    <value>ضريبة المواد</value>
+  </data>
 </root>

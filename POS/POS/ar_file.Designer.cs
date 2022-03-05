@@ -4660,6 +4660,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ضريبة المواد.
+        /// </summary>
+        internal static string trItemsTax {
+            get {
+                return ResourceManager.GetString("trItemsTax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ملاحظة ضريبة المواد.
         /// </summary>
         internal static string trItemsTaxNote {

@@ -3427,4 +3427,10 @@ Please add Email in setting</value>
   <data name="trLoggedOutBecauseDidNotDoneAnyProcess" xml:space="preserve">
     <value>You are logged out because you haven't done any process for 15 minutes</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trItemsTax" xml:space="preserve">
+    <value>Items Tax</value>
+  </data>
 </root>
