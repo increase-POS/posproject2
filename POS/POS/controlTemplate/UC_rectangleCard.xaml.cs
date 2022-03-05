@@ -109,10 +109,15 @@ namespace POS.controlTemplate
             #endregion
             #region  subTitle
             var countText = new TextBlock();
-            if (cardViewitem.item.type != "sr")
-                countText.Text = cardViewitem.item.itemCount + " " + cardViewitem.item.unitName;
+            if (cardViewitem.item.itemCount == null)
+                countText.Text = "";
             else
-                countText.Text = MainWindow.resourcemanager.GetString("trService");
+            {
+                if (cardViewitem.item.type != "sr")
+                    countText.Text = cardViewitem.item.itemCount + " " + cardViewitem.item.unitName;
+                else
+                    countText.Text = MainWindow.resourcemanager.GetString("trService");
+            }
             countText.Margin = new Thickness(5, 0, 5, 0);
             countText.FontWeight = FontWeights.Regular;
             countText.VerticalAlignment = VerticalAlignment.Center;
