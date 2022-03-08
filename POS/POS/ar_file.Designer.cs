@@ -781,7 +781,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to الجسم.
+        ///   Looks up a localized string similar to النص الاساسي.
         /// </summary>
         internal static string trBody {
             get {
@@ -2536,7 +2536,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to دعم البريد الإلكتروني.
+        ///   Looks up a localized string similar to الدعم التقني.
         /// </summary>
         internal static string trEmailSupport {
             get {

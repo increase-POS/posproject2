@@ -2554,7 +2554,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email Support.
+        ///   Looks up a localized string similar to Support.
         /// </summary>
         internal static string trEmailSupport {
             get {

@@ -3050,10 +3050,10 @@
     <value>نوع السيرفر</value>
   </data>
   <data name="trBody" xml:space="preserve">
-    <value>الجسم</value>
+    <value>النص الاساسي</value>
   </data>
   <data name="trEmailSupport" xml:space="preserve">
-    <value>دعم البريد الإلكتروني</value>
+    <value>الدعم التقني</value>
   </data>
   <data name="trLinkText1" xml:space="preserve">
     <value>نص الارتباط1</value>

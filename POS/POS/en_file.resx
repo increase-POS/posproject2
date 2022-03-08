@@ -3074,7 +3074,7 @@ Please add Email in setting</value>
     <value>Body</value>
   </data>
   <data name="trEmailSupport" xml:space="preserve">
-    <value>Email Support</value>
+    <value>Support</value>
   </data>
   <data name="trLinkText1" xml:space="preserve">
     <value>Link text1</value>
