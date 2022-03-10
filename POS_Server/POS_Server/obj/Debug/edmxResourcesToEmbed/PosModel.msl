@@ -558,6 +558,10 @@
     <EntitySetMapping Name="itemsTransfer">
       <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
         <MappingFragment StoreEntitySet="itemsTransfer">
+          <ScalarProperty Name="itemTax" ColumnName="itemTax" />
+          <ScalarProperty Name="offerType" ColumnName="offerType" />
+          <ScalarProperty Name="offerValue" ColumnName="offerValue" />
+          <ScalarProperty Name="itemUnitPrice" ColumnName="itemUnitPrice" />
           <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
           <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -582,6 +586,7 @@
     <EntitySetMapping Name="itemsUnits">
       <EntityTypeMapping TypeName="incposdbModel.itemsUnits">
         <MappingFragment StoreEntitySet="itemsUnits">
+          <ScalarProperty Name="cost" ColumnName="cost" />
           <ScalarProperty Name="itemUnitId" ColumnName="itemUnitId" />
           <ScalarProperty Name="itemId" ColumnName="itemId" />
           <ScalarProperty Name="unitId" ColumnName="unitId" />
@@ -819,6 +824,8 @@
     <EntitySetMapping Name="pos">
       <EntityTypeMapping TypeName="incposdbModel.pos">
         <MappingFragment StoreEntitySet="pos">
+          <ScalarProperty Name="isAdminClose" ColumnName="isAdminClose" />
+          <ScalarProperty Name="boxState" ColumnName="boxState" />
           <ScalarProperty Name="posId" ColumnName="posId" />
           <ScalarProperty Name="code" ColumnName="code" />
           <ScalarProperty Name="name" ColumnName="name" />

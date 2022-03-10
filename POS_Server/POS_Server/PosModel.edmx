@@ -551,6 +551,10 @@
           <Property Name="profit" Type="decimal" Precision="20" Scale="3" />
           <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
           <Property Name="cause" Type="nvarchar" MaxLength="500" />
+          <Property Name="itemTax" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="itemUnitPrice" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="offerValue" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="offerType" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -572,6 +576,7 @@
           <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
           <Property Name="storageCostId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
+          <Property Name="cost" Type="decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemTransferOffer">
           <Key>
@@ -791,6 +796,8 @@
           <Property Name="isActive" Type="tinyint" />
           <Property Name="note" Type="ntext" />
           <Property Name="balanceAll" Type="decimal" Precision="20" Scale="3" />
+          <Property Name="boxState" Type="nvarchar" MaxLength="20" />
+          <Property Name="isAdminClose" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="posSerials">
           <Key>
@@ -5079,6 +5086,10 @@
           <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="offers" Relationship="Self.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
           <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
+          <Property Name="itemUnitPrice" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="offerValue" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="offerType" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="itemTax" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -5111,6 +5122,7 @@
           <NavigationProperty Name="itemUnitUser" Relationship="Self.FK_itemUnitUser_itemsUnits" FromRole="itemsUnits" ToRole="itemUnitUser" />
           <NavigationProperty Name="packages" Relationship="Self.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
           <NavigationProperty Name="packages1" Relationship="Self.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
+          <Property Name="cost" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemTransferOffer">
           <Key>
@@ -5393,6 +5405,8 @@
           <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_pos" FromRole="pos" ToRole="posSetting" />
           <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
+          <Property Name="boxState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="isAdminClose" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="posSerials">
           <Key>
@@ -9688,6 +9702,10 @@
           <EntitySetMapping Name="itemsTransfer">
             <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
               <MappingFragment StoreEntitySet="itemsTransfer">
+                <ScalarProperty Name="itemTax" ColumnName="itemTax" />
+                <ScalarProperty Name="offerType" ColumnName="offerType" />
+                <ScalarProperty Name="offerValue" ColumnName="offerValue" />
+                <ScalarProperty Name="itemUnitPrice" ColumnName="itemUnitPrice" />
                 <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -9712,6 +9730,7 @@
           <EntitySetMapping Name="itemsUnits">
             <EntityTypeMapping TypeName="incposdbModel.itemsUnits">
               <MappingFragment StoreEntitySet="itemsUnits">
+                <ScalarProperty Name="cost" ColumnName="cost" />
                 <ScalarProperty Name="itemUnitId" ColumnName="itemUnitId" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="unitId" ColumnName="unitId" />
@@ -9949,6 +9968,8 @@
           <EntitySetMapping Name="pos">
             <EntityTypeMapping TypeName="incposdbModel.pos">
               <MappingFragment StoreEntitySet="pos">
+                <ScalarProperty Name="isAdminClose" ColumnName="isAdminClose" />
+                <ScalarProperty Name="boxState" ColumnName="boxState" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />

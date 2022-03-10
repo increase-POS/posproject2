@@ -711,6 +711,10 @@
     <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
     <NavigationProperty Name="offers" Relationship="Self.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
     <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
+    <Property Name="itemUnitPrice" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="offerValue" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="offerType" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="itemTax" Type="Decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -743,6 +747,7 @@
     <NavigationProperty Name="itemUnitUser" Relationship="Self.FK_itemUnitUser_itemsUnits" FromRole="itemsUnits" ToRole="itemUnitUser" />
     <NavigationProperty Name="packages" Relationship="Self.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
     <NavigationProperty Name="packages1" Relationship="Self.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
+    <Property Name="cost" Type="Decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -1025,6 +1030,8 @@
     <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_pos" FromRole="pos" ToRole="posSetting" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
+    <Property Name="boxState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="isAdminClose" Type="Byte" Nullable="false" />
   </EntityType>
   <EntityType Name="posSerials">
     <Key>

@@ -546,6 +546,10 @@
     <Property Name="profit" Type="decimal" Precision="20" Scale="3" />
     <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
     <Property Name="cause" Type="nvarchar" MaxLength="500" />
+    <Property Name="itemTax" Type="decimal" Precision="20" Scale="3" />
+    <Property Name="itemUnitPrice" Type="decimal" Precision="20" Scale="3" />
+    <Property Name="offerValue" Type="decimal" Precision="20" Scale="3" />
+    <Property Name="offerType" Type="decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -567,6 +571,7 @@
     <Property Name="purchasePrice" Type="decimal" Precision="20" Scale="3" />
     <Property Name="storageCostId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+    <Property Name="cost" Type="decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -786,6 +791,8 @@
     <Property Name="isActive" Type="tinyint" />
     <Property Name="note" Type="ntext" />
     <Property Name="balanceAll" Type="decimal" Precision="20" Scale="3" />
+    <Property Name="boxState" Type="nvarchar" MaxLength="20" />
+    <Property Name="isAdminClose" Type="tinyint" Nullable="false" />
   </EntityType>
   <EntityType Name="posSerials">
     <Key>

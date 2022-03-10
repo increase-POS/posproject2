@@ -9,7 +9,15 @@ namespace POS_Server.Classes
     {
         public decimal percentValue(decimal? value, decimal? percent)
         {
-          decimal? perval=  (value * percent / 100);
+            if (value == null)
+            {
+                value = 0;
+            }
+            if (percent == null)
+            {
+                percent = 0;
+            }
+            decimal? perval=  (value * percent / 100);
             return (decimal) perval;
         }
         public DateTime? changeDateformat(DateTime? date, string format)
