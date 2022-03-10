@@ -1037,7 +1037,7 @@ namespace POS_Server.Controllers
         {
             List<itemsUnits> inner = new List<itemsUnits>();
 
-            foreach (var t in unitsList.Where(item => item.subUnitId == smallLevelid))
+            foreach (var t in unitsList.Where(item => item.subUnitId == smallLevelid && item.unitId != smallLevelid))
             {
 
                 itemUnitsIds.Add(t.itemUnitId);
