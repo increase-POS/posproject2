@@ -921,7 +921,7 @@
             <Source>External</Source>
             <Value>=Parameters!barcodeimage.Value</Value>
             <Sizing>Fit</Sizing>
-            <Top>8.36376cm</Top>
+            <Top>8.04626cm</Top>
             <Left>0.6793cm</Left>
             <Height>0.81184cm</Height>
             <Width>4.34421cm</Width>
@@ -1013,16 +1013,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Notes:</Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontSize>6pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                      <Color>DimGray</Color>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=Parameters!Notes.Value</Value>
+                    <Value>=Parameters!sales_invoice_note.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>6pt</FontSize>
@@ -1032,7 +1023,7 @@
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Left</TextAlign>
+                  <TextAlign>Center</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
@@ -1059,46 +1050,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value />
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Center</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>3.65411in</Top>
-            <Left>0.26744in</Left>
-            <Height>0.25in</Height>
-            <Width>1.71032in</Width>
-            <ZIndex>15</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <BottomBorder>
-                <Color>LightGrey</Color>
-              </BottomBorder>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox20">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Parameters!Address.Value</Value>
+                    <Value>=Parameters!itemtax_note.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>6pt</FontSize>
@@ -1112,16 +1064,22 @@
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>2.83059in</Top>
-            <Left>0.08012in</Left>
-            <Height>0.33074in</Height>
-            <Width>2.08385in</Width>
-            <ZIndex>16</ZIndex>
+            <rd:DefaultName>Textbox7</rd:DefaultName>
+            <Top>2.82911in</Top>
+            <Left>0.08264in</Left>
+            <Height>0.25in</Height>
+            <Width>2.07982in</Width>
+            <ZIndex>15</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!hasItemTax.Value=1,False,True)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
+              <BottomBorder>
+                <Color>LightGrey</Color>
+              </BottomBorder>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1153,7 +1111,7 @@
             <Left>2.74991cm</Left>
             <Height>0.39977cm</Height>
             <Width>1.2305cm</Width>
-            <ZIndex>17</ZIndex>
+            <ZIndex>16</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1197,7 +1155,7 @@
             <Left>4.04427cm</Left>
             <Height>0.34438cm</Height>
             <Width>1.45219cm</Width>
-            <ZIndex>18</ZIndex>
+            <ZIndex>17</ZIndex>
             <Visibility>
               <Hidden>=Parameters!tax.Value = 0</Hidden>
             </Visibility>
@@ -1244,7 +1202,7 @@
             <Left>4.04429cm</Left>
             <Height>0.36891cm</Height>
             <Width>1.45859cm</Width>
-            <ZIndex>19</ZIndex>
+            <ZIndex>18</ZIndex>
             <Visibility>
               <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
             </Visibility>
@@ -1366,7 +1324,7 @@
             <Left>0.15994cm</Left>
             <Height>0.43731cm</Height>
             <Width>2.26576cm</Width>
-            <ZIndex>20</ZIndex>
+            <ZIndex>19</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1397,7 +1355,7 @@
             <Left>0.15332cm</Left>
             <Height>0.41599cm</Height>
             <Width>1.68939cm</Width>
-            <ZIndex>21</ZIndex>
+            <ZIndex>20</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1432,7 +1390,7 @@
             <Left>0.15332cm</Left>
             <Height>0.39103cm</Height>
             <Width>0.68395cm</Width>
-            <ZIndex>22</ZIndex>
+            <ZIndex>21</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1482,7 +1440,7 @@
             <Left>0.83727cm</Left>
             <Height>0.39103cm</Height>
             <Width>1.58844cm</Width>
-            <ZIndex>23</ZIndex>
+            <ZIndex>22</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1532,7 +1490,7 @@
             <Left>1.19331cm</Left>
             <Height>0.38439cm</Height>
             <Width>1.2324cm</Width>
-            <ZIndex>24</ZIndex>
+            <ZIndex>23</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1570,7 +1528,7 @@
             <Left>0.15994cm</Left>
             <Height>0.38439cm</Height>
             <Width>0.99809cm</Width>
-            <ZIndex>25</ZIndex>
+            <ZIndex>24</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1606,7 +1564,7 @@
             <Left>2.74991cm</Left>
             <Height>0.37966cm</Height>
             <Width>1.22028cm</Width>
-            <ZIndex>26</ZIndex>
+            <ZIndex>25</ZIndex>
             <Visibility>
               <Hidden>=Parameters!tax.Value = 0</Hidden>
             </Visibility>
@@ -1653,7 +1611,7 @@
             <Left>4.03407cm</Left>
             <Height>0.5048cm</Height>
             <Width>1.42214cm</Width>
-            <ZIndex>27</ZIndex>
+            <ZIndex>26</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
             </Visibility>
@@ -1692,7 +1650,7 @@
             <Left>2.67391cm</Left>
             <Height>0.5048cm</Height>
             <Width>1.37036cm</Width>
-            <ZIndex>28</ZIndex>
+            <ZIndex>27</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
             </Visibility>
@@ -1731,7 +1689,7 @@
             <Left>2.72709cm</Left>
             <Height>0.50299cm</Height>
             <Width>1.31718cm</Width>
-            <ZIndex>29</ZIndex>
+            <ZIndex>28</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
             </Visibility>
@@ -1786,7 +1744,7 @@
             <Left>4.04429cm</Left>
             <Height>0.50299cm</Height>
             <Width>1.41196cm</Width>
-            <ZIndex>30</ZIndex>
+            <ZIndex>29</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
             </Visibility>
@@ -1921,7 +1879,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Sales Invoice</Value>
+                      <Value>=Parameters!Title.Value</Value>
                       <Style>
                         <FontSize>14pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2239,11 +2197,47 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="show_header">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="itemtax_note">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="hasItemTax">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="sales_invoice_note">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="isSaved">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trDraftInv">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>9</NumberOfRows>
+      <NumberOfRows>10</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2414,6 +2408,36 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>8</RowIndex>
           <ParameterName>shippingCost</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>8</RowIndex>
+          <ParameterName>show_header</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>8</RowIndex>
+          <ParameterName>itemtax_note</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>hasItemTax</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>sales_invoice_note</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>isSaved</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>trDraftInv</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

@@ -881,6 +881,8 @@ namespace POS.View
             cb_customer.ItemsSource = customers;
             cb_customer.DisplayMemberPath = "name";
             cb_customer.SelectedValuePath = "agentId";
+
+           
         }
         async Task RefrishItems()
         {
@@ -895,6 +897,9 @@ namespace POS.View
         async Task fillCouponsList()
         {
             coupons = await couponModel.GetEffictiveCoupons();
+
+            foreach (Coupon c in coupons)
+                c.name = c.name + "   #"  + c.code;
 
             cb_coupon.DisplayMemberPath = "name";
             cb_coupon.SelectedValuePath = "cId";

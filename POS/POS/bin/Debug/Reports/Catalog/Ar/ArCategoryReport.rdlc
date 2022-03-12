@@ -347,7 +347,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -405,6 +404,9 @@
               <Top>0.00366in</Top>
               <Height>0.17391in</Height>
               <Width>21cm</Width>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -416,11 +418,14 @@
               <Source>External</Source>
               <Value>=Parameters!logoImage.Value</Value>
               <Sizing>FitProportional</Sizing>
-              <Top>0.62742cm</Top>
-              <Left>16.75001cm</Left>
+              <Top>0.55171cm</Top>
+              <Left>16.73414cm</Left>
               <Height>3cm</Height>
               <Width>3cm</Width>
               <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -449,11 +454,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox3</rd:DefaultName>
-              <Top>0.27682in</Top>
-              <Left>0.49212in</Left>
+              <Top>0.24701in</Top>
+              <Left>0.48587in</Left>
               <Height>0.3587in</Height>
               <Width>3.20147in</Width>
               <ZIndex>2</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -485,11 +493,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0.6494in</Top>
-              <Left>3.15879in</Left>
+              <Top>0.61959in</Top>
+              <Left>3.15254in</Left>
               <Height>0.25in</Height>
               <Width>0.5348in</Width>
               <ZIndex>3</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -521,11 +532,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0.91329in</Top>
-              <Left>3.29284in</Left>
+              <Top>0.88348in</Top>
+              <Left>3.28659in</Left>
               <Height>0.25in</Height>
               <Width>0.40075in</Width>
               <ZIndex>4</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -565,11 +579,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.16329in</Top>
-              <Left>0.49212in</Left>
+              <Top>1.13348in</Top>
+              <Left>0.48587in</Left>
               <Height>0.25in</Height>
               <Width>2.79447in</Width>
               <ZIndex>5</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -609,11 +626,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.41329in</Top>
-              <Left>0.49212in</Left>
+              <Top>1.38348in</Top>
+              <Left>0.48587in</Left>
               <Height>0.25in</Height>
               <Width>2.33333in</Width>
               <ZIndex>6</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -653,11 +673,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0.6494in</Top>
-              <Left>0.49212in</Left>
+              <Top>0.61959in</Top>
+              <Left>0.48587in</Left>
               <Height>0.25in</Height>
               <Width>2.66667in</Width>
               <ZIndex>7</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -689,11 +712,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.16329in</Top>
-              <Left>3.29613in</Left>
+              <Top>1.13348in</Top>
+              <Left>3.28988in</Left>
               <Height>0.25in</Height>
               <Width>0.39746in</Width>
               <ZIndex>8</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -733,11 +759,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>0.91329in</Top>
-              <Left>0.49212in</Left>
+              <Top>0.88348in</Top>
+              <Left>0.48587in</Left>
               <Height>0.25in</Height>
               <Width>2.80072in</Width>
               <ZIndex>9</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -769,11 +798,14 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox4</rd:DefaultName>
-              <Top>1.41329in</Top>
-              <Left>2.82545in</Left>
+              <Top>1.38348in</Top>
+              <Left>2.8192in</Left>
               <Height>0.25in</Height>
               <Width>0.86813in</Width>
               <ZIndex>10</ZIndex>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -802,6 +834,9 @@
               <Top>0.27789in</Top>
               <Height>0.2cm</Height>
               <Width>21cm</Width>
+              <Visibility>
+                <Hidden>=IIf(Parameters!show_header.Value=1,False,True)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1104,6 +1139,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="show_header">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1184,6 +1225,11 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>4</RowIndex>
           <ParameterName>trDetails</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>show_header</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

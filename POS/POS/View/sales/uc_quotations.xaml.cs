@@ -506,6 +506,9 @@ namespace POS.View.sales
         {
             coupons = await couponModel.GetEffictiveCoupons();
 
+            foreach (Coupon c in coupons)
+                c.name = c.name + "   #" + c.code;
+
             cb_coupon.DisplayMemberPath = "name";
             cb_coupon.SelectedValuePath = "cId";
             cb_coupon.ItemsSource = coupons;
