@@ -223,15 +223,15 @@ namespace POS.View
             btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
         }
 
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.KeyDown -= HandleKeyPress;
-                saveBeforeExit();
-
+                //saveBeforeExit();
+                await newDraft();
                 timer.Stop();
 
                 GC.Collect();
@@ -3137,7 +3137,8 @@ namespace POS.View
                         {
                             //if ((couponModel.remainQ > 0 || couponModel.quantity==0) && couponModel.endDate >= DateTime.Now && couponModel.startDate <= DateTime.Now && _Sum >= couponModel.invMin && _Sum <= couponModel.invMax)
                             if ((couponModel.invMin != 0 && couponModel.invMax != 0 && _Sum >= couponModel.invMin && _Sum <= couponModel.invMax)
-                                || (couponModel.invMax == 0 && _Sum >= couponModel.invMin))
+                                || (couponModel.invMax == 0 && _Sum >= couponModel.invMin)
+                                || (couponModel.invMax != 0 && couponModel.invMin == 0 && _Sum <= couponModel.invMax))
                             {
                                 CouponInvoice ci = new CouponInvoice();
                                 ci.couponId = couponModel.cId;
@@ -3154,12 +3155,12 @@ namespace POS.View
                             //Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponExpire"), animation: ToasterAnimation.FadeIn);
                             //else if (couponModel.startDate > DateTime.Now)
                             //Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorCouponNotActive"), animation: ToasterAnimation.FadeIn);
-                            else if (couponModel.invMax != 0 && couponModel.invMin != 0)
+                            else if (couponModel.invMax != 0 || couponModel.invMin != 0)
                             {
                                 if (_Sum < couponModel.invMin)
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMinInvToolTip"), animation: ToasterAnimation.FadeIn);
                                 else if (_Sum > couponModel.invMax)
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxInvToolTip"), animation: ToasterAnimation.FadeIn);
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorMaxInvToolTip"), animation: ToasterAnimation.FadeIn);                               
                             }
                             else if (couponModel.invMax == 0)
                             {
