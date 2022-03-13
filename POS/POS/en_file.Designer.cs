@@ -1213,7 +1213,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cashtransfers count.
+        ///   Looks up a localized string similar to Cash transfers count.
         /// </summary>
         internal static string trCashtransferCount {
             get {
@@ -1222,7 +1222,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cashtransfers.
+        ///   Looks up a localized string similar to Cash transfers.
         /// </summary>
         internal static string trCashtransfers {
             get {

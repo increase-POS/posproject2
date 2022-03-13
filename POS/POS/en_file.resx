@@ -2564,7 +2564,7 @@ Please add Email in setting</value>
     <value>credit cards count</value>
   </data>
   <data name="trCashtransferCount" xml:space="preserve">
-    <value>Cashtransfers count</value>
+    <value>Cash transfers count</value>
   </data>
   <data name="trCustomersCount" xml:space="preserve">
     <value>Customers count</value>
@@ -3215,7 +3215,7 @@ Please add Email in setting</value>
     <value>Credit cards</value>
   </data>
   <data name="trCashtransfers" xml:space="preserve">
-    <value>Cashtransfers</value>
+    <value>Cash transfers</value>
   </data>
   <data name="trSections" xml:space="preserve">
     <value>Sections</value>
