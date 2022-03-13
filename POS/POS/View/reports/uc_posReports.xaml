@@ -176,7 +176,7 @@
                             </Button>
                         </Border>
 
-                        <Border Grid.Column="3" >
+                        <Border Grid.Column="3"  CornerRadius="7">
                         <TextBlock  x:Name="txt_tabTitle"  Foreground="White"   Grid.Column="10" 
                               VerticalAlignment="Center"      FontSize="16"     Margin="5 5 10 5"/>
                         </Border>

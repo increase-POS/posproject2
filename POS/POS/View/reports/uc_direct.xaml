@@ -71,7 +71,7 @@ Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7
                             </Button>
                         </Border>
 
-                        <Border Grid.Column="10" >
+                        <Border Grid.Column="10"  CornerRadius="7">
                             <TextBlock  x:Name="txt_tabTitle"         Foreground="White"   Grid.Column="10" 
                                         VerticalAlignment="Center"    FontSize="16"        Margin="5 5 10 5"/>
                         </Border>
