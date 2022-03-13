@@ -134,7 +134,7 @@ namespace POS.View.reports
 
             tt_closing.Content = MainWindow.resourcemanager.GetString("trCash");
 
-            col_Num.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_Num.Header = MainWindow.resourcemanager.GetString("trNo");
             col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
             col_openDate.Header = MainWindow.resourcemanager.GetString("trOpenDate");
             col_openCash.Header = MainWindow.resourcemanager.GetString("trOpenCash");

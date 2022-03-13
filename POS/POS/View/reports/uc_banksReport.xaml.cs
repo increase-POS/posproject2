@@ -69,7 +69,6 @@ namespace POS.View.reports
 
                 payments = await statisticModel.GetPayments();// Deposite
                 recipient = await statisticModel.GetReceipt();// Pull
-                //BankChart = await statisticModel.GetBankTrans();
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -117,7 +116,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
-            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_Type.Header = MainWindow.resourcemanager.GetString("trType");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
             col_Bank.Header = MainWindow.resourcemanager.GetString("trBank");
@@ -155,18 +154,14 @@ namespace POS.View.reports
 
         List<CashTransferSts> bankLst;
         private List<CashTransferSts> fillList(List<CashTransferSts> payments, ComboBox vendor, ComboBox payType, ComboBox accountant
-           , DatePicker startDate, DatePicker endDate)
+          , DatePicker startDate, DatePicker endDate)
         {
-            var selectedItem1 = vendor.SelectedItem as Bank;
-            var selectedItem2 = payType.SelectedItem as VendorCombo;
-            var selectedItem3 = accountant.SelectedItem as AccountantCombo;
-
             var result = payments.Where(x => (
-              (vendor.SelectedItem != null ? x.bankId == selectedItem1.bankId : true)
-                        && (payType.SelectedItem != null ? x.userId == selectedItem2.UserId : true)
-                        && (accountant.SelectedItem != null ? x.updateUserAcc == selectedItem3.Accountant : true)
-                        && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
-                        && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
+                          (cb_paymentsBank.SelectedItem != null ? x.bankId == (int)cb_paymentsBank.SelectedValue : true)
+                       && (payType.SelectedItem != null ? x.userId == (int)cb_paymentsUser.SelectedValue : true)
+                       && (accountant.SelectedItem != null ? x.updateUserAcc == (string)cb_paymentsAccountant.SelectedValue : true)
+                       && (startDate.SelectedDate != null ? x.updateDate >= startDate.SelectedDate : true)
+                       && (endDate.SelectedDate != null ? x.updateDate <= endDate.SelectedDate : true)));
 
             bankLst = result.ToList();
             return result.ToList();
@@ -316,6 +311,7 @@ namespace POS.View.reports
 
         private void fillPieChart()
         {
+            #region
             //List<string> titles = new List<string>();
             //List<int> resultList = new List<int>();
             //titles.Clear();
@@ -363,6 +359,7 @@ namespace POS.View.reports
 
             //}
             //chart1.Series = piechartData;
+            #endregion
         }
         private void fillColumnChart()
         {
@@ -370,13 +367,7 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
 
-            //var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            //if (selectedTab == 1)
-            //{
-            //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            //}
-            //var res = temp.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
-            var res = bankLst.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
+            var res = temp.GroupBy(x => new { x.bankId, x.transType }).Select(x => new CashTransferSts
             {
                 bankName = x.FirstOrDefault().bankName,
                 transType = x.FirstOrDefault().transType,
@@ -461,6 +452,13 @@ namespace POS.View.reports
             int startYear = endYear - 1;
             int startMonth = DateTime.Now.Month;
             int endMonth = startMonth;
+
+            IEnumerable<CashTransferSts> payLst = null;
+            IEnumerable<CashTransferSts> recLst = null;
+
+            payLst = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+            recLst = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
+
             if (dp_paymentsStartDate.SelectedDate != null && dp_paymentsEndDate.SelectedDate != null)
             {
                 startYear = dp_paymentsStartDate.SelectedDate.Value.Year;
@@ -473,12 +471,7 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
             var temp = bankLst;
-            //var temp = fillList(payments, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            //if (selectedTab == 1)
-            //{
-            //    temp = fillList(recipient, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn");
-            //}
-
+           
             SeriesCollection rowChartData = new SeriesCollection();
             var tempName = temp.GroupBy(s => new { s.bankId }).Select(s => new
             {
@@ -499,8 +492,8 @@ namespace POS.View.reports
                     {
                         var firstOfThisMonth = new DateTime(year, month, 1);
                         var firstOfNextMonth = firstOfThisMonth.AddMonths(1);
-                        var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
-                        var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
+                        var drawCash = payLst.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "p").Sum(c => c.cash);
+                        var drawCard = recLst.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.transType == "d").Sum(c => c.cash);
                         cash.Add((decimal)drawCash);
                         card.Add((decimal)drawCard);
 
@@ -524,8 +517,8 @@ namespace POS.View.reports
                 {
                     var firstOfThisYear = new DateTime(year, 1, 1);
                     var firstOfNextMYear = firstOfThisYear.AddYears(1);
-                    var drawCash = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Count();
-                    var drawCard = temp.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "card").Count();
+                    var drawCash = payLst.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Count();
+                    var drawCard = recLst.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.processType == "cash").Count();
                     cash.Add(drawCash);
                     card.Add(drawCard);
                     MyAxis.Labels.Add(year.ToString());
@@ -534,13 +527,13 @@ namespace POS.View.reports
             rowChartData.Add(
           new LineSeries
           {
-              Values = cash.AsChartValues(),
+              Values = card.AsChartValues(),
               Title = MainWindow.resourcemanager.GetString("trDeposit")
           }); ;
             rowChartData.Add(
          new LineSeries
          {
-             Values = card.AsChartValues(),
+             Values = cash.AsChartValues(),
              Title = MainWindow.resourcemanager.GetString("trPull")
          });
 

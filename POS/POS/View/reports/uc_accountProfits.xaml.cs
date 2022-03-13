@@ -114,7 +114,7 @@ namespace POS.View.reports
             tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
             tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
 
-            col_invNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_invNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_invType.Header = MainWindow.resourcemanager.GetString("trType");
             col_invDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_invTotal.Header = MainWindow.resourcemanager.GetString("trTotal");

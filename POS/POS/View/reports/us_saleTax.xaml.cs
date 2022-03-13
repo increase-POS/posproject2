@@ -190,7 +190,7 @@ namespace POS.View.reports
             tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
             tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
             ////////////////////////////////grid//////////////////////////////////////
-            col_invNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_invNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_Date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             ////invoice

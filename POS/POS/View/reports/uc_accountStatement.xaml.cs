@@ -122,7 +122,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendorsDate, MainWindow.resourcemanager.GetString("trDateHint"));
             chk_allVendors.Content = MainWindow.resourcemanager.GetString("trAll");
 
-            dgPayments.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
+            dgPayments.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo");
             dgPayments.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
             dgPayments.Columns[2].Header = MainWindow.resourcemanager.GetString("trDescription");
             dgPayments.Columns[3].Header = MainWindow.resourcemanager.GetString("trPayment");

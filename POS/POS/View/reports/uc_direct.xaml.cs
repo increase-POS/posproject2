@@ -44,6 +44,8 @@ namespace POS.View.reports
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+        string searchText = "";
         public uc_direct()
         {
             try
@@ -834,6 +836,86 @@ namespace POS.View.reports
                     SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+
+        private void Cb_directUnits_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                fillEvents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Txt_search_SelectionChanged(object sender, RoutedEventArgs e)
+        {//search
+            try
+            {
+
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                temp = temp
+                              .Where(s => (s.invNumber.ToString().Contains(txt_search.Text) ||
+                                           s.branchName.Contains(txt_search.Text) ||
+                                           s.itemName.Contains(txt_search.Text) ||
+                                           s.unitName.Contains(txt_search.Text) ||
+                                           s.quantity.ToString().Contains(txt_search.Text)
+                                     ));
+
+                dgDirect.ItemsSource = temp;
+                txt_count.Text = temp.Count().ToString();
+
+                fillDirectColumnChart();
+                fillDirectPieChart();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+
+        private void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            try
+            {
+
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                txt_search.Text = "";
+                searchText = "";
+
+                fillEvents();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
         }
     }
 }

@@ -125,7 +125,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
-            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_processType.Header = MainWindow.resourcemanager.GetString("trPaymentType");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
             col_agentName.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");

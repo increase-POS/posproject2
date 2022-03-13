@@ -67,10 +67,10 @@ namespace POS.View.reports
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    if (sender != null)
-            //        SectionData.StartAwait(grid_main);
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -86,39 +86,23 @@ namespace POS.View.reports
                 translate();
                 #endregion
 
-                //list = await statisticModel.GetPosTrans();
                 listCash = await statisticModel.GetBytypeAndSideForPos("all" , "p");
-
-                //fromBranches = statisticModel.getFromCombo(listCash);
-                //toBranches = statisticModel.getToCombo(listCash);
-
-                //fromPos = statisticModel.getFromPosCombo(listCash);
-                //toPos = statisticModel.getToPosCombo(listCash);
 
                 accCombo = listCash.GroupBy(g => g.updateUserAcc).Select(g => new AccountantCombo { Accountant = g.FirstOrDefault().updateUserAcc }).ToList();
                 
-                //fillComboBranches();
-                //fillComboFromPos();
-                //fillComboToPos();
                 fillAccCombo();
-
-                //chk_allFromBranch.IsChecked = true;
-                //chk_allToBranch.IsChecked = true;
-                //chk_allFromPos.IsChecked = true;
-                //chk_allToPos.IsChecked = true;
-                //chk_allAccountant.IsChecked = true;
 
                 Btn_payments_Click(btn_payments , null);
 
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_main);
-            //}
-            //    catch (Exception ex)
-            //    {
-            //        if (sender != null)
-            //            SectionData.EndAwait(grid_main);
-            //        SectionData.ExceptionMessage(ex, this);
-            //}
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private void translate()
@@ -144,7 +128,7 @@ namespace POS.View.reports
             chk_allAccountant.Content = MainWindow.resourcemanager.GetString("trAll");
             chk_twoWay.Content = MainWindow.resourcemanager.GetString("trTwoWays");
 
-            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_tansNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_creatorBranch.Header = MainWindow.resourcemanager.GetString("trCreator");
             col_fromBranch.Header = MainWindow.resourcemanager.GetString("trFromBranch");
             col_fromPos.Header = MainWindow.resourcemanager.GetString("trDepositor");

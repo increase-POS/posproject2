@@ -125,7 +125,7 @@ namespace POS.View.reports
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
-            col_No.Header = MainWindow.resourcemanager.GetString("trNum");
+            col_No.Header = MainWindow.resourcemanager.GetString("trNo");
             col_type.Header = MainWindow.resourcemanager.GetString("trType");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
