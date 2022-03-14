@@ -623,6 +623,7 @@ namespace POS.View.accounts
 
                                 if (!s1.Equals(0))
                                 {
+                                    await MainWindow.refreshBalance();
                                     //second operation
                                     CashTransfer cash2 = new CashTransfer();
 
@@ -669,6 +670,7 @@ namespace POS.View.accounts
 
                                         await RefreshCashesList();
                                         Tb_search_TextChanged(null, null);
+                                        await MainWindow.refreshBalance();
                                     }
                                     else
                                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

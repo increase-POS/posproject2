@@ -684,7 +684,7 @@ namespace POS.View.accounts
 
                                 await RefreshCashesList();
                                 Tb_search_TextChanged(null, null);
-
+                                await MainWindow.refreshBalance();
                             }
                             else
                                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);

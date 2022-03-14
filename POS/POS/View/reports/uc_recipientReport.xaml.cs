@@ -127,11 +127,11 @@ namespace POS.View.reports
             col_tansNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_processType.Header = MainWindow.resourcemanager.GetString("trPaymentType");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
-            col_agentName.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
+            col_agentName.Header = MainWindow.resourcemanager.GetString("trDepositor");
             col_customer.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            col_user.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_user.Header = MainWindow.resourcemanager.GetString("trDepositor");
             col_company.Header = MainWindow.resourcemanager.GetString("trCompany");
-            col_shipping.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_shipping.Header = MainWindow.resourcemanager.GetString("trCompany");
             col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
 
@@ -575,7 +575,7 @@ namespace POS.View.reports
                 col_tansNum.Visibility = Visibility.Visible;
                 col_processType.Visibility = Visibility.Visible;
                 col_updateUserAcc.Visibility = Visibility.Visible;
-                col_shipping.Visibility = Visibility.Visible;
+                //col_shipping.Visibility = Visibility.Visible;
                 col_updateDate.Visibility = Visibility.Visible;
                 col_cash.Visibility = Visibility.Visible;
 

@@ -1099,6 +1099,7 @@ namespace POS.View.accounts
 
                                 await RefreshInvoiceList();
                                 Tb_search_TextChanged(null, null);
+                                await MainWindow.refreshBalance();
                             }
                             else
                             {

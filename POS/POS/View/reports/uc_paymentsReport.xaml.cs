@@ -130,9 +130,9 @@ namespace POS.View.reports
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
             col_agentName.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             col_customer.Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
-            col_user.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_user.Header = MainWindow.resourcemanager.GetString("trRecepient");
             col_company.Header = MainWindow.resourcemanager.GetString("trCompany");
-            col_shipping.Header = MainWindow.resourcemanager.GetString("trTotal");
+            col_shipping.Header = MainWindow.resourcemanager.GetString("trCompany");
             col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
 

@@ -332,8 +332,8 @@ namespace POS.View.accounts
 
                                 await RefreshBondsList();
                                 Tb_search_TextChanged(null, null);
+                                    await MainWindow.refreshBalance();
 
-                                    
                                 }
                         }
                         else
@@ -384,8 +384,8 @@ namespace POS.View.accounts
 
         private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
         {//search
-            //try
-            //{
+            try
+            {
                 if (sender != null)
                     SectionData.StartAwait(grid_ucBonds);
                 try
@@ -433,13 +433,13 @@ namespace POS.View.accounts
                 catch { }
                 if (sender != null)
                     SectionData.EndAwait(grid_ucBonds);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_ucBonds);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucBonds);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Tgl_isRecieved_Unchecked(object sender, RoutedEventArgs e)
