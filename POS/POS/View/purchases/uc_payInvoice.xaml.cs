@@ -1048,8 +1048,11 @@ namespace POS.View
                     //// pass agent id to update windows
                     w.agent.agentId = (int)cb_vendor.SelectedValue;
                     w.ShowDialog();
-                    await RefrishVendors();
-
+                    if (w.isOk == true)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        await RefrishVendors();
+                    }
 
 
                     Window.GetWindow(this).Opacity = 1;

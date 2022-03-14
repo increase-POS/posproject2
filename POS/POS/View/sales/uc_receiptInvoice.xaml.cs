@@ -1053,7 +1053,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
+        private async void Btn_updateCustomer_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1067,6 +1067,11 @@ namespace POS.View
                     w.agent.agentId = (int)cb_customer.SelectedValue;
                     w.type = "c";
                     w.ShowDialog();
+                    if (w.isOk == true)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                        await RefrishCustomers();
+                    }
                     Window.GetWindow(this).Opacity = 1;
                 }
                 if (sender != null)
