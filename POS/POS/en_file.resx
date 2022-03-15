@@ -3436,4 +3436,13 @@ Please add Email in setting</value>
   <data name="trCharp" xml:space="preserve">
     <value>#</value>
   </data>
+  <data name="trDeliveryMan" xml:space="preserve">
+    <value>Delivery Man</value>
+  </data>
+  <data name="trTheShippingCompany" xml:space="preserve">
+    <value>Shipping Company</value>
+  </data>
+  <data name="trFree" xml:space="preserve">
+    <value>Free</value>
+  </data>
 </root>

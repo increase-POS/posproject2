@@ -1933,6 +1933,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery Man.
+        /// </summary>
+        internal static string trDeliveryMan {
+            get {
+                return ResourceManager.GetString("trDeliveryMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delivery type.
         /// </summary>
         internal static string trDeliveryType {
@@ -3990,6 +3999,15 @@ namespace POS {
         internal static string trFirstPath {
             get {
                 return ResourceManager.GetString("trFirstPath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free.
+        /// </summary>
+        internal static string trFree {
+            get {
+                return ResourceManager.GetString("trFree", resourceCulture);
             }
         }
         
@@ -8941,6 +8959,15 @@ namespace POS {
         internal static string trTheShippingCompaniesHasNoEmail {
             get {
                 return ResourceManager.GetString("trTheShippingCompaniesHasNoEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipping Company.
+        /// </summary>
+        internal static string trTheShippingCompany {
+            get {
+                return ResourceManager.GetString("trTheShippingCompany", resourceCulture);
             }
         }
         

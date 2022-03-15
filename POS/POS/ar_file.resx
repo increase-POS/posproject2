@@ -3412,4 +3412,13 @@
   <data name="trCharp" xml:space="preserve">
     <value>#</value>
   </data>
+  <data name="trDeliveryMan" xml:space="preserve">
+    <value>السائق</value>
+  </data>
+  <data name="trTheShippingCompany" xml:space="preserve">
+    <value>شركة الشحن</value>
+  </data>
+  <data name="trFree" xml:space="preserve">
+    <value>مجاني</value>
+  </data>
 </root>

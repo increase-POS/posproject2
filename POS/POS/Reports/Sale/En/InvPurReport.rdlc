@@ -1892,7 +1892,7 @@
             <Width>2.1609cm</Width>
             <ZIndex>30</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value=0 OR Parameters!shippingCost.Value="0",True,False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value=0 OR Parameters!shippingCompanyId.Value="0",True,False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1911,21 +1911,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!shippingCost.Value</Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=Parameters!Currency.Value</Value>
+                    <Value>=iif(Parameters!shippingCompanyId.Value&gt;0 And Parameters!shippingCost.Value=0,Parameters!trFree.Value, Parameters!shippingCost.Value.ToString()+" "+Parameters!Currency.Value)</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -1942,7 +1928,7 @@
             <Width>5.18113cm</Width>
             <ZIndex>31</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value=0 OR Parameters!shippingCost.Value="0",True,False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value=0 OR Parameters!shippingCompanyId.Value="0",True,False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2179,7 +2165,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Shipping Company:</Value>
+                    <Value>=Parameters!trTheShippingCompany.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -2198,7 +2191,7 @@
             <Width>3.91632cm</Width>
             <ZIndex>37</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2224,18 +2217,25 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!ShippingCompany.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>10.4227cm</Top>
-            <Left>5.83111cm</Left>
+            <Left>5.76056cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.28223cm</Width>
+            <Width>4.35278cm</Width>
             <ZIndex>38</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2261,18 +2261,25 @@
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!DeliveryMan.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>10.4227cm</Top>
-            <Left>13.09445cm</Left>
+            <Left>13.20028cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.9983cm</Width>
+            <Width>5.89247cm</Width>
             <ZIndex>39</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value="com" And Parameters!deliveryType.Value&lt;&gt;"local") , True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2292,7 +2299,14 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Delivery Man:</Value>
+                    <Value>=Parameters!trDeliveryMan.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>:</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -2306,12 +2320,12 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>10.4227cm</Top>
-            <Left>10.28973cm</Left>
+            <Left>10.69162cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.76944cm</Width>
+            <Width>2.50866cm</Width>
             <ZIndex>40</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value="com" And Parameters!deliveryType.Value&lt;&gt;"local") , True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2964,11 +2978,53 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="trDeliveryMan">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trTheShippingCompany">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DeliveryMan">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ShippingCompany">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="deliveryType">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="shippingCompanyId">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trFree">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>10</NumberOfRows>
+      <NumberOfRows>12</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -3164,6 +3220,41 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>9</RowIndex>
           <ParameterName>trDraftInv</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>trDeliveryMan</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>trTheShippingCompany</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>DeliveryMan</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>ShippingCompany</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>deliveryType</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>shippingCompanyId</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>trFree</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

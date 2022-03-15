@@ -140,6 +140,10 @@ namespace POS.View
         Invoice prInvoice = new Invoice();
         int prinvoiceId = 0;
         List<PayedInvclass> mailpayedList = new List<PayedInvclass>();
+        //shipping
+        ShippingCompanies shippingcomp = new ShippingCompanies();
+        User shipinguser = new User();
+           
         //bool isClose = false;
 
         #region bill
@@ -3862,6 +3866,7 @@ namespace POS.View
                     {
                         prInvoice.branchName = branch.name;
                     }
+                   
                     decimal totaltax = 0;
                     foreach (var i in invoiceItems)
                     {
@@ -3891,7 +3896,7 @@ namespace POS.View
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr.Add(new ReportParameter("isSaved", "y"));
-                    paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
+                    paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr,shippingcomp);
 
                     // multiplePaytable(paramarr);
                     if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb"))
@@ -4027,7 +4032,19 @@ namespace POS.View
                             {
                                 prInvoice.branchName = branch.name;
                             }
-                         
+                            //shipping
+                            ShippingCompanies shippingcom = new ShippingCompanies();
+                            if (prInvoice.shippingCompanyId > 0)
+                            {
+                                shippingcom = await shippingcom.GetByID((int)prInvoice.shippingCompanyId);
+                            }
+                            User shipuser = new User();
+                            if (prInvoice.shipUserId > 0)
+                            {
+                                shipuser = await userModel.getUserById((int)prInvoice.shipUserId);
+                            }
+                            prInvoice.shipUserName = shipuser.name + " " + shipuser.lastname;
+                            //end shipping
 
                             decimal totaltax = 0;
                             foreach (var i in invoiceItems)
@@ -4057,7 +4074,7 @@ namespace POS.View
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
                             paramarr.Add(new ReportParameter("isSaved", "y"));
-                            paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
+                            paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
 
                             //  multiplePaytable(paramarr);
                             if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb"))
@@ -4280,7 +4297,19 @@ namespace POS.View
                         }
 
                         ReportCls.checkLang();
-
+                        //shipping
+                        ShippingCompanies shippingcom = new ShippingCompanies();
+                        if (prInvoice.shippingCompanyId > 0)
+                        {
+                            shippingcom = await shippingcom.GetByID((int)prInvoice.shippingCompanyId);
+                        }
+                        User shipuser = new User();
+                        if (prInvoice.shipUserId > 0)
+                        {
+                            shipuser = await userModel.getUserById((int)prInvoice.shipUserId);
+                        }
+                        prInvoice.shipUserName = shipuser.name + " " + shipuser.lastname;
+                        //end shipping
                         decimal totaltax = 0;
                         foreach (var i in invoiceItems)
                         {
@@ -4313,7 +4342,7 @@ namespace POS.View
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
                         paramarr.Add(new ReportParameter("isSaved", "y"));
-                        paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
+                        paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
                         //   multiplePaytable(paramarr);
 
 
@@ -4518,7 +4547,7 @@ namespace POS.View
                         prInvoice.uuserName = employ.name;
                         prInvoice.uuserLast = employ.lastname;
 
-                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                     //   invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         if (prInvoice.agentId != null)
                         {
                             Agent agentinv = new Agent();
@@ -4542,8 +4571,20 @@ namespace POS.View
                         {
                             prInvoice.branchName = branch.name;
                         }
-
-                        invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
+                        //shipping
+                        ShippingCompanies shippingcom = new ShippingCompanies();
+                        if (prInvoice.shippingCompanyId>0)
+                        {
+                            shippingcom = await shippingcom.GetByID((int)prInvoice.shippingCompanyId);
+                        }
+                        User shipuser = new User();
+                        if (prInvoice.shipUserId > 0)
+                        {
+                            shipuser= await userModel.getUserById((int)prInvoice.shipUserId);
+                        }
+                        prInvoice.shipUserName = shipuser.name + " " + shipuser.lastname;
+                        //end shipping
+                            //    invoiceItems = await invoiceModel.GetInvoicesItems(prInvoice.invoiceId);
                         ReportCls.checkLang();
                         decimal totaltax = 0;
                         foreach (var i in invoiceItems)
@@ -4572,7 +4613,7 @@ namespace POS.View
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
                       
-                        paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
+                        paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
 
                         if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
      || prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
@@ -4971,44 +5012,7 @@ namespace POS.View
                         }
 
 
-                        //int res = 0;
-
-                        // res = await invoiceModel.updateprintstat(prInvoice.invoiceId, 1, false, true);
-
-
-
-                        //tmpinvoice.printedcount = tmpinvoice.printedcount + 1;
-
-                        //tmpinvoice.isOrginal = false;
-
-
-                        //}
-                        //else
-                        //{
-                        //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trYouExceedLimit"), animation: ToasterAnimation.FadeIn);
-                        //}
-
-
-                        //}
-                        //else
-                        //{
-
-                        //    if (tmpinvoice.invType == "s" && MainWindow.salePaperSize != "A4")
-                        //    {
-                        //        LocalReportExtensions.customExportToPDF(rep, pdfpath, width, height);
-                        //    }
-                        //    else
-                        //    {
-                        //        LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                        //    }
-
-                        //}
-                        // end copy count
-
-
-
-
-
+                   
 
                         wd_previewPdf w = new wd_previewPdf();
                         w.pdfPath = pdfpath;
@@ -5047,30 +5051,30 @@ namespace POS.View
             }
         }
 
-        public void BuildReport()
-        {
-            List<ReportParameter> paramarr = new List<ReportParameter>();
+        //public void BuildReport()
+        //{
+        //    List<ReportParameter> paramarr = new List<ReportParameter>();
 
-            string addpath;
-            bool isArabic = ReportCls.checkLang();
-            if (isArabic)
-            {
-                addpath = @"\Reports\Sale\Ar\PackageReport.rdlc";
-            }
-            else
-                addpath = @"\Reports\Sale\En\PackageReport.rdlc";
-            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+        //    string addpath;
+        //    bool isArabic = ReportCls.checkLang();
+        //    if (isArabic)
+        //    {
+        //        addpath = @"\Reports\Sale\Ar\PackageReport.rdlc";
+        //    }
+        //    else
+        //        addpath = @"\Reports\Sale\En\PackageReport.rdlc";
+        //    string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
-            ReportCls.checkLang();
+        //    ReportCls.checkLang();
 
-            clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
-            clsReports.Header(paramarr);
+        //    clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
+        //    clsReports.setReportLanguage(paramarr);
+        //    clsReports.Header(paramarr);
 
-            rep.SetParameters(paramarr);
+        //    rep.SetParameters(paramarr);
 
-            rep.Refresh();
-        }
+        //    rep.Refresh();
+        //}
         public async void sendsaleEmail(int invoiceId)
         {
             try
@@ -5184,6 +5188,20 @@ namespace POS.View
                                             {
                                                 setvlist = await setvmodel.GetBySetName("sale_email_temp");
                                             }
+
+                                            //shipping
+                                         
+                                            if (prInvoice.shippingCompanyId > 0)
+                                            {
+                                                shippingcomp = await shippingcomp.GetByID((int)prInvoice.shippingCompanyId);
+                                            }
+                                           
+                                            if (prInvoice.shipUserId > 0)
+                                            {
+                                                shipinguser = await userModel.getUserById((int)prInvoice.shipUserId);
+                                            }
+                                            prInvoice.shipUserName = shipinguser.name + " " + shipinguser.lastname;
+                                            //end shipping
 
                                             string pdfpath = await SaveSalepdf();
 
