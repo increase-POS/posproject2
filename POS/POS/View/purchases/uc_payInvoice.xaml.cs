@@ -156,7 +156,7 @@ namespace POS.View
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNo.");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
@@ -1729,16 +1729,11 @@ namespace POS.View
                         #endregion
                         if (w.isOk)
                         {
-                            await addInvoice(_InvoiceType, "pi");
-                            clearInvoice();
-                            _InvoiceType = "pd";
-                            refreshDraftNotification();
+                            await addInvoice(_InvoiceType, "pi");                         
                         }
-                        else
-                        {
-                            clearInvoice();
-                            _InvoiceType = "pd";
-                        }
+                        clearInvoice();
+                        _InvoiceType = "pd";
+                        refreshDraftNotification();
                     }
                     else if (billDetails.Count == 0)
                     {

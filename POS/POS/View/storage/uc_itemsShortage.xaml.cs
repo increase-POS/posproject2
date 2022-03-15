@@ -132,7 +132,7 @@ namespace POS.View.storage
         {
 
             ////////////////////////////////----Grid----/////////////////////////////////
-            dg_itemShortage.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo.");
+            dg_itemShortage.Columns[0].Header = MainWindow.resourcemanager.GetString("trCharp");
             dg_itemShortage.Columns[1].Header = MainWindow.resourcemanager.GetString("trDate");
             dg_itemShortage.Columns[2].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             dg_itemShortage.Columns[3].Header = MainWindow.resourcemanager.GetString("trItemUnit");

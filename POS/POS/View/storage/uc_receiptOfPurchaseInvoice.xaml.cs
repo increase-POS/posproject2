@@ -115,7 +115,7 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----invoice----/////////////////////////////////
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trCharp");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNo.");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQTR");
@@ -976,12 +976,10 @@ namespace POS.View.storage
                     #endregion
                     if (w.isOk)
                     {
-                        await addInvoice(_InvoiceType);
-                        clearInvoice();
-                        refreshDraftNotification();
+                        await addInvoice(_InvoiceType);                      
                     }
-                    else
-                        clearInvoice();
+                    clearInvoice();
+                    refreshDraftNotification();
                 }
                 else
                     clearInvoice();

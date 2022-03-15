@@ -168,7 +168,7 @@ namespace POS.View
 
         private void translate()
         {
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trCharp");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNo.");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
@@ -1914,7 +1914,7 @@ namespace POS.View
                     {
                         await addInvoice(_InvoiceType);
                         await clearInvoice();
-                        setNotifications();
+                        
                     }
                     else
                     {
@@ -1931,9 +1931,8 @@ namespace POS.View
             else
             {
                 await clearInvoice();
-                setNotifications();
             }
-
+            setNotifications();
         }
         private async void Btn_newDraft_Click(object sender, RoutedEventArgs e)
         {

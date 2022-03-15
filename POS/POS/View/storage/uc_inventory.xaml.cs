@@ -144,7 +144,7 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----Inventory----/////////////////////////////////
-            dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trCharp");
+            dg_items.Columns[0].Header = MainWindow.resourcemanager.GetString("trNo.");
             dg_items.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             dg_items.Columns[2].Header = MainWindow.resourcemanager.GetString("trItemUnit");
             dg_items.Columns[3].Header = MainWindow.resourcemanager.GetString("trRealAmount");
