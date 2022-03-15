@@ -3409,4 +3409,7 @@
   <data name="trItemsTax" xml:space="preserve">
     <value>ضريبة المواد</value>
   </data>
+  <data name="trCharp" xml:space="preserve">
+    <value>#</value>
+  </data>
 </root>

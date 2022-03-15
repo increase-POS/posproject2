@@ -168,7 +168,7 @@ namespace POS.View
 
         private void translate()
         {
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trCharp");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
@@ -1898,11 +1898,8 @@ namespace POS.View
         {
             if (billDetails.Count > 0 && (_InvoiceType == "sd" || _InvoiceType == "sbd"))
             {
-                //Boolean available = true;
-                //if (_InvoiceType == "sd")
-                //    available = await checkItemsAmounts();
                 bool valid = validateItemUnits();
-                //if (billDetails.Count > 0 && available && valid)
+
                 if (billDetails.Count > 0 && valid)
                 {
                     #region Accept
@@ -1916,7 +1913,6 @@ namespace POS.View
                     if (w.isOk)
                     {
                         await addInvoice(_InvoiceType);
-                        // await refreshDraftNotification();
                         await clearInvoice();
                         setNotifications();
                     }

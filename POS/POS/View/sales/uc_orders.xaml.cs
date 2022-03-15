@@ -154,7 +154,7 @@ namespace POS.View.sales
         #endregion
         private void translate()
         {
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trCharp");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
@@ -986,11 +986,14 @@ namespace POS.View.sales
                         MainWindow.mainWindow.Opacity = 1;
                         #endregion
                         if (w.isOk)
-                            await addInvoice(_InvoiceType); 
-                        
+                            await addInvoice(_InvoiceType);
+
                     }
-                    clearInvoice();
-                    setNotifications();
+                    else
+                    {
+                        clearInvoice();
+                        setNotifications();
+                    }
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1423,7 +1426,11 @@ namespace POS.View.sales
             st.invoiceId = invoiceId;
             st.createUserId = MainWindow.userLogin.userId;
             st.isActive = 1;
-            await invoice.saveOrderStatus(st);
+           int res = await invoice.saveOrderStatus(st);
+            if(res > 0)
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);     
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
         }
         #region Get Id By Click  Y
         public async Task ChangeItemIdEvent(int itemId)
@@ -2522,9 +2529,12 @@ namespace POS.View.sales
                                 _InvoiceType = "ors";
                             await addInvoice(_InvoiceType);//quontation invoice                            
                             if (_InvoiceType == "or")
-                               await clearInvoice();
+                                await clearInvoice();
                             else
+                            {
+                                txt_invNumber.Text = invoice.invNumber;
                                 inputEditable();
+                            }
                             #region notification Object
                             Notification not = new Notification()
                             {

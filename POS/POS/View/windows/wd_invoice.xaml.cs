@@ -179,7 +179,7 @@ namespace POS.View.windows
             //txt_Invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
-            col_num.Header = MainWindow.resourcemanager.GetString("trInvoiceNumber");
+            col_num.Header = MainWindow.resourcemanager.GetString("trCharp");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_user.Header = MainWindow.resourcemanager.GetString("trUser");
             col_count.Header = MainWindow.resourcemanager.GetString("trQTR");

@@ -3433,4 +3433,7 @@ Please add Email in setting</value>
   <data name="trItemsTax" xml:space="preserve">
     <value>Items Tax</value>
   </data>
+  <data name="trCharp" xml:space="preserve">
+    <value>#</value>
+  </data>
 </root>

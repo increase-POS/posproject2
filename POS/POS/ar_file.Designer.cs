@@ -1276,6 +1276,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to #.
+        /// </summary>
+        internal static string trCharp {
+            get {
+                return ResourceManager.GetString("trCharp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to شيك.
         /// </summary>
         internal static string trCheque {

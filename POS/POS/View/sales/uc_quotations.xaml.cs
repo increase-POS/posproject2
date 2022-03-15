@@ -143,7 +143,7 @@ namespace POS.View.sales
         #endregion
         private void translate()
         {
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trCharp");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
@@ -436,9 +436,9 @@ namespace POS.View.sales
             try
             {
                 string invoiceType = "qd,qs";
-            int duration = 2;
-            int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            if (invoice != null && (_InvoiceType == "qd" || _InvoiceType == "qs")  && invoice.invoiceId != 0 && !isFromReport)
+                int duration = 2;
+                int draftCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
+                if (invoice != null && (_InvoiceType == "qd" || _InvoiceType == "qs")  && invoice.invoiceId != 0 && !isFromReport)
                 draftCount--;
 
             SectionData.refreshNotification(md_draft, ref _DraftCount, draftCount);
@@ -840,6 +840,7 @@ namespace POS.View.sales
                 else
                 {
                     clearInvoice();
+                    setNotifications();
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -962,14 +963,14 @@ namespace POS.View.sales
         }
         private async Task addInvoice(string invType)
         {
-            // build invoice NUM 
+            #region invoice number according to type
             if ((invType == "q" || invType == "qs") && (invoice.invType == "qd" || invoice.invoiceId == 0))
             {
                 invoice.invNumber = await invoice.generateInvNumber("qt", MainWindow.loginBranch.code, MainWindow.branchID.Value);
             }
             else if (invType == "qd" && invoice.invoiceId == 0)
                 invoice.invNumber = await invoice.generateInvNumber("qtd", MainWindow.loginBranch.code, MainWindow.branchID.Value);
-
+            #endregion
             if (invoice.branchCreatorId == 0 || invoice.branchCreatorId == null)
             {
                 invoice.branchCreatorId = MainWindow.branchID.Value;
@@ -1019,7 +1020,7 @@ namespace POS.View.sales
                 }
                 await invoiceModel.saveInvoiceCoupons(selectedCoupons, invoiceId, invoice.invType);
                 #endregion
-                // add invoice details
+                #region invoice items
                 invoiceItems = new List<ItemTransfer>();
                 ItemTransfer itemT;
                 for (int i = 0; i < billDetails.Count; i++)
@@ -1038,8 +1039,12 @@ namespace POS.View.sales
                     itemT.itemUnitPrice = billDetails[i].basicPrice;
                     invoiceItems.Add(itemT);
                 }
-                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);               
-            }           
+                await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
+                #endregion
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+            }
+            else
+                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
         }
 
         #region Get Id By Click  Y
@@ -1910,14 +1915,13 @@ namespace POS.View.sales
                         if (_InvoiceType == "q")
                             await clearInvoice();
                         else
+                        {
+                            txt_invNumber.Text = invoice.invNumber;
                             inputEditable();
+                        }
 
                         setNotifications();
-                        //if (invoice.invoiceId == 0)
-                        // clearInvoice();
                     }
-                    //else
-                       // clearInvoice();
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);

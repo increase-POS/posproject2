@@ -133,7 +133,7 @@ namespace POS.View.storage
         private void translate()
         {
             ////////////////////////////////----Order----/////////////////////////////////
-            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNum");
+            dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trCharp");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
