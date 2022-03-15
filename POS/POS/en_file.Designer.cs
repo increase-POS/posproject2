@@ -8855,7 +8855,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The customer does not have email.
+        ///   Looks up a localized string similar to The customer does not have an email.
         /// </summary>
         internal static string trTheCustomerHasNoEmail {
             get {
@@ -8954,7 +8954,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vendor Does not Have email..
+        ///   Looks up a localized string similar to The vendor Does not Have an email..
         /// </summary>
         internal static string trTheVendorHasNoEmail {
             get {

@@ -1880,7 +1880,7 @@ Please add Email in setting</value>
     <value>There is no order to send, please save order then send the email</value>
   </data>
   <data name="trTheVendorHasNoEmail" xml:space="preserve">
-    <value>The vendor Does not Have email.</value>
+    <value>The vendor Does not Have an email.</value>
   </data>
   <data name="trDepartmentHent" xml:space="preserve">
     <value>Department...</value>
@@ -2234,7 +2234,7 @@ Please add Email in setting</value>
     <value>Required Amount</value>
   </data>
   <data name="trTheCustomerHasNoEmail" xml:space="preserve">
-    <value>The customer does not have email</value>
+    <value>The customer does not have an email</value>
   </data>
   <data name="trTheShippingCompaniesHasNoEmail" xml:space="preserve">
     <value>The Shipping Company does not have email</value>

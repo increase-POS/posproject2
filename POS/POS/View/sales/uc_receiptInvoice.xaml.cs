@@ -1697,13 +1697,14 @@ namespace POS.View
                                     }
                                     else
                                         await saveCashTransfers();
+                                    prinvoiceId = invoice.invoiceId;
                                     await clearInvoice();
-                                    refreshDraftNotification();
+                               refreshDraftNotification();
                                     refreshInvoiceNotification();
                                 }
 
 
-                                //thread  + purchases
+                                //thread  
                                 prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
                                 if (prInvoice.invType == "s")
                                 {
@@ -1713,7 +1714,7 @@ namespace POS.View
                                         // printInvoice();
                                         Thread t1 = new Thread(() =>
                                         {
-                                            printInvoice();
+                                            printInvoice( prinvoiceId);
                                         });
                                         t1.Start();
                                     }
@@ -1722,7 +1723,7 @@ namespace POS.View
                                         //sendsaleEmail();
                                         Thread t1 = new Thread(() =>
                                         {
-                                            sendsaleEmail();
+                                            sendsaleEmail(prinvoiceId);
                                         });
                                         t1.Start();
                                     }
@@ -3889,6 +3890,7 @@ namespace POS.View
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
+                    paramarr.Add(new ReportParameter("isSaved", "y"));
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
                     // multiplePaytable(paramarr);
@@ -3936,11 +3938,11 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 /////////////////////////////////////
-                Thread t1 = new Thread(() =>
-                {
+                //Thread t1 = new Thread(() =>
+                //{
                     pdfPurInvoice();
-                });
-                t1.Start();
+                //});
+                //t1.Start();
                 //////////////////////////////////////
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -3958,9 +3960,9 @@ namespace POS.View
             try
             {
                 prInvoice = new Invoice();
-                if (prinvoiceId != 0)
-                    prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
-                else
+                //if (prinvoiceId != 0)
+                //    prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
+                //else
                     prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
 
                 if (int.Parse(MainWindow.Allow_print_inv_count) <= prInvoice.printedcount)
@@ -4054,6 +4056,7 @@ namespace POS.View
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
+                            paramarr.Add(new ReportParameter("isSaved", "y"));
                             paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
                             //  multiplePaytable(paramarr);
@@ -4207,17 +4210,24 @@ namespace POS.View
 
             }
         }
-        public async void printInvoice()
+        public async void printInvoice(int invoiceId)
         {
             try
             {
-
-
                 prInvoice = new Invoice();
-                if (prinvoiceId != 0)
-                    prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
-                else
-                    prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
+                //if (isdirect)
+                //{
+                    prInvoice = await invoiceModel.GetByInvoiceId(invoiceId);
+                //}
+                //else
+                //{
+                //    prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
+                //}
+              
+                ////if (prinvoiceId != 0)
+                ////    prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
+                //else
+                
 
                 //  int resu=await  invoiceModel.updateprintstat(prInvoice.invoiceId, 1, true, false);
                 if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
@@ -4302,6 +4312,7 @@ namespace POS.View
 
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
+                        paramarr.Add(new ReportParameter("isSaved", "y"));
                         paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
                         //   multiplePaytable(paramarr);
 
@@ -4447,7 +4458,7 @@ namespace POS.View
                 ////////////////
                 Thread t1 = new Thread(() =>
                 {
-                    printInvoice();
+                    printInvoice(invoice.invoiceId);
                 });
                 t1.Start();
                 /////////////////
@@ -4560,6 +4571,7 @@ namespace POS.View
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
+                      
                         paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
 
                         if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
@@ -4567,11 +4579,14 @@ namespace POS.View
      || prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
                         {
                             paramarr.Add(new ReportParameter("isOrginal", true.ToString()));
+                            paramarr.Add(new ReportParameter("isSaved", "n"));
                         }
                         else
                         {
                             paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
+                            paramarr.Add(new ReportParameter("isSaved", "y"));
                         }
+                        paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
                         if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb"))
                         {
                             CashTransfer cachModel = new CashTransfer();
@@ -4846,6 +4861,7 @@ namespace POS.View
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
+                        paramarr.Add(new ReportParameter("isSaved", "n"));
                         paramarr = reportclass.fillSaleInvReport(tmpinvoice, paramarr);
 
                         if (tmpinvoice.invType == "pd" || tmpinvoice.invType == "sd" || tmpinvoice.invType == "qd"
@@ -4907,7 +4923,7 @@ namespace POS.View
                             paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                             paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
-                            paramarr.Add(new ReportParameter("isSaved", "n"));
+                          
                             paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
                             //  paramarr.Add(new ReportParameter("deserved", reportclass.DecTostring(deservd)));
                             rep.DataSources.Add(new ReportDataSource("DataSetPayedInvclass", payedList));
@@ -5055,20 +5071,29 @@ namespace POS.View
 
             rep.Refresh();
         }
-        public async void sendsaleEmail()
+        public async void sendsaleEmail(int invoiceId)
         {
             try
             {
                 //
-                if ((prinvoiceId > 0) || (invoice.invoiceId > 0))
+                prInvoice = new Invoice();
+                //if (isdirect)
+                //{
+                    prInvoice = await invoiceModel.GetByInvoiceId(invoiceId);
+                //}
+                //else
+                //{
+                //    prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
+                //}
+                if (prInvoice.invoiceId > 0)
                 {
-                    prInvoice = new Invoice();
-                    Invoice tomailInvoice = new Invoice();
-                    if (prinvoiceId != 0)
-                        prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
-                    else
-                        prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
-                    tomailInvoice = prInvoice;
+                  //  prInvoice = new Invoice();
+                  //  Invoice tomailInvoice = new Invoice();
+                    //if (prinvoiceId != 0)
+                    //    prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
+                    //else
+                      //  prInvoice = await invoiceModel.GetByInvoiceId(invoice.invoiceId);
+                 //   tomailInvoice = prInvoice;
                     decimal? discountval = 0;
                     string discounttype = "";
                     discountval = prInvoice.discountValue;
@@ -5095,7 +5120,7 @@ namespace POS.View
                             //edit warning message to customer
                             this.Dispatcher.Invoke(() =>
                             {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
                             });
 
                         }
@@ -5134,7 +5159,7 @@ namespace POS.View
                                         {
                                             this.Dispatcher.Invoke(() =>
                                                                                                                 {
-                                                                                                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheVendorHasNoEmail"), animation: ToasterAnimation.FadeIn);
+                                                                                                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trTheCustomerHasNoEmail"), animation: ToasterAnimation.FadeIn);
                                                                                                                 });
                                         }
 
@@ -5226,7 +5251,7 @@ namespace POS.View
                     ////
                     Thread t1 = new Thread(() =>
                     {
-                        sendsaleEmail();
+                        sendsaleEmail(invoice.invoiceId);
                     });
                     t1.Start();
                     ////
