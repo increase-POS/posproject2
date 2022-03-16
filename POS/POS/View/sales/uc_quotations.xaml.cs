@@ -2131,18 +2131,31 @@ namespace POS.View.sales
                     {
                         prInvoice.branchName = branch.name;
                     }
-
+                    //shipping
+                    ShippingCompanies shippingcom = new ShippingCompanies();
+                    if (prInvoice.shippingCompanyId > 0)
+                    {
+                        shippingcom = await shippingcom.GetByID((int)prInvoice.shippingCompanyId);
+                    }
+                    User shipuser = new User();
+                    if (prInvoice.shipUserId > 0)
+                    {
+                        shipuser = await userModel.getUserById((int)prInvoice.shipUserId);
+                    }
+                    prInvoice.shipUserName = shipuser.name + " " + shipuser.lastname;
+                    //end shipping
                     ReportCls.checkLang();
 
                     foreach (var i in invoiceItems)
                     {
                         i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        i.subTotal = decimal.Parse(SectionData.DecTostring(i.price * i.quantity));
                     }
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     // clsReports.purchaseInvoiceReport(newl, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
-                    paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr);
+                    paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
@@ -2251,14 +2264,28 @@ namespace POS.View.sales
                     {
                         invoice.branchName = branch.name;
                     }
+                    //shipping
+                    ShippingCompanies shippingcom = new ShippingCompanies();
+                    if (prInvoice.shippingCompanyId > 0)
+                    {
+                        shippingcom = await shippingcom.GetByID((int)prInvoice.shippingCompanyId);
+                    }
+                    User shipuser = new User();
+                    if (prInvoice.shipUserId > 0)
+                    {
+                        shipuser = await userModel.getUserById((int)prInvoice.shipUserId);
+                    }
+                    prInvoice.shipUserName = shipuser.name + " " + shipuser.lastname;
+                    //end shipping
                     foreach (var i in invoiceItems)
                     {
                         i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                        i.subTotal = decimal.Parse(SectionData.DecTostring(i.price * i.quantity));
                     }
                     clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
-                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+                    paramarr = reportclass.fillSaleInvReport(invoice, paramarr,shippingcom);
 
                     rep.SetParameters(paramarr);
                     rep.Refresh();
@@ -2331,17 +2358,30 @@ namespace POS.View.sales
                             {
                                 invoice.branchName = branch.name;
                             }
-
+                            //shipping
+                            ShippingCompanies shippingcom = new ShippingCompanies();
+                            if (invoice.shippingCompanyId > 0)
+                            {
+                                shippingcom = await shippingcom.GetByID((int)invoice.shippingCompanyId);
+                            }
+                            User shipuser = new User();
+                            if (invoice.shipUserId > 0)
+                            {
+                                shipuser = await userModel.getUserById((int)invoice.shipUserId);
+                            }
+                            invoice.shipUserName = shipuser.name + " " + shipuser.lastname;
+                            //end shipping
                             invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
                             ReportCls.checkLang();
                             foreach (var i in invoiceItems)
                             {
                                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
+                                i.subTotal = decimal.Parse(SectionData.DecTostring(i.price * i.quantity));
                             }
                             clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
-                            paramarr = reportclass.fillSaleInvReport(invoice, paramarr);
+                            paramarr = reportclass.fillSaleInvReport(invoice, paramarr, shippingcom);
 
                             rep.SetParameters(paramarr);
                             rep.Refresh();
