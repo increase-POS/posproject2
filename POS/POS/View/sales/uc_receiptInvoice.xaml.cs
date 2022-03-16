@@ -3907,6 +3907,11 @@ namespace POS.View
                         mailpayedList = payedList;
                         decimal sump = payedList.Sum(x => x.cash).Value;
                         decimal deservd = (decimal)prInvoice.totalNet - sump;
+                        //convertter
+                        foreach (var p in payedList)
+                        {
+                            p.cash = decimal.Parse(reportclass.DecTostring(p.cash));
+                        }
                         paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                         paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
@@ -4085,6 +4090,11 @@ namespace POS.View
                                 mailpayedList = payedList;
                                 decimal sump = payedList.Sum(x => x.cash).Value;
                                 decimal deservd = (decimal)prInvoice.totalNet - sump;
+                                //convertter
+                                foreach (var p in payedList)
+                                {
+                                    p.cash = decimal.Parse(reportclass.DecTostring(p.cash));
+                                }
                                 paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                                 paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
@@ -4218,6 +4228,11 @@ namespace POS.View
                 mailpayedList = payedList;
                 decimal sump = payedList.Sum(x => x.cash).Value;
                 decimal deservd = (decimal)prInvoice.totalNet - sump;
+                //convertter
+                foreach (var p in payedList)
+                {
+                    p.cash = decimal.Parse(reportclass.DecTostring(p.cash));
+                }
                 paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                 paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
@@ -4354,6 +4369,11 @@ namespace POS.View
                             mailpayedList = payedList;
                             decimal sump = payedList.Sum(x => x.cash).Value;
                             decimal deservd = (decimal)prInvoice.totalNet - sump;
+                            //convertter
+                            foreach (var p in payedList)
+                            {
+                                p.cash = decimal.Parse(reportclass.DecTostring(p.cash));
+                            }
                             paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                             paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));
@@ -4636,6 +4656,11 @@ namespace POS.View
                             payedList = await cachModel.GetPayedByInvId(prInvoice.invoiceId);
                             decimal sump = payedList.Sum(x => x.cash).Value;
                             decimal deservd = (decimal)prInvoice.totalNet - sump;
+                            //convertter
+                            foreach (var p in payedList)
+                            {
+                                p.cash = decimal.Parse(reportclass.DecTostring(p.cash));
+                            }
                             paramarr.Add(new ReportParameter("cashTr", MainWindow.resourcemanagerreport.GetString("trCashType")));
 
                             paramarr.Add(new ReportParameter("sumP", reportclass.DecTostring(sump)));

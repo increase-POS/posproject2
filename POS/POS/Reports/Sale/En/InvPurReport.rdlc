@@ -998,7 +998,23 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=CStr(Parameters!totalNet.Value-Parameters!shippingCost.Value)+" "+Parameters!Currency.Value</Value>
+                    <Value>=Parameters!totalNoShip.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>11pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>11pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>11pt</FontSize>
@@ -1945,7 +1961,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>8.5177cm</Top>
+            <Top>8.41687cm</Top>
             <Left>11.80897cm</Left>
             <Height>0.67938cm</Height>
             <Width>2.1609cm</Width>
@@ -1981,7 +1997,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>8.5177cm</Top>
+            <Top>8.41687cm</Top>
             <Left>13.96987cm</Left>
             <Height>0.67938cm</Height>
             <Width>5.38915cm</Width>
@@ -2020,7 +2036,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>9.47021cm</Top>
+            <Top>9.21621cm</Top>
             <Left>11.80897cm</Left>
             <Height>0.67938cm</Height>
             <Width>2.1609cm</Width>
@@ -2078,7 +2094,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>9.47021cm</Top>
+            <Top>9.21621cm</Top>
             <Left>13.96987cm</Left>
             <Height>0.67938cm</Height>
             <Width>5.38915cm</Width>
@@ -3079,6 +3095,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="totalNoShip">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -3314,6 +3336,11 @@
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>11</RowIndex>
           <ParameterName>trFree</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>totalNoShip</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

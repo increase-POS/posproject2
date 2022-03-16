@@ -611,7 +611,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -810,7 +809,23 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=CStr(Parameters!totalNet.Value-Parameters!shippingCost.Value)+" "+Parameters!Currency.Value</Value>
+                    <Value>=Parameters!totalNoShip.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!Currency.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>6pt</FontSize>
@@ -1674,23 +1689,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Parameters!shippingCost.Value</Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontSize>6pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontSize>6pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>=Parameters!Currency.Value</Value>
+                    <Value>=iif(Parameters!shippingCompanyId.Value&gt;0 And Parameters!shippingCost.Value=0,Parameters!trFree.Value, Parameters!shippingCost.Value.ToString()+" "+Parameters!Currency.Value)</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>6pt</FontSize>
@@ -2427,6 +2426,12 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="totalNoShip">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2667,6 +2672,11 @@
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>11</RowIndex>
           <ParameterName>trFree</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>11</RowIndex>
+          <ParameterName>totalNoShip</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
