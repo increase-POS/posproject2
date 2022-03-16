@@ -46,7 +46,7 @@ namespace POS.Classes
         public string itemType { get; set; }
         public bool isActive { get; set; }
         public string cause { get; set; }
-
+        public Nullable<decimal> subTotal { get; set; }
 
     }
     public  class CouponInvoice

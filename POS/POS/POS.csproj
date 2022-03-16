@@ -2220,6 +2220,7 @@
     <Content Include="Reports\image\error.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\POS.Classes.ItemTransfer.datasource" />
     <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoice.datasource" />
     <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

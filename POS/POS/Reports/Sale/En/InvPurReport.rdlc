@@ -45,8 +45,16 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
+        <Field Name="availableQuantity">
+          <DataField>availableQuantity</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="barcode">
           <DataField>barcode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="cause">
+          <DataField>cause</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="createDate">
@@ -57,6 +65,10 @@
           <DataField>createUserId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="inventoryItemLocId">
+          <DataField>inventoryItemLocId</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="invNumber">
           <DataField>invNumber</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -64,6 +76,10 @@
         <Field Name="invoiceId">
           <DataField>invoiceId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="isActive">
+          <DataField>isActive</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
         <Field Name="itemId">
           <DataField>itemId</DataField>
@@ -73,13 +89,29 @@
           <DataField>itemName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="itemSerial">
+          <DataField>itemSerial</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="itemsTransId">
           <DataField>itemsTransId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="itemTax">
+          <DataField>itemTax</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="itemType">
+          <DataField>itemType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="itemUnitId">
           <DataField>itemUnitId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="itemUnitPrice">
+          <DataField>itemUnitPrice</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="locationIdNew">
           <DataField>locationIdNew</DataField>
@@ -89,9 +121,29 @@
           <DataField>locationIdOld</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="lockedQuantity">
+          <DataField>lockedQuantity</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="newLocked">
+          <DataField>newLocked</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="notes">
           <DataField>notes</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="offerId">
+          <DataField>offerId</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="offerType">
+          <DataField>offerType</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="offerValue">
+          <DataField>offerValue</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="price">
           <DataField>price</DataField>
@@ -100,6 +152,10 @@
         <Field Name="quantity">
           <DataField>quantity</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="subTotal">
+          <DataField>subTotal</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="unitName">
           <DataField>unitName</DataField>
@@ -258,7 +314,7 @@
                   <Width>2.57722cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.90665cm</Width>
+                  <Width>3.86303cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -663,14 +719,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox22">
+                        <Textbox Name="subTotal">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Round(Fields!price.Value*Fields!quantity.Value,2)</Value>
+                                  <Value>=Fields!subTotal.Value</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
@@ -682,7 +738,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox22</rd:DefaultName>
+                          <rd:DefaultName>subTotal</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -724,7 +780,7 @@
             <Top>3.99636cm</Top>
             <Left>1.78874cm</Left>
             <Height>1.2cm</Height>
-            <Width>17.34763cm</Width>
+            <Width>17.30401cm</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -804,7 +860,7 @@
             <Top>5.19636cm</Top>
             <Left>13.95523cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.18113cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -883,7 +939,7 @@
             <Top>6.8535cm</Top>
             <Left>13.95523cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>6</ZIndex>
             <Visibility>
               <Hidden>=Parameters!tax.Value = 0</Hidden>
@@ -957,7 +1013,7 @@
             <Top>7.63871cm</Top>
             <Left>13.95523cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -1014,6 +1070,9 @@
             <Height>0.67938cm</Height>
             <Width>2.14626cm</Width>
             <ZIndex>10</ZIndex>
+            <Visibility>
+              <Hidden>=  Parameters!discountValue.Value=0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -1059,10 +1118,10 @@
             <Top>6.17412cm</Top>
             <Left>13.95523cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>11</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+              <Hidden>=Parameters!discountType.Value = 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1208,10 +1267,10 @@
             <Top>6.17412cm</Top>
             <Left>13.95523cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>15</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
+              <Hidden>= Parameters!discountType.Value &lt;&gt; 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1925,7 +1984,7 @@
             <Top>8.5177cm</Top>
             <Left>13.96987cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.18113cm</Width>
+            <Width>5.38915cm</Width>
             <ZIndex>31</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value=0 OR Parameters!shippingCompanyId.Value="0",True,False)</Hidden>
@@ -2022,7 +2081,7 @@
             <Top>9.47021cm</Top>
             <Left>13.96987cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.18113cm</Width>
+            <Width>5.38915cm</Width>
             <ZIndex>33</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCost.Value=0 OR Parameters!shippingCost.Value="0",True,False)</Hidden>
@@ -2276,7 +2335,7 @@
             <Top>10.4227cm</Top>
             <Left>13.20028cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.89247cm</Width>
+            <Width>5.97353cm</Width>
             <ZIndex>39</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value="com" And Parameters!deliveryType.Value&lt;&gt;"local") , True, False)</Hidden>

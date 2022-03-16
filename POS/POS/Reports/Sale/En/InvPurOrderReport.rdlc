@@ -663,7 +663,7 @@
             <Top>5.29762cm</Top>
             <Left>13.92825cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.18113cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>14</ZIndex>
             <Style>
               <Border>
@@ -742,7 +742,7 @@
             <Top>6.95476cm</Top>
             <Left>13.92825cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>16</ZIndex>
             <Visibility>
               <Hidden>=Parameters!tax.Value = 0</Hidden>
@@ -816,7 +816,7 @@
             <Top>7.73997cm</Top>
             <Left>13.92825cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>18</ZIndex>
             <Style>
               <Border>
@@ -855,6 +855,9 @@
             <Height>0.67938cm</Height>
             <Width>2.14626cm</Width>
             <ZIndex>19</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountType.Value = 2 Or Parameters!discountValue.Value=0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -900,10 +903,10 @@
             <Top>6.27538cm</Top>
             <Left>13.92825cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>20</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+              <Hidden>=Parameters!discountType.Value = 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -943,10 +946,10 @@
             <Top>6.27538cm</Top>
             <Left>13.92825cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.17498cm</Width>
+            <Width>5.40379cm</Width>
             <ZIndex>21</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
+              <Hidden>=  Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1017,7 +1020,7 @@
             <Top>8.61896cm</Top>
             <Left>13.94289cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.18113cm</Width>
+            <Width>5.38915cm</Width>
             <ZIndex>23</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value=0 OR Parameters!shippingCompanyId.Value="0",True,False)</Hidden>
@@ -1114,7 +1117,7 @@
             <Top>9.57147cm</Top>
             <Left>13.94289cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.18113cm</Width>
+            <Width>5.38915cm</Width>
             <ZIndex>25</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>

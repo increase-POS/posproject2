@@ -3877,7 +3877,7 @@ namespace POS.View
 
                         }
 
-
+                        i.subTotal = decimal.Parse(SectionData.DecTostring(i.price * i.quantity));
                     }
                     if (totaltax>0 && prInvoice.invType!= "sbd" &&    prInvoice.invType != "sb")
                     {
@@ -4056,7 +4056,7 @@ namespace POS.View
 
                                 }
 
-
+                                i.subTotal = decimal.Parse(SectionData.DecTostring(i.price * i.quantity));
                             }
                             if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
                             {
@@ -4319,7 +4319,7 @@ namespace POS.View
                                 totaltax += (decimal)i.itemTax;
 
                             }
-
+                            i.subTotal = decimal.Parse(SectionData.DecTostring(i.price * i.quantity));
 
                         }
                         if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
@@ -4592,10 +4592,11 @@ namespace POS.View
                             i.price = decimal.Parse(SectionData.DecTostring(i.price));
                             if (i.itemTax != null)
                             {
+
                                 totaltax += (decimal)i.itemTax;
 
                             }
-
+                          i.subTotal = decimal.Parse(SectionData.DecTostring(i.price*i.quantity));
 
                         }
                         if (totaltax > 0 && prInvoice.invType != "sbd" && prInvoice.invType != "sb")
