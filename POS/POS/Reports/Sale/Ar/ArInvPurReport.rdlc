@@ -2258,15 +2258,15 @@
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>10.57276cm</Top>
-            <Left>6.97943cm</Left>
+            <Left>8.28534cm</Left>
             <Height>0.67938cm</Height>
-            <Width>2.50591cm</Width>
+            <Width>1.2cm</Width>
             <ZIndex>37</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value = "com" And Parameters!deliveryType.Value &lt;&gt; "local"), True, False)</Hidden>
@@ -2312,7 +2312,7 @@
             <Top>10.57276cm</Top>
             <Left>1.78472cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.2023cm</Width>
+            <Width>6.50062cm</Width>
             <ZIndex>38</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value = "com" And Parameters!deliveryType.Value &lt;&gt; "local"), True, False)</Hidden>
@@ -2356,9 +2356,9 @@
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>10.57276cm</Top>
-            <Left>10.91928cm</Left>
+            <Left>11.24477cm</Left>
             <Height>0.67938cm</Height>
-            <Width>4.8279cm</Width>
+            <Width>5.98544cm</Width>
             <ZIndex>39</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
@@ -2396,15 +2396,15 @@
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Center</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>10.57276cm</Top>
-            <Left>15.74718cm</Left>
+            <Left>17.23021cm</Left>
             <Height>0.67938cm</Height>
-            <Width>3.4412cm</Width>
+            <Width>1.9cm</Width>
             <ZIndex>40</ZIndex>
             <Visibility>
               <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
