@@ -840,7 +840,7 @@
             </Style>
           </Textbox>
           <Line Name="Line8">
-            <Top>6.25061cm</Top>
+            <Top>7.13961cm</Top>
             <Left>0.20991cm</Left>
             <Height>0cm</Height>
             <Width>7.36638cm</Width>
@@ -882,7 +882,7 @@
             <Source>External</Source>
             <Value>=Parameters!barcodeimage.Value</Value>
             <Sizing>Fit</Sizing>
-            <Top>8.89469cm</Top>
+            <Top>8.03744cm</Top>
             <Left>0.7926cm</Left>
             <Height>0.81184cm</Height>
             <Width>6.41761cm</Width>
@@ -915,7 +915,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>2.49935in</Top>
+            <Top>3.52435in</Top>
             <Left>0.12473in</Left>
             <Height>0.25in</Height>
             <Width>0.64951in</Width>
@@ -949,7 +949,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>2.49935in</Top>
+            <Top>3.52435in</Top>
             <Left>0.77425in</Left>
             <Height>0.25in</Height>
             <Width>2.25063in</Width>
@@ -989,7 +989,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>2.83268in</Top>
+            <Top>3.82018in</Top>
             <Left>0.12473in</Left>
             <Height>0.25in</Height>
             <Width>2.90015in</Width>
@@ -1047,7 +1047,7 @@
             <Width>1.82285cm</Width>
             <ZIndex>16</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+              <Hidden>=Parameters!discountType.Value = 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1085,6 +1085,9 @@
             <Height>0.55755cm</Height>
             <Width>1.46908cm</Width>
             <ZIndex>17</ZIndex>
+            <Visibility>
+              <Hidden>=  Parameters!discountValue.Value=0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1130,7 +1133,7 @@
             <Width>1.82289cm</Width>
             <ZIndex>18</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
+              <Hidden>= Parameters!discountType.Value &lt;&gt; 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1684,7 +1687,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>3.13705in</Top>
+            <Top>2.84955in</Top>
             <Left>0.12473in</Left>
             <Height>0.26667in</Height>
             <Width>2.90015in</Width>
@@ -1705,8 +1708,200 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Textbox47">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!trTheShippingCompany.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>:</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>6.17454cm</Top>
+            <Left>0.31681cm</Left>
+            <Height>0.45cm</Height>
+            <Width>3.07653cm</Width>
+            <ZIndex>30</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox48">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!ShippingCompany.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>6.17454cm</Top>
+            <Left>3.39334cm</Left>
+            <Height>0.45cm</Height>
+            <Width>4.18295cm</Width>
+            <ZIndex>31</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox50">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!DeliveryMan.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>6.6234cm</Top>
+            <Left>3.39334cm</Left>
+            <Height>0.45cm</Height>
+            <Width>4.18295cm</Width>
+            <ZIndex>32</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value = "com" And Parameters!deliveryType.Value &lt;&gt; "local"), True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox49">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=Parameters!trDeliveryMan.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>:</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontSize>6pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Right</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>6.6234cm</Top>
+            <Left>0.31681cm</Left>
+            <Height>0.45cm</Height>
+            <Width>3.07653cm</Width>
+            <ZIndex>33</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value = "com" And Parameters!deliveryType.Value &lt;&gt; "local"), True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>10.89854cm</Height>
+        <Height>10.40332cm</Height>
         <Style>
           <Border>
             <Style>None</Style>

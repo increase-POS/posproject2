@@ -45,8 +45,16 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
+        <Field Name="availableQuantity">
+          <DataField>availableQuantity</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="barcode">
           <DataField>barcode</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="cause">
+          <DataField>cause</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="createDate">
@@ -57,6 +65,10 @@
           <DataField>createUserId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="inventoryItemLocId">
+          <DataField>inventoryItemLocId</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="invNumber">
           <DataField>invNumber</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -64,6 +76,10 @@
         <Field Name="invoiceId">
           <DataField>invoiceId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="isActive">
+          <DataField>isActive</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
         </Field>
         <Field Name="itemId">
           <DataField>itemId</DataField>
@@ -73,13 +89,29 @@
           <DataField>itemName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="itemSerial">
+          <DataField>itemSerial</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="itemsTransId">
           <DataField>itemsTransId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="itemTax">
+          <DataField>itemTax</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="itemType">
+          <DataField>itemType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="itemUnitId">
           <DataField>itemUnitId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="itemUnitPrice">
+          <DataField>itemUnitPrice</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="locationIdNew">
           <DataField>locationIdNew</DataField>
@@ -89,9 +121,29 @@
           <DataField>locationIdOld</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="lockedQuantity">
+          <DataField>lockedQuantity</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="newLocked">
+          <DataField>newLocked</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
         <Field Name="notes">
           <DataField>notes</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="offerId">
+          <DataField>offerId</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="offerType">
+          <DataField>offerType</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="offerValue">
+          <DataField>offerValue</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="price">
           <DataField>price</DataField>
@@ -100,6 +152,10 @@
         <Field Name="quantity">
           <DataField>quantity</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="subTotal">
+          <DataField>subTotal</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="unitName">
           <DataField>unitName</DataField>
@@ -649,14 +705,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox22">
+                        <Textbox Name="subTotal">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!price.Value*Fields!quantity.Value</Value>
+                                  <Value>=Fields!subTotal.Value</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                     <FontWeight>Bold</FontWeight>
@@ -668,7 +724,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox22</rd:DefaultName>
+                          <rd:DefaultName>subTotal</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -969,7 +1025,7 @@
             <Source>External</Source>
             <Value>=Parameters!barcodeimage.Value</Value>
             <Sizing>Fit</Sizing>
-            <Top>12.19165cm</Top>
+            <Top>12.38215cm</Top>
             <Left>2.5562cm</Left>
             <Height>0.97083cm</Height>
             <Width>5.41158cm</Width>
@@ -1008,6 +1064,9 @@
             <Height>0.67938cm</Height>
             <Width>2.50447cm</Width>
             <ZIndex>10</ZIndex>
+            <Visibility>
+              <Hidden>=  Parameters!discountValue.Value=0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -1058,7 +1117,7 @@
             <Width>5.19828cm</Width>
             <ZIndex>11</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value = 2</Hidden>
+              <Hidden>=Parameters!discountType.Value = 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1126,7 +1185,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>13.34439cm</Top>
+            <Top>13.53489cm</Top>
             <Left>7.21244cm</Left>
             <Height>0.67938cm</Height>
             <Width>1.7293cm</Width>
@@ -1161,7 +1220,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>agentTitle</rd:DefaultName>
-            <Top>13.34086cm</Top>
+            <Top>13.53136cm</Top>
             <Left>1.80589cm</Left>
             <Height>0.68291cm</Height>
             <Width>5.40655cm</Width>
@@ -1209,7 +1268,7 @@
             <Width>5.19828cm</Width>
             <ZIndex>15</ZIndex>
             <Visibility>
-              <Hidden>=Parameters!discountType.Value &lt;&gt; 2</Hidden>
+              <Hidden>= Parameters!discountType.Value &lt;&gt; 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2079,7 +2138,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>5.57672in</Top>
+            <Top>5.65172in</Top>
             <Left>0.70265in</Left>
             <Height>0.25in</Height>
             <Width>6.82893in</Width>
@@ -2116,7 +2175,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.46053in</Top>
+            <Top>4.53553in</Top>
             <Left>0.72756in</Left>
             <Height>0.26667in</Height>
             <Width>6.8126in</Width>
@@ -2177,14 +2236,21 @@
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox49">
+          <Textbox Name="Textbox53">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>:شركة التوصيل</Value>
+                    <Value>:</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!trDeliveryMan.Value</Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
@@ -2192,32 +2258,31 @@
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Left</TextAlign>
+                  <TextAlign>Right</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>10.61889cm</Top>
-            <Left>16.5891cm</Left>
+            <Top>10.57276cm</Top>
+            <Left>6.97943cm</Left>
             <Height>0.67938cm</Height>
             <Width>2.50591cm</Width>
             <ZIndex>37</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value = "com" And Parameters!deliveryType.Value &lt;&gt; "local"), True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox50">
+          <Textbox Name="Textbox54">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -2227,7 +2292,13 @@
                     <Value xml:space="preserve"> </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!DeliveryMan.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -2238,81 +2309,26 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>10.61889cm</Top>
-            <Left>11.43cm</Left>
+            <Top>10.57276cm</Top>
+            <Left>1.78472cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.16669cm</Width>
+            <Width>5.2023cm</Width>
             <ZIndex>38</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0" Or (Parameters!deliveryType.Value = "com" And Parameters!deliveryType.Value &lt;&gt; "local"), True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Textbox Name="Textbox51">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>السائق:</Value>
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
-                    <Style>
-                      <FontFamily>Montserrat</FontFamily>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <TextAlign>Left</TextAlign>
-                </Style>
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>10.57395cm</Top>
-            <Left>7.73255cm</Left>
-            <Height>0.67938cm</Height>
-            <Width>2.50591cm</Width>
-            <ZIndex>39</ZIndex>
-            <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
-            </Visibility>
-            <Style>
-              <Border>
-                <Color>LightGrey</Color>
-                <Style>Solid</Style>
-              </Border>
-              <VerticalAlign>Middle</VerticalAlign>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox52">
+          <Textbox Name="Textbox55">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
             <Paragraphs>
@@ -2322,7 +2338,13 @@
                     <Value xml:space="preserve"> </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
-                      <FontSize>11pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!ShippingCompany.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -2333,20 +2355,65 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>10.57395cm</Top>
-            <Left>2.57345cm</Left>
+            <Top>10.57276cm</Top>
+            <Left>10.91928cm</Left>
             <Height>0.67938cm</Height>
-            <Width>5.16669cm</Width>
-            <ZIndex>40</ZIndex>
+            <Width>4.8279cm</Width>
+            <ZIndex>39</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value = 0 Or Parameters!shippingCost.Value = "0", True, False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox56">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>:</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Parameters!trTheShippingCompany.Value</Value>
+                    <Style>
+                      <FontFamily>Montserrat</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox1</rd:DefaultName>
+            <Top>10.57276cm</Top>
+            <Left>15.74718cm</Left>
+            <Height>0.67938cm</Height>
+            <Width>3.4412cm</Width>
+            <ZIndex>40</ZIndex>
+            <Visibility>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value = 0 Or Parameters!shippingCompanyId.Value = "0", True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Color>LightGrey</Color>
+                <Style>Solid</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -2354,7 +2421,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>14.93217cm</Height>
+        <Height>15.19674cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -3237,7 +3304,7 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-  <ReportParameter Name="trDeliveryMan">
+    <ReportParameter Name="trDeliveryMan">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
@@ -3480,7 +3547,7 @@
           <RowIndex>9</RowIndex>
           <ParameterName>trDraftInv</ParameterName>
         </CellDefinition>
-      <CellDefinition>
+        <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>10</RowIndex>
           <ParameterName>trDeliveryMan</ParameterName>

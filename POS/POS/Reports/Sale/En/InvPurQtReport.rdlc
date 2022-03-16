@@ -855,6 +855,9 @@
             <Height>0.67938cm</Height>
             <Width>2.14626cm</Width>
             <ZIndex>19</ZIndex>
+            <Visibility>
+              <Hidden>=Parameters!discountValue.Value=0</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>Solid</Style>
@@ -946,7 +949,7 @@
             <Width>5.40379cm</Width>
             <ZIndex>21</ZIndex>
             <Visibility>
-              <Hidden>=  Parameters!discountValue.Value=0</Hidden>
+              <Hidden>= Parameters!discountType.Value &lt;&gt; 2 Or Parameters!discountValue.Value=0</Hidden>
             </Visibility>
             <Style>
               <Border>
