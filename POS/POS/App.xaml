@@ -8,6 +8,7 @@
     <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
+            <converters:processTypeAndCardConverter x:Key="processTypeAndCardConverter"/>
             <converters:stockSectionLocationFreeZoneConverter x:Key="stockSectionLocationFreeZoneConverter"/>
             <converters:offerDiscountConverter x:Key="offerDiscountConverter"/>
             <converters:closingDescriptonConverter x:Key="closingDescriptonConverter"/>

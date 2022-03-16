@@ -245,6 +245,8 @@ namespace POS.View.reports
                 chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
                 chk_return.Content = MainWindow.resourcemanager.GetString("trReturn");
 
+                col_processType.Visibility = Visibility.Visible;
+
                 path_order.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
@@ -278,6 +280,8 @@ namespace POS.View.reports
               
                 chk_invoice.Content = MainWindow.resourcemanager.GetString("trOrder");
                 chk_return.Content = MainWindow.resourcemanager.GetString("trSaved");
+
+                col_processType.Visibility = Visibility.Hidden;
 
                 path_invoice.Fill = Brushes.White;
                 path_quotation.Fill = Brushes.White;
@@ -314,7 +318,9 @@ namespace POS.View.reports
                 
                 chk_invoice.Content = MainWindow.resourcemanager.GetString("trQuotation");
                 chk_return.Content = MainWindow.resourcemanager.GetString("trSaved");
-                
+
+                col_processType.Visibility = Visibility.Hidden;
+
                 path_invoice.Fill = Brushes.White;
                 path_order.Fill = Brushes.White;
                 bdrMain.RenderTransform = Animations.borderAnimation(50, bdrMain, true);
