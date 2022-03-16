@@ -1342,6 +1342,7 @@ namespace POS.Classes
                         break;
                     case "2":
                         sdc = string.Format("{0:F2}", dc);
+                       
                         break;
                     case "3":
                         sdc = string.Format("{0:F3}", dc);
@@ -1350,7 +1351,7 @@ namespace POS.Classes
                         sdc = string.Format("{0:F1}", dc);
                         break;
                 }
-
+                sdc = string.Format("{0:G29}", decimal.Parse(sdc));
             }
 
 
