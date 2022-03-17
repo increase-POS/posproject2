@@ -72,6 +72,7 @@ namespace POS_Server.Models
         public decimal shippingProfit { get; set; }
         public decimal totalNoShip { get; set; }
         public decimal totalNetNoShip { get; set; }
+        public string itemType { get; set; }
 
     }
 

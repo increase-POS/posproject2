@@ -9627,6 +9627,9 @@ namespace POS_Server.Controllers
 
                 }
                 // DateTime cmpdate = DateTime.Now.AddDays(newdays);
+                int ITitemUnitId = 0;
+                int ITitemId=0;
+                decimal? avgPurchasePrice=0;
                 try
                 {
 
@@ -9738,11 +9741,13 @@ namespace POS_Server.Controllers
                                                                          shippingProfit = I.shippingCost - I.realShippingCost,
                                                                          totalNetNoShip = (decimal)I.totalNet - I.shippingCost,
                                                                          totalNoShip = (decimal)I.total - I.shippingCost,
+                                                                         itemType=ITEM.type,
                                                                          //(ITEM.taxes *IU.price/100) = tax value
                                                                          //username
 
                                                                          //  I.invoiceId,
                                                                          //    JBB.name
+
                                                                      }).ToList();
 
 
@@ -9750,23 +9755,56 @@ namespace POS_Server.Controllers
                         {
                             decimal unitpurchasePrice = 0;
                             //   unitpurchasePrice = invoice.AvgItemPurPrice((int)row.ITitemUnitId, (int)row.ITitemId);
-                            unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice);
-                            row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
+                            //4 test
+                            ITitemUnitId = (int)row.ITitemUnitId;
+                            ITitemId = (int)row.ITitemId;
+                            avgPurchasePrice = row.avgPurchasePrice;
 
-                            if (row.discountValue > 0)
+
+                            //
+                            if(row.itemType=="p" || row.itemType == "sr")
                             {
-                                decimal ITdiscountpercent = 0;
-                                ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.totalNoShip;
-                                decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
-                                row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
+                            
+                                unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice==null ? 0 : row.avgPurchasePrice); ;
+                                row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
+
+                                if (row.discountValue > 0)
+                                {
+                                    decimal ITdiscountpercent = 0;
+                                    ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.totalNoShip;
+                                    decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
+                                    row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
+
+                                }
+                                else
+                                {
+                                    row.subTotalNet = (decimal)row.subTotal;
+                                }
+
+                                row.itemunitProfit = row.subTotalNet - row.purchasePrice;
 
                             }
                             else
                             {
-                                row.subTotalNet = (decimal)row.subTotal;
-                            }
+                                unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice);
+                                row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
 
-                            row.itemunitProfit = row.subTotalNet - row.purchasePrice;
+                                if (row.discountValue > 0)
+                                {
+                                    decimal ITdiscountpercent = 0;
+                                    ITdiscountpercent = ((decimal)row.subTotal * 100) / (decimal)row.totalNoShip;
+                                    decimal subTotalDiscount = (ITdiscountpercent * (decimal)row.discountValue) / 100;
+                                    row.subTotalNet = (decimal)row.subTotal - subTotalDiscount;
+
+                                }
+                                else
+                                {
+                                    row.subTotalNet = (decimal)row.subTotal;
+                                }
+
+                                row.itemunitProfit = row.subTotalNet - row.purchasePrice;
+
+                            }
 
 
 
@@ -9780,8 +9818,11 @@ namespace POS_Server.Controllers
                     }
 
                 }
-                catch
+                catch (Exception ex)
                 {
+                    //  return TokenManager.GenerateToken(ITitemUnitId.ToString() + "-" + ITitemId.ToString() + "-" + avgPurchasePrice.ToString()); 
+
+
                     return TokenManager.GenerateToken("0");
                 }
 
