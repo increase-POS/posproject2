@@ -23,9 +23,10 @@ namespace POS.converters
         {
             //var result = Task.Run(() => itemUnit.GetItemUnits(int.Parse(value.ToString()))).Result;
 
-            if(MainWindow.mainWindow.GlobalItemUnitsList.Count == 0 )
-                //MainWindow.mainWindow.GlobalItemUnitsList = await MainWindow.mainWindow.GlobalItemUnit.GetIU();
+            if(MainWindow.mainWindow.GlobalItemUnitsList.Count == 0)
                 MainWindow.mainWindow.GlobalItemUnitsList = Task.Run(() =>  MainWindow.mainWindow.GlobalItemUnit.GetIU()).Result;
+            if (MainWindow.mainWindow.GlobalUnitsList.Count == 0)
+                MainWindow.mainWindow.GlobalUnitsList = Task.Run(() => MainWindow.mainWindow.GlobalUnit.GetU()).Result;
             var result = itemUnit.GetIUbyItem(int.Parse(value.ToString()),
                 MainWindow.mainWindow.GlobalItemUnitsList,
                 MainWindow.mainWindow.GlobalUnitsList);
