@@ -816,7 +816,7 @@ namespace POS
             try
             {
                 if (sender != null)
-                    SectionData.StartAwait(grid_mainWindow);
+                    SectionData.StartAwait(grid_mainWindow, "mainWindow_load");
 
                 uc_general.settingsCls = await setModel.GetAll();
                 uc_general.settingsValues = await valueModel.GetAll();
@@ -984,7 +984,7 @@ namespace POS
                 #endregion
 
                 if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
+                    SectionData.EndAwait(grid_mainWindow , "mainWindow_load");
             }
             catch (Exception ex)
             {
@@ -1129,8 +1129,10 @@ namespace POS
                         else button.Visibility = Visibility.Collapsed;
                 }
             else
+            {
                 if (!loadWindow)
-                BTN_Home_Click(BTN_home, null);
+                    BTN_Home_Click(BTN_home, null);
+            }
         }
         #region notifications
         private void setTimer()
