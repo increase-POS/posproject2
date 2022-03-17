@@ -595,7 +595,7 @@ namespace POS.View
                 if (uQuery != null)
                 {
                     itemUnitId = uQuery.itemUnitId;
-                    //tb_price.Text = uQuery.price.ToString();
+                    tb_taxes.Text = SectionData.PercentageDecTostring(item.taxes);
                     tb_price.Text = SectionData.DecTostring(uQuery.price);
                     tb_barcode.Text = uQuery.barcode;
                 }

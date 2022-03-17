@@ -499,7 +499,7 @@ namespace POS.View.catalog
                     if (uQuery != null)
                     {
                         itemUnitId = uQuery.itemUnitId;
-                        tb_taxes.Text = SectionData.DecTostring(item.taxes);
+                        tb_taxes.Text = SectionData.PercentageDecTostring(item.taxes);
                         //tb_price.Text = uQuery.price.ToString();
                         tb_price.Text = SectionData.DecTostring(uQuery.price);
                         //tb_cost.Text = SectionData.DecTostring(uQuery.avgPurchasePrice);
@@ -590,6 +590,7 @@ namespace POS.View.catalog
                 {
                     itemUnitId = uQuery.itemUnitId;
                     //tb_price.Text = uQuery.price.ToString();
+                    tb_taxes.Text = SectionData.PercentageDecTostring(item.taxes);
                     tb_price.Text = SectionData.DecTostring(uQuery.price);
                     //tb_cost.Text = SectionData.DecTostring(uQuery.avgPurchasePrice);
                     tb_barcode.Text = uQuery.barcode;
