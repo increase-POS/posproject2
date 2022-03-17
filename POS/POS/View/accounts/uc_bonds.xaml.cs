@@ -397,6 +397,16 @@ namespace POS.View.accounts
                     this.Dispatcher.Invoke(() =>
                     {
                         searchText = tb_search.Text.ToLower();
+                        //bondsQuery = bonds.Where(s => (
+                        //s.number.ToLower().Contains(searchText)
+                        //||
+                        //s.amount.ToString().ToLower().Contains(searchText)
+                        //|| s.type.ToString().ToLower().Contains(searchText)
+                        //)
+                        //&& sDate != null ? s.updateDate.Value.Date >= sDate : true
+                        //&& eDate != null ? s.updateDate.Value.Date <= eDate : true
+                        //&& s.isRecieved == tgl_bondState
+                        //);
 
                         bondsQuery = bonds.Where(s => (
                         s.number.ToLower().Contains(searchText)
@@ -404,11 +414,16 @@ namespace POS.View.accounts
                         s.amount.ToString().ToLower().Contains(searchText)
                         || s.type.ToString().ToLower().Contains(searchText)
                         )
-                        && sDate != null ? s.updateDate.Value.Date >= sDate : true
-                        && eDate != null ? s.updateDate.Value.Date <= eDate : true
-                        && s.isRecieved == tgl_bondState
                         );
-
+                        bondsQuery = bondsQuery.ToList().Where(s =>
+                        sDate != null ? s.updateDate.Value.Date >= sDate : true
+                       );
+                        bondsQuery = bondsQuery.ToList().Where(s =>
+                        eDate != null ? s.updateDate.Value.Date <= eDate : true
+                      );
+                        bondsQuery = bondsQuery.ToList().Where(s =>
+                     s.isRecieved == tgl_bondState
+                     );
                     });
                 }
                 else
@@ -942,7 +957,7 @@ namespace POS.View.accounts
             dg_bonds.Columns[0].Header = MainWindow.resourcemanager.GetString("trDocNumTooltip");
             dg_bonds.Columns[1].Header = MainWindow.resourcemanager.GetString("trRecipientTooltip");
             dg_bonds.Columns[2].Header = MainWindow.resourcemanager.GetString("trPaymentTypeTooltip");
-            dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trDocDateTooltip");
+            dg_bonds.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeservedDate");
             dg_bonds.Columns[4].Header = MainWindow.resourcemanager.GetString("trPayDate");
             dg_bonds.Columns[5].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
