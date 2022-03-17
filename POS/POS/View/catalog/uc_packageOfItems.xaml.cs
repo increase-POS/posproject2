@@ -168,9 +168,15 @@ namespace POS.View
                 translate();
                 #endregion
                 if (MainWindow.itemsTax_bool == false)
+                {
+                    grid_taxes.Visibility = Visibility.Collapsed;
                     tb_taxes.Visibility = Visibility.Collapsed;
+                }
                 else
+                {
+                    grid_taxes.Visibility = Visibility.Visible;
                     tb_taxes.Visibility = Visibility.Visible;
+                }
                 await fillCategories();
 
                 generateBarcode();
