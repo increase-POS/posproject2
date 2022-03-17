@@ -1681,12 +1681,7 @@ namespace POS.View
                                 else if (_InvoiceType == "or")
                                 {
                                     await saveOrder("s");
-                                    await clearInvoice();
-                                    refreshOrdersWaitNotification();
-                                }
-                                else//s  sale invoice
-                                {
-                                    await saveSaleInvoice("s");
+                                    #region savepayment
                                     if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                                     {
                                         foreach (var item in listPayments)
@@ -1701,6 +1696,29 @@ namespace POS.View
                                     }
                                     else
                                         await saveCashTransfers();
+                                    #endregion
+                                    await clearInvoice();
+                                    refreshOrdersWaitNotification();
+                                }
+                                else//s  sale invoice
+                                {
+                                    await saveSaleInvoice("s");
+                                    #region savepayment
+                                    if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                                    {
+                                        foreach (var item in listPayments)
+                                        {
+                                            await saveConfiguredCashTrans(item);
+                                            invoice.paid += item.cash;
+                                            invoice.deserved -= item.cash;
+                                        }
+
+                                        prinvoiceId = await invoice.saveInvoice(invoice);
+
+                                    }
+                                    else
+                                        await saveCashTransfers();
+                                    #endregion
                                     prinvoiceId = invoice.invoiceId;
                                     await clearInvoice();
                                refreshDraftNotification();
@@ -2359,7 +2377,7 @@ namespace POS.View
                     tb_processNum.Clear();
                 }
             }
-            else if (invoice.invType == "or")
+            else if (invoice.invType == "or" && invoice.shippingCompanyId != null)
             {
                 cb_paymentProcessType.SelectedValue = "balance";
             }
@@ -2664,7 +2682,7 @@ namespace POS.View
                     //bdr_paymentDetails.IsEnabled = true;
                     cb_paymentProcessType.IsEnabled = false;
                     tb_cashPaid.IsEnabled = false;
-                    dkp_cards.IsEnabled = false;
+                    dkp_cards.IsEnabled = true;
                     cb_company.IsEnabled = false;
                     cb_user.IsEnabled = false;
                     tb_processNum.IsEnabled = false;
@@ -2826,7 +2844,7 @@ namespace POS.View
                     var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
                     if (cb_company.SelectedIndex == -1)
                     {
-                        if (c.payType != null)
+                        if (c.payType != null && c.payType != "")
                             cb_paymentProcessType.SelectedValue = c.payType;
                         else
                             cb_paymentProcessType.SelectedIndex = 0;
@@ -5479,6 +5497,7 @@ namespace POS.View
                         tb_cashPaid.Text = txt_theRest.Text = "0";
                         dp_desrvedDate.IsEnabled = false;
                         gd_card.Visibility = Visibility.Visible;
+
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         break;
                     case 3://multiple
