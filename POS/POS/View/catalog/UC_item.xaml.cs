@@ -349,10 +349,15 @@ namespace POS.View
                 cb_maxUnit.SelectedIndex = 0;
 
                 if (MainWindow.itemsTax_bool == false)
+                {
+                    grid_taxes.Visibility = Visibility.Collapsed;
                     tb_taxes.Visibility = Visibility.Collapsed;
+                }
                 else
+                {
+                    grid_taxes.Visibility = Visibility.Visible;
                     tb_taxes.Visibility = Visibility.Visible;
-
+                }
                 await RefrishItems();
                 Txb_searchitems_TextChanged(null, null);
 

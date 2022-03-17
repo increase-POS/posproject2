@@ -692,6 +692,7 @@
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="auto" />
                             </Grid.ColumnDefinitions>
                        
                         <TextBlock x:Name="txt_tax" Grid.Column="0" Margin="10,0,5,0" Text="Parent Tax" 
@@ -710,7 +711,7 @@
                                              Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
                                              BorderBrush="#f8f8f8"  TabIndex="4"
                                      TextChanged="Tb_taxes_TextChanged"
-                                          Height="40"   Margin="5,5,10,5" PreviewKeyDown="Tb_taxes_PreviewKeyDown" >
+                                          Height="40"   Margin="5,5,5,5" PreviewKeyDown="Tb_taxes_PreviewKeyDown" >
                             <TextBox.ToolTip>
                                 <ToolTip x:Name="tt_taxes" Content="Taxes"
                                               Placement="left" 
@@ -727,9 +728,13 @@
                                 <ToolTip x:Name="tt_errorTaxes" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
+                            <materialDesign:PackIcon Foreground="#6e6e6e" Kind="PercentOutline" 
+                                                      Grid.Column="3" Margin="0 5 10 5"
+                                                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                     Width="20" Height="20"/>
 
 
-                            
+
                         </Grid>
                     </Grid>
                 </ScrollViewer>
