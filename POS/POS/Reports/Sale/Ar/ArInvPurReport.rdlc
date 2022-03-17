@@ -1965,7 +1965,7 @@
             <Width>2.50591cm</Width>
             <ZIndex>30</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value=0 OR Parameters!shippingCost.Value="0",True,False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value=0 OR Parameters!shippingCompanyId.Value="0",True,False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -2005,7 +2005,7 @@
             <Width>5.16669cm</Width>
             <ZIndex>31</ZIndex>
             <Visibility>
-              <Hidden>=iif(Parameters!shippingCost.Value=0 OR Parameters!shippingCost.Value="0",True,False)</Hidden>
+              <Hidden>=iif(Parameters!shippingCompanyId.Value=0 OR Parameters!shippingCompanyId.Value="0",True,False)</Hidden>
             </Visibility>
             <Style>
               <Border>

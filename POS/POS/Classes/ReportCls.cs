@@ -1163,7 +1163,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("agentName", agentName.Trim()));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
 
-
+           
 
             //  paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
             paramarr.Add(new ReportParameter("discountValue", invoice.discountValue == null ? "0" : DecTostring(invoice.discountValue)));
@@ -1178,7 +1178,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : DateToString(invoice.deservedDate)));
 
 
-            paramarr.Add(new ReportParameter("tax", invoice.tax == null ? "0" : invoice.tax.ToString()));
+            paramarr.Add(new ReportParameter("tax", invoice.tax == null ? "0" : SectionData.PercentageDecTostring(invoice.tax)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
