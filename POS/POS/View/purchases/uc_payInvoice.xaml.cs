@@ -159,10 +159,8 @@ namespace POS.View
             dg_billDetails.Columns[1].Header = MainWindow.resourcemanager.GetString("trNo.");
             dg_billDetails.Columns[2].Header = MainWindow.resourcemanager.GetString("trItem");
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
-            //dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQTR");
             dg_billDetails.Columns[5].Header = MainWindow.resourcemanager.GetString("trPrice");
-            //dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trAmount");
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
 
             txt_discount.Text = MainWindow.resourcemanager.GetString("trDiscount");
@@ -170,7 +168,6 @@ namespace POS.View
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
             txt_tax.Text = MainWindow.resourcemanager.GetString("trTax");
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
-            //txt_barcode.Text = MainWindow.resourcemanager.GetString("trBarcode");
             txt_store.Text = MainWindow.resourcemanager.GetString("trStore/Branch");
             txt_vendor.Text = MainWindow.resourcemanager.GetString("trVendor");
             txt_vendorIvoiceDetails.Text = MainWindow.resourcemanager.GetString("trVendorDetails");
@@ -192,7 +189,6 @@ namespace POS.View
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_discount, MainWindow.resourcemanager.GetString("trDiscountHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_typeDiscount, MainWindow.resourcemanager.GetString("trDiscountTypeHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_branch, MainWindow.resourcemanager.GetString("trStore/BranchHint"));
-            //MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_taxValue, MainWindow.resourcemanager.GetString("trTaxHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_vendor, MainWindow.resourcemanager.GetString("trVendorHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_desrvedDate, MainWindow.resourcemanager.GetString("trDeservedDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_invoiceNumber, MainWindow.resourcemanager.GetString("trInvoiceNumberHint"));
@@ -421,15 +417,12 @@ namespace POS.View
                 while (!isDone);
                 #endregion
 
-
-
-
                 if (MainWindow.invoiceTax_bool == false)
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
                     sp_tax.Visibility = Visibility.Visible;
-                    tb_taxValue.Text = MainWindow.invoiceTax_decimal.ToString();
+                    tb_taxValue.Text = SectionData.PercentageDecTostring( MainWindow.invoiceTax_decimal);
                 }
                 setTimer();
                 configureDiscountType();
@@ -1784,7 +1777,7 @@ namespace POS.View
             tb_total.Text = "0";
             tb_sum.Text = "0";
             if (MainWindow.invoiceTax_decimal != 0)
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+                tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             else
                 tb_taxValue.Text = "0";
 
@@ -1838,7 +1831,7 @@ namespace POS.View
             tb_total.Text = "0";
             tb_sum.Text = "0";
             if (MainWindow.tax != 0)
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+                tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             else
                 tb_taxValue.Text = "0";
 
@@ -2054,7 +2047,7 @@ namespace POS.View
             if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pd")
             {              
                 if (invoice.tax != null)
-                    tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
+                    tb_taxValue.Text = SectionData.PercentageDecTostring(invoice.tax);
                 else
                     tb_taxValue.Text = "0";
             }
@@ -2082,7 +2075,7 @@ namespace POS.View
             else tb_sum.Text = "0";
 
             if ((invoice.discountValue != 0) && (invoice.discountValue != null))
-                tb_discount.Text = SectionData.DecTostring(invoice.discountValue);
+                tb_discount.Text = SectionData.PercentageDecTostring(invoice.discountValue);
             else
                 tb_discount.Text = "0";
             if (invoice.discountType == "1")
@@ -2324,7 +2317,6 @@ namespace POS.View
                 dkp_cards.IsEnabled = true;
                 tb_processNum.IsEnabled = true;
                 btn_clear.IsEnabled = false;
-               // btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;
             }
             else if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || archived)
@@ -2349,7 +2341,6 @@ namespace POS.View
                 dkp_cards.IsEnabled = false;
                 tb_processNum.IsEnabled = false;
                 btn_clear.IsEnabled = false;
-               // btn_updateVendor.IsEnabled = false;
                 btn_addVendor.IsEnabled = false;
             }
 
@@ -2589,14 +2580,20 @@ namespace POS.View
         private void refreshTotalValue()
         {
             decimal discountValue = 0;
-            if (tb_discount.Text != "." && !tb_discount.Text.Equals(""))
-                discountValue = decimal.Parse(tb_discount.Text);
-
-            if (cb_typeDiscount.SelectedIndex != -1 && int.Parse(cb_typeDiscount.SelectedValue.ToString()) == 2) // discount type is rate
+            #region calculate discount
+            if (_Sum > 0)
             {
-                discountValue = SectionData.calcPercentage(_Sum, discountValue);
-            }
+                if (tb_discount.Text != "." && !tb_discount.Text.Equals(""))
+                    discountValue = decimal.Parse(tb_discount.Text);
 
+                if (cb_typeDiscount.SelectedIndex != -1 && int.Parse(cb_typeDiscount.SelectedValue.ToString()) == 2) // discount type is rate
+                {
+                    discountValue = SectionData.calcPercentage(_Sum, discountValue);
+                }
+
+                tb_totalDescount.Text = SectionData.PercentageDecTostring(discountValue);
+            }
+            #endregion
             decimal total = _Sum - discountValue;
             decimal taxValue = 0;
             decimal taxInputVal = 0;

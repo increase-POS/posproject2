@@ -2081,8 +2081,7 @@ namespace POS.View
                             case "p": cb_itemType.SelectedIndex = 4; break;
                         }
                     }
-                    //tb_taxes.Text = parentItem.taxes.ToString();
-                    tb_taxes.Text = SectionData.DecTostring(parentItem.taxes);
+                    tb_taxes.Text = SectionData.PercentageDecTostring(parentItem.taxes);
 
                     tb_min.Text = parentItem.min.ToString();
                     tb_max.Text = parentItem.max.ToString();
@@ -2140,8 +2139,7 @@ namespace POS.View
                 {
                     int catId = (int)cb_categorie.SelectedValue;
                     cat = await categoryModel.getById(catId);
-                    //tb_taxes.Text = cat.taxes.ToString();
-                    tb_taxes.Text = SectionData.DecTostring(cat.taxes);
+                    tb_taxes.Text = SectionData.PercentageDecTostring(cat.taxes);
                     if (cat.fixedTax == 1)
                         tb_taxes.IsEnabled = false;
                     else
@@ -2353,8 +2351,7 @@ namespace POS.View
                     else
                         cb_itemType.SelectedValue = -1;
 
-                    //tb_taxes.Text = item.taxes.ToString();
-                    tb_taxes.Text = SectionData.DecTostring(item.taxes);
+                    tb_taxes.Text = SectionData.PercentageDecTostring(item.taxes);
 
                     tb_min.Text = item.min.ToString();
                     tb_max.Text = item.max.ToString();
@@ -2511,8 +2508,7 @@ namespace POS.View
                 else
                     cb_itemType.SelectedValue = -1;
 
-                //tb_taxes.Text = item.taxes.ToString();
-                tb_taxes.Text = SectionData.DecTostring(item.taxes);
+                tb_taxes.Text = SectionData.PercentageDecTostring(item.taxes);
                 tb_min.Text = item.min.ToString();
                 tb_max.Text = item.max.ToString();
 

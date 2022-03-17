@@ -1480,12 +1480,6 @@ namespace POS.View.purchases
             if (total != 0)
                 taxValue = SectionData.calcPercentage(total, taxInputVal);
 
-            ////tb_sum.Text = _Sum.ToString();
-            //if (_Sum != 0)
-            //    tb_sum.Text = SectionData.DecTostring(_Sum);
-            //else
-            //    tb_sum.Text = "0";
-
         }
 
 
@@ -1593,7 +1587,7 @@ namespace POS.View.purchases
                         }
                         else if (tb != null)
                         {
-                            if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note" || tb.Name == "tb_discount" || tb.Name == "tb_barcode")// remove barcode from text box
+                            if (tb.Name == "tb_invoiceNumber" || tb.Name == "tb_note"  || tb.Name == "tb_barcode")// remove barcode from text box
                             {
                                 string tbString = tb.Text;
                                 string newStr = "";

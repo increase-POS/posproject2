@@ -1078,19 +1078,13 @@ namespace POS.View.storage
         {
             decimal total = _Sum;
             decimal taxValue = 0;
-            decimal taxInputVal = 0;
-            //if (!tb_taxValue.Text.Equals(""))
-            //    taxInputVal = decimal.Parse(tb_taxValue.Text);
-            //if (total != 0)
-            //    taxValue = SectionData.calcPercentage(total, taxInputVal);
 
-            //tb_sum.Text = _Sum.ToString();
             if (_Sum != 0)
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
                 tb_sum.Text = "0";
             total = total + taxValue;
-            //tb_total.Text = Math.Round(total, 2).ToString();
+
             if (total != 0)
                 tb_total.Text = SectionData.DecTostring(total);
             else tb_total.Text = "0";
@@ -1123,66 +1117,7 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-        //private void refreshTotalValue()
-        //{
-        //    _Discount = 0;
-        //    decimal totalDiscount = 0;
-        //    decimal manualDiscount = 0;
-        //    if (_Sum > 0)
-        //    {
-        //        #region calculate discount value 
-        //        foreach (CouponInvoice coupon in selectedCoupons)
-        //        {
-        //            string discountType = coupon.discountType.ToString();
-        //            decimal discountValue = (decimal)coupon.discountValue;
-        //            if (discountType == "2")
-        //                discountValue = SectionData.calcPercentage(_Sum, discountValue);
-        //            _Discount += discountValue;
-        //        }
-        //        //tb_discountCoupon.Text = _Discount.ToString();
-        //        //if (_Discount != 0)
-        //        //    tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
-        //        //else
-        //        //    tb_discountCoupon.Text = "0";
-        //        #endregion
-        //        #region manaula discount           
-        //        if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
-        //        {
-        //            int manualDisType = cb_typeDiscount.SelectedIndex;
-        //            manualDiscount = decimal.Parse(tb_discount.Text);
-        //            if (manualDisType == 2)
-        //                manualDiscount = SectionData.calcPercentage(_Sum, manualDiscount);
-        //        }
-        //        #endregion
-        //        totalDiscount = _Discount + manualDiscount;
-        //    }
-        //    decimal taxValue = _Tax;
-        //    decimal total = _Sum - totalDiscount + _DeliveryCost;
-        //    //if (MainWindow.isInvTax == 1)
-        //    //{
-        //    taxValue = SectionData.calcPercentage(total, (decimal)MainWindow.tax);
-        //    //}
-        //    //else
-        //    //    tb_taxValue.Text = _Tax.ToString();
-        //    total += taxValue;
-        //    //tb_sum.Text = _Sum.ToString();
-        //    if (_Sum != 0)
-        //        tb_sum.Text = SectionData.DecTostring(_Sum);
-        //    else
-        //        tb_sum.Text = "0";
-        //    //tb_total.Text = Math.Round(total, 2).ToString();
-        //    if (total != 0)
-        //        tb_total.Text = SectionData.DecTostring(total);
-        //    else
-        //        tb_total.Text = "0";
-
-        //    if (totalDiscount != 0)
-        //        tb_totalDescount.Text = SectionData.DecTostring(totalDiscount);
-        //    else
-        //        tb_totalDescount.Text = "0";
-
-        //}
+      
         #region Get Id By Click  Y
 
         public void ChangeCategoryIdEvent(int categoryId)
@@ -1380,9 +1315,7 @@ namespace POS.View.storage
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
-                //txt_tax.Visibility = Visibility.Visible;
-                //tb_taxValue.Visibility = Visibility.Visible;
-                //tb_percentage.Visibility = Visibility.Visible;
+
                 sp_sum.Visibility = Visibility.Collapsed;
                 tb_sum.Visibility = Visibility.Collapsed;
                 txt_sum.Visibility = Visibility.Collapsed;
@@ -1396,9 +1329,7 @@ namespace POS.View.storage
             {
                 dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
                 dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
-                //txt_tax.Visibility = Visibility.Visible;
-                //tb_taxValue.Visibility = Visibility.Visible;
-                //tb_percentage.Visibility = Visibility.Visible;
+
                 sp_sum.Visibility = Visibility.Collapsed;
                 tb_sum.Visibility = Visibility.Collapsed;
                 txt_sum.Visibility = Visibility.Collapsed;
@@ -1409,9 +1340,6 @@ namespace POS.View.storage
             }
             else
             {
-                //txt_tax.Visibility = Visibility.Collapsed;
-                //tb_taxValue.Visibility = Visibility.Collapsed;
-                //tb_percentage.Visibility = Visibility.Collapsed;
                 sp_sum.Visibility = Visibility.Visible;
                 tb_sum.Visibility = Visibility.Visible;
                 txt_sum.Visibility = Visibility.Visible;
