@@ -70,6 +70,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رصيد.
         /// </summary>
         internal static string tr_Balance {
@@ -2073,6 +2082,15 @@ namespace POS {
         internal static string trDescription {
             get {
                 return ResourceManager.GetString("trDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الإستحقاق.
+        /// </summary>
+        internal static string trDeservedDate {
+            get {
+                return ResourceManager.GetString("trDeservedDate", resourceCulture);
             }
         }
         

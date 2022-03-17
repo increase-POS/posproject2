@@ -3421,4 +3421,10 @@
   <data name="trFree" xml:space="preserve">
     <value>مجاني</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="trDeservedDate" xml:space="preserve">
+    <value>تاريخ الإستحقاق</value>
+  </data>
 </root>

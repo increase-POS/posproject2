@@ -2095,6 +2095,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deserved date.
+        /// </summary>
+        internal static string trDeservedDate {
+            get {
+                return ResourceManager.GetString("trDeservedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Deserved Date....
         /// </summary>
         internal static string trDeservedDateHint {

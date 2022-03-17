@@ -3445,4 +3445,7 @@ Please add Email in setting</value>
   <data name="trFree" xml:space="preserve">
     <value>Free</value>
   </data>
+  <data name="trDeservedDate" xml:space="preserve">
+    <value>Deserved date</value>
+  </data>
 </root>
