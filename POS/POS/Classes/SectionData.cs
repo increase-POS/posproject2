@@ -1351,10 +1351,16 @@ namespace POS.Classes
                         sdc = string.Format("{0:F1}", dc);
                         break;
                 }
-                sdc = string.Format("{0:G29}", decimal.Parse(sdc));
             }
 
 
+            return sdc;
+        }
+        public static string PercentageDecTostring(decimal? dec)
+        {
+            string sdc = DecTostring(dec) ;
+
+            sdc = string.Format("{0:G29}", decimal.Parse(sdc));
             return sdc;
         }
 
