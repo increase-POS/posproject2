@@ -4338,8 +4338,6 @@ namespace POS.View
                         }
 
 
-
-
                         clsReports.purchaseInvoiceReport(invoiceItems, rep, reppath);
 
                         clsReports.setReportLanguage(paramarr);
@@ -4636,8 +4634,7 @@ namespace POS.View
                             paramarr.Add(new ReportParameter("isOrginal", false.ToString()));
                             paramarr.Add(new ReportParameter("isSaved", "y"));
                         }
-                        paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
-                        if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb"))
+                           if ((prInvoice.invType == "s" || prInvoice.invType == "sd" || prInvoice.invType == "sbd" || prInvoice.invType == "sb"))
                         {
                             CashTransfer cachModel = new CashTransfer();
                             List<PayedInvclass> payedList = new List<PayedInvclass>();

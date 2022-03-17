@@ -1994,7 +1994,7 @@
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>1.56844cm</Top>
               <Left>0.20991cm</Left>
-              <Height>0.7076cm</Height>
+              <Height>0.67233cm</Height>
               <Width>1.53995cm</Width>
               <Style>
                 <Border />
@@ -2026,10 +2026,13 @@
               </Paragraphs>
               <rd:DefaultName>Textbox1</rd:DefaultName>
               <Top>1.56844cm</Top>
-              <Left>1.82042cm</Left>
-              <Height>0.7076cm</Height>
-              <Width>2.83034cm</Width>
+              <Left>1.74986cm</Left>
+              <Height>0.67233cm</Height>
+              <Width>2.9009cm</Width>
               <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Parameters!isSaved.Value="n",True,False)</Hidden>
+              </Visibility>
               <Style>
                 <Border />
                 <PaddingLeft>2pt</PaddingLeft>
@@ -2208,6 +2211,44 @@
                 <Border>
                   <Style>None</Style>
                 </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox11">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Parameters!trDraftInv.Value</Value>
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontSize>7pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <Color>Red</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>1.56844cm</Top>
+              <Left>1.74986cm</Left>
+              <Height>0.67233cm</Height>
+              <Width>2.9009cm</Width>
+              <ZIndex>7</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Parameters!isSaved.Value="n",False,True)</Hidden>
+              </Visibility>
+              <Style>
+                <Border />
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>

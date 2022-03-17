@@ -2026,6 +2026,9 @@
               <Height>0.7076cm</Height>
               <Width>3.18549cm</Width>
               <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Parameters!isSaved.Value="n",True,False)</Hidden>
+              </Visibility>
               <Style>
                 <Border />
                 <PaddingLeft>2pt</PaddingLeft>
@@ -2204,6 +2207,44 @@
                 <Border>
                   <Style>None</Style>
                 </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox11">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Parameters!trDraftInv.Value</Value>
+                      <Style>
+                        <FontFamily>Montserrat</FontFamily>
+                        <FontSize>7pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                        <Color>Red</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>1.56844cm</Top>
+              <Left>2.27434cm</Left>
+              <Height>0.7076cm</Height>
+              <Width>3.18549cm</Width>
+              <ZIndex>7</ZIndex>
+              <Visibility>
+                <Hidden>=iif(Parameters!isSaved.Value="n",False,True)</Hidden>
+              </Visibility>
+              <Style>
+                <Border />
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>

@@ -966,8 +966,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
             //paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
             paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : DateToString(invoice.deservedDate)));
-
-            paramarr.Add(new ReportParameter("tax", DecTostring(invoice.tax) == null ? "0" : DecTostring(invoice.tax)));
+            paramarr.Add(new ReportParameter("tax", invoice.tax == null ? "0" : SectionData.PercentageDecTostring(invoice.tax)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
@@ -980,10 +979,12 @@ namespace POS.Classes
             {
 
                 paramarr.Add(new ReportParameter("watermark", "1"));
+                paramarr.Add(new ReportParameter("isSaved", "n"));
             }
             else
             {
                 paramarr.Add(new ReportParameter("watermark", "0"));
+                paramarr.Add(new ReportParameter("isSaved", "y"));
             }
             if (invoice.invType == "pbd" || invoice.invType == "pb" || invoice.invType == "pbw")
             {
@@ -994,7 +995,7 @@ namespace POS.Classes
                 paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPurchasesInvoice")));
 
             }
-
+            paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
             return paramarr;
         }
 
@@ -1163,8 +1164,6 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("agentName", agentName.Trim()));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
 
-           
-
             //  paramarr.Add(new ReportParameter("discountValue", DecTostring(disval) == null ? "-" : DecTostring(disval)));
             paramarr.Add(new ReportParameter("discountValue", invoice.discountValue == null ? "0" : DecTostring(invoice.discountValue)));
             paramarr.Add(new ReportParameter("discountType", invoice.discountType == null ? "1" : invoice.discountType.ToString()));
@@ -1176,7 +1175,6 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("deserved", DecTostring(invoice.deserved) == null ? "-" : DecTostring(invoice.deserved)));
             //paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : invoice.deservedDate.ToString()));
             paramarr.Add(new ReportParameter("deservedDate", invoice.deservedDate.ToString() == null ? "-" : DateToString(invoice.deservedDate)));
-
 
             paramarr.Add(new ReportParameter("tax", invoice.tax == null ? "0" : SectionData.PercentageDecTostring(invoice.tax)));
             string invNum = invoice.invNumber == null ? "-" : invoice.invNumber.ToString();
@@ -1214,6 +1212,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("deliveryType", shippingcompany.deliveryType));
             paramarr.Add(new ReportParameter("shippingCompanyId", invoice.shippingCompanyId==null?"0": invoice.shippingCompanyId.ToString()));
             paramarr.Add(new ReportParameter("trFree", MainWindow.resourcemanagerreport.GetString("trFree")));
+            paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
 
             return paramarr;
 

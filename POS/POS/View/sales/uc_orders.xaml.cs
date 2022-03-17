@@ -2053,7 +2053,18 @@ namespace POS.View.sales
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
                         paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
-
+                        if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"  
+|| prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+|| prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                        {
+                         
+                            paramarr.Add(new ReportParameter("isSaved", "n"));
+                        }
+                        else
+                        {
+                           
+                            paramarr.Add(new ReportParameter("isSaved", "y"));
+                        }
                         rep.SetParameters(paramarr);
                         rep.Refresh();
                         this.Dispatcher.Invoke(() =>
@@ -2910,7 +2921,18 @@ namespace POS.View.sales
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
                     paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
+                    if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+|| prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+|| prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                    {
 
+                        paramarr.Add(new ReportParameter("isSaved", "n"));
+                    }
+                    else
+                    {
+
+                        paramarr.Add(new ReportParameter("isSaved", "y"));
+                    }
                     rep.SetParameters(paramarr);
                     rep.Refresh();
                     this.Dispatcher.Invoke(() =>
@@ -3005,7 +3027,18 @@ namespace POS.View.sales
                             clsReports.setReportLanguage(paramarr);
                             clsReports.Header(paramarr);
                             paramarr = reportclass.fillSaleInvReport(prInvoice, paramarr, shippingcom);
+                            if (prInvoice.invType == "pd" || prInvoice.invType == "sd" || prInvoice.invType == "qd"
+|| prInvoice.invType == "sbd" || prInvoice.invType == "pbd"
+|| prInvoice.invType == "ord" || prInvoice.invType == "imd" || prInvoice.invType == "exd")
+                            {
 
+                                paramarr.Add(new ReportParameter("isSaved", "n"));
+                            }
+                            else
+                            {
+
+                                paramarr.Add(new ReportParameter("isSaved", "y"));
+                            }
                             rep.SetParameters(paramarr);
                             rep.Refresh();
 
