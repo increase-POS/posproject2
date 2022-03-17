@@ -205,7 +205,7 @@ namespace POS.View
                 {
                     int catId = (int)cb_parentCategorie.SelectedValue;
                     var cat = categories.Where(x => x.categoryId == catId).FirstOrDefault();
-                    tb_taxes.Text = SectionData.DecTostring(cat.taxes);
+                    tb_taxes.Text = SectionData.PercentageDecTostring(cat.taxes);
                     if (cat.fixedTax == 1)
                     {
                        gd_tax.IsEnabled = false;
@@ -706,7 +706,7 @@ namespace POS.View
                     this.DataContext = category;
                     cb_parentCategorie.SelectedValue = category.parentId;
 
-                    tb_taxes.Text = SectionData.DecTostring(category.taxes);
+                    tb_taxes.Text = SectionData.PercentageDecTostring(category.taxes);
                     if (category.fixedTax == 1)
                         tgl_tax.IsChecked = true;
                     else
@@ -782,7 +782,7 @@ namespace POS.View
             category = categories.ToList().Find(c => c.categoryId == categoryId);
             this.DataContext = category;
             cb_parentCategorie.SelectedValue = category.parentId;
-            tb_taxes.Text = SectionData.DecTostring(category.taxes);
+            tb_taxes.Text = SectionData.PercentageDecTostring(category.taxes);
             if (category.fixedTax == 1)
                 tgl_tax.IsChecked = true;
             else
