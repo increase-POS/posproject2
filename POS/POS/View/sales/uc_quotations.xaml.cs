@@ -348,7 +348,7 @@ namespace POS.View.sales
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+                    tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
                     sp_tax.Visibility = Visibility.Visible;
                 }
                 #region datagridChange
@@ -540,7 +540,6 @@ namespace POS.View.sales
                         int index = dg_billDetails.SelectedIndex;
                         // calculate new sum
                         _Sum -= row.Total;
-                       // _Tax -= row.Tax;
 
                         // remove item from bill
                         billDetails.RemoveAt(index);
@@ -553,17 +552,14 @@ namespace POS.View.sales
                     }
                 _SequenceNum = 0;
                 _Sum = 0;
-               // _Tax = 0;
+
                 for (int i = 0; i < billDetails.Count; i++)
                 {
                     _SequenceNum++;
                     _Sum += billDetails[i].Total;
-                  //  _Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
                 refrishBillDetails();
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -683,7 +679,7 @@ namespace POS.View.sales
                                     int count = 1;
                                     decimal price = 0;
                                     decimal tax = 0;
-                                    //decimal basicPrice = (decimal)unit1.price;
+
                                     decimal basicPrice = (decimal)unit1.basicPrice;
 
                                     if (MainWindow.itemsTax_bool == true)
@@ -723,7 +719,6 @@ namespace POS.View.sales
                                         billDetails[index].Tax = 0;
 
                                     _Sum += billDetails[index].Price;
-                                   // _Tax += billDetails[index].Tax;
 
                                 }
                                 refreshTotalValue();
@@ -874,7 +869,7 @@ namespace POS.View.sales
             tb_sum.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+            tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();
@@ -1055,7 +1050,6 @@ namespace POS.View.sales
             if (item != null)
             {
                 // get item units
-               // itemUnits = await itemUnitModel.GetItemUnits(item.itemId);
                 itemUnits = MainWindow.InvoiceGlobalSaleUnitsList.Where(a => a.itemId == item.itemId).ToList();
                 decimal itemTax = 0;
                 if (MainWindow.itemsTax_bool == true)
@@ -1162,7 +1156,7 @@ namespace POS.View.sales
                 tb_total.Text = "0";
 
             if (totalDiscount != 0)
-                tb_totalDescount.Text = SectionData.DecTostring(totalDiscount);
+                tb_totalDescount.Text = SectionData.PercentageDecTostring(totalDiscount);
             else
                 tb_totalDescount.Text = "0";
         }
@@ -1370,7 +1364,6 @@ namespace POS.View.sales
                 basicPrice = basicPrice,
             });
             _Sum += total;
-            //_Tax += tax;
         }
         #endregion billdetails
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -1438,7 +1431,7 @@ namespace POS.View.sales
                     tb_total.Text = SectionData.DecTostring((decimal)invoice.totalNet);
                 else tb_total.Text = "0";
             }
-            tb_taxValue.Text = SectionData.DecTostring(_Tax);
+            tb_taxValue.Text = SectionData.PercentageDecTostring(_Tax);
 
             tb_note.Text = invoice.notes;
             if (invoice.total != 0)
@@ -1447,7 +1440,7 @@ namespace POS.View.sales
                 tb_sum.Text = "0";
 
             if (invoice.manualDiscountValue != 0)
-                tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+                tb_discount.Text = SectionData.PercentageDecTostring(invoice.manualDiscountValue);
             else
                 tb_discount.Text = "0";
             if (invoice.manualDiscountType == "1")
@@ -1615,25 +1608,16 @@ namespace POS.View.sales
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
                     decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
-                    //decimal newPrice = (decimal)unit.price;
+
                     decimal newPrice = price;
 
                     //"tb_amont"
                     tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    //tb.Text = availableAmount.ToString();
 
                     oldCount = billDetails[_datagridSelectedIndex].Count;
                     oldPrice = billDetails[_datagridSelectedIndex].Price;
 
-                    //if (availableAmount < oldCount)
-                    //{
-                    //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
-                    //    newCount = availableAmount;
-                    //    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    //    tb.Text = availableAmount.ToString();
-                    //}
-                    //else
-                        newCount = oldCount;
+                    newCount = oldCount;
 
                     // old total for changed item
                     decimal total = oldPrice * oldCount;
@@ -1662,8 +1646,6 @@ namespace POS.View.sales
                     billDetails[_datagridSelectedIndex].Total = total;
                     //refrishBillDetails();
                 }
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -1812,12 +1794,6 @@ namespace POS.View.sales
                     decimal itemTax = 0;
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
-                    // old tax for changed item
-                    //decimal tax = (decimal)itemTax * oldCount;
-                    //_Tax -= tax;
-                    // new tax for changed item
-                    //tax = (decimal)itemTax * newCount;
-                    //_Tax += tax;
 
                     //refresh total cell
                     tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
@@ -2647,7 +2623,7 @@ namespace POS.View.sales
             tb_sum.Text = "0";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+            tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             tgl_ActiveOffer.IsChecked = false;
             lst_coupons.Items.Clear();

@@ -35,9 +35,6 @@ namespace POS.converters
                         break;
                 }
 
-                //remove zero after percent exp: 15.0 will be 15
-                s = string.Format("{0:G29}", decimal.Parse(s));
-
                 return decimal.Parse(s);
             }
             else return 0;

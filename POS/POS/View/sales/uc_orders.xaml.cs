@@ -410,12 +410,8 @@ namespace POS.View.sales
                 while (!isDone);
                 #endregion
 
-
-
-                //pos = await posModel.getById(MainWindow.posID.Value);
                 pos = MainWindow.posLogIn;
 
-                // branch = await branchModel.getBranchById((int)pos.branchId);
                 //List all the UIElement in the VisualTree
                 controls = new List<Control>();
                 FindControl(this.grid_main, controls);
@@ -424,7 +420,7 @@ namespace POS.View.sales
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+                    tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
                     sp_tax.Visibility = Visibility.Visible;
                 }
                 setNotifications();
@@ -693,7 +689,6 @@ namespace POS.View.sales
                         int index = dg_billDetails.SelectedIndex;
                         // calculate new sum
                         _Sum -= row.Total;
-                      //  _Tax -= row.Tax;
 
                         // remove item from bill
                         billDetails.RemoveAt(index);
@@ -706,12 +701,11 @@ namespace POS.View.sales
                     }
                 _SequenceNum = 0;
                 _Sum = 0;
-               // _Tax = 0;
+
                 for (int i = 0; i < billDetails.Count; i++)
                 {
                     _SequenceNum++;
                     _Sum += billDetails[i].Total;
-                   // _Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
               refrishBillDetails();
@@ -877,7 +871,6 @@ namespace POS.View.sales
                                         billDetails[index].Tax = 0;
 
                                    _Sum += billDetails[index].Price;
-                                   //_Tax += billDetails[index].Tax;
 
                                 }
                                 refreshTotalValue();
@@ -1039,7 +1032,7 @@ namespace POS.View.sales
             cb_user.SelectedItem = "";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+            tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             lst_coupons.Items.Clear();
             isFromReport = false;
@@ -1230,7 +1223,7 @@ namespace POS.View.sales
             cb_user.SelectedItem = "";
             tb_discount.Clear();
             cb_typeDiscount.SelectedIndex = 0;
-            tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+            tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             md_docImage.Badge = "";
             lst_coupons.Items.Clear();
             isFromReport = false;
@@ -1491,7 +1484,6 @@ namespace POS.View.sales
                         billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
 
                         _Sum += billDetails[index].Price;
-                        //_Tax += billDetails[index].Tax;
                     }
 
                     //refreshTotalValue();
@@ -1567,10 +1559,7 @@ namespace POS.View.sales
                 }
                 catch { }
             }
-            //if (MainWindow.itemsTax_bool == true)
-            //{
-            //    taxValue = SectionData.calcPercentage(_Sum, (decimal)_Tax);
-            //}
+
             #endregion
 
             total +=  taxValue;
@@ -1589,7 +1578,7 @@ namespace POS.View.sales
                 tb_total.Text = "0";
 
             if (totalDiscount != 0)
-                tb_totalDescount.Text = SectionData.DecTostring(totalDiscount);
+                tb_totalDescount.Text = SectionData.PercentageDecTostring(totalDiscount);
             else
                 tb_totalDescount.Text = "0";
         }
@@ -1630,7 +1619,7 @@ namespace POS.View.sales
             if (MainWindow.isInvTax == 0)
             {
                 if (_Tax != 0)
-                    tb_taxValue.Text = SectionData.DecTostring(_Tax);
+                    tb_taxValue.Text = SectionData.PercentageDecTostring(_Tax);
                 else
                     tb_taxValue.Text = "0";
             }
@@ -1811,7 +1800,6 @@ namespace POS.View.sales
                 basicPrice = basicPrice,
             });
             _Sum += total;
-           // _Tax += tax;
         }
         #endregion billdetails
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)
@@ -1854,7 +1842,6 @@ namespace POS.View.sales
                             await fillInvoiceInputs(invoice);
                         }
                     }
-                    //  (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 1;
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -1888,7 +1875,7 @@ namespace POS.View.sales
                     tb_total.Text = "0";
             }
             if (invoice.tax != 0)
-                tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
+                tb_taxValue.Text = SectionData.PercentageDecTostring(invoice.tax);
             else
                 tb_taxValue.Text = "0";
             tb_note.Text = invoice.notes;
@@ -1901,9 +1888,10 @@ namespace POS.View.sales
             cb_user.SelectedValue = invoice.shipUserId;
             
             if (invoice.manualDiscountValue != 0)
-                tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+                tb_discount.Text = SectionData.PercentageDecTostring(invoice.manualDiscountValue);
             else
                 tb_discount.Text = "0";
+
             if (invoice.manualDiscountType == "1")
                 cb_typeDiscount.SelectedIndex = 1;
             else if (invoice.manualDiscountType == "2")
@@ -2434,12 +2422,6 @@ namespace POS.View.sales
                     decimal itemTax = 0;
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
-                    // old tax for changed item
-                    //decimal tax = (decimal)itemTax * oldCount;
-                   // _Tax -= tax;
-                    // new tax for changed item
-                    //tax = (decimal)itemTax * newCount;
-                   // _Tax += tax;
 
                     //refresh total cell
                     tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;

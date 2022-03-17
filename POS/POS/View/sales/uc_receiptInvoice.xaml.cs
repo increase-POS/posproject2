@@ -497,7 +497,7 @@ namespace POS.View
                     sp_tax.Visibility = Visibility.Collapsed;
                 else
                 {
-                    tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+                    tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
                     sp_tax.Visibility = Visibility.Visible;
                 }
 
@@ -1008,17 +1008,13 @@ namespace POS.View
                     }
                 _SequenceNum = 0;
                 _Sum = 0;
-               // _Tax = 0;
                 for (int i = 0; i < billDetails.Count; i++)
                 {
                     _SequenceNum++;
                     _Sum += billDetails[i].Total;
-                    //_Tax += billDetails[i].Tax;
                     billDetails[i].ID = _SequenceNum;
                 }
                refrishBillDetails();
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -2020,7 +2016,7 @@ namespace POS.View
             gd_card.Visibility = Visibility.Collapsed;
             btn_updateCustomer.IsEnabled = false;
             if (MainWindow.invoiceTax_decimal != 0)
-                tb_taxValue.Text = SectionData.DecTostring(MainWindow.invoiceTax_decimal);
+                tb_taxValue.Text = SectionData.PercentageDecTostring(MainWindow.invoiceTax_decimal);
             else
                 tb_taxValue.Text = "0";
             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
@@ -2264,9 +2260,6 @@ namespace POS.View
             if (_InvoiceType == "sbd")
             {
                 _Tax = 0;
-                //if (_Tax != 0)
-                //    tb_taxValue.Text = SectionData.DecTostring(_Tax);
-                //else
                 tb_taxValue.Text = "0";
             }
             else
@@ -2274,9 +2267,7 @@ namespace POS.View
                 if (invoice.tax != null)
                 {
                     _Tax = (decimal)invoice.tax;
-                    tb_taxValue.Text = SectionData.DecTostring(invoice.tax);
-
-                    //tb_taxValue.Text = SectionData.DecTostring(MainWindow.tax);
+                    tb_taxValue.Text = SectionData.PercentageDecTostring(invoice.tax);
                 }
                 else
                 {
@@ -2309,7 +2300,7 @@ namespace POS.View
             else tb_sum.Text = "0";
 
             if (invoice.manualDiscountValue != 0)
-                tb_discount.Text = SectionData.DecTostring(invoice.manualDiscountValue);
+                tb_discount.Text = SectionData.PercentageDecTostring(invoice.manualDiscountValue);
             else
                 tb_discount.Text = "0";
             if (invoice.manualDiscountType == "1")
@@ -2907,11 +2898,6 @@ namespace POS.View
                         discountValue = SectionData.calcPercentage(_Sum, discountValue);
                     _Discount += discountValue;
                 }
-                //tb_discountCoupon.Text = _Discount.ToString();
-                //if (_Discount != 0)
-                //    tb_discountCoupon.Text = SectionData.DecTostring(_Discount);
-                //else
-                //    tb_discountCoupon.Text = "0";
                 #endregion
                 #region manaula discount           
                 if (cb_typeDiscount.SelectedIndex != -1 && cb_typeDiscount.SelectedIndex != 0 && tb_discount.Text != "")
@@ -2952,7 +2938,7 @@ namespace POS.View
                 tb_total.Text = "0";
 
             if (totalDiscount != 0)
-                tb_totalDescount.Text = SectionData.DecTostring(totalDiscount);
+                tb_totalDescount.Text = SectionData.PercentageDecTostring(totalDiscount);
             else
                 tb_totalDescount.Text = "0";
 
@@ -3144,8 +3130,6 @@ namespace POS.View
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
                             btn_save.Content = MainWindow.resourcemanager.GetString("trReturn");
-                            // orange #FFA926 red #D22A17
-                            //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#D22A17"));
                         }
 
                         await fillInvoiceInputs(invoice);
@@ -3392,11 +3376,8 @@ namespace POS.View
                     long newCount = 0;
                     decimal oldPrice = 0;
                     decimal itemTax = 0;
-                    //if (item.taxes != null)
-                    //    itemTax = (decimal)item.taxes;
-                    //decimal price = (decimal)unit.price + SectionData.calcPercentage((decimal)unit.price, itemTax);
-                    //decimal newPrice = (decimal)unit.price;
                     decimal newPrice = 0;
+
                     oldCount = billDetails[_datagridSelectedIndex].Count;
                     oldPrice = billDetails[_datagridSelectedIndex].Price;
                     newCount = oldCount;
@@ -3459,12 +3440,7 @@ namespace POS.View
                     #region items tax
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
-                    // old tax for changed item
-                    //decimal tax = (decimal)itemTax * oldCount;
-                    //_Tax -= tax;
-                    // new tax for changed item
-                    //tax = (decimal)itemTax * newCount;
-                    //_Tax += tax;
+
                     #endregion
 
                     refreshTotalValue();
@@ -3731,12 +3707,6 @@ namespace POS.View
                     decimal itemTax = 0;
                     if (item.taxes != null)
                         itemTax = (decimal)item.taxes;
-                    // old tax for changed item
-                    //decimal tax = (decimal)itemTax * oldCount;
-                    //_Tax -= tax;
-                    // new tax for changed item
-                    //tax = (decimal)itemTax * newCount;
-                    //_Tax += tax;
 
                     //refresh total cell
                     tb = dg_billDetails.Columns[6].GetCellContent(dg_billDetails.Items[index]) as TextBlock;
