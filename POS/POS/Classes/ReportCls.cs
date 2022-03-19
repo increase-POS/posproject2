@@ -936,9 +936,9 @@ namespace POS.Classes
             //    totalafterdis = 0;
             //}
             string userName = invoice.uuserName + " " + invoice.uuserLast;
-            // string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
-            //    : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
-            string agentName = "-";
+            string agentName = (invoice.agentCompany != null || invoice.agentCompany != "") ? invoice.agentCompany.Trim()
+               : ((invoice.agentName != null || invoice.agentName != "") ? invoice.agentName.Trim() : "-");
+       
 
             //    decimal taxval = calcpercentval("2", invoice.tax, totalafterdis);
             // decimal totalnet = totalafterdis + taxval;
@@ -953,7 +953,7 @@ namespace POS.Classes
 
             paramarr.Add(new ReportParameter("invDate", DateToString(invoice.invDate) == null ? "-" : DateToString(invoice.invDate)));
             paramarr.Add(new ReportParameter("invTime", TimeToString(invoice.invTime)));
-            paramarr.Add(new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
+           paramarr.Add(new ReportParameter("vendorInvNum", invoice.agentCode == "-" ? "-" : invoice.agentCode.ToString()));
             paramarr.Add(new ReportParameter("agentName", agentName));
             paramarr.Add(new ReportParameter("total", DecTostring(invoice.total) == null ? "-" : DecTostring(invoice.total)));
 
@@ -971,7 +971,11 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("barcodeimage", "file:\\" + BarcodeToImage(invNum, "invnum")));
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
             paramarr.Add(new ReportParameter("logoImage", "file:\\" + GetLogoImagePath()));
-            paramarr.Add(new ReportParameter("branchName", invoice.branchName == null ? "-" : invoice.branchName));
+            paramarr.Add(new ReportParameter("branchName", invoice.branchCreatorName == null ? "-" : invoice.branchCreatorName));
+            paramarr.Add(new ReportParameter("branchReciever", invoice.branchName == null ? "-" : invoice.branchName));
+            paramarr.Add(new ReportParameter("deserveDate", invoice.deservedDate == null ? "-" : DateToString(invoice.deservedDate)));
+            paramarr.Add(new ReportParameter("venInvoiceNumber", (invoice.vendorInvNum == null|| invoice.vendorInvNum == "") ? "-" : invoice.vendorInvNum.ToString()));//paramarr[6]
+
             paramarr.Add(new ReportParameter("userName", userName.Trim()));
             if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                     || invoice.invType == "sbd" || invoice.invType == "pbd" || invoice.invType == "pod"
