@@ -1069,7 +1069,7 @@
                                      Margin="5" Grid.Column="2" 
                                      TabIndex="9"  
                                      PreviewKeyDown="Tb_PreventSpaces" 
-                                     PreviewTextInput="Tb_decimal_PreviewTextInput"
+                                     PreviewTextInput="Tb_count_PreviewTextInput"
                                      TextChanged="Tb_validateEmptyTextChange" 
                                      LostFocus="Tb_validateEmptyLostFocus"/>
                                 <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorItemsCost"

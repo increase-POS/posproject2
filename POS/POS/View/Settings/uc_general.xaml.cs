@@ -856,7 +856,18 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void Tb_count_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void Tb_decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
         { //decimal
             try
@@ -872,7 +883,6 @@ namespace POS.View.Settings
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void Tb_validateEmptyTextChange(object sender, TextChangedEventArgs e)
         {
             try
@@ -1230,28 +1240,35 @@ namespace POS.View.Settings
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one") )
+                if (MainWindow.groupObject.HasPermissionAction(companySettingsPermission, MainWindow.groupObjects, "one"))
                 {
                     SectionData.validateEmptyTextBox(tb_itemsCost, p_errorItemsCost, tt_errorItemsCost, "trEmptyItemCost");
                     if (!tb_itemsCost.Text.Equals(""))
                     {
-                        if (itemCost == null)
-                            itemCost = new SetValues();
-                        itemCost.value = tb_itemsCost.Text;
-                        itemCost.isSystem = 1;
-                        itemCost.isDefault = 1;
-                        itemCost.settingId = itemCostId;
-                       
-                        int s = await valueModel.Save(itemCost);
-                        if (!s.Equals(0))
+                        if (int.Parse(tb_itemsCost.Text) >= 1)
                         {
-                            //update item cost in main window
-                            MainWindow.itemCost = int.Parse(itemCost.value);
+                            if (itemCost == null)
+                                itemCost = new SetValues();
+                            itemCost.value = tb_itemsCost.Text;
+                            itemCost.isSystem = 1;
+                            itemCost.isDefault = 1;
+                            itemCost.settingId = itemCostId;
 
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            int s = await valueModel.Save(itemCost);
+                            if (!s.Equals(0))
+                            {
+                                //update item cost in main window
+                                MainWindow.itemCost = int.Parse(itemCost.value);
+
+                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
+                            }
+                            else
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         }
                         else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        {
+                            SectionData.SetError(tb_itemsCost, p_errorItemsCost, tt_errorItemsCost, "itMustBeGreaterThanZero");
+                        }
                     }
                 }
                 else
