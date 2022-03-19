@@ -220,6 +220,8 @@ namespace POS.View.windows
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorSaleCopyCount, tt_errorSaleCopyCount, "trEmptyError");
                     else if ((sender as TextBox).Name == "tb_repPrintCount")
                         SectionData.validateEmptyTextBox((TextBox)sender, p_errorRepPrintCount, tt_errorRepPrintCount, "trEmptyError");
+                 else if ((sender as TextBox).Name == "tb_directEntry")
+                        SectionData.validateEmptyTextBox((TextBox)sender, p_errorDirectEntry, tt_errorDirectEntry, "trEmptyError");
                 }
             }
             catch (Exception ex)
@@ -241,7 +243,7 @@ namespace POS.View.windows
 
 
 
-                if (textBox.Name == "tb_purCopyCount" || textBox.Name == "tb_saleCopyCount" || textBox.Name == "tb_repPrintCount")
+                if (textBox.Name == "tb_purCopyCount" || textBox.Name == "tb_saleCopyCount" || textBox.Name == "tb_repPrintCount"|| textBox.Name == "tb_directEntry")
                     SectionData.InputJustNumber(ref textBox);
 
                 if (textBox.Name == "tb_purCopyCount")
@@ -258,6 +260,11 @@ namespace POS.View.windows
                 {
                     if (int.TryParse(textBox.Text, out _numRepPrintCount))
                         numRepPrintCount = int.Parse(textBox.Text);
+                }
+                else if (textBox.Name == "tb_directEntry")
+                {
+                    if (int.TryParse(textBox.Text, out _numDirectEntry))
+                        numDirectEntry = int.Parse(textBox.Text);
                 }
 
             }
@@ -327,6 +334,17 @@ namespace POS.View.windows
             }
         }
 
+        private int _numDirectEntry = 1;
+        public int numDirectEntry
+        {
+            get { return _numDirectEntry; }
+            set
+            {
+                _numDirectEntry = value;
+                tb_directEntry.Text = value.ToString();
+            }
+        }
+
         private void Btn_countUp_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -338,6 +356,8 @@ namespace POS.View.windows
                     numSaleCopyCount++;
                 else if (button.Tag.ToString() == "repPrintCount")
                     numRepPrintCount++;
+                else if (button.Tag.ToString() == "directEntry")
+                    numDirectEntry++;
             }
             catch (Exception ex)
             {
@@ -357,6 +377,8 @@ namespace POS.View.windows
                     numSaleCopyCount--;
                 else if (button.Tag.ToString() == "repPrintCount" && numRepPrintCount > 1)
                     numRepPrintCount--;
+                else if (button.Tag.ToString() == "directEntry" && numDirectEntry > 1)
+                    numDirectEntry--;
             }
             catch (Exception ex)
             {

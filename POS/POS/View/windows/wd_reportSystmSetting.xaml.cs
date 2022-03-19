@@ -161,6 +161,8 @@ namespace POS.View.windows
                     //tgl_showHeader.Visibility =
                      txt_printOnSavePur.Visibility =
                     tgl_printOnSavePur.Visibility =
+                     txt_directEntry.Visibility =
+                    tgl_directEntry.Visibility =
                     txt_printOnSaveSale.Visibility =
                     tgl_printOnSaveSale.Visibility = Visibility.Visible;
 
@@ -177,6 +179,8 @@ namespace POS.View.windows
                    tgl_showHeader.Visibility =
                    txt_printOnSavePur.Visibility =
                      tgl_printOnSavePur.Visibility =
+                     txt_directEntry.Visibility =
+                    tgl_directEntry.Visibility =
                      txt_printOnSaveSale.Visibility =
                      tgl_printOnSaveSale.Visibility = Visibility.Collapsed;
 

@@ -9,7 +9,7 @@
          WindowStyle="None" WindowStartupLocation="CenterScreen"
         Title="Increase POS"
         ResizeMode="NoResize" Margin="0"
-        Height="250" Width="300"  Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
+        Height="300" Width="300"  Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
         Loaded="Window_Loaded" Closing="Window_Closing" >
     <Grid Grid.Column="1" Grid.Row="1"    x:Name="grid_main">
         <Grid.RowDefinitions>
@@ -47,6 +47,7 @@
                     CornerRadius="0,0,7,7" BorderBrush="#999999"  Background="White">
             <Grid  Margin="5">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="auto"/>
@@ -157,7 +158,40 @@
                                               Margin="12,5,15,13"  VerticalAlignment="Bottom" HorizontalAlignment="Right"
                                               Foreground="#737373"       Background="{x:Null}" BorderThickness="0"/>
                 </Grid>
+                <Grid Grid.Row="3"  >
+                    <Grid  >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox  x:Name="tb_directEntry" x:FieldModifier="private" TextChanged="Tb_count_TextChanged"
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                                          Text="1" Grid.Row="2"  Padding="10,0,5,0"   
+                                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Report Print Count..."    
+                                                          Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                                          BorderBrush="AliceBlue" 
+                                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                          Height="40"   Margin="5,5,10,5" 
+                                                      PreviewKeyDown="Tb_PreventSpaces" 
+                                                      PreviewTextInput="Tb_count_PreviewTextInput" 
+                                                       LostFocus="Tb_validateEmptyLostFocus"/>
 
+                        <Path x:Name="p_errorDirectEntry"
+                                                Fill="#E81123" Stretch="Fill" Margin="5,5,30,5"
+                                  HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed" 
+                             VerticalAlignment="Center" Width="15"  Height="15"
+                                  Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip   x:Name="tt_errorDirectEntry"   Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
+                    </Grid>
+                    <Button Tag="directEntry" FontSize="10" Padding="0,-4,0,0" Content="▲" Width="10" Height="10" Click="Btn_countUp_Click"
+                                         Margin="12,13,15,5" VerticalAlignment="Top" HorizontalAlignment="Right" 
+                                        Foreground="#737373"       Background="{x:Null}" BorderThickness="0" />
+                    <Button  Tag="directEntry"   FontSize="10" Padding="0,-4,0,0" Content="▼" Width="10" Height="10" Click="Btn_countDown_Click" 
+                                              Margin="12,5,15,13"  VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                                              Foreground="#737373"       Background="{x:Null}" BorderThickness="0"/>
+                </Grid>
                 <Button   Grid.Row="5"   Content="save" materialDesign:ButtonAssist.CornerRadius="7"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}" />
