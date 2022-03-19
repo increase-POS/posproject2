@@ -23,15 +23,15 @@ namespace POS_Server.Controllers
         public string Get(string token)
         {
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
             else
             {
-               
+
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -59,10 +59,10 @@ namespace POS_Server.Controllers
                                     join it in entity.items on iu.itemId equals it.itemId
                                     join iuloc in entity.itemsLocations on iu.itemUnitId equals iuloc.itemUnitId
 
-                                    where it.type=="p"
+                                    where it.type == "p"
                                     select new
                                     {
-                                        piuId=iu.itemUnitId,
+                                        piuId = iu.itemUnitId,
                                         iuloc.itemsLocId,
                                         it.itemId,
                                         iu.unitId,
@@ -70,7 +70,7 @@ namespace POS_Server.Controllers
                                     }
 
 
-                                  //  select()
+                                    //  select()
                                     ).ToList();
 
 
@@ -195,7 +195,7 @@ namespace POS_Server.Controllers
 
         public List<int> canNotUpdatePack()
         {
-            
+
             List<int> listg = new List<int>();
 
             using (incposdbEntities entity = new incposdbEntities())
@@ -216,8 +216,8 @@ namespace POS_Server.Controllers
                                 //type=it.type,
                             }).ToList();
 
-              listg = list.GroupBy(g => g.itemId).Where(q=>q.Sum(s => s.quantity)>0).Select(x =>  
-                    x.First().itemId ).ToList();
+                listg = list.GroupBy(g => g.itemId).Where(q => q.Sum(s => s.quantity) > 0).Select(x =>
+                          x.First().itemId).ToList();
 
             }
             return listg;
@@ -229,8 +229,8 @@ namespace POS_Server.Controllers
             //public string Get(string token)
             //{
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -249,7 +249,7 @@ namespace POS_Server.Controllers
                                     join C in entity.categories on I.categoryId equals C.categoryId into JC
 
                                     from CC in JC.DefaultIfEmpty()
-                                    where I.type == "p" 
+                                    where I.type == "p"
 
                                     select new ItemModel()
                                     {
@@ -275,7 +275,7 @@ namespace POS_Server.Controllers
                                         categoryName = CC.name,
 
                                         canDelete = true,
-                                        canUpdate= noUpdateList.Contains(I.itemId)?false:true,
+                                        canUpdate = noUpdateList.Contains(I.itemId) ? false : true,
 
 
                                     }).ToList();
@@ -379,7 +379,7 @@ namespace POS_Server.Controllers
         public string GetByID(string token)
         {
             // public string GetUsersByGroupId(string token)
-          token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -486,8 +486,8 @@ namespace POS_Server.Controllers
 
 
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -511,7 +511,7 @@ namespace POS_Server.Controllers
                 {
 
 
-                  //  bondes tmpObject = null;
+                    //  bondes tmpObject = null;
 
                     if (newObject.updateUserId == 0 || newObject.updateUserId == null)
                     {
@@ -582,10 +582,10 @@ namespace POS_Server.Controllers
                 }
                 else
                 {
-    return TokenManager.GenerateToken("0");
+                    return TokenManager.GenerateToken("0");
                 }
 
-            
+
             }
 
             //var re = Request;
@@ -682,8 +682,8 @@ namespace POS_Server.Controllers
 
 
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -723,7 +723,7 @@ namespace POS_Server.Controllers
                             entity.packages.Remove(objectDelete);
                             message = entity.SaveChanges().ToString();
 
-                          
+
                             return TokenManager.GenerateToken(message);
                         }
                     }
@@ -756,63 +756,63 @@ namespace POS_Server.Controllers
                 }
             }
 
-                //var re = Request;
-                //var headers = re.Headers;
-                //string token = "";
-                //int message = 0;
-                //if (headers.Contains("APIKey"))
-                //{
-                //    token = headers.GetValues("APIKey").First();
-                //}
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //int message = 0;
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
 
-                //Validation validation = new Validation();
-                //bool valid = validation.CheckApiKey(token);
-                //if (valid)
-                //{
-                //    if (final)
-                //    {
-                //        try
-                //        {
-                //            using (incposdbEntities entity = new incposdbEntities())
-                //            {
-                //                packages objectDelete = entity.packages.Find(packageId);
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
+            //if (valid)
+            //{
+            //    if (final)
+            //    {
+            //        try
+            //        {
+            //            using (incposdbEntities entity = new incposdbEntities())
+            //            {
+            //                packages objectDelete = entity.packages.Find(packageId);
 
-                //                entity.packages.Remove(objectDelete);
-                //                message = entity.SaveChanges();
+            //                entity.packages.Remove(objectDelete);
+            //                message = entity.SaveChanges();
 
-                //                return message.ToString();
-                //            }
-                //        }
-                //        catch
-                //        {
-                //            return "-1";
-                //        }
-                //    }
-                //    else
-                //    {
-                //        try
-                //        {
-                //            using (incposdbEntities entity = new incposdbEntities())
-                //            {
-                //                packages objectDelete = entity.packages.Find(packageId);
+            //                return message.ToString();
+            //            }
+            //        }
+            //        catch
+            //        {
+            //            return "-1";
+            //        }
+            //    }
+            //    else
+            //    {
+            //        try
+            //        {
+            //            using (incposdbEntities entity = new incposdbEntities())
+            //            {
+            //                packages objectDelete = entity.packages.Find(packageId);
 
-                //                objectDelete.isActive = 0;
-                //                objectDelete.updateUserId = userId;
-                //                objectDelete.updateDate = DateTime.Now;
-                //                message = entity.SaveChanges();
+            //                objectDelete.isActive = 0;
+            //                objectDelete.updateUserId = userId;
+            //                objectDelete.updateDate = DateTime.Now;
+            //                message = entity.SaveChanges();
 
-                //                return message.ToString(); ;
-                //            }
-                //        }
-                //        catch
-                //        {
-                //            return "-2";
-                //        }
-                //    }
-                //}
-                //else
-                //    return "-3";
-            }
+            //                return message.ToString(); ;
+            //            }
+            //        }
+            //        catch
+            //        {
+            //            return "-2";
+            //        }
+            //    }
+            //}
+            //else
+            //    return "-3";
+        }
 
         // GET api/<controller>
         [HttpPost]
@@ -824,8 +824,8 @@ namespace POS_Server.Controllers
             //public string Get(string token)
             //{
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -876,48 +876,48 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken("0");
                 }
             }
-                //var re = Request;
-                //var headers = re.Headers;
-                //string token = "";
-                //if (headers.Contains("APIKey"))
-                //{
-                //    token = headers.GetValues("APIKey").First();
-                //}
-                //Validation validation = new Validation();
-                //bool valid = validation.CheckApiKey(token);
+            //var re = Request;
+            //var headers = re.Headers;
+            //string token = "";
+            //if (headers.Contains("APIKey"))
+            //{
+            //    token = headers.GetValues("APIKey").First();
+            //}
+            //Validation validation = new Validation();
+            //bool valid = validation.CheckApiKey(token);
 
-                //if (valid)
-                //{
-                //    using (incposdbEntities entity = new incposdbEntities())
-                //    {
-                //        var list = entity.packages
-                //       .Where(u => u.parentIUId == parentIUId)
-                //       .Select(S => new
-                //       {
-                //           S.packageId,
-                //           S.parentIUId,
-                //           S.childIUId,
-                //           S.quantity,
-                //           S.isActive,
-                //           S.notes,
-                //           S.createUserId,
-                //           S.updateUserId,
-                //           S.createDate,
-                //           S.updateDate,
+            //if (valid)
+            //{
+            //    using (incposdbEntities entity = new incposdbEntities())
+            //    {
+            //        var list = entity.packages
+            //       .Where(u => u.parentIUId == parentIUId)
+            //       .Select(S => new
+            //       {
+            //           S.packageId,
+            //           S.parentIUId,
+            //           S.childIUId,
+            //           S.quantity,
+            //           S.isActive,
+            //           S.notes,
+            //           S.createUserId,
+            //           S.updateUserId,
+            //           S.createDate,
+            //           S.updateDate,
 
 
-                //       })
-                //       .ToList();
+            //       })
+            //       .ToList();
 
-                //        if (list == null)
-                //            return NotFound();
-                //        else
-                //            return Ok(list);
-                //    }
-                //}
-                //else
-                //    return NotFound();
-            }
+            //        if (list == null)
+            //            return NotFound();
+            //        else
+            //            return Ok(list);
+            //    }
+            //}
+            //else
+            //    return NotFound();
+        }
 
         #region
         [HttpPost]
@@ -928,8 +928,8 @@ namespace POS_Server.Controllers
             //newplist
 
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -938,7 +938,7 @@ namespace POS_Server.Controllers
             {
                 List<packages> newitofObj = new List<packages>();
                 string newlist = "";
-           
+
                 int userId = 0;
                 int parentIUId = 0;
 
@@ -1084,6 +1084,88 @@ namespace POS_Server.Controllers
 
         }
         #endregion
+
+
+        public List<PackageModel> GetChildsByParentId(int parentIUId)
+        {
+            List<PackageModel> list = new List<PackageModel>();
+
+            try
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    list = (from S in entity.packages
+                            join IU in entity.itemsUnits on S.childIUId equals IU.itemUnitId
+                            join I in entity.items on IU.itemId equals I.itemId
+                            where S.parentIUId == parentIUId
+                            select new PackageModel()
+                            {
+
+                                packageId = S.packageId,
+                                parentIUId = S.parentIUId,
+                                childIUId = S.childIUId,
+                                quantity = S.quantity,
+                                isActive = S.isActive,
+                                avgPurchasePrice = I.avgPurchasePrice,
+                                citemId=I.itemId,
+                                type=I.type,
+                            }).ToList();
+
+                    return list;
+
+                }
+            }
+            catch
+            {
+                return list;
+            }
+        }
+
+        //[HttpPost]
+        //[Route("GetChilds")]
+        //public string GetChilds(string token)
+        //{
+
+
+        //    //public string Get(string token)
+        //    //{
+
+        //    token = TokenManager.readToken(HttpContext.Current.Request);
+        //    var strP = TokenManager.GetPrincipal(token);
+        //    if (strP != "0") //invalid authorization
+        //    {
+        //        return TokenManager.GenerateToken(strP);
+        //    }
+        //    else
+        //    {
+        //        int parentIUId = 0;
+        //        IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+        //        foreach (Claim c in claims)
+        //        {
+        //            if (c.Type == "parentIUId")
+        //            {
+        //                parentIUId = int.Parse(c.Value);
+        //            }
+
+
+        //        }
+        //        try
+        //        {
+        //            List<PackageModel> list = GetChildsByParentId(parentIUId);
+
+        //                return TokenManager.GenerateToken(list);
+ 
+        //        }
+        //        catch
+        //        {
+        //            return TokenManager.GenerateToken("0");
+        //        }
+        //    }
+  
+        //}
+
+
+
 
     }
 }

@@ -46,6 +46,6 @@ namespace POS_Server.Models
         //units
         public Nullable<int> cunitId { get; set; }
         public string cunitName { get; set; }
-
+        public Nullable<decimal> avgPurchasePrice { get; set; }
     }
 }

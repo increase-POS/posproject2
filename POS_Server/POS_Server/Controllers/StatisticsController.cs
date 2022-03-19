@@ -9762,10 +9762,10 @@ namespace POS_Server.Controllers
 
 
                             //
-                            if(row.itemType=="p" || row.itemType == "sr")
+                            if(row.itemType=="p" )
                             {
                             
-                                unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice==null ? 0 : row.avgPurchasePrice); ;
+                                unitpurchasePrice = AvgPackagePurPrice(ITitemUnitId); 
                                 row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
 
                                 if (row.discountValue > 0)
@@ -9786,7 +9786,8 @@ namespace POS_Server.Controllers
                             }
                             else
                             {
-                                unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice);
+                                
+                                   unitpurchasePrice = AvgPurPrice((int)row.ITitemUnitId, (int)row.ITitemId, row.avgPurchasePrice == null ? 0 : row.avgPurchasePrice);
                                 row.purchasePrice = (decimal)row.ITquantity * unitpurchasePrice;
 
                                 if (row.discountValue > 0)
@@ -9806,12 +9807,7 @@ namespace POS_Server.Controllers
 
                             }
 
-
-
                         }
-
-
-
 
                         return TokenManager.GenerateToken(invListm);
 
@@ -9828,6 +9824,28 @@ namespace POS_Server.Controllers
 
             }
 
+
+        }
+
+        public decimal AvgPackagePurPrice(int parentIUId)
+        {
+            PackageController pctrlr = new PackageController();
+            decimal avgtotal = 0;
+
+            List<PackageModel> list = pctrlr.GetChildsByParentId(parentIUId);
+            foreach (var row in list)
+            {
+                if (row.type == "p")
+                {
+                    avgtotal += AvgPackagePurPrice((int)row.childIUId);
+                }
+                else
+                {
+                    avgtotal += AvgPurPrice((int)row.childIUId, (int)row.citemId, row.avgPurchasePrice == null ? 0 : row.avgPurchasePrice) * row.quantity;
+
+                }
+            }
+            return avgtotal;
 
         }
         public decimal AvgPurPrice(int itemUnitId, int itemId, decimal? smallavgprice)
