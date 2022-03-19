@@ -96,7 +96,7 @@
                                  VerticalAlignment="Center" Padding="10,0,5,0" 
                                               Margin="10" Height="13" Width="28" />
                 <TextBlock x:Name="txt_directEntry" Grid.Row="5" Grid.Column="0" 
-                                Margin="10" Text="Show header" Foreground="#6e6e6e"
+                                Margin="10" Text="directEntry" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center"
                                   FontSize="12"/>
                 <ToggleButton x:Name="tgl_directEntry" Grid.Row="5" Grid.Column="1"    IsChecked="True"
