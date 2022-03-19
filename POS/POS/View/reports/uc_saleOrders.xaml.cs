@@ -728,8 +728,8 @@ namespace POS.View.reports
             col_coupon.Visibility = Visibility.Hidden;
             col_offers.Visibility = Visibility.Hidden;
             col_coupoValue.Visibility = Visibility.Hidden;
-            col_couponType.Visibility = Visibility.Hidden;
-            col_offersType.Visibility = Visibility.Hidden;
+            //col_couponType.Visibility = Visibility.Hidden;
+            //col_offersType.Visibility = Visibility.Hidden;
             col_offersValue.Visibility = Visibility.Hidden;
             col_offersTotalValue.Visibility = Visibility.Hidden;
             col_couponTotalValue.Visibility = Visibility.Hidden;

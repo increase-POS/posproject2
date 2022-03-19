@@ -174,7 +174,7 @@ namespace POS.View.reports
             col_invCount.Header = MainWindow.resourcemanager.GetString("trInvoices");
             col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
             col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
-            col_avg.Header = MainWindow.resourcemanager.GetString("trItem")+"/"+ MainWindow.resourcemanager.GetString("trI_nvoice");
+            col_avg.Header = MainWindow.resourcemanager.GetString("trItem")+"/"+ MainWindow.resourcemanager.GetString("tr_Invoice");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");

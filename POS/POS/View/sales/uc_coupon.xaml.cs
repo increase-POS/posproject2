@@ -180,9 +180,9 @@ namespace POS.View
 
 
 
-        private int _numValue = 0;
+        private decimal _numValue = 0;
 
-        public int NumValue
+        public decimal NumValue
         {
             get { return _numValue; }
             set
@@ -235,7 +235,7 @@ namespace POS.View
                     return;
                 }
 
-                if (!int.TryParse(tb_discountValue.Text, out _numValue))
+                if (!decimal.TryParse(tb_discountValue.Text, out _numValue))
                     tb_discountValue.Text = _numValue.ToString();
 
             }
@@ -247,16 +247,22 @@ namespace POS.View
 
         private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            try
-            {
-                Regex regex = new Regex("[^0-9]+");
-                e.Handled = regex.IsMatch(e.Text);
+            //try
+            //{
+            //    Regex regex = new Regex("[^0-9]+");
+            //    e.Handled = regex.IsMatch(e.Text);
 
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
         }
         #endregion
         private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
@@ -681,13 +687,13 @@ namespace POS.View
                         cb_typeDiscount.IsEnabled = false;
                         tb_discountValue.IsEnabled = false;
 
-                        tb_discountValue.Text = SectionData.DecTostring(coupon.discountValue);
+                        tb_discountValue.Text = SectionData.PercentageDecTostring(coupon.discountValue);
                         tb_MinInvoiceValue.Text = SectionData.DecTostring(coupon.invMin);
                         tb_MaxInvoiceValue.Text = SectionData.DecTostring(coupon.invMax);
                         tb_quantity.Text = coupon.quantity.ToString();
                         tgl_ActiveCoupon.IsChecked = Convert.ToBoolean(coupon.isActive);
                         cb_typeDiscount.SelectedValue = coupon.discountType;
-                        tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
+                        //tb_discountValue.Text = (Convert.ToInt32(coupon.discountValue)).ToString();
                         tb_barcode.Visibility = Visibility.Visible;
                         img_barcode.Visibility = Visibility.Visible;
                         tb_barcode.Text = coupon.barcode;

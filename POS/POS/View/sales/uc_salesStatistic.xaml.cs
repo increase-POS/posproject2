@@ -210,6 +210,7 @@ namespace POS.View.sales
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_invoice);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_invoice);
+                col_processType.Visibility = Visibility.Visible;
 
                 fillEvents();
                 rowToHide.Height = rowToShow.Height;
@@ -242,6 +243,7 @@ namespace POS.View.sales
                 path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_order);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_order);
+                col_processType.Visibility = Visibility.Hidden;
 
                 fillEvents();
                 rowToHide.Height = new GridLength(0);
@@ -274,6 +276,7 @@ namespace POS.View.sales
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_quotation);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_quotation);
+                col_processType.Visibility = Visibility.Hidden;
 
                 fillEvents();
                 rowToHide.Height = new GridLength(0);

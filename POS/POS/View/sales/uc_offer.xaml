@@ -139,7 +139,14 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=discountValue , Converter={StaticResource accuracyConverter}}">
+                        <!--Binding="{Binding Path=discountValue , Converter={StaticResource accuracyDiscountConverter}}"-->
+                        <DataGridTextColumn Width="*"  Header="Value" >
+                            <DataGridTextColumn.Binding >
+                                <MultiBinding Converter="{StaticResource accuracyDiscountConverter}" >
+                                    <Binding Path="discountType" />
+                                    <Binding Path="discountValue" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -546,24 +553,19 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBox  x:Name="tb_discountValue" x:FieldModifier="private" TextChanged="tb_discountValue_TextChanged"
+                                    <TextBox  x:Name="tb_discountValue" x:FieldModifier="private" 
                                               Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                                          Text="{Binding test, Mode=OneWay}" Grid.Row="2"  Padding="10,0,5,0"   
-                                                          BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Discount Value..."    
-                                                          Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                                          BorderBrush="AliceBlue" 
-                                                          materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                          Height="40"   Margin="5,5,10,5" 
-                                                      PreviewKeyDown="Tb_PreventSpaces" 
-                                                      PreviewTextInput="Tb_discountValue_PreviewTextInput" 
-                                                       LostFocus="Tb_validateEmptyLostFocus">
-                                        <!--<TextBox.ToolTip>
-                                            <ToolTip x:Name="tt_discountValue" Content="Discount Value"
-                                                          Placement="left" 
-                                                          HorizontalOffset="35"
-                                                          PlacementRectangle="50,0,0,0"
-                                                          VerticalOffset="20"/>
-                                        </TextBox.ToolTip>-->
+                                                Text="{Binding discountValue, Mode=OneWay}" Grid.Row="2"  Padding="10,0,5,0"   
+                                                BorderThickness="0,0,0,2" materialDesign:HintAssist.Hint="Discount Value..."    
+                                                Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                                BorderBrush="AliceBlue" 
+                                                materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                                Height="40"   Margin="5,5,10,5" 
+                                                PreviewKeyDown="Tb_PreventSpaces" 
+                                                PreviewTextInput="Tb_discountValue_PreviewTextInput" 
+                                                LostFocus="Tb_validateEmptyLostFocus"
+                                                TextChanged="tb_discountValue_TextChanged">
+                                     
                                     </TextBox>
 
                                     <Path x:Name="p_errorDiscountValue"

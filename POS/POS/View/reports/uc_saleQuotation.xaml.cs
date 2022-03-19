@@ -181,7 +181,7 @@ namespace POS.View.reports
             col_type.Header = MainWindow.resourcemanager.GetString("trType");
             col_Date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_coupon.Header = MainWindow.resourcemanager.GetString("trCoupon");
-            col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
+            //col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
             col_coupoValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_couponTotalValue.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
@@ -197,7 +197,7 @@ namespace POS.View.reports
             col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_itQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_offers.Header = MainWindow.resourcemanager.GetString("trOffer_");
-            col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
+            //col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
             col_offersValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_offersTotalValue.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
@@ -716,8 +716,8 @@ namespace POS.View.reports
             col_coupon.Visibility = Visibility.Hidden;
             col_offers.Visibility = Visibility.Hidden;
             col_coupoValue.Visibility = Visibility.Hidden;
-            col_couponType.Visibility = Visibility.Hidden;
-            col_offersType.Visibility = Visibility.Hidden;
+            //col_couponType.Visibility = Visibility.Hidden;
+            //col_offersType.Visibility = Visibility.Hidden;
             col_offersValue.Visibility = Visibility.Hidden;
             col_offersTotalValue.Visibility = Visibility.Hidden;
             col_couponTotalValue.Visibility = Visibility.Hidden;

@@ -141,7 +141,14 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Value" Binding="{Binding Path=discountValue , Converter={StaticResource accuracyConverter}}">
+                        <!--Binding="{Binding Path=discountValue , Converter={StaticResource accuracyConverter}}"-->
+                        <DataGridTextColumn Width="*"  Header="Value" >
+                            <DataGridTextColumn.Binding >
+                                <MultiBinding Converter="{StaticResource accuracyDiscountConverter}" >
+                                    <Binding Path="discountType" />
+                                    <Binding Path="discountValue" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -163,7 +170,14 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Remain Quantity" Binding="{Binding Path=remainQ}">
+                        <!--Binding="{Binding Path=remainQ ,Converter={StaticResource unlimitedCouponConverter }}"-->
+                        <DataGridTextColumn Width="*"  Header="Remain Quantity">
+                            <DataGridTextColumn.Binding >
+                                <MultiBinding Converter="{StaticResource unlimitedRemainCoupon}" >
+                                    <Binding Path="quantity" />
+                                    <Binding Path="remainQ" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -546,21 +560,16 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBox   Margin="5,5,10,5" x:Name="tb_discountValue" x:FieldModifier="private" 
-                                                           TextChanged="tb_discountValue_TextChanged"
-                                                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-
-                                                           Grid.Row="2"  Padding="10,0,5,0"
-                                                           BorderThickness="0,0,0,2"
-                                                           materialDesign:HintAssist.Hint="Discount Value..."    
-                                                           Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
-                                                           BorderBrush="AliceBlue" 
-                                                           PreviewTextInput="tb_discountValue_PreviewTextInput"
-                                                        
-                                                           materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                           Height="40"  
-                                                           PreviewKeyDown="Tb_preventSpaces"  
-                                                           
-                                                           LostFocus="Tb_validateEmptyLostFocus">
+                                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                            Grid.Row="2"  Padding="10,0,5,0" Height="40"
+                                            BorderThickness="0,0,0,2" BorderBrush="AliceBlue" 
+                                            materialDesign:HintAssist.Hint="Discount Value..."    
+                                            Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"
+                                            PreviewTextInput="tb_discountValue_PreviewTextInput"
+                                            materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                            PreviewKeyDown="Tb_preventSpaces"  
+                                            TextChanged="tb_discountValue_TextChanged"
+                                            LostFocus="Tb_validateEmptyLostFocus">
                                         <TextBox.ToolTip>
                                             <ToolTip x:Name="tt_discountValue" Content="Discount Value"
                                                          Placement="left" 

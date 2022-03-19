@@ -294,6 +294,8 @@
     </Compile>
     <Compile Include="Classes\ValidatorExtensions.cs" />
     <Compile Include="converters\accuracyConverter.cs" />
+    <Compile Include="converters\accuracyDiscountConverter.cs" />
+    <Compile Include="converters\accuracyTaxConverter.cs" />
     <Compile Include="converters\agentCompanyConverter.cs" />
     <Compile Include="converters\agentNameConverter.cs" />
     <Compile Include="converters\agentTypeConverter.cs" />
@@ -336,6 +338,7 @@
     <Compile Include="converters\transTypeConverter.cs" />
     <Compile Include="converters\unitItemsListConverter.cs" />
     <Compile Include="converters\unlimitedCouponConverter.cs" />
+    <Compile Include="converters\unlimitedRemainCoupon.cs" />
     <Compile Include="Keyboard\AnimationHelper.cs" />
     <Compile Include="Keyboard\EnvironmentEx.cs" />
     <Compile Include="Keyboard\HardwareKeyboard.cs" />

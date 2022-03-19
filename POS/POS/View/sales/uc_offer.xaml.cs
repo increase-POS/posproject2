@@ -97,9 +97,9 @@ namespace POS.View
         }
         #region Numeric
 
-        private int _numValue = 0;
+        private decimal _numValue = 0;
 
-        public int NumValue
+        public decimal NumValue
         {
             get { return _numValue; }
             set
@@ -139,19 +139,33 @@ namespace POS.View
         {
             try
             {
+                //if (tb_discountValue == null)
+                //{
+                //    return;
+                //}
+                //var txb = sender as TextBox;
+
+                //if ((sender as TextBox).Name == "tb_discountValue")
+                //    SectionData.InputJustNumber(ref txb);
+
+                //if (!decimal.TryParse(tb_discountValue.Text, out _numValue))
+                //    tb_discountValue.Text = _numValue.ToString();
+                //else
+                //    _numValue =decimal.Parse( tb_discountValue.Text);
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
+                var txb = sender as TextBox;
+                if ((sender as TextBox).Name == "tb_discountValue")
+                    SectionData.InputJustNumber(ref txb);
+
                 if (tb_discountValue == null)
                 {
                     return;
                 }
-                var txb = sender as TextBox;
 
-                if ((sender as TextBox).Name == "tb_discountValue")
-                    SectionData.InputJustNumber(ref txb);
-
-                if (!int.TryParse(tb_discountValue.Text, out _numValue))
+                if (!decimal.TryParse(tb_discountValue.Text, out _numValue))
                     tb_discountValue.Text = _numValue.ToString();
-                else
-                    _numValue =int.Parse( tb_discountValue.Text);
+
             }
             catch (Exception ex)
             {
@@ -161,15 +175,22 @@ namespace POS.View
 
         private void tb_discountValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            try
-            {
-                Regex regex = new Regex("[^0-9]+");
-                e.Handled = regex.IsMatch(e.Text);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //try
+            //{
+            //    Regex regex = new Regex("[^0-9]+");
+            //    e.Handled = regex.IsMatch(e.Text);
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
+            var regex = new Regex(@"^[0-9]*(?:\.[0-9]*)?$");
+            if (regex.IsMatch(e.Text) && !(e.Text == "." && ((TextBox)sender).Text.Contains(e.Text)))
+                e.Handled = false;
+
+            else
+                e.Handled = true;
         }
         #endregion
 
@@ -474,6 +495,7 @@ namespace POS.View
                 SectionData.clearValidate(tbStartTime, p_errorStartTime);
                 TextBox tbEndTime = (TextBox)tp_endTime.Template.FindName("PART_TextBox", tp_endTime);
                 SectionData.clearValidate(tbEndTime, p_errorEndTime);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -618,10 +640,10 @@ namespace POS.View
                     {
                         btn_items.IsEnabled = true;
 
-                        tb_discountValue.Text = SectionData.DecTostring(offer.discountValue);
+                        tb_discountValue.Text = SectionData.PercentageDecTostring(offer.discountValue);
                         tgl_ActiveOffer.IsChecked = Convert.ToBoolean(offer.isActive);
                         cb_discountType.SelectedValue = offer.discountType;
-                        tb_discountValue.Text = (Convert.ToInt32(offer.discountValue)).ToString();
+                        //tb_discountValue.Text = (Convert.ToInt32(offer.discountValue)).ToString();
                         dp_startDate.Text = offer.startDate.Value.ToShortDateString();
                         dp_endDate.Text = offer.endDate.Value.ToShortDateString();
                         tp_startTime.Text = offer.startDate.Value.ToShortTimeString();

@@ -316,7 +316,7 @@
                         <!--invoice-->
                         <DataGridTextColumn x:Name="col_invQuantity"   Width="*" Header="QTY"         Binding="{Binding itemsRowsCount }" />
                         <DataGridTextColumn x:Name="col_invTotal"      Width="*" Header="Total"       Binding="{Binding totalNoTax   ,Converter={StaticResource accuracyConverter}}" />
-                        <DataGridTextColumn x:Name="col_invTaxPercent" Width="*" Header="Tax Percent" Binding="{Binding tax          ,Converter={StaticResource accuracyConverter}}" />
+                        <DataGridTextColumn x:Name="col_invTaxPercent" Width="*" Header="Tax Percent" Binding="{Binding tax          ,Converter={StaticResource accuracyTaxConverter}}" />
                         <DataGridTextColumn x:Name="col_taxOnInvoice"  Width="*" Header="On Invoice"  Binding="{Binding invTaxVal    ,Converter={StaticResource accuracyConverter}}" >
                             <DataGridTextColumn.Foreground>
                                 <SolidColorBrush Color="#178DD2"/>
@@ -336,7 +336,7 @@
                         <DataGridTextColumn x:Name="col_itemsQuantity"  Width="*" Header="QTY"          Binding="{Binding ITquantity }" />
                         <DataGridTextColumn x:Name="col_itemsTotal"     Width="*" Header="Total"          Binding="{Binding subTotalNotax }" />
                         <DataGridTextColumn x:Name="col_itemTaxPercent" Width="*" Header="Item Percent" Binding="{Binding ItemTaxes          ,Converter={StaticResource accuracyConverter}}" />
-                        <DataGridTextColumn x:Name="col_taxOnItems"     Width="*" Header="On Items"     Binding="{Binding itemUnitTaxwithQTY ,Converter={StaticResource accuracyConverter}}" >
+                        <DataGridTextColumn x:Name="col_taxOnItems"     Width="*" Header="On Items"     Binding="{Binding itemUnitTaxwithQTY ,Converter={StaticResource accuracyTaxConverter}}" >
                             <DataGridTextColumn.Foreground>
                                 <SolidColorBrush Color="#178DD2"/>
                             </DataGridTextColumn.Foreground>
