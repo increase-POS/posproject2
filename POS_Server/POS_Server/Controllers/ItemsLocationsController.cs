@@ -5105,12 +5105,7 @@ namespace POS_Server.Controllers
                 {
                     return TokenManager.GenerateToken("0");
                 }
-
-
             }
-
-
-
         }
 
         [HttpPost]
@@ -5134,12 +5129,10 @@ namespace POS_Server.Controllers
                     if (c.Type == "branchId")
                     {
                         branchId = int.Parse(c.Value);
-
                     }
                 }
                 try
                 {
-
                     InvoicesController c = new InvoicesController();
                     var orders = c.getUnhandeledOrdersList("ors", 0, branchId);
 
@@ -5148,7 +5141,8 @@ namespace POS_Server.Controllers
                         List<ItemTransferModel> requiredTransfers = new List<ItemTransferModel>();
                         foreach (InvoiceModel invoice in orders)
                         {
-                            var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoice.invoiceId).ToList();
+                            var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoice.invoiceId 
+                                                                    && x.itemsUnits.items.type != "sr").ToList();
                             foreach (itemsTransfer tr in itemsTransfer)
                             {
                                 var lockedQuantity = entity.itemsLocations
