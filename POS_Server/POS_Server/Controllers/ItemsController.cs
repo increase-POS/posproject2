@@ -1664,6 +1664,10 @@ var strP = TokenManager.GetPrincipal(token);
                         Nullable<int> id = null;
                         itemObj.maxUnitId = id;
                     }
+                    if(itemObj.avgPurchasePrice == null)
+                    {
+                        itemObj.avgPurchasePrice = 0;
+                    }
                     try
                     {
                         items itemModel;
