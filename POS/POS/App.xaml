@@ -50,6 +50,10 @@
             <converters:itemTypeConverter x:Key="itemTypeConverter"/>
             <converters:isActiveConverter x:Key="isActiveConverter"/>
             <converters:posTransfersStatusConverter x:Key="posTransfersStatusConverter"/>
+            <converters:unlimitedRemainCoupon x:Key="unlimitedRemainCoupon"/>
+            <converters:accuracyTaxConverter x:Key="accuracyTaxConverter"/>
+            <converters:accuracyDiscountConverter x:Key="accuracyDiscountConverter"/>
+            
             <!--<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>-->
             <!--#region Fonts-->
             <FontFamily x:Key="BarcodeFont" >IDAHC39M Code 39 Barcode, /POS;component/fonts/#IDAHC39M Code 39 Barcode, Arial</FontFamily>
