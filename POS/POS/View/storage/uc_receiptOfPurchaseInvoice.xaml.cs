@@ -123,7 +123,7 @@ namespace POS.View.storage
             dg_billDetails.Columns[6].Header = MainWindow.resourcemanager.GetString("trTotal");
 
             txt_invoices.Text = MainWindow.resourcemanager.GetString("trInvoices");
-            txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trReturnInvoices");
+            txt_returnInvoice.Text = MainWindow.resourcemanager.GetString("trPurchases");
             txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trDirectEntry");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
