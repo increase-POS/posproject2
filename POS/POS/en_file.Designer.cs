@@ -70,6 +70,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It must be greater than zero.
+        /// </summary>
+        internal static string itMustBeGreaterThanZero {
+            get {
+                return ResourceManager.GetString("itMustBeGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Num.
         /// </summary>
         internal static string Num__ {

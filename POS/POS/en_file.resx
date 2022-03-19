@@ -3448,4 +3448,7 @@ Please add Email in setting</value>
   <data name="trDeservedDate" xml:space="preserve">
     <value>Deserved date</value>
   </data>
+  <data name="itMustBeGreaterThanZero" xml:space="preserve">
+    <value>It must be greater than zero</value>
+  </data>
 </root>

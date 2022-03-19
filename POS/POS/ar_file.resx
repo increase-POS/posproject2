@@ -3427,4 +3427,7 @@
   <data name="trDeservedDate" xml:space="preserve">
     <value>تاريخ الإستحقاق</value>
   </data>
+  <data name="itMustBeGreaterThanZero" xml:space="preserve">
+    <value>يجب أن يكون أكبر من الصفر</value>
+  </data>
 </root>
