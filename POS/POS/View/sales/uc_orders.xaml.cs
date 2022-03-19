@@ -2537,7 +2537,9 @@ namespace POS.View.sales
                                 _InvoiceType = "or";
                             else
                                 _InvoiceType = "ors";
-                            await addInvoice(_InvoiceType);//quontation invoice                            
+
+                            await addInvoice(_InvoiceType);
+                            
                             if (_InvoiceType == "or")
                                 await clearInvoice();
                             else
@@ -2545,6 +2547,8 @@ namespace POS.View.sales
                                 txt_invNumber.Text = invoice.invNumber;
                                 inputEditable();
                             }
+
+                            setNotifications();
                             #region notification Object
                             Notification not = new Notification()
                             {
@@ -2555,10 +2559,7 @@ namespace POS.View.sales
                                 updateUserId = MainWindow.userID.Value,
                             };
                             await notification.save(not, (int)cb_branch.SelectedValue, "saleAlerts_executeOrder", MainWindow.userLogin.name);
-                            #endregion
-
-                            refreshDraftNotification();
-                            refreshOrdersNotification();
+                            #endregion                            
                         }                        
                     }
                 }
