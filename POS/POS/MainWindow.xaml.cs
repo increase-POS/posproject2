@@ -114,6 +114,8 @@ namespace POS
         public static string docPapersize;
         public static string Allow_print_inv_count;
         public static string show_header;
+        public static string print_on_save_directentry;
+        public static string directentry_copy_count;
         public static Boolean go_out = false;
         public static Boolean go_out_didNotAnyProcess = false;
         static public PosSetting posSetting = new PosSetting();
@@ -162,6 +164,8 @@ namespace POS
             }
             itemtax_note = printList.Where(X => X.name == "itemtax_note").FirstOrDefault().value;
             sales_invoice_note = printList.Where(X => X.name == "sales_invoice_note").FirstOrDefault().value;
+            print_on_save_directentry = printList.Where(X => X.name == "print_on_save_directentry").FirstOrDefault().value;
+            directentry_copy_count = printList.Where(X => X.name == "directentry_copy_count").FirstOrDefault().value;
         }
         public static async Task GetReportlang()
         {

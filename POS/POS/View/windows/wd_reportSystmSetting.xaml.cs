@@ -43,12 +43,13 @@ namespace POS.View.windows
         SetValues email_on_save_purrow = new SetValues();
         SetValues show_header_row = new SetValues();
         SetValues setvalueModel = new SetValues();
+        SetValues print_on_save_directentryrow = new SetValues();
         string print_on_save_sale;
         string print_on_save_pur;
         string email_on_save_sale;
         string email_on_save_pur;
         string show_header;
-
+        string print_on_save_directentry;
         List<SetValues> printList = new List<SetValues>();
 
         async Task Getprintparameter()
@@ -74,6 +75,9 @@ namespace POS.View.windows
 
             show_header_row = printList.Where(X => X.name == "show_header").FirstOrDefault();
             show_header = show_header_row.value;
+
+            print_on_save_directentryrow = printList.Where(X => X.name == "print_on_save_directentry").FirstOrDefault();
+            print_on_save_directentry = print_on_save_directentryrow.value;
 
             if (print_on_save_pur == "1")
             {
@@ -119,7 +123,14 @@ namespace POS.View.windows
             {
                 tgl_showHeader.IsChecked = false;
             }
-
+            if (print_on_save_directentry == "1")
+            {
+              tgl_directEntry.IsChecked = true;
+            }
+            else
+            {
+                tgl_directEntry.IsChecked = false;
+            }
             /*
             tgl_printOnSaveSale
             tgl_emailOnSavePur
@@ -313,12 +324,22 @@ namespace POS.View.windows
             {
                 show_header_row.value = "0";
             }
+            if ((bool)tgl_directEntry.IsChecked)
+            {
+                print_on_save_directentryrow.value = "1";
+
+            }
+            else
+            {
+                print_on_save_directentryrow.value = "0";
+            }
             //   tgl_showHeader
             msg = await setvalueModel.Save(print_on_save_purrow);
             msg = await setvalueModel.Save(print_on_save_salerow);
             msg = await setvalueModel.Save(email_on_save_purrow);
             msg = await setvalueModel.Save(email_on_save_salerow);
-         //   msg = await setvalueModel.Save(show_header_row);
+            msg = await setvalueModel.Save(print_on_save_directentryrow);
+            //   msg = await setvalueModel.Save(show_header_row);
 
             await Getprintparameter();
             await MainWindow.Getprintparameter();

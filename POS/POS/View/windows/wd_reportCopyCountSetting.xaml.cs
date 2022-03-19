@@ -41,12 +41,14 @@ namespace POS.View.windows
         string sale_copy_count;
         string pur_copy_count;
         string rep_copy_count;
+        string directentry_copy_count;
         SetValues setvalueModel = new SetValues();
         List<SetValues> printList = new List<SetValues>();
 
         public SetValues sale_copy_countrow = new SetValues();
         public SetValues pur_copy_countrow = new SetValues();
         public SetValues rep_copy_countrow = new SetValues();
+        public SetValues directentry_copy_countrow = new SetValues();
 
         async Task refreshWindow()
         {
@@ -58,11 +60,14 @@ namespace POS.View.windows
             pur_copy_count = pur_copy_countrow.value;
             rep_copy_countrow = printList.Where(X => X.name == "rep_copy_count").FirstOrDefault();
             rep_copy_count = rep_copy_countrow.value;
+            directentry_copy_countrow = printList.Where(X => X.name == "directentry_copy_count").FirstOrDefault();
+            directentry_copy_count = directentry_copy_countrow.value;
 
             tb_purCopyCount.Text = pur_copy_count;
 
             tb_saleCopyCount.Text = sale_copy_count;
             tb_repPrintCount.Text = rep_copy_count;
+            tb_directEntry.Text = directentry_copy_count;
         }
 
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
@@ -168,7 +173,8 @@ namespace POS.View.windows
             sale_copy_countrow.value = (string)tb_saleCopyCount.Text;
             pur_copy_countrow.value = (string)tb_purCopyCount.Text;
             rep_copy_countrow.value = (string)tb_repPrintCount.Text;
-            if (int.Parse(sale_copy_countrow.value) <=0 || int.Parse(pur_copy_countrow.value) <= 0|| int.Parse(rep_copy_countrow.value)<=0)
+            directentry_copy_countrow.value = (string)tb_directEntry.Text;
+            if (int.Parse(sale_copy_countrow.value) <=0 || int.Parse(pur_copy_countrow.value) <= 0|| int.Parse(rep_copy_countrow.value)<=0 || int.Parse(directentry_copy_countrow.value) <= 0)
             {
                 Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trMustBeMoreThanZero"), animation: ToasterAnimation.FadeIn);
             }
@@ -178,7 +184,7 @@ namespace POS.View.windows
                 msg = await setvalueModel.Save(sale_copy_countrow);
                 msg = await setvalueModel.Save(pur_copy_countrow);
                 msg = await setvalueModel.Save(rep_copy_countrow);
-
+                msg = await setvalueModel.Save(directentry_copy_countrow);
                 await refreshWindow();
                 await MainWindow.Getprintparameter();
                 if (msg > 0)
