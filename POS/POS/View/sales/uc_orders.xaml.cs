@@ -1019,6 +1019,7 @@ namespace POS.View.sales
             cb_customer.SelectedIndex = -1;
             cb_customer.SelectedItem = "";
             btn_updateCustomer.IsEnabled = false;
+            tgl_ActiveOffer.IsChecked = false;
             cb_branch.SelectedIndex = -1;
             cb_branch.SelectedItem = "";
             tb_note.Clear();
