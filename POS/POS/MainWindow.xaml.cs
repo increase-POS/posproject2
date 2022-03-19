@@ -1783,6 +1783,10 @@ namespace POS
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trCashBalance");
                 else if (tag == "profit")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trProfits");
+                 else if (tag == "closing")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trDailyClosing");
+                 else if (tag == "tax")
+                    txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trTax");
 
                 #endregion
 
