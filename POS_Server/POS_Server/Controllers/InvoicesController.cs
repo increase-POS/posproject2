@@ -1601,6 +1601,51 @@ var strP = TokenManager.GetPrincipal(token);
                     return TokenManager.GenerateToken(invoicesList);
              }
         }
+        [HttpPost]
+        [Route("getWaitingOrders")]
+        public string getWaitingOrders(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string invType = "";
+                int branchCreatorId = 0;
+                int branchId = 0;
+                int duration = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invType")
+                    {
+                        invType = c.Value;
+                    }
+                    else if (c.Type == "branchCreatorId")
+                    {
+                        branchCreatorId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "duration")
+                    {
+                        duration = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
+                var invoicesList = getWaitingOrdersList(invType,branchId);
+                return TokenManager.GenerateToken(invoicesList);
+             }
+        }
        
         [HttpPost]
         [Route("GetCountUnHandeledOrders")]
@@ -2938,10 +2983,10 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("deleteOrder")]
         public string deleteOrder(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
+            token = TokenManager.readToken(HttpContext.Current.Request);
             ItemsLocationsController ilc = new ItemsLocationsController();
             string message = "";
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -3413,6 +3458,69 @@ var strP = TokenManager.GetPrincipal(token);
                         //    }
                         //}
                         //invoicesList[i].status = complete;
+                    }
+                }
+                return invoicesList;
+            }
+        }
+        public List<InvoiceModel> getWaitingOrdersList(string invType, int branchId)
+        {
+            string[] invTypeArray = invType.Split(',');
+            List<string> invTypeL = new List<string>();
+            foreach (string s in invTypeArray)
+                invTypeL.Add(s.Trim());
+
+            using (incposdbEntities entity = new incposdbEntities())
+            {
+                var searchPredicate = PredicateBuilder.New<invoices>();
+                searchPredicate = searchPredicate.And(inv => inv.isActive == true && invTypeL.Contains(inv.invType));
+               
+                if (branchId != 0)
+                    searchPredicate = searchPredicate.And(inv => inv.branchId == branchId);
+              
+                var invoicesList = (from b in entity.invoices.Where(searchPredicate)
+                                    join u in entity.users on b.createUserId equals u.userId into uj
+                                    from us in uj.DefaultIfEmpty()
+                                    join l in entity.branches on b.branchId equals l.branchId into lj
+                                    from x in lj.DefaultIfEmpty()
+                                    join y in entity.branches on b.branchCreatorId equals y.branchId into yj
+                                    from z in yj.DefaultIfEmpty()
+                                    join a in entity.agents on b.agentId equals a.agentId into aj
+                                    from ag in aj.DefaultIfEmpty()
+                                    where !entity.invoices.Any(y => y.invoiceMainId == b.invoiceId)
+                                    select new InvoiceModel()
+                                    {
+                                        invoiceId = b.invoiceId,
+                                        invNumber = b.invNumber,
+                                        agentId = b.agentId,
+                                        agentName = ag.name,
+                                        invType = b.invType,
+                                        tax = b.tax,
+                                        taxtype = b.taxtype,
+                                        name = b.name,
+                                        branchName = z.name,
+                                        branchCreatorName = z.name,
+                                        createrUserName = us.name + " " + us.lastname,
+                                        totalNet = b.totalNet,
+                                        total = b.total,
+                                        discountType = b.discountType,
+                                        discountValue = b.discountValue,
+                                        manualDiscountType = b.manualDiscountType,
+                                        manualDiscountValue = b.manualDiscountValue,
+                                        realShippingCost = b.realShippingCost,
+                                        shippingCost = b.shippingCost,
+                                        updateUserId = b.updateUserId,
+                                        isApproved = b.isApproved,
+                                        branchId = b.branchId,
+                                    })
+                .ToList();
+                if (invoicesList != null)
+                {
+                    for (int i = 0; i < invoicesList.Count(); i++)
+                    {
+                        int invoiceId = invoicesList[i].invoiceId;
+                        var itemList = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
+                        invoicesList[i].itemsCount = itemList.Count;                       
                     }
                 }
                 return invoicesList;

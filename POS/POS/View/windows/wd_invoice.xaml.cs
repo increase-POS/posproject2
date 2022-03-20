@@ -193,7 +193,11 @@ namespace POS.View.windows
         }
         private async Task refreshInvoices()
         {
-            if (condition == "orders") 
+            if (condition == "salesOrders") 
+            {
+                invoices = await invoice.getWaitingOrders(invoiceType,branchCreatorId, branchId,duration,userId);
+            }
+            else if (condition == "orders") 
             {
                 invoices = await invoice.getUnHandeldOrders(invoiceType,branchCreatorId, branchId,duration,userId);
             }

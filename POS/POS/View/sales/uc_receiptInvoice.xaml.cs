@@ -2200,7 +2200,7 @@ namespace POS.View
                     // sale invoices
                     string invoiceType = "or";
                     w.invoiceType = invoiceType;
-                    w.condition = "orders";
+                    w.condition = "salesOrders";
                     w.branchId = MainWindow.branchID.Value;
                     w.title = MainWindow.resourcemanager.GetString("trOrders");
 

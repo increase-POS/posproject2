@@ -370,6 +370,25 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<List<Invoice>> getWaitingOrders(string invType, int branchCreatorId, int branchId,int duration = 0,int userId = 0)
+        {
+            List<Invoice> items = new List<Invoice>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("invType", invType);
+            parameters.Add("branchCreatorId", branchCreatorId.ToString());
+            parameters.Add("branchId", branchId.ToString());
+            parameters.Add("duration", duration.ToString());
+            parameters.Add("userId", userId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/getWaitingOrders", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Invoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
         public async Task<List<Invoice>> getInvoicesToReturn(string invType, int userId )
         {
             List<Invoice> items = new List<Invoice>();
