@@ -201,7 +201,7 @@ namespace POS.View.reports
             col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotalInvoice");
             ////item
             col_itemunitName.Header = MainWindow.resourcemanager.GetString("trItemUnit");
-            col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trOnItem");
+            //col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trOnItem");
             col_price.Header = MainWindow.resourcemanager.GetString("trPrice");
             col_itemsQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_taxOnItems.Header = MainWindow.resourcemanager.GetString("trTaxValue");

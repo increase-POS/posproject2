@@ -123,7 +123,7 @@ namespace POS.View.reports
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(txt_search, MainWindow.resourcemanager.GetString("trSearchHint"));
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
-
+            //col_agentName
             col_tansNum.Header = MainWindow.resourcemanager.GetString("trNo");
             col_processType.Header = MainWindow.resourcemanager.GetString("trPaymentType");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
@@ -687,12 +687,13 @@ namespace POS.View.reports
         private void fillEvents(string side)
         {
             temp = fillList(payments, cb_vendors, cb_vendorPayType, cb_vendorAccountant, dp_vendorStartDate, dp_vendorEndDate).Where(x => x.side == side);
-            if (selectedTab == 1)
+            if (selectedTab == 1)//customer
             {
                 temp = temp.Where(t => (t.shippingCompanyId == null && t.userId == null && t.agentId != null) ||
-                                       (t.shippingCompanyId != null && t.userId != null && t.agentId != null));
+                                       (t.shippingCompanyId != null && t.userId != null && t.agentId != null) ||
+                                       t.agentId == null);
             }
-            else if (selectedTab == 4)
+            else if (selectedTab == 4)//shipping
             {
                 temp = temp.Where(t => (t.shippingCompanyId != null && t.userId == null && t.agentId != null) ||
                                        (t.shippingCompanyId != null && t.userId == null && t.agentId == null));
