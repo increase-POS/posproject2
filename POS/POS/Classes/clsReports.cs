@@ -304,7 +304,7 @@ namespace POS.Classes
 
             cashTransTypeConv(paramarr);
             cashTransferProcessTypeConv(paramarr);
- 
+
             paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
             paramarr.Add(new ReportParameter("trDepositor", MainWindow.resourcemanagerreport.GetString("trDepositor")));
             paramarr.Add(new ReportParameter("trPaymentTypeTooltip", MainWindow.resourcemanagerreport.GetString("trPaymentTypeTooltip")));
@@ -337,7 +337,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trWaiting", MainWindow.resourcemanagerreport.GetString("trWaiting")));
 
             DateFormConv(paramarr);
-          
+
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
 
@@ -345,10 +345,10 @@ namespace POS.Classes
         {
             posAccReport(cash, rep, reppath, paramarr);
             paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
-      
+
             paramarr.Add(new ReportParameter("trAccoutant", MainWindow.resourcemanagerreport.GetString("trAccoutant")));
             paramarr.Add(new ReportParameter("trAmount", MainWindow.resourcemanagerreport.GetString("trAmount")));
-           
+
 
 
         }
@@ -546,24 +546,72 @@ namespace POS.Classes
             rep.DataSources.Clear();
             foreach (var r in tempquery)
             {
-                r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+             //   r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                r.CopdiscountValue = decimal.Parse(DiscountConvert(r.CopdiscountType.ToString(),r.CopdiscountValue));
                 r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
-                r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+              //  r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                r.OdiscountValue = decimal.Parse(DiscountConvert(r.OdiscountType,r.OdiscountValue));
+
+
                 r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
                 r.ITprice = decimal.Parse(SectionData.DecTostring(r.ITprice));
+                r.price = decimal.Parse(SectionData.DecTostring(r.price));
                 r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
                 r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-                r.discountValue = decimal.Parse(SectionData.DecTostring(r.discountValue));
-                r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                r.discountValue = decimal.Parse(DiscountConvert(r.discountType,r.discountValue));
+                r.tax = decimal.Parse(SectionData.PercentageDecTostring(r.tax));
                 if (r.itemAvg != null)
                 {
                     r.itemAvg = double.Parse(SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString())));
 
                 }
+
             }
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", tempquery));
         }
+        public static string DiscountConvert(string type, decimal? value)
+        {
+            if (value != null) { 
+            decimal num = (decimal)value;
+            string s = num.ToString();
 
+            switch (MainWindow.accuracy)
+            {
+                case "0":
+                    s = string.Format("{0:F0}", num);
+                    break;
+                case "1":
+                    s = string.Format("{0:F1}", num);
+                    break;
+                case "2":
+                    s = string.Format("{0:F2}", num);
+                    break;
+                case "3":
+                    s = string.Format("{0:F3}", num);
+                    break;
+                default:
+                    s = string.Format("{0:F1}", num);
+                    break;
+            }
+
+
+            if (type == "2")
+            {
+                string sdc = string.Format("{0:G29}", decimal.Parse(s));
+                return sdc;
+            }
+            else
+            {
+      
+                return s;
+            }
+            }
+            else
+            {
+                return "0";
+            }
+
+        }
         public static void saleitemStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
 
@@ -591,8 +639,6 @@ Parameters!trValueDiscount.Value)
 
             paramarr.Add(new ReportParameter("trValueDiscount", MainWindow.resourcemanagerreport.GetString("trValueDiscount")));
             paramarr.Add(new ReportParameter("trPercentageDiscount", MainWindow.resourcemanagerreport.GetString("trPercentageDiscount")));
-
-
 
 
         }
@@ -629,7 +675,7 @@ Parameters!trValueDiscount.Value)
             }
             paramarr.Add(new ReportParameter("isTax", MainWindow.invoiceTax_bool.ToString()));
             paramarr.Add(new ReportParameter("invDate", date));
-            
+
             paramarr.Add(new ReportParameter("trPaymentMethodsheader", MainWindow.resourcemanagerreport.GetString("trPaymentMethods")));
 
             paramarr.Add(new ReportParameter("trCash", MainWindow.resourcemanagerreport.GetString("trCash")));
@@ -637,7 +683,7 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("trCheque", MainWindow.resourcemanagerreport.GetString("trCheque")));
             paramarr.Add(new ReportParameter("trCredit", MainWindow.resourcemanagerreport.GetString("trCredit")));
             paramarr.Add(new ReportParameter("trMultiplePayment", MainWindow.resourcemanagerreport.GetString("trMultiplePayment")));
-            
+
             itemTransferInvTypeConv(paramarr);
 
         }
@@ -723,11 +769,11 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trStocktaking");
             else if (firstTitle == "stock")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trStock");
-            else if ( firstTitle == "purchaseOrders")
+            else if (firstTitle == "purchaseOrders")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trPurchaseOrders");
-            else if (firstTitle == "saleOrders" )
+            else if (firstTitle == "saleOrders")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trSalesOrders");
-            
+
             else if (firstTitle == "saleItems" || firstTitle == "purchaseItem")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trItems");
             else if (firstTitle == "recipientReport")
@@ -756,7 +802,7 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trTax");
             else if (firstTitle == "closing")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trDailyClosing");
-      
+
             //trCashBalance trDirectEntry
             //trTransfers administrativePull operations
             //////////////////////////////////////////////////////////////////////////////
@@ -899,12 +945,12 @@ Parameters!trValueDiscount.Value)
         }
         public static void purchaseInvoiceReport(List<ItemTransfer> invoiceItems, LocalReport rep, string reppath)
         {
-             
+
             foreach (var i in invoiceItems)
             {
                 i.price = decimal.Parse(SectionData.DecTostring(i.price));
-             
-                
+
+
             }
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
@@ -1122,9 +1168,9 @@ Parameters!trValueDiscount.Value)
             rep.DataSources.Clear();
             foreach (var r in query)
             {
-                r.cash= decimal.Parse(SectionData.DecTostring(r.cash));
+                r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
                 r.openCash = decimal.Parse(SectionData.DecTostring(r.openCash));
-            
+
             }
             rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
             paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
@@ -1133,7 +1179,7 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("trOpenCash", MainWindow.resourcemanagerreport.GetString("trOpenCash")));
             paramarr.Add(new ReportParameter("trCloseDate", MainWindow.resourcemanagerreport.GetString("trCloseDate")));
             paramarr.Add(new ReportParameter("trCloseCash", MainWindow.resourcemanagerreport.GetString("trCloseCash")));
-         
+
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
 
 
@@ -1147,7 +1193,7 @@ Parameters!trValueDiscount.Value)
             {
                 r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
                 //  r.openCash = decimal.Parse(SectionData.DecTostring(r.openCash));
-              r.notes=  closingDescriptonConverter(r);
+                r.notes = closingDescriptonConverter(r);
 
 
             }
@@ -1162,10 +1208,10 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("Currency", MainWindow.Currency));
 
             paramarr.Add(new ReportParameter("OpenDate", openclosrow.openDate.ToString()));
-            paramarr.Add(new ReportParameter("OpenCash",  SectionData.DecTostring(openclosrow.openCash)));
+            paramarr.Add(new ReportParameter("OpenCash", SectionData.DecTostring(openclosrow.openCash)));
             paramarr.Add(new ReportParameter("CloseDate", openclosrow.updateDate.ToString()));
             paramarr.Add(new ReportParameter("CloseCash", SectionData.DecTostring(openclosrow.cash)));
-            paramarr.Add(new ReportParameter("pos", openclosrow.branchName+" / "+ openclosrow.posName));
+            paramarr.Add(new ReportParameter("pos", openclosrow.branchName + " / " + openclosrow.posName));
 
             paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
             paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
@@ -1177,7 +1223,7 @@ Parameters!trValueDiscount.Value)
         }
         public static string closingDescriptonConverter(OpenClosOperatinModel s)
         {
-          
+
             string name = "";
             switch (s.side)
             {

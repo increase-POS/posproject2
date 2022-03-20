@@ -1034,7 +1034,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                                 <TextRun>
                                   <Value>=IIF(Fields!CopdiscountType.Value="2" Or Fields!CopdiscountType.Value=2 
 	 ,Fields!CopdiscountValue.Value.ToString()+"%"
-,Fields!CopdiscountValue.Value.ToString()+" "+Parameters!Currency.Value)</Value>
+,Fields!CopdiscountValue.Value.ToString())</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1057,6 +1057,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>

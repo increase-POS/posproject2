@@ -93,7 +93,7 @@ namespace POS.View.sales
                 chk_invoice.IsChecked = true;
                 chk_orderInvoice.IsChecked = true;
                 chk_quotationInvoice.IsChecked = true;
-                itemTransferQuery= fillList();
+                itemTransferQuery = fillList();
 
                 if (MainWindow.tax == 0)
                     col_tax.Visibility = Visibility.Hidden;
@@ -144,7 +144,7 @@ namespace POS.View.sales
             col_tax.Header = MainWindow.resourcemanager.GetString("trTax");
             col_totalNet.Header = MainWindow.resourcemanager.GetString("trTotal");
             col_processType.Header = MainWindow.resourcemanager.GetString("trPaymentMethods");
-           
+
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
@@ -177,7 +177,7 @@ namespace POS.View.sales
             }
             if (selectedTab == 1)
             {
-                temp = temp.Where(obj => 
+                temp = temp.Where(obj =>
                             ((chk_orderInvoice.IsChecked == true ? obj.invType == "or" : false) || (chk_orderSaved.IsChecked == true ? obj.invType == "ors" : false) || (chk_orderDraft.IsChecked == true ? obj.invType == "ord" : false))
                          && (dp_orderDate.SelectedDate != null ? obj.updateDate.Value.Date.ToShortDateString() == dp_orderDate.SelectedDate.Value.Date.ToShortDateString() : true)
                          );
@@ -330,7 +330,7 @@ namespace POS.View.sales
 
             var titleTemp = temp.GroupBy(m => m.cUserAccName);
             titles.AddRange(titleTemp.Select(jj => jj.Key));
-            var result = temp.GroupBy(s =>new { s.updateUserId ,s.cUserAccName}).Select(s => new
+            var result = temp.GroupBy(s => new { s.updateUserId, s.cUserAccName }).Select(s => new
             {
                 updateUserId = s.FirstOrDefault().updateUserId,
                 cUserAccName = s.FirstOrDefault().cUserAccName,
@@ -387,26 +387,26 @@ namespace POS.View.sales
             IEnumerable<int> y = null;
             IEnumerable<int> z = null;
 
-            string trChk1 = "", trChk2 = "", condition1 = "", condition2 = "", condition3 = "" , condition4 = "";
+            string trChk1 = "", trChk2 = "", condition1 = "", condition2 = "", condition3 = "", condition4 = "";
 
             if (selectedTab == 0)
-            { trChk1 = "tr_Sales"; trChk2 = "trReturned"; condition1 = "s";  condition2 = "sb";  condition3 = "sd"; condition4 = "sbd"; }
+            { trChk1 = "tr_Sales"; trChk2 = "trReturned"; condition1 = "s"; condition2 = "sb"; condition3 = "sd"; condition4 = "sbd"; }
             else if (selectedTab == 1)
-            { trChk1 = "trOrder"; trChk2 = "trSaved";     condition1 = "or"; condition2 = "ors"; condition3 = "ord"; condition4 = "ord"; }
+            { trChk1 = "trOrder"; trChk2 = "trSaved"; condition1 = "or"; condition2 = "ors"; condition3 = "ord"; condition4 = "ord"; }
             else if (selectedTab == 2)
-            { trChk1 = "trQuotation"; trChk2 = "trSaved"; condition1 = "q";  condition2 = "qs";  condition3 = "qd"; condition4 = "qd"; }
+            { trChk1 = "trQuotation"; trChk2 = "trSaved"; condition1 = "q"; condition2 = "qs"; condition3 = "qd"; condition4 = "qd"; }
 
 
             var temp = itemTransferQuery;
             var result = temp.GroupBy(s => s.updateUserId).Select(s => new
             {
                 updateUserId = s.Key,
-                countP  = s.Where(m => m.invType == condition1).Count(),
+                countP = s.Where(m => m.invType == condition1).Count(),
                 countPb = s.Where(m => m.invType == condition2).Count(),
-                countD  = s.Where(m => m.invType == condition3 || m.invType == condition4).Count()
+                countD = s.Where(m => m.invType == condition3 || m.invType == condition4).Count()
 
             });
-          
+
             x = result.Select(m => m.countP);
             y = result.Select(m => m.countPb);
             z = result.Select(m => m.countD);
@@ -437,16 +437,16 @@ namespace POS.View.sales
                 cD.Add(z.ToList().Skip(i).FirstOrDefault());
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-            if(x.Count() > 6)
+            if (x.Count() > 6)
             {
                 int cPSum = 0, cPbSum = 0, cDSum = 0;
-                for (int i = 6; i < x.Count() ; i++)
+                for (int i = 6; i < x.Count(); i++)
                 {
-                    cPSum = cPSum +x.ToList().Skip(i).FirstOrDefault();
+                    cPSum = cPSum + x.ToList().Skip(i).FirstOrDefault();
                     cPbSum = cPbSum + y.ToList().Skip(i).FirstOrDefault();
                     cDSum = cDSum + z.ToList().Skip(i).FirstOrDefault();
                 }
-                if(!((cPSum == 0)&&(cPbSum == 0)&&(cDSum == 0)))
+                if (!((cPSum == 0) && (cPbSum == 0) && (cDSum == 0)))
                 {
                     cP.Add(cPSum);
                     cPb.Add(cPbSum);
@@ -497,7 +497,7 @@ namespace POS.View.sales
                 totalPb = s.Where(x => x.invType == "sb").Sum(x => x.totalNet)
             }
          );
-           
+
             var resultTotal = result.Select(x => new { x.updateUserId, total = x.totalP - x.totalPb }).ToList();
             pTemp = result.Select(x => (decimal)x.totalP);
             pbTemp = result.Select(x => (decimal)x.totalPb);
@@ -556,10 +556,29 @@ namespace POS.View.sales
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\Sale\Ar\dailySale.rdlc";
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\Sale\Ar\dailySale.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Sale\Ar\dailySaleOQ.rdlc";
+                }
+
             }
             else
-                addpath = @"\Reports\Sale\En\dailySale.rdlc";
+            {
+                if (selectedTab == 0)
+                {
+                    addpath = @"\Reports\Sale\En\dailySale.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Sale\En\dailySaleOQ.rdlc";
+                }
+
+            }
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -598,13 +617,13 @@ namespace POS.View.sales
                     SectionData.StartAwait(grid_main);
                 //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 //{
-                    /////////////////////////////////////
-                    Thread t1 = new Thread(() =>
-                    {
-                        pdfdaily();
-                    });
-                    t1.Start();
-                    //////////////////////////////////////
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    pdfdaily();
+                });
+                t1.Start();
+                //////////////////////////////////////
                 //}
                 //else
                 //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
@@ -636,13 +655,13 @@ namespace POS.View.sales
 
                 //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 //{
-                    /////////////////////////////////////
-                    Thread t1 = new Thread(() =>
-                    {
-                        printDaily();
-                    });
-                    t1.Start();
-                    //////////////////////////////////////
+                /////////////////////////////////////
+                Thread t1 = new Thread(() =>
+                {
+                    printDaily();
+                });
+                t1.Start();
+                //////////////////////////////////////
 
                 //}
                 //else
@@ -683,16 +702,16 @@ namespace POS.View.sales
 
                 //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 //{
-                    //Thread t1 = new Thread(() =>
-                    //{
-                        ExcelDaily();
+                //Thread t1 = new Thread(() =>
+                //{
+                ExcelDaily();
 
-                    //});
-                    //t1.Start();
+                //});
+                //t1.Start();
                 //}
                 //else
                 //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-               if (sender != null)
+                if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -712,24 +731,24 @@ namespace POS.View.sales
 
                 //if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "report") || SectionData.isAdminPermision())
                 //{
-                    #region
-                    Window.GetWindow(this).Opacity = 0.2;
-                    /////////////////////
-                    string pdfpath = "";
-                    pdfpath = @"\Thumb\report\temp.pdf";
-                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                    BuildReport();
-                    LocalReportExtensions.ExportToPDF(rep, pdfpath);
-                    ///////////////////
-                    wd_previewPdf w = new wd_previewPdf();
-                    w.pdfPath = pdfpath;
-                    if (!string.IsNullOrEmpty(w.pdfPath))
-                    {
-                        w.ShowDialog();
-                        w.wb_pdfWebViewer.Dispose();
-                    }
-                    Window.GetWindow(this).Opacity = 1;
-                    #endregion
+                #region
+                Window.GetWindow(this).Opacity = 0.2;
+                /////////////////////
+                string pdfpath = "";
+                pdfpath = @"\Thumb\report\temp.pdf";
+                pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+                BuildReport();
+                LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                ///////////////////
+                wd_previewPdf w = new wd_previewPdf();
+                w.pdfPath = pdfpath;
+                if (!string.IsNullOrEmpty(w.pdfPath))
+                {
+                    w.ShowDialog();
+                    w.wb_pdfWebViewer.Dispose();
+                }
+                Window.GetWindow(this).Opacity = 1;
+                #endregion
                 //}
                 //else
                 //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
