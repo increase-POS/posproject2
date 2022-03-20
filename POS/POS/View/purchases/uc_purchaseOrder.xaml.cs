@@ -1043,7 +1043,7 @@ namespace POS.View.purchases
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 bool valid = validateItemUnits();
-                if (billDetails.Count > 0 && valid)
+                if (billDetails.Count > 0 && valid && _InvoiceType =="pod")
                 {
                     #region Accept
                     MainWindow.mainWindow.Opacity = 0.2;
@@ -1054,14 +1054,11 @@ namespace POS.View.purchases
                     MainWindow.mainWindow.Opacity = 1;
                     #endregion
                     if (w.isOk)
-                        await addInvoice(_InvoiceType);
-                    clearInvoice();
-                    refreshNotification();
+                        await addInvoice(_InvoiceType);                   
                 }
-                else if (billDetails.Count == 0)
-                {
-                    clearInvoice();
-                }
+                clearInvoice();
+                refreshNotification();
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
