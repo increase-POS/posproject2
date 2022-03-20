@@ -673,6 +673,7 @@ namespace POS.Classes
                 {
                     addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
                 }
+              
                 else
                 {
                     addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
@@ -684,6 +685,49 @@ namespace POS.Classes
                 if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pos" || invoice.invType == "pod" || invoice.invType == "ors")
                 {
                     addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                }
+               
+                else
+                {
+                    addpath = @"\Reports\Purchase\En\InvPurReport.rdlc";
+                }
+            }
+
+
+            //
+
+            string reppath = PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            return reppath;
+        }
+        public string GetDirectEntryRdlcpath(Invoice invoice)
+        {
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
+            {
+                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pos" || invoice.invType == "pod" || invoice.invType == "ors")
+                {
+                    addpath = @"\Reports\Purchase\Ar\ArInvPurOrderReport.rdlc";
+                }
+                else if (invoice.invType == "is" || invoice.invType == "isd")
+                {
+                    addpath = @"\Reports\Store\Ar\ArDirectEntryReport.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Purchase\Ar\ArInvPurReport.rdlc";
+                }
+
+            }
+            else
+            {
+                if (invoice.invType == "or" || invoice.invType == "po" || invoice.invType == "pos" || invoice.invType == "pod" || invoice.invType == "ors")
+                {
+                    addpath = @"\Reports\Purchase\En\InvPurOrderReport.rdlc";
+                }
+                else if (invoice.invType == "is" || invoice.invType == "isd")
+                {
+                    addpath = @"\Reports\Store\En\DirectEntryReport.rdlc";
                 }
                 else
                 {
@@ -979,7 +1023,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("userName", userName.Trim()));
             if (invoice.invType == "pd" || invoice.invType == "sd" || invoice.invType == "qd"
                     || invoice.invType == "sbd" || invoice.invType == "pbd" || invoice.invType == "pod"
-                    || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd")
+                    || invoice.invType == "ord" || invoice.invType == "imd" || invoice.invType == "exd" || invoice.invType == "isd")
             {
 
                 paramarr.Add(new ReportParameter("watermark", "1"));
@@ -999,6 +1043,12 @@ namespace POS.Classes
                 paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trPurchasesInvoice")));
 
             }
+            else if (invoice.invType == "is" || invoice.invType == "isd"  )
+            {
+                paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trDirectEntry")));
+
+            }
+
             paramarr.Add(new ReportParameter("trDraftInv", MainWindow.resourcemanagerreport.GetString("trDraft")));
             return paramarr;
         }
