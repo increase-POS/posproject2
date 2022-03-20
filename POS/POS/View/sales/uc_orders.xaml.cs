@@ -531,49 +531,49 @@ namespace POS.View.sales
         }
         private async Task refreshOrdersNotification()
         {
-                try
-                {
-                    string invoiceType = "or";
-            int duration = 1;
-            //int orderCount = await invoice.GetCountByCreator(invoiceType, MainWindow.userID.Value, duration);
-            int orderCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value, 0, MainWindow.userID.Value, duration);
-            if (invoice != null && _InvoiceType == "or"  && invoice.invoiceId != 0 && !isFromReport)
-                orderCount--;
-
-            if (orderCount != _OrdersCount)
+            try
             {
-                if (orderCount > 9)
+                string invoiceType = "or";
+                int duration = 0;
+
+                int orderCount = await invoice.GetCountUnHandeledOrders(invoiceType, MainWindow.branchID.Value, 0, MainWindow.userID.Value, duration);
+                if (invoice != null && _InvoiceType == "or"  && invoice.invoiceId != 0 && !isFromReport)
+                    orderCount--;
+
+                if (orderCount != _OrdersCount)
                 {
-                    md_order.Badge = "+9" ;
+                    if (orderCount > 9)
+                    {
+                        md_order.Badge = "+9" ;
+                    }
+                    else if (orderCount == 0) md_order.Badge = "";
+                    else
+                        md_order.Badge = orderCount.ToString();
                 }
-                else if (orderCount == 0) md_order.Badge = "";
-                else
-                    md_order.Badge = orderCount.ToString();
-            }
-            _OrdersCount = orderCount;
+                _OrdersCount = orderCount;
             }
             catch { }
         }
         private async Task refreshOrdersWaitNotification()
         {
-                    try
-                    {
-                        string invoiceType = "s";
-            int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
-            if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
-                ordersCount--;
-
-            if (ordersCount != _OrdersWaitCount)
+            try
             {
-                if (ordersCount > 9)
+                string invoiceType = "s";
+                int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
+                if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
+                    ordersCount--;
+
+                if (ordersCount != _OrdersWaitCount)
                 {
-                    md_ordersWait.Badge = "+9" ;
+                    if (ordersCount > 9)
+                    {
+                        md_ordersWait.Badge = "+9" ;
+                    }
+                    else if (ordersCount == 0) md_ordersWait.Badge = "";
+                    else
+                        md_ordersWait.Badge = ordersCount.ToString();
                 }
-                else if (ordersCount == 0) md_ordersWait.Badge = "";
-                else
-                    md_ordersWait.Badge = ordersCount.ToString();
-            }
-            _OrdersWaitCount = ordersCount;
+                _OrdersWaitCount = ordersCount;
             }
             catch { }
         }       
@@ -2098,7 +2098,7 @@ namespace POS.View.sales
                     SectionData.isAdminPermision())
                 {
                     string invoiceType = "or";
-                    int duration = 1;
+                    int duration = 0;
                     // (((((((this.Parent as Grid).Parent as Grid).Parent as UserControl)).Parent as Grid).Parent as Grid).Parent as Window).Opacity = 0.2;
                     saveBeforeExit();
                     wd_invoice w = new wd_invoice();
