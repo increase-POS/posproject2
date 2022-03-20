@@ -1833,7 +1833,7 @@ namespace POS.View.sales
                             setNotifications();
                             refreshDocCount(invoice.invoiceId);
                             invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
-                            navigateBtnActivate();
+                          
                             // set title to bill
                             if(_InvoiceType == "ord")
                                 txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderDraft");
@@ -1841,6 +1841,7 @@ namespace POS.View.sales
                                 txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSaleOrderSaved");
                             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
                             await fillInvoiceInputs(invoice);
+                            navigateBtnActivate();
                         }
                     }
                 }
@@ -1908,6 +1909,7 @@ namespace POS.View.sales
             await getInvoiceCoupons(invoice.invoiceId);
             // build invoice details grid
             await buildInvoiceDetails(invoice.invoiceId);
+            _InvoiceType = invoice.invType;
             inputEditable();
             refreshTotalValue();
         }
@@ -3260,8 +3262,8 @@ namespace POS.View.sales
                     if (w.isOk)
                     {
                         int savedBranch = (int)invoice.branchId;
-                        int res = await itemLocationModel.unlockItems(invoiceItems, savedBranch);
-                       // int res = await invoice.deleteOrder(invoice.invoiceId);
+                        //int res = await itemLocationModel.unlockItems(invoiceItems, savedBranch);
+                        int res = await invoice.deleteOrder(invoice.invoiceId);
                         if (res>0)
                         {
                             Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopDelete"), animation: ToasterAnimation.FadeIn);
@@ -3472,21 +3474,25 @@ namespace POS.View.sales
 
         private void Tgl_ActiveOffer_Unchecked(object sender, RoutedEventArgs e)
         {
-            _InvoiceType = "ord";
-            btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+            //_InvoiceType = "ord";
+            if (tgl_ActiveOffer.IsFocused)
+            {
+                _InvoiceType = invoice.invType;
+                btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
 
-            if (tgl_ActiveOffer.IsChecked == true)
-            {
-                dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
-                dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                if (tgl_ActiveOffer.IsChecked == true)
+                {
+                    dg_billDetails.Columns[3].IsReadOnly = true; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                }
+                else
+                {
+                    dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
+                    dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
+                }
+                inputEditable();
+                refrishDataGridItems();
             }
-            else
-            {
-                dg_billDetails.Columns[3].IsReadOnly = false; //make unit read only
-                dg_billDetails.Columns[4].IsReadOnly = false; //make count read only
-            }
-            inputEditable();
-            refrishDataGridItems();
         }
         private async Task<bool> checkOrderReady(int invoiceId)
         {
