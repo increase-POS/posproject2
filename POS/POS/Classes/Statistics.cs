@@ -2910,7 +2910,7 @@ namespace POS.Classes
         }
         public class PaymentsTypeCombo
         {
-        ///typeeeeeeeeeeeeeeeee
+        
             private string paymentsTypeName;
             private string paymentsTypeText;
 
@@ -2921,7 +2921,7 @@ namespace POS.Classes
                     :  paymentsTypeName == "doc"     ? paymentsTypeText = MainWindow.resourcemanager.GetString("trDocument")
                     :  paymentsTypeName == "cheque"  ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCheque")
                     :  paymentsTypeName == "balance" ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCredit")
-                    :  paymentsTypeName == "card"    ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCreditCard")
+                    :  paymentsTypeName == "card"    ? paymentsTypeText = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods")
                     :  paymentsTypeName == "inv"     ? paymentsTypeText = MainWindow.resourcemanager.GetString("trInv")
                     :  "";
                 set => paymentsTypeText = value;

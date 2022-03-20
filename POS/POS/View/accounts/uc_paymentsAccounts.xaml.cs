@@ -57,8 +57,10 @@ namespace POS.View.accounts
         SaveFileDialog saveFileDialog = new SaveFileDialog();
 
         public List<Invoice> invoicesLst = new List<Invoice>();
+
         List<Button> cardBtnList = new List<Button>();
         List<Ellipse> cardEllipseList = new List<Ellipse>();
+        bool hasProcessNum = false;
 
         string createPermission = "payments_create";
         string reportsPermission = "payments_reports";
@@ -283,6 +285,7 @@ namespace POS.View.accounts
                 cardEllipseList.Add(ellipse);
                 #endregion
                 #endregion
+
                 button.Content = grid;
                 #endregion
                 dkp_cards.Children.Add(button);
@@ -291,7 +294,7 @@ namespace POS.View.accounts
             }
             #endregion
         }
-        bool hasProcessNum = false;
+
         void card_Click(object sender, RoutedEventArgs e)
         {
             SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
@@ -460,6 +463,8 @@ namespace POS.View.accounts
                         tb_cash.IsEnabled = false;
                         tb_note.IsEnabled = false;
                         /////////////////////////
+                        ///
+                        #region receipient
                         switch (cb_depositTo.SelectedValue.ToString())
                         {
                             case "v":
@@ -507,6 +512,7 @@ namespace POS.View.accounts
                                 cb_recipientSh.Visibility = Visibility.Collapsed; SectionData.clearComboBoxValidate(cb_recipientSh, p_errorRecipient);
                                 break;
                         }
+                        #endregion
 
                         tb_transNum.Text = cashtrans.transNum;
 

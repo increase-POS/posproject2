@@ -326,7 +326,13 @@
                         <DataGridTextColumn x:Name="col_quantity"      Width="*" Header="QTY"       Binding="{Binding ITquantity }" />
                         <DataGridTextColumn x:Name="col_branch"        Width="*" Header="Branch"    Binding="{Binding branchCreatorName }" />
                         <DataGridTextColumn x:Name="col_pos"           Width="*" Header="Pos"       Binding="{Binding posName }" />
-                        <DataGridTextColumn x:Name="col_invoiceProfit" Width="*" Header="Profits"   Binding="{Binding invoiceProfit ,Converter={StaticResource accuracyConverter}}" />
+                        <DataGridTextColumn x:Name="col_invoiceProfit" Width="*" Header="Profits"   Binding="{Binding invoiceProfit  ,Converter={StaticResource accuracyConverter}}" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Foreground" Value="{Binding invoiceProfit, Converter={StaticResource profitToColorConverter}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn x:Name="col_itemProfit"    Width="*" Header="Profits"   Binding="{Binding itemProfit    ,Converter={StaticResource accuracyConverter}}" />
 
                     </DataGrid.Columns>

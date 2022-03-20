@@ -58,6 +58,11 @@ namespace POS.View.accounts
         string reportsPermission = "bonds_reports";
         private static uc_bonds _instance;
         byte tgl_bondState;
+
+        List<Button> cardBtnList = new List<Button>();
+        List<Ellipse> cardEllipseList = new List<Ellipse>();
+        bool hasProcessNum = false;
+
         public static uc_bonds Instance
         {
             get
@@ -76,7 +81,7 @@ namespace POS.View.accounts
             catch (Exception ex)
             { SectionData.ExceptionMessage(ex, this); }
         }
-
+        CashTransfer ca = new CashTransfer();
         private async void Dg_bonds_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
@@ -174,7 +179,7 @@ namespace POS.View.accounts
                         {
                             //cashbondsQuery = await cashModel.GetCashTransferAsync("all", "bnd");
                             cashbondsQuery = await cashModel.GetCashBond("all", "bnd");
-                            CashTransfer ca = new CashTransfer();
+                            
                             ca = cashbondsQuery.Where(c => c.bondId == bond.bondId).FirstOrDefault();
                             cb_paymentProcessType.SelectedValue = ca.processType;
                             if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
@@ -184,6 +189,9 @@ namespace POS.View.accounts
                                 card = await card.getById(_SelectedCard);
                                 txt_card.Text = card.name;
                                 tb_processNum.Text = ca.docNum;
+
+                                Button btn = cardBtnList.Where(c => (int)c.Tag == _SelectedCard).FirstOrDefault();
+                                card_Click(btn, null);
                             }
                             else if(cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
                             {
@@ -537,6 +545,7 @@ namespace POS.View.accounts
         {//clear
             try
             {
+                ca = new CashTransfer();
                 tb_number.Text = "";
                 tb_amount.Clear();
                 tb_note.Clear();
@@ -569,6 +578,14 @@ namespace POS.View.accounts
                 SectionData.clearTextBlockValidate(txt_card, p_errorCard);
                 TextBox tbDocDate = (TextBox)dp_deservecDate.Template.FindName("PART_TextBox", dp_deservecDate);
                 SectionData.clearValidate(tbDocDate, p_errorDocDate);
+
+                txt_card.Text = "";
+                tb_processNum.Visibility = Visibility.Collapsed;
+                //set border color
+                foreach (var el in cardEllipseList)
+                {
+                    el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                }
             }
             catch (Exception ex)
             {
@@ -823,17 +840,21 @@ namespace POS.View.accounts
                 ellipse.Width = 35;
                 ellipse.FlowDirection = FlowDirection.LeftToRight;
                 ellipse.ToolTip = item.name;
+                ellipse.Tag = item.cardId;
                 userImageLoad(ellipse, item.image);
                 Grid.SetColumn(ellipse, userCount);
                 grid.Children.Add(ellipse);
+                cardEllipseList.Add(ellipse);
                 #endregion
                 #endregion
                 button.Content = grid;
                 #endregion
                 dkp_cards.Children.Add(button);
+                cardBtnList.Add(button);
 
             }
             #endregion
+
         }
         void card_Click(object sender, RoutedEventArgs e)
         {
@@ -847,7 +868,14 @@ namespace POS.View.accounts
             else
                 tb_processNum.Visibility = Visibility.Collapsed;
 
-            //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
+            //set border color
+            foreach (var el in cardEllipseList)
+            {
+                if ((int)el.Tag == (int)button.Tag)
+                    el.Stroke = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                else
+                    el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+            }
         }
         ImageBrush brush = new ImageBrush();
         async void userImageLoad(Ellipse ellipse, string image)
@@ -1021,6 +1049,13 @@ namespace POS.View.accounts
                     case 2://card
                         gd_card.Visibility = Visibility.Visible;
                         tb_chequeProcessNum.Visibility = Visibility.Collapsed;
+                        txt_card.Text = "";
+                        tb_processNum.Text = "";
+                        if (ca.cardId != null)
+                        {
+                            Button btn = cardBtnList.Where(c => (int)c.Tag == ca.cardId.Value).FirstOrDefault();
+                            card_Click(btn, null);
+                        }
                         SectionData.clearValidate(tb_chequeProcessNum, p_chequeProcessNum);
                         break;
                 }
