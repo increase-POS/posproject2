@@ -1205,7 +1205,7 @@ var strP = TokenManager.GetPrincipal(token);
                                              join il in entity.itemsLocations on u.itemUnitId equals il.itemUnitId
                                              join l in entity.locations on il.locationId equals l.locationId
                                              join s in entity.sections.Where(x => x.branchId == branchId) on l.sectionId equals s.sectionId
-                                             where ((il.quantity > 0 && I.type != "sr") ||(I.type == "sr"))
+                                             where ((il.quantity > 0 && il.invoiceId == null && I.type != "sr") ||(I.type == "sr"))
                                              select new ItemSalePurModel()
                                              {
                                                  itemId = I.itemId,
