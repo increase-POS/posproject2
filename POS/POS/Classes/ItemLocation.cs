@@ -34,6 +34,7 @@ namespace POS.Classes
         public string section { get; set; }
         public string unitName { get; set; }
         public string invNumber { get; set; }
+        public string invType { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public Nullable<int> sectionId { get; set; }
         public Nullable<decimal> storeCost { get; set; }

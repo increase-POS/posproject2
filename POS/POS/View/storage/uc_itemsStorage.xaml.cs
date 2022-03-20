@@ -562,6 +562,13 @@ namespace POS.View.storage
                         gd_date.Visibility = Visibility.Visible;
                     else
                         gd_date.Visibility = Visibility.Collapsed;
+
+                    #region order is Ready
+                    if (itemLocation.invType == "or")
+                        btn_locked.IsEnabled = false;
+                    else
+                        btn_locked.IsEnabled = true;
+                    #endregion
                     if (chk_stored.IsChecked == true)
                     {
                         tb_itemName.IsReadOnly = true;
