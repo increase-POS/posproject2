@@ -5747,7 +5747,7 @@ namespace POS_Server.Controllers
                                                             from jucc in juc.DefaultIfEmpty()
                                                             from jcrd in jcr.DefaultIfEmpty()
                                                             from jbbo in jbo.DefaultIfEmpty()
-                                                            where (C.transType == "p" && C.processType != "balance")
+                                                            where (C.transType == "p" && C.processType != "balance" && C.processType != "inv")
                                                             //&&  (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 
                                                             //( C.transType == "p" && C.side==Side)
@@ -6288,7 +6288,7 @@ namespace POS_Server.Controllers
                                                             from jucc in juc.DefaultIfEmpty()
                                                             from jcrd in jcr.DefaultIfEmpty()
                                                             from jbbo in jbo.DefaultIfEmpty()
-                                                            where (C.transType == "d" && C.processType != "balance")
+                                                            where (C.transType == "d" && C.processType != "balance" && C.processType != "inv")
                                                             //&& (brIds.Contains(jpp.branches.branchId) || brIds.Contains(jpcc.branches.branchId))
 
                                                             //( C.transType == "p" && C.side==Side)
