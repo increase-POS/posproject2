@@ -3275,7 +3275,7 @@ namespace POS.View
 
         public async void multiplePaytable(List<ReportParameter> paramarr)
         {
-            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
+            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pbw"))
             {
                 CashTransfer cachModel = new CashTransfer();
                 List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -3605,7 +3605,7 @@ namespace POS.View
                             clsReports.Header(paramarr);
                             paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
 
-                            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pd"))
+                            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pd" || prInvoice.invType == "pbw"))
                             {
                                 CashTransfer cachModel = new CashTransfer();
                                 List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -3860,10 +3860,7 @@ namespace POS.View
                                         this.Dispatcher.Invoke(() =>
                                         {
 
-
-                                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, 1);
-
-
+                                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, 1);
 
                                         });
 
@@ -4200,7 +4197,7 @@ namespace POS.View
                         paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
 
 
-                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
+                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pbw"))
                         {
                             CashTransfer cachModel = new CashTransfer();
                             List<PayedInvclass> payedList = new List<PayedInvclass>();
