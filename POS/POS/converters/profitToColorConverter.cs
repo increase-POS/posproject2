@@ -15,10 +15,8 @@ namespace POS.converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             decimal d = (decimal)value;
-            var converter = new System.Windows.Media.BrushConverter();
-
-            if (d < 0) return Brushes.Red;
-            else return Brushes.LightGreen;
+            if (d < 0) return 0;
+            else return 1;
             //else       return DependencyProperty.UnsetValue;
             //else return System.Drawing.ColorTranslator.FromHtml("#378500"); 
 
