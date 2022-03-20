@@ -145,6 +145,7 @@ namespace POS_Server.Controllers
                                                 unitName = u.units.name,
                                                 invoiceId = b.invoiceId,
                                                 invNumber = b.invoices.invNumber,
+                                                invType = b.invoices.invType,
                                             }).ToList().OrderBy(x => x.location).ToList();
 
 

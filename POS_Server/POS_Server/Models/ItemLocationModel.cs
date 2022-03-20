@@ -29,6 +29,7 @@ namespace POS_Server.Models
         public Nullable<byte> isFreeZone { get; set; }
         public Nullable<int> invoiceId { get; set; }
         public string invNumber { get; set; }
+        public string invType { get; set; }
 
     }
 }
