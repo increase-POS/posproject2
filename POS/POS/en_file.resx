@@ -2654,7 +2654,7 @@ Please add Email in setting</value>
     <value>Cash Customer</value>
   </data>
   <data name="trUnKnown" xml:space="preserve">
-    <value>UnKown</value>
+    <value>Unknown</value>
   </data>
   <data name="trQTR" xml:space="preserve">
     <value>QTY</value>

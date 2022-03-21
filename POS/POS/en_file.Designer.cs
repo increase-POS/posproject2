@@ -9404,7 +9404,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UnKown.
+        ///   Looks up a localized string similar to Unknown.
         /// </summary>
         internal static string trUnKnown {
             get {

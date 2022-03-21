@@ -344,7 +344,7 @@ namespace POS.Classes
         public static void posAccReportSTS(IEnumerable<CashTransfer> cash, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
             posAccReport(cash, rep, reppath, paramarr);
-            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo")));
 
             paramarr.Add(new ReportParameter("trAccoutant", MainWindow.resourcemanagerreport.GetString("trAccoutant")));
             paramarr.Add(new ReportParameter("trAmount", MainWindow.resourcemanagerreport.GetString("trAmount")));
@@ -546,11 +546,11 @@ namespace POS.Classes
             rep.DataSources.Clear();
             foreach (var r in tempquery)
             {
-             //   r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
-                r.CopdiscountValue = decimal.Parse(DiscountConvert(r.CopdiscountType.ToString(),r.CopdiscountValue));
+                //   r.CopdiscountValue = decimal.Parse(SectionData.DecTostring(r.CopdiscountValue));
+                r.CopdiscountValue = decimal.Parse(DiscountConvert(r.CopdiscountType.ToString(), r.CopdiscountValue));
                 r.couponTotalValue = decimal.Parse(SectionData.DecTostring(r.couponTotalValue));//
-              //  r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
-                r.OdiscountValue = decimal.Parse(DiscountConvert(r.OdiscountType,r.OdiscountValue));
+                                                                                                //  r.OdiscountValue = decimal.Parse(SectionData.DecTostring(r.OdiscountValue));
+                r.OdiscountValue = decimal.Parse(DiscountConvert(r.OdiscountType, r.OdiscountValue));
 
 
                 r.offerTotalValue = decimal.Parse(SectionData.DecTostring(r.offerTotalValue));
@@ -558,11 +558,11 @@ namespace POS.Classes
                 r.price = decimal.Parse(SectionData.DecTostring(r.price));
                 r.subTotal = decimal.Parse(SectionData.DecTostring(r.subTotal));
                 r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
-                r.discountValue = decimal.Parse(DiscountConvert(r.discountType,r.discountValue));
+                r.discountValue = decimal.Parse(DiscountConvert(r.discountType, r.discountValue));
                 r.tax = decimal.Parse(SectionData.PercentageDecTostring(r.tax));
                 if (r.itemAvg != null)
                 {
-                   // r.itemAvg = double.Parse(SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString())));
+                    // r.itemAvg = double.Parse(SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString())));
                     r.ITnotes = SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString()));
                     r.itemAvg = double.Parse(r.ITnotes);
                 }
@@ -572,40 +572,41 @@ namespace POS.Classes
         }
         public static string DiscountConvert(string type, decimal? value)
         {
-            if (value != null) { 
-            decimal num = (decimal)value;
-            string s = num.ToString();
-
-            switch (MainWindow.accuracy)
+            if (value != null)
             {
-                case "0":
-                    s = string.Format("{0:F0}", num);
-                    break;
-                case "1":
-                    s = string.Format("{0:F1}", num);
-                    break;
-                case "2":
-                    s = string.Format("{0:F2}", num);
-                    break;
-                case "3":
-                    s = string.Format("{0:F3}", num);
-                    break;
-                default:
-                    s = string.Format("{0:F1}", num);
-                    break;
-            }
+                decimal num = (decimal)value;
+                string s = num.ToString();
+
+                switch (MainWindow.accuracy)
+                {
+                    case "0":
+                        s = string.Format("{0:F0}", num);
+                        break;
+                    case "1":
+                        s = string.Format("{0:F1}", num);
+                        break;
+                    case "2":
+                        s = string.Format("{0:F2}", num);
+                        break;
+                    case "3":
+                        s = string.Format("{0:F3}", num);
+                        break;
+                    default:
+                        s = string.Format("{0:F1}", num);
+                        break;
+                }
 
 
-            if (type == "2")
-            {
-                string sdc = string.Format("{0:G29}", decimal.Parse(s));
-                return sdc;
-            }
-            else
-            {
-      
-                return s;
-            }
+                if (type == "2")
+                {
+                    string sdc = string.Format("{0:G29}", decimal.Parse(s));
+                    return sdc;
+                }
+                else
+                {
+
+                    return s;
+                }
             }
             else
             {
@@ -1056,7 +1057,7 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
             paramarr.Add(new ReportParameter("trPull", MainWindow.resourcemanagerreport.GetString("trPull")));
             paramarr.Add(new ReportParameter("trDeposit", MainWindow.resourcemanagerreport.GetString("trDeposit")));
-
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
 
         }
 
@@ -1096,7 +1097,7 @@ Parameters!trValueDiscount.Value)
             cashTransferStatSts(cashTransfers, rep, reppath);
 
             paramarr.Add(new ReportParameter("dateForm", MainWindow.dateFormat));
-
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
 
         }
         public static void cashTransferStsPayment(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
@@ -1105,6 +1106,7 @@ Parameters!trValueDiscount.Value)
 
             cashTransferProcessTypeConv(paramarr);
             DateFormConv(paramarr);
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
 
         }
         public static void cashTransferStsPos(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath, List<ReportParameter> paramarr)
@@ -1124,10 +1126,37 @@ Parameters!trValueDiscount.Value)
             {
                 r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
                 r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-
+                r.agentName = AgentUnKnownConvert(r.agentId,r.side,r.agentName);
+                r.agentCompany = AgentCompanyUnKnownConvert(r.agentId, r.side, r.agentCompany);
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
+        }
+        public static string AgentUnKnownConvert(int? agentId, string side, string agentName)
+        {
+            
+            if (agentId == null)
+            {
+                if (side == "v")
+                {
+                    agentName = MainWindow.resourcemanagerreport.GetString("trUnKnown");
+                }
+                else if (side == "c")
+                {
+                    agentName = MainWindow.resourcemanagerreport.GetString("trCashCustomer");
+                }
+            }
+            return agentName;
+
+        }
+        public static string AgentCompanyUnKnownConvert(int? agentId, string side, string agentCompany)
+        {
+            if (agentId == null)
+            {
+                agentCompany = MainWindow.resourcemanagerreport.GetString("trUnKnown");
+                 
+            }
+            return agentCompany;
         }
         public static void cashTransferStatSts(IEnumerable<CashTransferSts> cashTransfers, LocalReport rep, string reppath)
         {
@@ -1174,7 +1203,7 @@ Parameters!trValueDiscount.Value)
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
-            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo")));
             paramarr.Add(new ReportParameter("trPOS", MainWindow.resourcemanagerreport.GetString("trPOS")));
             paramarr.Add(new ReportParameter("trOpenDate", MainWindow.resourcemanagerreport.GetString("trOpenDate")));
             paramarr.Add(new ReportParameter("trOpenCash", MainWindow.resourcemanagerreport.GetString("trOpenCash")));
@@ -1199,7 +1228,7 @@ Parameters!trValueDiscount.Value)
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
-            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo")));
             paramarr.Add(new ReportParameter("trPOS", MainWindow.resourcemanagerreport.GetString("trPOS")));
             paramarr.Add(new ReportParameter("trOpenDate", MainWindow.resourcemanagerreport.GetString("trOpenDate")));
             paramarr.Add(new ReportParameter("trOpenCash", MainWindow.resourcemanagerreport.GetString("trOpenCash")));
@@ -1294,6 +1323,7 @@ Parameters!trValueDiscount.Value)
 
             cashTransferProcessTypeConv(paramarr);
             DateFormConv(paramarr);
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
 
         }
         public static void itemTransferInvoice(IEnumerable<ItemTransferInvoice> itemTransferInvoices, LocalReport rep, string reppath)
@@ -1333,6 +1363,7 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("trCredit", MainWindow.resourcemanagerreport.GetString("trCredit")));
             paramarr.Add(new ReportParameter("trInv", MainWindow.resourcemanagerreport.GetString("trInv")));
             paramarr.Add(new ReportParameter("trCard", MainWindow.resourcemanagerreport.GetString("trCreditCard")));
+
         }
         public static void itemTransferInvTypeConv(List<ReportParameter> paramarr)
         {
