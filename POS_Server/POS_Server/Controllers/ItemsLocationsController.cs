@@ -5164,18 +5164,25 @@ namespace POS_Server.Controllers
                                 if ((lockedQuantity + availableAmount) < tr.quantity) // there is a shortage in order amount
                                 {
                                     long requiredQuantity = (long)tr.quantity - ((long)lockedQuantity + (long)availableAmount);
-                                    ItemTransferModel transfer = new ItemTransferModel()
+
+                                    var itemUnit = requiredTransfers.Where(x => x.itemUnitId == tr.itemUnitId).FirstOrDefault();
+                                    if (itemUnit == null)
                                     {
-                                        invNumber = invoice.invNumber,
-                                        invoiceId = invoice.invoiceId,
-                                        price = 0,
-                                        quantity = requiredQuantity,
-                                        itemUnitId = tr.itemUnitId,
-                                        itemId = item.itemId,
-                                        itemName = item.name,
-                                        unitName = item.unitName,
-                                    };
-                                    requiredTransfers.Add(transfer);
+                                        ItemTransferModel transfer = new ItemTransferModel()
+                                        {
+                                            invNumber = invoice.invNumber,
+                                            //invoiceId = invoice.invoiceId,
+                                            price = 0,
+                                            quantity = requiredQuantity,
+                                            itemUnitId = tr.itemUnitId,
+                                            itemId = item.itemId,
+                                            itemName = item.name,
+                                            unitName = item.unitName,
+                                        };
+                                        requiredTransfers.Add(transfer);
+                                    }
+                                    else
+                                        itemUnit.quantity += requiredQuantity;
                                 }
 
                             }

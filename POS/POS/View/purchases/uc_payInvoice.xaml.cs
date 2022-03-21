@@ -1110,7 +1110,7 @@ namespace POS.View
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
                 {
-                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId && p.OrderId == 0).FirstOrDefault());
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId).FirstOrDefault());
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
@@ -3275,7 +3275,7 @@ namespace POS.View
 
         public async void multiplePaytable(List<ReportParameter> paramarr)
         {
-            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pbw"))
+            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
             {
                 CashTransfer cachModel = new CashTransfer();
                 List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -3605,7 +3605,7 @@ namespace POS.View
                             clsReports.Header(paramarr);
                             paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
 
-                            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pd" || prInvoice.invType == "pbw"))
+                            if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pd"))
                             {
                                 CashTransfer cachModel = new CashTransfer();
                                 List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -3860,7 +3860,10 @@ namespace POS.View
                                         this.Dispatcher.Invoke(() =>
                                         {
 
-                                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, 1);
+
+                                            LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.sale_printer_name, 1);
+
+
 
                                         });
 
@@ -4197,7 +4200,7 @@ namespace POS.View
                         paramarr = reportclass.fillPurInvReport(prInvoice, paramarr);
 
 
-                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb" || prInvoice.invType == "pbw"))
+                        if ((prInvoice.invType == "p" || prInvoice.invType == "pw" || prInvoice.invType == "pbd" || prInvoice.invType == "pb"))
                         {
                             CashTransfer cachModel = new CashTransfer();
                             List<PayedInvclass> payedList = new List<PayedInvclass>();
@@ -4567,7 +4570,7 @@ namespace POS.View
                     Unit = itemT.itemUnitId.ToString(),
                     itemUnitId = (int)itemT.itemUnitId,
                     Count = (int)itemT.quantity,
-                    OrderId = (int)itemT.invoiceId,
+                    //OrderId = (int)itemT.invoiceId,
                     Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
                     Total = total,
                     invType = invoice.invType,
