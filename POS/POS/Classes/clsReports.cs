@@ -422,13 +422,15 @@ namespace POS.Classes
             rep.DataSources.Clear();
             foreach (var c in CouponQuery2)
             {
-                c.discountValue = decimal.Parse(SectionData.DecTostring(c.discountValue));
+                 
+               c.discountValue = decimal.Parse(DiscountConvert(c.discountType.ToString(), c.discountValue));
+
                 c.invMin = decimal.Parse(SectionData.DecTostring(c.invMin));
                 c.invMax = decimal.Parse(SectionData.DecTostring(c.invMax));
-
+              
                 string state = "";
 
-                if ((c.isActive == 1) && (c.endDate > DateTime.Now) && (c.quantity > 0))
+                if ((c.isActive == 1) && ((c.endDate > DateTime.Now) || (c.endDate == null)) && ((c.quantity == 0) || (c.quantity > 0 && c.remainQ != 0)))
                     state = MainWindow.resourcemanager.GetString("trValid");
                 else
                     state = MainWindow.resourcemanager.GetString("trExpired");
@@ -446,7 +448,7 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trQuantity", MainWindow.resourcemanagerreport.GetString("trQuantity")));
             paramarr.Add(new ReportParameter("trRemainQ", MainWindow.resourcemanagerreport.GetString("trRemainQuantity")));
             paramarr.Add(new ReportParameter("trEndDate", MainWindow.resourcemanagerreport.GetString("trvalidity")));
-
+            paramarr.Add(new ReportParameter("trUnlimited", MainWindow.resourcemanagerreport.GetString("trUnlimited")));
         }
         public static void couponExportReport(LocalReport rep, string reppath, List<ReportParameter> paramarr, string barcode)
         {

@@ -453,7 +453,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!discountValue.Value</Value>
+                                  <Value>=iif( Fields!discountType.Value=2,Fields!discountValue.Value.ToString+"%",Fields!discountValue.Value)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -485,7 +485,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!quantity.Value</Value>
+                                  <Value>=iif(Fields!quantity.Value=0,Parameters!trUnlimited.Value,Fields!quantity.Value.ToString)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -517,7 +517,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!remainQ.Value</Value>
+                                  <Value>=iif(Fields!quantity.Value=0,Parameters!trUnlimited.Value, Fields!remainQ.Value.ToString)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -538,6 +538,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1158,6 +1159,12 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="trUnlimited">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1268,6 +1275,11 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>5</RowIndex>
           <ParameterName>show_header</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>5</RowIndex>
+          <ParameterName>trUnlimited</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
