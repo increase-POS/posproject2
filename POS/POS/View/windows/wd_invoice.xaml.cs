@@ -228,7 +228,7 @@ namespace POS.View.windows
                 else if (branchCreatorId != 0)
                     invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId);
                 else if (invoiceStatus != "" && branchId != 0) // get return invoice in storage
-                    invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId, branchId);
+                    invoices = await invoice.getBranchInvoices(invoiceType, branchCreatorId, branchId,duration);
                 else if (branchId != 0) // get export/ import orders
                     invoices = await invoice.GetOrderByType(invoiceType, branchId);
                 else if (invoiceStatus != "" && userId != 0) // get sales invoices to get deliver accept on it
