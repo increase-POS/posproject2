@@ -327,11 +327,15 @@ namespace POS.View.storage
         }
         #endregion
         #region notifications
+        int _OrdersCount = 0;
+        int _WaitedOrdersCount = 0;
+        int _DraftCount = 0;
         private void setNotifications()
         {
             try
             {
                 refreshDraftNotification();
+                refreshOrdersNotification();
                 refreshOrderWaitNotification();
                 refreshLackNotification();
             }
@@ -350,20 +354,22 @@ namespace POS.View.storage
                 if ((invoice.invType == "imd" || invoice.invType == "exd"))
                     draftCount--;
 
-                int previouseCount = 0;
-                if (md_draftsCount.Badge != null && md_draftsCount.Badge.ToString() != "") previouseCount = int.Parse(md_draftsCount.Badge.ToString());
+                SectionData.refreshNotification(md_draftsCount, ref _DraftCount, draftCount);
 
-                if (draftCount != previouseCount)
-                {
-                    if (draftCount > 9)
-                    {
-                        draftCount = 9;
-                        md_draftsCount.Badge = "+" + draftCount.ToString();
-                    }
-                    else if (draftCount == 0) md_draftsCount.Badge = "";
-                    else
-                        md_draftsCount.Badge = draftCount.ToString();
-                }
+                //int previouseCount = 0;
+                //if (md_draftsCount.Badge != null && md_draftsCount.Badge.ToString() != "") previouseCount = int.Parse(md_draftsCount.Badge.ToString());
+
+                //if (draftCount != previouseCount)
+                //{
+                //    if (draftCount > 9)
+                //    {
+                //        draftCount = 9;
+                //        md_draftsCount.Badge = "+" + draftCount.ToString();
+                //    }
+                //    else if (draftCount == 0) md_draftsCount.Badge = "";
+                //    else
+                //        md_draftsCount.Badge = draftCount.ToString();
+                //}
             }
             catch { }
         }
@@ -377,20 +383,38 @@ namespace POS.View.storage
                 if (invoice.invType == "exw")
                     waitedOrdersCount--;
 
-                int previouseCount = 0;
-                if (md_orderWaitCount.Badge != null && md_orderWaitCount.Badge.ToString() != "") previouseCount = int.Parse(md_orderWaitCount.Badge.ToString());
+                SectionData.refreshNotification(md_orderWaitCount, ref _WaitedOrdersCount, waitedOrdersCount);
+                //int previouseCount = 0;
+                //if (md_orderWaitCount.Badge != null && md_orderWaitCount.Badge.ToString() != "") previouseCount = int.Parse(md_orderWaitCount.Badge.ToString());
 
-                if (waitedOrdersCount != previouseCount)
-                {
-                    if (waitedOrdersCount > 9)
-                    {
-                        waitedOrdersCount = 9;
-                        md_orderWaitCount.Badge = "+" + waitedOrdersCount.ToString();
-                    }
-                    else if (waitedOrdersCount == 0) md_orderWaitCount.Badge = "";
-                    else
-                        md_orderWaitCount.Badge = waitedOrdersCount.ToString();
-                }
+                //if (waitedOrdersCount != previouseCount)
+                //{
+                //    if (waitedOrdersCount > 9)
+                //    {
+                //        waitedOrdersCount = 9;
+                //        md_orderWaitCount.Badge = "+" + waitedOrdersCount.ToString();
+                //    }
+                //    else if (waitedOrdersCount == 0) md_orderWaitCount.Badge = "";
+                //    else
+                //        md_orderWaitCount.Badge = waitedOrdersCount.ToString();
+                //}
+            }
+            catch (Exception ex)
+            {
+                //SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private async void refreshOrdersNotification()
+        {
+            try
+            {
+                string invoiceType = "im,ex";
+
+                int ordersCount = await invoice.GetCountBranchInvoices(invoiceType, 0, MainWindow.branchID.Value);
+                if (invoice.invType == "im" || invoice.invType == "ex")
+                    ordersCount--;
+
+                SectionData.refreshNotification(md_ordersCount, ref _OrdersCount, ordersCount);               
             }
             catch (Exception ex)
             {
@@ -1068,13 +1092,9 @@ namespace POS.View.storage
                     MainWindow.mainWindow.Opacity = 1;
                     #endregion
                     if (w.isOk)
-                        await saveDraft();
-                    else
-                        clearProcess();                    
+                        await saveDraft();                  
                 }
-                else
-                    clearProcess();
-
+                clearProcess();
                 setNotifications();
 
                 if (sender != null)
@@ -1213,7 +1233,6 @@ namespace POS.View.storage
                         Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                     break;
             }
-            clearProcess();
         }
 
         private async void Btn_draft_Click(object sender, RoutedEventArgs e)

@@ -147,8 +147,9 @@
 
                         <Border Grid.Column="3"  Background="White" Margin="10,10"   CornerRadius="0,0,0,0"  
                             Width="1" BorderThickness="0,0,1,0" BorderBrush="#377EB8" />
-
-                        <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"   Margin="5,10,5,0" Height="auto"
+                    <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0" 
+                      BadgeBackground="{StaticResource MainColorRed}" BadgeForeground="White" Name="md_ordersCount">
+                        <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Height="auto"
                     Background="{x:Null}" x:Name="btn_orders"  Click="Btn_orders_Click" >
                             <StackPanel>
                                 <Path Fill="#4E4E4E" Stretch="Fill"  
@@ -164,6 +165,7 @@
                                            HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Button>
+                    </materialDesign:Badged>
                     <materialDesign:Badged VerticalAlignment="Center" Margin="5,10,5,0"  Visibility="Collapsed"
                       BadgeBackground="{StaticResource MainColorRed}" BadgeForeground="White" Name="md_orderWaitCount">
                             <Button Grid.Column="4" BorderBrush="{x:Null}" Padding="0"  Height="auto"
