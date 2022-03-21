@@ -342,8 +342,22 @@
                                 </Style>
                             </DataGridTextColumn.CellStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn x:Name="col_itemProfit"    Width="*" Header="Profits"   Binding="{Binding itemProfit    ,Converter={StaticResource accuracyConverter}}" />
-
+                        <DataGridTextColumn x:Name="col_itemProfit"    Width="*" Header="Profits"   Binding="{Binding itemProfit    ,Converter={StaticResource accuracyConverter}}" >
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                        <DataTrigger Binding="{Binding itemProfit, Converter={StaticResource profitToColorConverter}}" Value="1">
+                                        <Setter Property="Background" Value="{StaticResource lightGreen}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource MainColorGrey}"/>
+                                    </DataTrigger>
+                                        <DataTrigger Binding="{Binding itemProfit, Converter={StaticResource profitToColorConverter}}" Value="0">
+                                        <Setter Property="Background" Value="{StaticResource lightRed}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource MainColorGrey}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </Border>
