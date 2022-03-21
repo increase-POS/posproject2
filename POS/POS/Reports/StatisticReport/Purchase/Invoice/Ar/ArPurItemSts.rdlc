@@ -1346,28 +1346,28 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>5.13934cm</Width>
+                  <Width>5.15344cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.87954cm</Width>
+                  <Width>2.89364cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.46605cm</Width>
+                  <Width>3.48015cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.18792cm</Width>
+                  <Width>3.20202cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.10312cm</Width>
+                  <Width>2.11722cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.4969cm</Width>
+                  <Width>3.511cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>2.5141cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.2133cm</Width>
+                  <Width>4.2274cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1919,6 +1919,12 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
+                                  <Value>%</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
                                   <Value>=Fields!tax.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
@@ -2009,9 +2015,9 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <LayoutDirection>RTL</LayoutDirection>
             <DataSetName>DataSetITinvoice</DataSetName>
             <Top>2.05435cm</Top>
-            <Left>1.30051cm</Left>
+            <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>26.98617cm</Width>
+            <Width>27.099cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>=Parameters!isTax.Value=false</Hidden>

@@ -850,7 +850,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Pos</Value>
+                                  <Value>POS</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>

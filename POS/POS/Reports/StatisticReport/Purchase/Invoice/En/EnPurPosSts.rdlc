@@ -891,7 +891,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Pos</Value>
+                                  <Value>POS</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -961,7 +961,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total</Value>
+                                  <Value>TOTAL</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1303,28 +1303,28 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.3cm</Width>
+                  <Width>4.3141cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.61875cm</Width>
+                  <Width>3.63285cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.12208cm</Width>
+                  <Width>3.13618cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.10096cm</Width>
+                  <Width>4.11506cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.68531cm</Width>
+                  <Width>2.69941cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.75809cm</Width>
+                  <Width>2.77219cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5cm</Width>
+                  <Width>2.5141cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.90094cm</Width>
+                  <Width>3.91504cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1480,7 +1480,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Pos</Value>
+                                  <Value>POS</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1585,7 +1585,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total</Value>
+                                  <Value>TOTAL</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1836,6 +1836,12 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
+                                <TextRun>
+                                  <Value>%</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
                               </TextRuns>
                               <Style>
                                 <TextAlign>Center</TextAlign>
@@ -1918,9 +1924,9 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             </TablixRowHierarchy>
             <DataSetName>DataSetITinvoice</DataSetName>
             <Top>2.05435cm</Top>
-            <Left>1.30051cm</Left>
+            <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>26.98613cm</Width>
+            <Width>27.09896cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>=Parameters!isTax.Value=false</Hidden>

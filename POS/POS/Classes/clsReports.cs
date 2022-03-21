@@ -562,8 +562,9 @@ namespace POS.Classes
                 r.tax = decimal.Parse(SectionData.PercentageDecTostring(r.tax));
                 if (r.itemAvg != null)
                 {
-                    r.itemAvg = double.Parse(SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString())));
-
+                   // r.itemAvg = double.Parse(SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString())));
+                    r.ITnotes = SectionData.DecTostring(decimal.Parse(r.itemAvg.ToString()));
+                    r.itemAvg = double.Parse(r.ITnotes);
                 }
 
             }
@@ -713,7 +714,7 @@ Parameters!trValueDiscount.Value)
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetITinvoice", invoiceItems));
-            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));// tt
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo")));// tt
             paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
             paramarr.Add(new ReportParameter("trBranch", MainWindow.resourcemanagerreport.GetString("trBranch")));
             paramarr.Add(new ReportParameter("trQTR", MainWindow.resourcemanagerreport.GetString("trQTR")));
@@ -730,12 +731,12 @@ Parameters!trValueDiscount.Value)
             {
                 r.OneItemPriceNoTax = decimal.Parse(SectionData.DecTostring(r.OneItemPriceNoTax));
                 r.subTotalNotax = decimal.Parse(SectionData.DecTostring(r.subTotalNotax));//
-                r.ItemTaxes = decimal.Parse(SectionData.DecTostring(r.ItemTaxes));
+                r.ItemTaxes = decimal.Parse(SectionData.PercentageDecTostring(r.ItemTaxes));
                 r.itemUnitTaxwithQTY = decimal.Parse(SectionData.DecTostring(r.itemUnitTaxwithQTY));
                 r.subTotalTax = decimal.Parse(SectionData.DecTostring(r.subTotalTax));
 
                 r.totalNoTax = decimal.Parse(SectionData.DecTostring(r.totalNoTax));
-                r.tax = decimal.Parse(SectionData.DecTostring(r.tax));
+                r.tax = decimal.Parse(SectionData.PercentageDecTostring(r.tax));
                 r.invTaxVal = decimal.Parse(SectionData.DecTostring(r.invTaxVal));
                 r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
 

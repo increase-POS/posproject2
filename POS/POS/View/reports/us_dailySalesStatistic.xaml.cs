@@ -646,41 +646,48 @@ namespace POS.View.reports
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
             {
-                addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc";
+               
 
             
             
                 if (selectedTab == 0)
                 {
                     secondTitle = "invoice";
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySale.rdlc";
                 }
                else if (selectedTab == 1)
                 {
                     secondTitle = "order";
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySaleOQ.rdlc";
+                    
                 }
                 else
                 {
                     //  selectedTab == 2
                     secondTitle = "quotation";
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\Ar\dailySaleOQ.rdlc";
 
                 }
                 subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
             }
             else
             {
-                addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc";
+                
                 if (selectedTab == 0)
                 {
                     secondTitle = "invoice";
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySale.rdlc";
                 }
                 else if (selectedTab == 1)
                 {
                     secondTitle = "order";
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySaleOQ.rdlc";
                 }
                 else
                 {
                     //  selectedTab == 2
                     secondTitle = "quotation";
+                    addpath = @"\Reports\StatisticReport\Sale\Daily\En\dailySaleOQ.rdlc";
 
                 }
                 subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);

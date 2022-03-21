@@ -1480,6 +1480,12 @@
     <Content Include="Reports\Sale\En\dailySaleOQ.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\StatisticReport\Sale\Daily\Ar\dailySaleOQ.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\StatisticReport\Sale\Daily\En\dailySaleOQ.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="pic\subIncrease-logo.png" />
     <Content Include="Reports\StatisticReport\Storage\Internal\Ar\ArItem.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
