@@ -190,6 +190,12 @@ namespace POS.View.windows
             txt_countTitle.Text = MainWindow.resourcemanager.GetString("trCount") + ":";
 
             btn_select.Content = MainWindow.resourcemanager.GetString("trSelect");
+
+            if(condition == "exportImport")
+                col_branch.Header = MainWindow.resourcemanager.GetString("trToBranch");
+            else if (condition == "export")
+                col_branch.Header = MainWindow.resourcemanager.GetString("trFromBranch");
+
         }
         private async Task refreshInvoices()
         {
