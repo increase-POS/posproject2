@@ -262,28 +262,33 @@ namespace POS.Classes
 
 
             //}
-            foreach (var c in cash)
-            {
-
-                c.cash = decimal.Parse(SectionData.DecTostring(c.cash));
-            }
+         
 
             AccountSideConv(paramarr);
 
             cashTransTypeConv(paramarr);
             cashTransferProcessTypeConv(paramarr);
 
-
             paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
             paramarr.Add(new ReportParameter("trRecepient", MainWindow.resourcemanagerreport.GetString("trRecepient")));
             paramarr.Add(new ReportParameter("trPaymentTypeTooltip", MainWindow.resourcemanagerreport.GetString("trPaymentTypeTooltip")));
             paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
             paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
-
+            paramarr.Add(new ReportParameter("accuracy", MainWindow.accuracy));
+            paramarr.Add(new ReportParameter("trUnKnown", MainWindow.resourcemanagerreport.GetString("trUnKnown")));
+            paramarr.Add(new ReportParameter("trCashCustomer", MainWindow.resourcemanagerreport.GetString("trCashCustomer")));
+    
             DateFormConv(paramarr);
 
 
+            foreach (var c in cash)
+            {
 
+                c.cash = decimal.Parse(SectionData.DecTostring(c.cash));
+                // c.notes = SectionData.DecTostring(c.cash);
+                c.agentName = AgentUnKnownConvert(c.agentId,c.side,c.agentName);
+              
+            }
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }
 
@@ -310,8 +315,9 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trPaymentTypeTooltip", MainWindow.resourcemanagerreport.GetString("trPaymentTypeTooltip")));
             paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
             paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
-
-
+            paramarr.Add(new ReportParameter("accuracy", MainWindow.accuracy));
+            paramarr.Add(new ReportParameter("trUnKnown", MainWindow.resourcemanagerreport.GetString("trUnKnown")));
+            paramarr.Add(new ReportParameter("trCashCustomer", MainWindow.resourcemanagerreport.GetString("trCashCustomer")));
 
             rep.DataSources.Add(new ReportDataSource("DataSetBankAcc", cash));
         }

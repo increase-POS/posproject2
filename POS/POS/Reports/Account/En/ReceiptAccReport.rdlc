@@ -514,20 +514,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>= Switch(Fields!side.Value="bnd",""
-,Fields!side.Value="v",Parameters!trVendor.Value
-,Fields!side.Value="c",Parameters!trCustomer.Value
-,Fields!side.Value="u",Parameters!trUser.Value
+,Fields!side.Value="v",Parameters!trVendor.Value+" "+iif(Fields!agentId.Value&gt;0,Fields!agentName.Value,Parameters!trUnKnown.Value)
+,Fields!side.Value="c",Parameters!trCustomer.Value+" "+iif(Fields!agentId.Value&gt;0,Fields!agentName.Value,Parameters!trUnKnown.Value)
+,Fields!side.Value="u",Parameters!trUser.Value+" "+Fields!usersName.Value+" "+Fields!usersLName.Value
 ,Fields!side.Value="s",Parameters!trSalary.Value
 ,Fields!side.Value="e",Parameters!trGeneralExpenses.Value
 ,Fields!side.Value="m",(IIf(Fields!transType.Value="d",Parameters!trAdministrativeDeposit.Value,"")+
 IIf(Fields!transType.Value="p",Parameters!trAdministrativePull.Value,""))
-,Fields!transType.Value="sh",Parameters!trShippingCompany.Value)
-+
-" "
-+
-IIf(Fields!agentName.Value&lt;&gt;"",Fields!agentName.Value,
-IIf(Fields!usersName.Value&lt;&gt;"",Fields!usersName.Value,
-IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,"")))</Value>
+,Fields!side.Value="sh",Parameters!trShippingCompany.Value+" "+Fields!shippingCompanyName.Value)</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                   </Style>
@@ -550,6 +544,7 @@ IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -565,7 +560,7 @@ IIf(Fields!shippingCompanyName.Value&lt;&gt;"",Fields!shippingCompanyName.Value,
 ,Fields!processType.Value="doc",Parameters!trDocument.Value
 ,Fields!processType.Value="cheque",Parameters!trCheque.Value
 ,Fields!processType.Value="balance",Parameters!trCredit.Value
-,Fields!processType.Value="card",Parameters!trCard.Value
+,Fields!processType.Value="card",Fields!cardName.Value
 )</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
@@ -638,7 +633,12 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!cash.Value</Value>
+                                  <Value>=Switch(Parameters!accuracy.Value="0",Format(Fields!cash.Value,"0")
+,Parameters!accuracy.Value="1",Format(Fields!cash.Value,"0.0")
+,Parameters!accuracy.Value="2",Format(Fields!cash.Value,"0.00")
+ , Parameters!accuracy.Value="3",Format(Fields!cash.Value,"0.000")
+ ,1=1,Format(Fields!cash.Value,"0.0")
+)</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                   </Style>
@@ -1352,11 +1352,29 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="accuracy">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trUnKnown">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="trCashCustomer">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>10</NumberOfRows>
+      <NumberOfRows>11</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1552,6 +1570,21 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>9</RowIndex>
           <ParameterName>show_header</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>9</RowIndex>
+          <ParameterName>accuracy</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>trUnKnown</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>trCashCustomer</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
