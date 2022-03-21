@@ -1189,6 +1189,7 @@ var strP = TokenManager.GetPrincipal(token);
                 string invType = "";
                 int branchCreatorId = 0;
                 int branchId = 0;
+                int duration = 0;
                 List<string> invTypeL = new List<string>();
 
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
@@ -1209,6 +1210,10 @@ var strP = TokenManager.GetPrincipal(token);
                     {
                         branchId = int.Parse(c.Value);
                     }
+                    else if (c.Type == "duration")
+                    {
+                        duration = int.Parse(c.Value);
+                    }
                 }
 
                 using (incposdbEntities entity = new incposdbEntities())
@@ -1219,6 +1224,12 @@ var strP = TokenManager.GetPrincipal(token);
                     // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     if (branchId != 0)
                         searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
+
+                    if (duration > 0)
+                    {
+                        DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-duration).ToShortDateString());
+                        searchPredicate = searchPredicate.And(inv => inv.updateDate >= dt);
+                    }
 
                     var invoicesList = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
@@ -1470,6 +1481,7 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
         [HttpPost]
         [Route("getInvoicesToReturn")]
         public string getInvoicesToReturn(string token)
@@ -1758,18 +1770,21 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("GetCountBranchInvoices")]
         public string GetCountBranchInvoices(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
             }
             else
             {
+                #region parameters definition
                 string invType = "";
                 int branchCreatorId = 0;
                 int branchId = 0;
+                int duration = 0;
                 List<string> invTypeL = new List<string>();
+                #endregion
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -1788,6 +1803,10 @@ var strP = TokenManager.GetPrincipal(token);
                     {
                         branchId = int.Parse(c.Value);
                     }
+                    else if (c.Type == "duration")
+                    {
+                        duration = int.Parse(c.Value);
+                    }
                 }
 
                 using (incposdbEntities entity = new incposdbEntities())
@@ -1798,6 +1817,12 @@ var strP = TokenManager.GetPrincipal(token);
                     // searchPredicate = searchPredicate.And(inv => invTypeL.Contains(inv.invType));
                     if (branchId != 0)
                         searchPredicate = searchPredicate.Or(inv => inv.branchId == branchId && inv.isActive == true && invTypeL.Contains(inv.invType));
+
+                    if (duration > 0)
+                    {
+                        DateTime dt = Convert.ToDateTime(DateTime.Today.AddDays(-duration).ToShortDateString());
+                        searchPredicate = searchPredicate.And(inv => inv.updateDate >= dt);
+                    }
 
                     var invoicesCount = (from b in entity.invoices.Where(searchPredicate)
                                         join l in entity.branches on b.branchId equals l.branchId into lj
