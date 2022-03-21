@@ -144,8 +144,8 @@ namespace POS.View.windows
         void RefreshCashView()
         {
             dg_accounts.ItemsSource = cashesQuery;
-            tb_paid.Text = invPaid.ToString();
-            tb_total.Text = invTotal.ToString(); 
+            tb_paid.Text = SectionData.DecTostring( invPaid);
+            tb_total.Text = SectionData.DecTostring(invTotal); 
         }
 
         private void HandleKeyPress(object sender, KeyEventArgs e)
