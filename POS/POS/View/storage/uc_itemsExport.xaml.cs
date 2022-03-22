@@ -969,8 +969,24 @@ namespace POS.View.storage
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
                 {
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId).FirstOrDefault());
+                    if (index == -1)//item doesn't exist in bill
+                    {
+                        // create new row in bill details data grid
+                        //decimal price = (decimal)defaultPurUnit.cost; //?????
+                        //decimal total = price;
+                        addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1);
+                        _Count++;
+                    }
+                    else // item exist prevoiusly in list
+                    {
+                        billDetails[index].Count++;
+                        billDetails[index].Total = billDetails[index].Count * billDetails[index].Price;
+
+                        //_Sum += billDetails[index].Price;
+                    }
                     // create new row in bill details data grid
-                    addRowToBill(item.name, itemId, defaultPurUnit.mainUnit, defaultPurUnit.itemUnitId, 1);
+                   
 
                     //_Count++;
                     //refrishBillDetails();
@@ -978,8 +994,9 @@ namespace POS.View.storage
                 else
                 {
                     addRowToBill(item.name, itemId, null, 0, 1);
+                    _Count++;
                 }
-                _Count++;
+                
             }
         }
 
@@ -2206,6 +2223,7 @@ namespace POS.View.storage
         {
             //get invoice items
             invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
+            _Count = invoiceItems.Count;
             mainInvoiceItems = invoiceItems;
             // build invoice details grid
             _SequenceNum = 0;
