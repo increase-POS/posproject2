@@ -80,10 +80,9 @@ namespace POS.View
         ItemLocation itemLocationModel = new ItemLocation();
 
         Branch branchModel = new Branch();
-        //IEnumerable<Branch> branches;
 
         Agent agentModel = new Agent();
-        List<Agent> vendors;
+        //List<Agent> vendors;
         List<Agent> vendorsL;
 
         ItemUnit itemUnitModel = new ItemUnit();
@@ -131,6 +130,7 @@ namespace POS.View
         static private int _invoiceId;
         static private decimal _Sum = 0;
         static public string _InvoiceType = "pd"; // purchase draft
+        static public bool _isLack = false; // for lack invoice
 
         // for report
         ReportCls reportclass = new ReportCls();
@@ -245,7 +245,7 @@ namespace POS.View
         }
         private async Task saveBeforeTransfer()
         {
-            if (billDetails.Count > 0 && _InvoiceType == "pd")
+            if (billDetails.Count > 0 && _InvoiceType == "pd" && _isLack == false)
             {
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;
@@ -1410,10 +1410,7 @@ namespace POS.View
                         bool validate = validateInvoiceValues();
                         bool valid = validateItemUnits();
                         TextBox tb = (TextBox)dp_desrvedDate.Template.FindName("PART_TextBox", dp_desrvedDate);
-                        //if ( ((!tb_invoiceNumber.Text.Equals("") && !tb.Text.Trim().Equals("") && cb_vendor.SelectedIndex > 0) || cb_vendor.SelectedIndex <1 ) 
-                        //&& billDetails.Count > 0  && decimal.Parse(tb_total.Text) > 0 
-                        //&& ((cb_paymentProcessType.SelectedValue.ToString().Equals("balance") && cb_vendor.SelectedIndex > 0) || !cb_paymentProcessType.SelectedValue.ToString().Equals("balance"))
-                        //&& valid)
+
                         if (valid && validate)
                         {
                             bool multipleValid = true;
@@ -1478,7 +1475,13 @@ namespace POS.View
                                                 updateUserId = MainWindow.userID.Value,
                                             };
                                             #endregion
-                                            await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
+                                            if (_isLack) //  add items to storage and orders
+                                            {
+                                                await itemLocationModel.recieptLackInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
+                                                refreshLackNotification();
+                                            }
+                                            else // add items to storage
+                                                await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
                                         }
                                         else
                                         {
@@ -1707,7 +1710,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (billDetails.Count > 0 && (_InvoiceType == "pd" || _InvoiceType == "pbd"))
+                if (billDetails.Count > 0 && _isLack == false && (_InvoiceType == "pd" || _InvoiceType == "pbd"))
                 {
                     bool valid = validateItemUnits();
                     if (billDetails.Count > 0 && valid)
@@ -1797,6 +1800,7 @@ namespace POS.View
 
             refrishBillDetails();
             _InvoiceType = "pd";
+            _isLack = false;
             inputEditable();
             btn_next.Visibility = Visibility.Collapsed;
             btn_previous.Visibility = Visibility.Collapsed;
@@ -2977,55 +2981,55 @@ namespace POS.View
                     billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     #region Dina
 
-                    dynamic unit;
-                    if (MainWindow.InvoiceGlobalItemUnitsList == null)
-                    {
-                        unit = new Item();
-                        unit = barcodesList.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
-                    }
-                    else
-                    {
-                        unit = new ItemUnit();
-                        unit = MainWindow.InvoiceGlobalItemUnitsList.Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
-                    }
+                    //dynamic unit;
+                    //if (MainWindow.InvoiceGlobalItemUnitsList == null)
+                    //{
+                    //    unit = new Item();
+                    //    unit = barcodesList.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+                    //}
+                    //else
+                    //{
+                    //    unit = new ItemUnit();
+                    //    unit = MainWindow.InvoiceGlobalItemUnitsList.Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
+                    //}
 
-                    int oldCount = 0;
-                    long newCount = 0;
-                    decimal oldPrice = 0;
-                    decimal itemTax = 0;
+                    //int oldCount = 0;
+                    //long newCount = 0;
+                    //decimal oldPrice = 0;
+                    //decimal itemTax = 0;
 
-                    decimal newPrice = 0;
-                    oldCount = billDetails[_datagridSelectedIndex].Count;
-                    oldPrice = billDetails[_datagridSelectedIndex].Price;
-                    newCount = oldCount;
-                    tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    //decimal newPrice = 0;
+                    //oldCount = billDetails[_datagridSelectedIndex].Count;
+                    //oldPrice = billDetails[_datagridSelectedIndex].Price;
+                    //newCount = oldCount;
+                    //tb = dg_billDetails.Columns[4].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
 
-                    newPrice = unit.cost;
+                    //newPrice = unit.cost;
 
-                    tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
-                    tb.Text = newPrice.ToString();
+                    //tb = dg_billDetails.Columns[5].GetCellContent(dg_billDetails.Items[_datagridSelectedIndex]) as TextBlock;
+                    //tb.Text = newPrice.ToString();
 
-                    // old total for changed item
-                    decimal total = oldPrice * oldCount;
-                    _Sum -= total;
+                    //// old total for changed item
+                    //decimal total = oldPrice * oldCount;
+                    //_Sum -= total;
 
 
-                    // new total for changed item
-                    total = newCount * newPrice;
-                    _Sum += total;
+                    //// new total for changed item
+                    //total = newCount * newPrice;
+                    //_Sum += total;
 
-                    #region items tax
-                    if (item.taxes != null)
-                        itemTax = (decimal)item.taxes;
-                    #endregion
+                    //#region items tax
+                    //if (item.taxes != null)
+                    //    itemTax = (decimal)item.taxes;
+                    //#endregion
 
-                    refreshTotalValue();
+                    //refreshTotalValue();
 
-                    // update item in billdetails           
-                    billDetails[_datagridSelectedIndex].Count = (int)newCount;
-                    billDetails[_datagridSelectedIndex].Price = newPrice;
-                    billDetails[_datagridSelectedIndex].Total = total;
-                    refrishBillDetails();
+                    //// update item in billdetails           
+                    //billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                    //billDetails[_datagridSelectedIndex].Price = newPrice;
+                    //billDetails[_datagridSelectedIndex].Total = total;
+                    //refrishBillDetails();
                     #endregion
                 }
 
@@ -4538,6 +4542,8 @@ namespace POS.View
                 await saveBeforeTransfer();
                 if (invoice.invoiceId != 0)
                     clearInvoice();
+
+                _isLack = true;
                 await buildShortageInvoiceDetails();
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

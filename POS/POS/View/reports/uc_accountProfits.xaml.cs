@@ -71,9 +71,6 @@ namespace POS.View.reports
         {//load
             try
             {
-                //if (sender != null)
-                //    SectionData.StartAwait(grid_main);
-
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
@@ -91,13 +88,9 @@ namespace POS.View.reports
                 Btn_invoice_Click(btn_invoice, null);
                 SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_invoice.Tag.ToString());
 
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -676,6 +669,7 @@ namespace POS.View.reports
             var temp = profitsQuery;
 
             int count = 0;
+            //invoice
             if (selectedTab == 0)
             {
                 var tempName = temp.GroupBy(s => s.posId).Select(s => new
@@ -692,6 +686,7 @@ namespace POS.View.reports
 
                 profit.AddRange(tempProfit.Select(nn => nn.profit));
             }
+            //item
             else if (selectedTab == 1)
             {
                 var tempName = temp.GroupBy(s => s.ITitemUnitId).Select(s => new
@@ -711,20 +706,31 @@ namespace POS.View.reports
             List<string> lable = new List<string>();
             SeriesCollection columnChartData = new SeriesCollection();
 
-            List<decimal> cS = new List<decimal>();
+            List<decimal> cWon = new List<decimal>();
+            List<decimal> cLoss = new List<decimal>();
 
             List<string> titles = new List<string>()
             {
-               MainWindow.resourcemanager.GetString("trProfits")
+               MainWindow.resourcemanager.GetString("trProfit") ,
+               MainWindow.resourcemanager.GetString("trLoss")
             };
             int x = 6;
             if (count <= 6) x = count;
             for (int i = 0; i < x; i++)
             {
-                cS.Add(profit.ToList().Skip(i).FirstOrDefault());
+                if (profit.ToList().Skip(i).FirstOrDefault() > 0)
+                {
+                    cWon.Add(profit.ToList().Skip(i).FirstOrDefault());
+                    cLoss.Add(0);
+                }
+                else
+                {
+                    cWon.Add(0);
+                    cLoss.Add(-1 * profit.ToList().Skip(i).FirstOrDefault());
+                }
                 axcolumn.Labels.Add(names.ToList().Skip(i).FirstOrDefault());
             }
-           
+
             if (count > 6)
             {
                 decimal profitSum = 0;
@@ -734,7 +740,16 @@ namespace POS.View.reports
                 }
                 if (!((profitSum == 0)))
                 {
-                    cS.Add(profitSum);
+                    if (profitSum > 0)
+                    {
+                        cWon.Add(profitSum);
+                        cLoss.Add(0);
+                    }
+                    else
+                    {
+                        cWon.Add(0);
+                        cLoss.Add(-1 * profitSum);
+                    }
 
                     axcolumn.Labels.Add(MainWindow.resourcemanager.GetString("trOthers"));
                 }
@@ -742,11 +757,17 @@ namespace POS.View.reports
             columnChartData.Add(
             new StackedColumnSeries
             {
-                Values = cS.AsChartValues(),
+                Values = cWon.AsChartValues(),
                 Title = titles[0],
                 DataLabels = true,
             });
-
+            columnChartData.Add(
+           new StackedColumnSeries
+           {
+               Values = cLoss.AsChartValues(),
+               Title = titles[1],
+               DataLabels = true,
+           });
             DataContext = this;
             cartesianChart.Series = columnChartData;
         }
@@ -754,9 +775,9 @@ namespace POS.View.reports
         private void fillPieChart()
         {
             List<string> titles = new List<string>();
+            List<string> finalTitles = new List<string>();
             IEnumerable<decimal> x = null;
 
-            titles.Clear();
             var temp = profitsQuery;
             int count = 0;
             if (selectedTab == 0)
@@ -796,26 +817,41 @@ namespace POS.View.reports
             int xCount = 6;
             if (count < 6) xCount = count;
 
-
             for (int i = 0; i < xCount; i++)
             {
                 List<decimal> final = new List<decimal>();
-                List<string> lable = new List<string>();
-                final.Add(x.ToList().Skip(i).FirstOrDefault());
-                piechartData.Add(
-                 new PieSeries
-                 {
-                     Values = final.AsChartValues(),
-                     Title = titles.Skip(i).FirstOrDefault(),
-                     DataLabels = true,
-                 }
-             );
+
+                if (x.ToList().Skip(i).FirstOrDefault() > 0)
+                {
+                    final.Add(x.ToList().Skip(i).FirstOrDefault());
+                    finalTitles.Add(titles[i]);
+
+                    piechartData.Add(
+                   new PieSeries
+                   {
+                       Values = final.AsChartValues(),
+                       Title = finalTitles.Skip(i).FirstOrDefault(),
+                       DataLabels = true,
+                   }
+                );
+                }
             }
+
             if (count > 6)
             {
+                decimal finalSum = 0;
+
+                for (int i = 6; i < count; i++)
+                {
+                    finalSum = finalSum + x.ToList().Skip(i).FirstOrDefault();
+                }
+
                 List<decimal> final = new List<decimal>();
                 List<string> lable = new List<string>();
-                final.Add(x.ToList().Skip(6).FirstOrDefault());
+
+                if (finalSum > 0)
+                    final.Add(finalSum);
+
                 piechartData.Add(
                 new PieSeries
                 {
@@ -823,7 +859,7 @@ namespace POS.View.reports
                     Title = MainWindow.resourcemanager.GetString("trOthers"),
                     DataLabels = true,
                 }
-            );
+                );
             }
 
             chart1.Series = piechartData;
@@ -860,7 +896,6 @@ namespace POS.View.reports
                 ids.AddRange(tempName.Select(mm => mm.id.ITitemId.Value));
             }
 
-            //LineSeries[] ls = new LineSeries[names.Count];
             int x = 6;
             if (names.Count() < 6) x = names.Count();
             for (int i = 0; i < x; i++)
@@ -875,7 +910,7 @@ namespace POS.View.reports
                     otherIds.Add(ids[i]);
                 drawPoints(MainWindow.resourcemanager.GetString("trOthers"), 0, rowChartData, 'o', otherIds);
             }
-            //rowChartData.AddRange(ls);
+
             DataContext = this;
             rowChart.Series = rowChartData;
         }
@@ -931,7 +966,7 @@ namespace POS.View.reports
                             if (ch == 'n')
                             {
                                 var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.ITitemId.Value == id)
-                                                              .Select(b => b.invoiceProfit).Sum();
+                                                              .Select(b => b.itemProfit).Sum();
 
                                 profitLst.Add(decimal.Parse(SectionData.DecTostring(drawProfit)));
                             }
@@ -941,7 +976,7 @@ namespace POS.View.reports
                                 for (int i = 0; i < otherIds.Count; i++)
                                 {
                                     var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisMonth && c.updateDate <= firstOfNextMonth && c.ITitemId.Value == otherIds[i])
-                                                             .Select(b => b.invoiceProfit).Sum();
+                                                             .Select(b => b.itemProfit).Sum();
                                     sum = sum + drawProfit;
                                 }
                                 profitLst.Add(decimal.Parse(SectionData.DecTostring(sum)));
@@ -994,7 +1029,7 @@ namespace POS.View.reports
                         if (ch == 'n')
                         {
                             var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.ITitemId.Value == id)
-                                                           .Select(b => b.invoiceProfit).Sum();
+                                                           .Select(b => b.itemProfit).Sum();
 
                             profitLst.Add(decimal.Parse(SectionData.DecTostring(drawProfit)));
                         }
@@ -1004,7 +1039,7 @@ namespace POS.View.reports
                             for (int i = 0; i < otherIds.Count; i++)
                             {
                                 var drawProfit = profitsQuery.ToList().Where(c => c.updateDate > firstOfThisYear && c.updateDate <= firstOfNextMYear && c.ITitemId.Value == otherIds[i])
-                                                           .Select(b => b.invoiceProfit).Sum();
+                                                           .Select(b => b.itemProfit).Sum();
                                 sum = sum + drawProfit;
                             }
                             profitLst.Add(decimal.Parse(SectionData.DecTostring(sum)));
@@ -1014,11 +1049,6 @@ namespace POS.View.reports
                 }
             }
 
-            //ls[i] = new LineSeries
-            //{
-            //    Values = profitLst.AsChartValues(),
-            //    Title = names[i]
-            //};
             rowChartData.Add(
                         new LineSeries
                         {

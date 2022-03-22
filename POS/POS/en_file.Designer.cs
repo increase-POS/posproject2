@@ -4984,6 +4984,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loss.
+        /// </summary>
+        internal static string trLoss {
+            get {
+                return ResourceManager.GetString("trLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mail not sent.
         /// </summary>
         internal static string trMailNotSent {
@@ -6772,6 +6781,15 @@ namespace POS {
         internal static string trProcessTypeHint {
             get {
                 return ResourceManager.GetString("trProcessTypeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profit.
+        /// </summary>
+        internal static string trProfit {
+            get {
+                return ResourceManager.GetString("trProfit", resourceCulture);
             }
         }
         

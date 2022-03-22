@@ -3451,4 +3451,10 @@ Please add Email in setting</value>
   <data name="itMustBeGreaterThanZero" xml:space="preserve">
     <value>It must be greater than zero</value>
   </data>
+  <data name="trLoss" xml:space="preserve">
+    <value>Loss</value>
+  </data>
+  <data name="trProfit" xml:space="preserve">
+    <value>Profit</value>
+  </data>
 </root>
