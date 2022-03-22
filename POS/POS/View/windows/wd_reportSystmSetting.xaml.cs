@@ -231,7 +231,7 @@ namespace POS.View.windows
             txt_emailOnSavePur.Text = MainWindow.resourcemanager.GetString("trEmailOnSavePurchase");
             txt_printOnSaveSale.Text = MainWindow.resourcemanager.GetString("trPrintOnSaveSale");
             txt_emailOnSaveSale.Text = MainWindow.resourcemanager.GetString("trEmailOnSaveSale");
-
+            txt_directEntry.Text= MainWindow.resourcemanager.GetString("trDirectEntry");
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
         }
 
