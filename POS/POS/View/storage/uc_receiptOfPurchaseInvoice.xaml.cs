@@ -37,6 +37,8 @@ namespace POS.View.storage
         string returnPermission = "reciptOfInvoice_return";
         string reportsPermission = "reciptOfInvoice_reports";
         string inputsPermission = "reciptOfInvoice_inputs";
+        string printCountPermission = "reciptOfInvoice_printCount";
+
         private static uc_receiptOfPurchaseInvoice _instance;
         public static uc_receiptOfPurchaseInvoice Instance
         {
@@ -247,6 +249,17 @@ namespace POS.View.storage
 
 
                 #region Permision
+                if (MainWindow.groupObject.HasPermissionAction(printCountPermission, MainWindow.groupObjects, "one"))
+                {
+                    btn_printCount.Visibility = Visibility.Visible;
+                    bdr_printCount.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    btn_printCount.Visibility = Visibility.Collapsed;
+                    bdr_printCount.Visibility = Visibility.Collapsed;
+                }
+
                 if (MainWindow.groupObject.HasPermissionAction(reciptPermission, MainWindow.groupObjects, "one"))
                     md_invoiceCount.Visibility = Visibility.Visible;
                 else
@@ -270,7 +283,7 @@ namespace POS.View.storage
                     btn_items.IsEnabled = false;
                 }
                 #endregion
-
+                
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2164,6 +2177,44 @@ namespace POS.View.storage
         private void Dg_billDetails_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             _IsFocused = true;
+        }
+        private async void Btn_printCount_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
+
+                int result = 0;
+
+                if (invoice.invoiceId > 0)
+                {
+                    result = await invoiceModel.updateprintstat(invoice.invoiceId, -1, true, true);
+
+
+                    if (result > 0)
+                    {
+                        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
+                    {
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                    }
+
+                }
+                else
+                {
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trChooseInvoiceToolTip"), animation: ToasterAnimation.FadeIn);
+                }
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
     }
 }
