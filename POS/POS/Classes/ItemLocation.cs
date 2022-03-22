@@ -648,24 +648,24 @@ namespace POS.Classes
 
            await APIResult.post(method, parameters);
         }
-        public async Task recieptLackInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
-        {
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            string method = "ItemsLocations/recieptLackInvoice";
+        //public async Task recieptLackInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
+        //{
+        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
+        //    string method = "ItemsLocations/recieptLackInvoice";
 
-            var myContent = JsonConvert.SerializeObject(invoiceItems);
-            parameters.Add("Object", myContent);
+        //    var myContent = JsonConvert.SerializeObject(invoiceItems);
+        //    parameters.Add("Object", myContent);
 
-            var myContent1 = JsonConvert.SerializeObject(notificationObj);
-            parameters.Add("notificationObj", myContent1);
+        //    var myContent1 = JsonConvert.SerializeObject(notificationObj);
+        //    parameters.Add("notificationObj", myContent1);
 
-            parameters.Add("userId", userId.ToString());
+        //    parameters.Add("userId", userId.ToString());
 
-            parameters.Add("branchId", branchId.ToString());
-            parameters.Add("objectName", objectName);
+        //    parameters.Add("branchId", branchId.ToString());
+        //    parameters.Add("objectName", objectName);
 
-           await APIResult.post(method, parameters);
-        }
+        //   await APIResult.post(method, parameters);
+        //}
         public async Task<int> generatePackage(int packageParentId, int quantity,int locationId,int branchId,int userId)
         {
 

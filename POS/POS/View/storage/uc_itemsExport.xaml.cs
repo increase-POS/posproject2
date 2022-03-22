@@ -78,11 +78,11 @@ namespace POS.View.storage
         List<ItemTransfer> mainInvoiceItems;
 
         User userModel = new User();
-        List<User> users;
-        ShippingCompanies companyModel = new ShippingCompanies();
-        List<ShippingCompanies> companies;
+       // ShippingCompanies companyModel = new ShippingCompanies();
+        //List<ShippingCompanies> companies;
         public List<Control> controls;
         static public string _ProcessType = "imd"; //draft import
+        bool _isLack = false;
 
         static private int _SequenceNum = 0;
         static private int _Count = 0;
@@ -93,9 +93,9 @@ namespace POS.View.storage
         static private string _SelectedProcess = "";
         static private int _SelectedBranch = -1;
         bool _IsFocused = false;
-        static private int _SelectedCompany = -1;
-        static private int _SelectedUser = -1;
-        static private decimal _DeliveryCost = 0;
+        //static private int _SelectedCompany = -1;
+        //static private int _SelectedUser = -1;
+       // static private decimal _DeliveryCost = 0;
 
         private static DispatcherTimer timer;
         Pos pos = new Pos();
@@ -103,9 +103,6 @@ namespace POS.View.storage
         Category categoryModel = new Category();
         Category category = new Category();
 
-        //IEnumerable<Category> categories;
-        //IEnumerable<Category> categoriesQuery;
-        //int? categoryParentId = 0;
         Item itemModel = new Item();
         Item item = new Item();
         IEnumerable<Item> items;
@@ -439,20 +436,7 @@ namespace POS.View.storage
         {
             items = await itemModel.GetAllItems();
         }
-        private async Task fillUsers()
-        {
-            users = await userModel.getBranchSalesMan(MainWindow.branchID.Value, deliveryPermission);
-            //cb_user.ItemsSource = users;
-            //cb_user.DisplayMemberPath = "name";
-            //cb_user.SelectedValuePath = "userId";
-        }
-        private async Task fillShippingCompanies()
-        {
-            companies = await companyModel.Get();
-            //cb_company.ItemsSource = companies;
-            //cb_company.DisplayMemberPath = "name";
-            //cb_company.SelectedValuePath = "shippingCompanyId";
-        }
+
         private void configureProcessType()
         {
             var processList = new[] {
@@ -1082,7 +1066,7 @@ namespace POS.View.storage
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
 
-                if (billDetails.Count > 0 && (_ProcessType == "imd" || _ProcessType == "exd"))
+                if (billDetails.Count > 0 && (_ProcessType == "imd" || _ProcessType == "exd") && _isLack == false)
                 {
                     #region Accept
                     MainWindow.mainWindow.Opacity = 0.2;
@@ -1112,9 +1096,9 @@ namespace POS.View.storage
             _Count = 0;
             _SequenceNum = 0;
             _SelectedBranch = -1;
-            _DeliveryCost = 0;
             _SelectedProcess = "imd";
             _ProcessType = "imd";
+            _isLack = false;
             cb_processType.SelectedIndex = 0;
             isFromReport = false;
             archived = false;
@@ -1580,7 +1564,7 @@ namespace POS.View.storage
                                 Window.GetWindow(this).Opacity = 0.2;
                                 w = new wd_transItemsLocation();
                                 List<ItemTransfer> orderList = new List<ItemTransfer>();
-                                List<int> ordersIds = new List<int>();
+                                //List<int> ordersIds = new List<int>();
                                 foreach (BillDetails d in billDetails)
                                 {
                                     if (d.Count == 0)
@@ -1599,9 +1583,9 @@ namespace POS.View.storage
                                             unitName = d.Unit,
                                             itemUnitId = d.itemUnitId,
                                             quantity = d.Count,
-                                            invoiceId = d.OrderId,
+                                            invoiceId = 0,
                                         });
-                                        ordersIds.Add(d.OrderId);
+                                        //ordersIds.Add(d.OrderId);
                                     }
                                 }
                                 w.orderList = orderList;
@@ -2202,6 +2186,8 @@ namespace POS.View.storage
 
                 if (invoice.invoiceId != 0)
                     clearProcess();
+
+                _isLack = true;
                 cb_processType.SelectedIndex = 0;
                 cb_processType.IsEnabled = false;
                 await buildShortageInvoiceDetails();
@@ -2236,7 +2222,7 @@ namespace POS.View.storage
                     Unit = itemT.itemUnitId.ToString(),
                     itemUnitId = (int)itemT.itemUnitId,
                     Count = (int)itemT.quantity,
-                    OrderId = (int)itemT.invoiceId,
+                    //OrderId = (int)itemT.invoiceId,
                     Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
                     Total = total,
                 });

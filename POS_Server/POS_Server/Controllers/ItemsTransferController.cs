@@ -128,9 +128,9 @@ namespace POS_Server.Controllers
                   // delete old invoice items
                     using (incposdbEntities entity = new incposdbEntities())
                         {
-                            List<invoiceOrder> iol = entity.invoiceOrder.Where(x => x.invoiceId == invoiceId).ToList();
-                            entity.invoiceOrder.RemoveRange(iol);
-                            entity.SaveChanges();
+                            //List<invoiceOrder> iol = entity.invoiceOrder.Where(x => x.invoiceId == invoiceId).ToList();
+                            //entity.invoiceOrder.RemoveRange(iol);
+                            //entity.SaveChanges();
                             
                             List<itemsTransfer> items = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).ToList();
                             entity.itemsTransfer.RemoveRange(items);
@@ -163,17 +163,17 @@ namespace POS_Server.Controllers
                             t = entity.itemsTransfer.Add(newObject[i]);
                                 entity.SaveChanges();
                              
-                                if (orderId != 0)
-                                {
-                                    invoiceOrder invoiceOrder = new invoiceOrder()
-                                    {
-                                        invoiceId = invoiceId,
-                                        orderId = orderId,
-                                        quantity = (int)newObject[i].quantity,
-                                        itemsTransferId = t.itemsTransId,
-                                    };
-                                    entity.invoiceOrder.Add(invoiceOrder);
-                                }
+                                //if (orderId != 0)
+                                //{
+                                //    invoiceOrder invoiceOrder = new invoiceOrder()
+                                //    {
+                                //        invoiceId = invoiceId,
+                                //        orderId = orderId,
+                                //        quantity = (int)newObject[i].quantity,
+                                //        itemsTransferId = t.itemsTransId,
+                                //    };
+                                //    entity.invoiceOrder.Add(invoiceOrder);
+                                //}
                                 if(newObject[i].offerId != null && invoice.invType =="s")
                                 {
                                     int offerId = (int)newObject[i].offerId;

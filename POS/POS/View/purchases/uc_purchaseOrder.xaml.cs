@@ -115,6 +115,7 @@ namespace POS.View.purchases
         static private decimal _Sum = 0;
         static public string _InvoiceType = "pod"; // purchase order draft
         static private decimal _Count = 0;
+        static public bool _isLack = false; // for lack invoice
         // for report
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -191,7 +192,7 @@ namespace POS.View.purchases
         {
             int invioceId = 0;
             bool succssess = false;
-            if (billDetails.Count > 0 && _InvoiceType == "pod")
+            if (billDetails.Count > 0 && _InvoiceType == "pod" && _isLack == false)
             {
                 #region Accept
                 MainWindow.mainWindow.Opacity = 0.2;
@@ -481,7 +482,7 @@ namespace POS.View.purchases
             public int Count { get; set; }
             public decimal Price { get; set; }
             public decimal Total { get; set; }
-            public int OrderId { get; set; }
+            //public int OrderId { get; set; }
             public string invType { get; set; }
         }
 
@@ -757,7 +758,7 @@ namespace POS.View.purchases
                 var defaultPurUnit = itemUnits.ToList().Find(c => c.defaultPurchase == 1);
                 if (defaultPurUnit != null)
                 {
-                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId && p.OrderId == 0).FirstOrDefault());
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == defaultPurUnit.itemUnitId).FirstOrDefault());
                     if (index == -1)//item doesn't exist in bill
                     {
                         // create new row in bill details data grid
@@ -889,7 +890,7 @@ namespace POS.View.purchases
                     itemT.price = billDetails[i].Price;
                     itemT.itemUnitId = billDetails[i].itemUnitId;
                     itemT.createUserId = MainWindow.userID;
-                    itemT.invoiceId = billDetails[i].OrderId;
+                    itemT.invoiceId = 0;
                     invoiceItems.Add(itemT);
                 }
                 await invoiceModel.saveInvoiceItems(invoiceItems, invoiceId);
@@ -1077,6 +1078,7 @@ namespace POS.View.purchases
             _SequenceNum = 0;
             _SelectedVendor = -1;
             _InvoiceType = "pod"; // purchase order draft
+            _isLack = false;
             invoice = new Invoice();
             tb_barcode.Clear();
             cb_vendor.SelectedIndex = -1;
@@ -1236,8 +1238,8 @@ namespace POS.View.purchases
                     Count = (int)itemT.quantity,
                     Price = (decimal)itemT.price,
                     Total = total,
-                    OrderId = orderId,
-                invType = invoice.invType,
+                    //OrderId = orderId,
+                    invType = invoice.invType,
                 });
             }
             tb_total.Text = _Count.ToString();
@@ -1692,7 +1694,7 @@ namespace POS.View.purchases
                             int itemId = (int)unit1.itemId;
                             if (unit1.itemId != 0)
                             {
-                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId && p.OrderId == 0).FirstOrDefault());
+                                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == unit1.itemUnitId).FirstOrDefault());
 
                                 if (index == -1)//item doesn't exist in bill
                                 {
@@ -1885,7 +1887,7 @@ namespace POS.View.purchases
                 var columnName = e.Column.Header.ToString();
 
                 BillDetails row = e.Row.Item as BillDetails;
-                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId && p.OrderId == row.OrderId).FirstOrDefault());
+                int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == row.itemUnitId).FirstOrDefault());
 
                 TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                 if (elapsed.TotalMilliseconds < 100)
@@ -1913,7 +1915,7 @@ namespace POS.View.purchases
 
                     if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
                     {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
+                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
                         if (newCount > item.quantity)
                         {
                             // return old value 
@@ -2576,7 +2578,9 @@ namespace POS.View.purchases
 
                 if (invoice.invoiceId != 0)
                 clearInvoice();
-            await buildShortageInvoiceDetails();
+
+                _isLack = true;
+                await buildShortageInvoiceDetails();
 
             if (sender != null)
                 SectionData.EndAwait(grid_main);
@@ -2592,7 +2596,7 @@ namespace POS.View.purchases
         {
             //get invoice items
             invoiceItems = await invoice.getShortageItems(MainWindow.branchID.Value);
-            mainInvoiceItems = invoiceItems;
+            //mainInvoiceItems = invoiceItems;
             // build invoice details grid
             _SequenceNum = 0;
             billDetails.Clear();
@@ -2608,7 +2612,7 @@ namespace POS.View.purchases
                     Unit = itemT.itemUnitId.ToString(),
                     itemUnitId = (int)itemT.itemUnitId,
                     Count = (int)itemT.quantity,
-                    OrderId = (int)itemT.invoiceId,
+                    //OrderId = (int)itemT.invoiceId,
                     Price = decimal.Parse(SectionData.DecTostring((decimal)itemT.price)),
                     Total = total,
                 invType = invoice.invType,
