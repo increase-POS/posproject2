@@ -452,7 +452,7 @@ namespace POS.View.reports
             List<int> cD = new List<int>();
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("trSales"),
+                MainWindow.resourcemanager.GetString("trSalesQuotations"),
                 MainWindow.resourcemanager.GetString("trReturned"),
                 MainWindow.resourcemanager.GetString("trDraft")
             };
@@ -594,7 +594,7 @@ namespace POS.View.reports
             List<decimal> sub = new List<decimal>();
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("trNetSales"),
+                MainWindow.resourcemanager.GetString("trSalesQuotations"),
                 MainWindow.resourcemanager.GetString("trTotalReturn"),
                 MainWindow.resourcemanager.GetString("trTotalSales")
             };

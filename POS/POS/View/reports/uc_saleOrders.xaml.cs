@@ -437,7 +437,7 @@ namespace POS.View.reports
             List<int> cD = new List<int>();
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("trSales"),
+                MainWindow.resourcemanager.GetString("trSalesOrders"),
                 MainWindow.resourcemanager.GetString("trReturned"),
                 MainWindow.resourcemanager.GetString("trDraft")
 
@@ -581,7 +581,7 @@ namespace POS.View.reports
             List<decimal> sub = new List<decimal>();
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("trNetSales"),
+                MainWindow.resourcemanager.GetString("trSalesOrders"),
                 MainWindow.resourcemanager.GetString("trTotalReturn"),
                 MainWindow.resourcemanager.GetString("trTotalSales")
             };
@@ -624,30 +624,7 @@ namespace POS.View.reports
         }
 
         //
-        private List<ItemTransferInvoice> fillPdfList(ComboBox comboBox, ObservableCollection<int> stackedButton)
-        {
-            List<ItemTransferInvoice> list = new List<ItemTransferInvoice>();
-
-            var temp = invLst;
-
-            if (selectedTab == 0)
-            {
-                temp = temp.Where(j => (selectedBranchId.Count != 0 ? stackedButton.Contains((int)j.branchCreatorId) : true));
-                list = temp.ToList();
-            }
-            if (selectedTab == 1)
-            {
-                temp = temp.Where(j => (selectedPosId.Count != 0 ? stackedButton.Contains((int)j.posId) : true));
-                list = temp.ToList();
-            }
-            if (selectedTab == 3)
-            {
-                temp = temp.Where(j => (selectedUserId.Count != 0 ? stackedButton.Contains((int)j.updateUserId) : true));
-                list = temp.ToList();
-            }
-           
-            return list;
-        }
+        
 
         public void fillEvent()
         {

@@ -483,7 +483,7 @@ namespace POS.View.reports
             new StackedColumnSeries
             {
                 Values = cP.AsChartValues(),
-                Title = MainWindow.resourcemanager.GetString("trPurchases"),
+                Title = MainWindow.resourcemanager.GetString("trPuchaseOrders"),
                 DataLabels = true,
             });
        

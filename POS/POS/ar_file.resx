@@ -3436,4 +3436,10 @@
   <data name="trProfit" xml:space="preserve">
     <value>الربح</value>
   </data>
+  <data name="trPuchaseOrders" xml:space="preserve">
+    <value>طلبات المشتريات</value>
+  </data>
+  <data name="trSalesQuotations" xml:space="preserve">
+    <value>عروض أسعار المبيعات</value>
+  </data>
 </root>

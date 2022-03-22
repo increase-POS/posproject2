@@ -3457,4 +3457,10 @@ Please add Email in setting</value>
   <data name="trProfit" xml:space="preserve">
     <value>Profit</value>
   </data>
+  <data name="trPuchaseOrders" xml:space="preserve">
+    <value>Puchase Orders</value>
+  </data>
+  <data name="trSalesQuotations" xml:space="preserve">
+    <value>Sales Quotations</value>
+  </data>
 </root>
