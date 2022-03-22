@@ -120,6 +120,7 @@ namespace POS.View.windows
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_purCopyCount, MainWindow.resourcemanager.GetString("trPurchasesCopyCount"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_saleCopyCount, MainWindow.resourcemanager.GetString("trSalesCopyCount"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_repPrintCount, MainWindow.resourcemanager.GetString("trReportsCopyCount"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_directEntry, MainWindow.resourcemanager.GetString("trDirectEntry"));
 
             btn_save.Content = winLogIn.resourcemanager.GetString("trSave");
 

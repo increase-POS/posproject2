@@ -131,6 +131,11 @@ namespace POS_Server.Controllers
                             {
                                 foreach (itemsOffers newitofrow in newObject)
                                 {
+                                    var iuofferold = entity.itemsOffers.Where(p => p.iuId == newitofrow.iuId);
+                                    if (iuofferold.Count() > 0)
+                                    {
+                                        entity.itemsOffers.RemoveRange(iuofferold);
+                                    }
                                     newitofrow.offerId = offerId;
 
                                     if (newitofrow.createUserId == null || newitofrow.createUserId == 0)
@@ -175,74 +180,7 @@ namespace POS_Server.Controllers
 
             }
 
-            //int userId =0;
-            //int offerId = 0;
-            //var re = Request;
-            //var headers = re.Headers;
-            //int res = 0;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //if (headers.Contains("offerId"))
-            //{
-            //    offerId = Convert.ToInt32(headers.GetValues("offerId").First());
-            //}
-            //if (headers.Contains("userId"))
-            //{
-            //    userId = Convert.ToInt32(headers.GetValues("userId").First());
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-            //newitoflist = newitoflist.Replace("\\", string.Empty);
-            //newitoflist = newitoflist.Trim('"');
-            //List<itemsOffers> newitofObj = JsonConvert.DeserializeObject<List<itemsOffers>>(newitoflist, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-            //if (valid)
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var iuoffer= entity.itemsOffers.Where(p => p.offerId == offerId);
-            //     if(iuoffer.Count()> 0)
-            //        {
-            //        entity.itemsOffers.RemoveRange(iuoffer);
-            //        }
-            //        if (newitofObj.Count() > 0)
-            //        {
-            //            foreach (itemsOffers newitofrow in newitofObj)
-            //            {
-            //                newitofrow.offerId = offerId;
-
-            //                if (newitofrow.createUserId == null || newitofrow.createUserId ==0 )
-            //                {
-            //                newitofrow.createDate = DateTime.Now;
-            //                newitofrow.updateDate = DateTime.Now;
-
-            //                    newitofrow.createUserId = userId;
-            //                    newitofrow.updateUserId =userId;
-            //                }
-            //                else
-            //                {
-            //                    newitofrow.updateDate = DateTime.Now;
-            //                    newitofrow.updateUserId = userId;
-
-            //                }
-
-            //            }
-            //            entity.itemsOffers.AddRange(newitofObj);
-            //        }
-            //      res  =entity.SaveChanges();
-
-            //            return res;
-
-            //    }
-
-            //}
-            //else
-            //{
-            //    return -1;
-            //}
-
+         
         }
         #endregion
 
