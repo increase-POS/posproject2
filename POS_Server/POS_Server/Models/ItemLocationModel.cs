@@ -30,6 +30,6 @@ namespace POS_Server.Models
         public Nullable<int> invoiceId { get; set; }
         public string invNumber { get; set; }
         public string invType { get; set; }
-
+        public Nullable<long> lockedQuantity { get; set; }
     }
 }

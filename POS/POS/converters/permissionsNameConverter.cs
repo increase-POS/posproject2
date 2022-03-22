@@ -60,6 +60,10 @@ namespace POS.converters
             {
                 value = MainWindow.resourcemanager.GetString("trOrders");
             }
+            else if (value.ToString().Contains("_printCount"))
+            {
+                value = MainWindow.resourcemanager.GetString("trPrintCount");
+            }
             else if (value.ToString().Contains("_statistic"))
             {
                 value = MainWindow.resourcemanager.GetString("trStatistic");
@@ -164,8 +168,11 @@ namespace POS.converters
                     case "trUnits":
                         value = MainWindow.resourcemanager.GetString("trWaitingExecuteOrder");
                         break;
+                    case "reciptOfInvoice_inputs":
+                        value = MainWindow.resourcemanager.GetString("trDirectEntry");
+                        break;
 
-
+                     
 
                     default: break;
                 }
