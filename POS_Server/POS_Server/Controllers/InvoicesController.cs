@@ -3461,7 +3461,8 @@ var strP = TokenManager.GetPrincipal(token);
                                         updateUserId = b.updateUserId,
                                         isApproved = b.isApproved,
                                         branchId = b.branchId,
-                                    })
+                                       invDate = b.invDate,
+                                    }).OrderBy(x => x.invDate)
                 .ToList();
                 if (invoicesList != null)
                 {

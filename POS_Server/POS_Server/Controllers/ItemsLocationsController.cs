@@ -891,69 +891,6 @@ namespace POS_Server.Controllers
 
 
             }
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
-            //itemLocationObject = itemLocationObject.Trim('"');
-
-            //if (valid)
-            //{
-            //    List<itemsLocations> itemLocList = JsonConvert.DeserializeObject<List<itemsLocations>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-
-            //    itemsLocations item;
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        foreach (itemsLocations itemLoc in itemLocList)
-            //        {
-            //            if (itemLoc.updateUserId == 0 || itemLoc.updateUserId == null)
-            //            {
-            //                Nullable<int> id = null;
-            //                itemLoc.updateUserId = id;
-            //            }
-            //            if (itemLoc.createUserId == 0 || itemLoc.createUserId == null)
-            //            {
-            //                Nullable<int> id = null;
-            //                itemLoc.createUserId = id;
-            //            }
-            //            var itemEntity = entity.Set<itemsLocations>();
-            //            item = itemEntity.Find(itemLoc.itemUnitId, itemLoc.locationId);
-            //            if (item == null)
-            //            {
-            //                itemLoc.createDate = DateTime.Now;
-            //                itemLoc.updateDate = DateTime.Now;
-            //                itemLoc.updateUserId = itemLoc.createUserId;
-
-            //                item = itemEntity.Add(itemLoc);
-            //            }
-            //            else
-            //            {
-            //                item.quantity = itemLoc.quantity;
-            //                item.startDate = itemLoc.startDate;
-            //                item.endDate = itemLoc.endDate;
-            //                item.note = itemLoc.note;
-            //                item.invoiceId = itemLoc.invoiceId;
-            //                item.updateDate = DateTime.Now;
-            //                item.updateUserId = itemLoc.updateUserId;
-            //            }
-            //        }
-            //        try
-            //        {
-            //            entity.SaveChanges();
-            //            return true;
-            //        }
-            //        catch { }
-            //    }
-            //}
-            //return false;
         }
         [HttpPost]
         [Route("receiptInvoice")]
@@ -1008,11 +945,11 @@ namespace POS_Server.Controllers
                                 var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
                                 var itemV = entity.items.Find(itemId);
                            
-                                if (item.invoiceId == 0 || item.invoiceId == null)
+                                //if (item.invoiceId == 0 || item.invoiceId == null)
                                     increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
-                                else//for order
-                                    increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, (int)item.invoiceId, userId);
-                                if(item.offerId != 0 && item.offerId != null)
+                                //else//for order
+                                //    increaseLockedItem(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, (int)item.invoiceId, userId);
+                                if(item.offerId != 0 && item.offerId != null) //if invoice is bounce
                                 {
                                     int offerId = (int)item.offerId;
                                     int itemUnitId = (int)item.itemUnitId;
@@ -1036,6 +973,144 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken(message);
                 }
             }
+                else
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }          
+        }
+
+        [HttpPost]
+        [Route("recieptLackInvoice")]
+        public string recieptLackInvoice(string token)
+        {
+            string message = "";
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string Object = "";
+                int branchId = 0;
+                int userId = 0;
+                string objectName = "";
+                string notificationObj = "";
+                InvoicesController ic = new InvoicesController();
+
+                List<itemsTransfer> newObject = null;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "Object")
+                    {
+                        Object = c.Value.Replace("\\", string.Empty);
+                        Object = Object.Trim('"');
+                        newObject = JsonConvert.DeserializeObject<List<itemsTransfer>>(Object, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" });
+                    }
+                    else if (c.Type == "branchId")
+                        branchId = int.Parse(c.Value);
+                    else if (c.Type == "userId")
+                        userId = int.Parse(c.Value);
+                    else if (c.Type == "objectName")
+                        objectName = c.Value;
+                    else if (c.Type == "notificationObj")
+                        notificationObj = c.Value;
+                }
+
+                if (newObject != null)
+                {
+                    try
+                    {
+                        using (incposdbEntities entity = new incposdbEntities())
+                        {
+                            #region get lack of orders items
+                            var orders = ic.getUnhandeledOrdersList("ors", 0, branchId);
+
+                            List<ItemTransferModel> requiredTransfers = new List<ItemTransferModel>();
+                            foreach (InvoiceModel invoice in orders)
+                            {
+                                var itemsTransfer = entity.itemsTransfer.Where(x => x.invoiceId == invoice.invoiceId
+                                                                        && x.itemsUnits.items.type != "sr").ToList();
+
+                                foreach (itemsTransfer tr in itemsTransfer)
+                                {
+                                    var lockedQuantity = entity.itemsLocations
+                                        .Where(x => x.invoiceId == invoice.invoiceId && x.itemUnitId == tr.itemUnitId)
+                                        .Select(x => x.quantity).Sum();
+                                    var availableAmount = getBranchAmount((int)tr.itemUnitId, branchId);
+                                    var item = (from i in entity.items
+                                                join u in entity.itemsUnits on i.itemId equals u.itemId
+                                                where u.itemUnitId == tr.itemUnitId
+                                                select new ItemModel()
+                                                {
+                                                    itemId = i.itemId,
+                                                    name = i.name,
+                                                    unitName = u.units.name,
+                                                }).FirstOrDefault();
+                                    if (lockedQuantity == null)
+                                        lockedQuantity = 0;
+
+                                    if ((lockedQuantity + availableAmount) < tr.quantity) // there is a shortage in order amount
+                                    {
+                                        long requiredQuantity = (long)tr.quantity - ((long)lockedQuantity + (long)availableAmount);
+
+                                        ItemTransferModel transfer = new ItemTransferModel()
+                                        {
+                                            invNumber = invoice.invNumber,
+                                            invoiceId = invoice.invoiceId,
+                                            price = 0,
+                                            quantity = requiredQuantity,
+                                            itemUnitId = tr.itemUnitId,
+                                            itemId = item.itemId,
+                                            itemName = item.name,
+                                            unitName = item.unitName,
+                                        };
+                                        requiredTransfers.Add(transfer);
+                                    }
+
+                                }
+                            }
+                            #endregion
+                            #region reciept all amount in freezone
+                            var freeZoneLocation = (from s in entity.sections.Where(x => x.branchId == branchId && x.isFreeZone == 1)
+                                                    join l in entity.locations on s.sectionId equals l.sectionId
+                                                    select l.locationId).SingleOrDefault();
+                            foreach (itemsTransfer item in newObject)
+                            {
+                                var itemId = entity.itemsUnits.Where(x => x.itemUnitId == item.itemUnitId).Select(x => x.itemId).Single();
+                                var itemV = entity.items.Find(itemId);
+                           
+                                increaseItemQuantity(item.itemUnitId.Value, freeZoneLocation, (int)item.quantity, userId);
+
+                                #region amount notification
+                                bool isExcedded = isExceddMaxQuantity((int)item.itemUnitId, branchId, userId);
+                                if (isExcedded == true) //add notification
+                                {
+                                    notificationController.addNotifications(objectName, notificationObj, branchId, itemV.name);
+                                }
+                                #endregion
+                            }
+                            #endregion
+
+                            #region add amount to reserved amount
+                            foreach (ItemTransferModel it in requiredTransfers)
+                            {
+                               lockItem(it.itemUnitId.Value, (int)it.invoiceId, branchId, (int)it.quantity, userId);
+                            }
+
+                            #endregion
+                        }
+                        return TokenManager.GenerateToken("1");
+                }
+                    catch
+                    {
+                        message = "0";
+                        return TokenManager.GenerateToken(message);
+                    }
+                }
                 else
                 {
                     return TokenManager.GenerateToken("0");
@@ -3599,12 +3674,10 @@ namespace POS_Server.Controllers
         [Route("reserveItems")]
         public string reserveItems(string token)
         {
-            //string itemLocationObject, int invoiceId, int branchId, int userId
-
             string message = "";
 
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -3615,8 +3688,6 @@ namespace POS_Server.Controllers
                 int invoiceId = 0;
                 int branchId = 0;
                 int userId = 0;
-
-
 
                 List<itemsTransfer> newObject = new List<itemsTransfer>();
 
@@ -3645,15 +3716,12 @@ namespace POS_Server.Controllers
                         userId = int.Parse(c.Value);
 
                     }
-
-
                 }
 
                 if (newObject != null)
                 {
                     try
                     {
-
                         using (incposdbEntities entity = new incposdbEntities())
                         {
                             foreach (itemsTransfer item in newObject)
@@ -3661,7 +3729,6 @@ namespace POS_Server.Controllers
                                 lockItem(item.itemUnitId.Value, invoiceId, branchId, (int)item.quantity, userId);
                             }
                         }
-                        // return true;
 
                         return TokenManager.GenerateToken("1");
                     }
@@ -3680,37 +3747,6 @@ namespace POS_Server.Controllers
 
 
             }
-
-
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //itemLocationObject = itemLocationObject.Replace("\\", string.Empty);
-            //itemLocationObject = itemLocationObject.Trim('"');
-
-            //if (valid)
-            //{
-            //    List<itemsTransfer> itemList = JsonConvert.DeserializeObject<List<itemsTransfer>>(itemLocationObject, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        foreach (itemsTransfer item in itemList)
-            //        {
-            //            lockItem(item.itemUnitId.Value, invoiceId, branchId, (int)item.quantity, userId);
-            //        }
-            //    }
-            //    return true;
-            //}
-            //else
-            //    return false;
         }
         [HttpPost]
         [Route("reReserveItems")]
@@ -4054,167 +4090,9 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken(message);
                 }
 
-                //}
-                //else
-                //{
-                //    return TokenManager.GenerateToken("0");
-                //}
-
 
             }
 
-
-
-            //int locationId = 0;
-            //Dictionary<string, int> dic = new Dictionary<string, int>();
-            //using (incposdbEntities entity = new incposdbEntities())
-            //{
-            //    var itemInLocs = (from s in entity.sections
-            //                      where s.branchId == branchId
-            //                      join l in entity.locations on s.sectionId equals l.sectionId
-            //                      join il in entity.itemsLocations on l.locationId equals il.locationId
-            //                      where il.itemUnitId == itemUnitId && il.quantity > 0 && il.invoiceId == null
-            //                      select new
-            //                      {
-            //                          il.itemsLocId,
-            //                          il.quantity,
-            //                          il.itemUnitId,
-            //                          il.locationId,
-            //                          il.updateDate,
-            //                          s.sectionId,
-            //                      }).ToList().OrderBy(x => x.updateDate).ToList();
-            //    for (int i = 0; i < itemInLocs.Count; i++)
-            //    {
-            //        int availableAmount = (int)itemInLocs[i].quantity;
-            //        int lockedAmount = 0;
-            //        var itemL = entity.itemsLocations.Find(itemInLocs[i].itemsLocId);
-            //        itemL.updateDate = DateTime.Now;
-            //        if (availableAmount >= requiredAmount)
-            //        {
-            //            itemL.quantity = availableAmount - requiredAmount;
-            //            lockedAmount = requiredAmount;
-            //            requiredAmount = 0;
-            //            entity.SaveChanges();
-            //        }
-            //        else if (availableAmount > 0)
-            //        {
-            //            itemL.quantity = 0;
-            //            requiredAmount = requiredAmount - availableAmount;
-            //            lockedAmount = availableAmount;
-            //            entity.SaveChanges();
-            //        }
-            //        if (lockedAmount > 0)
-            //            increaseLockedItem((int)itemInLocs[i].itemUnitId, (int)itemInLocs[i].locationId, lockedAmount, invoiceId, userId);
-
-            //        if (requiredAmount == 0)
-            //            return Ok(3);
-            //    }
-
-            //    if (requiredAmount != 0)
-            //    {
-            //        dic = lockUpperUnit(itemUnitId, branchId, requiredAmount, userId);
-
-            //        //var unit = entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => new { x.unitId, x.itemId }).FirstOrDefault();
-            //        //var upperUnit = entity.itemsUnits.Where(x => x.subUnitId == unit.unitId && x.itemId == unit.itemId).Select(x => new { x.unitValue, x.itemUnitId }).FirstOrDefault();
-            //        if (dic["remainQuantity"] > 0)
-            //        {
-            //            var item = (from il in entity.itemsLocations
-            //                        where il.itemUnitId == itemUnitId && il.invoiceId == null
-            //                        join l in entity.locations on il.locationId equals l.locationId
-            //                        join s in entity.sections on l.sectionId equals s.sectionId
-            //                        where s.branchId == branchId
-            //                        select new
-            //                        {
-            //                            il.itemsLocId,
-            //                        }).FirstOrDefault();
-            //            if (item != null)
-            //            {
-            //                var itemloc = entity.itemsLocations.Find(item.itemsLocId);
-            //                itemloc.quantity += dic["remainQuantity"];
-            //                entity.SaveChanges();
-            //            }
-            //            else
-            //            {
-            //                var locations = entity.locations.Where(x => x.branchId == branchId && x.isActive == 1).Select(x => new { x.locationId }).OrderBy(x => x.locationId).ToList();
-            //                locationId = dic["locationId"];
-            //                if ((locationId == 0 && locationId == null) && locations.Count > 1)
-            //                    locationId = locations[0].locationId; // free zoon
-            //                itemsLocations itemL = new itemsLocations();
-            //                itemL.itemUnitId = itemUnitId;
-            //                itemL.locationId = locationId;
-            //                itemL.quantity = dic["remainQuantity"];
-            //                itemL.createDate = DateTime.Now;
-            //                itemL.updateDate = DateTime.Now;
-            //                itemL.createUserId = userId;
-            //                itemL.updateUserId = userId;
-            //                itemL.invoiceId = null;
-
-            //                entity.itemsLocations.Add(itemL);
-            //                entity.SaveChanges();
-            //            }
-            //        }
-            //        // return Ok(dic["lockedQuantity"] +":"+ dic["remainQuantity"]+ ":"+ dic["requiredQuantity"]);
-            //        // reserve items
-            //        if (dic["lockedQuantity"] > 0)
-            //        {
-            //            int lockedQuantity = dic["lockedQuantity"];
-            //            if (lockedQuantity > requiredAmount)
-            //                lockedQuantity = requiredAmount;
-            //            var item = (from il in entity.itemsLocations
-            //                        where il.itemUnitId == itemUnitId && il.invoiceId == invoiceId
-            //                        select new
-            //                        {
-            //                            il.itemsLocId,
-            //                        }).FirstOrDefault();
-            //            if (item != null)
-            //            {
-            //                var itemloc = entity.itemsLocations.Find(item.itemsLocId);
-            //                locationId = (int)itemloc.locationId;
-            //            }
-            //            else
-            //            {
-            //                var locations = entity.locations.Where(x => x.branchId == branchId && x.isActive == 1).Select(x => new { x.locationId }).OrderBy(x => x.locationId).ToList();
-            //                locationId = dic["locationId"];
-            //                if (locationId == 0 && locations.Count > 1)
-            //                    locationId = locations[0].locationId; // free zoon
-            //            }
-
-            //            increaseLockedItem(itemUnitId, locationId, lockedQuantity, invoiceId, userId);
-            //        }
-            //        //return Ok(dic["requiredQuantity"]);
-            //        if (dic["requiredQuantity"] > 0)
-            //        {
-            //            dic = lockLowerUnit(itemUnitId, branchId, dic["requiredQuantity"], userId);
-            //            if (dic["lockedQuantity"] > 0)
-            //            {
-            //                var item = (from il in entity.itemsLocations
-            //                            where il.itemUnitId == itemUnitId && il.invoiceId == invoiceId
-            //                            join l in entity.locations on il.locationId equals l.locationId
-            //                            join s in entity.sections on l.sectionId equals s.sectionId
-            //                            where s.branchId == branchId
-            //                            select new
-            //                            {
-            //                                il.itemsLocId,
-            //                            }).FirstOrDefault();
-            //                if (item != null)
-            //                {
-            //                    var itemloc = entity.itemsLocations.Find(item.itemsLocId);
-            //                    locationId = (int)itemloc.locationId;
-            //                }
-            //                else
-            //                {
-            //                    var locations = entity.locations.Where(x => x.branchId == branchId && x.isActive == 1).Select(x => new { x.locationId }).OrderBy(x => x.locationId).ToList();
-            //                    locationId = dic["locationId"];
-            //                    if (locationId == 0 && locations.Count > 1)
-            //                        locationId = locations[0].locationId; // free zoon
-            //                }
-            //                increaseLockedItem(itemUnitId, locationId, dic["lockedQuantity"], invoiceId, userId);
-            //            }
-            //        }
-
-            //    }
-            //}
-            //return Ok(2);
         }
 
 

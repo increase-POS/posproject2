@@ -504,35 +504,6 @@ namespace POS.Classes
             parameters.Add("Object", myContent);
 
            return await APIResult.post(method, parameters);
-
-
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            //var myContent = JsonConvert.SerializeObject(itemLocation);
-            //// 
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    // encoding parameter to get special characters
-            //    myContent = HttpUtility.UrlEncode(myContent);
-            //    request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/trasnferItem?itemLocId=" + itemLocId + "&itemLocation=" + myContent);
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Post;
-            //    //set content type
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    var response = await client.SendAsync(request);
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        return true;
-            //    }
-            //    return false;
-            //}
         }
         public async Task<int> reserveItems(List<ItemTransfer> invoiceItems,int invoiceId, int branchId, int userId)
         {
@@ -550,39 +521,6 @@ namespace POS.Classes
             parameters.Add("Object", myContent);
 
            return await APIResult.post(method, parameters);
-
-
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            //// 
-            //var myContent = JsonConvert.SerializeObject(invoiceItems);
-            ////var myContent1 = JsonConvert.SerializeObject(not);
-
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    // encoding parameter to get special characters
-            //    myContent = HttpUtility.UrlEncode(myContent);
-            //    //myContent1 = HttpUtility.UrlEncode(myContent1);
-            //    request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/reserveItems?itemLocationObject=" + myContent+"&invoiceId="+invoiceId + "&branchId=" + branchId +
-            //                            "&userId=" + userId );
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Post;
-            //    //set content type
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    var response = await client.SendAsync(request);
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        return true;
-            //    }
-            //    return false;
-            //}
         }
         public async Task<int> reReserveItems(List<ItemTransfer> invoiceItems, int invoiceId, int branchId, int userId)
         {
@@ -612,33 +550,6 @@ namespace POS.Classes
 
 
            return await APIResult.post(method, parameters);
-
-
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/getAmountInBranch?itemUnitId=" + itemUnitId + "&branchId=" + branchId);
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Get;
-            //    //set content type
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    var response = await client.SendAsync(request);
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var AvailableAmount = await response.Content.ReadAsStringAsync();
-            //        return int.Parse(AvailableAmount);
-            //    }
-            //    return 0;
-            //}
         }
         public async Task<int> getAmountInLocation(int itemUnitId, int branchId , int locationId)
         {
@@ -654,33 +565,7 @@ namespace POS.Classes
 
 
            return await APIResult.post(method, parameters);
-
-
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/getAmountInLocation?itemUnitId=" + itemUnitId + "&branchId=" + branchId+ "&locationId="+ locationId);
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Get;
-            //    //set content type
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    var response = await client.SendAsync(request);
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var AvailableAmount = await response.Content.ReadAsStringAsync();
-            //        return int.Parse(AvailableAmount);
-            //    }
-            //    return 0;
-            //}
+           
         }
         public async Task<int> getUnitAmount(int itemUnitId, int branchId)
         {
@@ -744,33 +629,6 @@ namespace POS.Classes
                 }
             }
             return item;
-
-
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/getAmountByItemLocId?itemLocId=" + itemLocId);
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Get;
-            //    //set content type
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    var response = await client.SendAsync(request);
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        var AvailableAmount = await response.Content.ReadAsStringAsync();
-            //        return int.Parse(AvailableAmount);
-            //    }
-            //    return 0;
-            //}
         }
         public async Task recieptInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
         {
@@ -789,40 +647,24 @@ namespace POS.Classes
             parameters.Add("objectName", objectName);
 
            await APIResult.post(method, parameters);
+        }
+        public async Task recieptLackInvoice(List<ItemTransfer> invoiceItems, int branchId,int userId, string objectName, Notification notificationObj)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "ItemsLocations/recieptLackInvoice";
 
+            var myContent = JsonConvert.SerializeObject(invoiceItems);
+            parameters.Add("Object", myContent);
 
-            //// ... Use HttpClient.
-            //ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            //// 
-            //var myContent = JsonConvert.SerializeObject(invoiceItems);
-            //var myContent1 = JsonConvert.SerializeObject(notificationObj);
+            var myContent1 = JsonConvert.SerializeObject(notificationObj);
+            parameters.Add("notificationObj", myContent1);
 
-            //using (var client = new HttpClient())
-            //{
-            //    ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            //    client.BaseAddress = new Uri(Global.APIUri);
-            //    client.DefaultRequestHeaders.Clear();
-            //    client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
-            //    client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
-            //    HttpRequestMessage request = new HttpRequestMessage();
-            //    // encoding parameter to get special characters
-            //    myContent = HttpUtility.UrlEncode(myContent);
-            //    myContent1 = HttpUtility.UrlEncode(myContent1);
-            //    request.RequestUri = new Uri(Global.APIUri + "ItemsLocations/receiptInvoice?itemLocationObject=" + myContent + "&branchId=" + branchId 
-            //                                            + "&userId=" + userId
-            //                                            +"&objectName=" + objectName + "&notificationObj="+myContent1);
-            //    request.Headers.Add("APIKey", Global.APIKey);
-            //    request.Method = HttpMethod.Post;
-            //    //set content type
-            //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //    var response = await client.SendAsync(request);
+            parameters.Add("userId", userId.ToString());
 
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        return true;
-            //    }
-            //    return false;
-            //}
+            parameters.Add("branchId", branchId.ToString());
+            parameters.Add("objectName", objectName);
+
+           await APIResult.post(method, parameters);
         }
         public async Task<int> generatePackage(int packageParentId, int quantity,int locationId,int branchId,int userId)
         {

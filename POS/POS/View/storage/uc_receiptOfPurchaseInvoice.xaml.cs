@@ -1421,10 +1421,15 @@ namespace POS.View.storage
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (billDetails[0].OrderId != 0)
+                if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" || _InvoiceType == "pbw"|| _InvoiceType == "is")
                     cmb.IsEnabled = false;
                 else
                     cmb.IsEnabled = true;
+
+                //if (billDetails[0].OrderId != 0)
+                //    cmb.IsEnabled = false;
+                //else
+                //    cmb.IsEnabled = true;
 
             }
             catch (Exception ex)
@@ -1441,7 +1446,8 @@ namespace POS.View.storage
                 if (dg_billDetails.SelectedIndex != -1 && cmb.SelectedValue != null)
                 {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
-                    if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                   // if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
+                    if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" || _InvoiceType == "pbw" || _InvoiceType == "is")
                         cmb.IsEnabled = false;
                     else
                         cmb.IsEnabled = true;
