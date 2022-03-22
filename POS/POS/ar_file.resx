@@ -2615,7 +2615,7 @@
     <value>نقطة البيع ...</value>
   </data>
   <data name="trProfits" xml:space="preserve">
-    <value>الربح</value>
+    <value>الأرباح</value>
   </data>
   <data name="trAdministrativePullHint" xml:space="preserve">
     <value>سحوبات إدارية...</value>
@@ -3429,5 +3429,11 @@
   </data>
   <data name="itMustBeGreaterThanZero" xml:space="preserve">
     <value>يجب أن يكون أكبر من الصفر</value>
+  </data>
+  <data name="trLoss" xml:space="preserve">
+    <value>الخسارة</value>
+  </data>
+  <data name="trProfit" xml:space="preserve">
+    <value>الربح</value>
   </data>
 </root>

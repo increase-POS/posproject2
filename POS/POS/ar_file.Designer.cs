@@ -4948,6 +4948,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to الخسارة.
+        /// </summary>
+        internal static string trLoss {
+            get {
+                return ResourceManager.GetString("trLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لم يتم ارسال البريد الالكتروني.
         /// </summary>
         internal static string trMailNotSent {
@@ -6732,6 +6741,15 @@ namespace POS {
         
         /// <summary>
         ///   Looks up a localized string similar to الربح.
+        /// </summary>
+        internal static string trProfit {
+            get {
+                return ResourceManager.GetString("trProfit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الأرباح.
         /// </summary>
         internal static string trProfits {
             get {
