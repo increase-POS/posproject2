@@ -2875,7 +2875,8 @@ namespace POS.Classes
             //public string VendorName { get => vendorName; set => vendorName = value; }
             public string VendorName
             {
-                get => vendorName == null ? vendorName = MainWindow.resourcemanager.GetString("trCashCustomer")
+                get => vendorName == null ?( side == "c" ? vendorName = MainWindow.resourcemanager.GetString("trCashCustomer")
+                                                         : vendorName = MainWindow.resourcemanager.GetString("trUnKnown"))
                     : vendorName;
                 set => vendorName = value;
             }

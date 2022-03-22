@@ -755,19 +755,19 @@ namespace POS.View.reports
                 }
             }
             columnChartData.Add(
-            new StackedColumnSeries
-            {
-                Values = cWon.AsChartValues(),
-                Title = titles[0],
-                DataLabels = true,
-            });
+                new StackedColumnSeries
+                {
+                    Values = cWon.AsChartValues(),
+                    Title = titles[0],
+                    DataLabels = true,
+                });
             columnChartData.Add(
-           new StackedColumnSeries
-           {
-               Values = cLoss.AsChartValues(),
-               Title = titles[1],
-               DataLabels = true,
-           });
+               new StackedColumnSeries
+               {
+                   Values = cLoss.AsChartValues(),
+                   Title = titles[1],
+                   DataLabels = true,
+               });
             DataContext = this;
             cartesianChart.Series = columnChartData;
         }

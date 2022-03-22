@@ -99,10 +99,10 @@ namespace POS.View.reports
 
         private void translate()
         {
-            tt_payments.Content = MainWindow.resourcemanager.GetString("trPayments");
-            tt_recipient.Content = MainWindow.resourcemanager.GetString("trReceived");
+            tt_payments.Content = MainWindow.resourcemanager.GetString("trPull");
+            tt_recipient.Content = MainWindow.resourcemanager.GetString("trDeposit");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsBank, MainWindow.resourcemanager.GetString("trPayment") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsBank, MainWindow.resourcemanager.GetString("trBank") + "...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsUser, MainWindow.resourcemanager.GetString("trUser") + "...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_paymentsAccountant, MainWindow.resourcemanager.GetString("trAccoutant") + "...");
 
