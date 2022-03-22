@@ -505,7 +505,8 @@ namespace POS.Classes
             foreach (var o in OfferQuery)
             {
 
-                o.discountValue = decimal.Parse(SectionData.DecTostring(o.discountValue));
+             
+                o.discountValue = decimal.Parse(DiscountConvert(o.discountType.ToString(),o.discountValue));
             }
 
             rep.DataSources.Add(new ReportDataSource("DataSetOffer", OfferQuery));
