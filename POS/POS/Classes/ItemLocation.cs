@@ -41,6 +41,8 @@ namespace POS.Classes
         public Nullable<byte> isFreeZone { get; set; }
         public string itemType { get; set; }
         public Nullable<bool> isSelected { get; set; }
+        public Nullable<long> lockedQuantity { get; set; }
+
 
         //****************************************************
         public async Task<List<ItemLocation>> get(int branchId)

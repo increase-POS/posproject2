@@ -218,10 +218,11 @@ namespace POS.View.storage
             dg_itemsStorage.Columns[0].Header = MainWindow.resourcemanager.GetString("trItemUnit");
             dg_itemsStorage.Columns[1].Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             dg_itemsStorage.Columns[2].Header = MainWindow.resourcemanager.GetString("trQuantity");
-            dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trStartDate");
-            dg_itemsStorage.Columns[4].Header = MainWindow.resourcemanager.GetString("trEndDate");
-            dg_itemsStorage.Columns[5].Header = MainWindow.resourcemanager.GetString("trNote");
-            dg_itemsStorage.Columns[6].Header = MainWindow.resourcemanager.GetString("trOrderNum");
+            dg_itemsStorage.Columns[3].Header = MainWindow.resourcemanager.GetString("trReserved");
+            dg_itemsStorage.Columns[4].Header = MainWindow.resourcemanager.GetString("trStartDate");
+            dg_itemsStorage.Columns[5].Header = MainWindow.resourcemanager.GetString("trEndDate");
+            dg_itemsStorage.Columns[6].Header = MainWindow.resourcemanager.GetString("trNote");
+            dg_itemsStorage.Columns[7].Header = MainWindow.resourcemanager.GetString("trOrderNum");
 
             txt_itemsStorageHeader.Text = MainWindow.resourcemanager.GetString("trItemStorage");
             txt_Location.Text = MainWindow.resourcemanager.GetString("trLocationt");
@@ -874,9 +875,10 @@ namespace POS.View.storage
                         chk_freezone.IsChecked = false;
                         chk_locked.IsChecked = false;
                         btn_locked.Visibility = Visibility.Collapsed;
-                        dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
-                        dg_itemsStorage.Columns[3].Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[7].Visibility = Visibility.Collapsed; //make order num column unvisible
+                        dg_itemsStorage.Columns[3].Visibility = Visibility.Collapsed; //reserved column
                         dg_itemsStorage.Columns[4].Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[5].Visibility = Visibility.Visible;
                         repTitle2 = "trStored";
 
 
@@ -886,9 +888,10 @@ namespace POS.View.storage
                         chk_stored.IsChecked = false;
                         chk_locked.IsChecked = false;
                         btn_locked.Visibility = Visibility.Collapsed;
-                        dg_itemsStorage.Columns[6].Visibility = Visibility.Collapsed; //make order num column unvisible
-                        dg_itemsStorage.Columns[3].Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[7].Visibility = Visibility.Collapsed; //make order num column unvisible
+                        dg_itemsStorage.Columns[3].Visibility = Visibility.Collapsed; //reserved column
                         dg_itemsStorage.Columns[4].Visibility = Visibility.Visible;
+                        dg_itemsStorage.Columns[5].Visibility = Visibility.Visible;
                         repTitle2 = "trFreeZone";
 
                     }
@@ -897,9 +900,10 @@ namespace POS.View.storage
                         chk_stored.IsChecked = false;
                         chk_freezone.IsChecked = false;
                         btn_locked.Visibility = Visibility.Visible;
-                        dg_itemsStorage.Columns[6].Visibility = Visibility.Visible; //make order num column visible
-                        dg_itemsStorage.Columns[3].Visibility = Visibility.Collapsed;
+                        dg_itemsStorage.Columns[7].Visibility = Visibility.Visible; //make order num column visible
+                        dg_itemsStorage.Columns[3].Visibility = Visibility.Visible; //reserved column
                         dg_itemsStorage.Columns[4].Visibility = Visibility.Collapsed;
+                        dg_itemsStorage.Columns[5].Visibility = Visibility.Collapsed;
                         repTitle2 ="trReserved";
                     }
                 }

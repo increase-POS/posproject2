@@ -119,9 +119,10 @@ namespace POS_Server.Controllers
                         var docImageList = (from b in entity.itemsLocations
                                             where b.quantity > 0 && b.invoiceId != null
                                             join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                            join it in entity.itemsTransfer on b.invoiceId equals it.invoiceId
                                             join i in entity.items on u.itemId equals i.itemId
                                             join l in entity.locations on b.locationId equals l.locationId
-                                            where l.sections.branchId == branchId
+                                            where l.sections.branchId == branchId && it.invoiceId == b.invoiceId && it.itemUnitId == u.itemUnitId
 
                                             select new ItemLocationModel
                                             {
@@ -132,7 +133,8 @@ namespace POS_Server.Controllers
                                                 itemUnitId = b.itemUnitId,
                                                 locationId = b.locationId,
                                                 note = b.note,
-                                                quantity = b.quantity,
+                                                lockedQuantity = b.quantity,
+                                                quantity = it.quantity,
                                                 startDate = b.startDate,
 
                                                 updateDate = b.updateDate,
@@ -158,61 +160,6 @@ namespace POS_Server.Controllers
                     return TokenManager.GenerateToken("0");
                 }
             }
-
-
-
-
-            //var re = Request;
-            //var headers = re.Headers;
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var docImageList = (from b in entity.itemsLocations where b.quantity > 0 && b.invoiceId != null
-            //                            join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
-            //                            join i in entity.items on u.itemId equals i.itemId
-            //                            join l in entity.locations on b.locationId equals l.locationId where l.sections.branchId == branchId 
-
-            //                            select new ItemLocationModel
-            //                            {
-            //                                createDate = b.createDate,
-            //                                createUserId = b.createUserId,
-            //                                endDate = b.endDate,
-            //                                itemsLocId = b.itemsLocId,
-            //                                itemUnitId = b.itemUnitId,
-            //                                locationId = b.locationId,
-            //                                note = b.note,
-            //                                quantity = b.quantity,
-            //                                startDate = b.startDate,
-
-            //                                updateDate = b.updateDate,
-            //                                updateUserId = b.updateUserId,
-            //                                itemName = i.name,
-            //                                location = l.x + l.y + l.z,
-            //                                section = l.sections.name,
-            //                                sectionId = l.sectionId,
-            //                                itemType = i.type,
-            //                                unitName = u.units.name,
-            //                                invoiceId = b.invoiceId,
-            //                                invNumber = b.invoices.invNumber,
-            //                            }).ToList().OrderBy(x => x.location).ToList();
-
-            //        if (docImageList == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(docImageList);
-            //    }
-            //}
-            ////else
-            //return NotFound();
         }
         [HttpPost]
         [Route("GetAll")]
