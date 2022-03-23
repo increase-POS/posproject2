@@ -211,7 +211,7 @@ namespace POS.Classes
     }
     public class ItemUnitInvoiceProfit
     {
-
+    
         /////////////// الارباح
         public decimal shippingCost { get; set; }
         public decimal realShippingCost { get; set; }
@@ -2763,7 +2763,55 @@ namespace POS.Classes
             //}
 
         }
+        public async Task<List<ItemUnitInvoiceProfit>> GetInvoiceProfit(int mainBranchId, int userId)
+        {
 
+            List<ItemUnitInvoiceProfit> list = new List<ItemUnitInvoiceProfit>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("mainBranchId", mainBranchId.ToString());
+            parameters.Add("userId", userId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetInvoiceProfit", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemUnitInvoiceProfit>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+
+        
+
+        }
+        public async Task<List<ItemUnitInvoiceProfit>> GetItemProfit(int mainBranchId, int userId)
+        {
+
+            List<ItemUnitInvoiceProfit> list = new List<ItemUnitInvoiceProfit>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("mainBranchId", mainBranchId.ToString());
+            parameters.Add("userId", userId.ToString());
+
+            //#################
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetItemProfit", parameters);
+
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    list.Add(JsonConvert.DeserializeObject<ItemUnitInvoiceProfit>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return list;
+
+
+
+
+        }
+    
         // الضرائب
         public async Task<List<ItemTransferInvoiceTax>> GetInvItemTax(int mainBranchId, int userId)
         {
