@@ -728,7 +728,7 @@ namespace POS.View.sectionData
 
                         ReportCls.checkLang();
 
-                        clsReports.cardReport(cardsQuery, rep, reppath);
+                        clsReports.cardReport(cardsQuery, rep, reppath,paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -785,7 +785,7 @@ namespace POS.View.sectionData
 
                     ReportCls.checkLang();
 
-                    clsReports.cardReport(cardsQuery, rep, reppath);
+                    clsReports.cardReport(cardsQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -836,7 +836,7 @@ namespace POS.View.sectionData
                     string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
                     ReportCls.checkLang();
-                    clsReports.cardReport(cardsQuery, rep, reppath);
+                    clsReports.cardReport(cardsQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -912,7 +912,7 @@ namespace POS.View.sectionData
 
                     ReportCls.checkLang();
 
-                    clsReports.cardReport(cardsQuery, rep, reppath);
+                    clsReports.cardReport(cardsQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 

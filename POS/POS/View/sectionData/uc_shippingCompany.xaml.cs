@@ -277,7 +277,7 @@ namespace POS.View.sectionData
                             r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
                             r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
                         }
-                        clsReports.shippingReport(shComQuery, rep, reppath);
+                        clsReports.shippingReport(shComQuery, rep, reppath,paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -905,7 +905,7 @@ namespace POS.View.sectionData
                         r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
                         r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
                     }
-                    clsReports.shippingReport(shComQuery, rep, reppath);
+                    clsReports.shippingReport(shComQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -962,7 +962,7 @@ namespace POS.View.sectionData
                         r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
                         r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
                     }
-                    clsReports.shippingReport(shComQuery, rep, reppath);
+                    clsReports.shippingReport(shComQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1013,8 +1013,8 @@ namespace POS.View.sectionData
 
             ReportCls.checkLang();
 
-            clsReports.shippingReport(shComQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
+                    clsReports.shippingReport(shComQuery, rep, reppath, paramarr);
+                    clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);

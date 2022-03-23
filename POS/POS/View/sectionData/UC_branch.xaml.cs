@@ -1007,7 +1007,7 @@ namespace POS.View
                         string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
                         ReportCls.checkLang();
 
-                        clsReports.branchReport(branchesQuery, rep, reppath);
+                        clsReports.branchReport(branchesQuery, rep, reppath,paramarr);
                         clsReports.setReportLanguage(paramarr);
                         clsReports.Header(paramarr);
 
@@ -1064,7 +1064,7 @@ namespace POS.View
 
                     ReportCls.checkLang();
 
-                    clsReports.branchReport(branchesQuery, rep, reppath);
+                    clsReports.branchReport(branchesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1119,7 +1119,7 @@ namespace POS.View
 
                     ReportCls.checkLang();
 
-                    clsReports.branchReport(branchesQuery, rep, reppath);
+                    clsReports.branchReport(branchesQuery, rep, reppath, paramarr);
                     clsReports.setReportLanguage(paramarr);
                     clsReports.Header(paramarr);
 
@@ -1251,8 +1251,8 @@ namespace POS.View
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
             ReportCls.checkLang();
 
-            clsReports.branchReport(branchesQuery, rep, reppath);
-            clsReports.setReportLanguage(paramarr);
+                    clsReports.branchReport(branchesQuery, rep, reppath, paramarr);
+                    clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 
             rep.SetParameters(paramarr);
