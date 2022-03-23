@@ -173,7 +173,7 @@ namespace POS.View.windows
                     isOk = true;
                     this.Close();
                 }
-                else if(isPurchase)
+                else if(isPurchase && hasCredit == true)
                 {
                     if (invoice.totalNet - invoice.paid > 0)
                     {
