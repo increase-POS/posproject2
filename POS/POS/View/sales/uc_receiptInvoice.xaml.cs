@@ -2147,18 +2147,20 @@ namespace POS.View
                         _invoiceId = invoice.invoiceId;
                         isFromReport = false;
                         archived = false;
-                        // set title to bill
+                        #region  set title and color
                         if (_InvoiceType == "s")
+                        {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-                        else
-                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
-                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                        btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
-                        // orange #FFA926 red #D22A17
-                        //brd_total.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFA926"));
-                        //txt_totalDescount.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-                        //txt_total.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
 
+                        }
+                        else
+                        {
+                            txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+                        }
+                        #endregion
+                        btn_save.Content = MainWindow.resourcemanager.GetString("trPay");
 
                         await fillInvoiceInputs(invoice);
                         if (w.condition == "admin")
@@ -5968,13 +5970,29 @@ namespace POS.View
                 await fillInvoiceInputs(invoice);
 
                 if (_InvoiceType == "s")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesInvoice");
-                else if(_InvoiceType == "sb")
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+
+                }
+                else if (_InvoiceType == "sb")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesReturnInvoice");
-                else if(_InvoiceType == "sd")
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+
+                }
+                else if (_InvoiceType == "sd")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trSalesDraft");
-                else if(_InvoiceType == "sbd")
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+
+                }
+                else if (_InvoiceType == "sbd")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+
+                }
 
                 if (_InvoiceType == "s" || _InvoiceType == "sb")
                     refreshPaymentsNotification(invoice.invoiceId);

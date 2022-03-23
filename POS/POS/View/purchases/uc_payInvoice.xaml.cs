@@ -1936,9 +1936,17 @@ namespace POS.View
                         refreshDocCount(invoice.invoiceId);
                         // set title to bill
                         if (invoice.invType == "p" || invoice.invType == "pw")
+                        {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+
+                        }
                         else
+                        {
                             txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                            txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+
+                        }
                         txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
 
                         await fillInvoiceInputs(invoice);
@@ -4471,13 +4479,29 @@ namespace POS.View
 
                 #region title text
                 if (_InvoiceType == "pw" || _InvoiceType == "p")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trPurchaseInvoice");
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+
+                }
                 else if (_InvoiceType == "pb" || _InvoiceType == "pbw")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trReturnedInvoice");
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+
+                }
                 else if (_InvoiceType == "pd")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftPurchaseBill");
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+
+                }
                 else if (_InvoiceType == "pbd")
+                {
                     txt_payInvoice.Text = MainWindow.resourcemanager.GetString("trDraftBounceBill");
+                    txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
+
+                }
 
                 #endregion
                 if (_InvoiceType == "pw" || _InvoiceType == "p" || _InvoiceType == "pb" || _InvoiceType == "pbw")
