@@ -100,7 +100,10 @@ namespace POS.View.windows
                 else
                     tgl_invoiceTax.IsChecked = false;
                 if (setVInvoice != null)
-                    tb_invoiceTax.Text = setVInvoice.value;
+                {
+                    decimal d = decimal.Parse(setVInvoice.value);
+                    tb_invoiceTax.Text = SectionData.PercentageDecTostring(d);
+                }
                 else
                     tb_invoiceTax.Text = "";
                 if (setVItemBool != null)
@@ -108,7 +111,10 @@ namespace POS.View.windows
                 else
                     tgl_itemsTax.IsChecked = false;
                 if (setVItem != null)
-                    tb_itemsTax.Text = setVItem.value;
+                {
+                    decimal d = decimal.Parse(setVItem.value);
+                    tb_itemsTax.Text = SectionData.PercentageDecTostring(d);
+                }
                 else
                     tb_itemsTax.Text = "";
 
@@ -249,9 +255,9 @@ namespace POS.View.windows
                     if (setVInvoice == null)
                         setVInvoice = new SetValues();
                     //save invoice tax
-                    string invTax = "0.0";
-                    if (tgl_invoiceTax.IsChecked == true) invTax = tb_invoiceTax.Text;
-                    else invTax = "0.0";
+                    string invTax = "0.000";
+                    if (tgl_invoiceTax.IsChecked == true) { decimal d = decimal.Parse(tb_invoiceTax.Text);  invTax = String.Format("{0:0.000}", d); }
+                    else invTax = "0.000";
                     setVInvoice.value = invTax;
                     setVInvoice.isSystem = 1;
                     setVInvoice.settingId = setInvoice.settingId;
@@ -268,9 +274,9 @@ namespace POS.View.windows
                     if (setVItem == null)
                         setVItem = new SetValues();
                     //save item tax
-                    string itemTax = "0.0";
-                    if (tgl_itemsTax.IsChecked == true) itemTax = tb_itemsTax.Text;
-                    else itemTax = "0.0";
+                    string itemTax = "0.000";
+                    if (tgl_itemsTax.IsChecked == true) { decimal d = decimal.Parse(tb_itemsTax.Text); itemTax = String.Format("{0:0.000}", d); }
+                    else itemTax = "0.000";
                     setVItem.value = itemTax;
                     setVItem.isSystem = 1;
                     setVItem.settingId = setItem.settingId;

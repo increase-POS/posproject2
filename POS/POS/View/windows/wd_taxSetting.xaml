@@ -73,6 +73,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock  Grid.Row="0"   Grid.Column="0"   
                             x:Name="txt_invoiceTax"  Text="Invoice"  Margin="5,0,5,0" Foreground="#6e6e6e"
@@ -86,7 +87,7 @@
                 <Grid  Grid.Row="0"   Grid.Column="2" >
                    
                     <TextBox x:Name="tb_invoiceTax" Padding="10,10,5,5" 
-                            Grid.Row="0"   Grid.Column="2" 
+                            Grid.Row="0"   
                             BorderThickness="0,0,0,2"  
                             Foreground="#4E4E4E"  Background="#f8f8f8"
                             BorderBrush="AliceBlue"  
@@ -98,7 +99,7 @@
                             LostFocus="Tb_validateEmptyLostFocus">
                     </TextBox>
                     <Path Fill="#E81123" Stretch="Fill" Margin="0,15,15,15" x:Name="p_errorInvoiceTax"
-                               Grid.Row="0"   Grid.Column="2" 
+                               Grid.Row="0" 
                           HorizontalAlignment="Right"    Visibility="Collapsed"
                                   VerticalAlignment="Center" Width="15"  Height="15"
                                   Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -107,6 +108,9 @@
                         </Path.ToolTip>
                     </Path>
                 </Grid>
+                <materialDesign:PackIcon Grid.Column="3" Foreground="{StaticResource Grey}" Kind="PercentOutline"   
+                                                             Width="25" Height="25" Margin="0 5 10 5"
+                                                             HorizontalAlignment="Right" VerticalAlignment="Center" />
                 <TextBlock  Grid.Row="1"   Grid.Column="0" 
                             x:Name="txt_itemsTax"  Text="Items"  Margin="5,0,5,0" Foreground="#6e6e6e"
                             HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -139,8 +143,10 @@
                         </Path.ToolTip>
                     </Path>
                 </Grid>
-
-                <Button   Grid.Row="5" Grid.ColumnSpan="3"  Content="save" materialDesign:ButtonAssist.CornerRadius="7"
+                <materialDesign:PackIcon Grid.Column="3" Foreground="{StaticResource Grey}" Kind="PercentOutline"   
+                                                             Width="25" Height="25" Margin="0 5 10 5"
+                                                             HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <Button   Grid.Row="5" Grid.ColumnSpan="4"  Content="save" materialDesign:ButtonAssist.CornerRadius="7"
                        Margin="10,2.5" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}" />
 
