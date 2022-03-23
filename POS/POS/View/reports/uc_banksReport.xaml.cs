@@ -120,7 +120,7 @@ namespace POS.View.reports
             col_Type.Header = MainWindow.resourcemanager.GetString("trType");
             col_updateUserAcc.Header = MainWindow.resourcemanager.GetString("trAccoutant");
             col_Bank.Header = MainWindow.resourcemanager.GetString("trBank");
-            col_user.Header = MainWindow.resourcemanager.GetString("trCompany");
+            col_user.Header = MainWindow.resourcemanager.GetString("trUser");
             col_updateDate.Header = MainWindow.resourcemanager.GetString("trDate");
             col_cash.Header = MainWindow.resourcemanager.GetString("trAmount");
 
@@ -270,10 +270,10 @@ namespace POS.View.reports
 
                 fillBanksCombo(recipient);
 
-                userPaymentsCombo = statisticModel.getUserAcc(payments, "bn");
+                userPaymentsCombo = statisticModel.getUserAcc(recipient, "bn");
                 fillUserCombo(userPaymentsCombo, cb_paymentsUser);
 
-                accPaymentsCombo = statisticModel.getAccounantCombo(payments, "bn");
+                accPaymentsCombo = statisticModel.getAccounantCombo(recipient, "bn");
                 fillAccCombo(accPaymentsCombo, cb_paymentsAccountant);
 
                 fillEvents(recipient);
@@ -301,6 +301,7 @@ namespace POS.View.reports
         {
             temp = fillList(lst, cb_paymentsBank, cb_paymentsUser, cb_paymentsAccountant, dp_paymentsStartDate, dp_paymentsEndDate).Where(s => s.side == "bn" && s.isConfirm == 1);
             dgPayments.ItemsSource = temp;
+            txt_count.Text = temp.ToList().Count.ToString();
             //fillPieChart();
             fillColumnChart();
             fillRowChart();
