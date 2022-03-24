@@ -9071,6 +9071,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to قيمة الحسم الإجمالية.
+        /// </summary>
+        internal static string trTotalDiscountValue {
+            get {
+                return ResourceManager.GetString("trTotalDiscountValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to اجمالي الفاتورة.
         /// </summary>
         internal static string trTotalInvoice {

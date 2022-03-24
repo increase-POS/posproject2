@@ -132,10 +132,7 @@ namespace POS.View.reports
                 chk_couponInvoice.IsChecked = true;
 
                 hidAllColumns();
-                //col_code.Visibility = Visibility.Visible;
                 col_coupon.Visibility = Visibility.Visible;
-                //col_couponType.Visibility = Visibility.Visible;
-                //col_coupoValue.Visibility = Visibility.Visible;
                 col_cTypeValue.Visibility = Visibility.Visible;
                 col_couponTotalValue.Visibility = Visibility.Visible;
 
@@ -172,14 +169,9 @@ namespace POS.View.reports
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
             col_No.Header = MainWindow.resourcemanager.GetString("trNo.");
-            //col_couponType.Header = MainWindow.resourcemanager.GetString("trType");
             col_date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_coupon.Header = MainWindow.resourcemanager.GetString("trCoupon");
-            //col_code.Header = MainWindow.resourcemanager.GetString("trCode");
-            //col_coupoValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_cTypeValue.Header = MainWindow.resourcemanager.GetString("trValue");
-            //col_offersType.Header = MainWindow.resourcemanager.GetString("trType");
-            //col_offersValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_oTypeValue.Header = MainWindow.resourcemanager.GetString("trValue");
             col_couponTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
             col_offersTotalValue.Header = MainWindow.resourcemanager.GetString("trDiscount");
@@ -187,7 +179,6 @@ namespace POS.View.reports
             col_item.Header = MainWindow.resourcemanager.GetString("trItem");
             col_price.Header = MainWindow.resourcemanager.GetString("trPrice"); 
 
-            //col_offerCode.Header = MainWindow.resourcemanager.GetString("trCode");
             col_itQuantity.Header = MainWindow.resourcemanager.GetString("trQTR");
             col_total.Header = MainWindow.resourcemanager.GetString("trTotal");
 
@@ -392,11 +383,16 @@ namespace POS.View.reports
             List<int> cP = new List<int>();
             List<int> cPb = new List<int>();
             List<int> cD = new List<int>();
+
+            string title = "trCoupon";
+            if(selectedTab == 1)
+                title = "trOffer";
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("trSales"),
-                MainWindow.resourcemanager.GetString("trReturned"),
-                MainWindow.resourcemanager.GetString("trDraft")
+                MainWindow.resourcemanager.GetString(title)
+                //MainWindow.resourcemanager.GetString("trSales"),
+                //MainWindow.resourcemanager.GetString("trReturned"),
+                //MainWindow.resourcemanager.GetString("trDraft")
             };
             int xCount = 0;
             if (x.Count() <= 6) xCount = x.Count();
@@ -432,20 +428,20 @@ namespace POS.View.reports
                 Title = titles[0],
                 DataLabels = true,
             });
-            columnChartData.Add(
-           new StackedColumnSeries
-           {
-               Values = cPb.AsChartValues(),
-               Title = titles[1],
-               DataLabels = true,
-           });
-            columnChartData.Add(
-           new StackedColumnSeries
-           {
-               Values = cD.AsChartValues(),
-               Title = titles[2],
-               DataLabels = true,
-           });
+           // columnChartData.Add(
+           //new StackedColumnSeries
+           //{
+           //    Values = cPb.AsChartValues(),
+           //    Title = titles[1],
+           //    DataLabels = true,
+           //});
+           // columnChartData.Add(
+           //new StackedColumnSeries
+           //{
+           //    Values = cD.AsChartValues(),
+           //    Title = titles[2],
+           //    DataLabels = true,
+           //});
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
@@ -998,9 +994,9 @@ namespace POS.View.reports
             List<decimal> sub = new List<decimal>();
             List<string> titles = new List<string>()
             {
-                MainWindow.resourcemanager.GetString("trNetSales"),
-                MainWindow.resourcemanager.GetString("trTotalReturn"),
-                MainWindow.resourcemanager.GetString("trSum"),
+                MainWindow.resourcemanager.GetString("trTotalDiscountValue"),
+                //MainWindow.resourcemanager.GetString("trTotalReturn"),
+                //MainWindow.resourcemanager.GetString("trSum"),
             };
             int xCount = 0;
             if (pTemp.Count() <= 6) xCount = pTemp.Count();

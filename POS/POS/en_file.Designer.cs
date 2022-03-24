@@ -9125,6 +9125,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Total Discount Value.
+        /// </summary>
+        internal static string trTotalDiscountValue {
+            get {
+                return ResourceManager.GetString("trTotalDiscountValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total Net.
         /// </summary>
         internal static string trTotalInvoice {

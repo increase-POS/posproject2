@@ -3442,4 +3442,7 @@
   <data name="trSalesQuotations" xml:space="preserve">
     <value>عروض أسعار المبيعات</value>
   </data>
+  <data name="trTotalDiscountValue" xml:space="preserve">
+    <value>قيمة الحسم الإجمالية</value>
+  </data>
 </root>

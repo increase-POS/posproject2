@@ -3463,4 +3463,7 @@ Please add Email in setting</value>
   <data name="trSalesQuotations" xml:space="preserve">
     <value>Sales Quotations</value>
   </data>
+  <data name="trTotalDiscountValue" xml:space="preserve">
+    <value>Total Discount Value</value>
+  </data>
 </root>

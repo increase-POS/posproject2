@@ -10,12 +10,11 @@ namespace POS.converters
 {
     class accuracyDiscountConverter : IMultiValueConverter
     {
-        
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             if (values != null)
             {
-                string type = values[0].ToString();
+                //var type      = values[0];
                 decimal value = (decimal)values[1];
 
                 decimal num = decimal.Parse(value.ToString());
@@ -42,11 +41,25 @@ namespace POS.converters
 
                 string sdc = string.Format("{0:G29}", decimal.Parse(s));
 
-                
-                if (type == "2")
-                    return sdc + "%";
+                string isCoupon = (string)values[2];
+                if (isCoupon == "c")
+                {
+                    byte type = (byte)values[0];
+                    if (type == 2)
+                        return sdc + "%";
+                    else
+                        return s;
+                }
+                else if ((string)values[2] == "o")
+                {
+                    string type = (string)values[0];
+                    if (type == "2")
+                        return sdc + "%";
+                    else
+                        return s;
+                }
                 else
-                    return s;
+                    return "";
 
             }
             else return "";
