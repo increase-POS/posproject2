@@ -9731,7 +9731,9 @@ namespace POS_Server.Controllers
                                                                          uuserLast = JUPUS.lastname,
                                                                          uUserAccName = JUPUS.username,
                                                                          agentCompany = JAA.company,
-                                                                         subTotal = ((IT.price - (IT.itemTax * IU.price / 100)) * IT.quantity),
+                                                                         // subTotal = ((IT.price - (IT.itemTax * IU.price / 100)) * IT.quantity),
+                                                                         subTotal = (IT.itemUnitPrice - (IT.offerType == 2 ? (IT.offerValue * IT.itemUnitPrice / 100) : IT.offerValue)) * IT.quantity,
+
                                                                          shippingCost = I.shippingCost,
                                                                          realShippingCost = I.realShippingCost,
                                                                          shippingProfit = I.shippingCost - I.realShippingCost,
@@ -9928,7 +9930,7 @@ namespace POS_Server.Controllers
                                                                          tax = I.tax,
                                                                          //  I.name,
                                                                          // I.isApproved,
-
+                                                                     //    //offer discount
                                                                          //
                                                                          branchCreatorId = I.branchCreatorId,
                                                                          branchCreatorName = JBCC.name,
@@ -9948,7 +9950,7 @@ namespace POS_Server.Controllers
                                                                          uuserLast = JUPUS.lastname,
                                                                          uUserAccName = JUPUS.username,
                                                                          agentCompany = JAA.company,
-                                                                         subTotal = ((IT.price - (IT.itemTax * IU.price / 100)) * IT.quantity),
+                                                                         subTotal = (IT.itemUnitPrice - (IT.offerType == 2 ? (IT.offerValue * IT.itemUnitPrice / 100) : IT.offerValue)) * IT.quantity,
                                                                          shippingCost = I.shippingCost,
                                                                          realShippingCost = I.realShippingCost,
                                                                          shippingProfit = I.shippingCost - I.realShippingCost,
@@ -10045,7 +10047,7 @@ namespace POS_Server.Controllers
                             uuserLast = G.FirstOrDefault().uuserLast,
                             uUserAccName = G.FirstOrDefault().uUserAccName,
                             agentCompany = G.FirstOrDefault().agentCompany,
-                            subTotal = G.FirstOrDefault().subTotal,
+                            subTotalNet = G.Sum(q => q.subTotalNet),
                             shippingCost = G.FirstOrDefault().shippingCost,
                             realShippingCost = G.FirstOrDefault().realShippingCost,
                             shippingProfit = G.FirstOrDefault().shippingProfit,
@@ -10055,7 +10057,7 @@ namespace POS_Server.Controllers
                         }).ToList();
                         foreach (ItemUnitInvoiceProfitModel row in invListm)
                         {
-                            row.invoiceProfit = row.totalNoShip - (decimal)row.discountValue - row.purchasePrice + row.shippingProfit;
+                            row.invoiceProfit = row.subTotalNet - (decimal)row.discountValue - row.purchasePrice + row.shippingProfit;
                         }
 
 
@@ -10218,7 +10220,7 @@ namespace POS_Server.Controllers
                                                                          //uuserLast = JUPUS.lastname,
                                                                          //uUserAccName = JUPUS.username,
                                                                          //agentCompany = JAA.company,
-                                                                         subTotal = ((IT.price - (IT.itemTax * IU.price / 100)) * IT.quantity),
+                                                                         subTotal = (IT.itemUnitPrice - (IT.offerType == 2 ? (IT.offerValue * IT.itemUnitPrice / 100) : IT.offerValue)) * IT.quantity,
                                                                          //shippingCost = I.shippingCost,
                                                                          //realShippingCost = I.realShippingCost,
                                                                          //shippingProfit = I.shippingCost - I.realShippingCost,
