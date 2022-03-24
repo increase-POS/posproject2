@@ -1947,8 +1947,6 @@ namespace POS.View
                             txt_payInvoice.Foreground = Application.Current.Resources["MainColorRed"] as SolidColorBrush;
 
                         }
-                        txt_payInvoice.Foreground = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
-
                         await fillInvoiceInputs(invoice);
                         invoices = await invoice.GetInvoicesByCreator(invoiceType, MainWindow.userID.Value, duration);
                         navigateBtnActivate();
