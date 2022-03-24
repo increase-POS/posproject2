@@ -158,7 +158,7 @@ namespace POS.View.windows
 
                         if (s>0)
                         {
-                            if (Properties.Settings.Default.password != string.Empty)
+                            if (Properties.Settings.Default.password != string.Empty && user.userId == MainWindow.userLogin.userId)
                             {
                                 Properties.Settings.Default.password = pb_password.Password;
                                 Properties.Settings.Default.Save();
