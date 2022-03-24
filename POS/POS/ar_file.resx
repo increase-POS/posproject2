@@ -3445,4 +3445,10 @@
   <data name="trTotalDiscountValue" xml:space="preserve">
     <value>قيمة الحسم الإجمالية</value>
   </data>
+  <data name="trInternalMovementExport" xml:space="preserve">
+    <value>حركة داخلية - تصدير</value>
+  </data>
+  <data name="trInternalMovementImport" xml:space="preserve">
+    <value>حركة داخلية - استيراد</value>
+  </data>
 </root>

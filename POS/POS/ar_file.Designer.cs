@@ -4372,6 +4372,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to حركة داخلية - تصدير.
+        /// </summary>
+        internal static string trInternalMovementExport {
+            get {
+                return ResourceManager.GetString("trInternalMovementExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to حركة داخلية - استيراد.
+        /// </summary>
+        internal static string trInternalMovementImport {
+            get {
+                return ResourceManager.GetString("trInternalMovementImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to فاتورة.
         /// </summary>
         internal static string trInv {

@@ -135,9 +135,9 @@ namespace POS.View.storage
             dg_billDetails.Columns[3].Header = MainWindow.resourcemanager.GetString("trUnit");
             dg_billDetails.Columns[4].Header = MainWindow.resourcemanager.GetString("trQuantity");
 
+            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementImport");
             txt_shortageInvoice.Text = MainWindow.resourcemanager.GetString("trLack");
             txt_items.Text = MainWindow.resourcemanager.GetString("trItems");
-            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trItemsImport/Export");
             txt_newDraft.Text = MainWindow.resourcemanager.GetString("trNew");
             txt_drafts.Text = MainWindow.resourcemanager.GetString("trDrafts");
             txt_orders.Text = MainWindow.resourcemanager.GetString("trOrders");
@@ -765,12 +765,12 @@ namespace POS.View.storage
                         await fillOrderInputs(invoice);
                         if (_ProcessType == "im")// set title to bill
                         {
-                            //  mainInvoiceItems = invoiceItems;
+                            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementImport");
 
                         }
                         else if (_ProcessType == "ex")
                         {
-                            //   mainInvoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceMainId.Value);
+                            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementExport");
 
                         }
                         invoices = await invoice.getBranchInvoices(w.invoiceType, 0, MainWindow.branchID.Value);
@@ -813,6 +813,8 @@ namespace POS.View.storage
                             invoice = w.invoice;
                             _ProcessType = invoice.invType;
                             _invoiceId = invoice.invoiceId;
+                            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementExport");
+
                             setNotifications();
                             await fillOrderInputs(invoice);
                             invoices = await invoice.getBranchInvoices(w.invoiceType, 0, MainWindow.branchID.Value);
@@ -1124,7 +1126,9 @@ namespace POS.View.storage
             tb_barcode.Clear();
             cb_branch.SelectedIndex = -1;
             billDetails.Clear();
+            txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementImport");
 
+            txt_invNumber.Text = "";
             SectionData.clearComboBoxValidate(cb_branch, p_errorBranch);
             refrishBillDetails();
             inputEditable();
@@ -1295,6 +1299,9 @@ namespace POS.View.storage
                 generatedInvoice = await invoice.getgeneratedInvoice(invoice.invoiceId);
             else
                 generatedInvoice = await invoice.GetByInvoiceId((int)invoice.invoiceMainId);
+
+            txt_invNumber.Text = invoice.invNumber;
+
             _Count = invoice.itemsCount.Value;
             tb_count.Text = _Count.ToString();
 
@@ -1366,6 +1373,7 @@ namespace POS.View.storage
                 cb_branch.IsEnabled = true;
                 tb_barcode.IsEnabled = true;
                 btn_save.IsEnabled = true;
+                btn_items.IsEnabled = true;
             }
             else if (_ProcessType == "im" || _ProcessType == "ex")
             {
@@ -1374,6 +1382,7 @@ namespace POS.View.storage
                 cb_branch.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = false;
+                btn_items.IsEnabled = false;
 
             }
             else if (_ProcessType == "imw")
@@ -1383,6 +1392,7 @@ namespace POS.View.storage
                 cb_branch.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
+                btn_items.IsEnabled = false;
             }
             else if (_ProcessType == "exw")
             {
@@ -1391,6 +1401,7 @@ namespace POS.View.storage
                 cb_branch.IsEnabled = false;
                 tb_barcode.IsEnabled = false;
                 btn_save.IsEnabled = true;
+                btn_items.IsEnabled = false;
             }
             if (!isFromReport)
             {
@@ -1749,18 +1760,18 @@ namespace POS.View.storage
                     else
                         newCount = row.Count;
 
-                    if (row.OrderId != 0)
-                    {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
-                        if (newCount > item.quantity)
-                        {
-                            // return old value 
-                            t.Text = item.quantity.ToString();
+                    //if (row.OrderId != 0)
+                    //{
+                    //    ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId && i.invoiceId == row.OrderId);
+                    //    if (newCount > item.quantity)
+                    //    {
+                    //        // return old value 
+                    //        t.Text = item.quantity.ToString();
 
-                            newCount = (int)item.quantity;
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
-                        }
-                    }
+                    //        newCount = (int)item.quantity;
+                    //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                    //    }
+                    //}
 
 
                     _Count -= oldCount;
@@ -1837,10 +1848,16 @@ namespace POS.View.storage
                     if (invoice.invoiceId == 0)
                         _ProcessType = cb_processType.SelectedValue + "d";
                     if (cb_processType.SelectedValue.ToString() == "im")
+                    {
                         btn_save.Content = MainWindow.resourcemanager.GetString("trImport");
+                        txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementImport");
+
+                    }
                     else if (cb_processType.SelectedValue.ToString() == "ex")
                     {
                         btn_save.Content = MainWindow.resourcemanager.GetString("trExport");
+                        txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementExport");
+
                         ereaseQuantity();
                     }
                 }
@@ -2113,13 +2130,19 @@ namespace POS.View.storage
         {
             try
             {
-
+                var cmb = sender as ComboBox;
                 //billDetails
                 if (billDetails.Count == 1)
                 {
-                    var cmb = sender as ComboBox;
+                  
                     cmb.SelectedValue = (int)billDetails[0].itemUnitId;
                 }
+                #region disable & enable unit comboBox
+                if (_ProcessType == "ex" || _ProcessType == "im" || _ProcessType == "exw" || _ProcessType == "imw")
+                    cmb.IsEnabled = false;
+                else
+                    cmb.IsEnabled = true;
+                #endregion
             }
             catch (Exception ex)
             {
@@ -2141,6 +2164,33 @@ namespace POS.View.storage
             else
                 btn_previous.IsEnabled = true;
         }
+        private async Task navigateInvoice(int index)
+        {
+            try
+            {
+                clearProcess();
+                invoice = invoices[index];
+                _ProcessType = invoice.invType;
+                _invoiceId = invoice.invoiceId;
+                navigateBtnActivate();
+                await fillOrderInputs(invoice);
+
+                #region set title according to invoice type
+                if (_ProcessType == "im" || _ProcessType == "imw" || _ProcessType == "imd")
+                {
+                    txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementImport");
+                }
+                else if (_ProcessType == "ex" || _ProcessType == "exw" || _ProcessType == "exd")
+                {
+                    txt_titleDataGridInvoice.Text = MainWindow.resourcemanager.GetString("trInternalMovementExport");
+
+                }
+                #endregion
+            }
+            catch (Exception ex)
+            {
+            }
+        }
         private async void Btn_next_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -2150,12 +2200,12 @@ namespace POS.View.storage
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
                 index++;
-                clearProcess();
-                invoice = invoices[index];
-                _ProcessType = invoice.invType;
-                _invoiceId = invoice.invoiceId;
-                navigateBtnActivate();
-                await fillOrderInputs(invoice);
+                await navigateInvoice(index);
+                //invoice = invoices[index];
+                //_ProcessType = invoice.invType;
+                //_invoiceId = invoice.invoiceId;
+                //navigateBtnActivate();
+                //await fillOrderInputs(invoice);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -2175,12 +2225,15 @@ namespace POS.View.storage
 
                 int index = invoices.IndexOf(invoices.Where(x => x.invoiceId == _invoiceId).FirstOrDefault());
                 index--;
-                clearProcess();
-                invoice = invoices[index];
-                _ProcessType = invoice.invType;
-                _invoiceId = invoice.invoiceId;
-                navigateBtnActivate();
-                await fillOrderInputs(invoice);
+
+                await navigateInvoice(index);
+
+                //clearProcess();
+                //invoice = invoices[index];
+                //_ProcessType = invoice.invType;
+                //_invoiceId = invoice.invoiceId;
+                //navigateBtnActivate();
+                //await fillOrderInputs(invoice);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

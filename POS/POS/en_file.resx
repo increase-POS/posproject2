@@ -3466,4 +3466,10 @@ Please add Email in setting</value>
   <data name="trTotalDiscountValue" xml:space="preserve">
     <value>Total Discount Value</value>
   </data>
+  <data name="trInternalMovementExport" xml:space="preserve">
+    <value>Internal movement - Export</value>
+  </data>
+  <data name="trInternalMovementImport" xml:space="preserve">
+    <value>Internal movement - Import</value>
+  </data>
 </root>

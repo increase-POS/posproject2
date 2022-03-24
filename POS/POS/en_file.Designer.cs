@@ -4399,6 +4399,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Internal movement - Export.
+        /// </summary>
+        internal static string trInternalMovementExport {
+            get {
+                return ResourceManager.GetString("trInternalMovementExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Internal movement - Import.
+        /// </summary>
+        internal static string trInternalMovementImport {
+            get {
+                return ResourceManager.GetString("trInternalMovementImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invoice.
         /// </summary>
         internal static string trInv {
