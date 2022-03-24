@@ -542,12 +542,31 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
-            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
+            foreach (var r in shippingCompanies)
+            {
+                r.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(r.RealDeliveryCost));
+                r.deliveryCost = decimal.Parse(SectionData.DecTostring(r.deliveryCost));
+                r.deliveryType = deliveryTypeConvert(r.deliveryType);
+            }
+                paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
             paramarr.Add(new ReportParameter("trRealDeliveryCost", MainWindow.resourcemanagerreport.GetString("trRealDeliveryCost")));
             paramarr.Add(new ReportParameter("trDeliveryCost", MainWindow.resourcemanagerreport.GetString("trDeliveryCost")));
             paramarr.Add(new ReportParameter("trDeliveryType", MainWindow.resourcemanagerreport.GetString("trDeliveryType")));
             paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trShippingCompanies")));
             rep.DataSources.Add(new ReportDataSource("DataSetShipping", shippingCompanies));
+        }
+        public static string deliveryTypeConvert(string deliveryType)
+        {
+            switch (deliveryType)
+            {
+                case "local": return MainWindow.resourcemanagerreport.GetString("trLocaly");
+                //break;
+                case "com": return MainWindow.resourcemanagerreport.GetString("trShippingCompany");
+                //break;
+                default: return MainWindow.resourcemanagerreport.GetString("");
+                    //break;
+            }
+
         }
         public static string itemTypeConverter(string value)
         {
