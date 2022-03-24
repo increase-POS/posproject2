@@ -12,7 +12,7 @@ namespace POS.converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values != null)
+            if (values != null && values[0] != null && values[1] != null && values[2] != null)
             {
                 //var type      = values[0];
                 decimal value = (decimal)values[1];
