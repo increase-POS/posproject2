@@ -747,6 +747,21 @@ namespace POS.Classes
             }
             return items;
         }
+        public async Task<List<ItemTransfer>> GetInvoicesItemsWithCost(int invoiceId)
+        {
+            List<ItemTransfer> items = new List<ItemTransfer>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("itemId", invoiceId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsTransfer/GetWithCost", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<ItemTransfer>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
         public async Task<List<ItemTransfer>> getOrderItems(int invoiceId, int branchId)
         {
             List<ItemTransfer> items = new List<ItemTransfer>();

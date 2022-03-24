@@ -2196,8 +2196,12 @@ namespace POS.View
 
         private async Task buildInvoiceDetails()
         {
-            //get invoice items
-            invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+            # region get invoice items
+            if(_InvoiceType == "po")
+                invoiceItems = await invoiceModel.GetInvoicesItemsWithCost(invoice.invoiceId);
+            else
+                invoiceItems = await invoiceModel.GetInvoicesItems(invoice.invoiceId);
+            #endregion
             // build invoice details grid
             _SequenceNum = 0;
             billDetails.Clear();

@@ -87,6 +87,74 @@ namespace POS_Server.Controllers
                 }
             }
         }
+        [HttpPost]
+        [Route("GetWithCost")]
+        public string GetWithCost(string token)
+        {
+          token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int invoiceId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "itemId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+
+                }
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var transferList = (from t in entity.itemsTransfer.Where(x => x.invoiceId == invoiceId)
+                                            join u in entity.itemsUnits on t.itemUnitId equals u.itemUnitId
+                                            join i in entity.items on u.itemId equals i.itemId
+                                            join un in entity.units on u.unitId equals un.unitId
+                                            join inv in entity.invoices on t.invoiceId equals inv.invoiceId
+                                            select new ItemTransferModel()
+                                            {
+                                                itemsTransId = t.itemsTransId,
+                                                itemId = i.itemId,
+                                                itemName = i.name,
+                                                quantity = t.quantity,
+                                                invoiceId = entity.invoiceOrder.Where(x => x.itemsTransferId == t.itemsTransId).Select(x => x.orderId).FirstOrDefault() == null? 0 : entity.invoiceOrder.Where(x => x.itemsTransferId == t.itemsTransId).Select(x => x.orderId).FirstOrDefault(),
+                                                invNumber = inv.invNumber,
+                                                locationIdNew = t.locationIdNew,
+                                                locationIdOld = t.locationIdOld,
+                                                createUserId = t.createUserId,
+                                                updateUserId = t.updateUserId,
+                                                notes = t.notes,
+                                                createDate = t.createDate,
+                                                updateDate = t.updateDate,
+                                                itemUnitId = u.itemUnitId,
+                                                price = u.cost,
+                                                unitName = un.name,
+                                                unitId = un.unitId,
+                                                barcode = u.barcode,
+                                                itemSerial = t.itemSerial,
+                                                itemType = i.type,
+                                                offerId = t.offerId,
+                                                itemUnitPrice = t.itemUnitPrice,
+                                                offerType = t.offerType,
+                                                offerValue = t.offerValue,
+                                                itemTax = t.itemTax,
+                                            })
+                                            .ToList();
+
+                        return TokenManager.GenerateToken(transferList);
+                    }
+
+                }
+                catch { return TokenManager.GenerateToken("0"); }
+            }
+        }
 
         // add or update item transfer
         [HttpPost]

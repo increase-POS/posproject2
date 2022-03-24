@@ -1681,9 +1681,16 @@ namespace POS.View.storage
                 if (billDetails.Count > 0)
                 {
                     if (_InvoiceType == "pw") //p  wait purchase invoice
+                    {
                         await receiptInvoice();
+                        refreshInvoiceReturnNotification();
+                    }
                     else if (_InvoiceType == "pbw")
+                    {
                         await returnInvoice("pb");
+                        refreshInvoiceReturnNotification();
+
+                    }
                     else if (_InvoiceType == "isd" || _InvoiceType == "is")
                     {
                         await addInvoice("is");
@@ -1698,8 +1705,8 @@ namespace POS.View.storage
                         };
                         #endregion
                         await itemLocationModel.recieptInvoice(invoiceItems, MainWindow.branchID.Value, MainWindow.userID.Value, "storageAlerts_minMaxItem", not); // increase item quantity in DB
-                        if(_InvoiceType == "is")
-                          invoiceModel.saveAvgPurchasePrice(invoiceItems);
+                        if (_InvoiceType == "is")
+                            invoiceModel.saveAvgPurchasePrice(invoiceItems);
                         string invtype = invoice.invType;
                         clearInvoice();
                         refreshDraftNotification();
@@ -1720,7 +1727,7 @@ namespace POS.View.storage
 
                         }
                     }
-
+                    refreshInvoiceNotification();
                 }
 
                 //clearInvoice();
