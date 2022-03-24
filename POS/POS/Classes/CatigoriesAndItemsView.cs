@@ -159,7 +159,9 @@ namespace POS.Classes
         }
         private async void INotifyPropertyChangedIdCatigories()
         {
-            if (ucCategorie != null)
+            try
+            {
+                if (ucCategorie != null)
             {
                 ucCategorie.ChangeCategorieIdEvent(idCatigories);
             }
@@ -172,11 +174,6 @@ namespace POS.Classes
                 ucPayInvoice.ChangeCategoryIdEvent(idCatigories);
 
             }
-            //else if (ucItemsImport != null)
-            //{
-            //    ucItemsImport.ChangeCategoryIdEvent(idCatigories);
-
-            //}
             else if (ucItemsExport != null)
             {
                 ucItemsExport.ChangeCategoryIdEvent(idCatigories);
@@ -207,66 +204,74 @@ namespace POS.Classes
                 await wdItems.ChangeCategoryIdEvent(idCatigories);
 
             }
+            }
+            catch (Exception ex)
+            {
 
+                SectionData.ExceptionMessage(ex, this);
+            }
 
         }
         private async void INotifyPropertyChangedIdCatigorieItems()
         {
-
-             if (ucItem != null)
+            try
             {
-                await ucItem.ChangeItemIdEvent(idItem);
+                if (ucItem != null)
+                {
+                    await ucItem.ChangeItemIdEvent(idItem);
+                }
+                else if (ucPayInvoice != null)
+                {
+                    await ucPayInvoice.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucItemsExport != null)
+                {
+                    await ucItemsExport.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucreceiptOfPurchaseInvoice != null)
+                {
+                    //ucreceiptOfPurchaseInvoice.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucPackageOfItems != null)
+                {
+                    await ucPackageOfItems.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucServiceItem != null)
+                {
+                    await ucServiceItem.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucUsers != null)
+                {
+                    ucUsers.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucCustomer != null)
+                {
+                    ucCustomer.ChangeItemIdEvent(idItem);
+
+                }
+                else if (ucVendors != null)
+                {
+                    await ucVendors.ChangeItemIdEvent(idItem);
+
+                }
+                else if (wdItems != null)
+                {
+                    wdItems.ChangeItemIdEvent(idItem);
+
+                }
             }
-            else if (ucPayInvoice != null)
+            catch (Exception ex)
             {
-                await ucPayInvoice.ChangeItemIdEvent(idItem);
 
+                SectionData.ExceptionMessage(ex, this);
             }
-            //else if (ucItemsImport != null)
-            //{
-            //    ucItemsImport.ChangeItemIdEvent(idItem);
 
-            //}
-            else if (ucItemsExport != null)
-            {
-                await ucItemsExport.ChangeItemIdEvent(idItem);
-
-            }
-            else if (ucreceiptOfPurchaseInvoice != null)
-            {
-                //ucreceiptOfPurchaseInvoice.ChangeItemIdEvent(idItem);
-
-            }
-            else if (ucPackageOfItems != null)
-            {
-                await ucPackageOfItems.ChangeItemIdEvent(idItem);
-
-            }
-            else if (ucServiceItem != null)
-            {
-                await ucServiceItem.ChangeItemIdEvent(idItem);
-
-            }
-            else if (ucUsers != null)
-            {
-                ucUsers.ChangeItemIdEvent(idItem);
-
-            }
-            else if (ucCustomer != null)
-            {
-                ucCustomer.ChangeItemIdEvent(idItem);
-
-            }
-            else if (ucVendors != null)
-            {
-                await ucVendors.ChangeItemIdEvent(idItem);
-
-            }
-            else if (wdItems != null)
-            {
-                wdItems.ChangeItemIdEvent(idItem);
-
-            }
         }
         #region Catalog
         public int pastCatalogCard = -1;
