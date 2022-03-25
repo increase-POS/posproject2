@@ -3803,7 +3803,7 @@ namespace POS.Classes
                 ?
                (row.bondIsRecieved == 0 ?
                    MainWindow.resourcemanager.GetString("trBondNotRecieved") :
-                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + getProcessType(row.processType))
+                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + getProcessType(row.processType,row.cardName))
                  :
                   //row.Description1;
                   ((row.side == "c") && (row.invShippingCompanyId != null) && (row.processType == "inv") ?
@@ -3856,7 +3856,7 @@ namespace POS.Classes
 
         }
 
-        private string getProcessType(string value)
+        private string getProcessType(string value, string name)
         {
             switch (value)
             {
@@ -3864,7 +3864,8 @@ namespace POS.Classes
                 case "doc": return MainWindow.resourcemanager.GetString("trDocument");
                 case "cheque": return MainWindow.resourcemanager.GetString("trCheque");
                 case "balance": return MainWindow.resourcemanager.GetString("trCredit");
-                case "card": return MainWindow.resourcemanager.GetString("trAnotherPaymentMethods");
+                //case "card": return MainWindow.resourcemanager.GetString("trAnotherPaymentMethods");
+                case "card": return name;
                 case "inv": return MainWindow.resourcemanager.GetString("trInv");
                 default: return value;
             }

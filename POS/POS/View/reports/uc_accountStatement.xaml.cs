@@ -583,7 +583,7 @@ namespace POS.View.reports
            {
                Values = card.AsChartValues(),
                DataLabels = true,
-               Title = MainWindow.resourcemanager.GetString("tr_Card")
+               Title = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods")
            });
             columnChartData.Add(
            new ColumnSeries
@@ -601,13 +601,13 @@ namespace POS.View.reports
                Title = MainWindow.resourcemanager.GetString("trCheque")
            });
           
-           columnChartData.Add(
-           new ColumnSeries
-            {
-                Values = inv.AsChartValues(),
-                DataLabels = true,
-                Title = MainWindow.resourcemanager.GetString("tr_Invoice")
-            });
+           //columnChartData.Add(
+           //new ColumnSeries
+           // {
+           //     Values = inv.AsChartValues(),
+           //     DataLabels = true,
+           //     Title = MainWindow.resourcemanager.GetString("tr_Invoice")
+           // });
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
@@ -621,7 +621,7 @@ namespace POS.View.reports
            
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "p").Count());
             resultList.Add(temp.Where(x => x.processType != "inv" && x.transType == "d").Count());
-            resultList.Add(temp.Where(x => x.processType == "inv").Count());
+            //resultList.Add(temp.Where(x => x.processType == "inv").Count());
             SeriesCollection piechartData = new SeriesCollection();
             for (int i = 0; i < resultList.Count(); i++)
             {
@@ -630,7 +630,7 @@ namespace POS.View.reports
                 {
                     MainWindow.resourcemanager.GetString("trOnePayment"),
                     MainWindow.resourcemanager.GetString("trOneDeposit"),
-                    MainWindow.resourcemanager.GetString("tr_Invoice")
+                    //MainWindow.resourcemanager.GetString("tr_Invoice")
                 };
                 final.Add(resultList.Skip(i).FirstOrDefault());
                 piechartData.Add(
