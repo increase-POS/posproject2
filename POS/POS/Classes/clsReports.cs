@@ -582,6 +582,18 @@ namespace POS.Classes
 
             return s;
         }
+        public static string BranchStoreConverter(string type)
+        {
+            string s = "";
+            switch (type)
+            {
+                case "b": s = MainWindow.resourcemanagerreport.GetString("tr_Branch"); break;
+                case "s": s = MainWindow.resourcemanagerreport.GetString("tr_Store"); break;
+
+            }
+
+            return s;
+        }
         public static void PurStsReport(IEnumerable<ItemTransferInvoice> tempquery, LocalReport rep, string reppath)
         {
             rep.ReportPath = reppath;
