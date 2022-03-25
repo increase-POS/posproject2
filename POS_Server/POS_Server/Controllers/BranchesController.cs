@@ -233,8 +233,11 @@ namespace POS_Server.Controllers
 
                     var branch = entity.branches
                    .Where(b => b.branchId == branchId)
-                   .Select(b => new { b.branchId, b.address, b.createDate, b.createUserId, b.email, b.mobile, b.name, b.code, b.notes, b.parentId, b.phone, b.updateDate, b.updateUserId })
-                   .FirstOrDefault();
+                   .Select(b => new {
+                       b.branchId, b.address, b.createDate, b.createUserId, b.email,
+                       b.mobile, b.name, b.code, b.notes, b.parentId, b.phone, b.updateDate, b.updateUserId,
+                       b.type,
+                   }).FirstOrDefault();
                     return TokenManager.GenerateToken(branch);
                 }
             }
