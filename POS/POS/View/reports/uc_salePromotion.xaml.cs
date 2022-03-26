@@ -121,20 +121,9 @@ namespace POS.View.reports
                 dynamicComboCoupon = new ObservableCollection<CouponCombo>(comboCoupon);
                 dynamicComboOffer = new ObservableCollection<OfferCombo>(comboOffer);
 
-                fillComboCoupon();
-
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), btn_coupons.Tag.ToString());
-                MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_Coupons, MainWindow.resourcemanager.GetString("trCoponHint"));
-                paint();
-                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_coupon);
-                path_coupons.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
                 chk_couponInvoice.IsChecked = true;
 
-                hidAllColumns();
-                col_coupon.Visibility = Visibility.Visible;
-                col_cTypeValue.Visibility = Visibility.Visible;
-                col_couponTotalValue.Visibility = Visibility.Visible;
+                btn_coupons_Click(btn_coupons, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);

@@ -332,7 +332,6 @@
                                 <MultiBinding Converter="{StaticResource accuracyDiscountConverter}" >
                                     <Binding Path="CopdiscountType" />
                                     <Binding Path="CopdiscountValue" />
-                                    <Binding Source="{StaticResource couponKey}" />
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
@@ -351,7 +350,6 @@
                                 <MultiBinding Converter="{StaticResource accuracyDiscountConverter}" >
                                     <Binding Path="OdiscountType" />
                                     <Binding Path="OdiscountValue" />
-                                    <Binding Source="{StaticResource offerKey}" />
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
