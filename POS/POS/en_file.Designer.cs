@@ -1069,6 +1069,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not send email.
+        /// </summary>
+        internal static string trCannotSendEmail {
+            get {
+                return ResourceManager.GetString("trCannotSendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t complete the process.
         /// </summary>
         internal static string trCantDoProcess {

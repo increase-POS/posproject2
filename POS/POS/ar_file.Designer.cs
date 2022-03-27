@@ -1060,6 +1060,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to لايمكن ارسال الايميل.
+        /// </summary>
+        internal static string trCannotSendEmail {
+            get {
+                return ResourceManager.GetString("trCannotSendEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to لا يمكنك إتمام العملية.
         /// </summary>
         internal static string trCantDoProcess {

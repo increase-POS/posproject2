@@ -3472,4 +3472,7 @@ Please add Email in setting</value>
   <data name="trInternalMovementImport" xml:space="preserve">
     <value>Internal movement - Import</value>
   </data>
+  <data name="trCannotSendEmail" xml:space="preserve">
+    <value>Can not send email</value>
+  </data>
 </root>

@@ -5260,11 +5260,11 @@ namespace POS.View
                 //
 
             }
-            catch
+            catch(Exception ex)
             {
                 this.Dispatcher.Invoke(() =>
                 {
-                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPrintEmptyInvoice"), animation: ToasterAnimation.FadeIn);
+                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trCannotSendEmail"), animation: ToasterAnimation.FadeIn);
                 });
             }
         }

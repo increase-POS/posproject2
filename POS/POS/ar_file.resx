@@ -3451,4 +3451,7 @@
   <data name="trInternalMovementImport" xml:space="preserve">
     <value>حركة داخلية - استيراد</value>
   </data>
+  <data name="trCannotSendEmail" xml:space="preserve">
+    <value>لايمكن ارسال الايميل</value>
+  </data>
 </root>
