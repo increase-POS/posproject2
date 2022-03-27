@@ -1343,8 +1343,10 @@ namespace POS.View.storage
             switch (_InvoiceType)
             {
                 case "pw":// wait purchase invoice
+                case "pbw":
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column unvisible
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count read only
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
 
                     sp_sum.Visibility = Visibility.Collapsed;
                     tb_sum.Visibility = Visibility.Collapsed;
@@ -1357,24 +1359,25 @@ namespace POS.View.storage
                     btn_save.IsEnabled = true;
 
                     break;
-                case "pbw":
-                    dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
-                    dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
+                //case "pbw":
+                //    dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
+                //    dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
 
-                    sp_sum.Visibility = Visibility.Collapsed;
-                    tb_sum.Visibility = Visibility.Collapsed;
-                    txt_sum.Visibility = Visibility.Collapsed;
-                    tb_moneyIcon.Visibility = Visibility.Collapsed;
-                    txt_total.Visibility = Visibility.Collapsed;
-                    tb_total.Visibility = Visibility.Collapsed;
-                    tb_moneyIconTotal.Visibility = Visibility.Collapsed;
+                //    sp_sum.Visibility = Visibility.Collapsed;
+                //    tb_sum.Visibility = Visibility.Collapsed;
+                //    txt_sum.Visibility = Visibility.Collapsed;
+                //    tb_moneyIcon.Visibility = Visibility.Collapsed;
+                //    txt_total.Visibility = Visibility.Collapsed;
+                //    tb_total.Visibility = Visibility.Collapsed;
+                //    tb_moneyIconTotal.Visibility = Visibility.Collapsed;
 
-                    btn_save.IsEnabled = true;
+                //    btn_save.IsEnabled = true;
 
-                    break;
+                //    break;
                 case "isd":
                     dg_billDetails.Columns[0].Visibility = Visibility.Visible;
                     dg_billDetails.Columns[4].IsReadOnly = false; //make count editable
+                    dg_billDetails.Columns[5].IsReadOnly = false; //make price read only
 
                     sp_sum.Visibility = Visibility.Visible;
                     tb_sum.Visibility = Visibility.Visible;
@@ -1391,6 +1394,7 @@ namespace POS.View.storage
                 case "pb":
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed; //make delete column visible
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make count editable
 
                     sp_sum.Visibility = Visibility.Collapsed;
                     tb_sum.Visibility = Visibility.Collapsed;
@@ -1405,6 +1409,7 @@ namespace POS.View.storage
                 case "is":
                     dg_billDetails.Columns[0].Visibility = Visibility.Collapsed;
                     dg_billDetails.Columns[4].IsReadOnly = true; //make count editable
+                    dg_billDetails.Columns[5].IsReadOnly = true; //make price read only
 
                     sp_sum.Visibility = Visibility.Visible;
                     tb_sum.Visibility = Visibility.Visible;
@@ -1460,10 +1465,10 @@ namespace POS.View.storage
                 {
                     billDetails[dg_billDetails.SelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                    // if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
-                    if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" || _InvoiceType == "pbw" || _InvoiceType == "is")
-                        cmb.IsEnabled = false;
-                    else
-                        cmb.IsEnabled = true;
+                    //if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" || _InvoiceType == "pbw" || _InvoiceType == "is")
+                    //    cmb.IsEnabled = false;
+                    //else
+                    //    cmb.IsEnabled = true;
 
                     #region change price of unit
                
