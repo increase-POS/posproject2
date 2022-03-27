@@ -1439,7 +1439,8 @@ namespace POS.View.storage
                 var cmb = sender as ComboBox;
                 cmb.SelectedValue = (int)billDetails[0].itemUnitId;
 
-                if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" || _InvoiceType == "pbw"|| _InvoiceType == "is")
+                if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" ||
+                    _InvoiceType == "pbw"|| _InvoiceType == "is")
                     cmb.IsEnabled = false;
                 else
                     cmb.IsEnabled = true;
@@ -1563,7 +1564,8 @@ namespace POS.View.storage
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (item.OrderId != 0)
+                                if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" ||
+                   _InvoiceType == "pbw" || _InvoiceType == "is")
                                     combo.IsEnabled = false;
                                 else
                                     combo.IsEnabled = true;
@@ -1582,8 +1584,9 @@ namespace POS.View.storage
         {
             int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
             if (dg_billDetails.SelectedIndex != -1 && column == 3)
-                if (billDetails[dg_billDetails.SelectedIndex].OrderId != 0)
-                    e.Cancel = true;
+               if (_InvoiceType == "p" || _InvoiceType == "pw" || _InvoiceType == "pb" ||
+                   _InvoiceType == "pbw" || _InvoiceType == "is")
+                        e.Cancel = true;
         }
         private void Dg_billDetails_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
