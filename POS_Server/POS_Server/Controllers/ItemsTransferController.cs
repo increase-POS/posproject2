@@ -222,7 +222,7 @@ namespace POS_Server.Controllers
                                     newObject[i].itemSerial = "";
 
                                 var transferEntity = entity.Set<itemsTransfer>();
-                                int orderId = (int)newObject[i].invoiceId;
+
                                 newObject[i].invoiceId = invoiceId;
                                 newObject[i].createDate = DateTime.Now;
                                 newObject[i].updateDate = DateTime.Now;

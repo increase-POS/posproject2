@@ -1779,7 +1779,6 @@ namespace POS.View.storage
                     itemT.price = billDetails[i].Price;
                     itemT.itemUnitId = billDetails[i].itemUnitId;
                     itemT.createUserId = MainWindow.userID;
-                    itemT.invoiceId = billDetails[i].OrderId;
 
                     invoiceItems.Add(itemT);
                 }
@@ -1804,7 +1803,7 @@ namespace POS.View.storage
             {
                 itemT = new ItemTransfer();
 
-                // itemT.invoiceId = invoiceId;
+                itemT.invoiceId = 0;
                 itemT.itemName = billDetails[i].Product;
                 itemT.itemId = billDetails[i].itemId;
                 itemT.unitName = billDetails[i].Unit;
@@ -1895,8 +1894,6 @@ namespace POS.View.storage
                 title = "trExceedMaxLimitAlertTilte",
                 ncontent = "trExceedMaxLimitAlertContent",
                 msgType = "alert",
-                //createDate = DateTime.Now,
-                // updateDate = DateTime.Now,
                 createUserId = MainWindow.userID.Value,
                 updateUserId = MainWindow.userID.Value,
             };

@@ -1148,7 +1148,7 @@ namespace POS.View.storage
                 itemT.price = billDetails[i].Price;
                 itemT.itemUnitId = billDetails[i].itemUnitId;
                 itemT.createUserId = MainWindow.userID;
-                itemT.invoiceId = billDetails[i].OrderId;
+                itemT.invoiceId = 0;
 
                 invoiceItems.Add(itemT);
             }
