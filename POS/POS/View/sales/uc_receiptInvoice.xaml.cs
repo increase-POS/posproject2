@@ -1872,7 +1872,7 @@ namespace POS.View
 
                     MainWindow.posLogIn.balance -= invoice.totalNet;
                     await MainWindow.posLogIn.save(MainWindow.posLogIn);
-                    // cach transfer model
+                    #region cashTransfer
                     CashTransfer cashTrasnfer = new CashTransfer();
                     cashTrasnfer.transType = "p"; //pull
                     cashTrasnfer.posId = MainWindow.posID;
@@ -1889,7 +1889,13 @@ namespace POS.View
                     }
                     //  cashTrasnfer
                     cashTrasnfer.createUserId = MainWindow.userID;
-                    await cashTrasnfer.Save(cashTrasnfer); //add cash transfer    
+                    await cashTrasnfer.Save(cashTrasnfer); //add cash transfer
+                    #endregion
+                    #region update paid value
+                    invoice.paid = invoice.totalNet;
+                    invoice.deserved = 0;
+                    await invoice.saveInvoice(invoice);
+                    #endregion
                     break;
                 case 1:// balance: update customer balance
                     await invoice.recordCashTransfer(invoice, "sb");
