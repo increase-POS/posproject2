@@ -3362,8 +3362,7 @@ namespace POS.View
                     int itemUnitId = (int)cmb.SelectedValue;
                     billDetails[_datagridSelectedIndex].itemUnitId = (int)cmb.SelectedValue;
                     #region Dina
-                    //var unit = itemUnits.ToList().Find(x => x.itemUnitId == (int)cmb.SelectedValue);
-                    // var unit = await itemUnitModel.GetById((int)cmb.SelectedValue);
+
                     dynamic unit;
                     if (MainWindow.InvoiceGlobalSaleUnitsList == null)
                     {
@@ -3375,10 +3374,6 @@ namespace POS.View
                         unit = new ItemUnit();
                         unit = MainWindow.InvoiceGlobalSaleUnitsList.Find(x => x.itemUnitId == (int)cmb.SelectedValue && x.itemId == billDetails[_datagridSelectedIndex].itemId);
                     }
-
-                    //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, MainWindow.branchID.Value);
-                    // int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
-
 
                     int oldCount = 0;
                     long newCount = 0;
@@ -3393,8 +3388,46 @@ namespace POS.View
                     billDetails[_datagridSelectedIndex].OfferType = "1";
                     billDetails[_datagridSelectedIndex].OfferValue = 0;
                     billDetails[_datagridSelectedIndex].offerId = null;
-                    //validateAvailableAmount(row, newCount, index, tb );
-                    int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, unit.itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
+
+
+                    #region invoice is sales bounce draft
+                    if (_InvoiceType == "sbd")
+                    {
+                        billDetails[_datagridSelectedIndex].Count = (int)newCount;
+
+                        var selectedItemUnitId = itemUnitId;
+
+                        var itemUnitsIds = barcodesList.Where(x => x.itemId == billDetails[_datagridSelectedIndex].itemId).Select(x => x.itemUnitId).Distinct().ToList();
+
+                        #region caculate available amount in this bill
+                        int amountInBill = await getAmountInBill(billDetails[_datagridSelectedIndex].itemId,itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
+                        #endregion
+
+                        #region calculate amount in sales invoice
+                        var items = mainInvoiceItems.ToList().Where(i => itemUnitsIds.Contains((int)i.itemUnitId));
+                        int buyedAmount = 0;
+                        foreach (ItemTransfer it in items)
+                        {
+                            if (selectedItemUnitId == (int)it.itemUnitId)
+                                buyedAmount += (int)it.quantity;
+                            else
+                                buyedAmount += await itemUnitModel.fromUnitToUnitQuantity((int)it.quantity, billDetails[_datagridSelectedIndex].itemId, (int)it.itemUnitId, selectedItemUnitId);
+                        }
+                        #endregion
+
+                        if (newCount > (buyedAmount - amountInBill))
+                        {
+                            // return old value 
+                            tb.Text = (buyedAmount - amountInBill).ToString();
+
+                            newCount = (buyedAmount - amountInBill);
+                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                        }
+                    }
+                    #endregion
+                    else
+                    {
+                        int availableAmount = await getAvailableAmount(billDetails[_datagridSelectedIndex].itemId, unit.itemUnitId, MainWindow.branchID.Value, billDetails[_datagridSelectedIndex].ID);
                         if (availableAmount < newCount && billDetails[_datagridSelectedIndex].type != "sr")
                         {
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountNotAvailableToolTip"), animation: ToasterAnimation.FadeIn);
@@ -3408,7 +3441,7 @@ namespace POS.View
                             }
                             newCount = availableAmount;
                             tb.Text = newCount.ToString();
-                        billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                            billDetails[_datagridSelectedIndex].Count = (int)newCount;
                         }
                         else if (unit.offerId != null && (int)unit.offerId != 0)
                         {
@@ -3419,15 +3452,15 @@ namespace POS.View
                                 availableAmount = remainAmount;
                                 newCount = availableAmount;
                                 tb.Text = newCount.ToString();
-                            billDetails[_datagridSelectedIndex].Count = (int)newCount;
-                            billDetails[_datagridSelectedIndex].OfferType = unit.discountType;
-                            billDetails[_datagridSelectedIndex].OfferValue = unit.discountValue;
-                            billDetails[_datagridSelectedIndex].offerId = unit.offerId;
-                           
-                        }
-                       
-                    }
+                                billDetails[_datagridSelectedIndex].Count = (int)newCount;
+                                billDetails[_datagridSelectedIndex].OfferType = unit.discountType;
+                                billDetails[_datagridSelectedIndex].OfferValue = unit.discountValue;
+                                billDetails[_datagridSelectedIndex].offerId = unit.offerId;
 
+                            }
+
+                        }
+                    }
                     if (MainWindow.itemsTax_bool == true)
                         newPrice = unit.priceTax;
                     else
@@ -3517,6 +3550,11 @@ namespace POS.View
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
+
+                                if (_InvoiceType == "s" || _InvoiceType == "sb")
+                                    combo.IsEnabled = false;
+                                else
+                                    combo.IsEnabled = true;
                             }
                         }
                     }
@@ -3534,7 +3572,7 @@ namespace POS.View
         private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
             int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
-            if (_InvoiceType == "s" || _InvoiceType == "sb" || (_InvoiceType == "sbd" && column == 3))
+            if (_InvoiceType == "s" || _InvoiceType == "sb" )
                 e.Cancel = true;
         }
 
@@ -3648,19 +3686,49 @@ namespace POS.View
                         newCount = row.Count;
 
                     oldCount = row.Count;
-
+                    #region invoice is sales bounce draft
                     if (_InvoiceType == "sbd")
                     {
-                        ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
-                        if (newCount > item.quantity)
+                        //ItemTransfer item = mainInvoiceItems.ToList().Find(i => i.itemUnitId == row.itemUnitId);
+                        //if (newCount > item.quantity)
+                        //{
+                        //    // return old value 
+                        //    t.Text = item.quantity.ToString();
+
+                        //    newCount = (long)item.quantity;
+                        //    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
+                        //}
+                    billDetails[index].itemUnitId = row.itemUnitId;
+
+                        var selectedItemUnitId = row.itemUnitId;
+
+                        var itemUnitsIds = barcodesList.Where(x => x.itemId == row.itemId).Select(x => x.itemUnitId).ToList();
+
+                        #region caculate available amount in this bill
+                        int amountInBill = await getAmountInBill(row.itemId, row.itemUnitId, MainWindow.branchID.Value, row.ID);
+                        #endregion
+                        #region calculate amount in sales invoice
+                        var items = mainInvoiceItems.ToList().Where(i => itemUnitsIds.Contains((int)i.itemUnitId));
+                        int buyedAmount = 0;
+                        foreach (ItemTransfer it in items)
+                        {
+                            if (selectedItemUnitId == (int)it.itemUnitId)
+                                buyedAmount += (int)it.quantity;
+                            else
+                                buyedAmount += await itemUnitModel.fromUnitToUnitQuantity((int)it.quantity, row.itemId, (int)it.itemUnitId, selectedItemUnitId);
+                        }
+                        #endregion
+
+                        if (newCount > (buyedAmount - amountInBill))
                         {
                             // return old value 
-                            t.Text = item.quantity.ToString();
+                            t.Text = (buyedAmount - amountInBill).ToString();
 
-                            newCount = (long)item.quantity;
+                            newCount = (buyedAmount - amountInBill);
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
                         }
                     }
+                    #endregion
                     else
                     {
                         //validateAvailableAmount(row, newCount, index, tb );
@@ -3729,16 +3797,54 @@ namespace POS.View
                     billDetails[index].Total = total;
 
                 }
-                //refrishDataGridItems();
+                refrishDataGridItems();
                 //if (sender != null)
                 //    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
-                //if (sender != null)
-                //    SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private async Task<int> getAmountInBill(int itemId, int itemUnitId, int branchId, int ID)
+        {
+            int quantity = 0;
+            var itemUnits = barcodesList.Where(a => a.itemId == itemId).Select(x => x.itemUnitId).Distinct().ToList();
+            //int availableAmount = await itemLocationModel.getAmountInBranch(itemUnitId, branchId);
+            var smallUnits = await itemUnitModel.getSmallItemUnits(itemId, itemUnitId);
+            foreach (int itemUnit in itemUnits)
+            {
+                var isInBill = billDetails.ToList().Find(x => x.itemUnitId == (int)itemUnit && x.ID != ID); // unit exist in invoice
+                if (isInBill != null)
+                {
+                    var isSmall = smallUnits.Find(x => x.itemUnitId == (int)itemUnit);
+                    int unitValue = 0;
+
+                    int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == itemUnit && p.ID != ID).FirstOrDefault());
+                    //int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == itemUnit && p.ID == ID).FirstOrDefault());
+                    int count = billDetails[index].Count;
+                    if (itemUnitId == itemUnit)
+                    {
+                        quantity += count;
+                    }
+                    else if (isSmall != null) // from-unit is bigger than to-unit
+                    {
+                        unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, (int)itemUnit);
+                        quantity += count / unitValue;
+                    }
+                    else
+                    {
+                        unitValue = await itemUnitModel.smallToLargeUnit(itemUnitId, (int)itemUnit);
+
+                        if (unitValue != 0)
+                        {
+                            quantity += count * unitValue;
+                        }
+                    }
+
+                }
+            }
+            return quantity;
         }
         private async Task<int> getAvailableAmount(int itemId, int itemUnitId, int branchId, int ID)
         {

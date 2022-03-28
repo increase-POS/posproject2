@@ -3023,15 +3023,15 @@ namespace POS.View
                             if (itemUnitId == (int)it.itemUnitId)
                                 purchasedAmount += (int)it.quantity;
                             else
-                                purchasedAmount += await fromUnitToUnitQuantity((int)it.quantity, itemId, (int)it.itemUnitId, itemUnitId);
+                                purchasedAmount += await itemUnitModel.fromUnitToUnitQuantity((int)it.quantity, itemId, (int)it.itemUnitId, itemUnitId);
                         }
                         #endregion
                         if (newCount > (purchasedAmount - amountInBill) || newCount > availableAmount)
                         {
                             // return old value 
-                            tb.Text = (purchasedAmount - amountInBill) > availableAmount ? availableAmount.ToString() : purchasedAmount.ToString();
+                            tb.Text = (purchasedAmount - amountInBill) > availableAmount ? availableAmount.ToString() : (purchasedAmount - amountInBill).ToString();
 
-                            newCount = (purchasedAmount - amountInBill) > availableAmount ? availableAmount : purchasedAmount;
+                            newCount = (purchasedAmount - amountInBill) > availableAmount ? availableAmount : (purchasedAmount - amountInBill);
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
                         }
                     }
@@ -3210,15 +3210,15 @@ namespace POS.View
                             if (selectedItemUnitId == (int)it.itemUnitId)
                                 purchasedAmount += (int)it.quantity;
                             else
-                                purchasedAmount += await fromUnitToUnitQuantity((int)it.quantity,row.itemId,(int)it.itemUnitId, selectedItemUnitId);
+                                purchasedAmount += await itemUnitModel.fromUnitToUnitQuantity((int)it.quantity,row.itemId,(int)it.itemUnitId, selectedItemUnitId);
                         }
                         #endregion
                         if (newCount > (purchasedAmount-amountInBill) || newCount > availableAmount)
                         {
                             // return old value 
-                            t.Text = (purchasedAmount-amountInBill)>availableAmount ? availableAmount.ToString() : purchasedAmount.ToString();
+                            t.Text = (purchasedAmount-amountInBill)>availableAmount ? availableAmount.ToString() : (purchasedAmount - amountInBill).ToString();
 
-                            newCount = (purchasedAmount - amountInBill) > availableAmount ? availableAmount : purchasedAmount;
+                            newCount = (purchasedAmount - amountInBill) > availableAmount ? availableAmount : (purchasedAmount - amountInBill);
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorAmountIncreaseToolTip"), animation: ToasterAnimation.FadeIn);
                         }
                     }
@@ -3282,7 +3282,9 @@ namespace POS.View
                     int index = billDetails.IndexOf(billDetails.Where(p => p.itemUnitId == u.itemUnitId).FirstOrDefault());
                     int count= billDetails[index].Count;
                     if (itemUnitId == u.itemUnitId)
-                    { }
+                    {
+                        quantity += count;
+                    }
                     else if (isSmall != null) // from-unit is bigger than to-unit
                     {
                         unitValue = await itemUnitModel.largeToSmallUnitQuan(itemUnitId, (int)u.itemUnitId);
@@ -3302,37 +3304,7 @@ namespace POS.View
             }
             return quantity;
         }
-        private async Task<int> fromUnitToUnitQuantity(int quantity,int itemId,int fromItemUnitId, int toItemUnitId)
-        {
-            int remain = 0;
-            int _ConversionQuantity;
-            int _ToQuantity = 0;
-
-            if (quantity != 0 )
-            {
-                List<ItemUnit> smallUnits = await itemUnitModel.getSmallItemUnits(itemId, fromItemUnitId);
-
-                var isSmall = smallUnits.Find(x => x.itemUnitId == toItemUnitId);
-                if (isSmall != null) // from-unit is bigger than to-unit
-                {
-                    _ConversionQuantity = await itemUnitModel.largeToSmallUnitQuan(fromItemUnitId, toItemUnitId);
-                    _ToQuantity = quantity * _ConversionQuantity;
-
-                }
-                else
-                {
-                    _ConversionQuantity = await itemUnitModel.smallToLargeUnit(fromItemUnitId, toItemUnitId);
-
-                    if (_ConversionQuantity != 0)
-                    {
-                        _ToQuantity = quantity / _ConversionQuantity;
-                        remain = quantity - (_ToQuantity * _ConversionQuantity); // get remain quantity which cannot be changeed
-                    }
-                }
-            }
-
-            return _ToQuantity;
-        }
+       
         private void Dp_date_PreviewKeyUp(object sender, KeyEventArgs e)
         {
             try
