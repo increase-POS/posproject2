@@ -748,7 +748,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Fields!status.Value="rc",Parameters!trInDelivery.Value,iif(Fields!status.Value="tr",Parameters!trDelivered.Value,""))</Value>
+                                  <Value>=iif(Fields!status.Value="rc",Parameters!trDelivered.Value,iif(Fields!status.Value="tr",Parameters!trInDelivery.Value,""))</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                   </Style>
@@ -771,6 +771,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

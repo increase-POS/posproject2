@@ -887,15 +887,163 @@ namespace POS.View.accounts
             cb_salesMan.SelectedValuePath = "userId";
             cb_salesMan.SelectedIndex = -1;
         }
-        private   void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        #region Doc report
+        public void BuildvoucherReport()
         {
-            if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
+            string addpath;
+            bool isArabic = ReportCls.checkLang();
+            if (isArabic)
             {
 
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\Ar\ArReciveReportA4.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Account\Ar\ArReciveReport.rdlc";
+                }
             }
             else
-                Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+            {
+                if (MainWindow.docPapersize == "A4")
+                {
+                    addpath = @"\Reports\Account\En\ReciveReportA4.rdlc";
+                }
+                else
+                {
+                    addpath = @"\Reports\Account\En\ReciveReport.rdlc";
+                }
+
+
+            }
+
+            string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
+            rep.ReportPath = reppath;
+            rep.DataSources.Clear();
+            rep.EnableExternalImages = true;
+            rep.SetParameters(reportclass.fillPayReport(cashtrans));
+
+            rep.Refresh();
         }
+        private void Btn_preview_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucOrderAccounts);
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+                    Window.GetWindow(this).Opacity = 0.2;
+
+                    string pdfpath;
+                    pdfpath = @"\Thumb\report\temp.pdf";
+                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                    //
+                    if (cashtrans.cashTransId > 0)
+                    {
+                        BuildvoucherReport();
+
+                        LocalReportExtensions.ExportToPDF(rep, pdfpath);
+                        wd_previewPdf w = new wd_previewPdf();
+                        w.pdfPath = pdfpath;
+                        if (!string.IsNullOrEmpty(w.pdfPath))
+                        {
+                            w.ShowDialog();
+
+                            w.wb_pdfWebViewer.Dispose();
+
+                        }
+                        else
+                            Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        Window.GetWindow(this).Opacity = 1;
+                    }
+
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_pdf_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucOrderAccounts);
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+
+                    if (cashtrans.cashTransId > 0)
+                    {
+                        BuildvoucherReport();
+
+                        saveFileDialog.Filter = "PDF|*.pdf;";
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            string filepath = saveFileDialog.FileName;
+
+                            LocalReportExtensions.ExportToPDF(rep, filepath);
+
+                        }
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Btn_printInvoice_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucOrderAccounts);
+
+                if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
+                {
+
+                    if (cashtrans.cashTransId > 0)
+                    {
+                        BuildvoucherReport();
+                        LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+
+                    }
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        #endregion
+
+
         private void Btn_invoices_Click(object sender, RoutedEventArgs e)
         {
 
@@ -1307,6 +1455,9 @@ namespace POS.View.accounts
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+      
+
         private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
         {
             try
