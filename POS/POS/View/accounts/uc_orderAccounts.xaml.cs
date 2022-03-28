@@ -34,7 +34,7 @@ namespace POS.View.accounts
         string createPermission = "ordersAccounting_create";
         string reportsPermission = "ordersAccounting_reports";
         string BranchesPermission = "ordersAccounting_allBranches";
-        
+
         private static uc_orderAccounts _instance;
         public static uc_orderAccounts Instance
         {
@@ -248,7 +248,7 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucOrderAccounts);
 
                 await RefreshInvoiceList();
-               Tb_search_TextChanged(null, null);
+                Tb_search_TextChanged(null, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucOrderAccounts);
@@ -316,11 +316,11 @@ namespace POS.View.accounts
 
                 #region clear validate
                 SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-            SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
-            TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-            SectionData.clearValidate(tb_docNum, p_errorDocNum);
-            SectionData.clearValidate(tb_cash, p_errorCash);
-            #endregion
+                SectionData.clearComboBoxValidate(cb_card, p_errorpaymentProcessType);
+                TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+                SectionData.clearValidate(tb_docNum, p_errorDocNum);
+                SectionData.clearValidate(tb_cash, p_errorCash);
+                #endregion
 
                 if (dg_orderAccounts.SelectedIndex != -1)
                 {
@@ -329,7 +329,7 @@ namespace POS.View.accounts
 
                     if (invoice != null)
                     {
-                        
+
 
                         tb_cash.IsEnabled = true;
 
@@ -338,7 +338,7 @@ namespace POS.View.accounts
                         tb_invoiceNum.Text = invoice.invNumber;
 
                         agentId = invoice.agentId.Value;
-                       
+
                         userId = invoice.shipUserId.Value;
 
                         tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
@@ -400,9 +400,9 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucOrderAccounts);
 
                 try
-                { 
-                if (invoices is null)
-                    await RefreshInvoiceList();
+                {
+                    if (invoices is null)
+                        await RefreshInvoiceList();
 
                     if (chb_all.IsChecked == false)
                     {
@@ -438,7 +438,7 @@ namespace POS.View.accounts
                     }
 
                     invoiceQueryExcel = invoiceQuery.ToList();
-                RefreshInvoiceView();
+                    RefreshInvoiceView();
                 }
                 catch { }
 
@@ -484,58 +484,58 @@ namespace POS.View.accounts
         {//delete
 
         }
-        private  void Btn_clear_Click(object sender, RoutedEventArgs e)
+        private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-            //try
-            //{
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucOrderAccounts);
-                //////////////////////
-                cb_paymentProcessType.IsEnabled = true;
-                cb_card.IsEnabled = true;
-                tb_docNum.IsEnabled = true;
-                dp_docDate.IsEnabled = true;
-                tb_docNumCheque.IsEnabled = true;
-                tb_docNumCard.IsEnabled = true;
-                dp_docDateCheque.IsEnabled = true;
-                tb_cash.IsEnabled = true;
-                tb_note.IsEnabled = true;
+         //try
+         //{
+            if (sender != null)
+                SectionData.StartAwait(grid_ucOrderAccounts);
+            //////////////////////
+            cb_paymentProcessType.IsEnabled = true;
+            cb_card.IsEnabled = true;
+            tb_docNum.IsEnabled = true;
+            dp_docDate.IsEnabled = true;
+            tb_docNumCheque.IsEnabled = true;
+            tb_docNumCard.IsEnabled = true;
+            dp_docDateCheque.IsEnabled = true;
+            tb_cash.IsEnabled = true;
+            tb_note.IsEnabled = true;
 
-                btn_image.IsEnabled = false;
-                /////////////////////////
-                ///
-                if (grid_doc.IsVisible)
-                {
-                    TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-                    SectionData.clearValidate(tbDocDate, p_errorDocDate);
-                    dp_docDate.SelectedDate = null;
-                    tb_docNum.Clear();
-                    SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                }
-                if (grid_cheque.IsVisible)
-                {
-                    tb_docNumCheque.Clear();
-                    dp_docDateCheque.SelectedDate = null;
-                }
-                cb_card.Visibility = Visibility.Collapsed;
-                cb_paymentProcessType.SelectedIndex = -1;
-                tb_cash.Clear();
-                tb_note.Clear();
-                tb_docNumCard.Clear();
+            btn_image.IsEnabled = false;
+            /////////////////////////
+            ///
+            if (grid_doc.IsVisible)
+            {
+                TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+                SectionData.clearValidate(tbDocDate, p_errorDocDate);
+                dp_docDate.SelectedDate = null;
                 tb_docNum.Clear();
+                SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            }
+            if (grid_cheque.IsVisible)
+            {
                 tb_docNumCheque.Clear();
-                tb_invoiceNum.Text = "";
-                tb_cash.IsReadOnly = false;
-                grid_doc.Visibility = Visibility.Collapsed;
-                tb_docNumCard.Visibility = Visibility.Collapsed;
-                grid_cheque.Visibility = Visibility.Collapsed;
-                SectionData.clearValidate(tb_cash, p_errorCash);
-                SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
-                SectionData.clearComboBoxValidate(cb_card, p_errorCard);
-                SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                SectionData.clearValidate(tb_docNum, p_errorDocNum);
-                SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
+                dp_docDateCheque.SelectedDate = null;
+            }
+            cb_card.Visibility = Visibility.Collapsed;
+            cb_paymentProcessType.SelectedIndex = -1;
+            tb_cash.Clear();
+            tb_note.Clear();
+            tb_docNumCard.Clear();
+            tb_docNum.Clear();
+            tb_docNumCheque.Clear();
+            tb_invoiceNum.Text = "";
+            tb_cash.IsReadOnly = false;
+            grid_doc.Visibility = Visibility.Collapsed;
+            tb_docNumCard.Visibility = Visibility.Collapsed;
+            grid_cheque.Visibility = Visibility.Collapsed;
+            SectionData.clearValidate(tb_cash, p_errorCash);
+            SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
+            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+            SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+            SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
             //    if (sender != null)
             //        SectionData.EndAwait(grid_ucOrderAccounts);
             //}
@@ -557,16 +557,16 @@ namespace POS.View.accounts
                     #region
                     //Thread t1 = new Thread(() =>
                     //{
-                        BuildReport();
-                        this.Dispatcher.Invoke(() =>
+                    BuildReport();
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        saveFileDialog.Filter = "EXCEL|*.xls;";
+                        if (saveFileDialog.ShowDialog() == true)
                         {
-                            saveFileDialog.Filter = "EXCEL|*.xls;";
-                            if (saveFileDialog.ShowDialog() == true)
-                            {
-                                string filepath = saveFileDialog.FileName;
-                                LocalReportExtensions.ExportToExcel(rep, filepath);
-                            }
-                        });
+                            string filepath = saveFileDialog.FileName;
+                            LocalReportExtensions.ExportToExcel(rep, filepath);
+                        }
+                    });
 
 
                     //});
@@ -608,7 +608,7 @@ namespace POS.View.accounts
         private void Btn_image_Click(object sender, RoutedEventArgs e)
         {//image
             try
-            { 
+            {
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one"))
                 {
                     if (cashtrans != null || cashtrans.cashTransId != 0)
@@ -934,15 +934,16 @@ namespace POS.View.accounts
                     SectionData.StartAwait(grid_ucOrderAccounts);
                 if (MainWindow.groupObject.HasPermissionAction(createPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
-                    Window.GetWindow(this).Opacity = 0.2;
-
-                    string pdfpath;
-                    pdfpath = @"\Thumb\report\temp.pdf";
-                    pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-
-                    //
                     if (cashtrans.cashTransId > 0)
                     {
+                        Window.GetWindow(this).Opacity = 0.2;
+
+                        string pdfpath;
+                        pdfpath = @"\Thumb\report\temp.pdf";
+                        pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
+
+                        //
+
                         BuildvoucherReport();
 
                         LocalReportExtensions.ExportToPDF(rep, pdfpath);
@@ -958,13 +959,18 @@ namespace POS.View.accounts
                         else
                             Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
                         Window.GetWindow(this).Opacity = 1;
+
+
                     }
 
+                    else
+                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                    if (sender != null)
+                        SectionData.EndAwait(grid_ucOrderAccounts);
+
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
+
             }
             catch (Exception ex)
             {
@@ -1049,7 +1055,7 @@ namespace POS.View.accounts
 
         }
 
-        private   void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_salesMan_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select salesman
             try
             {
@@ -1071,7 +1077,7 @@ namespace POS.View.accounts
             }
         }
 
-        private  void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_customer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select agent
             try
             {
@@ -1093,7 +1099,7 @@ namespace POS.View.accounts
             }
         }
 
-        private  void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Cb_state_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select state
             try
             {
@@ -1313,12 +1319,12 @@ namespace POS.View.accounts
                     #region
                     BuildReport();
                     LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
-                        #endregion
-                    }
-                    else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                    if (sender != null)
-                        SectionData.EndAwait(grid_ucOrderAccounts);
+                    #endregion
+                }
+                else
+                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
             }
             catch (Exception ex)
             {
@@ -1341,7 +1347,7 @@ namespace POS.View.accounts
                     Window.GetWindow(this).Opacity = 0.2;
                     string pdfpath = "";
 
-                 
+
                     //
                     pdfpath = @"\Thumb\report\temp.pdf";
                     pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
@@ -1456,7 +1462,7 @@ namespace POS.View.accounts
             }
         }
 
-      
+
 
         private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
         {
