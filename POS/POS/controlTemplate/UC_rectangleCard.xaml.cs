@@ -79,14 +79,13 @@ namespace POS.controlTemplate
             #region   Title
             var titleText = new TextBlock();
             titleText.Text = cardViewitem.item.name;
-            //if (cardViewitem.language == "ar")titleText.FontSize = 14;
-            titleText.FontSize = 14;
+            titleText.FontSize = 13;
+            titleText.Height = 20;
             titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
             titleText.Margin = new Thickness(5, 0, 5, 0);
             titleText.FontWeight = FontWeights.Bold;
             titleText.VerticalAlignment = VerticalAlignment.Top;
             titleText.HorizontalAlignment = HorizontalAlignment.Left;
-            //titleText.FontSize = 12;
             titleText.TextWrapping = TextWrapping.Wrap;
             titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
             Grid.SetRow(titleText, 1);
@@ -100,6 +99,7 @@ namespace POS.controlTemplate
             subTitleText.FontWeight = FontWeights.Regular;
             subTitleText.VerticalAlignment = VerticalAlignment.Center;
             subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
+            subTitleText.Height = 18;
             subTitleText.FontSize = 10;
             subTitleText.TextWrapping = TextWrapping.Wrap;
             subTitleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
@@ -122,6 +122,7 @@ namespace POS.controlTemplate
             countText.FontWeight = FontWeights.Regular;
             countText.VerticalAlignment = VerticalAlignment.Center;
             countText.HorizontalAlignment = HorizontalAlignment.Left;
+            subTitleText.Height = 18;
             countText.FontSize = 10;
             countText.TextWrapping = TextWrapping.Wrap;
             countText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
@@ -375,7 +376,8 @@ namespace POS.controlTemplate
             var titleText = new TextBlock();
             titleText.Text = title;
             titleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
-            titleText.FontSize = 14;
+            titleText.FontSize = 13;
+            titleText.Height = 20;
             titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
             titleText.Margin = new Thickness(5, 0, 5, 0);
             titleText.FontWeight = FontWeights.Bold;
@@ -394,6 +396,7 @@ namespace POS.controlTemplate
             subTitleText.VerticalAlignment = VerticalAlignment.Top;
             subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
             subTitleText.FontSize = 10;
+            subTitleText.Height = 18;
             subTitleText.TextWrapping = TextWrapping.Wrap;
             subTitleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
             Grid.SetRow(subTitleText, 2);
@@ -408,6 +411,8 @@ namespace POS.controlTemplate
             subTitleText2.VerticalAlignment = VerticalAlignment.Top;
             subTitleText2.HorizontalAlignment = HorizontalAlignment.Left;
             subTitleText2.FontSize = 10;
+            subTitleText2.Height = 18;
+
             subTitleText2.TextWrapping = TextWrapping.Wrap;
             subTitleText2.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
             Grid.SetRow(subTitleText2, 3);
