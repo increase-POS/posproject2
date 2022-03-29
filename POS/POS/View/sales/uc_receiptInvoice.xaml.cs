@@ -3686,6 +3686,7 @@ namespace POS.View
                         newCount = row.Count;
 
                     oldCount = row.Count;
+                    oldPrice = row.Price;
                     #region invoice is sales bounce draft
                     if (_InvoiceType == "sbd")
                     {
@@ -3769,7 +3770,7 @@ namespace POS.View
                     else
                         newPrice = row.Price;
 
-                    oldPrice = row.Price;
+                   
 
                     // old total for changed item
                     decimal total = oldPrice * oldCount;

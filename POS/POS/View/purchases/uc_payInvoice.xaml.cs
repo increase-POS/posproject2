@@ -3181,6 +3181,7 @@ namespace POS.View
                         newCount = row.Count;
 
                     oldCount = row.Count;
+                    oldPrice = row.Price;
                     #region if return invoice
                     if (_InvoiceType == "pbd" || _InvoiceType == "pbw")
                     {
@@ -3227,9 +3228,7 @@ namespace POS.View
                     if (columnName == MainWindow.resourcemanager.GetString("trPrice") && !t.Text.Equals(""))
                         newPrice = decimal.Parse(t.Text);
                     else
-                        newPrice = row.Price;
-
-                    oldPrice = row.Price;
+                        newPrice = row.Price;                    
 
                     // old total for changed item
                     decimal total = oldPrice * oldCount;
