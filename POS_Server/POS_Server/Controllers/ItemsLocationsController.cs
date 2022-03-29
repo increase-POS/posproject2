@@ -507,9 +507,8 @@ namespace POS_Server.Controllers
         [Route("GetFreeZoneItems")]
         public string GetFreeZoneItems(string token)
         {
-            //int branchId string token
-          token = TokenManager.readToken(HttpContext.Current.Request); 
- var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request); 
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -532,7 +531,6 @@ namespace POS_Server.Controllers
 
                 }
 
-                //bool canDelete = false;
                 try
                 {
                     using (incposdbEntities entity = new incposdbEntities())
@@ -4946,9 +4944,6 @@ namespace POS_Server.Controllers
         [Route("getSpecificItemLocation")]
         public string getSpecificItemLocation(string token)
         {
-            //string itemUnitsIds, int branchId
-
-
             string message = "";
 
             token = TokenManager.readToken(HttpContext.Current.Request);
@@ -4959,7 +4954,6 @@ namespace POS_Server.Controllers
             }
             else
             {
-                string Object = "";
                 int branchId = 0;
 
                 string newObject = "";
@@ -5017,7 +5011,7 @@ namespace POS_Server.Controllers
                                                sectionId = s.sectionId,
                                                isFreeZone = s.isFreeZone,
                                                itemType = i.type,
-                                               location = l.x + "-" + l.y + "-" + l.z,
+                                               location = l.x +  l.y + l.z,
                                            }).OrderBy(a => a.endDate)
                                             .ToList();
 
