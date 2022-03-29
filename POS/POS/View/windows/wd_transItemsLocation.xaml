@@ -118,7 +118,12 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridTextColumn Width="*"  Header="Location"  Binding="{Binding Path=location}" IsReadOnly="True">
+                        <DataGridTextColumn Width="*"  Header="Location" >
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding  Converter="{StaticResource SectionLocationFreeZoneConverter}">
+                                    <Binding Path="location"></Binding>
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="{x:Type TextBlock}">
                                     <Style.Triggers>
@@ -129,6 +134,17 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
+                        <!--<DataGridTextColumn Width="*"  Header="Location"  Binding="{Binding location,Converter={StaticResource SectionLocationFreeZoneConverter}}" IsReadOnly="True">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding isActive}" Value="0">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>-->
                         <!--Binding="{Binding Path=startDate,StringFormat=d}"-->
                         <DataGridTextColumn Width="*"  Header="Start Date" IsReadOnly="True" Binding="{Binding Path = startDate,Converter={StaticResource dateFrameConverter }}">
                             <DataGridTextColumn.ElementStyle>
