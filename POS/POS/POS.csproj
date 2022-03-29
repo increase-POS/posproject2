@@ -655,6 +655,9 @@
     <Compile Include="View\windows\wd_deliveryReceiptInvoice.xaml.cs">
       <DependentUpon>wd_deliveryReceiptInvoice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\windows\wd_deliveryWaitConfirmUser.xaml.cs">
+      <DependentUpon>wd_deliveryWaitConfirmUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\windows\wd_dragdrop.xaml.cs">
       <DependentUpon>wd_dragdrop.xaml</DependentUpon>
     </Compile>
@@ -1231,6 +1234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\windows\wd_deliveryReceiptInvoice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\windows\wd_deliveryWaitConfirmUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

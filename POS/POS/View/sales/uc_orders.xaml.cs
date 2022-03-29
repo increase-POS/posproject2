@@ -431,11 +431,10 @@ namespace POS.View.sales
                 #endregion
 
                 #region Permision
-                if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one"))
-                    md_ordersWait.Visibility = Visibility.Visible;
-                else
-                    md_ordersWait.Visibility = Visibility.Collapsed;
-
+                //if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one"))
+                //    md_ordersWait.Visibility = Visibility.Visible;
+                //else
+                //    md_ordersWait.Visibility = Visibility.Collapsed;
                 #endregion
                 #region print - pdf - send email
                 btn_printInvoice.Visibility = Visibility.Collapsed;

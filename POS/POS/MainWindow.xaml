@@ -87,6 +87,7 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid >
                     <Grid.ColumnDefinitions>
@@ -139,11 +140,36 @@
                     </StackPanel>
                 </Grid>
                 <materialDesign:Badged Grid.Column="1" VerticalAlignment="Center" Margin="10 0"
+                                       Badge="+9"
+                    BadgeBackground="{StaticResource MainColorRed}"   BadgeForeground="White" Name="md_deliveryWaitConfirmUser" >
+                    <Button  x:Name="btn_deliveryWaitConfirmUser" Click="Btn_deliveryWaitConfirmUser_Click"
+                    Background="{x:Null}" BorderBrush="{x:Null}"  
+                    Padding="0"  >
+                        <Path Fill="White"  Stretch="Fill"  
+                               Width="25" Height="25" 
+                         VerticalAlignment="Center" 
+                            Data="M9.3,23.9c0,0.1-0.1,0.2-0.2,0.2H3.4c-0.1,0-0.2-0.1-0.2-0.2c0-0.1,0.1-0.2,0.2-0.2h5.7
+	C9.2,23.7,9.3,23.8,9.3,23.9z M9.7,22.4H4c-0.1,0-0.2,0.1-0.2,0.2c0,0.1,0.1,0.2,0.2,0.2h5.7c0.1,0,0.2-0.1,0.2-0.2
+	C9.9,22.4,9.8,22.3,9.7,22.4z M8.3,25H2.6c-0.1,0-0.2,0.1-0.2,0.2c0,0.1,0.1,0.2,0.2,0.2h5.7c0.1,0,0.2-0.1,0.2-0.2
+	C8.5,25.1,8.4,25,8.3,25z M39.7,21v7.1h-1.4c-0.3,2.1-2.1,3.8-4.3,3.8s-4-1.7-4.3-3.8H28V10.2h0.9c0,0,1.7,0,3.1,0.3
+	c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0,0.3,0.1c1.4,0.4,2.9,1.1,4.1,2.5C39,15.8,39.6,18.6,39.7,21z M36,27.6c0-1.2-0.9-2.1-2.1-2.1
+	c-1.2,0-2.1,0.9-2.1,2.1c0,1.2,0.9,2.1,2.1,2.1C35.1,29.7,36,28.8,36,27.6z M37.5,20.1c-0.3-8.2-7.3-7.2-7.3-7.2v7.2H37.5z
+	 M22.6,19.9c0,2.6-2.1,4.7-4.7,4.7c-2.6,0-4.7-2.1-4.7-4.7c0-2.6,2.1-4.7,4.7-4.7C20.5,15.2,22.6,17.3,22.6,19.9z M20.2,17.3
+	c-0.2,0.1-0.4,0.2-0.5,0.4L17,20.5l-0.2-0.2c-0.2-0.2-0.5-0.5-0.8-0.7c0-0.1-0.1-0.1-0.1-0.1c-0.5-0.3-1.2,0-1.3,0.6
+	c-0.1,0.2,0,0.6,0.2,0.8c0.3,0.3,0.6,0.6,1.1,0.9c0.2,0.2,0.4,0.4,0.6,0.5c0.4,0.3,0.9,0.3,1.2-0.1l3.3-3.5
+	C21.6,18.2,21,17.2,20.2,17.3z M26,6.6V28h-5.5c-0.2,2.2-2,3.9-4.3,3.9c-2.2,0-4.1-1.7-4.3-3.9h-1.7V12.6c0-4.1,2.9-5.4,4.2-5.9
+	c0.1,0,0.8-0.1,2.5-0.1H26z M12.8,12.1h10.3v-0.4H12.8V12.1z M12.8,13h10.3v-0.3H12.8V13z M12.8,13.9h10.3v-0.4H12.8V13.9z
+	 M18.2,27.8c0-1.2-0.9-2.1-2.1-2.1c-1.2,0-2.1,0.9-2.1,2.1s0.9,2.1,2.1,2.1C17.3,29.9,18.2,28.9,18.2,27.8z M23.1,19.9
+	c0-2.9-2.3-5.2-5.2-5.2s-5.2,2.3-5.2,5.2s2.3,5.2,5.2,5.2S23.1,22.8,23.1,19.9z"/>
+                    </Button>
+                </materialDesign:Badged>
+
+                <materialDesign:Badged Grid.Column="2" VerticalAlignment="Center" Margin="10 0"
                     BadgeBackground="{StaticResource MainColorRed}"   BadgeForeground="White" Name="md_transfers" >
                     <Button  x:Name="btn_transfers" Click="Btn_transfers_Click"
                     Background="{x:Null}" BorderBrush="{x:Null}"  
                     Padding="0"  >
-                    <!--<materialDesign:PackIcon   Foreground="{StaticResource White}" Kind="CashRegister"  FlowDirection="LeftToRight"
+                        <!--<materialDesign:PackIcon   Foreground="{StaticResource White}" Kind="CashRegister"  FlowDirection="LeftToRight"
                                          Width="25" Height="25"    />-->
                         <Path Fill="White"  Stretch="Fill"  
                                Width="25" Height="25" 
@@ -170,7 +196,7 @@
                     </Button>
                 </materialDesign:Badged>
                 <Button x:Name="btn_applicationStop" Click="Btn_applicationStop_Click"
-                    Height="auto" Grid.Column="2" VerticalAlignment="Center" Margin="5"
+                    Height="auto" Grid.Column="3" VerticalAlignment="Center" Margin="5"
                      Background="{x:Null}" BorderBrush="{x:Null}" 
                     Padding="0"    >
                     <StackPanel Height="auto">
@@ -182,21 +208,21 @@
                     </StackPanel>
                 </Button>
                
-                <Border Grid.Column="3" Height="30" BorderBrush="White" BorderThickness="1,0,0,0" Margin="5" VerticalAlignment="Center" ></Border>
+                <Border Grid.Column="4" Height="30" BorderBrush="White" BorderThickness="1,0,0,0" Margin="5" VerticalAlignment="Center" ></Border>
 
-                <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="5">
+                <StackPanel Grid.Column="5" VerticalAlignment="Center" Margin="5">
                     <TextBlock Name="txtTime" HorizontalAlignment="Center" Foreground="White"  FontSize="12" ></TextBlock>
                     <TextBlock Name="txtDate" Foreground="White" HorizontalAlignment="Center"  FontSize="12" ></TextBlock>
                 </StackPanel>
-                <Border Grid.Column="5" Height="30" BorderBrush="White" BorderThickness="1,0,0,0" Margin="5" VerticalAlignment="Center" ></Border>
-                <Button  Grid.Column="6" Name="btn_Keyboard"  Click="btn_Keyboard_Click"
+                <Border Grid.Column="6" Height="30" BorderBrush="White" BorderThickness="1,0,0,0" Margin="5" VerticalAlignment="Center" ></Border>
+                <Button  Grid.Column="7" Name="btn_Keyboard"  Click="btn_Keyboard_Click"
                 Margin="5,10,5,10" ToolTip="" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="auto" Height="auto" 
                     Padding="0" >
                     <materialDesign:PackIcon Foreground="White" Kind="Keyboard"  FlowDirection="LeftToRight"
                                          Width="30" Height="30"/>
                 </Button>
-                <materialDesign:Badged     Height="auto" Grid.Column="7"  Name="md_notificationCount" Margin="10,10,10,10"
+                <materialDesign:Badged     Height="auto" Grid.Column="8"  Name="md_notificationCount" Margin="10,10,10,10"
                                            VerticalAlignment="Center"   
                       BadgeBackground="{StaticResource MainColorRed}"  BadgeForeground="White"  >
                     <Button Grid.Column="6" x:Name="BTN_notifications"
@@ -224,7 +250,7 @@
 
 
  
-                <StackPanel  Margin="0,25,0,0"   Grid.Column="8" VerticalAlignment="Center">
+                <StackPanel  Margin="0,25,0,0"   Grid.Column="9" VerticalAlignment="Center">
                     <Menu Background="Black"  Padding="0" VerticalAlignment="Center">
                         <MenuItem Padding="0,0,0,25" >
                             <MenuItem.Header>
@@ -290,7 +316,7 @@
                 <!--
                 </MenuItem>
             </Menu>-->
-                <Button Grid.Column="9" Margin="5,5,5,5" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"
+                <Button Grid.Column="10" Margin="5,5,5,5" Padding="0" Background="{x:Null}" BorderBrush="{x:Null}"
                    Height="40" Width="40"      materialDesign:ButtonAssist.CornerRadius="90"  FlowDirection="LeftToRight" 
                         x:Name="btn_userImage" Click="Btn_userImage_Click">
                     <Ellipse  x:Name="img_userLogin"
@@ -301,18 +327,18 @@
                         </Ellipse.Fill>
                     </Ellipse>
                 </Button>
-                <StackPanel x:Name="stp_userName" VerticalAlignment="Center" Orientation="Vertical" Grid.Column="10" Margin="5,5,5,5">
+                <StackPanel x:Name="stp_userName" VerticalAlignment="Center" Orientation="Vertical" Grid.Column="11" Margin="5,5,5,5">
                     <TextBlock x:Name="txt_userName"  Text="" FontSize="12" Foreground="White" HorizontalAlignment="Center" />
                     <TextBlock x:Name="txt_userJob"  Text=""   FontSize="12" FontWeight="Light" Foreground="#E8E8E8" HorizontalAlignment="Left" />
                 </StackPanel>
-                <Button Grid.Column="11" x:Name="BTN_Minimize" Click="BTN_Minimize_Click"
+                <Button Grid.Column="12" x:Name="BTN_Minimize" Click="BTN_Minimize_Click"
                 Margin="5,10,5,10" ToolTip="Minimize" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >
                     <materialDesign:PackIcon Foreground="White" Kind="Minus" 
                                          Width="25" Height="25"/>
                 </Button>
-                <Button Grid.Column="12" x:Name="BTN_Close" Click="BTN_Close_Click"  
+                <Button Grid.Column="13" x:Name="BTN_Close" Click="BTN_Close_Click"  
                 Margin="5,10,5,10" ToolTip="Close" 
                     Background="{x:Null}" BorderBrush="{x:Null}" Width="25" Height="25" 
                     Padding="0" >

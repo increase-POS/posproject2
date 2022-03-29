@@ -133,6 +133,8 @@ namespace POS
 
         public static int _CachTransfersCount = 0;
 
+        string deliveryPermission = "salesOrders_delivery";
+
         public static async Task Getprintparameter()
         {
             List<SetValues> printList = new List<SetValues>();
@@ -932,8 +934,15 @@ namespace POS
                 setNotifications();
                 setTimer();
                 #endregion
-
+                #region Permision
                 permission();
+
+
+                if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one"))
+                    md_deliveryWaitConfirmUser.Visibility = Visibility.Visible;
+                else
+                    md_deliveryWaitConfirmUser.Visibility = Visibility.Collapsed;
+                #endregion
 
                 //SelectAllText
                 EventManager.RegisterClassHandler(typeof(System.Windows.Controls.TextBox), System.Windows.Controls.TextBox.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
@@ -2183,6 +2192,19 @@ namespace POS
 
             Window.GetWindow(this).Opacity = 0.2;
             wd_transfers w = new wd_transfers();
+            w.ShowDialog();
+            Window.GetWindow(this).Opacity = 1;
+
+            if (sender != null)
+                SectionData.EndAwait(grid_mainWindow);
+        }
+        private void Btn_deliveryWaitConfirmUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+                SectionData.StartAwait(grid_mainWindow);
+
+            Window.GetWindow(this).Opacity = 0.2;
+            wd_deliveryWaitConfirmUser w = new wd_deliveryWaitConfirmUser();
             w.ShowDialog();
             Window.GetWindow(this).Opacity = 1;
 
