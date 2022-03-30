@@ -329,9 +329,7 @@ namespace POS.View.accounts
 
                     if (invoice != null)
                     {
-
-
-                        tb_cash.IsEnabled = true;
+                        //tb_cash.IsEnabled = true;
 
                         btn_image.IsEnabled = true;
 
@@ -341,39 +339,34 @@ namespace POS.View.accounts
 
                         userId = invoice.shipUserId.Value;
 
-                        tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+                        //tb_cash.Text = SectionData.DecTostring(cashtrans.cash);
+                        tb_cash.Text = SectionData.DecTostring(invoice.deserved);
 
-                        if (cb_paymentProcessType.SelectedIndex == 0)
-                        {
-                            tb_cash.Text = invoice.deserved.ToString();
-                            tb_cash.IsEnabled = false;
-                        }
-                        else
-                        {
-                            tb_cash.IsEnabled = true;
-                            tb_cash.Clear();
-                        }
-
-
-
+                        //if (cb_paymentProcessType.SelectedIndex == 0)
+                        //{
+                        //    tb_cash.Text = invoice.deserved.ToString();
+                        //    tb_cash.IsEnabled = false;
+                        //}
+                        //else
+                        //{
+                        //    tb_cash.IsEnabled = true;
+                        //    tb_cash.Clear();
+                        //}
 
                         if (invoice.status == "rc")
                         {
-
                             btn_save.IsEnabled = false;
-                            tb_cash.IsEnabled = false;
-                            cb_paymentProcessType.IsEnabled = false;
+                            //tb_cash.IsEnabled = false;
+                            //cb_paymentProcessType.IsEnabled = false;
                             tb_note.IsEnabled = false;
                             SectionData.clearValidate(tb_cash, p_errorCash);
-
                         }
                         else
                         {
                             btn_save.IsEnabled = true;
-                            tb_cash.IsEnabled = true;
-                            cb_paymentProcessType.IsEnabled = true;
+                            //tb_cash.IsEnabled = true;
+                            //cb_paymentProcessType.IsEnabled = true;
                             tb_note.IsEnabled = true;
-
                         }
                     }
                     else
@@ -409,15 +402,28 @@ namespace POS.View.accounts
                         this.Dispatcher.Invoke(() =>
                         {
                             searchText = tb_search.Text.ToLower();
-                            invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
-                            || s.shipUserName.ToLower().Contains(searchText)
-                            || s.agentName.ToLower().Contains(searchText)
-                            || s.totalNet.ToString().ToLower().Contains(searchText)
-                            || s.status.ToLower().Contains(searchText)
-                            )
-                            && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
-                            && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                            );
+                            if(chk_delivered.IsChecked == true)
+                                invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                                || s.shipUserName.ToLower().Contains(searchText)
+                                || s.agentName.ToLower().Contains(searchText)
+                                || s.totalNet.ToString().ToLower().Contains(searchText)
+                                || s.status.ToLower().Contains(searchText)
+                                )
+                                && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                                && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                                && s.status == "rc" 
+                                );
+                            else if(chk_inDelivery.IsChecked == true)
+                                invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                               || s.shipUserName.ToLower().Contains(searchText)
+                               || s.agentName.ToLower().Contains(searchText)
+                               || s.totalNet.ToString().ToLower().Contains(searchText)
+                               || s.status.ToLower().Contains(searchText)
+                               )
+                               && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
+                               && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
+                               && s.status == "tr"
+                               );
 
                         });
                     }
@@ -426,13 +432,24 @@ namespace POS.View.accounts
                         this.Dispatcher.Invoke(() =>
                         {
                             searchText = tb_search.Text.ToLower();
-                            invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
-                            || s.shipUserName.ToLower().Contains(searchText)
-                            || s.agentName.ToLower().Contains(searchText)
-                            || s.totalNet.ToString().ToLower().Contains(searchText)
-                            || s.status.ToLower().Contains(searchText)
-                            )
-                            );
+                            if (chk_delivered.IsChecked == true)
+                                invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                                || s.shipUserName.ToLower().Contains(searchText)
+                                || s.agentName.ToLower().Contains(searchText)
+                                || s.totalNet.ToString().ToLower().Contains(searchText)
+                                || s.status.ToLower().Contains(searchText)
+                                )
+                                 && s.status == "rc"
+                                );
+                            else if (chk_inDelivery.IsChecked == true)
+                                invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                                || s.shipUserName.ToLower().Contains(searchText)
+                                || s.agentName.ToLower().Contains(searchText)
+                                || s.totalNet.ToString().ToLower().Contains(searchText)
+                                || s.status.ToLower().Contains(searchText)
+                                )
+                                 && s.status == "tr"
+                                );
 
                         });
                     }
@@ -486,49 +503,65 @@ namespace POS.View.accounts
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
         {//clear
-         //try
-         //{
-            if (sender != null)
+            try
+            {
+                if (sender != null)
                 SectionData.StartAwait(grid_ucOrderAccounts);
+
+                Clear();
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+
+        private void Clear()
+        {
             //////////////////////
-            cb_paymentProcessType.IsEnabled = true;
-            cb_card.IsEnabled = true;
-            tb_docNum.IsEnabled = true;
-            dp_docDate.IsEnabled = true;
-            tb_docNumCheque.IsEnabled = true;
-            tb_docNumCard.IsEnabled = true;
-            dp_docDateCheque.IsEnabled = true;
-            tb_cash.IsEnabled = true;
-            tb_note.IsEnabled = true;
+            //cb_paymentProcessType.IsEnabled = true;
+            //cb_card.IsEnabled = true;
+            //tb_docNum.IsEnabled = true;
+            //dp_docDate.IsEnabled = true;
+            //tb_docNumCheque.IsEnabled = true;
+            //tb_docNumCard.IsEnabled = true;
+            //dp_docDateCheque.IsEnabled = true;
+            //tb_cash.IsEnabled = true;
+            //tb_note.IsEnabled = true;
 
             btn_image.IsEnabled = false;
             /////////////////////////
             ///
-            if (grid_doc.IsVisible)
-            {
-                TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-                SectionData.clearValidate(tbDocDate, p_errorDocDate);
-                dp_docDate.SelectedDate = null;
-                tb_docNum.Clear();
-                SectionData.clearValidate(tb_docNum, p_errorDocNum);
-            }
-            if (grid_cheque.IsVisible)
-            {
-                tb_docNumCheque.Clear();
-                dp_docDateCheque.SelectedDate = null;
-            }
-            cb_card.Visibility = Visibility.Collapsed;
-            cb_paymentProcessType.SelectedIndex = -1;
+            //if (grid_doc.IsVisible)
+            //{
+            //    TextBox tbDocDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+            //    SectionData.clearValidate(tbDocDate, p_errorDocDate);
+            //    dp_docDate.SelectedDate = null;
+            //    tb_docNum.Clear();
+            //    SectionData.clearValidate(tb_docNum, p_errorDocNum);
+            //}
+            //if (grid_cheque.IsVisible)
+            //{
+            //    tb_docNumCheque.Clear();
+            //    dp_docDateCheque.SelectedDate = null;
+            //}
+            //cb_card.Visibility = Visibility.Collapsed;
+            //cb_paymentProcessType.SelectedIndex = -1;
             tb_cash.Clear();
             tb_note.Clear();
-            tb_docNumCard.Clear();
-            tb_docNum.Clear();
-            tb_docNumCheque.Clear();
+            //tb_docNumCard.Clear();
+            //tb_docNum.Clear();
+            //tb_docNumCheque.Clear();
             tb_invoiceNum.Text = "";
             tb_cash.IsReadOnly = false;
-            grid_doc.Visibility = Visibility.Collapsed;
-            tb_docNumCard.Visibility = Visibility.Collapsed;
-            grid_cheque.Visibility = Visibility.Collapsed;
+            //grid_doc.Visibility = Visibility.Collapsed;
+            //tb_docNumCard.Visibility = Visibility.Collapsed;
+            //grid_cheque.Visibility = Visibility.Collapsed;
             SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
@@ -536,15 +569,6 @@ namespace POS.View.accounts
             SectionData.clearValidate(tb_docNum, p_errorDocNum);
             SectionData.clearValidate(tb_docNum, p_errorDocNum);
             SectionData.clearValidate(tb_docNumCheque, p_errorDocNumCheque);
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_ucOrderAccounts);
-            //}
-            //catch (Exception ex)
-            //{
-            //    if (sender != null)
-            //        SectionData.EndAwait(grid_ucOrderAccounts);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
         }
         private void Btn_exportToExcel_Click(object sender, RoutedEventArgs e)
         {//excel
@@ -1126,7 +1150,7 @@ namespace POS.View.accounts
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
-        {//save
+        {//pay
             try
             {
                 if (sender != null)
@@ -1136,131 +1160,223 @@ namespace POS.View.accounts
                 {
                     if (MainWindow.posLogIn.boxState == "o")
                     {
-                        #region validate
-                        //chk empty cash
-                        bool acceptedAmmount = true;
+                        #region old
+                        //#region validate
+                        ////chk empty cash
+                        //bool acceptedAmmount = true;
 
-                        if (tb_cash.Text.Equals(""))
-                            SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
-                        else
-                        {
-                            decimal ammount = decimal.Parse(tb_cash.Text);
+                        //if (tb_cash.Text.Equals(""))
+                        //    SectionData.validateEmptyTextBox(tb_cash, p_errorCash, tt_errorCash, "trEmptyCashToolTip");
+                        //else
+                        //{
+                        //    decimal ammount = decimal.Parse(tb_cash.Text);
 
-                            if (ammount == 0)
-                            {
-                                acceptedAmmount = false;
-                                SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trZeroAmmount");
-                            }
-                            else if (ammount > invoice.deserved)
-                            {
-                                acceptedAmmount = false;
-                                SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trGreaterAmmount");
-                            }
-                        }
-                        //chk empty doc num
-                        if (grid_doc.IsVisible)
-                        {
-                            TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
-                            SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
-                            SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
-                        }
-                        else
-                        {
-                        }
+                        //    if (ammount == 0)
+                        //    {
+                        //        acceptedAmmount = false;
+                        //        SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trZeroAmmount");
+                        //    }
+                        //    else if (ammount > invoice.deserved)
+                        //    {
+                        //        acceptedAmmount = false;
+                        //        SectionData.showTextBoxValidate(tb_cash, p_errorCash, tt_errorCash, "trGreaterAmmount");
+                        //    }
+                        //}
+                        ////chk empty doc num
+                        //if (grid_doc.IsVisible)
+                        //{
+                        //    TextBox dpDate = (TextBox)dp_docDate.Template.FindName("PART_TextBox", dp_docDate);
+                        //    SectionData.validateEmptyTextBox(tb_docNum, p_errorDocNum, tt_errorDocNum, "trEmptyDocNumToolTip");
+                        //    SectionData.validateEmptyTextBox(dpDate, p_errorDocDate, tt_errorDocDate, "trEmptyDocDateToolTip");
+                        //}
+                        //else
+                        //{
+                        //}
 
-                        //chk empty cheque num
-                        if (grid_cheque.IsVisible)
-                        {
-                            SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
-                        }
-                        else
-                        {
-                        }
-                        //chk empty process num
-                        if (tb_docNumCard.IsVisible)
-                        {
-                            SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
-                        }
-                        else
-                        {
-                            SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
-                        }
-                        //chk empty payment type
-                        SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
+                        ////chk empty cheque num
+                        //if (grid_cheque.IsVisible)
+                        //{
+                        //    SectionData.validateEmptyTextBox(tb_docNumCheque, p_errorDocNumCheque, tt_errorDocNumCheque, "trEmptyDocNumToolTip");
+                        //}
+                        //else
+                        //{
+                        //}
+                        ////chk empty process num
+                        //if (tb_docNumCard.IsVisible)
+                        //{
+                        //    SectionData.validateEmptyTextBox(tb_docNumCard, p_errorDocCard, tt_errorDocCard, "trEmptyProcessNumToolTip");
+                        //}
+                        //else
+                        //{
+                        //    SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                        //}
+                        ////chk empty payment type
+                        //SectionData.validateEmptyComboBox(cb_paymentProcessType, p_errorpaymentProcessType, tt_errorpaymentProcessType, "trErrorEmptyPaymentTypeToolTip");
 
-                        //chk empty card 
-                        if (cb_card.IsVisible)
-                            SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
-                        else
-                            SectionData.clearComboBoxValidate(cb_card, p_errorCard);
+                        ////chk empty card 
+                        //if (cb_card.IsVisible)
+                        //    SectionData.validateEmptyComboBox(cb_card, p_errorCard, tt_errorCard, "trEmptyCardTooltip");
+                        //else
+                        //    SectionData.clearComboBoxValidate(cb_card, p_errorCard);
 
+                        //#endregion
+
+                        //#region save
+
+                        //if ((!tb_cash.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
+                        // (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
+                        // (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
+                        // (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
+                        // (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
+                        //    acceptedAmmount
+                        // )
+                        //{
+                        //    CashTransfer cash = new CashTransfer();
+
+                        //    cash.transType = "d";
+                        //    cash.posId = MainWindow.posID.Value;
+                        //    cash.transNum = await cashModel.generateCashNumber(cash.transType + "c");
+                        //    cash.cash = decimal.Parse(tb_cash.Text);
+                        //    cash.notes = tb_note.Text;
+                        //    cash.createUserId = MainWindow.userID;
+                        //    cash.side = "c";
+                        //    cash.processType = cb_paymentProcessType.SelectedValue.ToString();
+
+                        //    cash.agentId = agentId;
+
+                        //    cash.userId = userId;
+
+                        //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                        //    {
+                        //        cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
+                        //        cash.docNum = tb_docNumCard.Text;
+                        //    }
+                        //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                        //        cash.docNum = await cashModel.generateDocNumber("pbnd");
+
+                        //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
+                        //        cash.docNum = tb_docNumCheque.Text;
+
+                        //    if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
+                        //    {
+                        //        int res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
+                        //        cash.bondId = res;
+                        //    }
+
+                        //    int s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
+
+                        //    if (!s.Equals(0))
+                        //    {
+                        //        if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
+                        //        {
+                        //            await calcBalance(decimal.Parse(tb_cash.Text));
+                        //            await MainWindow.refreshBalance();
+                        //        }
+
+                        //        Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
+                        //        Btn_clear_Click(null, null);
+
+                        //        await RefreshInvoiceList();
+                        //        Tb_search_TextChanged(null, null);
+                        //        await MainWindow.refreshBalance();
+                        //    }
+                        //    else
+                        //    {
+                        //        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                        //    }
+                        //}
+                        //#endregion
                         #endregion
 
-                        #region save
-
-                        if ((!tb_cash.Text.Equals("")) && (!cb_paymentProcessType.Text.Equals("")) &&
-                         (((grid_cheque.IsVisible) && (!tb_docNumCheque.Text.Equals(""))) || (!grid_cheque.IsVisible)) &&
-                         (((grid_doc.IsVisible) && (!dp_docDate.Text.Equals("")) && (!tb_docNum.Text.Equals(""))) || (!dp_docDate.IsVisible)) &&
-                         (((tb_docNumCard.IsVisible) && (!tb_docNumCard.Text.Equals(""))) || (!tb_docNumCard.IsVisible)) &&
-                         (((cb_card.IsVisible) && (!cb_card.Text.Equals(""))) || (!cb_card.IsVisible)) &&
-                            acceptedAmmount
-                         )
+                        bool multipleValid = true;
+                        List<CashTransfer> listPayments = new List<CashTransfer>();
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_multiplePayment w = new wd_multiplePayment();
+                        w.isPurchase = false;
+                        if (cb_customer.SelectedValue != null)
                         {
-                            CashTransfer cash = new CashTransfer();
-
-                            cash.transType = "d";
-                            cash.posId = MainWindow.posID.Value;
-                            cash.transNum = await cashModel.generateCashNumber(cash.transType + "c");
-                            cash.cash = decimal.Parse(tb_cash.Text);
-                            cash.notes = tb_note.Text;
-                            cash.createUserId = MainWindow.userID;
-                            cash.side = "c";
-                            cash.processType = cb_paymentProcessType.SelectedValue.ToString();
-
-                            cash.agentId = agentId;
-
-                            cash.userId = userId;
-
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
+                            Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
+                            if (customer != null)
                             {
-                                cash.cardId = Convert.ToInt32(cb_card.SelectedValue);
-                                cash.docNum = tb_docNumCard.Text;
-                            }
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                                cash.docNum = await cashModel.generateDocNumber("pbnd");
-
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("cheque"))
-                                cash.docNum = tb_docNumCheque.Text;
-
-                            if (cb_paymentProcessType.SelectedValue.ToString().Equals("doc"))
-                            {
-                                int res = await saveBond(cash.docNum, cash.cash.Value, dp_docDate.SelectedDate.Value, "d");
-                                cash.bondId = res;
-                            }
-
-                            int s = await cashModel.payOrderInvoice(invoice.invoiceId, invoice.invStatusId, cash.cash.Value, processType, cash);
-
-                            if (!s.Equals(0))
-                            {
-                                if (cb_paymentProcessType.SelectedValue.ToString().Equals("cash"))
-                                {
-                                    await calcBalance(decimal.Parse(tb_cash.Text));
-                                    await MainWindow.refreshBalance();
-                                }
-
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
-                                Btn_clear_Click(null, null);
-
-                                await RefreshInvoiceList();
-                                Tb_search_TextChanged(null, null);
-                                await MainWindow.refreshBalance();
+                                decimal remain = 0;
+                                if (customer.maxDeserve != 0)
+                                    remain = getCusAvailableBlnc(customer);
+                                w.hasCredit = true;
+                                w.creditValue = remain;
                             }
                             else
                             {
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                w.hasCredit = false;
+                                w.creditValue = 0;
                             }
                         }
-                        #endregion
+
+                        w.invoice.invType = invoice.invType;
+                        //w.invoice.totalNet = decimal.Parse(tb_total.Text);
+                        w.invoice.totalNet = invoice.totalNet;
+                        w.cards = cards;
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
+                        multipleValid = w.isOk;
+                        listPayments = w.listPayments;
+
+                        if (multipleValid)
+                        {
+                            #region Save
+
+                            //if (_InvoiceType == "or")
+                            //{
+                            //    await saveOrder("s");
+                            //    #region savepayment
+                            //    if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                            //    {
+                            foreach (var item in listPayments)
+                            {
+                                await saveConfiguredCashTrans(item);
+                                invoice.paid += item.cash;
+                                invoice.deserved -= item.cash;
+                            }
+
+                            //        prinvoiceId = await invoice.saveInvoice(invoice);
+
+                            //    }
+                            //    else
+                            //        await saveCashTransfers();
+                            //    #endregion
+                            //    await clearInvoice();
+                            //    refreshOrdersWaitNotification();
+                            //}
+
+                            ////thread  
+                            //prInvoice = await invoiceModel.GetByInvoiceId(prinvoiceId);
+                            //if (prInvoice.invType == "s")
+                            //{
+
+                            //    if (MainWindow.print_on_save_sale == "1")
+                            //    {
+                            //        // printInvoice();
+                            //        Thread t1 = new Thread(() =>
+                            //        {
+                            //            printInvoice(prinvoiceId);
+                            //        });
+                            //        t1.Start();
+                            //    }
+                            //    if (MainWindow.email_on_save_sale == "1")
+                            //    {
+                            //        //sendsaleEmail();
+                            //        Thread t1 = new Thread(() =>
+                            //        {
+                            //            sendsaleEmail(prinvoiceId);
+                            //        });
+                            //        t1.Start();
+                            //    }
+                            //}
+
+                            ////    prinvoiceId = 0;
+
+                            #endregion
+                            //refreshOrdersWaitNotification();???????????????????
+                        }
                     }
                     else //box is closed
                     {
@@ -1269,6 +1385,8 @@ namespace POS.View.accounts
                 }
                 else
                     Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
+
+                await MainWindow.refreshBalance();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_ucOrderAccounts);
@@ -1279,6 +1397,53 @@ namespace POS.View.accounts
                     SectionData.EndAwait(grid_ucOrderAccounts);
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private async Task saveConfiguredCashTrans(CashTransfer cashTransfer)
+        {
+            switch (cashTransfer.processType)
+            {
+                case "cash":// cash: update pos balance   
+                    MainWindow.posLogIn.balance += invoice.totalNet;
+                    await MainWindow.posLogIn.save(MainWindow.posLogIn);
+                    cashTransfer.transType = "d"; //deposit
+                    cashTransfer.posId = MainWindow.posID;
+                    cashTransfer.agentId = invoice.agentId;
+                    cashTransfer.invId = invoice.invoiceId;
+                    cashTransfer.transNum = await cashTransfer.generateCashNumber("dc");
+                    cashTransfer.side = "c"; // customer                    
+                    cashTransfer.createUserId = MainWindow.userID;
+                    await cashTransfer.Save(cashTransfer); //add cash transfer   
+                    break;
+                case "balance":// balance: update customer balance
+                    //if (cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
+                    //    await invoice.recordComSpecificPaidCash(invoice, "si", cashTransfer);
+                    //else
+                        await invoice.recordConfiguredAgentCash(invoice, "si", cashTransfer);
+                    break;
+                case "card": // card
+                    cashTransfer.transType = "d"; //deposit
+                    cashTransfer.posId = MainWindow.posID;
+                    cashTransfer.agentId = invoice.agentId;
+                    cashTransfer.invId = invoice.invoiceId;
+                    cashTransfer.transNum = await cashTransfer.generateCashNumber("dc");
+                    cashTransfer.side = "c"; // customer
+                    cashTransfer.createUserId = MainWindow.userID;
+                    await cashTransfer.Save(cashTransfer); //add cash transfer  
+                    break;
+            }
+        }
+
+        private decimal getCusAvailableBlnc(Agent customer)
+        {
+            decimal remain = 0;
+
+            float customerBalance = customer.balance;
+
+            if (customer.balanceType == 0)
+                remain = invoice.totalNet.Value - (decimal)customerBalance;
+            else
+                remain = (decimal)customer.balance + invoice.totalNet.Value;
+            return remain;
         }
         public void BuildReport()
         {
@@ -1462,7 +1627,56 @@ namespace POS.View.accounts
             }
         }
 
+        private void chk_uncheck(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckBox cb = sender as CheckBox;
+                if (cb.IsFocused)
+                {
+                    if (cb.Name == "chk_delivered")
+                        chk_delivered.IsChecked = true;
+                    else if (cb.Name == "chk_inDelivery")
+                        chk_inDelivery.IsChecked = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
+        private async void search_Checking(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckBox cb = sender as CheckBox;
+                if (cb.IsFocused)
+                {
+                    if (cb.Name == "chk_delivered")
+                    {
+                        chk_inDelivery.IsChecked = false;
+                    }
+                    else if (cb.Name == "chk_inDelivery")
+                    {
+                        chk_delivered.IsChecked = false;
+                    }
+                }
+                SectionData.StartAwait(grid_ucOrderAccounts);
+
+                //translate();
+                Clear();
+                await RefreshInvoiceList();
+                Tb_search_TextChanged(null, null);
+
+                SectionData.EndAwait(grid_ucOrderAccounts);
+            }
+            catch (Exception ex)
+            {
+                SectionData.EndAwait(grid_ucOrderAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private void Chb_all_Unchecked(object sender, RoutedEventArgs e)
         {
