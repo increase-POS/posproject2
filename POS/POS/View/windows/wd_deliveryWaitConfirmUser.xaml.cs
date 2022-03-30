@@ -1,4 +1,5 @@
-﻿using POS.Classes;
+﻿using netoaster;
+using POS.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace POS.View.windows
         {
             try
             {
-                InitializeComponent();
+                InitializeComponent(); 
             }
             catch (Exception ex)
             {
@@ -78,30 +79,24 @@ namespace POS.View.windows
         }
         private void translat()
         {
-            //txt_title.Text = MainWindow.resourcemanager.GetString("trCashtransfers");
-            //dg_transfers.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
-            //dg_transfers.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor");
-            //dg_transfers.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            //dg_transfers.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            txt_title.Text = MainWindow.resourcemanager.GetString("trWaitConfirmUser");
 
+            #region data grid
+            col_invNum.Header = MainWindow.resourcemanager.GetString("trCharp");
+            col_customer.Header = MainWindow.resourcemanager.GetString("trCustomer");
+            col_itemsCount.Header = MainWindow.resourcemanager.GetString("trQTR");
+            #endregion
         }
 
+        public Invoice invoice = new Invoice();
+        IEnumerable<Invoice> invoices;
         async Task fillDataGrid()
         {
-            //cashesQuery = await cashModel.GetCashTransferForPosById("all", "p", (int)MainWindow.posID);
-            //cashesQuery = cashesQuery.Where(c => c.posId == MainWindow.posID && c.isConfirm == 0);
+            string invoiceType = "s";
+            string invoiceStatus = "ex";
+            invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, MainWindow.userID.Value);
 
-            //foreach (var c in cashesQuery)
-            //{
-            //    if (c.transType.Equals("p"))
-            //    {
-            //        string s = c.posName;
-            //        c.posName = c.pos2Name;
-            //        c.pos2Name = s;
-            //    }
-            //}
-
-            //dg_transfers.ItemsSource = cashesQuery;
+           dg_invoice.ItemsSource = invoices;
         }
         private void Btn_colse_Click(object sender, RoutedEventArgs e)
         {
@@ -121,140 +116,33 @@ namespace POS.View.windows
 
         #region Button In DataGrid
 
-        //CashTransfer cashtrans2 = new CashTransfer();
-        //CashTransfer cashtrans3 = new CashTransfer();
-        //IEnumerable<CashTransfer> cashes2;
-
         async void confirmRowinDatagrid(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-                /*
+              
                 for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
                     if (vis is DataGridRow)
                     {
-                        Pos posModel = new Pos();
-                        CashTransfer row = (CashTransfer)dg_transfers.SelectedItems[0];
-
-                        if (row.isConfirm2 == 0)
-                            await confirmOpr(row);
-                        else
-                        {
-                            Pos pos = await posModel.getById(row.posId.Value);
-                            Pos pos2 = await posModel.getById(row.pos2Id.Value);
-                            int s1 = 0;
-                            if (row.transType == "d")
-                            {
-                                //there is enough balance
-                                if (pos.balance >= row.cash)
-                                {
-                                    pos.balance -= row.cash;
-                                    int s = await posModel.save(pos);
-
-                                    pos2.balance += row.cash;
-                                    s1 = await posModel.save(pos2);
-                                    if (!s1.Equals(0))//tras done so confirm
-                                        await confirmOpr(row);
-                                    else//error then do not confirm
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                                }
-                                //there is not enough balance
-                                else
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
-                            }
-                            else
-                            {
-                                //there is enough balance
-                                if (pos2.balance >= row.cash)
-                                {
-                                    pos2.balance -= row.cash;
-                                    int s = await posModel.save(pos2);
-
-                                    pos.balance += row.cash;
-                                    s1 = await posModel.save(pos);
-                                    if (!s1.Equals(0))//tras done so confirm
-                                        await confirmOpr(row);
-                                    else//error then do not confirm
-                                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-
-                                }
-
-                                //there is not enough balance
-                                else
-                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
-                            }
-                            await MainWindow.refreshBalance();
-                        }
-                    }
-                */
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private async Task confirmOpr(CashTransfer cashtrans)
-        {
-            //cashtrans.isConfirm = 1;
-            //int s = await cashModel.Save(cashtrans);
-            //if (!s.Equals(0))
-            //{
-            //    await fillDataGrid();
-            //    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopConfirm"), animation: ToasterAnimation.FadeIn);
-            //}
-        }
-        /*
-        async void cancelRowinDatagrid(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-                for (var vis = sender as Visual; vis != null; vis = VisualTreeHelper.GetParent(vis) as Visual)
-                    if (vis is DataGridRow)
-                    {
-                        CashTransfer row = (CashTransfer)dg_transfers.SelectedItems[0];
-
-                        #region get two pos
-                        cashes2 = await cashModel.GetbySourcId("p", row.cashTransId);
-                        //to insure that the pull operation is in cashtrans2 
-                        if (row.transType == "p")
-                        {
-                            cashtrans2 = cashes2.ToList()[0] as CashTransfer;
-                            cashtrans3 = cashes2.ToList()[1] as CashTransfer;
-                        }
-                        else if (row.transType == "d")
-                        {
-                            cashtrans2 = cashes2.ToList()[1] as CashTransfer;
-                            cashtrans3 = cashes2.ToList()[0] as CashTransfer;
-                        }
-
+                        #region
+                        Window.GetWindow(this).Opacity = 0.2;
+                        wd_acceptCancelPopup w = new wd_acceptCancelPopup();
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        w.ShowDialog();
+                        Window.GetWindow(this).Opacity = 1;
                         #endregion
-
-                        #region cancel
-                        cashtrans2.isConfirm = 2;
-                        cashtrans3.isConfirm = 2;
-
-                        int s2 = await cashModel.Save(cashtrans2);
-                        int s3 = await cashModel.Save(cashtrans3);
-
-                        if ((!s2.Equals(0)) && (!s3.Equals(0)))
+                        if (w.isOk)
                         {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopCanceled"), animation: ToasterAnimation.FadeIn);
+                            // Pos posModel = new Pos();
+                            Invoice row = (Invoice)dg_invoice.SelectedItems[0];
+                            await saveOrderStatus(row.invoiceId, "tr");
                             await fillDataGrid();
                         }
-                        else
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                        #endregion
+                        
                     }
+               
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
@@ -265,7 +153,19 @@ namespace POS.View.windows
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        */
+        private async Task saveOrderStatus(int invoiceId, string status)
+        {
+            invoiceStatus st = new invoiceStatus();
+            st.status = status;
+            st.invoiceId = invoiceId;
+            st.createUserId = MainWindow.userLogin.userId;
+            st.isActive = 1;
+            int res = await invoice.saveOrderStatus(st);
+            if (res > 0)
+                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopConfirm"), animation: ToasterAnimation.FadeIn);
+            else
+                Toaster.ShowError(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+        }
         #endregion
     }
 }

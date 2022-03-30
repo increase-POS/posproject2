@@ -493,7 +493,7 @@ namespace POS.View.sales
             try
             {
                 refreshOrdersNotification();
-                refreshOrdersWaitNotification();
+               // refreshOrdersWaitNotification();
                 if (invoice.invoiceId != 0)
                 {
                    refreshDocCount(invoice.invoiceId);
@@ -511,7 +511,7 @@ namespace POS.View.sales
             {           
                 refreshDraftNotification();
                 refreshOrdersNotification();
-                refreshOrdersWaitNotification();
+                //refreshOrdersWaitNotification();
             }
             catch { }
         }
@@ -553,29 +553,29 @@ namespace POS.View.sales
             }
             catch { }
         }
-        private async Task refreshOrdersWaitNotification()
-        {
-            try
-            {
-                string invoiceType = "s";
-                int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
-                if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
-                    ordersCount--;
+        //private async Task refreshOrdersWaitNotification()
+        //{
+        //    try
+        //    {
+        //        string invoiceType = "s";
+        //        int ordersCount = await invoice.getDeliverOrdersCount(invoiceType, "ex", MainWindow.userID.Value);
+        //        if (invoice != null && _InvoiceType == "s" && invoice.invoiceId != 0 && !isFromReport)
+        //            ordersCount--;
 
-                if (ordersCount != _OrdersWaitCount)
-                {
-                    if (ordersCount > 9)
-                    {
-                        md_ordersWait.Badge = "+9" ;
-                    }
-                    else if (ordersCount == 0) md_ordersWait.Badge = "";
-                    else
-                        md_ordersWait.Badge = ordersCount.ToString();
-                }
-                _OrdersWaitCount = ordersCount;
-            }
-            catch { }
-        }       
+        //        if (ordersCount != _OrdersWaitCount)
+        //        {
+        //            if (ordersCount > 9)
+        //            {
+        //                md_ordersWait.Badge = "+9" ;
+        //            }
+        //            else if (ordersCount == 0) md_ordersWait.Badge = "";
+        //            else
+        //                md_ordersWait.Badge = ordersCount.ToString();
+        //        }
+        //        _OrdersWaitCount = ordersCount;
+        //    }
+        //    catch { }
+        //}       
         private async Task refreshDocCount(int invoiceId)
         {
                         try
@@ -2526,13 +2526,13 @@ namespace POS.View.sales
                     bool valid =  validateInvoiceValues();
                     if (valid)
                     {
-                        if (_InvoiceType == "s")
-                        {
-                            await saveOrderStatus(invoice.invoiceId, "tr");
-                            await clearInvoice();
-                            refreshOrdersWaitNotification();
-                        }
-                        else
+                        //if (_InvoiceType == "s")
+                        //{
+                        //    await saveOrderStatus(invoice.invoiceId, "tr");
+                        //    await clearInvoice();
+                        //    refreshOrdersWaitNotification();
+                        //}
+                        //else
                         {
                             if (tgl_ActiveOffer.IsChecked == true)
                                 _InvoiceType = "or";

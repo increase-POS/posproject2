@@ -79,9 +79,9 @@
                         </Style>
                     </DataGrid.Resources>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="*"  Header="inv num" Binding="{Binding Path=test}"/>
-                        <DataGridTextColumn Width="*"  Header="items count"       Binding="{Binding Path=test}"/>
-                        <DataGridTextColumn Width="*"  Header="units count"       Binding="{Binding Path=test}"/>
+                        <DataGridTextColumn Width="*"  Header="inv num" x:Name="col_invNum" Binding="{Binding Path=invNumber}"/>
+                        <DataGridTextColumn Width="*"  Header="customer" x:Name="col_customer" Binding="{Binding Path=agentName}"/>
+                        <DataGridTextColumn Width="*"  Header="items count" x:Name="col_itemsCount"  Binding="{Binding Path=itemsCount}"/>
                         <DataGridTemplateColumn Width="35" Header="" IsReadOnly="True" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

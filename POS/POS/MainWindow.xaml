@@ -140,7 +140,6 @@
                     </StackPanel>
                 </Grid>
                 <materialDesign:Badged Grid.Column="1" VerticalAlignment="Center" Margin="10 0"
-                                       Badge="+9"
                     BadgeBackground="{StaticResource MainColorRed}"   BadgeForeground="White" Name="md_deliveryWaitConfirmUser" >
                     <Button  x:Name="btn_deliveryWaitConfirmUser" Click="Btn_deliveryWaitConfirmUser_Click"
                     Background="{x:Null}" BorderBrush="{x:Null}"  

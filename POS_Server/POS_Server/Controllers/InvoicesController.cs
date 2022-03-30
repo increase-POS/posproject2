@@ -1872,7 +1872,7 @@ var strP = TokenManager.GetPrincipal(token);
         public string getDeliverOrders(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -1913,6 +1913,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             invoiceId = b.invoiceId,
                                             invNumber = b.invNumber,
                                             agentId = b.agentId,
+                                            agentName = b.agents.name,
                                             invType = b.invType,
                                             total = b.total,
                                             totalNet = b.totalNet,
@@ -3538,6 +3539,8 @@ var strP = TokenManager.GetPrincipal(token);
                                         updateUserId = b.updateUserId,
                                         isApproved = b.isApproved,
                                         branchId = b.branchId,
+                                        shippingCompanyId = b.shippingCompanyId,
+                                        shipUserId = b.shipUserId,
                                     })
                 .ToList();
                 if (invoicesList != null)
