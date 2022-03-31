@@ -129,7 +129,7 @@ namespace POS.View.windows
                         #region
                         Window.GetWindow(this).Opacity = 0.2;
                         wd_acceptCancelPopup w = new wd_acceptCancelPopup();
-                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxDelete");
+                        w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxConfirm");
                         w.ShowDialog();
                         Window.GetWindow(this).Opacity = 1;
                         #endregion

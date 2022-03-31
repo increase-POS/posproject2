@@ -119,13 +119,14 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid  Margin="5" Grid.Row="0"  >
-                        <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="2"
+                        <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="2" Grid.Column="0" Height="40" 
                                   Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Payment Process Type..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" LostFocus="input_LostFocus"
-                Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                Grid.Column="0" Height="40"   
-                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_paymentProcessType_SelectionChanged" >
+                                  materialDesign:HintAssist.Hint="Payment Process Type..."  
+                                  TextBlock.FontSize="12"   Background="#f8f8f8" 
+                                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                  BorderBrush="#737373" BorderThickness="0" 
+                                  SelectionChanged="Cb_paymentProcessType_SelectionChanged"
+                                  LostFocus="input_LostFocus">
                         </ComboBox>
                         <Path Fill="#E81123" x:Name="p_errorpaymentProcessType" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   

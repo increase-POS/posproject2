@@ -251,6 +251,10 @@ namespace POS.View.windows
                         break;
                     case 1://card
                         gd_card.Visibility = Visibility.Visible;
+                        foreach (var el in cardEllipseList)
+                        {
+                            el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                        }
                         break;
                 }
 
@@ -292,9 +296,12 @@ namespace POS.View.windows
                 ellipse.Width = 35;
                 ellipse.FlowDirection = FlowDirection.LeftToRight;
                 ellipse.ToolTip = item.name;
+                ellipse.Height = 35;
+                ellipse.Tag = item.cardId;
                 userImageLoad(ellipse, item.image);
                 Grid.SetColumn(ellipse, userCount);
                 grid.Children.Add(ellipse);
+                cardEllipseList.Add(ellipse);
                 #endregion
                 #endregion
                 button.Content = grid;
@@ -304,6 +311,7 @@ namespace POS.View.windows
             }
             #endregion
         }
+        List<Ellipse> cardEllipseList = new List<Ellipse>();
         void card_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -317,6 +325,15 @@ namespace POS.View.windows
                     tb_processNum.Visibility = Visibility.Visible;
                 else
                     tb_processNum.Visibility = Visibility.Collapsed;
+
+                //set border color
+                foreach (var el in cardEllipseList)
+                {
+                    if ((int)el.Tag == (int)button.Tag)
+                        el.Stroke = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                    else
+                        el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                }
             }
             catch (Exception ex)
             {
