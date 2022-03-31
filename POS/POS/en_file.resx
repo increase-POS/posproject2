@@ -3475,4 +3475,13 @@ Please add Email in setting</value>
   <data name="trCannotSendEmail" xml:space="preserve">
     <value>Can not send email</value>
   </data>
+  <data name="trPaid_" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="trPartPaid" xml:space="preserve">
+    <value>partial</value>
+  </data>
+  <data name="trUnPaid" xml:space="preserve">
+    <value>Unpaid</value>
+  </data>
 </root>

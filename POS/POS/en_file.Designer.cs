@@ -6056,6 +6056,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paid.
+        /// </summary>
+        internal static string trPaid_ {
+            get {
+                return ResourceManager.GetString("trPaid_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paid....
         /// </summary>
         internal static string trPaidHint {
@@ -6115,6 +6124,15 @@ namespace POS {
         internal static string trParentTax {
             get {
                 return ResourceManager.GetString("trParentTax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to partial.
+        /// </summary>
+        internal static string trPartPaid {
+            get {
+                return ResourceManager.GetString("trPartPaid", resourceCulture);
             }
         }
         
@@ -9499,6 +9517,15 @@ namespace POS {
         internal static string trUnlock {
             get {
                 return ResourceManager.GetString("trUnlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unpaid.
+        /// </summary>
+        internal static string trUnPaid {
+            get {
+                return ResourceManager.GetString("trUnPaid", resourceCulture);
             }
         }
         

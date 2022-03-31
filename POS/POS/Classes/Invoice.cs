@@ -120,7 +120,7 @@ namespace POS.Classes
         public decimal shippingCost { get; set; }
         public decimal realShippingCost { get; set; }
         public bool isActive { get; set; }
-
+        public string payStatus { get; set; }
 
         // for report
         public int countP { get; set; }

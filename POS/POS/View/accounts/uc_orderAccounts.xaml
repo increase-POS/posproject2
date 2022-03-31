@@ -68,15 +68,15 @@
                             </DatePicker.ToolTip>
                         </DatePicker>
                         <DatePicker  x:Name="dp_endSearchDate"  
-                               BorderBrush="#737373"  BorderThickness="0" 
-                                    TextBlock.Foreground="#4E4E4E"
-                                 Grid.Row="2" Padding="10,0,5,0"  
-                                 materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
-                                                                      Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
-                                 materialDesign:HintAssist.Hint="End date..."  
-                               Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
-                                 HorizontalAlignment="Left" VerticalAlignment="Center" 
-                            Grid.Column="2"  Height="40" Width="125"  Margin="5,5" >
+                                     BorderBrush="#737373"  BorderThickness="0" 
+                                     TextBlock.Foreground="#4E4E4E"
+                                     Grid.Row="2" Padding="10,0,5,0"  
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                                     materialDesign:HintAssist.Hint="End date..."  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"  Background="White"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" 
+                                     Grid.Column="2"  Height="40" Width="125"  Margin="5,5" >
                             <DatePicker.ToolTip>
                                 <ToolTip x:Name="tt_endDate" Content="End Date"
                                                           Placement="left" 
@@ -227,11 +227,12 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Width="*"  Header="Invoice Number" Binding="{Binding Path=invNumber}"/>
-                            <DataGridTextColumn Width="*"  Header="sales man" Binding="{Binding Path=shipUserName}"/>
-                            <DataGridTextColumn Width="*"  Header="customer" Binding="{Binding Path=agentName}"/>
-                            <DataGridTextColumn Width="*"  Header="Date"          Binding="{Binding updateDate, Converter={StaticResource dateFrameConverter }}"/>
-                            <DataGridTextColumn Width="*"  Header="Cash"  Binding="{Binding Path =deserved,Converter={StaticResource accuracyConverter }}"/>
-                            <DataGridTextColumn Width="*"  Header="Status" Binding="{Binding status,Converter={StaticResource invoiceStatusConverter }}"/>
+                            <DataGridTextColumn Width="*"  Header="sales man"      Binding="{Binding Path=shipUserName}"/>
+                            <DataGridTextColumn Width="*"  Header="customer"       Binding="{Binding Path=agentName}"/>
+                            <DataGridTextColumn Width="*"  Header="Date"           Binding="{Binding updateDate, Converter={StaticResource dateFrameConverter }}"/>
+                            <DataGridTextColumn Width="*"  Header="Cash"           Binding="{Binding Path =deserved,Converter={StaticResource accuracyConverter }}" Visibility="Hidden"/>
+                            <DataGridTextColumn Width="*"  Header="Status"         Binding="{Binding status,Converter={StaticResource invoiceStatusConverter }}" Visibility="Hidden"/>
+                            <DataGridTextColumn Width="*"  Header="Paid"           Binding="{Binding payStatus,Converter={StaticResource invoicePayStatus }}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

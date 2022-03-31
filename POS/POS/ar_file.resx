@@ -3454,4 +3454,13 @@
   <data name="trCannotSendEmail" xml:space="preserve">
     <value>لايمكن ارسال الايميل</value>
   </data>
+  <data name="trPaid_" xml:space="preserve">
+    <value>مدفوع</value>
+  </data>
+  <data name="trPartPaid" xml:space="preserve">
+    <value>جزئي</value>
+  </data>
+  <data name="trUnPaid" xml:space="preserve">
+    <value>غير مدفوع</value>
+  </data>
 </root>

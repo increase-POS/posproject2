@@ -288,6 +288,7 @@ namespace POS.View.accounts
             dg_orderAccounts.Columns[3].Header = MainWindow.resourcemanager.GetString("trDate");
             dg_orderAccounts.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
             dg_orderAccounts.Columns[5].Header = MainWindow.resourcemanager.GetString("trState");
+            dg_orderAccounts.Columns[6].Header = MainWindow.resourcemanager.GetString("trState");
 
             tt_clear.Content = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -385,6 +386,7 @@ namespace POS.View.accounts
                             searchText = tb_search.Text.ToLower();
                             if(chk_delivered.IsChecked == true)
                                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                                || s.branchCreatorName.ToLower().Contains(searchText)
                                 || s.shipUserName.ToLower().Contains(searchText)
                                 || s.agentName.ToLower().Contains(searchText)
                                 || s.totalNet.ToString().ToLower().Contains(searchText)
@@ -396,6 +398,7 @@ namespace POS.View.accounts
                                 );
                             else if(chk_inDelivery.IsChecked == true)
                                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                               || s.branchCreatorName.ToLower().Contains(searchText)
                                || s.shipUserName.ToLower().Contains(searchText)
                                || s.agentName.ToLower().Contains(searchText)
                                || s.totalNet.ToString().ToLower().Contains(searchText)
@@ -415,6 +418,7 @@ namespace POS.View.accounts
                             searchText = tb_search.Text.ToLower();
                             if (chk_delivered.IsChecked == true)
                                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                                || s.branchCreatorName.ToLower().Contains(searchText)
                                 || s.shipUserName.ToLower().Contains(searchText)
                                 || s.agentName.ToLower().Contains(searchText)
                                 || s.totalNet.ToString().ToLower().Contains(searchText)
@@ -424,6 +428,7 @@ namespace POS.View.accounts
                                 );
                             else if (chk_inDelivery.IsChecked == true)
                                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
+                                || s.branchCreatorName.ToLower().Contains(searchText)
                                 || s.shipUserName.ToLower().Contains(searchText)
                                 || s.agentName.ToLower().Contains(searchText)
                                 || s.totalNet.ToString().ToLower().Contains(searchText)
@@ -1093,8 +1098,25 @@ namespace POS.View.accounts
             }
         }
 
-        private void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_branch_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//select branch
+            try
+            {
+                if (sender != null)
+                    SectionData.StartAwait(grid_ucOrderAccounts);
+
+                await RefreshInvoiceList();
+                Tb_search_TextChanged(null, null);
+
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+            }
+            catch (Exception ex)
+            {
+                if (sender != null)
+                    SectionData.EndAwait(grid_ucOrderAccounts);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         private async void Btn_save_Click(object sender, RoutedEventArgs e)
