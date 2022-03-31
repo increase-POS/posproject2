@@ -232,7 +232,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Accoutant.
+        ///   Looks up a localized string similar to Accountant.
         /// </summary>
         internal static string trAccoutant {
             get {
