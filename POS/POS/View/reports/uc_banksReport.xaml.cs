@@ -84,7 +84,7 @@ namespace POS.View.reports
                 translate();
                 #endregion
 
-                Btn_vendor_Click(btn_payments , null);
+                Btn_vendor_Click(btn_payments, null);
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -166,7 +166,7 @@ namespace POS.View.reports
             bankLst = result.ToList();
             return result.ToList();
         }
-       
+
         /*********************************************************************/
 
 
@@ -196,7 +196,7 @@ namespace POS.View.reports
 
         }
 
-        private  void Btn_vendor_Click(object sender, RoutedEventArgs e)
+        private void Btn_vendor_Click(object sender, RoutedEventArgs e)
         {//payments
             try
             {
@@ -229,9 +229,9 @@ namespace POS.View.reports
 
                 fillEvents(payments);
 
-               chk_allPaymentsBanks.IsChecked = true;
-               chk_allPyamentsUser.IsChecked = true;
-               chk_allpaymentsAccountant.IsChecked = true;
+                chk_allPaymentsBanks.IsChecked = true;
+                chk_allPyamentsUser.IsChecked = true;
+                chk_allpaymentsAccountant.IsChecked = true;
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -244,7 +244,7 @@ namespace POS.View.reports
             }
         }
 
-        private  void Btn_customer_Click(object sender, RoutedEventArgs e)
+        private void Btn_customer_Click(object sender, RoutedEventArgs e)
         {//received
             try
             {
@@ -306,7 +306,7 @@ namespace POS.View.reports
             fillColumnChart();
             fillRowChart();
         }
-       
+
         /*Charts*/
         /*********************************************************************************/
 
@@ -413,12 +413,12 @@ namespace POS.View.reports
             }
             if (resultList.Count() > 6)
             {
-                decimal pullSum = 0, depositSum = 0 ;
+                decimal pullSum = 0, depositSum = 0;
                 for (int i = 6; i < resultList.Count; i++)
                 {
                     pullSum = pullSum + resultList.ToList().Skip(i).FirstOrDefault().pullSum;
                     depositSum = depositSum + resultList.ToList().Skip(i).FirstOrDefault().depositSum;
-          
+
                 }
                 if (!((pullSum == 0) && (depositSum == 0)))
                 {
@@ -472,7 +472,7 @@ namespace POS.View.reports
             List<string> names = new List<string>();
             List<CashTransferSts> resultList = new List<CashTransferSts>();
             var temp = bankLst;
-           
+
             SeriesCollection rowChartData = new SeriesCollection();
             var tempName = temp.GroupBy(s => new { s.bankId }).Select(s => new
             {
@@ -739,19 +739,19 @@ namespace POS.View.reports
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
-              
-                    txt_search.Text = "";
 
-                    cb_paymentsBank.SelectedItem = null;
-                    cb_paymentsUser.SelectedItem = null;
-                    cb_paymentsAccountant.SelectedItem = null;
-                    chk_allpaymentsAccountant.IsChecked = false;
-                    chk_allPaymentsBanks.IsChecked = false;
-                    chk_allPyamentsUser.IsChecked = false;
-                    dp_paymentsStartDate.SelectedDate = null;
-                    dp_paymentsEndDate.SelectedDate = null;
+                txt_search.Text = "";
 
-                    fillByType();
+                cb_paymentsBank.SelectedItem = null;
+                cb_paymentsUser.SelectedItem = null;
+                cb_paymentsAccountant.SelectedItem = null;
+                chk_allpaymentsAccountant.IsChecked = false;
+                chk_allPaymentsBanks.IsChecked = false;
+                chk_allPyamentsUser.IsChecked = false;
+                dp_paymentsStartDate.SelectedDate = null;
+                dp_paymentsEndDate.SelectedDate = null;
+
+                fillByType();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
@@ -812,14 +812,14 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArDeposite.rdlc";
-                    secondTitle = "payments";
-                   
+                    secondTitle = "pull";
+
 
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Bank\Ar\ArPull.rdlc";
-  secondTitle = "recipient";
+                    secondTitle = "deposit";
 
                 }
 
@@ -829,18 +829,18 @@ namespace POS.View.reports
                 if (selectedTab == 0)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Deposite.rdlc";
-                    secondTitle = "payments";
+                    secondTitle = "pull";
 
                 }
                 else if (selectedTab == 1)
                 {
                     addpath = @"\Reports\StatisticReport\Accounts\Bank\En\Pull.rdlc";
-                    secondTitle = "recipient";
-
+                    secondTitle = "deposit";
+                    //
                 }
 
             }
-         
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
@@ -895,7 +895,8 @@ namespace POS.View.reports
 
                 #region
                 BuildReport();
-                LocalReportExtensions.PrintToPrinter(rep);
+                LocalReportExtensions.PrintToPrinterbyNameAndCopy(rep, MainWindow.rep_printer_name, short.Parse(MainWindow.rep_print_count));
+
                 #endregion
 
                 if (sender != null)
@@ -919,16 +920,16 @@ namespace POS.View.reports
                 #region
                 //Thread t1 = new Thread(() =>
                 //{
-                    BuildReport();
-                    this.Dispatcher.Invoke(() =>
+                BuildReport();
+                this.Dispatcher.Invoke(() =>
+                {
+                    saveFileDialog.Filter = "EXCEL|*.xls;";
+                    if (saveFileDialog.ShowDialog() == true)
                     {
-                        saveFileDialog.Filter = "EXCEL|*.xls;";
-                        if (saveFileDialog.ShowDialog() == true)
-                        {
-                            string filepath = saveFileDialog.FileName;
-                            LocalReportExtensions.ExportToExcel(rep, filepath);
-                        }
-                    });
+                        string filepath = saveFileDialog.FileName;
+                        LocalReportExtensions.ExportToExcel(rep, filepath);
+                    }
+                });
 
 
                 //    });

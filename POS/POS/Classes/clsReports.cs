@@ -930,6 +930,12 @@ Parameters!trValueDiscount.Value)
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trCash_");
             else if (secondTitle == "operations")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trOperations");
+            else if (secondTitle == "pull")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trPull");
+            else if (secondTitle == "deposit")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trDeposit");
+            
+            //trPull
             //////////////////////////////////////////////////////////////////////////////
 
             trtext = firstTitle + " / " + secondTitle;
