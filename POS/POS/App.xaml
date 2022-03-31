@@ -8,6 +8,7 @@
     <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
+            <converters:invoicePayStatus x:Key="invoicePayStatus"/>
             <converters:profitToColorConverter x:Key="profitToColorConverter"/>
             <converters:unknownAgentConverter x:Key="unknownAgentConverter"/>
             <converters:processTypeAndCardConverter x:Key="processTypeAndCardConverter"/>
