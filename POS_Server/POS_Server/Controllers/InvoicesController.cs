@@ -2098,6 +2098,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             manualDiscountValue = b.manualDiscountValue,
                                             shippingCost = b.shippingCost,
                                             realShippingCost = b.realShippingCost,
+                                            payStatus = b.deserved == 0 ? "payed" : (b.deserved == b.totalNet ? "unpayed" : "partpayed"),
                                         })
                     .ToList();
                     if (invoicesList != null)

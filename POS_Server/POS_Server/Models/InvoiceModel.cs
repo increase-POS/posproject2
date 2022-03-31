@@ -52,6 +52,7 @@ namespace POS_Server.Models
         public decimal cashReturn { get; set; }
         public decimal shippingCost { get; set; }
         public decimal realShippingCost { get; set; }
+        public string payStatus { get; set; }
     }
 
     public class CouponInvoiceModel
