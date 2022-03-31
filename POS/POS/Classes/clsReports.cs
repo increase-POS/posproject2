@@ -1146,7 +1146,32 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
 
         }
+        public static string  processTypeAndCardConverter(string processType, string cardName )
+        {
+            string pType =  processType ;
+            string cName = cardName;
 
+            switch (pType)
+            {
+                case "cash": return MainWindow.resourcemanagerreport.GetString("trCash");
+                //break;
+                case "doc": return MainWindow.resourcemanagerreport.GetString("trDocument");
+                //break;
+                case "cheque": return MainWindow.resourcemanagerreport.GetString("trCheque");
+                //break;
+                case "balance": return MainWindow.resourcemanagerreport.GetString("trCredit");
+                //break;
+                case "card": return cName;
+                //break;
+                case "inv": return MainWindow.resourcemanagerreport.GetString("trInv");
+                case "multiple": return MainWindow.resourcemanagerreport.GetString("trMultiplePayment");
+
+                //break;
+                default: return pType;
+                    //break;
+            }
+
+        }
         public static string StsStatementPaymentConvert(string value)
         {
             string s = "";
@@ -1253,9 +1278,9 @@ Parameters!trValueDiscount.Value)
             {
                 r.updateDate = DateTime.Parse(SectionData.DateToString(r.updateDate));
                 r.cash = decimal.Parse(SectionData.DecTostring(r.cash));
-
-                r.paymentreport = StsStatementPaymentConvert(r.Description3);
-
+             
+                r.paymentreport = processTypeAndCardConverter(r.Description3, r.cardName);
+             
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetCashTransferSts", cashTransfers));
