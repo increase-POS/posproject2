@@ -3484,4 +3484,7 @@ Please add Email in setting</value>
   <data name="trUnPaid" xml:space="preserve">
     <value>Unpaid</value>
   </data>
+  <data name="trOrderreport" xml:space="preserve">
+    <value>Orders</value>
+  </data>
 </root>
