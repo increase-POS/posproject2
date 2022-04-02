@@ -1624,7 +1624,7 @@ namespace POS.View
                             bool multipleValid = true;
                             List<CashTransfer> listPayments = new List<CashTransfer>();
 
-                            if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                            if (cb_paymentProcessType.SelectedValue.ToString() == "multiple" && invoice.shippingCompanyId == null)
                             {
                                 Window.GetWindow(this).Opacity = 0.2;
                                 wd_multiplePayment w = new wd_multiplePayment();
@@ -1678,20 +1678,23 @@ namespace POS.View
                                 {
                                     await saveOrder("s");
                                     #region savepayment
-                                    if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                                    if (invoice.shippingCompanyId == null)
                                     {
-                                        foreach (var item in listPayments)
+                                        if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                                         {
-                                            await saveConfiguredCashTrans(item);
-                                            invoice.paid += item.cash;
-                                            invoice.deserved -= item.cash;
+                                            foreach (var item in listPayments)
+                                            {
+                                                await saveConfiguredCashTrans(item);
+                                                invoice.paid += item.cash;
+                                                invoice.deserved -= item.cash;
+                                            }
+
+                                            prinvoiceId = await invoice.saveInvoice(invoice);
+
                                         }
-
-                                        prinvoiceId = await invoice.saveInvoice(invoice);
-
+                                        else
+                                            await saveCashTransfers();
                                     }
-                                    else
-                                        await saveCashTransfers();
                                     #endregion
                                     await clearInvoice();
                                     refreshOrdersWaitNotification();
@@ -1700,24 +1703,27 @@ namespace POS.View
                                 {
                                     await saveSaleInvoice("s");
                                     #region savepayment
-                                    if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
+                                    if (invoice.shippingCompanyId == null)
                                     {
-                                        foreach (var item in listPayments)
+                                        if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                                         {
-                                            await saveConfiguredCashTrans(item);
-                                            invoice.paid += item.cash;
-                                            invoice.deserved -= item.cash;
+                                            foreach (var item in listPayments)
+                                            {
+                                                await saveConfiguredCashTrans(item);
+                                                invoice.paid += item.cash;
+                                                invoice.deserved -= item.cash;
+                                            }
+
+                                            prinvoiceId = await invoice.saveInvoice(invoice);
+
                                         }
-
-                                        prinvoiceId = await invoice.saveInvoice(invoice);
-
+                                        else
+                                            await saveCashTransfers();
                                     }
-                                    else
-                                        await saveCashTransfers();
                                     #endregion
                                     prinvoiceId = invoice.invoiceId;
                                     await clearInvoice();
-                               refreshDraftNotification();
+                                    refreshDraftNotification();
                                     refreshInvoiceNotification();
                                 }
 
@@ -2919,7 +2925,7 @@ namespace POS.View
                 totalDiscount = _Discount + manualDiscount;
             }
 
-            decimal total = _Sum - totalDiscount + _DeliveryCost;
+            decimal total = _Sum - totalDiscount;
 
             #region invoice tax value 
             decimal taxValue = 0;
@@ -2937,6 +2943,9 @@ namespace POS.View
                 tb_sum.Text = SectionData.DecTostring(_Sum);
             else
                 tb_sum.Text = "0";
+
+
+            total += _DeliveryCost;
 
             if (total < 0)
                 total = 0;
