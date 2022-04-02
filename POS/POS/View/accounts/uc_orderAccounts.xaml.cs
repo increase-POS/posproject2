@@ -68,8 +68,8 @@ namespace POS.View.accounts
         Agent agentModel = new Agent();
         User userModel = new User();
         Pos posModel = new Pos();
-        IEnumerable<Agent> agents;
-        IEnumerable<Agent> customers;
+        List<Agent> agents;
+        List<Agent> customers;
         IEnumerable<User> users;
         IEnumerable<Card> cards;
         IEnumerable<Invoice> invoiceQuery;
@@ -166,8 +166,8 @@ namespace POS.View.accounts
                 #endregion
 
                 #region fill agent combo
-                List<Agent> agents = new List<Agent>();
-                List<Agent> customers = new List<Agent>();
+                 agents = new List<Agent>();
+                 customers = new List<Agent>();
                 try
                 {
                     customers = await agentModel.GetAgentsActive("c");
@@ -1138,8 +1138,8 @@ namespace POS.View.accounts
                         Window.GetWindow(this).Opacity = 0.2;
                         wd_multiplePayment w = new wd_multiplePayment();
                         w.isPurchase = false;
-                        if (cb_customer.SelectedValue != null)
-                        {
+                        //if (cb_customer.SelectedValue != null)
+                        //{
                             Agent customer = customers.ToList().Find(b => b.agentId == invoice.agentId && b.isLimited == true);
                             if (customer != null)
                             {
@@ -1154,7 +1154,7 @@ namespace POS.View.accounts
                                 w.hasCredit = false;
                                 w.creditValue = 0;
                             }
-                        }
+                        //}
 
                         w.invoice.invType = invoice.invType;
                         w.invoice.totalNet = invoice.totalNet;
