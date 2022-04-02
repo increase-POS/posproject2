@@ -5887,6 +5887,15 @@ namespace POS {
         /// <summary>
         ///   Looks up a localized string similar to الطلبات.
         /// </summary>
+        internal static string trOrderreport {
+            get {
+                return ResourceManager.GetString("trOrderreport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to الطلبات.
+        /// </summary>
         internal static string trOrders {
             get {
                 return ResourceManager.GetString("trOrders", resourceCulture);

@@ -127,6 +127,7 @@ namespace POS.Classes
             foreach (var o in invoiceQuery)
             {
                 o.deserved = decimal.Parse(SectionData.DecTostring(o.deserved));
+                o.payStatus = invoicePayStatusConvert(o.payStatus);
             }
             DeliverStateConv(paramarr);
 
@@ -142,7 +143,24 @@ namespace POS.Classes
 
             rep.DataSources.Add(new ReportDataSource("DataSetInvoice", invoiceQuery));
         }
-        public static void DeliverStateConv(List<ReportParameter> paramarr)
+
+        
+            public static string  invoicePayStatusConvert(string payStatus)
+            {
+            
+                switch (payStatus)
+                {
+                    case "payed": return MainWindow.resourcemanagerreport.GetString("trPaid_");
+
+                    case "unpayed": return MainWindow.resourcemanagerreport.GetString("trUnPaid");
+
+                    case "partpayed": return MainWindow.resourcemanagerreport.GetString("trCredit");
+
+                    default: return "";
+
+                }
+            }
+            public static void DeliverStateConv(List<ReportParameter> paramarr)
         {
             paramarr.Add(new ReportParameter("trDelivered", MainWindow.resourcemanagerreport.GetString("trDelivered")));
             paramarr.Add(new ReportParameter("trInDelivery", MainWindow.resourcemanagerreport.GetString("trInDelivery")));
@@ -859,6 +877,8 @@ Parameters!trValueDiscount.Value)
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trTax");
             else if (firstTitle == "closing")
                 firstTitle = MainWindow.resourcemanagerreport.GetString("trDailyClosing");
+            else if (firstTitle == "orders")
+                firstTitle = MainWindow.resourcemanagerreport.GetString("trOrderreport");
 
             //trCashBalance trDirectEntry
             //trTransfers administrativePull operations
@@ -934,7 +954,11 @@ Parameters!trValueDiscount.Value)
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trPull");
             else if (secondTitle == "deposit")
                 secondTitle = MainWindow.resourcemanagerreport.GetString("trDeposit");
-            
+            else if (secondTitle == "delivered")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trDelivered");
+            else if (secondTitle == "indelivery")
+                secondTitle = MainWindow.resourcemanagerreport.GetString("trInDelivery");
+
             //trPull
             //////////////////////////////////////////////////////////////////////////////
 

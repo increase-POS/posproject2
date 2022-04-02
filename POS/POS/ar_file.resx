@@ -3463,4 +3463,7 @@
   <data name="trUnPaid" xml:space="preserve">
     <value>غير مدفوع</value>
   </data>
+  <data name="trOrderreport" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
 </root>

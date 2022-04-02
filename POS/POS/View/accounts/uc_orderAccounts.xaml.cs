@@ -387,7 +387,7 @@ namespace POS.View.accounts
                         this.Dispatcher.Invoke(() =>
                         {
                             searchText = tb_search.Text.ToLower();
-                            if(chk_delivered.IsChecked == true)
+                            if (chk_delivered.IsChecked == true)
                                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
                                 || s.branchCreatorName.ToLower().Contains(searchText)
                                 || s.shipUserName.ToLower().Contains(searchText)
@@ -397,9 +397,9 @@ namespace POS.View.accounts
                                 )
                                 && s.updateDate.Value.Date >= dp_startSearchDate.SelectedDate.Value.Date
                                 && s.updateDate.Value.Date <= dp_endSearchDate.SelectedDate.Value.Date
-                                && s.status == "rc" 
+                                && s.status == "rc"
                                 );
-                            else if(chk_inDelivery.IsChecked == true)
+                            else if (chk_inDelivery.IsChecked == true)
                                 invoiceQuery = invoices.Where(s => (s.invNumber.ToLower().Contains(searchText)
                                || s.branchCreatorName.ToLower().Contains(searchText)
                                || s.shipUserName.ToLower().Contains(searchText)
@@ -495,7 +495,7 @@ namespace POS.View.accounts
             try
             {
                 if (sender != null)
-                SectionData.StartAwait(grid_ucOrderAccounts);
+                    SectionData.StartAwait(grid_ucOrderAccounts);
 
                 Clear();
 
@@ -513,7 +513,7 @@ namespace POS.View.accounts
         private void Clear()
         {
             btn_image.IsEnabled = false;
-           
+
             tb_cash.Clear();
             tb_cashDelivered.Clear();
             tb_note.Clear();
@@ -1241,10 +1241,10 @@ namespace POS.View.accounts
                     await cashTransfer.Save(cashTransfer); //add cash transfer   
                     break;
                 case "balance":// balance: update customer balance
-                    //if (cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
-                    //    await invoice.recordComSpecificPaidCash(invoice, "si", cashTransfer);
-                    //else
-                        await invoice.recordConfiguredAgentCash(invoice, "si", cashTransfer);
+                               //if (cb_company.SelectedIndex != -1 && companyModel.deliveryType.Equals("com"))
+                               //    await invoice.recordComSpecificPaidCash(invoice, "si", cashTransfer);
+                               //else
+                    await invoice.recordConfiguredAgentCash(invoice, "si", cashTransfer);
                     break;
                 case "card": // card
                     cashTransfer.transType = "d"; //deposit
@@ -1275,17 +1275,46 @@ namespace POS.View.accounts
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
 
+            string firstTitle = "orders";
+            string secondTitle = "";
+            string state = "";
+            string Title = "";
+        
+
+            if (chk_delivered.IsChecked == true)
+            {
+                secondTitle = "delivered";
+                state = "d";
+
+            }
+            else if (chk_inDelivery.IsChecked == true)
+            {
+                secondTitle = "indelivery";
+                state = "i";
+
+            }
+      
+         
             string addpath;
             bool isArabic = ReportCls.checkLang();
+
             if (isArabic)
             {
                 addpath = @"\Reports\Account\Ar\ArOrderAccReport.rdlc";
             }
-            else addpath = @"\Reports\Account\En\OrderAccReport.rdlc";
+            else
+            {
+                addpath = @"\Reports\Account\En\OrderAccReport.rdlc";
+            }
+
+
             string reppath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, addpath);
 
             ReportCls.checkLang();
-
+            //Title = MainWindow.resourcemanagerreport.GetString("trOrders") + " / " + secondTitle;
+            Title = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            paramarr.Add(new ReportParameter("trTitle", Title));
+            paramarr.Add(new ReportParameter("state", state));
             //clsReports.orderReport(invoiceQuery, rep, reppath);
             clsReports.orderReport(invoiceQuery, rep, reppath, paramarr);
             clsReports.setReportLanguage(paramarr);

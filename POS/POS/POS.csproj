@@ -2264,6 +2264,7 @@
     <Content Include="EmailTemplates\saletemplate\en\deliverydiv.tmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\DataSources\POS.Classes.Invoice.datasource" />
     <None Include="Properties\DataSources\POS.Classes.ItemTransfer.datasource" />
     <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoice.datasource" />
     <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc">
