@@ -274,6 +274,7 @@ namespace POS.View.accounts
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_docNumCard, MainWindow.resourcemanager.GetString("trProcessNumHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(dp_docDateCheque, MainWindow.resourcemanager.GetString("trDocDateHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cash, MainWindow.resourcemanager.GetString("trCashHint"));
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_cashDelivered, MainWindow.resourcemanager.GetString("trCashHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_note, MainWindow.resourcemanager.GetString("trNoteHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_card, MainWindow.resourcemanager.GetString("trCardHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_salesMan, MainWindow.resourcemanager.GetString("trSalesManHint"));
@@ -339,6 +340,8 @@ namespace POS.View.accounts
 
                         tb_cash.Text = SectionData.DecTostring(invoice.deserved);
 
+                        tb_cashDelivered.Text = SectionData.DecTostring(invoice.paid);
+
                         if (invoice.status == "rc")
                         {
                             btn_save.IsEnabled = false;
@@ -371,8 +374,8 @@ namespace POS.View.accounts
         {//search
             try
             {
-                if (sender != null)
-                    SectionData.StartAwait(grid_ucOrderAccounts);
+                //if (sender != null)
+                //    SectionData.StartAwait(grid_ucOrderAccounts);
 
                 try
                 {
@@ -445,13 +448,13 @@ namespace POS.View.accounts
                 }
                 catch { }
 
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_ucOrderAccounts);
             }
             catch (Exception ex)
             {
-                if (sender != null)
-                    SectionData.EndAwait(grid_ucOrderAccounts);
+                //if (sender != null)
+                //    SectionData.EndAwait(grid_ucOrderAccounts);
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -512,9 +515,9 @@ namespace POS.View.accounts
             btn_image.IsEnabled = false;
            
             tb_cash.Clear();
+            tb_cashDelivered.Clear();
             tb_note.Clear();
             tb_invoiceNum.Text = "";
-            tb_cash.IsReadOnly = false;
             SectionData.clearValidate(tb_cash, p_errorCash);
             SectionData.clearComboBoxValidate(cb_paymentProcessType, p_errorpaymentProcessType);
             SectionData.clearComboBoxValidate(cb_card, p_errorCard);
@@ -1137,7 +1140,7 @@ namespace POS.View.accounts
                         w.isPurchase = false;
                         if (cb_customer.SelectedValue != null)
                         {
-                            Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
+                            Agent customer = customers.ToList().Find(b => b.agentId == invoice.agentId && b.isLimited == true);
                             if (customer != null)
                             {
                                 decimal remain = 0;
@@ -1479,15 +1482,22 @@ namespace POS.View.accounts
                     if (cb.Name == "chk_delivered")
                     {
                         chk_inDelivery.IsChecked = false;
+                        dg_orderAccounts.Columns[4].Visibility = Visibility.Collapsed;
+                        dg_orderAccounts.Columns[6].Visibility = Visibility.Visible;
+                        tb_cash.Visibility = Visibility.Collapsed;
+                        tb_cashDelivered.Visibility = Visibility.Visible;
                     }
                     else if (cb.Name == "chk_inDelivery")
                     {
                         chk_delivered.IsChecked = false;
+                        dg_orderAccounts.Columns[4].Visibility = Visibility.Visible;
+                        dg_orderAccounts.Columns[6].Visibility = Visibility.Collapsed;
+                        tb_cash.Visibility = Visibility.Visible;
+                        tb_cashDelivered.Visibility = Visibility.Collapsed;
                     }
                 }
                 SectionData.StartAwait(grid_ucOrderAccounts);
 
-                //translate();
                 Clear();
                 await RefreshInvoiceList();
                 Tb_search_TextChanged(null, null);

@@ -22,7 +22,7 @@ namespace POS
             try
             {
                 Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
 
                 System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 

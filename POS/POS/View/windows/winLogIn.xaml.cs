@@ -84,7 +84,8 @@ namespace POS.View.windows
                 bdrLogIn.RenderTransform = Animations.borderAnimation(-100, bdrLogIn, true);
 
                 MainWindow.posID = int.Parse(Properties.Settings.Default.posId);
-               Global.APIUri = Properties.Settings.Default.APIUri;
+                Global.APIUri = Properties.Settings.Default.APIUri;
+                //Global.APIUri = "http://192.168.1.4:44370/api/";
                 if (Properties.Settings.Default.userName != string.Empty)
                 {
                     txtUserName.Text = Properties.Settings.Default.userName;

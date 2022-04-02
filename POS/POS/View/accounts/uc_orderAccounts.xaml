@@ -420,6 +420,7 @@
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
                             <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
                         </Grid.RowDefinitions>
                         <DockPanel Grid.Row="0">
                             <TextBlock Text="Transafer Details" VerticalAlignment="Center" Foreground="#737373"
@@ -671,7 +672,7 @@
                         <TextBox x:Name="tb_cash" MaxLength="20"  Grid.Row="9" IsEnabled="False"
                                      materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                     Text="{Binding cash, Mode=OneWay}" 
+                                     Text="{Binding cash, Mode=OneWay}" Visibility="Collapsed"
                                      Padding="10,0,5,0" BorderThickness="1" 
                                      materialDesign:HintAssist.Hint="Cash..."  
                                      Foreground="#4E4E4E"  TextBlock.FontSize="12"
@@ -697,8 +698,37 @@
                                 <ToolTip x:Name="tt_errorCash" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
                             </Path.ToolTip>
                         </Path>
+                        <TextBox x:Name="tb_cashDelivered" MaxLength="20"  Grid.Row="10" IsEnabled="False"
+                                     materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                     Text="{Binding paid, Mode=OneWay}" 
+                                     Padding="10,0,5,0" BorderThickness="1" 
+                                     materialDesign:HintAssist.Hint="Cash..."  
+                                     Foreground="#4E4E4E"  TextBlock.FontSize="12"
+                                     Background="#f8f8f8" BorderBrush="#f8f8f8"
+                                     Height="40"   Margin="10,5,10,5"
+                                     TextChanged="Tb_validateEmptyTextChange" 
+                                     LostFocus="Tb_validateEmptyLostFocus"
+                                     PreviewKeyDown="PreventSpaces" 
+                                     PreviewTextInput="Tb_cash_PreviewTextInput">
+                            <TextBox.ToolTip>
+                                <ToolTip x:Name="tt_cashDelivered" Content="Payment Type"
+                                                          Placement="left" 
+                                                          HorizontalOffset="35"
+                                                          PlacementRectangle="50,0,0,0"
+                                                          VerticalOffset="20"/>
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <Path x:Name="p_errorCashDelivered" Grid.Row="10" Fill="#E81123" Stretch="Fill" Margin="5,5,15,5"
+                              HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
+                              VerticalAlignment="Center" Width="15"  Height="15"
+                              Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
+                            <Path.ToolTip>
+                                <ToolTip x:Name="tt_errorCashDelivered" Content="Name Not Validate"  Style="{StaticResource ToolTipError}"/>
+                            </Path.ToolTip>
+                        </Path>
                         <TextBox  x:Name="tb_note" Text="{Binding notes, Mode=OneWay}"
-                                  Grid.Row="10" Padding="10,0,5,0"  
+                                  Grid.Row="11" Padding="10,0,5,0"  
                                   materialDesign:TextFieldAssist.CharacterCounterStyle="{Binding}"
                                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                   BorderThickness="1"  materialDesign:HintAssist.Hint="Note..."  
@@ -713,7 +743,7 @@
                                                           VerticalOffset="20"/>
                             </TextBox.ToolTip>
                         </TextBox>
-                        <Path Fill="#E81123" Grid.Row="10" Stretch="Fill" Margin="5,5,15,5"
+                        <Path Fill="#E81123" Grid.Row="11" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
                               VerticalAlignment="Center" Width="15"  Height="15"
                               Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M12,13 C11.45,13 11,12.55 11,12 L11,8 C11,7.45 11.45,7 12,7 C12.55,7 13,7.45 13,8 L13,12 C13,12.55 12.55,13 12,13 Z M13,17 L11,17 L11,15 L13,15 L13,17 Z">
@@ -735,16 +765,16 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <Button x:Name="btn_image" Grid.Row="0" Grid.ColumnSpan="3" TabIndex="10"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Visibility="Collapsed"
                     Margin="1,1"    Content="Image" Click="Btn_image_Click" />
                     <Button x:Name="btn_preview" Grid.Row="1" Grid.Column="0"
-                          Background="#4E4E4E" BorderBrush="{x:Null}"
+                          Background="#4E4E4E" BorderBrush="{x:Null}" Visibility="Collapsed"
                     Margin="1,1"   Content="Preview" Click="Btn_preview_Click" />
                     <Button x:Name="btn_pdf" Grid.Row="1" Grid.Column="1"
-                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                        Background="#4E4E4E" BorderBrush="{x:Null}" Visibility="Collapsed"
                   Margin="1,1"    Content="PDF" Click="Btn_pdf_Click" />
                     <Button x:Name="btn_printInvoice" Grid.Row="1" Grid.Column="2"
-                        Background="#4E4E4E" BorderBrush="{x:Null}"
+                        Background="#4E4E4E" BorderBrush="{x:Null}" Visibility="Collapsed"
                    Margin="1,1"    Content="Print" Click="Btn_printInvoice_Click" />
 
                     <Button x:Name="btn_save"  TabIndex="10" Content="Save" Grid.Row="2"
