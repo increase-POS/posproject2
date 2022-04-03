@@ -160,8 +160,8 @@ namespace POS.View.reports
             col_locationSection.Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             col_startDate.Header = MainWindow.resourcemanager.GetString("trStartDate");
             col_endDate.Header = MainWindow.resourcemanager.GetString("trEndDate");
-            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinCollect");
-            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxCollect");
+            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinStock");
+            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxStock");
             col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");

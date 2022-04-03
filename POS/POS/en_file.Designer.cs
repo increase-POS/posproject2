@@ -5155,6 +5155,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Stock.
+        /// </summary>
+        internal static string trMaxStock {
+            get {
+                return ResourceManager.GetString("trMaxStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maximum.
         /// </summary>
         internal static string trMaxUnit {
@@ -5304,6 +5313,15 @@ namespace POS {
         internal static string trMinInvoiceValue {
             get {
                 return ResourceManager.GetString("trMinInvoiceValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Min Stock.
+        /// </summary>
+        internal static string trMinStock {
+            get {
+                return ResourceManager.GetString("trMinStock", resourceCulture);
             }
         }
         
@@ -5926,15 +5944,6 @@ namespace POS {
         internal static string trOrderNum {
             get {
                 return ResourceManager.GetString("trOrderNum", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Orders.
-        /// </summary>
-        internal static string trOrderreport {
-            get {
-                return ResourceManager.GetString("trOrderreport", resourceCulture);
             }
         }
         

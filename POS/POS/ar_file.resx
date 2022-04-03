@@ -3463,7 +3463,10 @@
   <data name="trUnPaid" xml:space="preserve">
     <value>غير مدفوع</value>
   </data>
-  <data name="trOrderreport" xml:space="preserve">
-    <value>الطلبات</value>
+  <data name="trMaxStock" xml:space="preserve">
+    <value>أقصى مخزون</value>
+  </data>
+  <data name="trMinStock" xml:space="preserve">
+    <value>أدنى مخزون</value>
   </data>
 </root>
