@@ -2369,6 +2369,7 @@
     <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoiceTax1.datasource" />
     <None Include="Properties\DataSources\POS.Classes.OpenClosOperatinModel.datasource" />
     <None Include="Properties\DataSources\POS.Classes.POSOpenCloseModel.datasource" />
+    <None Include="Properties\DataSources\POS.Classes.Storage.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
