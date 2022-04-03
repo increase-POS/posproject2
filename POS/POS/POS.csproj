@@ -322,6 +322,7 @@
     <Compile Include="converters\levelGroupConverter.cs" />
     <Compile Include="converters\LocationFreeZoneConverter.cs" />
     <Compile Include="converters\locationFreeZoneStorageReportConverter.cs" />
+    <Compile Include="converters\minmaxUnitNameStockConverter.cs" />
     <Compile Include="converters\notificationsContentConverter.cs" />
     <Compile Include="converters\notificationsTitleConverter.cs" />
     <Compile Include="converters\offerDiscountConverter.cs" />
@@ -2264,7 +2265,6 @@
     <Content Include="EmailTemplates\saletemplate\en\deliverydiv.tmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Properties\DataSources\POS.Classes.Invoice.datasource" />
     <None Include="Properties\DataSources\POS.Classes.ItemTransfer.datasource" />
     <None Include="Properties\DataSources\POS.Classes.ItemTransferInvoice.datasource" />
     <Content Include="Reports\StatisticReport\Sale\QT\En\EnPurItemSts.rdlc">
