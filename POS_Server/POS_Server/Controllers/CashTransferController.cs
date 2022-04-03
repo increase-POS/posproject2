@@ -2929,9 +2929,33 @@ namespace POS_Server.Controllers
                                                shipUserId = b.shipUserId,
                                            }).ToList().OrderBy(b => b.deservedDate);
 
+
+                            List<InvoiceModel> res = new List<InvoiceModel>();
                             cashTransfer ct;
                             agents agent;
-                            if (invList.ToList().Count > 0)
+                            //get only with rc status
+                            if (payType == "feed")
+                            {
+                                foreach (InvoiceModel inv in invList)
+                                {
+                                    int invoiceId = inv.invoiceId;
+
+                                    var statusObj = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId && x.status == "rc").FirstOrDefault();
+
+                                    if (statusObj != null)
+                                    {
+                                        int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                                        inv.itemsCount = itemCount;
+                                        res.Add(inv);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                res.AddRange(invList);
+                            }
+                            
+                            if (res.ToList().Count > 0)
                             {
                                 switch (payType)
                                 {

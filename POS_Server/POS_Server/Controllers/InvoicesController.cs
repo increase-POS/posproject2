@@ -2098,8 +2098,6 @@ var strP = TokenManager.GetPrincipal(token);
                                             manualDiscountValue = b.manualDiscountValue,
                                             shippingCost = b.shippingCost,
                                             realShippingCost = b.realShippingCost,
-                                            payStatus = b.deserved == 0 ? "payed" : (b.deserved == b.totalNet ? "unpayed" : "partpayed"),
-                                            branchCreatorName = entity.branches.Where(X => X.branchId == b.branchCreatorId).FirstOrDefault().name,
                                         })
                     .ToList();
                     if (invoicesList != null)
@@ -2120,8 +2118,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("getAgentInvoices")]
         public string getAgentInvoices(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2204,16 +2202,38 @@ var strP = TokenManager.GetPrincipal(token);
                                             realShippingCost = b.realShippingCost,
                                             shippingCost = b.shippingCost,
                                         }).ToList();
-                    if (invoicesList != null)
+
+                   
+                    //get only with rc status
+                    if(type == "feed")
                     {
+                        List<InvoiceModel> res = new List<InvoiceModel>();
+                        foreach (InvoiceModel inv in invoicesList)
+                        {
+                            int invoiceId = inv.invoiceId;
+
+                            var statusObj = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId && x.status == "rc").FirstOrDefault();
+
+                            if (statusObj != null)
+                            {
+                                int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                                inv.itemsCount = itemCount;
+                                res.Add(inv);
+                            }
+                        }
+                        return TokenManager.GenerateToken(res);
+                    }
+                    else
+                    { 
                         for (int i = 0; i < invoicesList.Count; i++)
                         {
                             int invoiceId = invoicesList[i].invoiceId;
                             int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
                             invoicesList[i].itemsCount = itemCount;
                         }
+                        return TokenManager.GenerateToken(invoicesList);
                     }
-                    return TokenManager.GenerateToken(invoicesList);
+                    
                 }
             }
         }
