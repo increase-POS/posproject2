@@ -809,7 +809,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Number</Value>
+                                  <Value>No.</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>

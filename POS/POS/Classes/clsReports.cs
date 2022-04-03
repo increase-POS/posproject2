@@ -175,6 +175,7 @@ namespace POS.Classes
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
+
             paramarr.Add(new ReportParameter("trTransferNumberTooltip", MainWindow.resourcemanagerreport.GetString("trTransferNumberTooltip")));
             paramarr.Add(new ReportParameter("trBank", MainWindow.resourcemanagerreport.GetString("trBank")));
             paramarr.Add(new ReportParameter("trDepositeNumTooltip", MainWindow.resourcemanagerreport.GetString("trDepositeNumTooltip")));
@@ -1664,7 +1665,7 @@ Parameters!trValueDiscount.Value)
             rep.DataSources.Clear();
             rep.DataSources.Add(new ReportDataSource("DataSetInventory", invItemsLocations));
             paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trStocktakingItems")));// tt
-            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNum")));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo.")));
             paramarr.Add(new ReportParameter("trSec_Loc", MainWindow.resourcemanagerreport.GetString("trSectionLocation")));//
             //paramarr.Add(new ReportParameter("trItem_UnitName", MainWindow.resourcemanagerreport.GetString("trUnitName")+"-" + MainWindow.resourcemanagerreport.GetString("")));
             paramarr.Add(new ReportParameter("trItem_UnitName", MainWindow.resourcemanagerreport.GetString("trItemUnit")));
