@@ -3340,7 +3340,7 @@ namespace POS_Server.Controllers
                                         from JUU in JU.DefaultIfEmpty()
                                         from JUPUSS in JUPUS.DefaultIfEmpty()
 
-                                        where (brIds.Contains(JBB.branchId))
+                                        where (brIds.Contains(JBB.branchId) && ITEM.type!="sr")
 
                                         select new
                                         {
@@ -3438,144 +3438,7 @@ namespace POS_Server.Controllers
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        // storageCost storageCostsr = new storageCost();
-
-            //        var invListm = (from L in entity.locations
-            //                            //  from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
-
-
-            //                        join IUL in entity.itemsLocations on L.locationId equals IUL.locationId
-            //                        join IU in entity.itemsUnits on IUL.itemUnitId equals IU.itemUnitId
-
-            //                        //  join ITCUSER in entity.users on IT.createUserId equals ITCUSER.userId
-            //                        //join ITUPUSER in entity.users on IT.updateUserId equals ITUPUSER.userId
-            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
-            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
-            //                        join S in entity.sections on L.sectionId equals S.sectionId into JS
-            //                        join B in entity.branches on L.branchId equals B.branchId into JB
-
-
-            //                        join UPUSR in entity.users on IUL.updateUserId equals UPUSR.userId into JUPUS
-            //                        join U in entity.users on IUL.createUserId equals U.userId into JU
-
-
-
-            //                        from JBB in JB
-            //                        from JSS in JS.DefaultIfEmpty()
-            //                        from JUU in JU.DefaultIfEmpty()
-            //                        from JUPUSS in JUPUS.DefaultIfEmpty()
-
-            //                        where (brIds.Contains(JBB.branchId))
-
-            //                        select new
-            //                        {
-            //                            // item unit
-            //                            itemName = ITEM.name,
-            //                            ITEM.min,
-            //                            ITEM.max,
-            //                            ITEM.minUnitId,
-            //                            ITEM.maxUnitId,
-            //                            minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
-            //                            maxUnitName = entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
-            //                            unitName = UNIT.name,
-            //                            IU.itemUnitId,
-
-            //                            IU.itemId,
-            //                            IU.unitId,
-
-            //                            IU.barcode,
-            //                            //item location
-            //                            CreateuserName = JUU.name,
-            //                            CreateuserLName = JUU.lastname,
-            //                            CreateuserAccName = JUU.username,
-            //                            UuserName = JUPUSS.name,
-            //                            UuserLName = JUPUSS.lastname,
-            //                            UuserAccName = JUPUSS.username,
-
-            //                            //
-            //                            branchName = JBB.name,
-
-            //                            branchType = JBB.type,
-            //                            //itemslocations
-
-            //                            IUL.itemsLocId,
-            //                            IUL.locationId,
-            //                            IUL.quantity,
-
-            //                            IUL.startDate,
-            //                            IUL.endDate,
-
-            //                            IULnote = IUL.note,
-            //                            IU.storageCostId,
-
-            //                            storageCostName = IU.storageCostId != null ? entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().name : "",
-            //                            storageCostValue = IU.storageCostId != null ?
-            //                          entity.storageCost.Where(X => X.storageCostId == IU.storageCostId).FirstOrDefault().cost
-            //                          : 0,
-
-            //                            //  IUL.updateDate.
-            //                            cuserName = JUU.name,
-            //                            cuserLast = JUU.lastname,
-            //                            cUserAccName = JUU.username,
-            //                            uuserName = JUPUSS.name,
-            //                            uuserLast = JUPUSS.lastname,
-            //                            uUserAccName = JUPUSS.username,
-            //                            // Location
-            //                            L.x,
-            //                            L.y,
-            //                            L.z,
-
-            //                            LocisActive = L.isActive,
-            //                            L.sectionId,
-            //                            Locnote = L.note,
-            //                            L.branchId,
-            //                            LocisFreeZone = L.isFreeZone,
-
-
-            //                            // section
-
-            //                            Secname = JSS.name,
-            //                            SecisActive = JSS.isActive,
-            //                            Secnote = JSS.note,
-            //                            SecisFreeZone = JSS.isFreeZone,
-
-
-            //                            //username
-
-            //                            //  I.invoiceId,
-            //                            //    JBB.name
-            //                        }).ToList();
-
-
-
-
-
-            //        if (invListm == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(invListm);
-            //    }
-
-            //}
-
-            ////else
-            //return NotFound();
+   
         }
 
         // 
@@ -3786,11 +3649,9 @@ namespace POS_Server.Controllers
                                         from JAA in JA.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
 
-                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
-
-
+                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId) )
                                         && (I.invType == "p" || I.invType == "sb" || I.invType == "s" || I.invType == "pb")// exw
-
+                                        && ITEM.type != "sr"
                                         select new
                                         {
                                             /*itemId-itemName-branchId-unitId-unitName-agentId-agentName
@@ -4121,7 +3982,7 @@ namespace POS_Server.Controllers
                                         from JAA in JA.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
 
-                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+                                        where (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId)) && ITEM.type != "sr"
 
 
                                         && (I.invType == "is")// exw
@@ -4270,7 +4131,7 @@ namespace POS_Server.Controllers
                                         (entity.invoices.Where(x => x.invoiceMainId == I.invoiceId && x.invType == "ex").ToList().Count > 0)
                                         : (I.invType == "im" && I.invoiceMainId != null)
                                         ? entity.invoices.Where(x => x.invoiceId == I.invoiceMainId && x.invType == "ex").ToList().Count > 0 : false))
-                                        && (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId))
+                                        && (brIds.Contains(JBCC.branchId) || brIds.Contains(JBB.branchId)) && ITEM.type != "sr"
 
                                         select new
                                         {
@@ -4669,7 +4530,7 @@ namespace POS_Server.Controllers
                                     join lo in entity.locations on l.locationId equals lo.locationId
                                     join usr in entity.users on i.updateUserId equals usr.userId
                                     //   join s in entity.sections on lo.sectionId equals s.sectionId
-                                    where (brIds.Contains(lo.branches.branchId))
+                                    where (brIds.Contains(lo.branches.branchId)) && u.items.type != "sr"
                                     select new
                                     {
                                         /*branchId
@@ -4758,98 +4619,7 @@ namespace POS_Server.Controllers
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var List = (from c in entity.inventoryItemLocation
-            //                    join i in entity.Inventory on c.inventoryId equals i.inventoryId
-            //                    join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
-            //                    join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
-            //                    join un in entity.units on u.unitId equals un.unitId
-            //                    join lo in entity.locations on l.locationId equals lo.locationId
-            //                    join usr in entity.users on i.updateUserId equals usr.userId
-            //                    //   join s in entity.sections on lo.sectionId equals s.sectionId
-            //                    where (brIds.Contains(lo.branches.branchId))
-            //                    select new
-            //                    {
-            //                        usr.username,
-            //                        inventoryILId = c.id,
-            //                        c.isDestroyed,
-            //                        c.amount,
-            //                        c.amountDestroyed,
-            //                        c.realAmount,
-            //                        c.itemLocationId,
-            //                        c.inventoryId,
-            //                        c.isActive,
-            //                        c.notes,
-            //                        i.createDate,
-            //                        i.updateDate,
-            //                        i.createUserId,
-            //                        i.updateUserId,
-            //                        i.branchId,
-            //                        branchName = i.branches.name,
-            //                        u.items.itemId,
-            //                        itemName = u.items.name,
-            //                        un.unitId,
-            //                        u.itemUnitId,
-            //                        unitName = un.name,
-
-            //                        Secname = lo.sections.name,
-            //                        lo.sectionId,
-            //                        lo.x,
-            //                        lo.y,
-            //                        lo.z,
-            //                        itemType = u.items.type,
-            //                        inventoryDate = c.Inventory.createDate,
-            //                        inventoryNum = c.Inventory.num,
-            //                        c.Inventory.inventoryType,
-            //                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
-            //                        //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
-            //                    }).ToList();
-
-
-            //        var list2 = List.GroupBy(S => S.inventoryId).Select(X => new
-            //        {
-
-            //            X.FirstOrDefault().inventoryId,
-            //            X.FirstOrDefault().isDestroyed,
-            //            DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
-            //            userFalls = X.FirstOrDefault().username,
-
-            //            X.FirstOrDefault().branchName,
-            //            X.FirstOrDefault().branchId,
-            //            X.FirstOrDefault().inventoryNum,
-            //            X.FirstOrDefault().inventoryType,
-            //            X.FirstOrDefault().inventoryDate,
-            //            //diffsum= (X.Sum(a=>a.diffPercentage )),
-            //            // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
-            //            diffPercentage = ((X.Sum(a => (decimal)(int)a.amount) / X.Sum(a => (decimal)(int)a.realAmount)) * 100),
-            //            itemCount = X.Count(),
-
-
-            //        }).ToList();
-
-            //        if (list2 == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(list2);
-            //    }
-            //}
-            //return NotFound();
+      
         }
         //
         [HttpPost]
@@ -4902,7 +4672,7 @@ namespace POS_Server.Controllers
                                     join un in entity.units on u.unitId equals un.unitId
                                     join lo in entity.locations on l.locationId equals lo.locationId
                                     //   join s in entity.sections on lo.sectionId equals s.sectionId
-                                    where (brIds.Contains(lo.branches.branchId))
+                                    where (brIds.Contains(lo.branches.branchId)) && u.items.type != "sr"
                                     select new
                                     {
                                         inventoryILId = c.id,
@@ -5016,136 +4786,7 @@ namespace POS_Server.Controllers
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var List = (from c in entity.inventoryItemLocation
-            //                    join i in entity.Inventory on c.inventoryId equals i.inventoryId
-            //                    join l in entity.itemsLocations on c.itemLocationId equals l.itemsLocId
-            //                    join u in entity.itemsUnits on l.itemUnitId equals u.itemUnitId
-            //                    join un in entity.units on u.unitId equals un.unitId
-            //                    join lo in entity.locations on l.locationId equals lo.locationId
-            //                    //   join s in entity.sections on lo.sectionId equals s.sectionId
-            //                    where (brIds.Contains(lo.branches.branchId))
-            //                    select new
-            //                    {
-            //                        inventoryILId = c.id,
-            //                        c.isDestroyed,
-            //                        c.amount,
-            //                        c.amountDestroyed,
-            //                        c.realAmount,
-            //                        c.itemLocationId,
-            //                        c.inventoryId,
-            //                        c.isActive,
-            //                        c.notes,
-            //                        i.createDate,
-            //                        i.updateDate,
-            //                        i.createUserId,
-            //                        i.updateUserId,
-            //                        i.branchId,
-
-            //                        branchName = i.branches.name,
-            //                        u.items.itemId,
-            //                        itemName = u.items.name,
-            //                        un.unitId,
-            //                        u.itemUnitId,
-            //                        unitName = un.name,
-
-            //                        Secname = lo.sections.name,
-            //                        lo.sectionId,
-            //                        lo.x,
-            //                        lo.y,
-            //                        lo.z,
-            //                        l.startDate,
-            //                        l.endDate,
-            //                        l.itemsLocId,
-            //                        l.locationId,
-            //                        itemType = u.items.type,
-            //                        inventoryDate = c.Inventory.createDate,
-            //                        inventoryNum = c.Inventory.num,
-            //                        c.Inventory.inventoryType,
-            //                        //   shortfalls= (int)c.realAmount - (int)c.amount,
-            //                        // shortfallspercent= (c.realAmount == 0) ? 0 : ((((decimal)(int)c.realAmount - (decimal)(int)c.amount) * 100) / (decimal)(int)c.realAmount)
-            //                        // diffPercentage =(c.realAmount == 0) ? 0 : ((( (decimal)(int)c.realAmount-(decimal)(int)c.amount)*100)/(decimal)(int)c.realAmountc.realAmount),
-            //                        //diffPercentage = (c.realAmount == 0) ? 0 : (((int)c.amount / (decimal)(int)c.realAmount) * 100),
-            //                    }).ToList();
-            //        var list2 = List.GroupBy(S => new { S.branchId, S.itemUnitId, S.inventoryId })
-            //            .Select(X => new
-            //            {
-
-            //                X.FirstOrDefault().inventoryId,
-            //                X.FirstOrDefault().isDestroyed,
-            //                DestroyedCount = X.Where(a => a.isDestroyed == true ? true : false).Count(),
-
-            //                X.FirstOrDefault().branchName,
-            //                X.FirstOrDefault().branchId,
-            //                X.FirstOrDefault().inventoryNum,
-            //                X.FirstOrDefault().inventoryType,
-            //                X.FirstOrDefault().inventoryDate,
-            //                //
-
-            //                amount = (X.Sum(a => (int)a.amount)),
-            //                amountDestroyed = (X.Sum(a => (int)a.amountDestroyed)),
-            //                realAmount = (X.Sum(a => (int)a.realAmount)),
-
-            //                X.FirstOrDefault().itemLocationId,
-
-
-            //                X.FirstOrDefault().notes,
-            //                X.FirstOrDefault().createDate,
-            //                X.FirstOrDefault().updateDate,
-            //                X.FirstOrDefault().createUserId,
-            //                X.FirstOrDefault().updateUserId,
-
-
-
-            //                X.FirstOrDefault().itemId,
-            //                X.FirstOrDefault().itemName,
-            //                X.FirstOrDefault().unitId,
-            //                X.FirstOrDefault().itemUnitId,
-            //                X.FirstOrDefault().unitName,
-
-            //                // X.FirstOrDefault().Secname ,
-            //                // X.FirstOrDefault().sectionId,
-            //                //  X.FirstOrDefault().x,
-            //                //  X.FirstOrDefault().y,
-            //                //  X.FirstOrDefault().z,
-
-            //                X.FirstOrDefault().itemsLocId,
-            //                X.FirstOrDefault().locationId,
-            //                X.FirstOrDefault().itemType,
-
-            //                shortfalls = (int)(X.Sum(a => (int)a.realAmount)) - (int)(X.Sum(a => (int)a.amount)),
-            //                shortfallspercent = ((X.Sum(a => (int)a.realAmount)) == 0) ? 0 : ((((decimal)(int)(X.Sum(a => (int)a.realAmount)) - (decimal)(int)(X.Sum(a => (int)a.amount))) * 100) / (decimal)(int)(X.Sum(a => (int)a.realAmount))),
-
-
-            //                //diffsum= (X.Sum(a=>a.diffPercentage )),
-            //                // diffPercentage = (X.Sum(a => a.diffPercentage)) / X.Count(),
-            //                itemCount = X.Count(),
-
-
-            //            }).ToList();
-            //        if (list2 == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(list2);
-            //    }
-            //}
-            //return NotFound();
+         
         }
 
 
@@ -5211,7 +4852,7 @@ namespace POS_Server.Controllers
                                         from duu in Dusr.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
                                         where I.invType == "d" &&
-                                        (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+                                        (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId)) && ITEM.type != "sr"
 
                                         select new
                                         {
@@ -5297,118 +4938,7 @@ namespace POS_Server.Controllers
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var invListm = (from IT in entity.itemsTransfer
-            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
-
-            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-
-            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
-            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
-            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-            //                        join U in entity.users on I.createUserId equals U.userId into JU
-            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-            //                        from JPP in entity.pos.Where(X => X.posId == I.posId)
-            //                        join BP in entity.branches on JPP.branchId equals BP.branchId
-            //                        join du in entity.users on I.userId equals du.userId into Dusr
-            //                        //   from JPP into  JP.DefaultIfEmpty
-            //                        from JUU in JU.DefaultIfEmpty()
-            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
-            //                        from duu in Dusr.DefaultIfEmpty()
-            //                        from JBCC in JBC.DefaultIfEmpty()
-            //                        where I.invType == "d" &&
-            //                        (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
-
-
-
-            //                        select new
-            //                        {
-            //                            causeDestroy = IT.inventoryItemLocation.cause,
-            //                            userdestroy = duu.username,
-            //                            I.userId,
-            //                            itemName = ITEM.name,
-            //                            unitName = UNIT.name,
-            //                            IT.itemsTransId,
-            //                            IT.itemUnitId,
-
-            //                            IU.itemId,
-            //                            IU.unitId,
-            //                            IT.quantity,
-            //                            IT.price,
-            //                            IU.barcode,
-
-            //                            I.invoiceId,
-            //                            I.invNumber,
-
-            //                            I.posId,
-            //                            I.invType,
-            //                            I.total,
-            //                            I.totalNet,
-            //                            I.paid,
-            //                            I.deserved,
-            //                            I.deservedDate,
-            //                            I.invDate,
-            //                            I.invoiceMainId,
-            //                            I.invCase,
-            //                            I.invTime,
-            //                            I.notes,
-            //                            I.vendorInvNum,
-            //                            I.vendorInvDate,
-            //                            I.createUserId,
-            //                            IupdateDate = I.updateDate,
-            //                            I.updateUserId,
-            //                            // I.branchId,
-            //                            I.discountValue,
-            //                            I.discountType,
-            //                            I.tax,
-            //                            I.name,
-            //                            I.isApproved,
-            //                            IT.itemSerial,
-            //                            //
-            //                            I.branchCreatorId,
-
-            //                            //
-            //                            branchName = JBCC.name,
-            //                            branchId = I.branchCreatorId,
-
-            //                            branchType = JBCC.type,
-            //                            posName = JPP.name,
-            //                            posCode = JPP.code,
-
-            //                            cuserName = JUU.name,
-            //                            cuserLast = JUU.lastname,
-            //                            cUserAccName = JUU.username,
-            //                            uuserName = JUPUS.name,
-            //                            uuserLast = JUPUS.lastname,
-            //                            uUserAccName = JUPUS.username,
-
-            //                        }).ToList();
-
-            //        if (invListm == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(invListm);
-            //    }
-
-            //}
-
-            ////else
-            //return NotFound();
+            
         }
 
         // العناصر الناقصة
@@ -5473,7 +5003,7 @@ namespace POS_Server.Controllers
                                         from duu in Dusr.DefaultIfEmpty()
                                         from JBCC in JBC.DefaultIfEmpty()
                                         where I.invType == "sh" &&
-                                         (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
+                                         (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId)) && ITEM.type != "sr"
 
                                         select new
                                         {
@@ -5563,122 +5093,7 @@ namespace POS_Server.Controllers
 
             }
 
-            //var re = Request;
-            //
-            //string token = "";
-            //if (headers.Contains("APIKey"))
-            //{
-            //    token = headers.GetValues("APIKey").First();
-            //}
-            //Validation validation = new Validation();
-            //bool valid = validation.CheckApiKey(token);
-
-            //if (valid) // APIKey is valid
-            //{
-            //    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
-
-            //    using (incposdbEntities entity = new incposdbEntities())
-            //    {
-            //        var invListm = (from IT in entity.itemsTransfer
-            //                        from I in entity.invoices.Where(I => I.invoiceId == IT.invoiceId)
-
-            //                        from IU in entity.itemsUnits.Where(IU => IU.itemUnitId == IT.itemUnitId)
-
-            //                        join ITEM in entity.items on IU.itemId equals ITEM.itemId
-            //                        join UNIT in entity.units on IU.unitId equals UNIT.unitId
-            //                        join BC in entity.branches on I.branchCreatorId equals BC.branchId into JBC
-            //                        join U in entity.users on I.createUserId equals U.userId into JU
-            //                        join UPUSR in entity.users on I.updateUserId equals UPUSR.userId into JUPUSR
-            //                        from JPP in entity.pos.Where(X => X.posId == I.posId)
-            //                        join BP in entity.branches on JPP.branchId equals BP.branchId
-            //                        join du in entity.users on I.userId equals du.userId into Dusr
-            //                        //   from JPP into  JP.DefaultIfEmpty
-            //                        from JUU in JU.DefaultIfEmpty()
-            //                        from JUPUS in JUPUSR.DefaultIfEmpty()
-            //                        from duu in Dusr.DefaultIfEmpty()
-            //                        from JBCC in JBC.DefaultIfEmpty()
-            //                        where I.invType == "sh" &&
-            //                         (brIds.Contains(JBCC.branchId) || brIds.Contains(BP.branchId))
-
-            //                        select new
-            //                        {
-
-
-            //                            inventoryNum = IT.inventoryItemLocation.Inventory.num,
-            //                            IT.inventoryItemLocation.Inventory.inventoryType,
-            //                            inventoryDate = IT.inventoryItemLocation.Inventory.createDate,
-            //                            //   itemCount
-            //                            causeFalls = IT.inventoryItemLocation.fallCause,
-            //                            userFalls = duu.username,
-            //                            I.userId,
-            //                            itemName = ITEM.name,
-            //                            unitName = UNIT.name,
-            //                            IT.itemsTransId,
-            //                            IT.itemUnitId,
-
-            //                            IU.itemId,
-            //                            IU.unitId,
-            //                            itemCount = IT.quantity,
-            //                            IT.price,
-            //                            IU.barcode,
-
-            //                            I.invoiceId,
-            //                            I.invNumber,
-
-            //                            I.posId,
-            //                            I.invType,
-            //                            I.total,
-            //                            I.totalNet,
-            //                            I.paid,
-            //                            I.deserved,
-            //                            I.deservedDate,
-            //                            I.invDate,
-            //                            I.invoiceMainId,
-            //                            I.invCase,
-            //                            I.invTime,
-            //                            I.notes,
-            //                            I.vendorInvNum,
-            //                            I.vendorInvDate,
-            //                            I.createUserId,
-            //                            IupdateDate = I.updateDate,
-            //                            I.updateUserId,
-            //                            // I.branchId,
-            //                            I.discountValue,
-            //                            I.discountType,
-            //                            I.tax,
-            //                            I.name,
-            //                            I.isApproved,
-            //                            IT.itemSerial,
-            //                            //
-            //                            I.branchCreatorId,
-
-            //                            //
-            //                            branchName = JBCC.name,
-            //                            branchId = I.branchCreatorId,
-
-            //                            branchType = JBCC.type,
-            //                            posName = JPP.name,
-            //                            posCode = JPP.code,
-
-            //                            cuserName = JUU.name,
-            //                            cuserLast = JUU.lastname,
-            //                            cUserAccName = JUU.username,
-            //                            uuserName = JUPUS.name,
-            //                            uuserLast = JUPUS.lastname,
-            //                            uUserAccName = JUPUS.username,
-
-            //                        }).ToList();
-
-            //        if (invListm == null)
-            //            return NotFound();
-            //        else
-            //            return Ok(invListm);
-            //    }
-
-            //}
-
-            ////else
-            //return NotFound();
+           
         }
 
         #endregion
