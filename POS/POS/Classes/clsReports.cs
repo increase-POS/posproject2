@@ -1188,7 +1188,7 @@ Parameters!trValueDiscount.Value)
                 //break;
                 case "card": return cName;
                 //break;
-                case "inv": return MainWindow.resourcemanagerreport.GetString("trInv");
+                case "inv": return "-";
                 case "multiple": return MainWindow.resourcemanagerreport.GetString("trMultiplePayment");
 
                 //break;
