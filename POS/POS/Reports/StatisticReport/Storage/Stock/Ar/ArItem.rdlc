@@ -73,6 +73,10 @@
           <DataField>itemsLocId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="itemType">
+          <DataField>itemType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="itemUnitId">
           <DataField>itemUnitId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -834,7 +838,7 @@ IIf(Parameters!dateForm.Value="YearMonthPattern","MMMM yyyy","dd/MM/yyyy")))))</
             <Top>1.8956cm</Top>
             <Left>1.3005cm</Left>
             <Height>1.2cm</Height>
-            <Width>26.98615cm</Width>
+            <Width>26.98614cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>

@@ -622,8 +622,8 @@ namespace POS
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                    //get company name
-                    set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
+                        //get company name
+                        set = settingsCls.Where(s => s.name == "com_name").FirstOrDefault<SettingCls>();
                         nameId = set.settingId;
                         setV = settingsValues.Where(i => i.settingId == nameId).FirstOrDefault();
                         if (setV != null)
@@ -639,8 +639,8 @@ namespace POS
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                    //get company address
-                    set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
+                        //get company address
+                        set = settingsCls.Where(s => s.name == "com_address").FirstOrDefault<SettingCls>();
                         addressId = set.settingId;
                         setV = settingsValues.Where(i => i.settingId == addressId).FirstOrDefault();
                         if (setV != null)
@@ -655,8 +655,8 @@ namespace POS
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                    //get company email
-                    set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
+                        //get company email
+                        set = settingsCls.Where(s => s.name == "com_email").FirstOrDefault<SettingCls>();
                         emailId = set.settingId;
                         setV = settingsValues.Where(i => i.settingId == emailId).FirstOrDefault();
                         if (setV != null)
@@ -671,8 +671,8 @@ namespace POS
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                    //get company mobile
-                    set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
+                        //get company mobile
+                        set = settingsCls.Where(s => s.name == "com_mobile").FirstOrDefault<SettingCls>();
                         mobileId = set.settingId;
                         setV = settingsValues.Where(i => i.settingId == mobileId).FirstOrDefault();
                         if (setV != null)
@@ -690,8 +690,8 @@ namespace POS
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                    //get company phone
-                    set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
+                        //get company phone
+                        set = settingsCls.Where(s => s.name == "com_phone").FirstOrDefault<SettingCls>();
                         phoneId = set.settingId;
                         setV = settingsValues.Where(i => i.settingId == phoneId).FirstOrDefault();
                         if (setV != null)
@@ -709,8 +709,8 @@ namespace POS
                 {
                     this.Dispatcher.Invoke(() =>
                     {
-                    //get company fax
-                    set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
+                        //get company fax
+                        set = settingsCls.Where(s => s.name == "com_fax").FirstOrDefault<SettingCls>();
                         faxId = set.settingId;
                         setV = settingsValues.Where(i => i.settingId == faxId).FirstOrDefault();
                         if (setV != null)
@@ -997,7 +997,7 @@ namespace POS
                 #endregion
 
                 if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow , "mainWindow_load");
+                    SectionData.EndAwait(grid_mainWindow, "mainWindow_load");
             }
             catch (Exception ex)
             {
@@ -1049,7 +1049,7 @@ namespace POS
             bdrMain.Margin = new Thickness(0, 70, thickness.Right + stp_userName.ActualWidth, 0);
             #endregion
         }
-        
+
         void SelectAllText(object sender, RoutedEventArgs e)
         {
             var textBox = sender as System.Windows.Controls.TextBox;
@@ -1575,16 +1575,14 @@ namespace POS
 
         async Task<bool> updateLogninRecord()
         {
-            //update lognin record
+
             UsersLogs userLog = new UsersLogs();
             userLog = await userLogsModel.GetByID(userLogInID.Value);
-
-            await userLogsModel.Save(userLog);
-
             //update user record
             userLogin.isOnline = 0;
-            await userModel.save(userLogin);
-
+            int s = await userModel.save(userLogin);
+            //update lognin record
+            s = await userLogsModel.Save(userLog);
 
             return true;
         }
@@ -1825,9 +1823,9 @@ namespace POS
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trCashBalance");
                 else if (tag == "profit")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trProfits");
-                 else if (tag == "closing")
+                else if (tag == "closing")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trDailyClosing");
-                 else if (tag == "tax")
+                else if (tag == "tax")
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trTax");
 
                 #endregion

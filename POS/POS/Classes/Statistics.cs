@@ -420,6 +420,7 @@ namespace POS.Classes
                  : processType == "doc" ? description = MainWindow.resourcemanager.GetString("trBond") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + bondNumber
                  : processType == "cheque" ? description = MainWindow.resourcemanager.GetString("trCheque") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + docNum
                  : processType == "inv" ? description = MainWindow.resourcemanager.GetString("trInv")//yasmine
+                 //: processType == "inv" ? description = "-"//yasmine
                  : MainWindow.resourcemanager.GetString("trCredit");
 
             set => description = value;
@@ -427,7 +428,7 @@ namespace POS.Classes
         public string Description1
         {//
             get =>
-                description1 = (transType == "p" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trPaymentReceipt")
+                description1 = (transType == "p" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trPayment")
                 : description1 = (transType == "d" && processType != "inv") ? description1 = MainWindow.resourcemanager.GetString("trReceipt")
                 : invId > 0 && processType == "inv" ? description1 = MainWindow.resourcemanager.GetString("tr_Invoice") + " " + MainWindow.resourcemanager.GetString("trNum:") + " : " + invNumber
                 : ""
@@ -456,7 +457,7 @@ namespace POS.Classes
 
     public class Storage
     {
-
+        public string itemType { get; set; }
         //storagecost
         public Nullable<int> storageCostId { get; set; }
         public string storageCostName { get; set; }
@@ -2972,7 +2973,8 @@ namespace POS.Classes
                     :  paymentsTypeName == "balance" ? paymentsTypeText = MainWindow.resourcemanager.GetString("trCredit")
                     :  paymentsTypeName == "card"    ? paymentsTypeText = MainWindow.resourcemanager.GetString("trAnotherPaymentMethods")
                     :  paymentsTypeName == "inv"     ? paymentsTypeText = MainWindow.resourcemanager.GetString("trInv")
-                    :  "";
+                    //: paymentsTypeName == "inv" ? paymentsTypeText = "-"
+                    : "";
                 set => paymentsTypeText = value;
             }
 
@@ -3803,12 +3805,13 @@ namespace POS.Classes
                 ?
                (row.bondIsRecieved == 0 ?
                    MainWindow.resourcemanager.GetString("trBondNotRecieved") :
-                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + getProcessType(row.processType,row.cardName))
-                 :
-                  //row.Description1;
-                  ((row.side == "c") && (row.invShippingCompanyId != null) && (row.processType == "inv") ?
-                                                                  row.Description1 + " + " + MainWindow.resourcemanager.GetString("trDeliveryCost")
-                                                                : row.Description1) ;
+                   MainWindow.resourcemanager.GetString("trBondRecieved") + "-" + getProcessType(row.processType,row.cardName)
+                )
+                :
+                //row.Description1;
+                ((row.side == "c") && (row.invShippingCompanyId != null) && (row.processType == "inv") ?
+                                                                row.Description1 + " + " + MainWindow.resourcemanager.GetString("trDeliveryCost")
+                                                            : row.Description1) ;
 
                 row.BIsReceived = row.bondId > 0
                ? ((row.bondIsRecieved == 0 && row.transType == "d") || (row.bondIsRecieved == 0 && row.transType == "p") ?
@@ -3867,6 +3870,7 @@ namespace POS.Classes
                 //case "card": return MainWindow.resourcemanager.GetString("trAnotherPaymentMethods");
                 case "card": return name;
                 case "inv": return MainWindow.resourcemanager.GetString("trInv");
+                //case "inv": return "-";
                 default: return value;
             }
         }

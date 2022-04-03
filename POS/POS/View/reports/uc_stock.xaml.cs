@@ -160,8 +160,8 @@ namespace POS.View.reports
             col_locationSection.Header = MainWindow.resourcemanager.GetString("trSectionLocation");
             col_startDate.Header = MainWindow.resourcemanager.GetString("trStartDate");
             col_endDate.Header = MainWindow.resourcemanager.GetString("trEndDate");
-            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinCollect");
-            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxCollect");
+            col_MinCollect.Header = MainWindow.resourcemanager.GetString("trMinStock");
+            col_MaxCollect.Header = MainWindow.resourcemanager.GetString("trMaxStock");
             col_quantity.Header = MainWindow.resourcemanager.GetString("trQTR");
 
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -1082,15 +1082,15 @@ namespace POS.View.reports
                        branchName = s.FirstOrDefault().branchName,
                        storeCost = s.FirstOrDefault().storeCost,
                        itemUnitId = s.FirstOrDefault().itemUnitId,
-                       ItemUnits = s.FirstOrDefault().ItemUnits
-                   ,
+                       ItemUnits = s.FirstOrDefault().ItemUnits,
                        itemId = s.FirstOrDefault().itemId,
                        itemName = s.FirstOrDefault().itemName,
                        unitId = s.FirstOrDefault().unitId,
                        unitName = s.FirstOrDefault().unitName,
                        quantity = s.Sum(g => g.quantity),
-                       minUnitName = s.FirstOrDefault().minUnitName + s.FirstOrDefault().min,
-                       maxUnitName = s.FirstOrDefault().maxUnitName + s.FirstOrDefault().max
+                       minUnitName = s.FirstOrDefault().minUnitName +": "+ s.FirstOrDefault().min,
+                       maxUnitName = s.FirstOrDefault().maxUnitName +": "+ s.FirstOrDefault().max,
+                       itemType = s.FirstOrDefault().itemType
                    });
             }
 

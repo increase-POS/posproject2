@@ -73,6 +73,10 @@
           <DataField>itemsLocId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="itemType">
+          <DataField>itemType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="itemUnitId">
           <DataField>itemUnitId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -452,7 +456,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>قيمة التجميع الدنيا</Value>
+                                  <Value>أدنى مخزون</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -476,7 +480,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -488,7 +491,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>قيمة التجميع العظمى</Value>
+                                  <Value>أقصى مخزون</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -664,7 +667,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!minUnitName.Value</Value>
+                                  <Value>=iif(Fields!itemType.Value="p","-", Fields!minUnitName.Value)</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -698,7 +701,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!maxUnitName.Value</Value>
+                                  <Value>=iif(Fields!itemType.Value="p","-",Fields!maxUnitName.Value)</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -721,6 +724,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

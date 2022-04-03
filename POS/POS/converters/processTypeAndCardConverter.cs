@@ -27,7 +27,8 @@ namespace POS.converters
                 //break;
                 case "card": return cName;
                 //break;
-                case "inv": return MainWindow.resourcemanager.GetString("trInv");
+                //case "inv": return MainWindow.resourcemanager.GetString("trInv");
+                case "inv": return "-";
                 case "multiple": return MainWindow.resourcemanager.GetString("trMultiplePayment");
 
                 //break;
