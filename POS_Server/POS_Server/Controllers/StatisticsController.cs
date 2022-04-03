@@ -3348,12 +3348,13 @@ namespace POS_Server.Controllers
                                               InvTypeNumber-itemId-branchId-unitId-Secname-ItemUnits-SectionLoactionName-startDate-endDate-MinAll
                                               MaxAll-sectionId-locationId-LoactionName
                                               exportBranch-importBranch*/
-                                            // item unit
+                                            // item unit     
                                             itemName = ITEM.name,
                                             ITEM.min,
                                             ITEM.max,
                                             ITEM.minUnitId,
                                             ITEM.maxUnitId,
+                                           itemType =ITEM.type,
                                             minUnitName = entity.units.Where(x => x.unitId == ITEM.minUnitId).FirstOrDefault().name,
                                             maxUnitName = entity.units.Where(x => x.unitId == ITEM.maxUnitId).FirstOrDefault().name,
                                             unitName = UNIT.name,
