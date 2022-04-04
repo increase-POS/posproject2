@@ -377,6 +377,7 @@ namespace POS.View
                             agent.payType = payType;
                             agent.accType = "";
                             agent.balance = 0;
+                            agent.balanceType = 0;
                             agent.createUserId = MainWindow.userID;
                             agent.updateUserId = MainWindow.userID;
                             agent.notes = tb_notes.Text;

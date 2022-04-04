@@ -326,6 +326,7 @@ namespace POS.View
                             agent.type = "c";
                             agent.accType = "";
                             agent.balance = 0;
+                            agent.balanceType = 0;
                             agent.payType = payType;
                             agent.isLimited =(bool) tgl_hasCredit.IsChecked;
 
