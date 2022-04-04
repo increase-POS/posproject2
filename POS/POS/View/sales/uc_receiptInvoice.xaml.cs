@@ -3560,7 +3560,7 @@ namespace POS.View
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
 
-                                if (_InvoiceType == "s" || _InvoiceType == "sb")
+                                if (_InvoiceType == "s" || _InvoiceType == "sb" || _InvoiceType == "or")
                                     combo.IsEnabled = false;
                                 else
                                     combo.IsEnabled = true;
