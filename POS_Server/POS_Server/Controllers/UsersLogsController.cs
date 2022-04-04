@@ -850,7 +850,7 @@ namespace POS_Server.Controllers
                                 List<usersLogs> ul = new List<usersLogs>();
                                 List<usersLogs> locationE = entity2.usersLogs.ToList();
                                 ul = locationE.Where(s => s.sOutDate == null &&
-                               ((DateTime.Now - (DateTime)s.sInDate).TotalHours >= 24) || (s.userId == newObject.userId && s.sOutDate == null)).ToList();
+                               ((DateTime.Now - (DateTime)s.sInDate).TotalHours >= 8) || (s.userId == newObject.userId && s.sOutDate == null)).ToList();
                                 if (ul != null)
                                 {
                                     foreach (usersLogs row in ul)
