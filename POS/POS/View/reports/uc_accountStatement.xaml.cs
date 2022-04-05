@@ -134,6 +134,7 @@ namespace POS.View.reports
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
             tt_settings.Content = MainWindow.resourcemanager.GetString("trSettings");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
+            tt_emailMessage.Content = MainWindow.resourcemanager.GetString("trSendEmail");
         }
 
         private void fillVendorCombo(IEnumerable<VendorCombo> list, ComboBox cb)

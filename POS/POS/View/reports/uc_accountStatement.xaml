@@ -783,7 +783,7 @@
 	C250,0,250,0,250,0C250,0,250,0,250,0C250,0,250,0,250,0z M250,500C250,500,250,500,250,500C250,500,250,500,250,500
 	C250,500,250,500,250,500C250,500,250,500,250,500z"  >
                                 <Path.ToolTip>
-                                    <ToolTip x:Name="tt_emailMessage" Content="Export to excel"
+                                    <ToolTip x:Name="tt_emailMessage"
                                               Placement="left" 
                                               HorizontalOffset="10"
                                               PlacementRectangle="50,0,0,0"
