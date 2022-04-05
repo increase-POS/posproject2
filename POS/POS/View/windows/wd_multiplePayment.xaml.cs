@@ -156,8 +156,8 @@ namespace POS.View.windows
         {
             try
             {
-                if (!isPurchase && 
-               (invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid) || (hasCredit == true && creditValue ==0)))
+                if (!isPurchase &&
+               (invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid) || (hasCredit == true && creditValue == 0)))
                 {
                     if (invoice.totalNet - invoice.paid > 0)
                     {
@@ -173,23 +173,31 @@ namespace POS.View.windows
                     isOk = true;
                     this.Close();
                 }
-                else if(isPurchase /*&& hasCredit == true*/)
+                else if (isPurchase /*&& hasCredit == true*/)
                 {
-                    if (invoice.totalNet - invoice.paid > 0)
-                    {
-                        cashTrasnfer = new CashTransfer();
+                    // اختبار اذا كان معو المبلغ
+                    //if ()
+                    //{
 
+                    //}
+                    //    else
+                    {
+                        if (invoice.totalNet - invoice.paid > 0)
+                        {
+                            cashTrasnfer = new CashTransfer();
+
+                            ///////////////////////////////////////////////////
+                            cashTrasnfer.agentId = invoice.agentId;
+                            cashTrasnfer.invId = invoice.invoiceId;
+                            cashTrasnfer.processType = "balance";
+                            cashTrasnfer.cash = invoice.totalNet - invoice.paid;
+                            listPayments.Add(cashTrasnfer);
+                        }
+                        //lst_payments.Items.Add(s);
                         ///////////////////////////////////////////////////
-                        cashTrasnfer.agentId = invoice.agentId;
-                        cashTrasnfer.invId = invoice.invoiceId;
-                        cashTrasnfer.processType = "balance";
-                        cashTrasnfer.cash = invoice.totalNet - invoice.paid;
-                        listPayments.Add(cashTrasnfer);
+                        isOk = true;
+                        this.Close();
                     }
-                    //lst_payments.Items.Add(s);
-                    ///////////////////////////////////////////////////
-                    isOk = true;
-                    this.Close();
                 }
                 else // if (invoice.paid < invoice.totalNet && hasCredit == false &&)
                 {
