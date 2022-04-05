@@ -2947,8 +2947,10 @@ namespace POS_Server.Controllers
                                         int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
                                         inv.itemsCount = itemCount;
                                         res.Add(inv);
-                                    }
+
                                 }
+                            }
+
                             }
                             else
                             {
@@ -2962,7 +2964,7 @@ namespace POS_Server.Controllers
                                     #region payments
                                     case "pay"://get pw,p,sb invoices
 
-                                        foreach (InvoiceModel inv in invList)
+                                        foreach (InvoiceModel inv in res)
                                         {
                                             decimal paid = 0;
                                             agent = entity.agents.Find(agentId);
@@ -3046,7 +3048,7 @@ namespace POS_Server.Controllers
                                     #endregion
                                     #region feed
                                     case "feed": //get s, pb
-                                        foreach (InvoiceModel inv in invList)
+                                        foreach (InvoiceModel inv in res)
                                         {
                                             agent = entity.agents.Find(agentId);
 
@@ -3204,15 +3206,15 @@ namespace POS_Server.Controllers
                             }
                         }
 
-                    }
-                    catch
-                    {
-                        message = "0";
-                        return TokenManager.GenerateToken(message);
-                    }
-
-
                 }
+                    catch
+                {
+                    message = "0";
+                    return TokenManager.GenerateToken(message);
+                }
+
+
+            }
 
                 return TokenManager.GenerateToken("0");
 
