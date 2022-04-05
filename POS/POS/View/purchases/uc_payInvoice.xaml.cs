@@ -1625,8 +1625,10 @@ namespace POS.View
                     break;
                 case "balance":// balance: update customer balance
                     await invoice.recordConfiguredAgentCash(invoice, "pi", cashTransfer);
-                    invoice.paid += cashTransfer.cash;
-                    invoice.deserved -= cashTransfer.cash;
+                    // yasin code
+                    //invoice.paid += cashTransfer.cash;
+                    //invoice.deserved -= cashTransfer.cash;
+                    ////
                     await invoice.saveInvoice(invoice);
                     break;
                 case "card": // card  

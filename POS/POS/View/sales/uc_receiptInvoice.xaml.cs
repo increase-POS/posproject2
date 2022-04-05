@@ -1685,8 +1685,12 @@ namespace POS.View
                                             foreach (var item in listPayments)
                                             {
                                                 await saveConfiguredCashTrans(item);
-                                                invoice.paid += item.cash;
-                                                invoice.deserved -= item.cash;
+                                                // yasin code
+                                                if (item.processType != "balance")
+                                                {
+                                                    invoice.paid += item.cash;
+                                                    invoice.deserved -= item.cash;
+                                                }
                                             }
 
                                             prinvoiceId = await invoice.saveInvoice(invoice);
@@ -1710,8 +1714,13 @@ namespace POS.View
                                             foreach (var item in listPayments)
                                             {
                                                 await saveConfiguredCashTrans(item);
-                                                invoice.paid += item.cash;
+                                                // yasin code
+                                                if (item.processType != "balance")
+                                                {
+                                                    invoice.paid += item.cash;
                                                 invoice.deserved -= item.cash;
+                                                }
+
                                             }
 
                                             prinvoiceId = await invoice.saveInvoice(invoice);

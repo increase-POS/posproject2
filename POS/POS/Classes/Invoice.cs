@@ -1062,11 +1062,22 @@ namespace POS.Classes
                     {
                         if (cashTransfer.cash <= (decimal)agent.balance)
                         {
+                           
                             newBalance = agent.balance - (float)cashTransfer.cash;
                             agent.balance = newBalance;
+
+                            // yasin code
+                            invoice.paid += cashTransfer.cash;
+                            invoice.deserved -= cashTransfer.cash;
+                            ////
                         }
                         else
                         {
+                            // yasin code
+                            invoice.paid += (decimal)agent.balance;
+                            invoice.deserved -= (decimal)agent.balance;
+                            //////
+                            ///
                             newBalance = (float)cashTransfer.cash - agent.balance;
                             agent.balance = newBalance;
                             agent.balanceType = 0;
@@ -1106,12 +1117,23 @@ namespace POS.Classes
                         {
                             newBalance = agent.balance - (float)cashTransfer.cash;
                             agent.balance = newBalance;
+
+                            // yasin code
+                            invoice.paid += cashTransfer.cash;
+                            invoice.deserved -= cashTransfer.cash;
+                            ////
                         }
                         else
                         {
+                            // yasin code
+                            invoice.paid += (decimal)agent.balance;
+                            invoice.deserved -= (decimal)agent.balance;
+                            //////
                             newBalance = (float)cashTransfer.cash - agent.balance;
                             agent.balance = newBalance;
                             agent.balanceType = 1;
+
+                            
                         }
                         cashTransfer.transType = "d"; //deposit
 
@@ -1259,9 +1281,18 @@ namespace POS.Classes
                 {
                     newBalance = (decimal)company.balance - (decimal)cashTrasnfer.cash;
                     company.balance = newBalance;
+
+                    // yasin code
+                    invoice.paid += cashTrasnfer.cash;
+                    invoice.deserved -= cashTrasnfer.cash;
+                    /////
                 }
                 else
                 {
+                    // yasin code
+                    invoice.paid += (decimal)company.balance;
+                    invoice.deserved -= (decimal)company.balance;
+                    ///////
                     newBalance = (decimal)cashTrasnfer.cash - company.balance;
                     company.balance = newBalance;
                     company.balanceType = 1;

@@ -1171,8 +1171,14 @@ namespace POS.View.accounts
                             foreach (var item in listPayments)
                             {
                                 await saveConfiguredCashTrans(item);
+
+                                // yasin code
+                                if (item.processType != "balance")
+                                {
                                 invoice.paid += item.cash;
                                 invoice.deserved -= item.cash;
+                                }
+
                             }
 
                             int s = await invoice.saveInvoice(invoice);
