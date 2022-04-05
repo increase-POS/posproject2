@@ -4586,7 +4586,7 @@ namespace POS_Server.Controllers
                                         ct = entity.cashTransfer.Add(cashTr);
                                         cashIds += ct.cashTransId + ",";
                                         // increase agent balance
-                                        if (agent.balanceType == 1)
+                                        if (agent.balanceType == 0)
                                         {
                                             if (paid <= (decimal)agent.balance)
                                             {
@@ -4598,7 +4598,7 @@ namespace POS_Server.Controllers
                                                 agent.balanceType = 0;
                                             }
                                         }
-                                        else if (agent.balanceType == 0)
+                                        else if (agent.balanceType == 1)
                                         {
                                             agent.balance += paid;
                                         }
@@ -4625,7 +4625,7 @@ namespace POS_Server.Controllers
                                         ct = entity.cashTransfer.Add(cashTr);
                                         cashIds += ct.cashTransId + ",";
                                         // decrease agent balance
-                                        if (agent.balanceType == 0)
+                                        if (agent.balanceType == 1)
                                         {
                                             if (paid <= (decimal)agent.balance)
                                             {
@@ -4637,7 +4637,7 @@ namespace POS_Server.Controllers
                                                 agent.balanceType = 1;
                                             }
                                         }
-                                        else if (agent.balanceType == 1)
+                                        else if (agent.balanceType == 0)
                                         {
                                             agent.balance += paid;
                                         }
