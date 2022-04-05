@@ -159,15 +159,21 @@ namespace POS.View.windows
                 if (!isPurchase && 
                (invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid) || (hasCredit == true && creditValue ==0)))
                 {
-                    if (invoice.totalNet - invoice.paid > 0)
+                    if (invoice.totalNet - invoice.paid > 0 && creditValue > 0)
                     {
+                        decimal paidVal = 0;
+                        if (creditValue >= (invoice.totalNet - invoice.paid))
+                            paidVal = (decimal)invoice.totalNet - (decimal)invoice.paid;
+                        else
+                            paidVal = creditValue;
+
                         cashTrasnfer = new CashTransfer();
 
                         ///////////////////////////////////////////////////
                         cashTrasnfer.agentId = invoice.agentId;
                         cashTrasnfer.invId = invoice.invoiceId;
                         cashTrasnfer.processType = "balance";
-                        cashTrasnfer.cash = invoice.totalNet - invoice.paid;
+                        cashTrasnfer.cash = paidVal;
                         listPayments.Add(cashTrasnfer);
                     }
                     isOk = true;
