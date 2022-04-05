@@ -450,14 +450,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="itemProfit">
+                        <Textbox Name="itemunitProfit">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!itemProfit.Value</Value>
+                                  <Value>=Fields!itemunitProfit.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -468,7 +468,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>itemProfit</rd:DefaultName>
+                          <rd:DefaultName>itemunitProfit</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -526,7 +526,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Total: </Value>
+                    <Value>TOTAL: </Value>
                     <Style>
                       <FontFamily>Montserrat</FontFamily>
                       <FontSize>16pt</FontSize>

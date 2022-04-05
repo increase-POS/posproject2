@@ -774,6 +774,7 @@ Parameters!trValueDiscount.Value)
                 r.totalNet = decimal.Parse(SectionData.DecTostring(r.totalNet));
                 r.invoiceProfit = decimal.Parse(SectionData.DecTostring(r.invoiceProfit));
                 r.itemProfit = decimal.Parse(SectionData.DecTostring(r.itemProfit));
+                r.itemunitProfit = decimal.Parse(SectionData.DecTostring(r.itemunitProfit));
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetProfit", tempquery));
