@@ -87,7 +87,7 @@ namespace POS.View.windows
             dg_transfers.Columns[0].Header = MainWindow.resourcemanager.GetString("trTransferNumberTooltip");
             dg_transfers.Columns[1].Header = MainWindow.resourcemanager.GetString("trDepositor");
             dg_transfers.Columns[2].Header = MainWindow.resourcemanager.GetString("trRecepient");
-            dg_transfers.Columns[4].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
+            dg_transfers.Columns[3].Header = MainWindow.resourcemanager.GetString("trCashTooltip");
 
         }
 
