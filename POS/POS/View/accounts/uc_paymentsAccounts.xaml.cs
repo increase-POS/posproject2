@@ -1646,7 +1646,7 @@ namespace POS.View.accounts
                 w.ShowDialog();
                 if (w.isActive)
                 {
-                    tb_cash.Text = w.sum.ToString();
+                    tb_cash.Text = SectionData.DecTostring(w.sum);
                     tb_cash.IsReadOnly = true;
                     invoicesLst.AddRange(w.selectedInvoices);
                 }

@@ -212,7 +212,7 @@ namespace POS.View.windows
 
                     sum += x;
 
-                    tb_sum.Text = " "+sum.ToString()+" ";
+                    tb_sum.Text = " "+ SectionData.DecTostring(sum) +" ";
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_invoices);
@@ -250,7 +250,7 @@ namespace POS.View.windows
 
                     sum -= x;
 
-                    tb_sum.Text = " "+sum.ToString()+" ";
+                    tb_sum.Text = " "+ SectionData.DecTostring(sum)+" ";
                 }
                 if (sender != null)
                     SectionData.EndAwait(grid_invoices);
