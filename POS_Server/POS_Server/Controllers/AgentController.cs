@@ -334,6 +334,7 @@ token = TokenManager.readToken(HttpContext.Current.Request);var strP = TokenMana
                                 agentObj.createDate = DateTime.Now;
                                 agentObj.updateDate = DateTime.Now;
                                 agentObj.updateUserId = agentObj.createUserId;
+                                agentObj.balanceType = 0;
                                 agent = agentEntity.Add(agentObj);
                             }
                         }
