@@ -3643,8 +3643,11 @@ namespace POS_Server.Controllers
                         {
                             foreach (itemsTransfer item in newObject)
                             {
-                                if (mainInvId == null && mainInvId == 0)
+  
+                                if (mainInvId == null || mainInvId == 0)
+                                {
                                     updateItemQuantity(item.itemUnitId.Value, branchId, (int)item.quantity, userId);
+                                }
                                 else
                                 {
                                     var itl = entity.itemsLocations.Where(x => x.invoiceId == mainInvId).ToList();
