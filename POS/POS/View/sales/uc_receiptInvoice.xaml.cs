@@ -2847,26 +2847,29 @@ namespace POS.View
         {
             try
             {
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
+                if (cb_customer.IsFocused || _InvoiceType == "sd")
                 {
-                    _SelectedCustomer = (int)cb_customer.SelectedValue;
-
-                    if (_InvoiceType == "sd")
-                        btn_updateCustomer.IsEnabled = true;
-
-                    var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
-                    if (cb_company.SelectedIndex == -1)
+                    TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                    if (elapsed.TotalMilliseconds > 100 && cb_customer.SelectedIndex != -1)
                     {
-                        if (c.payType != null && c.payType != "")
-                            cb_paymentProcessType.SelectedValue = c.payType;
-                        else
-                            cb_paymentProcessType.SelectedIndex = 0;
+                        _SelectedCustomer = (int)cb_customer.SelectedValue;
+
+                        if (_InvoiceType == "sd")
+                            btn_updateCustomer.IsEnabled = true;
+
+                        var c = customers.Where(x => x.agentId == _SelectedCustomer).FirstOrDefault();
+                        if (cb_company.SelectedIndex == -1)
+                        {
+                            if (c.payType != null && c.payType != "")
+                                cb_paymentProcessType.SelectedValue = c.payType;
+                            else
+                                cb_paymentProcessType.SelectedIndex = 0;
+                        }
                     }
-                }
-                else
-                {
-                    cb_customer.SelectedValue = _SelectedCustomer;
+                    else
+                    {
+                        cb_customer.SelectedValue = _SelectedCustomer;
+                    }
                 }
             }
             catch (Exception ex)
