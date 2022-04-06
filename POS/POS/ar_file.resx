@@ -3469,4 +3469,7 @@
   <data name="trMinStock" xml:space="preserve">
     <value>أدنى مخزون</value>
   </data>
+  <data name="trPartialPay" xml:space="preserve">
+    <value>دفع جزئي</value>
+  </data>
 </root>

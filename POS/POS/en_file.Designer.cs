@@ -6146,6 +6146,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to partial pay.
+        /// </summary>
+        internal static string trPartialPay {
+            get {
+                return ResourceManager.GetString("trPartialPay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to partial.
         /// </summary>
         internal static string trPartPaid {
