@@ -17,9 +17,9 @@ namespace POS.converters
             {
                 case "payed": return MainWindow.resourcemanager.GetString("trPaid_");
                 
-                case "unpayed": return MainWindow.resourcemanager.GetString("trUnPaid");
+                case "unpayed": return MainWindow.resourcemanager.GetString("trCredit");
 
-                case "partpayed": return MainWindow.resourcemanager.GetString("trCredit");
+                case "partpayed": return MainWindow.resourcemanager.GetString("trPartialPay");
 
                 default: return "";
               
