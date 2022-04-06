@@ -1198,6 +1198,8 @@ var strP = TokenManager.GetPrincipal(token);
                         #region items for sale
                         else if (defaultSale != 0)
                         {
+                            ItemsLocationsController ilc = new ItemsLocationsController();
+
                             unitPredicate = unitPredicate.Or(unit => unit.defaultSale == 1);
 
                             var itemsList = (from I in entity.items.Where(searchPredicate)
@@ -1303,7 +1305,8 @@ var strP = TokenManager.GetPrincipal(token);
                                 if (iunlist.itemUnitId != null && iunlist.itemUnitId != 0)
                                 {
                                     int itemUnitId = (int)iunlist.itemUnitId.Value;
-                                    int count = getItemUnitAmount(itemUnitId, branchId);
+                                    //int count = getItemUnitAmount(itemUnitId, branchId);
+                                    int count = ilc.getBranchAmount(itemUnitId, branchId);
                                     iunlist.itemCount = count;
                                 }
                                 foreach (var row in unt)
@@ -1384,6 +1387,8 @@ var strP = TokenManager.GetPrincipal(token);
                                 iunlist.price = iunlist.price - totaldis;
                                 iunlist.priceTax = iunlist.price + (iunlist.price * iunlist.taxes / 100);
                             }
+
+
                             searchPredicate = searchPredicate.And(x => x.type == "sr");
                             var serviceItems = (from I in entity.items.Where(searchPredicate)
                                              join u in entity.itemsUnits on I.itemId equals u.itemId
@@ -1415,6 +1420,7 @@ var strP = TokenManager.GetPrincipal(token);
 
                                              }).DistinctBy(x => x.itemId)
                                      .ToList();
+
                             foreach (var iunlist in serviceItems)
                             {
                                 iunlist.itemCount = 0;
