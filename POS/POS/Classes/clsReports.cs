@@ -1340,7 +1340,7 @@ Parameters!trValueDiscount.Value)
 
             }
             rep.DataSources.Add(new ReportDataSource("DataSetBalanceSTS", query));
-            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo")));
+            paramarr.Add(new ReportParameter("trNum", MainWindow.resourcemanagerreport.GetString("trNo.")));
             paramarr.Add(new ReportParameter("trPOS", MainWindow.resourcemanagerreport.GetString("trPOS")));
             paramarr.Add(new ReportParameter("trOpenDate", MainWindow.resourcemanagerreport.GetString("trOpenDate")));
             paramarr.Add(new ReportParameter("trOpenCash", MainWindow.resourcemanagerreport.GetString("trOpenCash")));
@@ -1380,7 +1380,7 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("CloseCash", SectionData.DecTostring(openclosrow.cash)));
             paramarr.Add(new ReportParameter("pos", openclosrow.branchName + " / " + openclosrow.posName));
 
-            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo")));
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo.")));
             paramarr.Add(new ReportParameter("trDate", MainWindow.resourcemanagerreport.GetString("trDate")));
             paramarr.Add(new ReportParameter("trDescription", MainWindow.resourcemanagerreport.GetString("trDescription")));
             paramarr.Add(new ReportParameter("trCashTooltip", MainWindow.resourcemanagerreport.GetString("trCashTooltip")));
