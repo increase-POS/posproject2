@@ -173,14 +173,15 @@ namespace POS.View.windows
                     isOk = true;
                     this.Close();
                 }
-                else if (isPurchase /*&& hasCredit == true*/)
+                else if (isPurchase && hasCredit == true)
                 {
-                    // اختبار اذا كان معو المبلغ
-                    //if ()
-                    //{
-
-                    //}
-                    //    else
+                    if(listPayments.Where(x => x.processType == "cash").Count() > 0 &&
+                        listPayments.Where(x => x.processType == "cash").FirstOrDefault().cash > MainWindow.posLogIn.balance)
+                    {
+                        isOk = false;
+                        Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopNotEnoughBalance"), animation: ToasterAnimation.FadeIn);
+                    }
+                    else
                     {
                         if (invoice.totalNet - invoice.paid > 0)
                         {
