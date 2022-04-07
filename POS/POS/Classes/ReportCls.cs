@@ -353,7 +353,7 @@ namespace POS.Classes
             string purpose = "";
             string recived_by = "";
             string user_name = cashtrans.createUserName + " " + cashtrans.createUserLName;
-            string job = "Employee"; //cashtrans.createUserJob;
+            string job = MainWindow.resourcemanagerreport.GetString("trAccoutant");
             string pay_to;
 
             if (cashtrans.side == "u")

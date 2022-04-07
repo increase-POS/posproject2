@@ -6263,7 +6263,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to سند دفع.
+        ///   Looks up a localized string similar to سند صرف.
         /// </summary>
         internal static string trPayVocher {
             get {
