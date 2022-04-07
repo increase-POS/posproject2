@@ -558,6 +558,11 @@ namespace POS.View
                 }
             }
         }
+
+        List<Button> cardBtnList = new List<Button>();
+        List<Ellipse> cardEllipseList = new List<Ellipse>();
+        bool hasProcessNum = false;
+
         void InitializeCardsPic(IEnumerable<Card> cards)
         {
             #region cardImageLoad
@@ -589,14 +594,17 @@ namespace POS.View
                 ellipse.Width = 35;
                 ellipse.FlowDirection = FlowDirection.LeftToRight;
                 ellipse.ToolTip = item.name;
+                ellipse.Tag = item.cardId;
                 userImageLoad(ellipse, item.image);
                 Grid.SetColumn(ellipse, userCount);
                 grid.Children.Add(ellipse);
+                cardEllipseList.Add(ellipse);
                 #endregion
                 #endregion
                 button.Content = grid;
                 #endregion
                 dkp_cards.Children.Add(button);
+                cardBtnList.Add(button);
 
             }
             #endregion
@@ -639,11 +647,23 @@ namespace POS.View
             Card card = button.DataContext as Card;
             txt_card.Text = card.name;
             if (card.hasProcessNum.Value)
+            {
                 tb_processNum.Visibility = Visibility.Visible;
+                hasProcessNum = true;
+            }
             else
+            {
                 tb_processNum.Visibility = Visibility.Collapsed;
-
-            //MessageBox.Show("Hey you Click me! I'm Card: " + _SelectedCard);
+                hasProcessNum = false;
+            }
+            //set border color
+            foreach (var el in cardEllipseList)
+            {
+                if ((int)el.Tag == (int)button.Tag)
+                    el.Stroke = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                else
+                    el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+            }
         }
         private void clearImg(Ellipse ellipse)
         {
@@ -940,7 +960,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -990,6 +1010,23 @@ namespace POS.View
                         dp_desrvedDate.IsEnabled = false;
                         gd_card.Visibility = Visibility.Visible;
                         // SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+                        txt_card.Text = "";
+                        tb_processNum.Clear();
+                        tb_processNum.Visibility = Visibility.Collapsed;
+                        foreach (var el in cardEllipseList)
+                        {
+                            el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                        }
+                        CashTransfer cashTrasnfer = new CashTransfer();// cach transfer model
+                        if (invoice.invoiceId != 0 && invoice.invType == "p")//get payment information          
+                        {
+                            cashTrasnfer = await cashTrasnfer.GetByInvId(invoice.invoiceId);
+                        }
+                        if (cashTrasnfer.cardId != null)
+                        {
+                            Button btn = cardBtnList.Where(c => (int)c.Tag == cashTrasnfer.cardId.Value).FirstOrDefault();
+                            card_Click(btn, null);
+                        }
                         break;
                     case 3://multiple
                         //gd_theRest.Visibility = Visibility.Collapsed;
