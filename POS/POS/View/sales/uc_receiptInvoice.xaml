@@ -430,12 +430,13 @@
                                        HorizontalAlignment="Left" Margin="20,5,5,5"/>
                             <Grid  Margin="5" Grid.Row="1"  >
                                 <ComboBox x:Name="cb_paymentProcessType"  Grid.Row="2"
-                                  Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
-                             materialDesign:HintAssist.Hint="Payment Process Type..."  
-                           TextBlock.FontSize="12"   Background="#f8f8f8" LostFocus="input_LostFocus"
-                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                Grid.Column="0" Height="40"   
-                           BorderBrush="#737373" BorderThickness="0" SelectionChanged="Cb_paymentProcessType_SelectionChanged" >
+                                          Padding="10,0,5,0"  TextBlock.Foreground="#4E4E4E"
+                                          materialDesign:HintAssist.Hint="Payment Process Type..."  
+                                          TextBlock.FontSize="12"   Background="#f8f8f8" LostFocus="input_LostFocus"
+                                          Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                          Grid.Column="0" Height="40"   
+                                          BorderBrush="#737373" BorderThickness="0" 
+                                          SelectionChanged="Cb_paymentProcessType_SelectionChanged" >
                                 </ComboBox>
                                 <Path Fill="#E81123" x:Name="p_errorpaymentProcessType" Stretch="Fill" Margin="5,5,15,5"
                               HorizontalAlignment="Right" Grid.Column="2"  Visibility="Collapsed"   
@@ -1048,13 +1049,14 @@
                         </StackPanel>
                         
                         <DataGrid x:Name="dg_billDetails"  Margin="5,5" Grid.Row="1"   Grid.ColumnSpan="2"    Background="White"
-                      materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
-                         IsReadOnly="False" CanUserAddRows="False"   BeginningEdit="Dg_billDetails_BeginningEdit" 
-                        PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
-                        AutoGenerateColumns="False" CellEditEnding="Dg_billDetails_CellEditEnding"
-                        ColumnWidth="SizeToHeader" CanUserSortColumns="False"
+                                  materialDesign:DataGridAssist.CornerRadius="5" Visibility="Visible"
+                                  IsReadOnly="False" CanUserAddRows="False"   AutoGenerateColumns="False" 
+                                  ColumnWidth="SizeToHeader" CanUserSortColumns="False"
                                   VirtualizingStackPanel.IsVirtualizing="False"  
-                                  EnableRowVirtualization="True" EnableColumnVirtualization="True" >
+                                  EnableRowVirtualization="True" EnableColumnVirtualization="True"
+                                  BeginningEdit="Dg_billDetails_BeginningEdit" 
+                                  PreviewKeyDown="Dg_billDetails_PreviewKeyDown"
+                                  CellEditEnding="Dg_billDetails_CellEditEnding">
                             <DataGrid.Resources>
                                 <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"></SolidColorBrush>
                                 <Style x:Key="serialButtonStyle" TargetType="{x:Type Button}">

@@ -2270,7 +2270,7 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+       
         public async Task fillInvoiceInputs(Invoice invoice)
         {
             configurProcessType();
@@ -5551,7 +5551,7 @@ namespace POS.View
             }
         }
 
-        private void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void Cb_paymentProcessType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
@@ -5566,7 +5566,7 @@ namespace POS.View
                 {
                     cb_paymentProcessType.SelectedValue = _SelectedPaymentType;
                 }
-
+               
                 switch (cb_paymentProcessType.SelectedIndex)
                 {
                     case 0://cash
@@ -5600,7 +5600,23 @@ namespace POS.View
                         tb_cashPaid.Text = txt_theRest.Text = "0";
                         dp_desrvedDate.IsEnabled = false;
                         gd_card.Visibility = Visibility.Visible;
-
+                        txt_card.Text = "";
+                        tb_processNum.Clear();
+                        tb_processNum.Visibility = Visibility.Collapsed;
+                        foreach (var el in cardEllipseList)
+                        {
+                            el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+                        }
+                        CashTransfer cashTrasnfer = new CashTransfer();// cach transfer model
+                        if (invoice.invoiceId !=0 && invoice.invType == "s")//get payment information          
+                        {
+                            cashTrasnfer = await cashTrasnfer.GetByInvId(invoice.invoiceId);
+                        }
+                        if (cashTrasnfer.cardId != null)
+                        {
+                            Button btn = cardBtnList.Where(c => (int)c.Tag == cashTrasnfer.cardId.Value).FirstOrDefault();
+                            card_Click(btn, null);
+                        }
                         SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
                         break;
                     case 3://multiple
@@ -5627,6 +5643,11 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
+
+        List<Button> cardBtnList = new List<Button>();
+        List<Ellipse> cardEllipseList = new List<Ellipse>();
+        bool hasProcessNum = false;
+
         void InitializeCardsPic(IEnumerable<Card> cards)
         {
             #region cardImageLoad
@@ -5658,30 +5679,47 @@ namespace POS.View
                 ellipse.Width = 35;
                 ellipse.FlowDirection = FlowDirection.LeftToRight;
                 ellipse.ToolTip = item.name;
+                ellipse.Tag = item.cardId;
                 userImageLoad(ellipse, item.image);
                 Grid.SetColumn(ellipse, userCount);
                 grid.Children.Add(ellipse);
+                cardEllipseList.Add(ellipse);
                 #endregion
                 #endregion
                 button.Content = grid;
                 #endregion
                 dkp_cards.Children.Add(button);
-
+                cardBtnList.Add(button);
             }
             #endregion
         }
         void card_Click(object sender, RoutedEventArgs e)
         {
+            SectionData.clearTextBlockValidate(txt_card, p_errorCard);
             var button = sender as Button;
             _SelectedCard = int.Parse(button.Tag.ToString());
-            //txt_card.Text = button.DataContext.ToString();
+
             Card card = button.DataContext as Card;
+           
             txt_card.Text = card.name;
             if (card.hasProcessNum.Value)
+            {
                 tb_processNum.Visibility = Visibility.Visible;
+                hasProcessNum = true;
+            }
             else
+            {
                 tb_processNum.Visibility = Visibility.Collapsed;
-
+                hasProcessNum = false;
+            }
+            //set border color
+            foreach (var el in cardEllipseList)
+            {
+                if ((int)el.Tag == (int)button.Tag)
+                    el.Stroke = Application.Current.Resources["MainColorBlue"] as SolidColorBrush;
+                else
+                    el.Stroke = Application.Current.Resources["MainColorOrange"] as SolidColorBrush;
+            }
         }
 
         ImageBrush brush = new ImageBrush();
