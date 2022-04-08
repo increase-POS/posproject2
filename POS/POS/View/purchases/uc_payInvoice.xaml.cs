@@ -2543,22 +2543,25 @@ namespace POS.View
         {
             try
             {
-                TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
-                if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
+                if (cb_vendor.IsFocused || _InvoiceType == "pd")
                 {
-                    _SelectedVendor = (int)cb_vendor.SelectedValue;
-                    if (_InvoiceType == "pd")
-                        btn_updateVendor.IsEnabled = true;
-                    var v = vendorsL.Where(x => x.agentId == _SelectedVendor).FirstOrDefault();
-                    if (v.payType != null)
-                        cb_paymentProcessType.SelectedValue = v.payType;
-                    else
-                        cb_paymentProcessType.SelectedIndex = 0;
+                    TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
+                    if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)
+                    {
+                        _SelectedVendor = (int)cb_vendor.SelectedValue;
+                        if (_InvoiceType == "pd")
+                            btn_updateVendor.IsEnabled = true;
+                        var v = vendorsL.Where(x => x.agentId == _SelectedVendor).FirstOrDefault();
+                        if (v.payType != null)
+                            cb_paymentProcessType.SelectedValue = v.payType;
+                        else
+                            cb_paymentProcessType.SelectedIndex = 0;
 
-                }
-                else
-                {
-                    cb_vendor.SelectedValue = _SelectedVendor;
+                    }
+                    else
+                    {
+                        cb_vendor.SelectedValue = _SelectedVendor;
+                    }
                 }
 
             }
