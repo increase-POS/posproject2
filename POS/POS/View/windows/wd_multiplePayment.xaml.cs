@@ -507,10 +507,17 @@ namespace POS.View.windows
                         }
                         else if (cb_paymentProcessType.SelectedValue.ToString().Equals("card"))
                         {
-                            cashTrasnfer.cardId = _SelectedCard;
-                            cashTrasnfer.docNum = tb_processNum.Text;
-
-                            s = txt_card.Text + " : " + cashTrasnfer.cash;
+                            if (_SelectedCard == -1)
+                            {
+                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trSelectCreditCard"), animation: ToasterAnimation.FadeIn);
+                                return;
+                            }
+                            else
+                            {
+                                cashTrasnfer.cardId = _SelectedCard;
+                                cashTrasnfer.docNum = tb_processNum.Text;
+                                s = txt_card.Text + " : " + cashTrasnfer.cash;
+                            }
                         }
 
 

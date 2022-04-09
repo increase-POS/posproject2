@@ -2545,7 +2545,7 @@ namespace POS.View
         {
             try
             {
-                if (cb_vendor.IsFocused || _InvoiceType == "pd")
+                if (cb_vendor.IsFocused /*|| _InvoiceType == "pd"*/)
                 {
                     TimeSpan elapsed = (DateTime.Now - _lastKeystroke);
                     if (elapsed.TotalMilliseconds > 100 && cb_vendor.SelectedIndex != -1)

@@ -900,6 +900,7 @@ namespace POS.View.accounts
                 grid_doc.Visibility = Visibility.Collapsed;
                 tb_docNumCard.Visibility = Visibility.Collapsed;
                 grid_cheque.Visibility = Visibility.Collapsed;
+                tb_docNumCheque.Visibility = Visibility.Collapsed;
                 SectionData.clearValidate(tb_cash, p_errorCash);
                 SectionData.clearComboBoxValidate(cb_depositFrom, p_errorDepositFrom);
                 SectionData.clearComboBoxValidate(cb_depositorV, p_errordepositor);
@@ -1199,10 +1200,10 @@ namespace POS.View.accounts
                     case 0://cash
                         grid_doc.Visibility = Visibility.Collapsed;
                         grid_cheque.Visibility = Visibility.Collapsed;
+                        tb_docNumCheque.Visibility = Visibility.Collapsed;
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
-                        tb_docNumCheque.Visibility = Visibility.Collapsed;
-                        SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
+                         SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNum, p_errorDocNum);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
@@ -1222,9 +1223,9 @@ namespace POS.View.accounts
                     case 1://doc
                         grid_doc.Visibility = Visibility.Visible;
                         grid_cheque.Visibility = Visibility.Collapsed;
+                        tb_docNumCheque.Visibility = Visibility.Collapsed;
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
-                        tb_docNumCheque.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
                         SectionData.clearValidate(tb_docNumCheque, p_errorDocNum);
                         SectionData.clearTextBlockValidate(txt_card, p_errorCard);
@@ -1239,6 +1240,8 @@ namespace POS.View.accounts
                     case 2://cheque
                         grid_doc.Visibility = Visibility.Collapsed;
                         grid_cheque.Visibility = Visibility.Visible;
+                        tb_docNumCheque.Visibility = Visibility.Visible;
+
                         gd_card.Visibility = Visibility.Collapsed;
                         tb_docNumCard.Visibility = Visibility.Collapsed;
                         SectionData.clearValidate(tb_docNumCard, p_errorDocCard);
@@ -1255,6 +1258,8 @@ namespace POS.View.accounts
                     case 3://card
                         grid_doc.Visibility = Visibility.Collapsed;
                         grid_cheque.Visibility = Visibility.Collapsed;
+                        tb_docNumCheque.Visibility = Visibility.Collapsed;
+
                         gd_card.Visibility = Visibility.Visible;
                         if (cashtrans.cardId != null)
                         {

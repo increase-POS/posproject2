@@ -102,6 +102,9 @@ namespace POS.View.windows
 
                 if (sender != null)
                     SectionData.EndAwait(grid_generatePackage);
+
+                txb.Focus();
+                txb.SelectionStart = txb.Text.Length;
             }
             catch (Exception ex)
             {
