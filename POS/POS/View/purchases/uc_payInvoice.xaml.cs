@@ -1763,7 +1763,7 @@ namespace POS.View
                         }
                         clearInvoice();
                         _InvoiceType = "pd";
-                        refreshDraftNotification();
+                        //refreshDraftNotification();
                     }
                     else if (billDetails.Count == 0)
                     {
@@ -1773,6 +1773,8 @@ namespace POS.View
                 }
                 else
                     clearInvoice();
+
+                setNotifications();
 
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
