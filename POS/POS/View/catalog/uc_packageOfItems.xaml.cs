@@ -149,7 +149,7 @@ namespace POS.View
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
                 MainWindow.mainWindow.initializationMainTrack(this.Tag.ToString(), 1);
-                //btn_items.IsEnabled = false;
+                btn_items.IsEnabled = false;
 
                 btns = new Button[] { btn_firstPage, btn_prevPage, btn_activePage, btn_nextPage, btn_lastPage };
                 catigoriesAndItemsView.ucPackageOfItems = this;
@@ -236,7 +236,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
 
                 //clear
-                //btn_items.IsEnabled = false;
+                btn_items.IsEnabled = false;
 
                 tb_code.Clear();
                 tb_name.Clear();
@@ -498,10 +498,11 @@ namespace POS.View
                 {
                     item = dg_items.SelectedItem as Item;
                     this.DataContext = item;
+
                 }
                 if (item != null)
                 {
-                    //btn_items.IsEnabled = true;
+                    btn_items.IsEnabled = true;
                     cb_categorie.SelectedValue = item.categoryId;
                     List<ItemUnit> itemUnits = new List<ItemUnit>();
                     itemUnits = await itemUnitModel.Getall();
@@ -587,7 +588,7 @@ namespace POS.View
             if (item != null)
             {
                 this.DataContext = item;
-                //btn_items.IsEnabled = true;
+                btn_items.IsEnabled = true;
                 cb_categorie.SelectedValue = item.categoryId;
                 List<ItemUnit> itemUnits = new List<ItemUnit>();
                 itemUnits = await itemUnitModel.Getall();
