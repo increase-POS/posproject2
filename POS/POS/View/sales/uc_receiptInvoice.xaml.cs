@@ -1678,7 +1678,7 @@ namespace POS.View
                                 {
                                     await saveOrder("s");
                                     #region savepayment
-                                    if (invoice.shippingCompanyId == null)
+                                    if (invoice.shippingCompanyId == null || (invoice.shippingCompanyId != null && invoice.shipUserId == null))
                                     {
                                         if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                                         {
@@ -1707,7 +1707,7 @@ namespace POS.View
                                 {
                                     await saveSaleInvoice("s");
                                     #region savepayment
-                                    if (invoice.shippingCompanyId == null)
+                                    if (invoice.shippingCompanyId == null || (invoice.shippingCompanyId != null && invoice.shipUserId == null))
                                     {
                                         if (cb_paymentProcessType.SelectedValue.ToString() == "multiple")
                                         {
