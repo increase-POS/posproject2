@@ -95,6 +95,7 @@ namespace POS.View.reports
                 #endregion
 
                 statement = await statisticModel.GetStatement();
+                //statement = statement.Where(s => s.processType != "inv").ToList();
 
                 Btn_vendor_Click(btn_vendor ,null);
 
@@ -357,7 +358,7 @@ namespace POS.View.reports
                 chk_allVendors.IsChecked = true;
                 fillDateCombo(cb_vendorsDate);
                 //customerCombo = statisticModel.getCustomerForStatementCombo(statement, "c");
-                customerCombo = statisticModel.getVendorCombo(statement, "c").Where(x => x.VendorId != null); ;
+                customerCombo = statisticModel.getVendorCombo(statement, "c").Where(x => x.VendorId != null); 
                 fillVendorCombo(customerCombo, cb_vendors);
 
                 if (sender != null)
@@ -439,8 +440,8 @@ namespace POS.View.reports
 
                 chk_allVendors.IsChecked = true;
                 fillDateCombo(cb_vendorsDate);
-                //ShippingCombo = statisticModel.getShippingForStatementCombo(statement);
-                ShippingCombo = statisticModel.getShippingCombo(statement);
+                ShippingCombo = statisticModel.getShippingForStatementCombo(statement);
+                //ShippingCombo = statisticModel.getShippingCombo(statement);
                 fillShippingCombo(ShippingCombo, cb_vendors);
 
                 if (sender != null)
