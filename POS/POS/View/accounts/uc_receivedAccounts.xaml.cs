@@ -1343,6 +1343,7 @@ namespace POS.View.accounts
                     cb_depositorSh.Text = "";
                     break;
                 case 4://shipping company
+                    cb_depositorSh.SelectedIndex = -1;
                     cb_depositorU.SelectedIndex = -1;
                     cb_depositorV.Visibility = Visibility.Collapsed;
                     cb_depositorC.Visibility = Visibility.Collapsed;
