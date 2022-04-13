@@ -956,6 +956,7 @@ namespace POS.View.accounts
 
                 btn_confirm.Content = MainWindow.resourcemanager.GetString("trIsConfirmed");
                 btn_confirm.IsEnabled = false;
+                btn_cancel.IsEnabled = false;
             }
         }
         private void Btn_clear_Click(object sender, RoutedEventArgs e)
