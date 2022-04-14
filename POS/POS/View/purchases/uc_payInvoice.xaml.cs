@@ -229,7 +229,8 @@ namespace POS.View
                 MainWindow.mainWindow.Opacity = 0.2;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                 //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.contentText = "Do you want save pay invoice in drafts?";
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+                //w.contentText = "Do you want save pay invoice in drafts?";
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
@@ -251,7 +252,8 @@ namespace POS.View
                 MainWindow.mainWindow.Opacity = 0.2;
                 wd_acceptCancelPopup w = new wd_acceptCancelPopup();
                 //w.contentText = MainWindow.resourcemanager.GetString("trMessageBoxActivate");
-                w.contentText = "Do you want save pay invoice in drafts?";
+                    w.contentText = MainWindow.resourcemanager.GetString("trSaveInvoiceNotification");
+                //w.contentText = "Do you want save pay invoice in drafts?";
                 w.ShowDialog();
                 MainWindow.mainWindow.Opacity = 1;
                 #endregion
