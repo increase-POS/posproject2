@@ -2558,8 +2558,8 @@ namespace POS.View
                         var v = vendorsL.Where(x => x.agentId == _SelectedVendor).FirstOrDefault();
                         if (v.payType != null)
                             cb_paymentProcessType.SelectedValue = v.payType;
-                        else
-                            cb_paymentProcessType.SelectedIndex = 0;
+                        //else
+                        //    cb_paymentProcessType.SelectedIndex = 0;
 
                     }
                     else

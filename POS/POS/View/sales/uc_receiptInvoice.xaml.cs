@@ -2862,8 +2862,8 @@ namespace POS.View
                         {
                             if (c.payType != null && c.payType != "")
                                 cb_paymentProcessType.SelectedValue = c.payType;
-                            else
-                                cb_paymentProcessType.SelectedIndex = 0;
+                            //else
+                            //    cb_paymentProcessType.SelectedIndex = 0;
                         }
                     }
                     else
