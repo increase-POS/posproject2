@@ -3472,4 +3472,7 @@
   <data name="trPartialPay" xml:space="preserve">
     <value>دفع جزئي</value>
   </data>
+  <data name="trOrderreport" xml:space="preserve">
+    <value>الطلبات</value>
+  </data>
 </root>

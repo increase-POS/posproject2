@@ -3493,4 +3493,7 @@ Please add Email in setting</value>
   <data name="trPartialPay" xml:space="preserve">
     <value>partial pay</value>
   </data>
+  <data name="trOrderreport" xml:space="preserve">
+    <value>Orders</value>
+  </data>
 </root>
