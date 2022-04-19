@@ -2557,7 +2557,11 @@ namespace POS.View
                             btn_updateVendor.IsEnabled = true;
                         var v = vendorsL.Where(x => x.agentId == _SelectedVendor).FirstOrDefault();
                         if (v.payType != null)
+                        {
                             cb_paymentProcessType.SelectedValue = v.payType;
+                            Animations.shakingControl(cb_paymentProcessType);
+                            Animations.shakingControl(txt_payment);
+                        }
                         //else
                         //    cb_paymentProcessType.SelectedIndex = 0;
 
