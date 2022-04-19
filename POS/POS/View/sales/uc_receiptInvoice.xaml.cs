@@ -5776,19 +5776,24 @@ namespace POS.View
             }
         }
 
-        private void Btn_clearCustomer_Click(object sender, RoutedEventArgs e)
+        private async void Btn_clearCustomer_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (sender != null)
                     SectionData.StartAwait(grid_main);
+
+                await RefrishCustomers();
+
                 _SelectedCustomer = -1;
                 cb_customer.SelectedIndex = -1;
                 dp_desrvedDate.SelectedDate = null;
                 tb_note.Clear();
+                invoice.agentId = 0;
 
                 btn_updateCustomer.IsEnabled = false;
                 SectionData.clearComboBoxValidate(cb_customer, p_errorCustomer);
+
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }

@@ -4498,8 +4498,12 @@ namespace POS.View
         {
             try
             {
+                if (sender != null)
+                    SectionData.StartAwait(grid_main);
                 clearVendor();
                 btn_updateVendor.IsEnabled = false;
+                if (sender != null)
+                    SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
             {
@@ -4508,8 +4512,9 @@ namespace POS.View
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void clearVendor()
+        private async void clearVendor()
         {
+            await RefrishVendors();
             cb_vendor.SelectedIndex = -1;
             cb_vendor.Text = "";
             dp_desrvedDate.SelectedDate = null;
@@ -4518,6 +4523,8 @@ namespace POS.View
             dp_invoiceDate.SelectedDate = null;
             dp_invoiceDate.Text = "";
             tb_note.Text = "";
+            invoice.agentId = 0;
+
         }
 
         private void Tb_barcode_TextChanged(object sender, TextChangedEventArgs e)
