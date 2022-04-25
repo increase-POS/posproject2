@@ -58,7 +58,7 @@ namespace POS.View.windows
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
                 }
 
-                //translate();
+                translate();
                 #endregion
 
                 txt_userName.Text = MainWindow.userLogin.fullName;
@@ -78,7 +78,12 @@ namespace POS.View.windows
         }
         private void translate()
         {
-
+            txt_userNameTitle.Text = MainWindow.resourcemanager.GetString("trUserName") + ":";  
+            txt_posTitle.Text = MainWindow.resourcemanager.GetString("trPOS") + ":";  
+            if(MainWindow.loginBranch.type == "b")
+                txt_branchTitle.Text = MainWindow.resourcemanager.GetString("tr_Branch") + ":";
+            else
+                txt_branchTitle.Text = MainWindow.resourcemanager.GetString("tr_Store") + ":";
         }
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
