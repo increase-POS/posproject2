@@ -2383,12 +2383,14 @@ namespace POS.View
                 }
                 else
                 {
-                    gd_theRest.Visibility = Visibility.Visible;
+                    cb_paymentProcessType.SelectedValue = "balance";
+                    gd_theRest.Visibility = Visibility.Collapsed;
                     tb_cashPaid.Text = txt_theRest.Text = "0";
                     gd_card.Visibility = Visibility.Collapsed;
                     _SelectedCard = -1;
                     txt_card.Text = "";
                     tb_processNum.Clear();
+                    //gd_theRest.Visibility = Visibility.Visible;
                 }
             }
             else if (invoice.invType == "or" && invoice.shippingCompanyId != null)

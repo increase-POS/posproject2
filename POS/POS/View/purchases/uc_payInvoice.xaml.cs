@@ -2066,7 +2066,12 @@ namespace POS.View
             {
                 //payments
                 var cashTransfers = await cashTransfer.GetListByInvId(invoice.invoiceId);
-                if (cashTransfers.Count == 1)
+                if (cashTransfers.Count == 0)
+                {
+                    cb_paymentProcessType.SelectedValue = "balance";
+
+                }
+                else if (cashTransfers.Count == 1)
                 {
                     cb_paymentProcessType.SelectedValue = cashTransfers[0].processType;
                     try
