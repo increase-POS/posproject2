@@ -1598,6 +1598,7 @@ namespace POS.View.storage
                                     if (d.Count == 0)
                                     {
                                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorQuantIsZeroToolTip"), animation: ToasterAnimation.FadeIn);
+                                            Window.GetWindow(this).Opacity = 1;
                                         if (sender != null)
                                             SectionData.EndAwait(grid_main);
                                         return;
@@ -2275,6 +2276,13 @@ namespace POS.View.storage
                                 var combo = (ComboBox)cp.ContentTemplate.FindName("cbm_unitItemDetails", cp);
                                 //var combo = (combo)cell.Content;
                                 combo.SelectedValue = (int)item.itemUnitId;
+
+                                #region disable & enable unit comboBox
+                                if (_ProcessType == "ex" || _ProcessType == "im" || _ProcessType == "exw" || _ProcessType == "imw")
+                                    combo.IsEnabled = false;
+                                else
+                                    combo.IsEnabled = true;
+                                #endregion
                             }
                         }
                     }
@@ -2314,7 +2322,13 @@ namespace POS.View.storage
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void Dg_billDetails_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
+        {
+            int column = dg_billDetails.CurrentCell.Column.DisplayIndex;
+            if ((_ProcessType == "ex" || _ProcessType == "im" || _ProcessType == "exw" || _ProcessType == "imw")
+                && column == 3)
+                e.Cancel = true;
+        }
         #region navigation buttons
         private void navigateBtnActivate()
         {
