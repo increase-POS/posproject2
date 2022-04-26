@@ -145,7 +145,7 @@
                     Background="{x:Null}" BorderBrush="{x:Null}"  
                     Padding="0"  >
                         <Path Fill="White"  Stretch="Fill"  
-                               Width="25" Height="25" 
+                               Width="25" Height="25" FlowDirection="LeftToRight"  
                          VerticalAlignment="Center" 
                             Data="M9.3,23.9c0,0.1-0.1,0.2-0.2,0.2H3.4c-0.1,0-0.2-0.1-0.2-0.2c0-0.1,0.1-0.2,0.2-0.2h5.7
 	C9.2,23.7,9.3,23.8,9.3,23.9z M9.7,22.4H4c-0.1,0-0.2,0.1-0.2,0.2c0,0.1,0.1,0.2,0.2,0.2h5.7c0.1,0,0.2-0.1,0.2-0.2
