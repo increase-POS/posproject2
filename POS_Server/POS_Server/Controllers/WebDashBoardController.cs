@@ -58,7 +58,7 @@ namespace POS_Server.Controllers
                 #endregion
                 //try
                 {
-                    DashBoardModel dashBoardModel = new DashBoardModel();
+                    WebDashBoardModel dashBoardModel = new WebDashBoardModel();
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var searchPredicate = PredicateBuilder.New<invoices>();
