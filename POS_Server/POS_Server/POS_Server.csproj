@@ -425,7 +425,7 @@
     <Compile Include="Models\CategoryModel.cs" />
     <Compile Include="Models\CardModel.cs" />
     <Compile Include="Models\CouponModel.cs" />
-    <Compile Include="Models\DashBoardModel.cs" />
+    <Compile Include="Models\WebDashBoardModel.cs" />
     <Compile Include="Models\DashModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
