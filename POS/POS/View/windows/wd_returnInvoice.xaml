@@ -71,7 +71,7 @@
                 </Path>
                 
                 <Button   Grid.Row="3"   Content="Select"
-                       Margin="10,5" x:Name="btn_save" Click="Btn_save_Click"
+                       Margin="10,10" x:Name="btn_save" Click="Btn_save_Click"
                           Background="#178DD2" BorderBrush="{x:Null}" />
             </Grid>
         </Border>

@@ -1362,7 +1362,7 @@ namespace POS.View
                 if (dp_desrvedDate.SelectedDate != null)
                 {
                     desrveDate = (DateTime)dp_desrvedDate.SelectedDate.Value.Date;
-                    if (desrveDate.Date < DateTime.Now.Date)
+                    if (desrveDate.Date < DateTime.Now.Date && dp_desrvedDate.IsFocused)
                     {
                         Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trErrorInvDateAfterDeserveToolTip"), animation: ToasterAnimation.FadeIn);
                         dp_desrvedDate.Text = "";
