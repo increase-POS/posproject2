@@ -507,12 +507,13 @@ namespace POS.Classes
             }
             return item;
         }
-         public async Task<Invoice> GetInvoicesByBarcodeAndUser(string invNum,int userId)
+         public async Task<Invoice> GetInvoicesByBarcodeAndUser(string invNum,int userId,int branchId)
         {
             Invoice item = new Invoice();
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("invNum", invNum);
             parameters.Add("userId", userId.ToString());
+            parameters.Add("branchId", branchId.ToString());
             //#################
             IEnumerable<Claim> claims = await APIResult.getList("Invoices/GetInvoicesByBarcodeAndUser", parameters);
 

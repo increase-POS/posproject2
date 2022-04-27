@@ -159,11 +159,11 @@ namespace POS.View.windows
  
             if (prefix == "pi" && fromPurchase)
             {
-                invoice = await invoiceModel.GetInvoicesByBarcodeAndUser(barcode,MainWindow.userID.Value);                
+                invoice = await invoiceModel.GetInvoicesByBarcodeAndUser(barcode,MainWindow.userID.Value, MainWindow.branchID.Value);                
             }
             else if(prefix == "si" && !fromPurchase)
             {
-                invoice = await invoiceModel.GetInvoicesByBarcodeAndUser(barcode, MainWindow.userID.Value);
+                invoice = await invoiceModel.GetInvoicesByBarcodeAndUser(barcode, MainWindow.userID.Value, MainWindow.branchID.Value);
             }
             if (invoice == null) // check if agent invoice number
             {
