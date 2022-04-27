@@ -62,7 +62,7 @@
                                     </EventTrigger>
                                 </Button.Triggers>
                                 <Path Name="path_invoice" Fill="#4E4E4E" Stretch="Fill" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-1,0,0" 
-                                       Width="25" Height="25"   
+                                       Width="25" Height="25"   FlowDirection="LeftToRight"
                                           Data="M110.2,2.4H17.8c-2.4,0-4.3,1.9-4.3,4.3v114.6c0,2.4,1.9,4.3,4.3,4.3c1.1,0,2.2-0.5,3.1-1.3l8.5-8.5l8.5,8.5
 	c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5c1.7,1.7,4.4,1.7,6.1,0l8.5-8.5l8.5,8.5
 	c1.7,1.7,4.4,1.7,6.1,0c0.8-0.8,1.3-1.9,1.3-3.1V6.7C114.5,4.3,112.6,2.4,110.2,2.4z M38.4,23.9h42.7c1.9,0,3.4,1.5,3.4,3.4
@@ -106,7 +106,7 @@
                                     </EventTrigger>
                                 </Button.Triggers>
                                 <Path Fill="White" Stretch="Fill"  VerticalAlignment="Top" Margin="0,-1,0,0" HorizontalAlignment="Center"
-                                       Width="25" Height="25"    x:Name="path_item" 
+                                       Width="25" Height="25"    x:Name="path_item"  FlowDirection="LeftToRight"
                                          Data="M473.2,341.6c-10.5-18.1-21-36.2-31.5-54.2c-1.9-3.3-3.8-6.6-5.8-9.9c2.1-3.7,3.3-8,3.3-12.8c0-7.7,0-15.4,0-23
 	c0-16.3-10.2-26.5-26.4-26.5c-102.3,0-204.6,0-306.9,0c-2,0-4.1,0-6.1,0.1c-13,0.6-23.2,11.1-23.3,24.2c-0.1,8.7-0.1,17.3,0,26
 	c0,4,1,7.8,2.7,11.1c-2.1,3.6-4.3,7.3-6.4,10.9c-10.5,18.1-21,36.2-31.5,54.2c-4.5,7.7-4.7,15.4,0.5,22.7
@@ -193,10 +193,11 @@
 
                                         <ComboBox SelectionChanged="cb_branches_SelectionChanged" MinWidth="150" Name="cb_branches" 
                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      materialDesign:HintAssist.Hint="Branch ...."
+                                      materialDesign:HintAssist.Hint="Branch ...." 
                                     Foreground="#4E4E4E"  TextBlock.FontSize="12" Background="#f8f8f8"  BorderBrush="#737373" BorderThickness="0"  
                                     Height="40" Margin="10,5,10,5" Padding="10,0,5,0" Grid.Row="1"></ComboBox>
-                                        <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" Grid.Row="1"  Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allBranches_Checked" Unchecked="Chk_allBranches_Unchecked"></CheckBox>
+                                        <CheckBox  Background="{StaticResource MainColorBlue}" x:Name="chk_allBranches" 
+                                                   Grid.Row="1"  Content="All" Style="{StaticResource MaterialDesignFilterChipPrimaryOutlineCheckBox}" Checked="Chk_allBranches_Checked" Unchecked="Chk_allBranches_Unchecked"></CheckBox>
 
                                     </DockPanel>
                                    

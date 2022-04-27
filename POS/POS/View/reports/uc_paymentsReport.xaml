@@ -88,7 +88,7 @@
                                 </Button.Triggers>
                                 <Path Name="path_vendor"
                                       Fill="#4E4E4E"
-                                      Stretch="Fill"
+                                      Stretch="Fill" FlowDirection="LeftToRight"
                                       VerticalAlignment="Top"
                                       HorizontalAlignment="Center"
                                       Margin="0,-1,0,0" 
@@ -144,7 +144,7 @@
                                 </Button.Triggers>
                                 <Path x:Name="path_customer" 
                                       Fill="White"
-                                      Stretch="Fill" 
+                                      Stretch="Fill"  FlowDirection="LeftToRight"
                                       VerticalAlignment="Top"
                                       Margin="0,-1,0,0"
                                       HorizontalAlignment="Center"
@@ -203,7 +203,7 @@
                                 </Button.Triggers>
                                 <Path x:Name="path_user" 
                                       Fill="White"
-                                      Stretch="Fill" 
+                                      Stretch="Fill"  FlowDirection="LeftToRight"
                                       VerticalAlignment="Top"
                                       Margin="0,-1,0,0"
                                       HorizontalAlignment="Center"
@@ -262,7 +262,7 @@
                                 </Button.Triggers>
                                 <Path x:Name="path_salary" 
                                       Fill="White"
-                                      Stretch="Fill" 
+                                      Stretch="Fill"  FlowDirection="LeftToRight"
                                       VerticalAlignment="Top" 
                                       Margin="0,-1,0,0" 
                                       HorizontalAlignment="Center"
@@ -311,7 +311,7 @@
                                 </Button.Triggers>
                                 <Path x:Name="path_generalExpenses"
                                       Fill="White" 
-                                      Stretch="Fill" 
+                                      Stretch="Fill"  FlowDirection="LeftToRight"
                                       VerticalAlignment="Top" 
                                       Margin="0,-1,0,0"
                                       HorizontalAlignment="Center"
@@ -360,7 +360,7 @@
                                 </Button.Triggers>
                                 <Path x:Name="path_administrativePull"
                                       Fill="White" 
-                                      Stretch="Fill" 
+                                      Stretch="Fill"  FlowDirection="LeftToRight"
                                       VerticalAlignment="Top" 
                                       Margin="0,-1,0,0"
                                       HorizontalAlignment="Center"
@@ -409,7 +409,7 @@
                                 </Button.Triggers>
                                 <Path x:Name="path_shipping"
                                       Fill="White" 
-                                      Stretch="Fill" 
+                                      Stretch="Fill"  FlowDirection="LeftToRight"
                                       VerticalAlignment="Top" 
                                       Margin="0,-1,0,0"
                                       HorizontalAlignment="Center"
@@ -472,10 +472,10 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
 
                                     <ComboBox Name="cb_vendors" 

@@ -81,7 +81,7 @@
                                 </Button.Triggers>
                                 <Path Name="path_payments"
                                       Fill="#4E4E4E"
-                                      Stretch="Fill"
+                                      Stretch="Fill" FlowDirection="LeftToRight"
                                       VerticalAlignment="Top"
                                       HorizontalAlignment="Center"
                                       Margin="0,-1,0,0" 
@@ -150,7 +150,7 @@
                                 </Button.Triggers>
                                 <Path Name="path_pulls"
                                       Fill="White"
-                                      Stretch="Fill"
+                                      Stretch="Fill" FlowDirection="LeftToRight"
                                       VerticalAlignment="Top"
                                       HorizontalAlignment="Center"
                                       Margin="0,-1,0,0" 
@@ -198,9 +198,9 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
                                         <ColumnDefinition Width="auto"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="auto"></ColumnDefinition>
                                         <ColumnDefinition Width="auto"></ColumnDefinition>

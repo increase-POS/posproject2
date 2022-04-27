@@ -44,7 +44,7 @@
                                     materialDesign:RippleAssist.Feedback="Transparent"
                                     BorderBrush="Transparent" Height="auto" Click="Btn_destroied_Click" >
                                 <Path Fill="White" Stretch="Fill"  VerticalAlignment="Top" Margin="0,-1,0,0" HorizontalAlignment="Center"
-                                       Width="25" Height="25"    x:Name="path_destroied" 
+                                       Width="25" Height="25"    x:Name="path_destroied"  FlowDirection="LeftToRight"
                                          Data="M28.2,7h-5.8c-0.2-3.5-3.1-6.3-6.5-6.3c-3.4,0-6.2,2.8-6.5,6.3H2.5c-1.1,0-2,0.9-2,2s0.9,2,2,2h1.8v18
 	c0,1.1,0.9,2,2,2h19c1.1,0,2-0.9,2-2V11h1c1.1,0,2-0.9,1.9-2C30.2,7.9,29.3,7,28.2,7z M9.7,28.2H8V12.4h1.7V28.2z M16.8,28.2h-1.7
 	V12.4h1.7V28.2z M12.5,7c0.2-1.8,1.6-3.1,3.4-3.1c1.8,0,3.2,1.4,3.5,3.1H12.5z M23.9,28.2h-1.7V12.4h1.7V28.2z"  >
@@ -83,9 +83,9 @@
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="60"></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>

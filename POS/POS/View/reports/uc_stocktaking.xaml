@@ -60,9 +60,9 @@
                                 <materialDesign:PackIcon Name="path_archives"
                                                       Foreground="#4E4E4E" 
                                                       HorizontalAlignment="Right"
-                                                      Grid.Column="0"  
+                                                      Grid.Column="0"  FlowDirection="LeftToRight"
                                                       VerticalAlignment="Center"
-                                                      Width="30"
+                                                      Width="30" 
                                                       Height="30"
                                                       Kind="Archive">
                                     <materialDesign:PackIcon.ToolTip>
@@ -93,7 +93,7 @@
                                     </EventTrigger>
                                 </Button.Triggers>
                                 <Path Fill="White" Stretch="Fill"  VerticalAlignment="Top" Margin="0,-1,0,0" HorizontalAlignment="Center"
-                                       Width="25" Height="25"    x:Name="path_shortfalls" 
+                                       Width="25" Height="25"    x:Name="path_shortfalls"  FlowDirection="LeftToRight"
                                          Data="M17.9,50.8c0.1-3.4,0.1-6.9,0-10.3c-0.1-2,0.8-2.5,2.6-2.5c7.5,0.1,14.9,0.1,22.4,0c1.5-0.1,3-0.5,4.3-1.2
 	c2-1,3-0.7,3.1,1.6c0.1,4.3,0,8.5,0,12.8c0,1.5-0.6,2-2.1,2c-4.7-0.1-9.3,0-14,0h-14C18.5,53.1,17.9,52.5,17.9,50.8z M53.7,50.2
 	c0.1-9.3,0.1-18.5,0-27.8c0-2.2,0.8-2.8,2.9-2.8c8.1,0.1,16.2,0.1,24.3,0c1.8,0,2.5,0.6,2.4,2.4c-0.1,2,0,4,0,6.1
@@ -168,9 +168,9 @@
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                                    <ColumnDefinition Width="auto"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                                    <ColumnDefinition Width="auto"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                 </Grid.ColumnDefinitions>
@@ -245,9 +245,9 @@
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                                    <ColumnDefinition Width="auto"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                                    <ColumnDefinition Width="60"></ColumnDefinition>
+                                                    <ColumnDefinition Width="auto"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                                 </Grid.ColumnDefinitions>
