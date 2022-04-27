@@ -243,6 +243,8 @@ namespace POS
 
         #region loading
         static List<keyValueBool> loadingList;
+        List<string> catchError = new List<string>();
+        int catchErrorCount = 0;
         //loadingThread[] loadingList = new loadingThread[25];
         async void loading_getUserPath()
         {
@@ -270,8 +272,11 @@ namespace POS
             }
             catch
             {
-                firstPath = "";
-                secondPath = "";
+                //firstPath = "";
+                //secondPath = "";
+                loading_getUserPath();
+                catchError.Add("loading_getUserPath");
+                catchErrorCount++;
             }
             #endregion
             foreach (var item in loadingList)
@@ -297,11 +302,13 @@ namespace POS
             }
             catch
             {
-                //tax = 0;
-                invoiceTax_bool = false;
-                invoiceTax_decimal = 0;
-                itemsTax_bool = false;
-                itemsTax_decimal = 0;
+                // invoiceTax_bool = false;
+                //invoiceTax_decimal = 0;
+                //itemsTax_bool = false;
+                //itemsTax_decimal = 0;
+                loading_getTax();
+                catchError.Add("loading_getTax");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -321,7 +328,10 @@ namespace POS
             }
             catch
             {
-                itemCost = 0;
+                //itemCost = 0;
+                loading_getItemCost();
+                catchError.Add("loading_getItemCost");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -341,7 +351,10 @@ namespace POS
             }
             catch
             {
-                Allow_print_inv_count = "1";
+                //Allow_print_inv_count = "1";
+                loading_getPrintCount();
+                catchError.Add("loading_getPrintCount");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -361,7 +374,9 @@ namespace POS
             }
             catch
             {
-
+                loading_getBalance();
+                catchError.Add("loading_getBalance");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -381,7 +396,10 @@ namespace POS
             }
             catch
             {
-                dateFormat = "ShortDatePattern";
+                //dateFormat = "ShortDatePattern";
+                loading_getDateForm();
+                catchError.Add("loading_getDateForm");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -406,7 +424,9 @@ namespace POS
             }
             catch
             {
-
+                loading_getRegionAndCurrency();
+                catchError.Add("loading_getRegionAndCurrency");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -426,7 +446,10 @@ namespace POS
             }
             catch
             {
-                StorageCost = 0;
+                //StorageCost = 0;
+                loading_getStorageCost();
+                catchError.Add("loading_getStorageCost");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -446,7 +469,10 @@ namespace POS
             }
             catch
             {
-                accuracy = "1";
+                //accuracy = "1";
+                loading_getAccurac();
+                catchError.Add("loading_getAccurac");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -487,7 +513,10 @@ namespace POS
             }
             catch
             {
-                clearImg();
+                //clearImg();
+                loading_getUserPersonalInfo();
+                catchError.Add("loading_getUserPersonalInfo");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -506,7 +535,11 @@ namespace POS
                 itemUnitsUsers = await itemUnitsUser.GetByUserId(userLogin.userId);
             }
             catch (Exception)
-            { }
+            {
+                loading_getItemUnitsUsers();
+                catchError.Add("loading_getItemUnitsUsers");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_getItemUnitsUsers"))
@@ -523,7 +556,11 @@ namespace POS
                 groupObjects = await groupObject.GetUserpermission(userLogin.userId);
             }
             catch (Exception)
-            { }
+            {
+                loading_getGroupObjects();
+                catchError.Add("loading_getGroupObjects");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_getGroupObjects"))
@@ -593,10 +630,13 @@ namespace POS
             }
             catch (Exception)
             {
-                invoiceTax_bool = false;
-                invoiceTax_decimal = 0;
-                itemsTax_bool = false;
-                itemsTax_decimal = 0;
+                //invoiceTax_bool = false;
+                //invoiceTax_decimal = 0;
+                //itemsTax_bool = false;
+                //itemsTax_decimal = 0;
+                loading_getTaxDetails();
+                catchError.Add("loading_getTaxDetails");
+                catchErrorCount++;
             }
             foreach (var item in loadingList)
             {
@@ -736,7 +776,11 @@ namespace POS
                 #endregion
             }
             catch (Exception)
-            { }
+            {
+                loading_getDefaultSystemInfo();
+                catchError.Add("loading_getDefaultSystemInfo");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_getDefaultSystemInfo"))
@@ -754,7 +798,11 @@ namespace POS
                 await getprintSitting();
             }
             catch (Exception)
-            { }
+            {
+                loading_getprintSitting();
+                catchError.Add("loading_getprintSitting");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_getprintSitting"))
@@ -771,7 +819,11 @@ namespace POS
                 GlobalItemUnitsList = await GlobalItemUnit.GetIU();
             }
             catch (Exception)
-            { }
+            {
+                loading_GlobalItemUnitsList();
+                catchError.Add("loading_GlobalItemUnitsList");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_GlobalItemUnitsList"))
@@ -788,7 +840,11 @@ namespace POS
                 GlobalUnitsList = await GlobalUnit.GetU();
             }
             catch (Exception)
-            { }
+            {
+                loading_GlobalUnitsList();
+                catchError.Add("loading_GlobalUnitsList");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_GlobalUnitsList"))
@@ -805,7 +861,11 @@ namespace POS
                 posList = await posLogIn.Get();
             }
             catch (Exception)
-            { }
+            {
+                loading_POSList();
+                catchError.Add("loading_POSList");
+                catchErrorCount++;
+            }
             foreach (var item in loadingList)
             {
                 if (item.key.Equals("loading_POSList"))
@@ -928,6 +988,7 @@ namespace POS
                     }
                 }
                 while (!isDone);
+                //MessageBox.Show(catchError + " and count: " + catchErrorCount);
                 #endregion
 
                 #region notifications 
