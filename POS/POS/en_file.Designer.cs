@@ -9440,7 +9440,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type Discount....
+        ///   Looks up a localized string similar to Discount type....
         /// </summary>
         internal static string trTypeDiscountHint {
             get {
