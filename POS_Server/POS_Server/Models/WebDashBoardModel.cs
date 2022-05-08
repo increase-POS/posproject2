@@ -13,5 +13,6 @@ namespace POS_Server.Models
         public int customersCount { get; set; }
         public int onLineUsersCount { get; set; }
         public decimal balance { get; set; }
+        public int branchId { get; set; }
     }
 }

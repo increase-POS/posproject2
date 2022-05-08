@@ -2409,8 +2409,8 @@ var strP = TokenManager.GetPrincipal(token);
         [Route("getUserInvoices")]
         public string getUserInvoices(string token)
         {
-token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2504,7 +2504,7 @@ var strP = TokenManager.GetPrincipal(token);
         public string GetOrderByType(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
-var strP = TokenManager.GetPrincipal(token);
+            var strP = TokenManager.GetPrincipal(token);
             if (strP != "0") //invalid authorization
             {
                 return TokenManager.GenerateToken(strP);
@@ -2646,6 +2646,92 @@ var strP = TokenManager.GetPrincipal(token);
                         
                     return TokenManager.GenerateToken(invoicesList);
                     }
+                }
+            }
+        }
+
+        [HttpPost]
+        [Route("getInvoicesByAgentAndType")]
+        public string getInvoicesByAgentAndType(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                #region params
+                int agentId = 0;
+                string type = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "agentId")
+                    {
+                        agentId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "type")
+                    {
+                        type = c.Value;
+                    }
+                }
+                #endregion
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invoicesList = (from b in entity.invoices.Where(x => x.agentId == agentId && x.invType == type && x.isActive == true)
+                                        select new InvoiceModel()
+                                        {
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchCreatorId = b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId = b.shipUserId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
+                                            realShippingCost = b.realShippingCost,
+                                            shippingCost = b.shippingCost,
+                                        }).ToList();
+
+
+
+                    int index = 1;
+                    for (int i = 0; i < invoicesList.Count; i++)
+                    {
+                        int invoiceId = invoicesList[i].invoiceId;
+
+                        invoicesList[i].invoiceId = index;
+                        index++;
+                        int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                        invoicesList[i].itemsCount = itemCount;                       
+                    }
+                    return TokenManager.GenerateToken(invoicesList);
+
                 }
             }
         }

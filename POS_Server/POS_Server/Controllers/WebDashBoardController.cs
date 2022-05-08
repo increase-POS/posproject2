@@ -40,6 +40,7 @@ namespace POS_Server.Controllers
                     {
                         branchId = int.Parse(c.Value);
                     }
+                    
                     //else if (c.Type == "startDate")
                     //{
                     //    startDate = DateTime.Parse(c.Value);
@@ -56,9 +57,11 @@ namespace POS_Server.Controllers
                     //}
                 }
                 #endregion
+                
                 //try
                 {
                     WebDashBoardModel dashBoardModel = new WebDashBoardModel();
+                    dashBoardModel.branchId = branchId;
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var searchPredicate = PredicateBuilder.New<invoices>();
@@ -127,7 +130,14 @@ namespace POS_Server.Controllers
                         #endregion
 
                         #region balance
-                        dashBoardModel.balance = (decimal)entity.pos.Where(posSearchPredicat).Select(x => x.balance).Sum();
+                        try
+                        {
+                            dashBoardModel.balance = (decimal)entity.pos.Where(posSearchPredicat).Select(x => x.balance).Sum();
+                        }
+                        catch
+                        {
+                            dashBoardModel.balance = 0;
+                        }
                         #endregion
                         return TokenManager.GenerateToken(dashBoardModel);
 
@@ -140,10 +150,27 @@ namespace POS_Server.Controllers
             }
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [HttpPost]
+        [Route("getAccuracy")]
+        public string getAccuracy(string token)
         {
-            return "value";
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var accuracy = entity.setValues.Where(x => x.setting.name == "accuracy").Select(x => x.value).FirstOrDefault();
+                    return TokenManager.GenerateToken(accuracy);
+                }
+                
+            }
+
         }
 
         // POST api/<controller>
