@@ -173,7 +173,7 @@ namespace POS.View.windows
                     isOk = true;
                     this.Close();
                 }
-                else if (isPurchase && hasCredit == true)
+                else if (isPurchase &&( hasCredit == true || invoice.totalNet == invoice.paid))
                 {
                     if(listPayments.Where(x => x.processType == "cash").Count() > 0 &&
                         listPayments.Where(x => x.processType == "cash").FirstOrDefault().cash > MainWindow.posLogIn.balance)
