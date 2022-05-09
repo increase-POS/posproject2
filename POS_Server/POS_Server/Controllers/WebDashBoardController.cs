@@ -172,6 +172,44 @@ namespace POS_Server.Controllers
             }
 
         }
+         [HttpPost]
+        [Route("getCurrency")]
+        public string getCurrency(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var currency = entity.countriesCodes
+                        .Where(x => x.isDefault == 1)
+                        .Select(c => new
+                        {
+                            c.countryId,
+                            c.code,
+                            c.currency,
+                            c.name,
+                            c.isDefault,
+                            c.currencyId,
+
+                        }).FirstOrDefault();
+
+                    if(currency != null)
+                        return TokenManager.GenerateToken(currency.currency);
+                    else
+                        return TokenManager.GenerateToken("");
+
+                }
+
+            }
+
+        }
 
         // POST api/<controller>
         public void Post([FromBody]string value)
