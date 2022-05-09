@@ -1544,6 +1544,7 @@ namespace POS.View
                                         {
                                             foreach (var item in listPayments)
                                             {
+                                                tb_processNum.Text = item.docNum;
                                                 item.transType = "p"; //pull
                                                 item.posId = MainWindow.posID;
                                                 item.agentId = invoice.agentId;

@@ -1684,6 +1684,7 @@ namespace POS.View
                                         {
                                             foreach (var item in listPayments)
                                             {
+                                                tb_processNum.Text = item.docNum;
                                                 await saveConfiguredCashTrans(item);
                                                 // yasin code
                                                 if (item.processType != "balance")
