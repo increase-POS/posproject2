@@ -62,6 +62,7 @@ namespace POS_Server.Controllers
                 {
                     WebDashBoardModel dashBoardModel = new WebDashBoardModel();
                     dashBoardModel.branchId = branchId;
+     
                     using (incposdbEntities entity = new incposdbEntities())
                     {
                         var searchPredicate = PredicateBuilder.New<invoices>();
@@ -79,6 +80,7 @@ namespace POS_Server.Controllers
 
 
                         dashBoardModel.purchasesCount = entity.invoices.Where(searchPredicate).ToList().Count();
+   
 
                         //vendors count
                         searchPredicate = searchPredicate.And(x => x.agentId != null);
@@ -126,7 +128,6 @@ namespace POS_Server.Controllers
                                             log.userId,
 
                                         }).Distinct().Count();
-
                         #endregion
 
                         #region balance
@@ -137,6 +138,7 @@ namespace POS_Server.Controllers
                         catch
                         {
                             dashBoardModel.balance = 0;
+
                         }
                         #endregion
                         return TokenManager.GenerateToken(dashBoardModel);
@@ -145,7 +147,7 @@ namespace POS_Server.Controllers
                 }
                 catch
                 {
-                    return TokenManager.GenerateToken("0");
+                    return TokenManager.GenerateToken(new WebDashBoardModel());
                 }
             }
         }
@@ -316,9 +318,88 @@ namespace POS_Server.Controllers
 
         }
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
+        [HttpPost]
+        [Route("getCustomerDeliverdOrders")]
+        public string getCustomerDeliverdOrders(string token)
         {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int agentId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "agentId")
+                    {
+                        agentId = int.Parse(c.Value);
+                    }
+                }
+                List<string> statusL = new List<string>();
+                //statusL.Add("tr");
+                statusL.Add("rc");
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.agentId == agentId && x.shippingCompanyId != null && x.isActive == true)
+                                        join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
+                                        join u in entity.users on b.shipUserId equals u.userId into lj
+                                        from y in lj.DefaultIfEmpty()
+                                        where (statusL.Contains(s.status) && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                        select new InvoiceModel()
+                                        {
+                                            invStatusId = s.invStatusId,
+                                            invoiceId = b.invoiceId,
+                                            invNumber = b.invNumber,
+                                            agentId = b.agentId,
+                                            invType = b.invType,
+                                            total = b.total,
+                                            totalNet = b.totalNet,
+                                            paid = b.paid,
+                                            deserved = b.deserved,
+                                            deservedDate = b.deservedDate,
+                                            invDate = b.invDate,
+                                            invoiceMainId = b.invoiceMainId,
+                                            invCase = b.invCase,
+                                            invTime = b.invTime,
+                                            notes = b.notes,
+                                            vendorInvNum = b.vendorInvNum,
+                                            vendorInvDate = b.vendorInvDate,
+                                            createUserId = b.createUserId,
+                                            updateDate = b.updateDate,
+                                            updateUserId = b.updateUserId,
+                                            branchId = b.branchId,
+                                            discountValue = b.discountValue,
+                                            discountType = b.discountType,
+                                            tax = b.tax,
+                                            taxtype = b.taxtype,
+                                            name = b.name,
+                                            isApproved = b.isApproved,
+                                            branchCreatorId = b.branchCreatorId,
+                                            shippingCompanyId = b.shippingCompanyId,
+                                            shipUserId = b.shipUserId,
+                                            
+                                            agentName = b.agents.name,
+                                            shipUserName = y.name+ " "+y.lastname,
+                                            shipCompanyName = b.shippingCompanies.name,
+                                            status = s.status,
+                                            userId = b.userId,
+                                            manualDiscountType = b.manualDiscountType,
+                                            manualDiscountValue = b.manualDiscountValue,
+                                            shippingCost = b.shippingCost,
+                                            realShippingCost = b.realShippingCost,
+                                            payStatus = b.deserved == 0 ? "payed" : (b.deserved == b.totalNet ? "unpayed" : "partpayed"),
+                                            branchCreatorName = entity.branches.Where(X => X.branchId == b.branchCreatorId).FirstOrDefault().name,
+
+                                        })
+                    .ToList();
+                    
+                    return TokenManager.GenerateToken(invoicesList);
+                }
+            }
         }
 
         // PUT api/<controller>/5
