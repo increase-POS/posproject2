@@ -466,11 +466,11 @@ namespace POS.View
                     }
                 InitializePieChart(pch_dailyPurchaseInvoice,
                     int.Parse(dash.countDailyPurchase),
-                    (int.Parse(dash.countDailyPurchase) + int.Parse(dash.countMonthlyPurchase)));
+                    int.Parse(dash.countMonthlyPurchase));
 
                 InitializePieChart(pch_dailySalesInvoice,
                     int.Parse(dash.countDailySales),
-                    (int.Parse(dash.countDailySales) + int.Parse(dash.countMonthlySales)));
+                    int.Parse(dash.countMonthlySales));
             }
             catch (Exception ex)
             {
