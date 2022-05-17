@@ -402,9 +402,71 @@ namespace POS_Server.Controllers
             }
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        [Route("GetStockInfo")]
+        public string GetStockInfo(string token)
         {
+            //int branchId string token
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                int branchId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "branchId")
+                    {
+                        branchId = int.Parse(c.Value);
+                    }
+                }
+
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        var searchPredicate = PredicateBuilder.New<sections>();
+                        searchPredicate = searchPredicate.And(x => true);
+                        if (branchId != 0)
+                            searchPredicate = searchPredicate.And(x => x.branchId == branchId);
+
+                        var itemsUnitsList = (from b in entity.itemsLocations
+                                            where b.quantity > 0 && b.invoiceId == null
+                                            join u in entity.itemsUnits on b.itemUnitId equals u.itemUnitId
+                                            join i in entity.items on u.itemId equals i.itemId
+                                            join l in entity.locations on b.locationId equals l.locationId
+                                            join s in entity.sections.Where(searchPredicate) on l.sectionId equals s.sectionId
+
+                                            select new ItemLocationModel
+                                            {
+                                                quantity = b.quantity,
+                                                itemName = i.name,
+                                                unitName = u.units.name,
+                                            }).ToList();
+
+                        var res = itemsUnitsList.GroupBy(x => new { x.itemName, x.unitName })
+                                                .Select(x => new ItemLocationModel(){itemName = x.FirstOrDefault().itemName,
+                                                                   unitName = x.FirstOrDefault().unitName,
+                                                                    quantity = x.Sum(a => a.quantity)}).ToList();
+
+                        int sequence = 1;
+                        foreach(ItemLocationModel it in res)
+                        {
+                            it.sequence = sequence;
+                            sequence++;
+                        }
+                        return TokenManager.GenerateToken(res);
+                    }
+                }
+                catch
+                {
+                    return TokenManager.GenerateToken("0");
+                }
+            }
         }
 
         // DELETE api/<controller>/5
