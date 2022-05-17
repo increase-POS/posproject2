@@ -427,11 +427,11 @@ namespace POS.View
                     }
                     else
                     {
-                        var newSalPur = listSalPur.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue).FirstOrDefault();
+                        var newSalPur = listSalPur.Where(s => s.branchCreatorId == (int)cb_branch.SelectedValue);
                         if (newSalPur != null)
                         {
-                            dash.countMonthlyPurchase = newSalPur.countPur.ToString();
-                            dash.countMonthlySales = newSalPur.countSale.ToString();
+                            dash.countMonthlyPurchase = newSalPur.Sum(x => x.countPur).ToString();
+                            dash.countMonthlySales = newSalPur.Sum(x => x.countSale).ToString();
                         }
                         else
                             dash.countMonthlyPurchase = dash.countMonthlySales = "0";
@@ -466,11 +466,11 @@ namespace POS.View
                     }
                 InitializePieChart(pch_dailyPurchaseInvoice,
                     int.Parse(dash.countDailyPurchase),
-                    (int.Parse(dash.countDailyPurchase) + int.Parse(dash.countMonthlyPurchase)));
+                    int.Parse(dash.countMonthlyPurchase));
 
                 InitializePieChart(pch_dailySalesInvoice,
                     int.Parse(dash.countDailySales),
-                    (int.Parse(dash.countDailySales) + int.Parse(dash.countMonthlySales)));
+                    int.Parse(dash.countMonthlySales));
             }
             catch (Exception ex)
             {
