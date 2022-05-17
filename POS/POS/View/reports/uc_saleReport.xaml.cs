@@ -159,7 +159,7 @@ namespace POS.View.reports
         {
             tt_branch.Content = MainWindow.resourcemanager.GetString("trBranches");
             tt_pos.Content = MainWindow.resourcemanager.GetString("trPOSs");
-            tt_vendors.Content = MainWindow.resourcemanager.GetString("trVendors");
+            tt_vendors.Content = MainWindow.resourcemanager.GetString("trCustomers");
             tt_users.Content = MainWindow.resourcemanager.GetString("trUsers");
 
             chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
@@ -183,7 +183,7 @@ namespace POS.View.reports
             col_date.Header = MainWindow.resourcemanager.GetString("trDate");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_pos.Header = MainWindow.resourcemanager.GetString("trPOS");
-            col_vendor.Header = MainWindow.resourcemanager.GetString("trVendor");
+            col_vendor.Header = MainWindow.resourcemanager.GetString("trCustomer");
             col_agentCompany.Header = MainWindow.resourcemanager.GetString("trCompany");
             col_user.Header = MainWindow.resourcemanager.GetString("trUser");
             col_count.Header = MainWindow.resourcemanager.GetString("trQTR");
@@ -194,6 +194,7 @@ namespace POS.View.reports
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
         }
@@ -725,7 +726,7 @@ namespace POS.View.reports
 
         public void fillEvent()
         {
-            itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime).Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+            itemTransfers = fillList(Invoices, chk_invoice, chk_return, chk_drafs, dp_startDate, dp_endDate, dt_startTime, dt_endTime);
 
             //hide tax column if region tax equals to 0
             if (!MainWindow.invoiceTax_bool.Value)
@@ -733,18 +734,31 @@ namespace POS.View.reports
             else
                 col_tax.Visibility = Visibility.Visible;
 
-            dgInvoice.ItemsSource = itemTransfers;
-            txt_count.Text = dgInvoice.Items.Count.ToString();
-
             ObservableCollection<int> selected = new ObservableCollection<int>();
             if (selectedTab == 0)
+            {
                 selected = selectedBranchId;
+                itemTransfers = itemTransfers.Where(j => (selectedBranchId.Count != 0 ? selectedBranchId.Contains((int)j.branchCreatorId) : true));
+            }
             if (selectedTab == 1)
+            {
                 selected = selectedPosId;
+                itemTransfers = itemTransfers.Where(j => (selectedPosId.Count != 0 ? selectedPosId.Contains((int)j.posId) : true));
+            }
             if (selectedTab == 2)
+            {
                 selected = selectedVendorsId;
+                itemTransfers = itemTransfers.Where(j => (selectedVendorsId.Count != 0 ? selectedVendorsId.Contains((int)j.agentId) : true));
+            }
             if (selectedTab == 3)
+            {
                 selected = selectedUserId;
+                itemTransfers = itemTransfers.Where(j => (selectedUserId.Count != 0 ? selectedUserId.Contains((int)j.updateUserId) : true));
+            }
+
+
+            dgInvoice.ItemsSource = itemTransfers;
+            txt_count.Text = dgInvoice.Items.Count.ToString();
 
             fillPieChart(cb_branches, selected);
             fillColumnChart(cb_branches, selected);
