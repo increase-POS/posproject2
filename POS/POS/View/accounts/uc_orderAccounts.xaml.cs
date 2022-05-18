@@ -97,7 +97,12 @@ namespace POS.View.accounts
                 try
                 {
                     branches = await branchModel.GetBranchesActive("b");
-                    cb_branch.ItemsSource = branches;
+                    List<Branch> newListBranches = branches.ToList();
+                    var br = new Branch();
+                    br.branchId = 0;
+                    br.name = "-";
+                    newListBranches.Insert(0, br);
+                    cb_branch.ItemsSource = newListBranches;
                     cb_branch.DisplayMemberPath = "name";
                     cb_branch.SelectedValuePath = "branchId";
                     cb_branch.SelectedValue = MainWindow.branchID.Value;
@@ -186,7 +191,14 @@ namespace POS.View.accounts
                 try
                 {
                     users = await userModel.GetUsersActive();
-                    cb_salesMan.ItemsSource = users;
+
+                    List<User> newListUsers = users.ToList();
+                    var us = new User();
+                    us.userId = 0;
+                    us.name = "-";
+                    newListUsers.Insert(0, us);
+
+                    cb_salesMan.ItemsSource = newListUsers;
                     cb_salesMan.DisplayMemberPath = "username";
                     cb_salesMan.SelectedValuePath = "userId";
                     cb_salesMan.SelectedIndex = -1;
@@ -853,7 +865,14 @@ namespace POS.View.accounts
         private async Task fillCustomers()
         {
             agents = await agentModel.GetAgentsActive("c");
-            cb_customer.ItemsSource = agents;
+
+            List<Agent> newListAgents = agents.ToList();
+            var ag = new Agent();
+            ag.agentId = 0;
+            ag.name = "-";
+            newListAgents.Insert(0, ag);
+
+            cb_customer.ItemsSource = newListAgents;
             cb_customer.DisplayMemberPath = "name";
             cb_customer.SelectedValuePath = "agentId";
             cb_salesMan.SelectedIndex = -1;
