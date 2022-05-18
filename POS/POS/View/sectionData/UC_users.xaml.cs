@@ -636,10 +636,14 @@ namespace POS.View
 
                             int s = await userModel.save(user);
 
-                            if (!s.Equals("0"))   
-                                Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
-                            else 
-                                Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
+                                if (!s.Equals("0"))
+                                {
+                                    Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopUpdate"), animation: ToasterAnimation.FadeIn);
+                                    if (MainWindow.userLogin.userId == s)
+                                        MainWindow.userLogin = user;
+                                }
+                                else
+                                    Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
 
                             if (isImgPressed)
                             {
