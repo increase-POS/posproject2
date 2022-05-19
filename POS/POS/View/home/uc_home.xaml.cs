@@ -382,7 +382,7 @@ namespace POS.View
         {
             try
             {
-                List<InvoiceCount> listSalPur = await dash.Getdashsalpur();
+                List<InvoiceCount> listSalPur = await dash.Getdashsalpur(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -418,7 +418,7 @@ namespace POS.View
         {
             try
             {
-                List<TotalPurSale> listSalPur = await dash.GetTotalPurSale();
+                List<TotalPurSale> listSalPur = await dash.GetTotalPurSale(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -446,7 +446,7 @@ namespace POS.View
         {
             try
             {
-                List<InvoiceCount> listSalPur = await dash.GetdashsalpurDay();
+                List<InvoiceCount> listSalPur = await dash.GetdashsalpurDay(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -510,7 +510,7 @@ namespace POS.View
         {
             try
             {
-                List<UserOnlineCount> listUserOnline = await dash.Getuseronline();
+                List<UserOnlineCount> listUserOnline = await dash.Getuseronline(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -549,7 +549,7 @@ namespace POS.View
         {
             try
             {
-                dash.listUserOnline = await dash.GetuseronlineInfo();
+                dash.listUserOnline = await dash.GetuseronlineInfo(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -684,7 +684,7 @@ namespace POS.View
         {
             try
             {
-                List<BranchOnlineCount> listBranchOnline = await dash.GetBrachonline();
+                List<BranchOnlineCount> listBranchOnline = await dash.GetBrachonline(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 var newBranchOnline = listBranchOnline.FirstOrDefault();
                 if (newBranchOnline != null)
                 {
@@ -731,7 +731,7 @@ namespace POS.View
         {
             try
             {
-                List<BestSeller> listAllBestSeller = await dash.Getbestseller();
+                List<BestSeller> listAllBestSeller = await dash.Getbestseller(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -929,7 +929,7 @@ namespace POS.View
         {
             try
             {
-                List<IUStorage> listAllIUStorage = await dash.GetIUStorage(IUList);
+                List<IUStorage> listAllIUStorage = await dash.GetIUStorage(IUList,MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
@@ -1082,7 +1082,7 @@ namespace POS.View
                 double[] ArrayS = new double[NumberDaysInMonth];
                 double[] ArrayP = new double[NumberDaysInMonth];
                 string[] ArrayCount = new string[NumberDaysInMonth];
-                List<TotalPurSale> listAllBestSeller = await dash.GetTotalPurSale();
+                List<TotalPurSale> listAllBestSeller = await dash.GetTotalPurSale(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
                 if (cb_branch.SelectedValue != null)
                     if ((int)cb_branch.SelectedValue == 0)
                     {
