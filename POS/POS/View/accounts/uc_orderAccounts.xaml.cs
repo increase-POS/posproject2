@@ -100,7 +100,7 @@ namespace POS.View.accounts
                     List<Branch> newListBranches = branches.ToList();
                     var br = new Branch();
                     br.branchId = 0;
-                    br.name = "-";
+                    br.name = MainWindow.resourcemanager.GetString("trAll");
                     newListBranches.Insert(0, br);
                     cb_branch.ItemsSource = newListBranches;
                     cb_branch.DisplayMemberPath = "name";
@@ -179,7 +179,13 @@ namespace POS.View.accounts
                     agents = await agentModel.GetAgentsActive("v");
                     agents.AddRange(customers);
 
-                    cb_customer.ItemsSource = customers;
+                    List<Agent> newListAgents = customers.ToList();
+                    var cu = new Agent();
+                    cu.agentId = 0;
+                    cu.name = "-";
+                    newListAgents.Insert(0, cu);
+
+                    cb_customer.ItemsSource = newListAgents;
                     cb_customer.DisplayMemberPath = "name";
                     cb_customer.SelectedValuePath = "agentId";
                     cb_customer.SelectedIndex = -1;
@@ -197,7 +203,6 @@ namespace POS.View.accounts
                     us.userId = 0;
                     us.name = "-";
                     newListUsers.Insert(0, us);
-
                     cb_salesMan.ItemsSource = newListUsers;
                     cb_salesMan.DisplayMemberPath = "username";
                     cb_salesMan.SelectedValuePath = "userId";
