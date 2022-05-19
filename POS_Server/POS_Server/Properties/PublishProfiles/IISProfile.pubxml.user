@@ -132,13 +132,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/28/2021 17:07:45</publishTime>
     </File>
     <File Include="bin/POS_Server.dll">
-      <publishTime>03/10/2022 19:27:19</publishTime>
+      <publishTime>05/19/2022 15:43:39</publishTime>
     </File>
     <File Include="bin/POS_Server.pdb">
-      <publishTime>03/10/2022 19:27:19</publishTime>
+      <publishTime>05/19/2022 15:43:39</publishTime>
     </File>
     <File Include="bin/POS_Server.xml">
-      <publishTime>03/10/2022 19:27:19</publishTime>
+      <publishTime>05/19/2022 15:43:37</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>12/28/2021 17:07:44</publishTime>

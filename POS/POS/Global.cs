@@ -9,8 +9,8 @@ namespace POS
     class Global
     {
         //public const string APIKey = "1234";
-        //public static string APIUri = "http://localhost:44730/api/";
-        public static string APIUri = "http://192.168.1.5:44370/api/";
+        public static string APIUri = "http://localhost:44730/api/";
+        //public static string APIUri = "http://192.168.1.5:44370/api/";
         //public static string APIUri = "http://192.168.1.7:44730/api/";
 
         //public static string APIUri = Properties.Settings.Default.APIUri;
