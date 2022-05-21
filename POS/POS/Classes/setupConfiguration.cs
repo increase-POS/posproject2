@@ -81,28 +81,45 @@ namespace POS.Classes
 
             return mbInfo;
         }
+        //public static String GetHDDSerialNo()
+        //{
+        //    //ManagementClass mangnmt = new ManagementClass("Win32_LogicalDisk");
+        //    //ManagementObjectCollection mcol = mangnmt.GetInstances();
+        //    //string result = "";
+        //    //foreach (ManagementObject strt in mcol)
+        //    //{
+        //    //    result += Convert.ToString(strt["VolumeSerialNumber"]);
+        //    //}
+        //    //return result;
+        //    string systemLogicalDiskDeviceId = Environment.GetFolderPath(Environment.SpecialFolder.System).Substring(0, 2);
+
+        //    // Start by enumerating the logical disks
+        //    using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DeviceID='" + systemLogicalDiskDeviceId + "'"))
+        //    {
+        //        foreach (ManagementObject logicalDisk in searcher.Get())
+        //            foreach (ManagementObject partition in logicalDisk.GetRelated("Win32_DiskPartition"))
+        //                foreach (ManagementObject diskDrive in partition.GetRelated("Win32_DiskDrive"))
+        //                    return diskDrive["SerialNumber"].ToString();
+        //    }
+
+        //    return null;
+        //}
         public static String GetHDDSerialNo()
         {
-            //ManagementClass mangnmt = new ManagementClass("Win32_LogicalDisk");
-            //ManagementObjectCollection mcol = mangnmt.GetInstances();
-            //string result = "";
-            //foreach (ManagementObject strt in mcol)
-            //{
-            //    result += Convert.ToString(strt["VolumeSerialNumber"]);
-            //}
-            //return result;
+
             string systemLogicalDiskDeviceId = Environment.GetFolderPath(Environment.SpecialFolder.System).Substring(0, 2);
-
-            // Start by enumerating the logical disks
-            using (var searcher = new ManagementObjectSearcher("SELECT * FROM Win32_LogicalDisk WHERE DeviceID='" + systemLogicalDiskDeviceId + "'"))
+            if (string.IsNullOrEmpty(systemLogicalDiskDeviceId) || systemLogicalDiskDeviceId == null)
             {
-                foreach (ManagementObject logicalDisk in searcher.Get())
-                    foreach (ManagementObject partition in logicalDisk.GetRelated("Win32_DiskPartition"))
-                        foreach (ManagementObject diskDrive in partition.GetRelated("Win32_DiskDrive"))
-                            return diskDrive["SerialNumber"].ToString();
+                systemLogicalDiskDeviceId = "C:";
             }
+            //Create our ManagementObject, passing it the drive letter to the
+            //DevideID using WQL
+            ManagementObject disk = new ManagementObject("Win32_LogicalDisk.DeviceID=\"" + systemLogicalDiskDeviceId + "\"");
+            //bind our management object
+            disk.Get();
+            //Return the serial number
+            return disk["VolumeSerialNumber"].ToString();
 
-            return null;
         }
         public async static Task<int> getInstallationNum()
         {
