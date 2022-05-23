@@ -133,6 +133,7 @@ namespace POS.View.reports
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             tt_settings.Content = MainWindow.resourcemanager.GetString("trSettings");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
             tt_emailMessage.Content = MainWindow.resourcemanager.GetString("trSendEmail");

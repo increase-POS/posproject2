@@ -123,6 +123,7 @@ namespace POS.View.reports
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
             tt_print.Content = MainWindow.resourcemanager.GetString("trPrint");
             tt_excel.Content = MainWindow.resourcemanager.GetString("trExcel");
+            tt_preview.Content = MainWindow.resourcemanager.GetString("trPreview");
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
             txt_total.Text = MainWindow.resourcemanager.GetString("trTotal");
