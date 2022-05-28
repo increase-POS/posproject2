@@ -1168,15 +1168,15 @@ namespace POS.View.accounts
                             if (customer != null)
                             {
                                 decimal remain = 0;
-                                if (customer.maxDeserve != 0)
-                                    remain = getCusAvailableBlnc(customer);
+                                //if (customer.maxDeserve != 0)
+                                //    remain = getCusAvailableBlnc(customer);
                                 w.hasCredit = true;
-                                w.creditValue = remain;
+                                w.maxCredit = remain;
                             }
                             else
                             {
                                 w.hasCredit = false;
-                                w.creditValue = 0;
+                                w.maxCredit = 0;
                             }
                         //}
 

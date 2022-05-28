@@ -40,7 +40,7 @@ namespace POS.View.windows
         public bool isOk { get; set; }
         public bool isPurchase { get; set; }
         public bool hasCredit { get; set; }
-        public decimal creditValue { get; set; }
+        public decimal maxCredit { get; set; }
         ImageBrush brush = new ImageBrush();
         static private string _SelectedPaymentType = "cash";
         static private int _SelectedCard = -1;
@@ -49,7 +49,10 @@ namespace POS.View.windows
         Card cardModel = new Card();
         public IEnumerable<Card> cards;
         public Invoice invoice = new Invoice();
+        public Agent agent = new Agent();
         bool amountIsValid = false;
+        public bool checkMaxCredit = false;
+        
         private  void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -77,7 +80,7 @@ namespace POS.View.windows
 
                 // get it from invoice
                 loading_fillCardCombo();
-              
+
                 //////////////////////////
                 //invoice.agentId
                 //////////////////////////
@@ -85,12 +88,54 @@ namespace POS.View.windows
                 invoice.paid = 0;
                 tb_cash.Text = tb_total.Text = invoice.totalNet.ToString();
 
+
+                #region max credit
+                if (checkMaxCredit)
+                {
+                    if (agent != null)
+                    {
+                        if (agent.isLimited)
+                        {
+                            //decimal maxCredit = 0;
+                            if (agent.maxDeserve != 0)
+                                maxCredit = getCusAvailableBlnc();
+                             hasCredit = true;
+                        }
+                        else
+                        {
+                            hasCredit = false;
+                            maxCredit = 0;
+                        }
+                    }
+                    else
+                    {
+                        hasCredit = false;
+                        maxCredit = 0;
+                    }
+                }
+                #endregion
             }
             catch (Exception ex)
             {
 
                 SectionData.ExceptionMessage(ex, this);
             }
+        }
+        private decimal getCusAvailableBlnc()
+        {
+            decimal maxCredit = 0;
+
+            float customerBalance = agent.balance;
+
+            if (agent.balanceType == 0)
+                maxCredit = agent.maxDeserve + (decimal)customerBalance;
+            else
+            {
+                maxCredit = agent.maxDeserve - (decimal)customerBalance;
+                if (maxCredit < 0)
+                    maxCredit = 0;
+            }
+            return maxCredit;
         }
         private void translate()
         {
@@ -157,7 +202,7 @@ namespace POS.View.windows
             try
             {
                 if (!isPurchase &&
-               (invoice.paid >= invoice.totalNet || (hasCredit == true && creditValue > invoice.totalNet - invoice.paid) || (hasCredit == true && creditValue == 0)))
+               (invoice.paid >= invoice.totalNet || (hasCredit == true && agent.maxDeserve == 0) || (hasCredit == true && maxCredit >= invoice.totalNet - invoice.paid)))
                 {
                     if (invoice.totalNet - invoice.paid > 0)
                     {

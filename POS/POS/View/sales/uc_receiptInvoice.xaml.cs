@@ -1630,28 +1630,38 @@ namespace POS.View
                                 wd_multiplePayment w = new wd_multiplePayment();
                                 w.isPurchase = false;
                                 if (cb_customer.SelectedValue != null)
-                                //w.invoice.agentId = (int)cb_customer.SelectedValue;
-
                                 {
-                                    Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
-                                    if (customer != null)
-                                    {
-                                        decimal remain = 0;
-                                        if (customer.maxDeserve != 0)
-                                            remain = getCusAvailableBlnc(customer);
-                                        w.hasCredit = true;
-                                        w.creditValue = remain;
-                                    }
-                                    else
-                                    {
-                                        w.hasCredit = false;
-                                        w.creditValue = 0;
-                                    }
+                                    //await RefrishCustomers();
+                                    //Agent customer = customers.ToList().Find(b => b.agentId == (int)cb_customer.SelectedValue && b.isLimited == true);
+                                    Agent customer = await agentModel.getAgentById((int)cb_customer.SelectedValue);
+                                    //if (customer != null)
+                                    //{
+                                    //    if (customer.isLimited)
+                                    //    {
+                                    //        decimal maxCredit = 0;
+                                    //        if (customer.maxDeserve != 0)
+                                    //            maxCredit = getCusAvailableBlnc(customer);
+                                            w.agent = customer;
+                                    //        w.hasCredit = true;
+                                    //        w.maxCredit = maxCredit;
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        w.hasCredit = false;
+                                    //        w.maxCredit = 0;
+                                    //    }
+                                    //}
+                                    //else
+                                    //{
+                                    //    w.hasCredit = false;
+                                    //    w.maxCredit = 0;
+                                    //}
                                 }
 
                                 w.invoice.invType = _InvoiceType;
                                 w.invoice.totalNet = decimal.Parse(tb_total.Text);
                                 w.cards = cards;
+                                w.checkMaxCredit = true;
                                 w.ShowDialog();
                                 Window.GetWindow(this).Opacity = 1;
                                 multipleValid = w.isOk;
