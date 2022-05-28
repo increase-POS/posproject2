@@ -6155,7 +6155,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to partial pay.
+        ///   Looks up a localized string similar to Partial pay.
         /// </summary>
         internal static string trPartialPay {
             get {
