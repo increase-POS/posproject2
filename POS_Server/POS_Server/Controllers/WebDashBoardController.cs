@@ -212,7 +212,49 @@ namespace POS_Server.Controllers
             }
 
         }
+        [HttpPost]
+        [Route("getUserLanguage")]
+        public string getUserLanguage(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
 
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                #region params
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
+                #endregion
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    var lang =(from sv in entity.setValues.Where(x => x.setting.name == "language")
+                                   join su in entity.userSetValues.Where(x => x.userId == userId) on sv.valId equals su.valId
+                        select new setValuesModel() {
+                            value = sv.value,
+                            name = sv.setting.name,
+                        }).FirstOrDefault();
+
+                    if (lang != null)
+                        return TokenManager.GenerateToken(lang.value);
+                    else
+                        return TokenManager.GenerateToken("en");
+
+                }
+
+            }
+
+        }
         [HttpPost]
         [Route("GetCustomerPayments")]
         public string GetCustomerPayments(string token)
