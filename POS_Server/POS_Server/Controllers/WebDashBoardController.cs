@@ -511,6 +511,112 @@ namespace POS_Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("getUserDeliverOrders")]
+        public string getUserDeliverOrders(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string invType = "";
+                string status = "";
+                int shipUserId = 0;
+                List<string> invTypeL = new List<string>();
+                List<string> statusL = new List<string>();
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invType")
+                    {
+                        invType = c.Value;
+                        string[] invTypeArray = invType.Split(',');
+                        foreach (string s in invTypeArray)
+                            invTypeL.Add(s.Trim());
+                    }
+                    else if (c.Type == "status")
+                    {
+                        status = c.Value;
+                        string[] statusArray = status.Split(',');
+                        statusL.AddRange(statusArray);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        shipUserId = int.Parse(c.Value);
+                    }
+                }
+
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    List<InvoiceModel> lst = new List<InvoiceModel>();
+
+                    int sequence = 1;
+                    foreach (string st in statusL)
+                    {
+                        var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true)
+                                            join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
+                                            where (s.status == st && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                            select new InvoiceModel()
+                                            {
+                                                invoiceId = b.invoiceId,
+                                                invNumber = b.invNumber,
+                                                agentId = b.agentId,
+                                                agentName = b.agents.name,
+                                                invType = b.invType,
+                                                total = b.total,
+                                                totalNet = b.totalNet,
+                                                paid = b.paid,
+                                                deserved = b.deserved,
+                                                deservedDate = b.deservedDate,
+                                                invDate = b.invDate,
+                                                invoiceMainId = b.invoiceMainId,
+                                                invCase = b.invCase,
+                                                invTime = b.invTime,
+                                                notes = b.notes,
+                                                vendorInvNum = b.vendorInvNum,
+                                                vendorInvDate = b.vendorInvDate,
+                                                createUserId = b.createUserId,
+                                                updateDate = b.updateDate,
+                                                updateUserId = b.updateUserId,
+                                                branchId = b.branchId,
+                                                discountValue = b.discountValue,
+                                                discountType = b.discountType,
+                                                tax = b.tax,
+                                                taxtype = b.taxtype,
+                                                name = b.name,
+                                                isApproved = b.isApproved,
+                                                branchCreatorId = b.branchCreatorId,
+                                                shippingCompanyId = b.shippingCompanyId,
+                                                shipUserId = b.shipUserId,
+                                                userId = b.userId,
+                                                manualDiscountType = b.manualDiscountType,
+                                                manualDiscountValue = b.manualDiscountValue,
+                                                shippingCost = b.shippingCost,
+                                                realShippingCost = b.realShippingCost,
+                                                
+                                            })
+                        .ToList();
+
+                        for (int i = 0; i < invoicesList.Count; i++)
+                        {
+                            int invoiceId = invoicesList[i].invoiceId;
+                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
+                            invoicesList[i].itemsCount = itemCount;
+                            invoicesList[i].sequence = sequence;
+                            sequence++;
+                        }
+
+                        if(invoicesList.Count > 0)
+                            lst.AddRange(invoicesList);
+                    }
+                    return TokenManager.GenerateToken(lst);
+                }
+            }
+        }
         // DELETE api/<controller>/5
         public void Delete(int id)
         {

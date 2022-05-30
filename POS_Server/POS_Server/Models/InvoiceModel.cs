@@ -54,6 +54,7 @@ namespace POS_Server.Models
         public decimal shippingCost { get; set; }
         public decimal realShippingCost { get; set; }
         public string payStatus { get; set; }
+        public int sequence { get; set; }
     }
 
     public class CouponInvoiceModel
