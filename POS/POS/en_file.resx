@@ -3491,7 +3491,7 @@ Please add Email in setting</value>
     <value>Min Stock</value>
   </data>
   <data name="trPartialPay" xml:space="preserve">
-    <value>partial pay</value>
+    <value>Partial pay</value>
   </data>
   <data name="trOrderreport" xml:space="preserve">
     <value>Orders</value>

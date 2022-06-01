@@ -117,7 +117,6 @@ namespace POS.View.reports
         {
             tt_item.Content = MainWindow.resourcemanager.GetString("trItems");
             tt_agent.Content = MainWindow.resourcemanager.GetString("trAgents");
-            tt_invoice.Content = MainWindow.resourcemanager.GetString("trInvoices");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_externalItemsBranches, MainWindow.resourcemanager.GetString("trBranch/StoreHint"));
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_externalItemsItems, MainWindow.resourcemanager.GetString("trItemHint"));
@@ -176,11 +175,9 @@ namespace POS.View.reports
 
             path_item.Fill = Brushes.White;
             path_agent.Fill = Brushes.White;
-            path_invoice.Fill = Brushes.White;
 
             bdr_agent.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_item.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-            bdr_invoice.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
         }
         private async void btn_externalItems_Click(object sender, RoutedEventArgs e)
         {//items
@@ -250,40 +247,6 @@ namespace POS.View.reports
             }
         }
 
-        private async void btn_externalInvoices_Click(object sender, RoutedEventArgs e)
-        {//invoices
-            try
-            {
-                if (sender != null)
-                    SectionData.StartAwait(grid_main);
-
-                SectionData.ReportTabTitle(txt_tabTitle, this.Tag.ToString(), (sender as Button).Tag.ToString());
-
-                selectedExternalTab = 2;
-                txt_search.Text = "";
-
-                paintExternlaChilds();
-                grid_externalInvoices.Visibility = Visibility.Visible;
-                ReportsHelp.paintTabControlBorder(grid_tabControl, bdr_invoice);
-                path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
-
-                showSelectedTabColumn();
-
-                await SectionData.fillBranchesWithoutMain(cb_externalInvoicesBranches);
-
-                fillEvents();
-
-
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                if (sender != null)
-                    SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
         
         private void fillComboExternalItemsItems()
         {
