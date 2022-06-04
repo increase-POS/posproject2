@@ -554,7 +554,7 @@ namespace POS_Server.Controllers
                 {
                     List<InvoiceModel> lst = new List<InvoiceModel>();
 
-                    int sequence = 1;
+                    
                     foreach (string st in statusL)
                     {
                         var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true)
@@ -597,7 +597,7 @@ namespace POS_Server.Controllers
                                                 manualDiscountValue = b.manualDiscountValue,
                                                 shippingCost = b.shippingCost,
                                                 realShippingCost = b.realShippingCost,
-                                                
+                                                status = s.status,
                                             })
                         .ToList();
 
@@ -606,12 +606,20 @@ namespace POS_Server.Controllers
                             int invoiceId = invoicesList[i].invoiceId;
                             int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
                             invoicesList[i].itemsCount = itemCount;
-                            invoicesList[i].sequence = sequence;
-                            sequence++;
+                           
                         }
 
                         if(invoicesList.Count > 0)
                             lst.AddRange(invoicesList);
+                    }
+
+                    lst = lst.OrderBy(x => x.status).ToList();
+
+                    int sequence = 1;
+                    for (int i = 0; i < lst.Count; i++)
+                    {
+                        lst[i].sequence = sequence;
+                        sequence++;
                     }
                     return TokenManager.GenerateToken(lst);
                 }
