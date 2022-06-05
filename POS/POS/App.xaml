@@ -8,7 +8,6 @@
     <!--StartupUri="MainWindow.xaml"-->
     <Application.Resources>
         <ResourceDictionary>
-            <converters:isLimitedCountConverter x:Key="isLimitedCountConverter"/>
             <converters:isLimitedDateConverter x:Key="isLimitedDateConverter"/>
             <converters:minmaxUnitNameStockConverter x:Key="minmaxUnitNameStockConverter"/>
             <converters:invoicePayStatus x:Key="invoicePayStatus"/>
