@@ -56,9 +56,9 @@ namespace POS.View.Settings
         ProgramDetails progDetails = new ProgramDetails();
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -91,7 +91,7 @@ namespace POS.View.Settings
                 #endregion
 
                 progDetails = await progDetailsModel.getCurrentInfo();
-
+            
                 #region unlimited
                 if (progDetails.branchCount == -1)
                 { dpnl_branch.Visibility = Visibility.Collapsed; txt_branchUnlimited.Visibility = Visibility.Visible; }
@@ -133,11 +133,10 @@ namespace POS.View.Settings
                 else
                 { dpnl_item.Visibility = Visibility.Visible; txt_itemUnlimited.Visibility = Visibility.Collapsed; }
                 #endregion
-
+                
                 if (SectionData.isSupportPermision())
                 {
                     col_upgrade.Width = col_extend.Width;
-
                 }
                 else
                 {
@@ -146,14 +145,14 @@ namespace POS.View.Settings
 
                 this.DataContext = progDetails;
 
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
+            //    SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
 
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private void translate()
         {
@@ -161,7 +160,7 @@ namespace POS.View.Settings
             txt_packageCodeTitle.Text = MainWindow.resourcemanager.GetString("trCode");
             txt_packageNameTitle.Text = MainWindow.resourcemanager.GetString("trName");
             txt_agentTitle.Text = MainWindow.resourcemanager.GetString("trAgent");
-            txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trRegisteredFor");////????
+            txt_customerNameTitle.Text = MainWindow.resourcemanager.GetString("trRegisteredFor");
             txt_expiredTitle.Text = MainWindow.resourcemanager.GetString("trExpiredDate");
             txt_statusTitle.Text = MainWindow.resourcemanager.GetString("trServerStatus");
             txt_serverStatusTitle.Text = MainWindow.resourcemanager.GetString("trServerType");
@@ -183,6 +182,15 @@ namespace POS.View.Settings
             txt_posCountNameTitle.Text = MainWindow.resourcemanager.GetString("trPOSs");
             txt_vendorCountNameTitle.Text = MainWindow.resourcemanager.GetString("trVendors");
             txt_itemCountNameTitle.Text = MainWindow.resourcemanager.GetString("trItems");
+
+            txt_branchUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_userUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_customerUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_salesInvUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_storeUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_posUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_vendorUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
+            txt_itemUnlimited.Text = MainWindow.resourcemanager.GetString("trUnlimited");
 
             btn_extend.Content = MainWindow.resourcemanager.GetString("trExtend");
             btn_upgrade.Content = MainWindow.resourcemanager.GetString("trUpgrade");
