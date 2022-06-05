@@ -559,7 +559,7 @@ namespace POS_Server.Controllers
                     {
                         var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true)
                                             join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
-                                            where (s.status == st && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                            where (s.status == st && s.invoiceId == b.invoiceId && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                             select new InvoiceModel()
                                             {
                                                 invoiceId = b.invoiceId,
@@ -598,22 +598,15 @@ namespace POS_Server.Controllers
                                                 shippingCost = b.shippingCost,
                                                 realShippingCost = b.realShippingCost,
                                                 status = s.status,
-                                            })
+                                                itemsCount = entity.itemsTransfer.Where(x => x.invoiceId == b.invoiceId).Select(x => x.itemsTransId).ToList().Count,
+                    })
                         .ToList();
-
-                        for (int i = 0; i < invoicesList.Count; i++)
-                        {
-                            int invoiceId = invoicesList[i].invoiceId;
-                            int itemCount = entity.itemsTransfer.Where(x => x.invoiceId == invoiceId).Select(x => x.itemsTransId).ToList().Count;
-                            invoicesList[i].itemsCount = itemCount;
-                           
-                        }
 
                         if(invoicesList.Count > 0)
                             lst.AddRange(invoicesList);
                     }
 
-                    lst = lst.OrderBy(x => x.status).ToList();
+                    lst = lst.OrderBy(x => x.status).ThenBy(x => x.invDate).ToList();
 
                     int sequence = 1;
                     for (int i = 0; i < lst.Count; i++)
