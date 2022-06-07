@@ -4570,7 +4570,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invoices Per Month.
+        ///   Looks up a localized string similar to Invoices per month.
         /// </summary>
         internal static string trInvoicesPerMonth {
             get {
@@ -7496,7 +7496,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registered For.
+        ///   Looks up a localized string similar to Registered for.
         /// </summary>
         internal static string trRegisteredFor {
             get {

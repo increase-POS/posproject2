@@ -3002,7 +3002,7 @@
     <value>اتصال بالانترنت</value>
   </data>
   <data name="trServerStatus" xml:space="preserve">
-    <value>حالة السيرفر</value>
+    <value>حالة المخدم</value>
   </data>
   <data name="trPayDate" xml:space="preserve">
     <value>تاريخ الدفع</value>

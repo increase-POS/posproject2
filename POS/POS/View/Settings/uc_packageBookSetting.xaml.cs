@@ -56,36 +56,20 @@ namespace POS.View.Settings
         ProgramDetails progDetails = new ProgramDetails();
         public async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    SectionData.StartAwait(grid_main);
+            try
+            {
+                SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.en_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_branch.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_store.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_user.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_vendor.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_item.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_salesInv.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_customer.FlowDirection = FlowDirection.LeftToRight;
-                    //dpnl_pos.FlowDirection = FlowDirection.LeftToRight; 
                 }
                 else
                 {
                     MainWindow.resourcemanager = new ResourceManager("POS.ar_file", Assembly.GetExecutingAssembly());
                     grid_main.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_branch.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_store.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_user.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_vendor.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_item.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_salesInv.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_customer.FlowDirection = FlowDirection.RightToLeft;
-                    //dpnl_pos.FlowDirection = FlowDirection.RightToLeft;
                 }
                 translate();
                 #endregion
@@ -145,14 +129,14 @@ namespace POS.View.Settings
 
                 this.DataContext = progDetails;
 
-            //    SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
+                SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
 
-            //    SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
         private void translate()
         {

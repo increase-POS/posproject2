@@ -3062,7 +3062,7 @@ Please add Email in setting</value>
     <value>Two ways</value>
   </data>
   <data name="trInvoicesPerMonth" xml:space="preserve">
-    <value>Invoices Per Month</value>
+    <value>Invoices per month</value>
   </data>
   <data name="trNom" xml:space="preserve">
     <value>NO.</value>
@@ -3206,7 +3206,7 @@ Please add Email in setting</value>
     <value>Salaries</value>
   </data>
   <data name="trRegisteredFor" xml:space="preserve">
-    <value>Registered For</value>
+    <value>Registered for</value>
   </data>
   <data name="trUnlimited" xml:space="preserve">
     <value>Unlimited</value>

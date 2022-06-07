@@ -8360,7 +8360,7 @@ namespace POS {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to حالة السيرفر.
+        ///   Looks up a localized string similar to حالة المخدم.
         /// </summary>
         internal static string trServerStatus {
             get {
