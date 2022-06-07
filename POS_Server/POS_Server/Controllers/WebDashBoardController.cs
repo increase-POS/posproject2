@@ -557,7 +557,7 @@ namespace POS_Server.Controllers
                     
                     foreach (string st in statusL)
                     {
-                        var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true)
+                        var invoicesList = (from b in entity.invoices.Where(x => invTypeL.Contains(x.invType) && x.shipUserId == shipUserId && x.isActive == true && x.deserved >0)
                                             join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                             where (s.status == st && s.invoiceId == b.invoiceId && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                             select new InvoiceModel()
