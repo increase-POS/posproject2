@@ -31,6 +31,7 @@ namespace POS_Server.Controllers
             {
                 #region params
                 int branchId = 0;
+                int userId = 0;
                 DateTime startDate = DateTime.Now;
                // DateTime? endDate = null;
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
@@ -39,6 +40,10 @@ namespace POS_Server.Controllers
                     if (c.Type == "branchId")
                     {
                         branchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
                     }
                     
                     //else if (c.Type == "startDate")
@@ -67,10 +72,18 @@ namespace POS_Server.Controllers
                     {
                         var searchPredicate = PredicateBuilder.New<invoices>();
 
+                        BranchesController bc = new BranchesController();
+                        var branchesList = bc.BranchesByUser(userId);
+                       var branchIds =  branchesList.Select(x => x.branchId).ToList();
+
                         #region purchases count - vendors
                         searchPredicate = searchPredicate.And(x => x.isActive == true && (x.invType == "p" || x.invType == "pw"));
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
+                        else
+                        {
+                            searchPredicate = searchPredicate.And(x => branchIds.Contains((int)x.branchId));
+                        }
 
                         //if(endDate == null)
                         //    searchPredicate = searchPredicate.And(x => EntityFunctions.TruncateTime(x.updateDate) == startDate);
@@ -95,7 +108,10 @@ namespace POS_Server.Controllers
                         searchPredicate = searchPredicate.And(x => x.isActive == true && x.invType == "s" );
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
-
+                        else
+                        {
+                            searchPredicate = searchPredicate.And(x => branchIds.Contains((int)x.branchId));
+                        }
                         //if (endDate == null)
                         //    searchPredicate = searchPredicate.And(x => EntityFunctions.TruncateTime(x.updateDate) == startDate);
                         //else
@@ -115,6 +131,10 @@ namespace POS_Server.Controllers
 
                         if (branchId != 0)
                             posSearchPredicat = posSearchPredicat.And(x => x.branchId == branchId);
+                        else
+                        {
+                            posSearchPredicat = posSearchPredicat.And(x => branchIds.Contains((int)x.branchId));
+                        }
 
                         #region online users
                         dashBoardModel.onLineUsersCount = (from log in entity.usersLogs
