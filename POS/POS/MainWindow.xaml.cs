@@ -1812,7 +1812,7 @@ namespace POS
                 else if (tag == "emailTemplates")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trEmailTemplates");
                 else if (tag == "packageBookSetting")
-                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("");
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("packageBookSettings");
                 #endregion
                 #region  report
                 else if (tag == "reports")
