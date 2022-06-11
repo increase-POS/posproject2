@@ -74,7 +74,7 @@ namespace POS_Server.Controllers
                         searchPredicate = searchPredicate.And(x => x.isActive == true && (x.invType == "p" || x.invType == "pw"));
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
-                        else
+                        else if (userId != 2)
                         {
                             searchPredicate = searchPredicate.And(x => branchIds.Contains((int)x.branchId));
                         }
@@ -104,7 +104,7 @@ namespace POS_Server.Controllers
                         searchPredicate = searchPredicate.And(x => x.isActive == true && x.invType == "s" );
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
-                        else
+                        else if (userId != 2)
                         {
                             searchPredicate = searchPredicate.And(x => branchIds.Contains((int)x.branchId));
                         }
@@ -126,7 +126,7 @@ namespace POS_Server.Controllers
 
                         if (branchId != 0)
                             posSearchPredicat = posSearchPredicat.And(x => x.branchId == branchId);
-                        else
+                        else if (userId != 2)
                         {
                             posSearchPredicat = posSearchPredicat.And(x => branchIds.Contains((int)x.branchId));
                         }
@@ -627,7 +627,7 @@ namespace POS_Server.Controllers
                         searchPredicate = searchPredicate.And(x => true);
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
-                        else
+                        else if(userId != 2)
                         {
                             BranchesController bc = new BranchesController();
                             var branchesList = bc.BranchesByUser(userId);
