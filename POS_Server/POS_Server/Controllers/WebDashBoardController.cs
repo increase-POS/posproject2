@@ -605,12 +605,17 @@ namespace POS_Server.Controllers
             else
             {
                 int branchId = 0;
+                int userId = 0;
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
                     if (c.Type == "branchId")
                     {
                         branchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
                     }
                 }
 
@@ -622,6 +627,14 @@ namespace POS_Server.Controllers
                         searchPredicate = searchPredicate.And(x => true);
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
+                        else
+                        {
+                            BranchesController bc = new BranchesController();
+                            var branchesList = bc.BranchesByUser(userId);
+                            var branchIds = branchesList.Select(x => x.branchId).ToList();
+
+                            searchPredicate = searchPredicate.And(x => branchIds.Contains((int)x.branchId));
+                        }
 
                         var itemsUnitsList = (from b in entity.itemsLocations
                                             where b.quantity > 0 && b.invoiceId == null
