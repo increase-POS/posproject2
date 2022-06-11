@@ -3496,4 +3496,10 @@ Please add Email in setting</value>
   <data name="trOrderreport" xml:space="preserve">
     <value>Orders</value>
   </data>
+  <data name="packageBook" xml:space="preserve">
+    <value>Package book</value>
+  </data>
+  <data name="packageBookSettings" xml:space="preserve">
+    <value>Package book settings</value>
+  </data>
 </root>

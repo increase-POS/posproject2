@@ -88,6 +88,24 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Package book.
+        /// </summary>
+        internal static string packageBook {
+            get {
+                return ResourceManager.GetString("packageBook", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package book settings.
+        /// </summary>
+        internal static string packageBookSettings {
+            get {
+                return ResourceManager.GetString("packageBookSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string String1 {

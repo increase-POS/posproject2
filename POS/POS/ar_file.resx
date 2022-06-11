@@ -3475,4 +3475,10 @@
   <data name="trOrderreport" xml:space="preserve">
     <value>الطلبات</value>
   </data>
+  <data name="packageBook" xml:space="preserve">
+    <value>Package book</value>
+  </data>
+  <data name="packageBookSettings" xml:space="preserve">
+    <value>Package book settings</value>
+  </data>
 </root>
