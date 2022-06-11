@@ -33,7 +33,7 @@ namespace POS_Server.Controllers
                 int branchId = 0;
                 int userId = 0;
                 DateTime startDate = DateTime.Now;
-               // DateTime? endDate = null;
+
                 IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
                 foreach (Claim c in claims)
                 {
@@ -52,14 +52,7 @@ namespace POS_Server.Controllers
                     //    startDate = DateTime.Parse(startDate.ToString().Split(' ')[0]);
 
                     //}
-                    //else if (c.Type == "endDate")
-                    //{
-                    //    if (c.Value != null && c.Value != "")
-                    //    {
-                    //        endDate = DateTime.Parse(c.Value);
-                    //        endDate = DateTime.Parse(endDate.ToString().Split(' ')[0]);
-                    //    }
-                    //}
+
                 }
                 #endregion
                 
@@ -76,7 +69,7 @@ namespace POS_Server.Controllers
                         var branchesList = bc.BranchesByUser(userId);
                        var branchIds =  branchesList.Select(x => x.branchId).ToList();
 
-                        #region purchases count - vendors
+                        #region purchases count
                         searchPredicate = searchPredicate.And(x => x.isActive == true && (x.invType == "p" || x.invType == "pw"));
                         if (branchId != 0)
                             searchPredicate = searchPredicate.And(x => x.branchId == branchId);
@@ -93,13 +86,15 @@ namespace POS_Server.Controllers
 
 
                         dashBoardModel.purchasesCount = entity.invoices.Where(searchPredicate).ToList().Count();
-   
 
-                        //vendors count
+                        #endregion
+
+                        #region vendors count
+                        searchPredicate = PredicateBuilder.New<invoices>();
+                        searchPredicate = searchPredicate.And(x => x.isActive == true && (x.invType == "p" || x.invType == "pw"));
                         searchPredicate = searchPredicate.And(x => x.agentId != null);
-                        dashBoardModel.vendorsCount = entity.invoices.Where(searchPredicate).Select(x => x.agentId).ToList().Distinct().Count();
-                       
 
+                        dashBoardModel.vendorsCount = entity.invoices.Where(searchPredicate).Select(x => x.agentId).ToList().Distinct().Count();
                         #endregion
 
                         #region sales count
@@ -112,17 +107,16 @@ namespace POS_Server.Controllers
                         {
                             searchPredicate = searchPredicate.And(x => branchIds.Contains((int)x.branchId));
                         }
-                        //if (endDate == null)
-                        //    searchPredicate = searchPredicate.And(x => EntityFunctions.TruncateTime(x.updateDate) == startDate);
-                        //else
-                        //    searchPredicate = searchPredicate.And(x => EntityFunctions.TruncateTime(x.updateDate) >= startDate
-                        //                                            && EntityFunctions.TruncateTime(x.updateDate) <= endDate);
-
 
                         dashBoardModel.salesCount = entity.invoices.Where(searchPredicate).Count();
 
-                        //customers count
-                        searchPredicate = searchPredicate.And(x => x.agentId != null);
+
+                        #endregion
+
+                        #region customers count
+                        searchPredicate = PredicateBuilder.New<invoices>();
+                        searchPredicate = searchPredicate.And(x => x.isActive == true && x.invType == "s" && x.agentId != null);
+
                         dashBoardModel.customersCount = entity.invoices.Where(searchPredicate).Select(x => x.agentId).Distinct().Count();
                         #endregion
 
