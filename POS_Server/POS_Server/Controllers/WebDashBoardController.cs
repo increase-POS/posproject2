@@ -1,4 +1,5 @@
 ﻿using LinqKit;
+using Newtonsoft.Json.Linq;
 using POS_Server.Models;
 using POS_Server.Models.VM;
 using System;
@@ -183,6 +184,138 @@ namespace POS_Server.Controllers
                 {
                     var accuracy = entity.setValues.Where(x => x.setting.name == "accuracy").Select(x => x.value).FirstOrDefault();
                     return TokenManager.GenerateToken(accuracy);
+                }
+                
+            }
+
+        }
+
+        [HttpPost]
+        [Route("GetPermissions")]
+        public string GetPermissions(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                #region params
+                int userId = 0;
+                string dashBoardPermission = "dashboard";
+                string accountRepPermission = "accountsReports_view";
+                string itemsStorage_transfer = "itemsStorage_transfer";
+                string itemsStorage_reports = "itemsStorage_reports";
+                string deliveryPermission = "salesOrders_delivery";
+
+                string result = "";
+
+                JArray jArray = new JArray();
+
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+
+                }
+                #endregion
+                using (incposdbEntities entity = new incposdbEntities())
+                {
+                    result += "{";
+                    #region dashBoard Permission
+                    var groupObjects = (from GO in entity.groupObject
+                                        where GO.showOb == 1 && GO.objects.name.Contains(dashBoardPermission)
+                                        join U in entity.users on GO.groupId equals U.groupId
+                                        where U.userId == userId
+                                        select new
+                                        {
+                                            GO.id,
+                                            GO.showOb,
+                                        }).FirstOrDefault();
+
+                    result += "showDashBoard:";
+                    if (groupObjects != null)
+                    {
+                        result += "true,";
+                    }
+                    else
+                    {
+                        result += "false,";
+                    }
+                    #endregion  
+                    #region account Reports (sales+purchases) Permission
+                    groupObjects = (from GO in entity.groupObject
+                                        where GO.showOb == 1 && GO.objects.name.Contains(accountRepPermission)
+                                        join U in entity.users on GO.groupId equals U.groupId
+                                        where U.userId == userId
+                                        select new
+                                        {
+                                            GO.id,
+                                            GO.showOb,
+                                        }).FirstOrDefault();
+
+                    result += "showAccountRep:";
+                    if (groupObjects != null)
+                    {
+                        result += "true,";
+                    }
+                    else
+                    {
+                        result += "false,";
+                    }
+                    #endregion 
+                    #region stock Permission
+                    groupObjects = (from GO in entity.groupObject
+                                        where GO.showOb == 1 && (GO.objects.name.Contains(itemsStorage_transfer) || GO.objects.name.Contains(itemsStorage_reports))
+                                        join U in entity.users on GO.groupId equals U.groupId
+                                        where U.userId == userId
+                                        select new
+                                        {
+                                            GO.id,
+                                            GO.showOb,
+                                        }).FirstOrDefault();
+
+                    result += "showStock:";
+                    if (groupObjects != null)
+                    {
+                        result += "true,";
+                    }
+                    else
+                    {
+                        result += "false,";
+                    }
+                    #endregion
+                    #region delivery Permission
+                    groupObjects = (from GO in entity.groupObject
+                                        where GO.showOb == 1 && GO.objects.name.Contains(deliveryPermission)
+                                        join U in entity.users on GO.groupId equals U.groupId
+                                        where U.userId == userId
+                                        select new
+                                        {
+                                            GO.id,
+                                            GO.showOb,
+                                        }).FirstOrDefault();
+
+                    result += "showDelivery:";
+                    if (groupObjects != null)
+                    {
+                        result += "true";
+                    }
+                    else
+                    {
+                        result += "false";
+                    }
+
+                    #endregion
+                    result += "}";
+                    return TokenManager.GenerateToken(result);
+
                 }
                 
             }
