@@ -25,6 +25,7 @@ using netoaster;
 using POS.Classes;
 using POS.View;
 using POS.View.accounts;
+using POS.View.delivery;
 using POS.View.reports;
 using POS.View.Settings;
 using POS.View.windows;
@@ -1063,7 +1064,7 @@ namespace POS
             catch (Exception ex)
             {
                 if (sender != null)
-                    SectionData.EndAwait(grid_mainWindow);
+                    SectionData.EndAwait(grid_mainWindow, "mainWindow_load");
                 SectionData.ExceptionMessage(ex, this);
             }
         }
@@ -1145,6 +1146,8 @@ namespace POS
                     loadingSecondLevel(second, uc_purchases.Instance);
                 if (first == "sales")
                     loadingSecondLevel(second, uc_sales.Instance);
+                if (first == "delivery")
+                    loadingSecondLevel(second, uc_delivery.Instance);
                 if (first == "accounts")
                     loadingSecondLevel(second, uc_accounts.Instance);
                 if (first == "reports")
@@ -1497,6 +1500,8 @@ namespace POS
             txt_purchases.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_sales.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
+            txt_delivery.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
+            txt_delivery.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_accounting.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_reports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             txt_sectiondata.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
@@ -1511,6 +1516,7 @@ namespace POS
             path_iconReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             path_iconAccounts.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             path_iconSales.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
+            path_iconDelivery.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             path_iconPurchases.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             path_iconStorage.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
             path_iconCatalog.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#9FD7F8"));
@@ -1531,6 +1537,8 @@ namespace POS
             txt_purchases.Text = resourcemanager.GetString("trPurchases");
             tt_sales.Content = resourcemanager.GetString("trSales");
             txt_sales.Text = resourcemanager.GetString("trSales");
+            tt_delivery.Content = resourcemanager.GetString("trDelivery");
+            txt_delivery.Text = resourcemanager.GetString("trSales");
             tt_accounts.Content = resourcemanager.GetString("trAccounting");
             txt_accounting.Text = resourcemanager.GetString("trAccounting");
             tt_reports.Content = resourcemanager.GetString("trReports");
@@ -1576,6 +1584,7 @@ namespace POS
                 FN_tooltipVisibility(btn_storage);
                 FN_tooltipVisibility(btn_purchase);
                 FN_tooltipVisibility(btn_sales);
+                FN_tooltipVisibility(btn_delivery);
                 FN_tooltipVisibility(btn_reports);
                 FN_tooltipVisibility(btn_accounts);
                 FN_tooltipVisibility(btn_sectionData);
@@ -1595,6 +1604,7 @@ namespace POS
             path_openStorage.Visibility = Visibility.Collapsed;
             path_openPurchases.Visibility = Visibility.Collapsed;
             path_openSales.Visibility = Visibility.Collapsed;
+            path_openDelivery.Visibility = Visibility.Collapsed;
             path_openReports.Visibility = Visibility.Collapsed;
             path_openSectionData.Visibility = Visibility.Collapsed;
             path_openSettings.Visibility = Visibility.Collapsed;
@@ -1686,6 +1696,8 @@ namespace POS
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trPurchases");
                 else if (tag == "sales")
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trSales");
+                else if (tag == "delivery")
+                    txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trDelivery");
                 else if (tag == "accounts")
                     txt_firstLevelTrack.Text = "> " + resourcemanager.GetString("trAccounting");
                 else if (tag == "reports")
@@ -1780,6 +1792,12 @@ namespace POS
                 else if (tag == "salesStatistic")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trStatistic");
                 #endregion
+                #region  delivery
+                else if (tag == "deliveryManagement")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("management");
+                else if (tag == "driversManagement")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("deliveryList");
+                #endregion
                 #region  sectionData
                 else if (tag == "suppliers")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSuppliers");
@@ -1823,6 +1841,8 @@ namespace POS
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trPurchases");
                 else if (tag == "salesReports")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trSales");
+                else if (tag == "deliveryReports")
+                    txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trDelivery");
                 else if (tag == "accountsReports")
                     txt_secondLevelTrack.Text = "> " + resourcemanager.GetString("trAccounting");
                 else if (tag == "usersReports")
@@ -1866,6 +1886,7 @@ namespace POS
                     txt_thirdLevelTrack.Text = "> " + resourcemanager.GetString("trDailySales");
 
                 #endregion
+                 
 
                 #region  accountsReports
                 else if (tag == "payments")
@@ -2301,6 +2322,7 @@ namespace POS
                 SectionData.EndAwait(grid_mainWindow);
         }
 
+       
 
         public void BTN_purchases_Click(object sender, RoutedEventArgs e)
         {
@@ -2330,6 +2352,24 @@ namespace POS
                 fn_ColorIconRefreash(path_iconSales);
                 grid_main.Children.Clear();
                 grid_main.Children.Add(uc_sales.Instance);
+                isHome = true;
+                Button button = sender as Button;
+                initializationMainTrack(button.Tag.ToString(), 0);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void BTN_delivery_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                colorTextRefreash(txt_delivery);
+                FN_pathVisible(path_openDelivery);
+                fn_ColorIconRefreash(path_iconDelivery);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_delivery.Instance);
                 isHome = true;
                 Button button = sender as Button;
                 initializationMainTrack(button.Tag.ToString(), 0);
