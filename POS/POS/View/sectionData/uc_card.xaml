@@ -20,7 +20,7 @@
         <!--#region -->
         <Grid Margin="0,15,10,15" Grid.Column="0">
             <Grid.RowDefinitions >
-                <RowDefinition Height="45"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="45"/>
             </Grid.RowDefinitions>
