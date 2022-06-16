@@ -58,6 +58,11 @@
             <converters:unlimitedRemainCoupon x:Key="unlimitedRemainCoupon"/>
             <converters:accuracyTaxConverter x:Key="accuracyTaxConverter"/>
             <converters:accuracyDiscountConverter x:Key="accuracyDiscountConverter"/>
+            <converters:availableConverter x:Key="availableConverter"/>
+            <converters:driverNameConverter x:Key="driverNameConverter"/>
+            <converters:dateTimeToTimeConverter x:Key="dateTimeToTimeConverter"/>
+            <converters:preparingOrderStatusConverter x:Key="preparingOrderStatusConverter"/>
+            <converters:shippingCompanyNameConverter x:Key="shippingCompanyNameConverter"/>
             
             <!--<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>-->
             <!--#region Fonts-->
