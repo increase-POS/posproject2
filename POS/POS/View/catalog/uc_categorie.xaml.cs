@@ -433,7 +433,7 @@ namespace POS.View
                     SectionData.StartAwait(grid_main);
                 if (MainWindow.groupObject.HasPermissionAction(basicsPermission, MainWindow.groupObjects, "update") || SectionData.isAdminPermision())
                 {
-                    if (category.id > 0)
+                    if (category.categoryId > 0)
                     {
                         //duplicate
                         bool iscodeExist = await SectionData.isCodeExist(tb_categoryCode.Text, "", "Category", category.categoryId);
@@ -610,7 +610,7 @@ namespace POS.View
 
                                 if (b > 0) //SectionData.popUpResponse("", popupContent);
                                 {
-                                    category.id = 0;
+                                    category.categoryId = 0;
                                     Toaster.ShowSuccess(Window.GetWindow(this), message: popupContent, animation: ToasterAnimation.FadeIn);
                                 } else //SectionData.popUpResponse("", MainWindow.resourcemanager.GetString("trPopError"));
                                     Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
