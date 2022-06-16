@@ -3481,4 +3481,13 @@
   <data name="packageBookSettings" xml:space="preserve">
     <value>Package book settings</value>
   </data>
+  <data name="deliveryList" xml:space="preserve">
+    <value>قائمة الطلبات</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>إدارة</value>
+  </data>
+  <data name="trSelectItemFirst" xml:space="preserve">
+    <value>اختار العنصر أولًا</value>
+  </data>
 </root>

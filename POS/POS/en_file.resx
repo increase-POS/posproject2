@@ -3502,4 +3502,13 @@ Please add Email in setting</value>
   <data name="packageBookSettings" xml:space="preserve">
     <value>Package book settings</value>
   </data>
+  <data name="deliveryList" xml:space="preserve">
+    <value>Delivery list</value>
+  </data>
+  <data name="management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="trSelectItemFirst" xml:space="preserve">
+    <value>Select item first</value>
+  </data>
 </root>

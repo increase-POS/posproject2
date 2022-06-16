@@ -61,6 +61,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to قائمة الطلبات.
+        /// </summary>
+        internal static string deliveryList {
+            get {
+                return ResourceManager.GetString("deliveryList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هل تريد حفظ عرض السعر في المسودات؟.
         /// </summary>
         internal static string Do_you_want_save_the_quotation_in_drafts_ {
@@ -75,6 +84,15 @@ namespace POS {
         internal static string itMustBeGreaterThanZero {
             get {
                 return ResourceManager.GetString("itMustBeGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to إدارة.
+        /// </summary>
+        internal static string management {
+            get {
+                return ResourceManager.GetString("management", resourceCulture);
             }
         }
         
@@ -8185,6 +8203,15 @@ namespace POS {
         internal static string trSelectImage {
             get {
                 return ResourceManager.GetString("trSelectImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to اختار العنصر أولًا.
+        /// </summary>
+        internal static string trSelectItemFirst {
+            get {
+                return ResourceManager.GetString("trSelectItemFirst", resourceCulture);
             }
         }
         

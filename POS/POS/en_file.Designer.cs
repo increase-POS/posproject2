@@ -70,11 +70,29 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery list.
+        /// </summary>
+        internal static string deliveryList {
+            get {
+                return ResourceManager.GetString("deliveryList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It must be greater than zero.
         /// </summary>
         internal static string itMustBeGreaterThanZero {
             get {
                 return ResourceManager.GetString("itMustBeGreaterThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Management.
+        /// </summary>
+        internal static string management {
+            get {
+                return ResourceManager.GetString("management", resourceCulture);
             }
         }
         
@@ -8230,6 +8248,15 @@ namespace POS {
         internal static string trSelectImage {
             get {
                 return ResourceManager.GetString("trSelectImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select item first.
+        /// </summary>
+        internal static string trSelectItemFirst {
+            get {
+                return ResourceManager.GetString("trSelectItemFirst", resourceCulture);
             }
         }
         
