@@ -7,7 +7,7 @@
         mc:Ignorable="d"   KeyDown="HandleKeyPress"
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          WindowStyle="None" WindowStartupLocation="CenterScreen"
-        Title="Increase Restaurant"
+        Title="Increase POS"
         ResizeMode="NoResize" Margin="0"
         Height="250" Width="300"  Background="Transparent" AllowsTransparency="True" MouseDown="Window_MouseDown"
         Loaded="Window_Loaded" Closing="Window_Closing" >
