@@ -79,6 +79,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drivers.
+        /// </summary>
+        internal static string drivers {
+            get {
+                return ResourceManager.GetString("drivers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to It must be greater than zero.
         /// </summary>
         internal static string itMustBeGreaterThanZero {
@@ -102,6 +111,15 @@ namespace POS {
         internal static string Num__ {
             get {
                 return ResourceManager.GetString("Num :", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On the way.
+        /// </summary>
+        internal static string onTheWay {
+            get {
+                return ResourceManager.GetString("onTheWay", resourceCulture);
             }
         }
         
@@ -10219,6 +10237,15 @@ namespace POS {
         internal static string trZHint {
             get {
                 return ResourceManager.GetString("trZHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to With delivery.
+        /// </summary>
+        internal static string withDelivery {
+            get {
+                return ResourceManager.GetString("withDelivery", resourceCulture);
             }
         }
     }

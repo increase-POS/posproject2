@@ -79,6 +79,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to السائقين.
+        /// </summary>
+        internal static string drivers {
+            get {
+                return ResourceManager.GetString("drivers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to يجب أن يكون أكبر من الصفر.
         /// </summary>
         internal static string itMustBeGreaterThanZero {
@@ -93,6 +102,15 @@ namespace POS {
         internal static string management {
             get {
                 return ResourceManager.GetString("management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to على الطريق.
+        /// </summary>
+        internal static string onTheWay {
+            get {
+                return ResourceManager.GetString("onTheWay", resourceCulture);
             }
         }
         
@@ -10156,6 +10174,15 @@ namespace POS {
         internal static string trZHint {
             get {
                 return ResourceManager.GetString("trZHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to مع السائق.
+        /// </summary>
+        internal static string withDelivery {
+            get {
+                return ResourceManager.GetString("withDelivery", resourceCulture);
             }
         }
     }

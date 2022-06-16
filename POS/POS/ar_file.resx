@@ -3490,4 +3490,13 @@
   <data name="trSelectItemFirst" xml:space="preserve">
     <value>اختار العنصر أولًا</value>
   </data>
+  <data name="drivers" xml:space="preserve">
+    <value>السائقين</value>
+  </data>
+  <data name="onTheWay" xml:space="preserve">
+    <value>على الطريق</value>
+  </data>
+  <data name="withDelivery" xml:space="preserve">
+    <value>مع السائق</value>
+  </data>
 </root>
