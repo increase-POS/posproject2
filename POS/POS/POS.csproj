@@ -299,15 +299,18 @@
     <Compile Include="converters\agentCompanyConverter.cs" />
     <Compile Include="converters\agentNameConverter.cs" />
     <Compile Include="converters\agentTypeConverter.cs" />
+    <Compile Include="converters\availableConverter.cs" />
     <Compile Include="converters\BooleanReverseConverter.cs" />
     <Compile Include="converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="converters\closingDescriptonConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
+    <Compile Include="converters\dateTimeToTimeConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
     <Compile Include="converters\depositorNameConverter.cs" />
     <Compile Include="converters\depositorTypeConverter.cs" />
     <Compile Include="converters\discountTypeConverter.cs" />
+    <Compile Include="converters\driverNameConverter.cs" />
     <Compile Include="converters\enabledCouponConverter.cs" />
     <Compile Include="converters\expiredDateConverter.cs" />
     <Compile Include="converters\inventoryTypeConverter.cs" />
@@ -330,12 +333,14 @@
     <Compile Include="converters\orderStatusConverter.cs" />
     <Compile Include="converters\permissionsNameConverter.cs" />
     <Compile Include="converters\posTransfersStatusConverter.cs" />
+    <Compile Include="converters\preparingOrderStatusConverter.cs" />
     <Compile Include="converters\processTypeAndCardConverter.cs" />
     <Compile Include="converters\processTypeConverter.cs" />
     <Compile Include="converters\profitToColorConverter.cs" />
     <Compile Include="converters\SectionFreeZoneConverter.cs" />
     <Compile Include="converters\sectionFreeZoneStorageReportConverter.cs" />
     <Compile Include="converters\SectionLocationFreeZoneConverter.cs" />
+    <Compile Include="converters\shippingCompanyNameConverter.cs" />
     <Compile Include="converters\stockSectionLocationFreeZoneConverter.cs" />
     <Compile Include="converters\TaxVisibilityConverter.cs" />
     <Compile Include="converters\transTypeClosingConverter.cs" />
@@ -382,6 +387,15 @@
     </Compile>
     <Compile Include="View\catalog\win_lvcCatalog.xaml.cs">
       <DependentUpon>win_lvcCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\delivery\uc_delivery.xaml.cs">
+      <DependentUpon>uc_delivery.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\delivery\uc_deliveryManagement.xaml.cs">
+      <DependentUpon>uc_deliveryManagement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\delivery\uc_driversManagement.xaml.cs">
+      <DependentUpon>uc_driversManagement.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\purchases\uc_purchaseOrder.xaml.cs">
       <DependentUpon>uc_purchaseOrder.xaml</DependentUpon>
@@ -867,6 +881,18 @@
     <Page Include="View\catalog\win_lvcCatalog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\delivery\uc_delivery.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="View\delivery\uc_deliveryManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="View\delivery\uc_driversManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
     <Page Include="View\purchases\uc_purchaseOrder.xaml">
       <SubType>Designer</SubType>
