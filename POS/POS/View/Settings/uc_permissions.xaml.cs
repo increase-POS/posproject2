@@ -1050,6 +1050,8 @@ namespace POS.View.Settings
             path_banks.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_cards.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_shippingCompany.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_deliveryManagement.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_driversManagement.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
 
             txt_suppliers.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
@@ -1061,6 +1063,8 @@ namespace POS.View.Settings
             txt_banks.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_cards.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_shippingCompany.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_deliveryManagement.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_driversManagement.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
         public void paintSettings()
         {
@@ -1160,6 +1164,8 @@ namespace POS.View.Settings
             txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
             txt_banks.Text = MainWindow.resourcemanager.GetString("trBanks");
             txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShipping");
+            txt_deliveryManagement.Text = MainWindow.resourcemanager.GetString("deliveryList");
+            txt_driversManagement.Text = MainWindow.resourcemanager.GetString("trShipping");
 
             txt_storageReports.Text = MainWindow.resourcemanager.GetString("trStore");
             txt_purchaseReports.Text = MainWindow.resourcemanager.GetString("trPurchases");
@@ -1269,6 +1275,23 @@ namespace POS.View.Settings
                 isEnabledButtons();
                 btn_sale.IsEnabled = false;
                 btn_sale.Opacity = 1;
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void btn_delivery_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                paint();
+                bdr_delivery.Background = Brushes.White;
+                path_delivery.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+                grid_delivery.Visibility = Visibility.Visible;
+                isEnabledButtons();
+                btn_delivery.IsEnabled = false;
+                btn_delivery.Opacity = 1;
             }
             catch (Exception ex)
             {
@@ -1444,5 +1467,7 @@ namespace POS.View.Settings
                 }
             }
         }
+
+        
     }
 }
