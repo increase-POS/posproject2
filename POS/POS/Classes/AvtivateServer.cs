@@ -99,6 +99,8 @@ namespace POS.Classes
         public string upnum { get; set; }
         public string activeApp { get; set; }
         public string confirmStat { get; set; }
+        public string isDemo { get; set; }
+
     }
     public class SendDetail
     {
@@ -144,6 +146,24 @@ namespace POS.Classes
 
          
         }
+        //public async Task<string> hdserial()
+        //{            
+        //    string item = "";
+        //    Dictionary<string, string> parameters = new Dictionary<string, string>();
+        //   // parameters.Add("id", id.ToString());
+        //    //#################
+        //    IEnumerable<Claim> claims = await APIResult.getList("Activate/hdserial");
+
+        //    foreach (Claim c in claims)
+        //    {
+        //        if (c.Type == "scopes")
+        //        {
+        //            item = c.Value;
+        //            break;
+        //        }
+        //    }
+        //    return item;
+        //}
 
         public async Task<int> Sendserverkey(string skey)
         {

@@ -73,6 +73,7 @@ namespace POS.Classes
         public string notes { get; set; }
         public string upnum { get; set; }
         public string packuserType { get; set; }
+        public string isDemo { get; set; }
 
 
         public async Task<ProgramDetails> getCurrentInfo()
