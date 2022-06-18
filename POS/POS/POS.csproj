@@ -397,6 +397,9 @@
     <Compile Include="View\delivery\uc_driversManagement.xaml.cs">
       <DependentUpon>uc_driversManagement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\delivery\uc_shippingCompany.xaml.cs">
+      <DependentUpon>uc_shippingCompany.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\purchases\uc_purchaseOrder.xaml.cs">
       <DependentUpon>uc_purchaseOrder.xaml</DependentUpon>
     </Compile>
@@ -510,9 +513,6 @@
     </Compile>
     <Compile Include="View\sectionData\uc_card.xaml.cs">
       <DependentUpon>uc_card.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\sectionData\uc_shippingCompany.xaml.cs">
-      <DependentUpon>uc_shippingCompany.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\sectionData\win_lvc.xaml.cs">
       <DependentUpon>win_lvc.xaml</DependentUpon>
@@ -894,6 +894,10 @@
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
+    <Page Include="View\delivery\uc_shippingCompany.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\purchases\uc_purchaseOrder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1043,10 +1047,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\sectionData\uc_card.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\sectionData\uc_shippingCompany.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
