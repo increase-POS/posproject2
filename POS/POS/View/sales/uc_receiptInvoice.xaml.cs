@@ -1359,10 +1359,15 @@ namespace POS.View
             await addInvoice(invType);
             if (invoice.invoiceId != 0)
             {
-                await saveOrderStatus(invoice.invoiceId, "pr"); // under processing
-                await saveOrderStatus(invoice.invoiceId, "ex"); // under excution
+                //await saveOrderStatus(invoice.invoiceId, "pr"); // under processing
+                //await saveOrderStatus(invoice.invoiceId, "ex"); // under excution
+                //if (cb_company.SelectedIndex == -1)
+                //    await saveOrderStatus(invoice.invoiceId, "rc"); // recieved 
+
+                await saveOrderStatus(invoice.invoiceId, "UnderProcessing"); // under processing
+                await saveOrderStatus(invoice.invoiceId, "Ready"); // under excution
                 if (cb_company.SelectedIndex == -1)
-                    await saveOrderStatus(invoice.invoiceId, "rc"); // recieved
+                    await saveOrderStatus(invoice.invoiceId, "Done"); // recieved
             }
         }
         private async Task saveOrder(string invType)
@@ -1384,7 +1389,8 @@ namespace POS.View
                 catch { }
                 await not.save(not, MainWindow.branchID.Value, "saleAlerts_shippingUser", MainWindow.loginBranch.name, shipUserId);
                 #endregion
-                await saveOrderStatus(invoice.invoiceId, "ex");
+                //await saveOrderStatus(invoice.invoiceId, "ex");
+                await saveOrderStatus(invoice.invoiceId, "Ready");
             }
         }
         private async Task saveOrderStatus(int invoiceId, string status)

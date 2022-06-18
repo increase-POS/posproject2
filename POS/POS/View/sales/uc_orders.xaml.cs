@@ -1408,7 +1408,8 @@ namespace POS.View.sales
                     await itemLocationModel.reserveItems(invoiceItems, invoiceId, (int)cb_branch.SelectedValue, MainWindow.userID.Value);
                 }
                 // save order status
-                await saveOrderStatus(invoiceId, "pr");
+                //await saveOrderStatus(invoiceId, "pr");
+                await saveOrderStatus(invoiceId, "UnderProcessing");
                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);
             }
             else

@@ -1206,7 +1206,8 @@ namespace POS.View.accounts
                             }
 
                             int s = await invoice.saveInvoice(invoice);
-                            await saveOrderStatus(invoice.invoiceId, "rc");
+                            //await saveOrderStatus(invoice.invoiceId, "rc");
+                            await saveOrderStatus(invoice.invoiceId, "Done");
                             if (!s.Equals(0))
                             {
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopAdd"), animation: ToasterAnimation.FadeIn);

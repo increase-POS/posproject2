@@ -137,7 +137,8 @@ namespace POS.View.windows
                         {
                             // Pos posModel = new Pos();
                             Invoice row = (Invoice)dg_invoice.SelectedItems[0];
-                            await saveOrderStatus(row.invoiceId, "tr");
+                            //await saveOrderStatus(row.invoiceId, "tr");
+                            await saveOrderStatus(row.invoiceId, "Collected");
                             await fillDataGrid();
                         }
                         
