@@ -153,6 +153,7 @@ namespace POS_Server.Controllers
                              agentName = p.agentName,
                              agentLastName = p.agentLastName,
                              agentAccountName = p.agentAccountName,
+                             isDemo=p.isDemo==""||p.isDemo==null|| p.isDemo == "1"? "1" : p.isDemo,
                          }).FirstOrDefault();
 
                 packs.posCountNow=  entity.pos.Count();

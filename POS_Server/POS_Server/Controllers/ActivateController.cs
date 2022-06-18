@@ -220,7 +220,7 @@ namespace POS_Server.Controllers
                              verName = p.versionName,
                              packageNumber = p.packageNumber,
                              packageName = p.packageName,
-
+                             isDemo=p.isDemo,
 
                          }).FirstOrDefault();
             }
@@ -288,6 +288,7 @@ namespace POS_Server.Controllers
                              agentLastName = p.agentLastName,
                              agentAccountName = p.agentAccountName,
                              packageName = p.packageName,
+                             isDemo = p.isDemo,
                          }).FirstOrDefault();
             }
             sd.packageSend = packs;
@@ -408,7 +409,7 @@ namespace POS_Server.Controllers
                             tmpObject.isServerActivated = newObject.isServerActivated;
                             tmpObject.activatedate = newObject.activatedate;
 
-
+                            tmpObject.isDemo = newObject.isDemo;
                         }
                         else
                         {

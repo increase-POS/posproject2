@@ -100,7 +100,7 @@ namespace POS_Server.Models
         public string packuserType { get; set; }
         public string activeApp { get; set; }
         public string confirmStat { get; set; }
-
+        public string isDemo { get; set; }
     }
     public class SendDetail
     {
