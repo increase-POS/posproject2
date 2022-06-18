@@ -74,8 +74,7 @@ namespace POS.View
             btn_cards.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_cards.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
-            btn_shippingCompany.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
-            btn_shippingCompany.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+            
         }
 
         void refreashBachgroundClick(Button btn)
@@ -198,7 +197,6 @@ namespace POS.View
             btn_stores.Content = MainWindow.resourcemanager.GetString("trStores");
             btn_pos.Content = MainWindow.resourcemanager.GetString("trPOS");
             btn_banks.Content = MainWindow.resourcemanager.GetString("trBanks");
-            btn_shippingCompany.Content = MainWindow.resourcemanager.GetString("trShipping");
             btn_cards.Content = MainWindow.resourcemanager.GetString("trPayment1");
             btn_cards.ToolTip = MainWindow.resourcemanager.GetString("trPaymentMethods");
         }
@@ -300,21 +298,7 @@ namespace POS.View
             }
         }
 
-        private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                refreashBachgroundClick(btn_shippingCompany);
-                grid_main.Children.Clear();
-                grid_main.Children.Add(uc_shippingCompany.Instance);
-                Button button = sender as Button;
-                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
+        
         private async void Ex_Expanded(object sender, RoutedEventArgs e)
         {
             try

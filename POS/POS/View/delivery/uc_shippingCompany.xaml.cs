@@ -25,7 +25,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace POS.View.sectionData
+namespace POS.View.delivery
 {
     /// <summary>
     /// Interaction logic for uc_shippingCompany.xaml
