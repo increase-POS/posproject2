@@ -93,7 +93,8 @@ namespace POS.View.windows
         async Task fillDataGrid()
         {
             string invoiceType = "s";
-            string invoiceStatus = "ex";
+            //string invoiceStatus = "ex";
+            string invoiceStatus = "Ready";
             invoices = await invoice.getDeliverOrders(invoiceType, invoiceStatus, MainWindow.userID.Value);
 
            dg_invoice.ItemsSource = invoices;

@@ -2157,7 +2157,8 @@ namespace POS.View.sales
                 if (MainWindow.groupObject.HasPermissionAction(deliveryPermission, MainWindow.groupObjects, "one") || SectionData.isAdminPermision())
                 {
                     string invoiceType = "s";
-                    string invoiceStatus = "ex";
+                    //string invoiceStatus = "ex";
+                    string invoiceStatus = "Ready";
                     saveBeforeExit();
                     wd_invoice w = new wd_invoice();
 
