@@ -529,8 +529,8 @@ namespace POS_Server.Controllers
                     }
                 }
                 List<string> statusL = new List<string>();
-                //statusL.Add("tr");
-                statusL.Add("rc");
+
+                statusL.Add("Done");
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.agentId == agentId && x.shippingCompanyId != null && x.isActive == true)

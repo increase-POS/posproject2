@@ -2940,7 +2940,7 @@ namespace POS_Server.Controllers
                                 {
                                     int invoiceId = inv.invoiceId;
 
-                                    var statusObj = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId && x.status == "rc").FirstOrDefault();
+                                    var statusObj = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId && x.status == "Done").FirstOrDefault();
 
                                     if (statusObj != null)
                                     {
@@ -5395,7 +5395,8 @@ namespace POS_Server.Controllers
                             invoiceStatus invStatus = entity.invoiceStatus.Find(invStatusId);
 
                             //update invoice type
-                            invStatus.status = "tr";
+                            //invStatus.status = "tr";
+                            invStatus.status = "Collected";
                             //add cashtransfer
                             cashTr.invId = inv.invoiceId;
                             cashTr.cash = amount;

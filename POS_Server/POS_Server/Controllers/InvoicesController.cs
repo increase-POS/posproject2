@@ -2049,8 +2049,10 @@ var strP = TokenManager.GetPrincipal(token);
                     }
                 }
                 List<string> statusL = new List<string>();
-                statusL.Add("tr");
-                statusL.Add("rc");
+                //statusL.Add("tr");
+                //statusL.Add("rc");
+               statusL.Add("InTheWay");
+                statusL.Add("Done");
                 using (incposdbEntities entity = new incposdbEntities())
                 {
                     var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && x.branchCreatorId == branchId && x.shipUserId != null && x.isActive == true)
@@ -2215,7 +2217,7 @@ var strP = TokenManager.GetPrincipal(token);
                         {
                             int invoiceId = inv.invoiceId;
 
-                            var statusObj = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId && x.status == "rc").FirstOrDefault();
+                            var statusObj = entity.invoiceStatus.Where(x => x.invoiceId == invoiceId && x.status == "Done").FirstOrDefault();
 
                             if (statusObj != null)
                             {
