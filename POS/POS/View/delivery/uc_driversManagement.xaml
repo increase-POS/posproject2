@@ -7,7 +7,7 @@
              mc:Ignorable="d" Tag="driversManagement"  Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="870" d:DesignWidth="950">
-    <Grid x:Name="grid_main" Margin="20 10" >
+    <Grid x:Name="grid_main"  >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
@@ -298,7 +298,7 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Border  Background="#4E4E4E"   CornerRadius="7 7 0 0">
+                <Border  Background="#4E4E4E" Height="52"  CornerRadius="7 7 0 0">
 
                     <Grid  Height="40" Margin="10 0">
                         <Grid.ColumnDefinitions>

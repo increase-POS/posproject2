@@ -51,7 +51,8 @@ namespace POS.View.delivery
         {
             btn_deliveryManagement.Content = MainWindow.resourcemanager.GetString("management");
             btn_driversManagement.Content = MainWindow.resourcemanager.GetString("deliveryList");
-           
+            btn_shippingCompany.Content = MainWindow.resourcemanager.GetString("trShipping");
+
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -137,6 +138,9 @@ namespace POS.View.delivery
             btn_driversManagement.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_driversManagement.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+
+            btn_shippingCompany.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_shippingCompany.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
         }
 
         void refreashBachgroundClick(Button btn)
@@ -182,8 +186,22 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-      
 
+        private void Btn_shippingCompany_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                refreashBachgroundClick(btn_shippingCompany);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc_shippingCompany.Instance);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
 
         private async void Ex_Collapsed(object sender, RoutedEventArgs e)
         {
