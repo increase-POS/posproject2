@@ -102,6 +102,9 @@ namespace POS.converters
                 case "reciptOfInvoice_inputs":
                     value = MainWindow.resourcemanager.GetString("trDirectEntry");
                     break;
+                    case "deliveryManagement_update":
+                    value = MainWindow.resourcemanager.GetString("trView");
+                    break;
 
                 default:
                     {
