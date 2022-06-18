@@ -129,6 +129,7 @@ namespace POS.View.delivery
                 }
             }
         }
+
         #region methods
         async Task Search()
         {
@@ -173,10 +174,10 @@ namespace POS.View.delivery
 
         async Task<IEnumerable<Invoice>> RefreshOrdersList(string status)
         {
-            /*
-            orders = await orderModel.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, status);
-            orders = orders.Where(o => o.status == "Ready" || o.status == "Collected" || o.status == "InTheWay");
-            */
+            
+            //orders = await orderModel.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, status);
+            //orders = orders.Where(o => o.status == "Ready" || o.status == "Collected" || o.status == "InTheWay");
+            
 
             return orders;
         }

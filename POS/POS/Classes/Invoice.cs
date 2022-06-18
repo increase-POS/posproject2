@@ -1327,5 +1327,26 @@ namespace POS.Classes
             return await APIResult.post(method, parameters);
         }
         //updateprintstat
+
+        public async Task<List<Invoice>> GetOrdersWithDelivery(int branchId, string status)
+        {
+            List<Invoice> items = new List<Invoice>();
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("branchId", branchId.ToString());
+            // status in syntax "Listed, Collected" or one status "Collected"
+            // status values: Listed, Ready, Collected, InTheWay,Done
+            parameters.Add("status", status.ToString());
+
+            IEnumerable<Claim> claims = await APIResult.getList("Invoice/GetOrdersWithDelivery", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Invoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+
     }
 }

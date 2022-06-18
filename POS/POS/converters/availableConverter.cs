@@ -13,9 +13,14 @@ namespace POS.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            byte s = (byte)value;
-            if (s == 1) return MainWindow.resourcemanager.GetString("trAvailable");
-            else return MainWindow.resourcemanager.GetString("trNotAvailable");
+            if (value != null)
+            {
+                int s = int.Parse(value.ToString());
+                if (s == 1) return MainWindow.resourcemanager.GetString("trAvailable");
+                else return MainWindow.resourcemanager.GetString("trNotAvailable");
+            }
+            else
+                return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

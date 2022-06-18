@@ -3520,4 +3520,10 @@ Please add Email in setting</value>
   <data name="withDelivery" xml:space="preserve">
     <value>With delivery</value>
   </data>
+  <data name="trDriver" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="trNotAvailable" xml:space="preserve">
+    <value>Not available</value>
+  </data>
 </root>

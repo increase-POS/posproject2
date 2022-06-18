@@ -3499,4 +3499,10 @@
   <data name="withDelivery" xml:space="preserve">
     <value>مع السائق</value>
   </data>
+  <data name="trDriver" xml:space="preserve">
+    <value>السائق</value>
+  </data>
+  <data name="trNotAvailable" xml:space="preserve">
+    <value>غير متاح</value>
+  </data>
 </root>

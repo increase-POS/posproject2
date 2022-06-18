@@ -43,6 +43,14 @@ namespace POS.View.delivery
         string residentialSectorsPermission = "driversManagement_residentialSectors";
         string activateDriverPermission = "driversManagement_activateDriver";
 
+        int selectedIndexDataGrid = 0;
+        //List<ResidentialSectors> driverSectors = new List<ResidentialSectors>();
+        //ResidentialSectors residentialSector = new ResidentialSectors();
+
+        List<Invoice> orders;
+        Invoice orderModel = new Invoice();
+        List<Invoice> driverOrder = new List<Invoice>();
+
         private static uc_driversManagement _instance;
 
         public static uc_driversManagement Instance
@@ -86,9 +94,9 @@ namespace POS.View.delivery
                 #endregion
 
                 await Search();
-                /*
-                await RefreshOrdersList();
-                */
+                
+                //await RefreshOrdersList();
+                
                 SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -99,6 +107,13 @@ namespace POS.View.delivery
         }
 
         #region methods
+
+        async Task<IEnumerable<Invoice>> RefreshOrdersList()
+        {
+            orders = await orderModel.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, "Collected,Ready");
+            orders = orders.Where(o => o.status == "Collected" || o.status == "Ready").ToList();
+            return orders;
+        }
         async Task Search()
         {
             try
@@ -126,25 +141,15 @@ namespace POS.View.delivery
                     ));
                     RefreshCompanyView();
                 }
-                    
-
-
             }
             catch { }
         }
 
-        async Task refreshDriverSectors()
-        {
-            /*
-            driverSectors = await residentialSector.GetResSectorsByUserId(driver.userId);
-            tb_sectorsCount.Text = driverSectors.Count.ToString();
-            */
-        }
         async Task<IEnumerable<User>> RefreshDriversList()
         {
-            drivers = await userModel.GetUsersActive();
-            drivers = drivers.Where(x => x.job == "deliveryEmployee");
-
+            drivers = await userModel.getBranchSalesMan(MainWindow.branchID.Value , "deliveryPermission");
+            //drivers = drivers.Where(x => x.job == "deliveryEmployee");
+            //get drivers br permissions
             return drivers;
         }
         async Task<IEnumerable<ShippingCompanies>> RefreshCompaniesList()
@@ -164,7 +169,7 @@ namespace POS.View.delivery
         private void translate()
         {
             // Title
-                txt_title.Text = MainWindow.resourcemanager.GetString("deliveryList");
+            txt_title.Text = MainWindow.resourcemanager.GetString("deliveryList");
 
             //txt_title.Text = MainWindow.resourcemanager.GetString("trDriversManagement");
             txt_details.Text = MainWindow.resourcemanager.GetString("trDetails");
@@ -187,26 +192,23 @@ namespace POS.View.delivery
 
             txt_preview.Text = MainWindow.resourcemanager.GetString("trPreview");
             txt_print.Text = MainWindow.resourcemanager.GetString("trPrint");
-            txt_residentialSectors.Text = MainWindow.resourcemanager.GetString("trResidentialSectors");
-            txt_activeInactive.Text = MainWindow.resourcemanager.GetString("activate");
 
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
 
             col_driversUsername.Header = MainWindow.resourcemanager.GetString("trUserName");
             col_driversName.Header = MainWindow.resourcemanager.GetString("trName");
             col_driversMobile.Header = MainWindow.resourcemanager.GetString("trMobile");
-            col_driversAvailable.Header = MainWindow.resourcemanager.GetString("trStatus");
 
             col_companyName.Header = MainWindow.resourcemanager.GetString("trName");
             col_companyMobile.Header = MainWindow.resourcemanager.GetString("trMobile");
             col_companyEmail.Header = MainWindow.resourcemanager.GetString("trEmail");
             col_companyAvailable.Header = MainWindow.resourcemanager.GetString("trStatus");
 
-
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
         }
         #endregion
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             Instance = null;
@@ -293,11 +295,10 @@ namespace POS.View.delivery
         */
         private async void deliveryType_check(object sender, RoutedEventArgs e)
         {
-            /*
-            try
-            {
+            //try
+            //{
                 CheckBox cb = sender as CheckBox;
-                await RefreshOrdersList();
+                //await RefreshOrdersList();
                 if (cb.IsFocused)
                 {
                     if (cb.IsChecked == true)
@@ -314,18 +315,17 @@ namespace POS.View.delivery
                 }
                 
                 await changeDeliveryType();
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-            */
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         private void deliveryType_uncheck(object sender, RoutedEventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 CheckBox cb = sender as CheckBox;
                 if (cb.IsFocused)
                 {
@@ -334,11 +334,11 @@ namespace POS.View.delivery
                    else if (cb.Name == "chk_shippingCompanies")
                         chk_shippingCompanies.IsChecked = true;
                 }
-            }
-            catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
         async Task changeDeliveryType()
         {
@@ -351,9 +351,6 @@ namespace POS.View.delivery
                 col_driversUsername.Visibility = Visibility.Visible;
                 col_driversName.Visibility = Visibility.Visible;
                 col_driversMobile.Visibility = Visibility.Visible;
-                col_driversAvailable.Visibility = Visibility.Visible;
-                cd_residentialSectors.Width =  new GridLength(1, GridUnitType.Star) ;
-                btn_residentialSectors.Visibility = Visibility.Visible;
                 sp_driverDetails.Visibility = Visibility.Visible;
                 tb_sectorsCount.Text = "0";
                 this.DataContext = new User();
@@ -370,9 +367,6 @@ namespace POS.View.delivery
                 col_driversUsername.Visibility = Visibility.Collapsed;
                 col_driversName.Visibility = Visibility.Collapsed;
                 col_driversMobile.Visibility = Visibility.Collapsed;
-                col_driversAvailable.Visibility = Visibility.Collapsed;
-                cd_residentialSectors.Width = new GridLength(0, GridUnitType.Star);
-                btn_residentialSectors.Visibility = Visibility.Collapsed;
                 sp_driverDetails.Visibility = Visibility.Collapsed;
 
                 col_companyName.Visibility = Visibility.Visible;
@@ -384,26 +378,17 @@ namespace POS.View.delivery
 
             }
 
-
-
             await Search();
 
             SectionData.EndAwait(grid_main);
         }
 
-      
-/*
-        int selectedIndexDataGrid = 0;
-        List<ResidentialSectors> driverSectors = new List<ResidentialSectors>();
-        ResidentialSectors residentialSector = new ResidentialSectors();
-        */
-        
         private async void Dg_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
             {
                 SectionData.StartAwait(grid_main);
-                /*
+                
                 if (dg_user.SelectedIndex != -1)
                 {
                     int ordersCount = 0;
@@ -418,12 +403,6 @@ namespace POS.View.delivery
                             if (orders != null)
                                 driverOrder = orders.Where(o => o.shipUserId == null ? false : (int)o.shipUserId == driver.userId).ToList();
 
-                            if (driver.driverIsAvailable == 0)
-                                txt_activeInactive.Text = MainWindow.resourcemanager.GetString("activate");
-                            else
-                                txt_activeInactive.Text = MainWindow.resourcemanager.GetString("deActivate");
-                            await refreshDriverSectors();
-
                             if (chk_drivers.IsChecked == true)
                                 ordersCount = driverOrder.Count();
 
@@ -431,7 +410,6 @@ namespace POS.View.delivery
                     }
                     else if (chk_shippingCompanies.IsChecked.Value)
                     {
-                        
                         company = dg_user.SelectedItem as ShippingCompanies;
                         selectedIndexDataGrid = dg_user.SelectedIndex;
                         this.DataContext = company;
@@ -439,11 +417,6 @@ namespace POS.View.delivery
                         {
                             if (orders != null)
                                 driverOrder = orders.Where(o => (int)o.shippingCompanyId == company.shippingCompanyId && o.status == "Ready").ToList();
-
-                            if (company.isActive == 0)
-                                txt_activeInactive.Text = MainWindow.resourcemanager.GetString("activate");
-                            else
-                                txt_activeInactive.Text = MainWindow.resourcemanager.GetString("deActivate");
 
                             if (chk_shippingCompanies.IsChecked == true)
                                 ordersCount = driverOrder.Count();
@@ -453,7 +426,7 @@ namespace POS.View.delivery
                     tb_driverOrdersCount.Text = ordersCount.ToString();
 
                 }
-                */
+
                 SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -462,127 +435,18 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
 
-        }
-
-        private async void Btn_residentialSectors_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                /*
-                if (driver.userId > 0)
-                {
-                    SectionData.StartAwait(grid_main);
-
-                    if (FillCombo.groupObject.HasPermissionAction(residentialSectorsPermission, FillCombo.groupObjects, "one"))
-                    {
-                        Window.GetWindow(this).Opacity = 0.2;
-
-                        wd_residentialSectorsList w = new wd_residentialSectorsList();
-                        w.driverId = driver.userId;
-                        w.ShowDialog();
-
-                        Window.GetWindow(this).Opacity = 1;
-
-                        await refreshDriverSectors();
-                    }
-                    else
-                        Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                    SectionData.EndAwait(grid_main);
-                }
-                */
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-
-        private async void Btn_activeInactive_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SectionData.StartAwait(grid_main);
-                /*
-                if (FillCombo.groupObject.HasPermissionAction(activateDriverPermission, FillCombo.groupObjects, "one"))
-                {
-                    string resultStr = "";
-                    if(chk_drivers.IsChecked.Value)
-                    {
-                        if (driver.driverIsAvailable == 0)
-                        {
-                            driver.driverIsAvailable = 1;
-                            resultStr = "popActivation";
-                        }
-                        else
-                        {
-                            driver.driverIsAvailable = 0;
-                            resultStr = "popDeActivation";
-                        }
-                        int s = await driver.save(driver);
-                        if (s <= 0)
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                        else
-                        {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString(resultStr), animation: ToasterAnimation.FadeIn);
-                            await RefreshDriversList();
-                            await Search();
-                            dg_user.SelectedIndex = selectedIndexDataGrid;
-                        }
-                    }
-                    else if (chk_shippingCompanies.IsChecked.Value)
-                    {
-                        if (company.isActive == 0)
-                        {
-                            company.isActive = 1;
-                            resultStr = "popActivation";
-                        }
-                        else
-                        {
-                            company.isActive = 0;
-                            resultStr = "popDeActivation";
-                        }
-                        int s = await company.save(company);
-                        if (s <= 0)
-                            Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopError"), animation: ToasterAnimation.FadeIn);
-                        else
-                        {
-                            Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString(resultStr), animation: ToasterAnimation.FadeIn);
-                            await FillCombo.RefreshShippingCompanies();
-                            await RefreshCompaniesList();
-                            await Search();
-                            dg_user.SelectedIndex = selectedIndexDataGrid;
-                        }
-                    }
-                }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                */
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
         }
 
         #region report
-        /*
+        
         //report  parameters
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        List<Invoice> orders;
-        OrderPreparing orderModel = new OrderPreparing();
-        List<Invoice> driverOrder = new List<Invoice>();
+        
         // end report parameters
-        async Task<IEnumerable<Invoice>> RefreshOrdersList()
-        {
-            orders = await orderModel.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, "Collected,Ready");
-            orders = orders.Where(o => o.status == "Collected" || o.status == "Ready").ToList();
-            return orders;
-        }
+       
+        /*
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();

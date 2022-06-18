@@ -137,12 +137,14 @@
                                 <DataGridTextColumn Width="*" x:Name="col_driversUsername" Header="username" Binding="{Binding Path=username}"/>
                                 <DataGridTextColumn Width="*" x:Name="col_driversName" Header="name" Binding="{Binding Path=fullName}"/>
                                 <DataGridTextColumn Width="*" x:Name="col_driversMobile" Header="mobile" Binding="{Binding Path=mobile}"/>
-                                <DataGridTextColumn Width="*" x:Name="col_driversAvailable" Header="available" Binding="{Binding Path=driverIsAvailable ,Converter={StaticResource availableConverter }}"/>
+                                <!--<DataGridTextColumn Width="*" x:Name="col_driversAvailable" Header="available" Binding="{Binding Path=driverIsAvailable ,Converter={StaticResource availableConverter }}"/>-->
+                                <!--<DataGridTextColumn Width="*" x:Name="col_driversAvailable" Header="available" Binding="{Binding Path=isActive }"/>-->
 
                                 <DataGridTextColumn Width="*" x:Name="col_companyName" Header="name" Binding="{Binding Path=name}"/>
                                 <DataGridTextColumn Width="*" x:Name="col_companyMobile" Header="mobile" Binding="{Binding Path=mobile}"/>
                                 <DataGridTextColumn Width="*" x:Name="col_companyEmail" Header="email" Binding="{Binding Path=email}"/>
-                                <DataGridTextColumn Width="*" x:Name="col_companyAvailable" Header="available" Binding="{Binding Path=isActive,Converter={StaticResource availableConverter }}"/>
+                                <!--<DataGridTextColumn Width="*" x:Name="col_companyAvailable" Header="available" Binding="{Binding Path=isActive,Converter={StaticResource availableConverter }}"/>-->
+                                <DataGridTextColumn Width="*" x:Name="col_companyAvailable" Header="available" Binding="{Binding Path=isActive,Converter={StaticResource availableConverter}}"/>
 
                             </DataGrid.Columns>
                         </DataGrid>
@@ -389,7 +391,7 @@
                                        Margin="10 5" Foreground="#4E4E4E"
                                        HorizontalAlignment="Right"   VerticalAlignment="Center" />
                         </Grid>
-                            <Grid>
+                            <Grid Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" MinWidth="100"/>
                                 <ColumnDefinition Width="auto"/>
@@ -419,7 +421,7 @@
                                        Margin="10 5" Foreground="#4E4E4E"
                                        HorizontalAlignment="Right"   VerticalAlignment="Center" />
                         </Grid>
-                            <Grid>
+                            <Grid x:Name="grd_status" Visibility="Collapsed">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" MinWidth="100"/>
                                 <ColumnDefinition Width="auto"/>
@@ -429,8 +431,9 @@
                                         Text="status" FontWeight="SemiBold"
                                         Margin="10 5" Foreground="#4E4E4E"
                                         HorizontalAlignment="Left" VerticalAlignment="Center"   />
+                                <!--Text="{Binding driverIsAvailable, Mode=OneWay,Converter={StaticResource availableConverter}}"-->
                             <TextBlock  Grid.Row="1" Grid.Column="1" 
-                                        x:Name="tb_driverStatus" Text="{Binding driverIsAvailable, Mode=OneWay,Converter={StaticResource availableConverter}}"
+                                        x:Name="tb_driverStatus" Text="{Binding isActive, Mode=OneWay}"
                                         Margin="10 5" Foreground="#4E4E4E"
                                         HorizontalAlignment="Right"   VerticalAlignment="Center" />
                         </Grid>
@@ -498,18 +501,20 @@
                                        Margin="10 5" Foreground="#4E4E4E"
                                        HorizontalAlignment="Right"   VerticalAlignment="Center" />
                             </Grid>
-                            <Grid>
+                            <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" MinWidth="100"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock  Grid.Row="1" Grid.Column="0"
-                                        x:Name="txt_companyStatus"
+                                        x:Name="txt_companyStatus" 
                                         Text="status" FontWeight="SemiBold"
                                         Margin="10 5" Foreground="#4E4E4E"
                                         HorizontalAlignment="Left" VerticalAlignment="Center"   />
+                                
                                 <TextBlock  Grid.Row="1" Grid.Column="1" 
-                                        x:Name="tb_companyStatus" Text="{Binding isActive, Mode=OneWay,Converter={StaticResource availableConverter}}"
+                                        x:Name="tb_companyStatus" 
+                                        Text="{Binding isActive, Mode=OneWay,Converter={StaticResource availableConverter}}"
                                         Margin="10 5" Foreground="#4E4E4E"
                                         HorizontalAlignment="Right"   VerticalAlignment="Center" />
                             </Grid>
@@ -533,8 +538,8 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition x:Name="cd_residentialSectors" Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition x:Name="cd_residentialSectors" Width="*"/>-->
+                                <!--<ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" BorderBrush="{x:Null}" Padding="0" 
                                     x:Name="btn_preview"
@@ -603,7 +608,7 @@
                                                 HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                 </Grid>
                             </Button>
-                            <Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" 
+                            <!--<Button Grid.Column="2" BorderBrush="{x:Null}" Padding="0" 
                                     x:Name="btn_residentialSectors"
                                     Margin="5 5 2.5 5 " Height="auto"
                                     Background="{x:Null}" VerticalAlignment="Top" Click="Btn_residentialSectors_Click"  >
@@ -634,8 +639,8 @@
                                                 Foreground="#4E4E4E"
                                                 HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                 </Grid>
-                            </Button>
-                            <Button Grid.Column="3" BorderBrush="{x:Null}" Padding="0"
+                            </Button>-->
+                            <!--<Button Grid.Column="3" BorderBrush="{x:Null}" Padding="0"
                                     x:Name="btn_activeInactive"
                                     Margin="5 5 2.5 5 " Height="auto"
                                     Background="{x:Null}" VerticalAlignment="Top" 
@@ -667,7 +672,7 @@
                                                 Foreground="#4E4E4E"
                                                 HorizontalAlignment="Center" TextWrapping="Wrap"/>
                                 </Grid>
-                            </Button>
+                            </Button>-->
                         </Grid>
 
                     </Grid>

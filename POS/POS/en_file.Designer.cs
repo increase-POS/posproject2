@@ -2563,6 +2563,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver.
+        /// </summary>
+        internal static string trDriver {
+            get {
+                return ResourceManager.GetString("trDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Location is already exist.
         /// </summary>
         internal static string trDublicateLocation {
@@ -5701,6 +5710,15 @@ namespace POS {
         internal static string trNotActive {
             get {
                 return ResourceManager.GetString("trNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not available.
+        /// </summary>
+        internal static string trNotAvailable {
+            get {
+                return ResourceManager.GetString("trNotAvailable", resourceCulture);
             }
         }
         
