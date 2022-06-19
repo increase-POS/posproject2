@@ -305,6 +305,7 @@
     <Compile Include="converters\closingDescriptonConverter.cs" />
     <Compile Include="converters\dateFrameConverter.cs" />
     <Compile Include="converters\dateTimeToTimeConverter.cs" />
+    <Compile Include="converters\decimalToTimeConverter.cs" />
     <Compile Include="converters\deliveryTypeConverter.cs" />
     <Compile Include="converters\depositorBondeConverter.cs" />
     <Compile Include="converters\depositorNameConverter.cs" />
@@ -405,6 +406,9 @@
     </Compile>
     <Compile Include="View\purchases\uc_statistic.xaml.cs">
       <DependentUpon>uc_statistic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\reports\deliveryReports\uc_deliveryReports.xaml.cs">
+      <DependentUpon>uc_deliveryReports.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\reports\uc_accountant.xaml.cs">
       <DependentUpon>uc_accountant.xaml</DependentUpon>
@@ -905,6 +909,10 @@
     <Page Include="View\purchases\uc_statistic.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
+    <Page Include="View\reports\deliveryReports\uc_deliveryReports.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\reports\uc_accountant.xaml">
       <Generator>MSBuild:Compile</Generator>
