@@ -1517,6 +1517,18 @@ namespace POS.Classes
             }
             _count = count;
         }
+        public static string decimalToTime(decimal remainingTime)
+        {
+            TimeSpan span = TimeSpan.FromMinutes(double.Parse(remainingTime.ToString()));
+            var timeArr = span.ToString().Split(':');
 
+            var hoursToMinutes = int.Parse(timeArr[0]) * 60;
+
+            timeArr[1] = (int.Parse(timeArr[1]) + hoursToMinutes).ToString();
+
+            //string label = (int)span.TotalMinutes + ":" + span.Seconds;
+            string label = timeArr[1].ToString().PadLeft(2, '0') + ":" + Math.Round(decimal.Parse(timeArr[2])).ToString().PadLeft(2, '0');
+            return label;
+        }
     }
 }
