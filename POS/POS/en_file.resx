@@ -3526,4 +3526,10 @@ Please add Email in setting</value>
   <data name="trNotAvailable" xml:space="preserve">
     <value>Not available</value>
   </data>
+  <data name="deliveryTime" xml:space="preserve">
+    <value>Delivery time</value>
+  </data>
+  <data name="trInvoiceCharp" xml:space="preserve">
+    <value>Invoice#</value>
+  </data>
 </root>

@@ -77,9 +77,9 @@ namespace POS.View.delivery
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -97,13 +97,13 @@ namespace POS.View.delivery
                 
                 //await RefreshOrdersList();
                 
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
 
         #region methods
@@ -148,13 +148,12 @@ namespace POS.View.delivery
         async Task<IEnumerable<User>> RefreshDriversList()
         {
             drivers = await userModel.getBranchSalesMan(MainWindow.branchID.Value , "deliveryPermission");
-            //drivers = drivers.Where(x => x.job == "deliveryEmployee");
-            //get drivers br permissions
             return drivers;
         }
         async Task<IEnumerable<ShippingCompanies>> RefreshCompaniesList()
         {
             companies = await companyModel.Get();
+            companies = companies.Where(c => c.deliveryType != "local");
             return companies;
         }
         void RefreshDriverView()
@@ -253,46 +252,7 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        /*
-        private async void Tgl_isActive_Checked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SectionData.StartAwait(grid_main);
-
-                if (drivers is null)
-                    await RefreshDriversList();
-                tgl_driverState = 1;
-                await Search();
-
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-        private async void Tgl_isActive_Unchecked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SectionData.StartAwait(grid_main);
-
-                if (drivers is null)
-                    await RefreshDriversList();
-                tgl_driverState = 0;
-                await Search();
-
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-        */
+       
         private async void deliveryType_check(object sender, RoutedEventArgs e)
         {
             //try

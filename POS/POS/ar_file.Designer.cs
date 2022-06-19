@@ -70,6 +70,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to زمن التوصيل.
+        /// </summary>
+        internal static string deliveryTime {
+            get {
+                return ResourceManager.GetString("deliveryTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to هل تريد حفظ عرض السعر في المسودات؟.
         /// </summary>
         internal static string Do_you_want_save_the_quotation_in_drafts_ {
@@ -4521,6 +4530,15 @@ namespace POS {
         internal static string trInvoice {
             get {
                 return ResourceManager.GetString("trInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to رقم الفاتورة.
+        /// </summary>
+        internal static string trInvoiceCharp {
+            get {
+                return ResourceManager.GetString("trInvoiceCharp", resourceCulture);
             }
         }
         

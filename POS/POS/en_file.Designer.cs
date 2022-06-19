@@ -79,6 +79,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery time.
+        /// </summary>
+        internal static string deliveryTime {
+            get {
+                return ResourceManager.GetString("deliveryTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drivers.
         /// </summary>
         internal static string drivers {
@@ -4548,6 +4557,15 @@ namespace POS {
         internal static string trInvoice {
             get {
                 return ResourceManager.GetString("trInvoice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invoice#.
+        /// </summary>
+        internal static string trInvoiceCharp {
+            get {
+                return ResourceManager.GetString("trInvoiceCharp", resourceCulture);
             }
         }
         

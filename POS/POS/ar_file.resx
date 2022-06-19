@@ -3505,4 +3505,10 @@
   <data name="trNotAvailable" xml:space="preserve">
     <value>غير متاح</value>
   </data>
+  <data name="deliveryTime" xml:space="preserve">
+    <value>زمن التوصيل</value>
+  </data>
+  <data name="trInvoiceCharp" xml:space="preserve">
+    <value>رقم الفاتورة</value>
+  </data>
 </root>

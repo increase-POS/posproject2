@@ -62,21 +62,21 @@ namespace POS.View.delivery
         */
         Invoice invoiceModel = new Invoice();
         Invoice order = new Invoice();
-        
+
+        IEnumerable<User> drivers;
+        User userModel = new User();
+
+        IEnumerable<ShippingCompanies> companies;
+        ShippingCompanies companyModel = new ShippingCompanies();
+
         string searchText = "";
         public static List<string> requiredControlList;
 
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Instance = null;
-            GC.Collect();
-        }
-
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            try
-            {
-                SectionData.StartAwait(grid_main);
+            //try
+            //{
+            //    SectionData.StartAwait(grid_main);
                 requiredControlList = new List<string> { "userId" , "companyId"};
 
                 #region translate
@@ -90,52 +90,67 @@ namespace POS.View.delivery
                 }
                 translate();
                 #endregion
-                /*
-                #region fill drivers
-                await FillCombo.FillComboDrivers(cb_userId);
 
-                await FillCombo.FillComboDrivers_withDefault(cb_searchUser);
+                #region fill drivers
+                drivers = await userModel.getBranchSalesMan(MainWindow.branchID.Value, "deliveryPermission");
+                cb_userId.ItemsSource = drivers;
+                cb_userId.DisplayMemberPath = "fullName";
+                cb_userId.SelectedValuePath = "userId";
+                cb_userId.SelectedIndex = -1;
+
+                List<User> _driversList = drivers.ToList();
+                var dr = new User();
+                dr.userId = 0;
+                dr.name = "-";
+                _driversList.Insert(0, dr);
+
+                cb_searchUser.ItemsSource = _driversList;
+                cb_searchUser.DisplayMemberPath = "fullName";
+                cb_searchUser.SelectedValuePath = "userId";
+                cb_searchUser.SelectedIndex = -1;
                 #endregion
 
                 #region fill companies
-                await FillCombo.FillComboShippingCompaniesForDelivery(cb_companyId);
-                await FillCombo.FillComboShippingCompaniesForDelivery_withDefault(cb_searchCompany);
+                companies = await companyModel.Get();
+                companies = companies.Where(c => c.deliveryType != "local");
+                cb_companyId.ItemsSource = companies;
+                cb_companyId.DisplayMemberPath = "name";
+                cb_companyId.SelectedValuePath = "shippingCompanyId";
+                cb_companyId.SelectedIndex = -1;
+
+                List<ShippingCompanies> _companiesList = companies.ToList();
+                var sh = new ShippingCompanies();
+                sh.shippingCompanyId = 0;
+                sh.name = "-";
+                _companiesList.Insert(0, sh);
+
+                cb_searchCompany.ItemsSource = _companiesList;
+                cb_searchCompany.DisplayMemberPath = "name";
+                cb_searchCompany.SelectedValuePath = "shippingCompanyId";
+                cb_searchCompany.SelectedIndex = -1;
                 #endregion
-                */
+
                 grid_deliveryCompany.Visibility = Visibility.Collapsed;
                 col_cbCompany.Width = new GridLength(0, GridUnitType.Star);
                 bdr_searchCompany.Visibility = Visibility.Hidden;
                 chk_allForDelivery.IsChecked = true;
 
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
+            //    SectionData.EndAwait(grid_main);
+            //}
+            //catch (Exception ex)
+            //{
+            //    SectionData.EndAwait(grid_main);
+            //    SectionData.ExceptionMessage(ex, this);
+            //}
         }
-        private void UserControl_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
-            {
-                switch (e.Key)
-                {
-                    case Key.S:
-                        //handle S key
-                        Btn_save_Click(btn_save, null);
-                        break;
-
-                }
-            }
-        }
+      
 
         #region methods
         async Task Search()
         {
+            /*
             try
             {
-                /*
                 searchText = tb_search.Text.ToLower();
                 if (chk_allForDelivery.IsChecked == true)
                 {
@@ -160,24 +175,24 @@ namespace POS.View.delivery
 
                 orders = orders.Where(s => (s.invNumber.Contains(searchText)
                       || s.shipUserName.ToString().Contains(searchText)
-                      || s.orderTime.ToString().Contains(searchText)
+                      //|| s.orderTime.ToString().Contains(searchText)
                       )
                       && ((cb_searchUser.SelectedIndex != -1 && cb_searchUser.SelectedValue.ToString() != "0")   ?  s.shipUserId        == (int)cb_searchUser.SelectedValue : true)
                       && ( (cb_searchCompany.SelectedIndex != -1 && cb_searchCompany.SelectedValue.ToString() != "0") ?  s.shippingCompanyId == (int)cb_searchCompany.SelectedValue : true)
                   );
 
                 RefreshOrdersView();
-                */
             }
             catch { }
+            */
         }
 
         async Task<IEnumerable<Invoice>> RefreshOrdersList(string status)
         {
-            
-            //orders = await orderModel.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, status);
-            //orders = orders.Where(o => o.status == "Ready" || o.status == "Collected" || o.status == "InTheWay");
-            
+            //GetOrdersWithDelivery
+            orders = await order.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, status);
+            orders = orders.Where(o => o.status == "Ready" || o.status == "Collected" || o.status == "InTheWay");
+
 
             return orders;
         }
@@ -205,7 +220,7 @@ namespace POS.View.delivery
 
             txt_baseInformation.Text = MainWindow.resourcemanager.GetString("trUserInformation");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_search, MainWindow.resourcemanager.GetString("trSearchHint"));
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_searchUser, MainWindow.resourcemanager.GetString("deliveryMan")+"...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_searchUser, MainWindow.resourcemanager.GetString("trDeliveryMan") +"...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_searchCompany, MainWindow.resourcemanager.GetString("trCompany") + "...");
 
 
@@ -217,18 +232,21 @@ namespace POS.View.delivery
             chk_withDeliveryMan.Content = MainWindow.resourcemanager.GetString("withDelivery");
             chk_inTheWay.Content = MainWindow.resourcemanager.GetString("onTheWay");
 
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_userId, MainWindow.resourcemanager.GetString("deliveryMan") + "...");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_user, MainWindow.resourcemanager.GetString("deliveryMan") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_userId, MainWindow.resourcemanager.GetString("trDeliveryMan") + "...");
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_user, MainWindow.resourcemanager.GetString("trDeliveryMan") + "...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_companyId, MainWindow.resourcemanager.GetString("trCompany") + "...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deliveryTime, MainWindow.resourcemanager.GetString("deliveryTime") + "...");
             //txt_minutes.Text = MainWindow.resourcemanager.GetString("minute");
-            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNotes") + "..."); 
+            MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNote") + "..."); 
 
             dg_orders.Columns[1].Header = MainWindow.resourcemanager.GetString("trInvoiceCharp");
             dg_orders.Columns[2].Header = MainWindow.resourcemanager.GetString("trCompany");
-            dg_orders.Columns[3].Header = MainWindow.resourcemanager.GetString("deliveryMan");
+            dg_orders.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeliveryMan");
             dg_orders.Columns[4].Header = MainWindow.resourcemanager.GetString("deliveryTime");
             dg_orders.Columns[5].Header = MainWindow.resourcemanager.GetString("trStatus");
+
+            btn_updateDeliveryMan.ToolTip = MainWindow.resourcemanager.GetString("trSave");
+            btn_updateDeliveryCompany.ToolTip = MainWindow.resourcemanager.GetString("trSave");
 
             btn_clear.ToolTip = MainWindow.resourcemanager.GetString("trClear");
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
@@ -673,7 +691,25 @@ namespace POS.View.delivery
         #endregion
 
         #region events
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl))
+            {
+                switch (e.Key)
+                {
+                    case Key.S:
+                        //handle S key
+                        Btn_save_Click(btn_save, null);
+                        break;
 
+                }
+            }
+        }
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Instance = null;
+            GC.Collect();
+        }
         private void FieldDataGridCheckedHeader(object sender, RoutedEventArgs e)
         {
             try
@@ -809,7 +845,6 @@ namespace POS.View.delivery
                 }
             }
         }
-
         List<Invoice> selectedOrders = new List<Invoice>();
         private void FieldDataGridChecked(object sender, RoutedEventArgs e)
         {
@@ -933,7 +968,6 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         string input;
         decimal _decimal = 0;
         private void Number_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -1010,7 +1044,6 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private async void deliveryType_check(object sender, RoutedEventArgs e)
         {
             try
@@ -1081,7 +1114,6 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void deliveryType_uncheck(object sender, RoutedEventArgs e)
         {
             try
@@ -1100,7 +1132,6 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
         private void selectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
            
