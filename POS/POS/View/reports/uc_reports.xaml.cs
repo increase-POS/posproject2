@@ -1,5 +1,6 @@
 ﻿using POS.Classes;
 using POS.View.purchases;
+using POS.View.reports.deliveryReports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace POS.View.reports
             btn_purchaseReports.Content = MainWindow.resourcemanager.GetString("trPurchases");
             btn_storageReports.Content = MainWindow.resourcemanager.GetString("trStorage");
             btn_accountsReports.Content = MainWindow.resourcemanager.GetString("trAccounting");
+            btn_deliveryReports.Content = MainWindow.resourcemanager.GetString("trDelivery");
             //btn_usersReports.Content = MainWindow.resourcemanager.GetString("trUsers");
         }
 
@@ -154,6 +156,9 @@ namespace POS.View.reports
             btn_accountsReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             btn_accountsReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
+            btn_deliveryReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
+            btn_deliveryReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
+
             //btn_usersReports.BorderBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686D"));
             //btn_usersReports.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#FFFFFF"));
 
@@ -233,7 +238,22 @@ namespace POS.View.reports
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
+        private void btn_deliveryReports_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                uc_deliveryReports uc = new uc_deliveryReports();
+                refreashBachgroundClick(btn_deliveryReports);
+                grid_main.Children.Clear();
+                grid_main.Children.Add(uc);
+                Button button = sender as Button;
+                MainWindow.mainWindow.initializationMainTrack(button.Tag.ToString(), 1);
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private void btn_usersReports_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -278,5 +298,7 @@ namespace POS.View.reports
         {
             GC.Collect();
         }
+
+        
     }
 }
