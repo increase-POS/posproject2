@@ -1031,12 +1031,14 @@ namespace POS.View.Settings
             path_purchaseReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_salesReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_accountsReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            path_deliveryReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             path_usersReports.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
 
             txt_storageReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_purchaseReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_salesReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_accountsReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
+            txt_deliveryReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
             txt_usersReports.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#67686d"));
         }
         public void paintSectionData()
@@ -1171,6 +1173,7 @@ namespace POS.View.Settings
             txt_purchaseReports.Text = MainWindow.resourcemanager.GetString("trPurchases");
             txt_salesReports.Text = MainWindow.resourcemanager.GetString("trSales");
             txt_accountsReports.Text = MainWindow.resourcemanager.GetString("trAccounting");
+            txt_deliveryReports.Text = MainWindow.resourcemanager.GetString("trDelivery");
 
             txt_storageAlerts.Text = MainWindow.resourcemanager.GetString("trStore");
             txt_saleAlerts.Text = MainWindow.resourcemanager.GetString("trSales");
