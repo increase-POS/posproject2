@@ -63,6 +63,7 @@
             <converters:dateTimeToTimeConverter x:Key="dateTimeToTimeConverter"/>
             <converters:preparingOrderStatusConverter x:Key="preparingOrderStatusConverter"/>
             <converters:shippingCompanyNameConverter x:Key="shippingCompanyNameConverter"/>
+            <converters:decimalToTimeConverter x:Key="decimalToTimeConverter"/>
             
             <!--<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>-->
             <!--#region Fonts-->
@@ -831,7 +832,8 @@
             <!--#region  Colors-->
             <SolidColorBrush x:Key="MainColor" Color="#2491EA"/>
             <SolidColorBrush x:Key="MainColorBlue" Color="#178DD2"/>
-            
+            <SolidColorBrush x:Key="SecondColor" Color="#4E4E4E"/>
+               
             <SolidColorBrush x:Key="MainColorOrange" Color="#FFA926"/>
             <SolidColorBrush x:Key="MainColorGrey" Color="#4E4E4E"/>
             <SolidColorBrush x:Key="MainColorlightGrey" Color="#DFDFDF"/>
@@ -843,7 +845,7 @@
             <SolidColorBrush x:Key="MainColorRed" Color="#D22A17"/>
             <SolidColorBrush x:Key="mediumRed" Color="#E53D29"/>
             <SolidColorBrush x:Key="lightRed" Color="#FCE4D6"/>
-
+            <SolidColorBrush x:Key="LightGrey" Color="#B1B1B1"/>
             <SolidColorBrush x:Key="White" Color="#FFFFFF"/>
             
             <SolidColorBrush x:Key="Orange" Color="#FFA500"/>
