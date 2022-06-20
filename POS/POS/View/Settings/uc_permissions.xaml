@@ -1610,7 +1610,7 @@
                             <!--***********************************************************-->
                             <!--grid delivery-->
 
-                            <Grid x:Name="grid_delivery" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
+                            <Grid x:Name="grid_delivery" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="auto"></ColumnDefinition>
@@ -2146,7 +2146,7 @@
                             <!--***********************************************************-->
                             <!--grid charts-->
                             
-                            <Grid x:Name="grid_charts" Margin="10,10,10,10" MinHeight="80" Visibility="Visible">
+                            <Grid x:Name="grid_charts" Margin="10,10,10,10" MinHeight="80" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="auto"></ColumnDefinition>

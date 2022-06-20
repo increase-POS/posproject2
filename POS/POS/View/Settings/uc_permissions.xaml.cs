@@ -1166,8 +1166,8 @@ namespace POS.View.Settings
             txt_pos.Text = MainWindow.resourcemanager.GetString("trPOS");
             txt_banks.Text = MainWindow.resourcemanager.GetString("trBanks");
             txt_shippingCompany.Text = MainWindow.resourcemanager.GetString("trShipping");
-            txt_deliveryManagement.Text = MainWindow.resourcemanager.GetString("deliveryList");
-            txt_driversManagement.Text = MainWindow.resourcemanager.GetString("trShipping");
+            txt_deliveryManagement.Text = MainWindow.resourcemanager.GetString("management");
+            txt_driversManagement.Text = MainWindow.resourcemanager.GetString("deliveryList");
 
             txt_storageReports.Text = MainWindow.resourcemanager.GetString("trStore");
             txt_purchaseReports.Text = MainWindow.resourcemanager.GetString("trPurchases");
