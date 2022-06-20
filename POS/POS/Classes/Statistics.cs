@@ -3896,7 +3896,27 @@ namespace POS.Classes
         //    return list;
         //}
 
-      
+        //التوصيل
+        #region Delivery
+        public async Task<List<Invoice>> GetDelivery(int mainBranchId, int userId)
+        {
+            List<Invoice> items = new List<Invoice>();
+
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            parameters.Add("mainBranchId", mainBranchId.ToString());
+            parameters.Add("userId", userId.ToString());
+            IEnumerable<Claim> claims = await APIResult.getList("Statistics/GetDelivery", parameters);
+            foreach (Claim c in claims)
+            {
+                if (c.Type == "scopes")
+                {
+                    items.Add(JsonConvert.DeserializeObject<Invoice>(c.Value, new IsoDateTimeConverter { DateTimeFormat = "dd/MM/yyyy" }));
+                }
+            }
+            return items;
+        }
+        #endregion
+
 
     }
 }

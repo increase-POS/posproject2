@@ -29,11 +29,11 @@ namespace POS.View.reports.deliveryReports
     /// </summary>
     public partial class uc_deliveryReports : UserControl
     {
-        /*
-        IEnumerable<OrderPreparingSTS> deliveries;
+        
+        IEnumerable<Invoice> deliveries;
         Statistics statisticsModel = new Statistics();
-        IEnumerable<OrderPreparingSTS> deliveriesQuery;
-        */
+        IEnumerable<Invoice> deliveriesQuery;
+        
         //prin & pdf
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
@@ -124,7 +124,6 @@ namespace POS.View.reports.deliveryReports
 
         async Task Search()
         {
-            /*
             if (deliveries is null)
                 await RefreshDeliveriesList();
 
@@ -132,19 +131,17 @@ namespace POS.View.reports.deliveryReports
             deliveriesQuery = deliveries
                 .Where(s =>
             (
-            s.orderNum.ToLower().Contains(searchText)
-            ||
+            //s.orderNum.ToLower().Contains(searchText)
+            //||
             s.invNumber.ToLower().Contains(searchText)
             ||
             s.branchName.ToLower().Contains(searchText)
-            ||
-            s.shippingCompanyName.ToLower().Contains(searchText)
+            //||
+            //s.shippingCompanyName.ToLower().Contains(searchText)
             ||
             s.agentName.ToLower().Contains(searchText)
             ||
             (s.shipUserName != null ? s.shipUserName.ToLower().Contains(searchText) : false)
-            ||
-            s.orderTime.ToString().ToLower().Contains(searchText)
             )
             &&
             //branch
@@ -152,39 +149,37 @@ namespace POS.View.reports.deliveryReports
             &&
             //company
             (cb_company.SelectedIndex != -1 ? s.shippingCompanyId == Convert.ToInt32(cb_company.SelectedValue) : true)
-            &&
-            //start date
-            (dp_startDate.SelectedDate != null ? s.createDate >= dp_startDate.SelectedDate : true)
-            &&
-            //end date
-            (dp_endDate.SelectedDate != null ? s.createDate <= dp_endDate.SelectedDate : true)
+            //&&
+            ////start date
+            //(dp_startDate.SelectedDate != null ? s.createDate >= dp_startDate.SelectedDate : true)
+            //&&
+            ////end date
+            //(dp_endDate.SelectedDate != null ? s.createDate <= dp_endDate.SelectedDate : true)
             );
 
             RefreshDeliveriesView();
 
             fillColumnChart();
             fillPieChart();
-            fillRowChart();
-            */
+            //fillRowChart();
+            
         }
 
         void RefreshDeliveriesView()
         {
-            /*
             dg_delivery.ItemsSource = deliveriesQuery;
             txt_count.Text = deliveriesQuery.Count().ToString();
-            */
         }
 
-        /*
-    async Task<IEnumerable<OrderPreparingSTS>> RefreshDeliveriesList()
+        
+    async Task<IEnumerable<Invoice>> RefreshDeliveriesList()
     {
         deliveries = await statisticsModel.GetDelivery(MainWindow.loginBranch.branchId, MainWindow.userLogin.userId);
         fillBranches();
         fillCompanies();
         return deliveries;
     }
-        */
+        
 
         private async void callSearch(object sender)
         {
@@ -204,19 +199,17 @@ namespace POS.View.reports.deliveryReports
         }
         private void fillBranches()
         {
-            /*
             cb_branches.SelectedValuePath = "branchId";
             cb_branches.DisplayMemberPath = "branchName";
             cb_branches.ItemsSource = deliveries.Select(i => new { i.branchName, i.branchId }).Distinct();
-*/
         }
         private void fillCompanies()
         {
-            /*
             cb_company.SelectedValuePath = "shippingCompanyId";
+            //cb_company.DisplayMemberPath = "shippingCompanyName";
+            //cb_company.ItemsSource = deliveries.Select(i => new { i.shippingCompanyName, i.shippingCompanyId }).Distinct();/////?????
             cb_company.DisplayMemberPath = "shippingCompanyName";
-            cb_company.ItemsSource = deliveries.Select(i => new { i.shippingCompanyName, i.shippingCompanyId }).Distinct();
-            */
+            cb_company.ItemsSource = deliveries.Select(i => new {  i.shippingCompanyId }).Distinct();
         }
         #endregion
 
@@ -317,7 +310,6 @@ namespace POS.View.reports.deliveryReports
         }
         private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
         {//refresh
-            /*
             try
             {
                 SectionData.StartAwait(grid_main);
@@ -339,7 +331,6 @@ namespace POS.View.reports.deliveryReports
                 SectionData.EndAwait(grid_main);
                 SectionData.ExceptionMessage(ex, this);
             }
-            */
         }
 
         private void Txt_search_TextChanged(object sender, TextChangedEventArgs e)
@@ -351,7 +342,6 @@ namespace POS.View.reports.deliveryReports
         #region charts
         private void fillColumnChart()
         {
-/*
             axcolumn.Labels = new List<string>();
             List<string> names = new List<string>();
             List<int> deliveriesCount = new List<int>();
@@ -413,13 +403,11 @@ namespace POS.View.reports.deliveryReports
 
             DataContext = this;
             cartesianChart.Series = columnChartData;
-            */
         }
 
 
         private void fillPieChart()
         {
-            /*
             List<string> titles = new List<string>();
             IEnumerable<int> x = null;
             titles.Clear();
@@ -434,11 +422,12 @@ namespace POS.View.reports.deliveryReports
             {
                 quantity = s.Count()
             });
-            var tempName = deliveriesQuery.GroupBy(s => s.shippingCompanyName).Select(s => new
+            //var tempName = deliveriesQuery.GroupBy(s => s.shippingCompanyName).Select(s => new
+            var tempName = deliveriesQuery.GroupBy(s => s.shippingCompanyId).Select(s => new
             {
                 name = s.Key
             });
-            titles.AddRange(tempName.Select(jj => jj.name));
+            titles.AddRange(tempName.Select(jj => jj.name.ToString()));
 
             x = finalResult.Select(m => m.quantity);
 
@@ -486,9 +475,7 @@ namespace POS.View.reports.deliveryReports
 
             }
             chart1.Series = piechartData;
-            */
         }
-        /*
         private void fillRowChart()
         {
             int endYear = DateTime.Now.Year;
@@ -512,7 +499,8 @@ namespace POS.View.reports.deliveryReports
 
             var tempName = deliveriesQuery.GroupBy(s => new { s.branchId , s.invNumber }).Select(s => new
             {
-                Name = s.FirstOrDefault().createDate,
+                //Name = s.FirstOrDefault().createDate,
+                Name = s.FirstOrDefault().invDate,
             });
             names.AddRange(tempName.Select(nn => nn.Name.ToString()));
 
@@ -520,7 +508,8 @@ namespace POS.View.reports.deliveryReports
             {
                 Id = s.Key.branchId,
                 inv = s.Key.invNumber,
-                createDate = s.FirstOrDefault().createDate
+                //createDate = s.FirstOrDefault().createDate
+                createDate = s.FirstOrDefault().invDate
             });
 
             List<string> lable = new List<string>();
@@ -575,7 +564,6 @@ namespace POS.View.reports.deliveryReports
             rowChart.Series = rowChartData;
         }
 
-        */
         #endregion
 
         #region reports
