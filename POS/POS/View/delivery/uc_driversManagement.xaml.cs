@@ -258,7 +258,7 @@ namespace POS.View.delivery
             //try
             //{
                 CheckBox cb = sender as CheckBox;
-                //await RefreshOrdersList();
+                await RefreshOrdersList();
                 if (cb.IsFocused)
                 {
                     if (cb.IsChecked == true)

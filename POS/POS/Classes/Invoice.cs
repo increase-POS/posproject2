@@ -1337,7 +1337,7 @@ namespace POS.Classes
             // status values: Listed, Ready, Collected, InTheWay,Done
             parameters.Add("status", status.ToString());
 
-            IEnumerable<Claim> claims = await APIResult.getList("Invoice/GetOrdersWithDelivery", parameters);
+            IEnumerable<Claim> claims = await APIResult.getList("Invoices/GetOrdersWithDelivery", parameters);
             foreach (Claim c in claims)
             {
                 if (c.Type == "scopes")
