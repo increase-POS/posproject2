@@ -2119,6 +2119,9 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
+        [HttpPost]
+        [Route("GetOrdersWithDelivery")]
         public string GetOrdersWithDelivery(string token)
         {
             token = TokenManager.readToken(HttpContext.Current.Request);
@@ -2156,7 +2159,7 @@ var strP = TokenManager.GetPrincipal(token);
                                         join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
                                         join u in entity.users on b.shipUserId equals u.userId into lj
                                         from y in lj.DefaultIfEmpty()
-                                        where (statusL.Contains(s.status) && s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                        where ( s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
                                         select new InvoiceModel()
                                         {
                                             invStatusId = s.invStatusId,
@@ -2202,6 +2205,10 @@ var strP = TokenManager.GetPrincipal(token);
 
                                         })
                     .ToList();
+
+                    if (statusStr != "")
+                        invoicesList = invoicesList.Where(s => statusL.Contains(s.status)).ToList();
+
                     if (invoicesList != null)
                     {
                         for (int i = 0; i < invoicesList.Count; i++)
