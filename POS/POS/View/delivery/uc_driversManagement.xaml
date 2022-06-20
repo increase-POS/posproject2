@@ -9,7 +9,7 @@
              d:DesignHeight="870" d:DesignWidth="950">
     <Grid x:Name="grid_main"  >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
 
@@ -300,7 +300,7 @@
                 </Grid.RowDefinitions>
                 <Border  Background="#4E4E4E" Height="52"  CornerRadius="7 7 0 0">
 
-                    <Grid  Height="40" Margin="10 0">
+                    <Grid  Height="40" Margin="10 0"   HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>

@@ -11,7 +11,7 @@
              d:DesignHeight="672" d:DesignWidth="941">
     <Grid x:Name="grid_main" >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="2.54*"/>
             <ColumnDefinition x:Name="gridWidth" Width="*" MinWidth="225"/>
         </Grid.ColumnDefinitions>
 
@@ -515,7 +515,7 @@
             </Grid.RowDefinitions>
                 <Border  Background="#4E4E4E" Height="52"  CornerRadius="7 7 0 0">
 
-                <Grid  Height="40" Margin="10 0">
+                    <Grid  Height="40" Margin="10 0" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="auto"/>
@@ -569,19 +569,22 @@
                     <TextBlock Grid.Column="1" Text="delivery management" x:Name="txt_title" Margin="10,0,0,0"  Foreground="White" 
                      FontSize="14"     VerticalAlignment="Center" 
                            FontWeight="Bold" />
-                    <Button   x:Name="btn_clear" Click="Btn_clear_Click" Grid.Column="3" Padding="0" 
-                               VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"   >
-                            <materialDesign:PackIcon Foreground="White" Kind="RefreshCircle"   Width="30" Height="30"/>
-                        </Button>
-
                 </Grid>
             </Border>
 
             <ScrollViewer Background="White"  Grid.Row="1"  VerticalScrollBarVisibility="Auto" >
                 <StackPanel>
                    
-                    <DockPanel Margin="10 0" LastChildFill="True"  >
+                    <DockPanel  LastChildFill="True"  >
                             <TextBlock x:Name="txt_baseInformation" Text="Base Infomation" Foreground="#737373" FontSize="10"   VerticalAlignment="Center" Margin="5,5,5,5"/>
+                            <Button DockPanel.Dock="Right" x:Name="btn_clear" Grid.Row="1" Grid.Column="2" Padding="0" Background="{x:Null}"
+                                    BorderBrush="{x:Null}" Click="Btn_clear_Click" Margin="5,1" ToolTip="clear" TabIndex="13">
+                                <materialDesign:PackIcon Foreground="#178DD2" Kind="RefreshCircle" HorizontalAlignment="Center" Grid.Column="0" VerticalAlignment="Center" Width="30" Height="30">
+                                    <materialDesign:PackIcon.ToolTip>
+                                        <ToolTip x:Name="tt_clear" Content="clear" Placement="left" HorizontalOffset="5" PlacementRectangle="50,0,0,0" VerticalOffset="20"/>
+                                    </materialDesign:PackIcon.ToolTip>
+                                </materialDesign:PackIcon>
+                            </Button>
                             <Separator  Background="#999999" VerticalAlignment="Center" Width="auto"  />
                     </DockPanel>
                         <Grid x:Name="grid_deliveryMan">
