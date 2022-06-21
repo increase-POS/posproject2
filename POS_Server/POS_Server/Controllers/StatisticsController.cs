@@ -9823,6 +9823,135 @@ namespace POS_Server.Controllers
             }
         }
         #endregion
+        //delivery
+        #region delivery
+        [HttpPost]
+        [Route("GetDelivery")]
+        public string GetDelivery(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                #region params
 
+
+                int mainBranchId = 0;
+                int userId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "mainBranchId")
+                    {
+                        mainBranchId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "userId")
+                    {
+                        userId = int.Parse(c.Value);
+                    }
+                }
+                #endregion
+                try
+                {
+
+                    List<int> brIds = AllowedBranchsId(mainBranchId, userId);
+                   
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        //var searchPredicate = PredicateBuilder.New<invoices>();
+                        //searchPredicate = searchPredicate.And(x => x.branchId == branchId);
+
+                        //searchPredicate = searchPredicate.And(x => x.invType == "ts" || x.invType == "ss");
+                        //searchPredicate = searchPredicate.And(x => x.shippingCompanyId != null);
+
+                        var invoicesList = (from b in entity.invoices.Where(x => x.invType == "s" && brIds.Contains((int)x.branchCreatorId) && x.shippingCompanyId != null && x.isActive == true)
+                                            join s in entity.invoiceStatus on b.invoiceId equals s.invoiceId
+                                            join u in entity.users on b.shipUserId equals u.userId into lj
+                                            from y in lj.DefaultIfEmpty()
+                                            where (s.invStatusId == entity.invoiceStatus.Where(x => x.invoiceId == b.invoiceId).Max(x => x.invStatusId))
+                                            select new InvoiceModel()
+                                            {
+
+                                                invStatusId = s.invStatusId,
+                                                invoiceId = b.invoiceId,
+                                                invNumber = b.invNumber,
+                                                agentId = b.agentId,
+                                                invType = b.invType,
+                                                total = b.total,
+                                                totalNet = b.totalNet,
+                                                paid = b.paid,
+                                                deserved = b.deserved,
+                                                deservedDate = b.deservedDate,
+                                                invDate = b.invDate,
+                                                invoiceMainId = b.invoiceMainId,
+                                                invCase = b.invCase,
+                                                invTime = b.invTime,
+                                                notes = b.notes,
+                                                vendorInvNum = b.vendorInvNum,
+                                                vendorInvDate = b.vendorInvDate,
+                                                createUserId = b.createUserId,
+                                                updateDate = b.updateDate,
+                                                updateUserId = b.updateUserId,
+                                                branchId = b.branchId,
+                                                discountValue = b.discountValue,
+                                                discountType = b.discountType,
+                                                tax = b.tax,
+                                                taxtype = b.taxtype,
+                                                name = b.name,
+                                                isApproved = b.isApproved,
+                                                branchCreatorId = b.branchCreatorId,
+                                                shippingCompanyId = b.shippingCompanyId,
+                                                shipUserId = b.shipUserId,
+                                                agentName = b.agents.name,
+
+                                                shipUserName = y.name + " " + y.lastname,
+                                                shipCompanyName = b.shippingCompanies.name,
+                                                status = s.status,
+                                                userId = b.userId,
+                                                manualDiscountType = b.manualDiscountType,
+                                                manualDiscountValue = b.manualDiscountValue,
+                                                shippingCost = b.shippingCost,
+                                                realShippingCost = b.realShippingCost,
+                                                payStatus = b.deserved == 0 ? "payed" : (b.deserved == b.totalNet ? "unpayed" : "partpayed"),
+                                                branchCreatorName = entity.branches.Where(X => X.branchId == b.branchCreatorId).FirstOrDefault().name,
+                                                itemsCount = entity.itemsTransfer.Where(x => x.invoiceId == b.invoiceId).Count(),
+                                            }).ToList();
+
+                        //invoices = invoices.Where(X => X.orderStatusList.LastOrDefault() != null ? X.orderStatusList.LastOrDefault().status == "Done" : false).ToList();
+                        //if (invoices != null)
+                        //{
+                        //    //if (invoices.Count() > 0)
+                        //    //{
+
+
+                        //    //    foreach (OrderPreparingSTSModel row in invoices.ToList())
+                        //    //    {
+                        //    //        if (row.orderStatusList != null)
+                        //    //        {
+
+                        //    //            TimeSpan tmp = (TimeSpan)(row.orderStatusList.LastOrDefault().createDate - row.orderStatusList.FirstOrDefault().createDate);
+                        //    //            row.orderDuration = (decimal)tmp.TotalMinutes;
+
+
+                        //    //        }
+
+                        //    //    }
+                        //    //}
+                        //}
+                        return TokenManager.GenerateToken(invoicesList);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return TokenManager.GenerateToken(ex.ToString());
+                    // return TokenManager.GenerateToken("0");
+                }
+            }
+        }
+        #endregion
     }
 }
