@@ -160,6 +160,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sorry! There are no data.
+        /// </summary>
+        internal static string thereArenodata {
+            get {
+                return ResourceManager.GetString("thereArenodata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Balance.
         /// </summary>
         internal static string tr_Balance {
@@ -2019,6 +2028,15 @@ namespace POS {
         internal static string trDeliveryMan {
             get {
                 return ResourceManager.GetString("trDeliveryMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delivery management.
+        /// </summary>
+        internal static string trDeliveryManagement {
+            get {
+                return ResourceManager.GetString("trDeliveryManagement", resourceCulture);
             }
         }
         

@@ -3535,7 +3535,13 @@ Please add Email in setting</value>
   <data name="trDone" xml:space="preserve">
     <value>Done</value>
   </data>
+  <data name="trDeliveryManagement" xml:space="preserve">
+    <value>Delivery management</value>
+  </data>
   <data name="trDemo" xml:space="preserve">
     <value>Demo</value>
+  </data>
+  <data name="thereArenodata" xml:space="preserve">
+    <value>Sorry! There are no data</value>
   </data>
 </root>

@@ -1186,9 +1186,9 @@ namespace POS.View.delivery
                 isdriver = 0;
 
             }
-            /*
-            clsReports.deliveryManagement(orders.ToList(), rep, reppath, paramarr,isdriver);
-            */
+
+            clsReports.deliveryManagement(orders.ToList(), rep, reppath, paramarr, isdriver);
+
             clsReports.setReportLanguage(paramarr);
             clsReports.Header(paramarr);
 

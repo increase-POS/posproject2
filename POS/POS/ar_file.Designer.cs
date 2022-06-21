@@ -151,6 +151,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to للأسف ! لايوجد بيانات.
+        /// </summary>
+        internal static string thereArenodata {
+            get {
+                return ResourceManager.GetString("thereArenodata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to رصيد.
         /// </summary>
         internal static string tr_Balance {
@@ -2010,6 +2019,15 @@ namespace POS {
         internal static string trDeliveryMan {
             get {
                 return ResourceManager.GetString("trDeliveryMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ادارة التوصيل.
+        /// </summary>
+        internal static string trDeliveryManagement {
+            get {
+                return ResourceManager.GetString("trDeliveryManagement", resourceCulture);
             }
         }
         

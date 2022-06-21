@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using POS.View.storage;
+using Newtonsoft.Json;
 namespace POS.Classes
 {
     class clsReports
@@ -1709,6 +1710,67 @@ Parameters!trValueDiscount.Value)
         }
 
 
+        public static void deliveryManagement(IEnumerable<Invoice> Query1, LocalReport rep, string reppath, List<ReportParameter> paramarr, int isdriver)
+        {
+            List<Invoice> Query = JsonConvert.DeserializeObject<List<Invoice>>(JsonConvert.SerializeObject(Query1));
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
 
+
+            //table columns
+            paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trInvoiceCharp")));
+            paramarr.Add(new ReportParameter("deliveryTime", MainWindow.resourcemanagerreport.GetString("deliveryTime")));
+            paramarr.Add(new ReportParameter("trStatus", MainWindow.resourcemanagerreport.GetString("trStatus")));
+            if (isdriver == 1)
+            {
+                paramarr.Add(new ReportParameter("deliveryMan", MainWindow.resourcemanagerreport.GetString("trDeliveryMan")));
+            }
+            else
+            {
+                paramarr.Add(new ReportParameter("deliveryMan", MainWindow.resourcemanagerreport.GetString("trCompany")));
+            }
+            foreach (var row in Query)
+            {
+                row.status = preparingOrderStatusConvert(row.status);
+              //  row.orderTimeConv = dateTimeToTimeConvert(row.orderTime);
+                row.shipUserName = driverOrShipcompanyConvert(isdriver, row.shipUserName,"", row.shipCompanyName);
+            }
+            paramarr.Add(new ReportParameter("trNoData", MainWindow.resourcemanagerreport.GetString("thereArenodata")));
+            rep.DataSources.Add(new ReportDataSource("DataSet", Query));
+
+            //title
+            paramarr.Add(new ReportParameter("trTitle", MainWindow.resourcemanagerreport.GetString("trDeliveryManagement")));
+
+        }
+        public static string preparingOrderStatusConvert(string status)
+        {
+            switch (status)
+            {
+                case "Listed": return MainWindow.resourcemanagerreport.GetString("trListed");
+                case "Preparing": return MainWindow.resourcemanagerreport.GetString("trPreparing");
+                case "Ready": return MainWindow.resourcemanagerreport.GetString("trReady");
+                case "Collected": return MainWindow.resourcemanagerreport.GetString("withDelivery");
+                case "InTheWay": return MainWindow.resourcemanagerreport.GetString("onTheWay");
+                case "Done": return MainWindow.resourcemanagerreport.GetString("trDone");// gived to customer
+              //  case "withDelivery":return MainWindow.resourcemanagerreport.GetString("withDelivery");
+                    
+                default: return "";
+            }
+        }
+        public static string driverOrShipcompanyConvert(int isDriver, string shipUserName, string shipUserLastName, string shippingCompanyName)
+        {
+            string name = "";
+            if (isDriver == 1)
+            {
+                name = shipUserName + " " + shipUserLastName;
+            }
+            else
+            {
+                name = shippingCompanyName;
+            }
+
+            return name;
+        }
     }
 }
