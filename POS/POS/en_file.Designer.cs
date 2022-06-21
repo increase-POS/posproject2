@@ -2500,6 +2500,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        internal static string trDone {
+            get {
+                return ResourceManager.GetString("trDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to you don&apos;t have permission.
         /// </summary>
         internal static string trdontHavePermission {

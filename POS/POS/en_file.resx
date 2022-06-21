@@ -3532,4 +3532,7 @@ Please add Email in setting</value>
   <data name="trInvoiceCharp" xml:space="preserve">
     <value>Invoice#</value>
   </data>
+  <data name="trDone" xml:space="preserve">
+    <value>Done</value>
+  </data>
 </root>

@@ -110,6 +110,7 @@ namespace POS.Classes
         public Nullable<int> branchCreatorId { get; set; }
         public string branchCreatorName { get; set; }
         public Nullable<int> shippingCompanyId { get; set; }
+        public string shipCompanyName { get; set; }
         public Nullable<int> shipUserId { get; set; }
         public string shipUserName { get; set; }
         public string status { get; set; }
@@ -1346,6 +1347,18 @@ namespace POS.Classes
                 }
             }
             return items;
+        }
+
+        public async Task<int> EditInvoiceDelivery(int invoiceId, int? shipUserId, int shippingCompanyId)
+        {
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            string method = "Invoices/EditInvoiceDelivery";
+
+            parameters.Add("invoiceId", invoiceId.ToString());
+            parameters.Add("shipUserId", shipUserId.ToString());
+            parameters.Add("shippingCompanyId", shippingCompanyId.ToString());
+
+            return await APIResult.post(method, parameters);
         }
 
     }

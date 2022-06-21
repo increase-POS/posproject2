@@ -2491,6 +2491,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تم.
+        /// </summary>
+        internal static string trDone {
+            get {
+                return ResourceManager.GetString("trDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ليس لديك صلاحية.
         /// </summary>
         internal static string trdontHavePermission {

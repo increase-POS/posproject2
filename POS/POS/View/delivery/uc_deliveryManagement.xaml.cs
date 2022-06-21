@@ -44,7 +44,6 @@ namespace POS.View.delivery
         {
             get
             {
-                //if (_instance == null)
                 if(_instance is null)
                 _instance = new uc_deliveryManagement();
                 return _instance;
@@ -57,10 +56,7 @@ namespace POS.View.delivery
 
         string updatePermission = "deliveryManagement_update";
         IEnumerable<Invoice> orders;
-        /*
-        OrderPreparing orderModel = new OrderPreparing();
-        */
-        Invoice invoiceModel = new Invoice();
+       
         Invoice order = new Invoice();
 
         IEnumerable<User> drivers;
@@ -74,10 +70,10 @@ namespace POS.View.delivery
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    SectionData.StartAwait(grid_main);
-                requiredControlList = new List<string> { "userId" , "companyId"};
+            try
+            {
+                SectionData.StartAwait(grid_main);
+                requiredControlList = new List<string> { "userId", "companyId" };
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -135,20 +131,19 @@ namespace POS.View.delivery
                 bdr_searchCompany.Visibility = Visibility.Hidden;
                 chk_allForDelivery.IsChecked = true;
 
-            //    SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
         }
       
 
         #region methods
         async Task Search()
         {
-            /*
             try
             {
                 searchText = tb_search.Text.ToLower();
@@ -184,15 +179,12 @@ namespace POS.View.delivery
                 RefreshOrdersView();
             }
             catch { }
-            */
         }
 
         async Task<IEnumerable<Invoice>> RefreshOrdersList(string status)
         {
-            //GetOrdersWithDelivery
             orders = await order.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, status);
             orders = orders.Where(o => o.status == "Ready" || o.status == "Collected" || o.status == "InTheWay");
-
 
             return orders;
         }
@@ -209,9 +201,9 @@ namespace POS.View.delivery
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
             selectedOrders.Clear();
             this.DataContext = order;
-            /*
-            SectionData.clearValidate(requiredControlList, this);
-            */
+
+            SectionData.clearComboBoxValidate(cb_userId, p_error_userId);
+            SectionData.clearComboBoxValidate(cb_companyId, p_error_companyId);
         }
         private void translate()
         {
@@ -236,14 +228,12 @@ namespace POS.View.delivery
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_user, MainWindow.resourcemanager.GetString("trDeliveryMan") + "...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(cb_companyId, MainWindow.resourcemanager.GetString("trCompany") + "...");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_deliveryTime, MainWindow.resourcemanager.GetString("deliveryTime") + "...");
-            //txt_minutes.Text = MainWindow.resourcemanager.GetString("minute");
             MaterialDesignThemes.Wpf.HintAssist.SetHint(tb_notes, MainWindow.resourcemanager.GetString("trNote") + "..."); 
 
             dg_orders.Columns[1].Header = MainWindow.resourcemanager.GetString("trInvoiceCharp");
             dg_orders.Columns[2].Header = MainWindow.resourcemanager.GetString("trCompany");
             dg_orders.Columns[3].Header = MainWindow.resourcemanager.GetString("trDeliveryMan");
-            dg_orders.Columns[4].Header = MainWindow.resourcemanager.GetString("deliveryTime");
-            dg_orders.Columns[5].Header = MainWindow.resourcemanager.GetString("trStatus");
+            dg_orders.Columns[4].Header = MainWindow.resourcemanager.GetString("trStatus");
 
             btn_updateDeliveryMan.ToolTip = MainWindow.resourcemanager.GetString("trSave");
             btn_updateDeliveryCompany.ToolTip = MainWindow.resourcemanager.GetString("trSave");
@@ -257,6 +247,21 @@ namespace POS.View.delivery
             tt_count.Content = MainWindow.resourcemanager.GetString("trCount");
 
             btn_save.Content = MainWindow.resourcemanager.GetString("trSave");
+        }
+        private void validateEmpty(string name, object sender)
+        {
+            try
+            { 
+                if (name == "ComboBox")
+                {
+                    if ((sender as ComboBox).Name == "cb_userId")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_error_userId, tt_error_userId, "trErrorNameToolTip");
+                    else if ((sender as ComboBox).Name == "cb_companyId")
+                        SectionData.validateEmptyComboBox((ComboBox)sender, p_error_companyId, tt_error_companyId, "trErrorNameToolTip");
+                }
+            }
+            catch (Exception ex)
+            { SectionData.ExceptionMessage(ex, this); }
         }
         #endregion
 
@@ -350,21 +355,18 @@ namespace POS.View.delivery
                         if (selectedOrders.Count != 0 && order.status != selectedOrders[0].status)
                         {
                             checkboxColumn.IsChecked = checkboxColumn.IsChecked;
-                            //checkboxColumn.IsEnabled = false;
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("notHaveSameStatus"), animation: ToasterAnimation.FadeIn);
                         }
                         //driver
                         else if (selectedOrders.Count != 0 && order.shipUserId != null && selectedOrders[0].shipUserId == null)
                         {
                             checkboxColumn.IsChecked = checkboxColumn.IsChecked;
-                            //checkboxColumn.IsEnabled = false;
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("notHaveSameType"), animation: ToasterAnimation.FadeIn);
                         }
                         //company
                         else if (selectedOrders.Count != 0 && order.shipUserId == null && selectedOrders[0].shipUserId != null)
                         {
                             checkboxColumn.IsChecked = checkboxColumn.IsChecked;
-                            //checkboxColumn.IsEnabled = false;
                             Toaster.ShowWarning(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("notHaveSameType"), animation: ToasterAnimation.FadeIn);
                         }
 
@@ -372,28 +374,25 @@ namespace POS.View.delivery
                         {
                             if (!chk_allForDelivery.IsChecked.Value)
                                 checkboxColumn.IsChecked = !checkboxColumn.IsChecked;
-                                //checkboxColumn.IsEnabled = true;
                         }
 
 
-                        if (selectedOrders.Count > 0)
-                        {
-                            if (selectedOrders[0].shipUserId == null)
-                                requiredControlList = new List<string> { "companyId" };
-                            else
-                                requiredControlList = new List<string> { "userId" };
-                        }
+                        //if (selectedOrders.Count > 0)
+                        //{
+                        //    if (selectedOrders[0].shipUserId == null)
+                        //        requiredControlList = new List<string> { "companyId" };
+                        //    else
+                        //        requiredControlList = new List<string> { "userId" };
+                        //}
                         #region refreshSaveBtnText
                         if (order.shipUserId != null)
                         {
-                            //bdr_cbDeliveryCompany.Visibility = Visibility.Collapsed;
                             grid_deliveryCompany.Visibility = Visibility.Collapsed;
 
                             if (order.status.Equals("Ready"))
                             {
                                 btn_save.Content = MainWindow.resourcemanager.GetString("trCollect");
                                 btn_save.IsEnabled = true;
-                                //bdr_cbDeliveryMan.Visibility = Visibility.Visible;
                                 grid_deliveryMan.Visibility = Visibility.Visible;
                                 bdr_tbDeliveryMan.Visibility = Visibility.Collapsed;
                             }
@@ -401,7 +400,6 @@ namespace POS.View.delivery
                             {
                                 btn_save.Content = MainWindow.resourcemanager.GetString("onTheWay");
                                 btn_save.IsEnabled = true;
-                                //bdr_cbDeliveryMan.Visibility = Visibility.Visible;
                                 grid_deliveryMan.Visibility = Visibility.Visible;
                                 bdr_tbDeliveryMan.Visibility = Visibility.Collapsed;
                             }
@@ -409,15 +407,12 @@ namespace POS.View.delivery
                             {
                                 btn_save.Content = MainWindow.resourcemanager.GetString("trDone");
                                 btn_save.IsEnabled = true;
-                                //bdr_cbDeliveryMan.Visibility = Visibility.Collapsed;
                                 grid_deliveryMan.Visibility = Visibility.Collapsed;
                                 bdr_tbDeliveryMan.Visibility = Visibility.Visible;
                             }
                         }
                         else
                         {
-                            //bdr_cbDeliveryCompany.Visibility = Visibility.Visible;
-                            //bdr_cbDeliveryMan.Visibility = Visibility.Collapsed;
                             grid_deliveryMan.Visibility = Visibility.Collapsed;
                             grid_deliveryCompany.Visibility = Visibility.Visible;
                             bdr_tbDeliveryMan.Visibility = Visibility.Collapsed;
@@ -433,9 +428,9 @@ namespace POS.View.delivery
                     }
                 }
 
-                /*
-                SectionData.clearValidate(requiredControlList, this);
-                */
+                SectionData.clearComboBoxValidate(cb_userId , p_error_userId);
+                SectionData.clearComboBoxValidate(cb_companyId, p_error_companyId);
+
                 SectionData.EndAwait(grid_main);
             }
             catch (Exception ex)
@@ -470,10 +465,11 @@ namespace POS.View.delivery
         {//save
             try
             {
-                /*
-                if (FillCombo.groupObject.HasPermissionAction(updatePermission, FillCombo.groupObjects, "one"))
+                //if (FillCombo.groupObject.HasPermissionAction(updatePermission, FillCombo.groupObjects, "one"))
                 {
                     SectionData.StartAwait(grid_main);
+
+                    bool validate = true;
 
                     if (selectedOrders.Count > 1)
                         requiredControlList = new List<string>();
@@ -486,9 +482,20 @@ namespace POS.View.delivery
                             return;
                         }
                         if (chk_drivers.IsChecked == true)
+                        {
                             requiredControlList = new List<string>() { "userId" };
+                           
+                            if(cb_userId.Text.Equals(""))
+                                validate = false;
+                            SectionData.validateEmptyComboBox(cb_userId, p_error_userId, tt_error_userId, "trEmptyNameToolTip");
+                        }
                         if (chk_shippingCompanies.IsChecked == true)
+                        {
                             requiredControlList = new List<string>() { "companyId" };
+                            if (cb_companyId.Text.Equals(""))
+                                validate = false;
+                            SectionData.validateEmptyComboBox(cb_companyId, p_error_companyId, tt_error_companyId, "trEmptyNameToolTip");
+                        }
                     }
                     else if(selectedOrders.Count == 0 && order != null)
                     {
@@ -499,21 +506,33 @@ namespace POS.View.delivery
                         }
                         selectedOrders.Add(order);
                         if (chk_drivers.IsChecked == true)
+                        {
                             requiredControlList = new List<string>() { "userId" };
+                            if (cb_userId.Text.Equals(""))
+                                validate = false;
+                            SectionData.validateEmptyComboBox(cb_userId, p_error_userId, tt_error_userId, "trEmptyNameToolTip");
+                        }
                         if (chk_shippingCompanies.IsChecked == true)
+                        {
                             requiredControlList = new List<string>() { "companyId" };
+                            if (cb_companyId.Text.Equals(""))
+                                validate = false;
+                            SectionData.validateEmptyComboBox(cb_companyId, p_error_companyId, tt_error_companyId, "trEmptyNameToolTip");
+                        }
                     }
-                    
+
 
                     #region add
-                    if (SectionData.validate(requiredControlList, this))
+                   
+                    if (validate)
+                    //if (SectionData.validate(requiredControlList, this))
                     {
                         foreach(Invoice i in selectedOrders)
                         { 
                             int? driverID = i.shipUserId;
                             int comID = i.shippingCompanyId.Value;
 
-                            orderPreparingStatus ops = new orderPreparingStatus();
+                            invoiceStatus ops = new invoiceStatus();
 
                             if (i.shipUserId != null)
                             {
@@ -554,12 +573,14 @@ namespace POS.View.delivery
                                     await savePayments(i);
                                 }
                             }
+                            ops.invoiceId = i.invoiceId;
                             ops.createUserId = MainWindow.userLogin.userId;
                             ops.updateUserId = MainWindow.userLogin.userId;
                             ops.notes = tb_notes.Text;
                             ops.isActive = 1;
-
-                            int res = await orderModel.EditInvoiceOrdersStatus(i.invoiceId, driverID, comID, ops);
+                           
+                            //int res = await order.EditInvoiceOrdersStatus(i.invoiceId, driverID, comID, ops);
+                            int res = await order.saveOrderStatus(ops);
 
                             if (!res.Equals(0))
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
@@ -578,9 +599,8 @@ namespace POS.View.delivery
                     
                     SectionData.EndAwait(grid_main);
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                */
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
@@ -588,14 +608,11 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-
-
         private async void Btn_updateDeliveryMan_Click(object sender, RoutedEventArgs e)
         {//update driver
             try
             {
-                /*
-                if (FillCombo.groupObject.HasPermissionAction(updatePermission, FillCombo.groupObjects, "one"))
+                //if (FillCombo.groupObject.HasPermissionAction(updatePermission, FillCombo.groupObjects, "one"))
                 {
                     SectionData.StartAwait(grid_main);
 
@@ -615,14 +632,27 @@ namespace POS.View.delivery
                             requiredControlList = new List<string>() { "companyId" };
                     }
                     #region update
-                    if (SectionData.validate(requiredControlList, this))
+                    bool validate = true;
+                    if (chk_drivers.IsChecked == true)
+                    {
+                        if (cb_userId.Text.Equals(""))
+                            validate = false;
+                        SectionData.validateEmptyComboBox(cb_userId, p_error_userId, tt_error_userId, "trEmptyNameToolTip");
+                    }
+                    else if (chk_shippingCompanies.IsChecked == true)
+                    {
+                        if (cb_companyId.Text.Equals(""))
+                            validate = false;
+                        SectionData.validateEmptyComboBox(cb_companyId, p_error_companyId, tt_error_companyId, "trEmptyNameToolTip");
+                    }
+                    if (validate)
                     {
                         foreach (Invoice i in selectedOrders)
                         {
                             int? driverID = i.shipUserId;
                             int comID = i.shippingCompanyId.Value;
 
-                            if (i.shipUserName != null)
+                            if (i.shipUserId != null)
                             {
                                 if (i.status.Equals("Ready"))
                                 {
@@ -645,7 +675,7 @@ namespace POS.View.delivery
                                 }
                             }
 
-                            int res = await orderModel.EditInvoiceDelivery(i.invoiceId, driverID, comID);
+                            int res = await order.EditInvoiceDelivery(i.invoiceId, driverID, comID );
 
                             if (!res.Equals(0))
                                 Toaster.ShowSuccess(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trPopSave"), animation: ToasterAnimation.FadeIn);
@@ -663,9 +693,8 @@ namespace POS.View.delivery
 
                     SectionData.EndAwait(grid_main);
                 }
-                else
-                    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
-                */
+                //else
+                //    Toaster.ShowInfo(Window.GetWindow(this), message: MainWindow.resourcemanager.GetString("trdontHavePermission"), animation: ToasterAnimation.FadeIn);
             }
             catch (Exception ex)
             {
@@ -674,19 +703,16 @@ namespace POS.View.delivery
             }
         }
 
-
         #endregion
 
         #region payments
         private async Task savePayments(Invoice invoice)
         {
-            /*
-            invoice.updateUserId = MainWindow.userLog.userId;
+            invoice.updateUserId = MainWindow.userLogin.userId;
             if (invoice.shippingCompanyId != null && invoice.shipUserId == null)
                 await invoice.recordCompanyCashTransfer(invoice, "si");
             else
                 await invoice.recordCashTransfer(invoice, "si");
-            */
         }
         #endregion
 
@@ -714,8 +740,6 @@ namespace POS.View.delivery
         {
             try
             {
-             
-
                 selectedOrders.Clear();
                 var chkSelectAll = sender as CheckBox;
                 if (chk_allForDelivery.IsChecked == true)
@@ -1035,14 +1059,11 @@ namespace POS.View.delivery
         {
             try
             {
-/*
-                SectionData.validate(requiredControlList, this);
-                */
+                string name = sender.GetType().Name;
+                validateEmpty(name, sender);
             }
             catch (Exception ex)
-            {
-                SectionData.ExceptionMessage(ex, this);
-            }
+            { SectionData.ExceptionMessage(ex, this); }
         }
         private async void deliveryType_check(object sender, RoutedEventArgs e)
         {
@@ -1065,15 +1086,12 @@ namespace POS.View.delivery
                             bdr_searchUser.Visibility = Visibility.Visible;
                             col_cbDriver.Width = new GridLength(1, GridUnitType.Star);
                             col_cbCompany.Width = new GridLength(0, GridUnitType.Star);
-                            //col_cbDriver.Width = col_cbCompany.Width;
                             chk_allForDelivery.Visibility = Visibility.Visible;
                             chk_readyForDelivery.Visibility = Visibility.Visible;
                             chk_withDeliveryMan.Visibility = Visibility.Visible;
                             chk_inTheWay.Visibility = Visibility.Visible;
                             chk_allForDelivery.IsChecked = true;
 
-                            //bdr_cbDeliveryCompany.Visibility = Visibility.Collapsed;
-                            //bdr_cbDeliveryMan.Visibility = Visibility.Visible;
                             grid_deliveryMan.Visibility = Visibility.Visible;
                             grid_deliveryCompany.Visibility = Visibility.Collapsed;
 
@@ -1096,8 +1114,6 @@ namespace POS.View.delivery
                             chk_inTheWay.Visibility = Visibility.Hidden;
                             chk_allForDelivery.IsChecked = false;
 
-                            //bdr_cbDeliveryCompany.Visibility = Visibility.Visible;
-                            //bdr_cbDeliveryMan.Visibility = Visibility.Collapsed;
                             grid_deliveryMan.Visibility = Visibility.Collapsed;
                             grid_deliveryCompany.Visibility = Visibility.Visible;
                         }
@@ -1132,11 +1148,7 @@ namespace POS.View.delivery
                 SectionData.ExceptionMessage(ex, this);
             }
         }
-        private void selectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
-        {
-           
-        }
-
+       
         #endregion
 
         #region report
