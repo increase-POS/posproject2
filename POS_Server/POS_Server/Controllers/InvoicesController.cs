@@ -2194,6 +2194,7 @@ var strP = TokenManager.GetPrincipal(token);
                                             shipUserId = b.shipUserId,
                                             agentName = b.agents.name,
                                             shipUserName = y.name +" "+y.lastname,
+                                            shipCompanyName = b.shippingCompanies.name,
                                             status = s.status,
                                             userId = b.userId,
                                             manualDiscountType = b.manualDiscountType,
@@ -2223,6 +2224,70 @@ var strP = TokenManager.GetPrincipal(token);
                 }
             }
         }
+
+        [HttpPost]
+        [Route("EditInvoiceDelivery")]
+        public string EditInvoiceDelivery(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            string message = "1";
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                #region params
+                int invoiceId = 0;
+                int? shipUserId = 0;
+                int shippingCompanyId = 0;
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "invoiceId")
+                    {
+                        invoiceId = int.Parse(c.Value);
+                    }
+                    else if (c.Type == "shipUserId")
+                    {
+                        try
+                        {
+                            shipUserId = int.Parse(c.Value);
+                        }
+                        catch
+                        {
+                            shipUserId = null;
+                        }
+                    }
+                    else if (c.Type == "shippingCompanyId")
+                    {
+                        shippingCompanyId = int.Parse(c.Value);
+                    }
+
+                }
+                #endregion
+                try
+                {
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+                        #region edit shipping info
+                        var inv = entity.invoices.Find(invoiceId);
+                        inv.shipUserId = shipUserId;
+                        inv.shippingCompanyId = shippingCompanyId;
+                        inv.updateDate = DateTime.Now;
+                        entity.SaveChanges();
+                        #endregion
+                    }
+                }
+                catch
+                {
+                    message = "0";
+                }
+                return TokenManager.GenerateToken(message);
+            }
+        }
+
         [HttpPost]
         [Route("getAgentInvoices")]
         public string getAgentInvoices(string token)
