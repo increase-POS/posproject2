@@ -149,12 +149,12 @@ namespace POS.View.reports.deliveryReports
             &&
             //company
             (cb_company.SelectedIndex != -1 ? s.shippingCompanyId == Convert.ToInt32(cb_company.SelectedValue) : true)
-            //&&
-            ////start date
-            //(dp_startDate.SelectedDate != null ? s.createDate >= dp_startDate.SelectedDate : true)
-            //&&
-            ////end date
-            //(dp_endDate.SelectedDate != null ? s.createDate <= dp_endDate.SelectedDate : true)
+            &&
+            //start date
+            (dp_startDate.SelectedDate != null ? s.invDate >= dp_startDate.SelectedDate : true)
+            &&
+            //end date
+            (dp_endDate.SelectedDate != null ? s.invDate <= dp_endDate.SelectedDate : true)
             );
 
             RefreshDeliveriesView();
@@ -206,10 +206,8 @@ namespace POS.View.reports.deliveryReports
         private void fillCompanies()
         {
             cb_company.SelectedValuePath = "shippingCompanyId";
-            //cb_company.DisplayMemberPath = "shippingCompanyName";
-            //cb_company.ItemsSource = deliveries.Select(i => new { i.shippingCompanyName, i.shippingCompanyId }).Distinct();/////?????
-            cb_company.DisplayMemberPath = "shippingCompanyName";
-            cb_company.ItemsSource = deliveries.Select(i => new {  i.shippingCompanyId }).Distinct();
+            cb_company.DisplayMemberPath = "shipCompanyName";
+            cb_company.ItemsSource = deliveries.Select(i => new {  i.shipCompanyName,i.shippingCompanyId }).Distinct();
         }
         #endregion
 
