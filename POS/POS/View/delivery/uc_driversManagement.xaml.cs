@@ -35,17 +35,12 @@ namespace POS.View.delivery
         IEnumerable<ShippingCompanies> companies;
         ShippingCompanies companyModel = new ShippingCompanies();
         ShippingCompanies company = new ShippingCompanies();
-
         string searchText = "";
         byte tgl_driverState;
 
         string viewPermission = "driversManagement_view";
         string residentialSectorsPermission = "driversManagement_residentialSectors";
         string activateDriverPermission = "driversManagement_activateDriver";
-
-        int selectedIndexDataGrid = 0;
-        //List<ResidentialSectors> driverSectors = new List<ResidentialSectors>();
-        //ResidentialSectors residentialSector = new ResidentialSectors();
 
         List<Invoice> orders;
         Invoice orderModel = new Invoice();
@@ -77,9 +72,9 @@ namespace POS.View.delivery
         }
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {//load
-            //try
-            //{
-            //    SectionData.StartAwait(grid_main);
+            try
+            {
+                SectionData.StartAwait(grid_main);
 
                 #region translate
                 if (MainWindow.lang.Equals("en"))
@@ -95,19 +90,18 @@ namespace POS.View.delivery
 
                 await Search();
                 
-                //await RefreshOrdersList();
-                
-            //    SectionData.EndAwait(grid_main);
-            //}
-            //catch (Exception ex)
-            //{
-            //    SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
+                await RefreshOrdersList();
+
+                SectionData.EndAwait(grid_main);
+            }
+                catch (Exception ex)
+                {
+                    SectionData.EndAwait(grid_main);
+                    SectionData.ExceptionMessage(ex, this);
+            }
         }
 
         #region methods
-
         async Task<IEnumerable<Invoice>> RefreshOrdersList()
         {
             orders = await orderModel.GetOrdersWithDelivery(MainWindow.loginBranch.branchId, "Collected,Ready");
@@ -144,7 +138,6 @@ namespace POS.View.delivery
             }
             catch { }
         }
-
         async Task<IEnumerable<User>> RefreshDriversList()
         {
             drivers = await userModel.getBranchSalesMan(MainWindow.branchID.Value , "deliveryPermission");
@@ -164,13 +157,11 @@ namespace POS.View.delivery
         {
             dg_user.ItemsSource = companies;
         }
-
         private void translate()
         {
             // Title
             txt_title.Text = MainWindow.resourcemanager.GetString("deliveryList");
 
-            //txt_title.Text = MainWindow.resourcemanager.GetString("trDriversManagement");
             txt_details.Text = MainWindow.resourcemanager.GetString("trDetails");
 
             chk_drivers.Content = MainWindow.resourcemanager.GetString("drivers");
@@ -206,106 +197,12 @@ namespace POS.View.delivery
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
 
         }
-        #endregion
-
-        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Instance = null;
-            GC.Collect();
-        }
-
-        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
-        {//refresh
-            try
-            {
-                SectionData.StartAwait(grid_main);
-
-                await RefreshDriversList();
-                await RefreshCompaniesList();
-                searchText = "";
-                tb_search.Text = "";
-                await Search();
-
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-
-        }
-
-        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
-        {//search
-            try
-            {
-                SectionData.StartAwait(grid_main);
-
-                await Search();
-
-                SectionData.EndAwait(grid_main);
-            }
-            catch (Exception ex)
-            {
-                SectionData.EndAwait(grid_main);
-                SectionData.ExceptionMessage(ex, this);
-            }
-        }
-       
-        private async void deliveryType_check(object sender, RoutedEventArgs e)
-        {
-            //try
-            //{
-                CheckBox cb = sender as CheckBox;
-                //await RefreshOrdersList();
-                if (cb.IsFocused)
-                {
-                    if (cb.IsChecked == true)
-                    {
-                        if (cb.Name == "chk_drivers")
-                        {
-                            chk_shippingCompanies.IsChecked = false;
-                        }
-                        else if (cb.Name == "chk_shippingCompanies")
-                        {
-                            chk_drivers.IsChecked = false;
-                        }
-                    }
-                }
-                
-                await changeDeliveryType();
-            //}
-            //catch (Exception ex)
-            //{
-            //    SectionData.EndAwait(grid_main);
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
-        }
-        private void deliveryType_uncheck(object sender, RoutedEventArgs e)
-        {
-            //try
-            //{
-                CheckBox cb = sender as CheckBox;
-                if (cb.IsFocused)
-                {
-                   if (cb.Name == "chk_drivers")
-                        chk_drivers.IsChecked = true;
-                   else if (cb.Name == "chk_shippingCompanies")
-                        chk_shippingCompanies.IsChecked = true;
-                }
-            //}
-            //catch (Exception ex)
-            //{
-            //    SectionData.ExceptionMessage(ex, this);
-            //}
-        }
         async Task changeDeliveryType()
         {
             SectionData.StartAwait(grid_main);
 
             if (col_driversUsername is null)
-              await  Task.Delay(500);
+                await Task.Delay(500);
             if (chk_drivers.IsChecked.Value)
             {
                 col_driversUsername.Visibility = Visibility.Visible;
@@ -320,7 +217,7 @@ namespace POS.View.delivery
                 col_companyEmail.Visibility = Visibility.Collapsed;
                 col_companyAvailable.Visibility = Visibility.Collapsed;
                 sp_companyDetails.Visibility = Visibility.Collapsed;
-                
+
             }
             else if (chk_shippingCompanies.IsChecked.Value)
             {
@@ -342,7 +239,98 @@ namespace POS.View.delivery
 
             SectionData.EndAwait(grid_main);
         }
+        #endregion
 
+        #region events
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Instance = null;
+            GC.Collect();
+        }
+        private async void Btn_refresh_Click(object sender, RoutedEventArgs e)
+        {//refresh
+            try
+            {
+                SectionData.StartAwait(grid_main);
+
+                await RefreshDriversList();
+                await RefreshCompaniesList();
+                searchText = "";
+                tb_search.Text = "";
+                await Search();
+
+                SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+
+        }
+        private async void Tb_search_TextChanged(object sender, TextChangedEventArgs e)
+        {//search
+            try
+            {
+                SectionData.StartAwait(grid_main);
+
+                await Search();
+
+                SectionData.EndAwait(grid_main);
+            }
+            catch (Exception ex)
+            {
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private async void deliveryType_check(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckBox cb = sender as CheckBox;
+                await RefreshOrdersList();
+                if (cb.IsFocused)
+                {
+                    if (cb.IsChecked == true)
+                    {
+                        if (cb.Name == "chk_drivers")
+                        {
+                            chk_shippingCompanies.IsChecked = false;
+                        }
+                        else if (cb.Name == "chk_shippingCompanies")
+                        {
+                            chk_drivers.IsChecked = false;
+                        }
+                    }
+                }
+                
+                await changeDeliveryType();
+            }
+            catch (Exception ex)
+            {
+                SectionData.EndAwait(grid_main);
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
+        private void deliveryType_uncheck(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                CheckBox cb = sender as CheckBox;
+                if (cb.IsFocused)
+                {
+                   if (cb.Name == "chk_drivers")
+                        chk_drivers.IsChecked = true;
+                   else if (cb.Name == "chk_shippingCompanies")
+                        chk_shippingCompanies.IsChecked = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                SectionData.ExceptionMessage(ex, this);
+            }
+        }
         private async void Dg_user_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {//selection
             try
@@ -356,7 +344,6 @@ namespace POS.View.delivery
                     if (chk_drivers.IsChecked.Value)
                     {
                         driver = dg_user.SelectedItem as User;
-                        selectedIndexDataGrid = dg_user.SelectedIndex;
                         this.DataContext = driver;
                         if (driver != null)
                         {
@@ -367,11 +354,11 @@ namespace POS.View.delivery
                                 ordersCount = driverOrder.Count();
 
                         }
+                        tb_driverOrdersCount.Text = ordersCount.ToString();
                     }
                     else if (chk_shippingCompanies.IsChecked.Value)
                     {
                         company = dg_user.SelectedItem as ShippingCompanies;
-                        selectedIndexDataGrid = dg_user.SelectedIndex;
                         this.DataContext = company;
                         if (company != null)
                         {
@@ -382,8 +369,8 @@ namespace POS.View.delivery
                                 ordersCount = driverOrder.Count();
 
                         }
+                        tb_companyOrdersCount.Text = ordersCount.ToString();
                     }
-                    tb_driverOrdersCount.Text = ordersCount.ToString();
 
                 }
 
@@ -396,9 +383,10 @@ namespace POS.View.delivery
             }
 
         }
+        #endregion
 
         #region report
-        
+
         //report  parameters
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
