@@ -3514,4 +3514,7 @@
   <data name="trDone" xml:space="preserve">
     <value>تم</value>
   </data>
+  <data name="trDemo" xml:space="preserve">
+    <value>نسخة تجريبية</value>
+  </data>
 </root>

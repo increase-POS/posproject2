@@ -2041,6 +2041,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Demo.
+        /// </summary>
+        internal static string trDemo {
+            get {
+                return ResourceManager.GetString("trDemo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Department.
         /// </summary>
         internal static string trDepartment {

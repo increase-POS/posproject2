@@ -2032,6 +2032,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to نسخة تجريبية.
+        /// </summary>
+        internal static string trDemo {
+            get {
+                return ResourceManager.GetString("trDemo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to القسم.
         /// </summary>
         internal static string trDepartment {
