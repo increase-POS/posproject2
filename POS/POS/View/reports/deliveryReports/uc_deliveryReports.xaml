@@ -261,20 +261,13 @@
                                     </Style>
                                 </DataGrid.Resources>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn x:Name="col_orderNum"      Width="*" Header="No."       Binding="{Binding orderNum}"/>
+                                    <!--<DataGridTextColumn x:Name="col_orderNum"      Width="*" Header="No."       Binding="{Binding orderNum}"/>-->
                                     <DataGridTextColumn x:Name="col_invNum"        Width="*" Header="No."       Binding="{Binding invNumber}"/>
-                                    <DataGridTextColumn x:Name="col_branch"        Width="*" Header="Branch"    Binding="{Binding branchName }" />
+                                    <DataGridTextColumn x:Name="col_branch"        Width="*" Header="Branch"    Binding="{Binding branchCreatorName }" />
                                     <DataGridTextColumn x:Name="col_customer"      Width="*" Header="Customer"  Binding="{Binding agentName}"/>
-                                    <DataGridTextColumn x:Name="col_company"       Width="*" Header="Company"   Binding="{Binding shippingCompanyName , Converter={StaticResource shippingCompanyNameConverter}}"/>
-                                    <DataGridTextColumn x:Name="col_driver"        Width="*" Header="Driver"     >
-                                        <DataGridTextColumn.Binding>
-                                            <MultiBinding Converter="{StaticResource driverNameConverter}">
-                                                <Binding Path="shipUserName" />
-                                                <Binding Path="shipUserLastName" />
-                                            </MultiBinding>
-                                        </DataGridTextColumn.Binding>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn x:Name="col_duration"      Width="*" Header="Duration"  Binding="{Binding orderDuration , Converter={StaticResource decimalToTimeConverter}}" />
+                                    <DataGridTextColumn x:Name="col_company"       Width="*" Header="Company"   Binding="{Binding shipCompanyName , Converter={StaticResource shippingCompanyNameConverter}}"/>
+                                    <DataGridTextColumn x:Name="col_driver"        Width="*" Header="Driver"    Binding="{Binding shipUserName , Converter={StaticResource driverNameConverter}}" />
+                                    <!--<DataGridTextColumn x:Name="col_duration"      Width="*" Header="Duration"  Binding="{Binding orderDuration , Converter={StaticResource decimalToTimeConverter}}" />-->
                                     
                                 </DataGrid.Columns>
                             </DataGrid>

@@ -8,22 +8,22 @@ using System.Windows.Data;
 
 namespace POS.converters
 {
-    class driverNameConverter : IMultiValueConverter
+    class driverNameConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] != null && values[1] != null)
+            if (value != null)
             {
-                string name = (string)values[0];
-                string lname = (string)values[1];
-
-                return name +" "+ lname;
+               string s = value.ToString();
+               if(!s.Trim().Equals(""))
+                   return s;
+               else return "-";
             }
             else return "-";
         }
 
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

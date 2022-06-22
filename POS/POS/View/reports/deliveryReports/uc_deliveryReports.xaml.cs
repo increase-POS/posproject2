@@ -105,13 +105,13 @@ namespace POS.View.reports.deliveryReports
 
             tt_delivery.Content = MainWindow.resourcemanager.GetString("trDelivery");
 
-            col_orderNum.Header = MainWindow.resourcemanager.GetString("trNo.");
+            //col_orderNum.Header = MainWindow.resourcemanager.GetString("trNo.");
             col_invNum.Header = MainWindow.resourcemanager.GetString("trInvoiceCharp");
             col_branch.Header = MainWindow.resourcemanager.GetString("trBranch");
             col_customer.Header = MainWindow.resourcemanager.GetString("trCustomer");
             col_company.Header = MainWindow.resourcemanager.GetString("trCompany");
             col_driver.Header = MainWindow.resourcemanager.GetString("trDriver");
-            col_duration.Header = MainWindow.resourcemanager.GetString("duration");
+            //col_duration.Header = MainWindow.resourcemanager.GetString("duration");
 
             tt_refresh.Content = MainWindow.resourcemanager.GetString("trRefresh");
             tt_report.Content = MainWindow.resourcemanager.GetString("trPdf");
@@ -131,13 +131,11 @@ namespace POS.View.reports.deliveryReports
             deliveriesQuery = deliveries
                 .Where(s =>
             (
-            //s.orderNum.ToLower().Contains(searchText)
-            //||
             s.invNumber.ToLower().Contains(searchText)
             ||
-            s.branchName.ToLower().Contains(searchText)
-            //||
-            //s.shippingCompanyName.ToLower().Contains(searchText)
+            s.branchCreatorName.ToLower().Contains(searchText)
+            ||
+            s.shipCompanyName.ToLower().Contains(searchText)
             ||
             s.agentName.ToLower().Contains(searchText)
             ||
@@ -145,7 +143,7 @@ namespace POS.View.reports.deliveryReports
             )
             &&
             //branch
-            (cb_branches.SelectedIndex != -1 ? s.branchId == Convert.ToInt32(cb_branches.SelectedValue) : true)
+            (cb_branches.SelectedIndex != -1 ? s.branchCreatorId == Convert.ToInt32(cb_branches.SelectedValue) : true)
             &&
             //company
             (cb_company.SelectedIndex != -1 ? s.shippingCompanyId == Convert.ToInt32(cb_company.SelectedValue) : true)
@@ -161,7 +159,7 @@ namespace POS.View.reports.deliveryReports
 
             fillColumnChart();
             fillPieChart();
-            //fillRowChart();
+            fillRowChart();
             
         }
 
@@ -199,9 +197,9 @@ namespace POS.View.reports.deliveryReports
         }
         private void fillBranches()
         {
-            cb_branches.SelectedValuePath = "branchId";
-            cb_branches.DisplayMemberPath = "branchName";
-            cb_branches.ItemsSource = deliveries.Select(i => new { i.branchName, i.branchId }).Distinct();
+            cb_branches.SelectedValuePath = "branchCreatorId";
+            cb_branches.DisplayMemberPath = "branchCreatorName";
+            cb_branches.ItemsSource = deliveries.Select(i => new { i.branchCreatorName, i.branchCreatorId }).Distinct();
         }
         private void fillCompanies()
         {
@@ -344,9 +342,9 @@ namespace POS.View.reports.deliveryReports
             List<string> names = new List<string>();
             List<int> deliveriesCount = new List<int>();
 
-            var result = deliveriesQuery.GroupBy(s => new { s.branchId , s.invNumber}).Select(s => new
+            var result = deliveriesQuery.GroupBy(s => new { s.branchCreatorId , s.invNumber}).Select(s => new
             {
-                Id = s.Key.branchId,
+                Id = s.Key.branchCreatorId,
                 inv = s.Key.invNumber,
             }) ;
 
@@ -354,7 +352,7 @@ namespace POS.View.reports.deliveryReports
             {
                 quantity = s.Count()
             });
-            var tempName = deliveriesQuery.GroupBy(s => s.branchName).Select(s => new
+            var tempName = deliveriesQuery.GroupBy(s => s.branchCreatorName).Select(s => new
             {
                 name = s.Key
             });
@@ -421,7 +419,7 @@ namespace POS.View.reports.deliveryReports
                 quantity = s.Count()
             });
             //var tempName = deliveriesQuery.GroupBy(s => s.shippingCompanyName).Select(s => new
-            var tempName = deliveriesQuery.GroupBy(s => s.shippingCompanyId).Select(s => new
+            var tempName = deliveriesQuery.GroupBy(s => s.shipCompanyName).Select(s => new
             {
                 name = s.Key
             });
@@ -495,18 +493,16 @@ namespace POS.View.reports.deliveryReports
 
             SeriesCollection rowChartData = new SeriesCollection();
 
-            var tempName = deliveriesQuery.GroupBy(s => new { s.branchId , s.invNumber }).Select(s => new
+            var tempName = deliveriesQuery.GroupBy(s => new { s.branchCreatorId , s.invNumber }).Select(s => new
             {
-                //Name = s.FirstOrDefault().createDate,
                 Name = s.FirstOrDefault().invDate,
             });
             names.AddRange(tempName.Select(nn => nn.Name.ToString()));
 
-            var result = deliveriesQuery.GroupBy(s => new { s.branchId, s.invNumber }).Select(s => new
+            var result = deliveriesQuery.GroupBy(s => new { s.branchCreatorId, s.invNumber }).Select(s => new
             {
-                Id = s.Key.branchId,
+                Id = s.Key.branchCreatorId,
                 inv = s.Key.invNumber,
-                //createDate = s.FirstOrDefault().createDate
                 createDate = s.FirstOrDefault().invDate
             });
 

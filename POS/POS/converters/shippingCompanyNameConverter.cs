@@ -15,7 +15,7 @@ namespace POS.converters
             if (value != null)
             {
                 string s = value.ToString();
-                if (s.Equals("local ship"))
+                if (s.Trim().Equals("Local"))
                     return "-";
                 else
                     return s;
