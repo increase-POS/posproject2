@@ -2203,7 +2203,8 @@ var strP = TokenManager.GetPrincipal(token);
                                             realShippingCost = b.realShippingCost,
                                             payStatus = b.deserved == 0 ? "payed" : (b.deserved == b.totalNet ? "unpayed" : "partpayed"),
                                             branchCreatorName = entity.branches.Where(X => X.branchId == b.branchCreatorId).FirstOrDefault().name,
-
+                                            agentAddress= b.agents.address,
+                                            agentMobile= b.agents.mobile,
                                         })
                     .ToList();
 
