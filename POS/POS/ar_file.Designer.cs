@@ -8594,6 +8594,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to شركة الشحن.
+        /// </summary>
+        internal static string trShippingCompanynohint {
+            get {
+                return ResourceManager.GetString("trShippingCompanynohint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to نقص.
         /// </summary>
         internal static string trShortage {

@@ -1772,5 +1772,42 @@ Parameters!trValueDiscount.Value)
 
             return name;
         }
+
+        public static void driverManagement(List<Invoice> Query1, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+
+            List<Invoice> Query = JsonConvert.DeserializeObject<List<Invoice>>(JsonConvert.SerializeObject(Query1));
+
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            //table columns
+            paramarr.Add(new ReportParameter("trCode", MainWindow.resourcemanagerreport.GetString("trInvoiceCharp")));
+
+          //  paramarr.Add(new ReportParameter("deliveryTime", MainWindow.resourcemanagerreport.GetString("deliveryTime")));
+            //paramarr.Add(new ReportParameter("trStatus", AppSettings.resourcemanagerreport.GetString("trStatus")));
+
+
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trCustomerAddress", MainWindow.resourcemanagerreport.GetString("trAddress")));
+
+            paramarr.Add(new ReportParameter("trCustomerMobile", MainWindow.resourcemanagerreport.GetString("trMobile")));
+
+
+            //foreach (var row in Query)
+            //{
+            //    //row.status = preparingOrderStatusConvert(row.status);
+            //    row.orderTimeConv = dateTimeToTimeConvert(row.orderTime);
+            //    row.agentAddress = agentResSectorsAddressConv(row.agentResSectorsName, row.agentAddress);
+            //}
+            rep.DataSources.Add(new ReportDataSource("DataSet", Query));
+            //title
+            paramarr.Add(new ReportParameter("trTitle", MainWindow.resourcemanagerreport.GetString("deliveryList")));
+
+            paramarr.Add(new ReportParameter("trNoData", MainWindow.resourcemanagerreport.GetString("thereArenodata")));
+
+        }
+
     }
 }

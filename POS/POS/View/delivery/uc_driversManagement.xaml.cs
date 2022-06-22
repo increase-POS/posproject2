@@ -391,14 +391,14 @@ namespace POS.View.delivery
         ReportCls reportclass = new ReportCls();
         LocalReport rep = new LocalReport();
         SaveFileDialog saveFileDialog = new SaveFileDialog();
-        
+
         // end report parameters
-       
-        /*
+
+
         public void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
-            
+
             string addpath;
             bool isArabic = ReportCls.checkLang();
             if (isArabic)
@@ -439,7 +439,7 @@ namespace POS.View.delivery
                 }
                 else
                 {
-                    deliveryMan ="-";
+                    deliveryMan = "-";
                 }
             }
 
@@ -485,7 +485,7 @@ namespace POS.View.delivery
 
         }
 
- 
+
         private void Btn_preview_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -529,9 +529,10 @@ namespace POS.View.delivery
             }
 
         }
-        */
-         #endregion
 
-    
+
+        #endregion
+
+     
     }
 }

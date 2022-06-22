@@ -3523,4 +3523,7 @@
   <data name="thereArenodata" xml:space="preserve">
     <value>للأسف ! لايوجد بيانات</value>
   </data>
+  <data name="trShippingCompanynohint" xml:space="preserve">
+    <value>شركة الشحن</value>
+  </data>
 </root>

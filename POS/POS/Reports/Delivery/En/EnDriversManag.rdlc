@@ -41,10 +41,6 @@
           <DataField>agentName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="agentResSectorsName">
-          <DataField>agentResSectorsName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="branchCreatorId">
           <DataField>branchCreatorId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
@@ -107,11 +103,19 @@
         </Field>
         <Field Name="deserved">
           <DataField>deserved</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="deservedD">
+          <DataField>deservedD</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="deservedDate">
           <DataField>deservedDate</DataField>
           <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="deservedPb">
+          <DataField>deservedPb</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="discountType">
           <DataField>discountType</DataField>
@@ -119,7 +123,15 @@
         </Field>
         <Field Name="discountValue">
           <DataField>discountValue</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="discountValueD">
+          <DataField>discountValueD</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="discountValuePb">
+          <DataField>discountValuePb</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="invCase">
           <DataField>invCase</DataField>
@@ -141,10 +153,6 @@
           <DataField>invoiceMainId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
-        <Field Name="invoiceProfit">
-          <DataField>invoiceProfit</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
         <Field Name="invStatusId">
           <DataField>invStatusId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -163,7 +171,7 @@
         </Field>
         <Field Name="isApproved">
           <DataField>isApproved</DataField>
-          <rd:TypeName>System.Byte</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Byte, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="isOrginal">
           <DataField>isOrginal</DataField>
@@ -171,7 +179,7 @@
         </Field>
         <Field Name="itemsCount">
           <DataField>itemsCount</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="manualDiscountType">
           <DataField>manualDiscountType</DataField>
@@ -181,10 +189,6 @@
           <DataField>manualDiscountValue</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="membershipId">
-          <DataField>membershipId</DataField>
-          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
-        </Field>
         <Field Name="name">
           <DataField>name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -193,17 +197,17 @@
           <DataField>notes</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="orderTime">
-          <DataField>orderTime</DataField>
-          <rd:TypeName>System.Nullable`1[[System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
-        </Field>
-        <Field Name="orderTimeConv">
-          <DataField>orderTimeConv</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="paid">
           <DataField>paid</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="paidD">
+          <DataField>paidD</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="paidPb">
+          <DataField>paidPb</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="payStatus">
           <DataField>payStatus</DataField>
@@ -221,10 +225,6 @@
           <DataField>posName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="prevStatus">
-          <DataField>prevStatus</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="printedcount">
           <DataField>printedcount</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -233,33 +233,21 @@
           <DataField>realShippingCost</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="reservationId">
-          <DataField>reservationId</DataField>
-          <rd:TypeName>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        <Field Name="shipCompanyName">
+          <DataField>shipCompanyName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="shippingCompanyId">
           <DataField>shippingCompanyId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
-        <Field Name="shippingCompanyName">
-          <DataField>shippingCompanyName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="shippingCost">
           <DataField>shippingCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="shippingCostDiscount">
-          <DataField>shippingCostDiscount</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="shipUserId">
           <DataField>shipUserId</DataField>
           <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
-        </Field>
-        <Field Name="shipUserLastName">
-          <DataField>shipUserLastName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="shipUserName">
           <DataField>shipUserName</DataField>
@@ -271,22 +259,34 @@
         </Field>
         <Field Name="tax">
           <DataField>tax</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="taxtype">
           <DataField>taxtype</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="total">
           <DataField>total</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="totalD">
+          <DataField>totalD</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="totalNet">
           <DataField>totalNet</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="totalNetD">
+          <DataField>totalNetD</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="totalNetP">
           <DataField>totalNetP</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="totalNetPb">
+          <DataField>totalNetPb</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="totalNetS">
@@ -295,6 +295,10 @@
         </Field>
         <Field Name="totalP">
           <DataField>totalP</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="totalPb">
+          <DataField>totalPb</DataField>
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="totalS">
@@ -333,15 +337,11 @@
           <DataField>vendorInvNum</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="waiterId">
-          <DataField>waiterId</DataField>
-          <rd:TypeName>System.Nullable`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
-        </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>Restaurant.Classes</rd:DataSetName>
+        <rd:DataSetName>POS.Classes</rd:DataSetName>
         <rd:TableName>Invoice</rd:TableName>
-        <rd:ObjectDataSourceType>Restaurant.Classes.Invoice, Restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:ObjectDataSourceType>POS.Classes.Invoice, POS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
@@ -356,16 +356,13 @@
                   <Width>3.34396cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.45249cm</Width>
+                  <Width>5.14582cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.09834cm</Width>
+                  <Width>6.11797cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>3.95458cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>2.65063cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -502,42 +499,6 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox7</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BackgroundColor>WhiteSmoke</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox13">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Parameters!deliveryTime.Value</Value>
-                                  <Style>
-                                    <FontFamily>Montserrat</FontFamily>
-                                    <FontWeight>Bold</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox13</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -693,47 +654,12 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="orderTimeConv">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!orderTimeConv.Value</Value>
-                                  <Style>
-                                    <FontFamily>Montserrat</FontFamily>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>orderTimeConv</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
-                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -754,7 +680,7 @@
             <Top>2.78886cm</Top>
             <Left>1.18768cm</Left>
             <Height>1.2cm</Height>
-            <Width>18.5cm</Width>
+            <Width>18.56233cm</Width>
             <Visibility>
               <Hidden>=Countrows("DataSet")=0</Hidden>
             </Visibility>
@@ -897,7 +823,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>3.10238cm</Top>
+            <Top>2.78488cm</Top>
             <Left>1.25cm</Left>
             <Height>0.95911cm</Height>
             <Width>18.50001cm</Width>

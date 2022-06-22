@@ -159,6 +159,8 @@ namespace POS.Classes
        public Nullable<decimal> discountValueD { get; set; }
         public int printedcount { get; set; }
         public bool isOrginal { get; set; }
+        public string agentAddress { get; set; }
+        public string agentMobile { get; set; }
 
         //*************************************************
         //------------------------------------------------------
