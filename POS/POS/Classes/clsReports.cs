@@ -1842,6 +1842,61 @@ Parameters!trValueDiscount.Value)
 
         }
 
+        public static void DeliveryReport(IEnumerable<Invoice> list, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            List<Invoice> Query = JsonConvert.DeserializeObject<List<Invoice>>(JsonConvert.SerializeObject(list));
+
+
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            paramarr.Add(new ReportParameter("trNo", MainWindow.resourcemanagerreport.GetString("trNo.")));
+
+            paramarr.Add(new ReportParameter("trInvoiceNumber", MainWindow.resourcemanagerreport.GetString("trInvoiceNumber")));
+            paramarr.Add(new ReportParameter("trBranch", MainWindow.resourcemanagerreport.GetString("trBranch")));
+
+            paramarr.Add(new ReportParameter("trCustomer", MainWindow.resourcemanagerreport.GetString("trCustomer")));
+            paramarr.Add(new ReportParameter("trCompany", MainWindow.resourcemanagerreport.GetString("trCompany")));
+            paramarr.Add(new ReportParameter("trDriver", MainWindow.resourcemanagerreport.GetString("trDriver")));
+          //  paramarr.Add(new ReportParameter("duration", MainWindow.resourcemanagerreport.GetString("duration")));
+            DateFormConv(paramarr);
+
+
+            foreach (Invoice row in Query)
+            {
+                //row.statusConv = preparingOrderStatusConvert(row.status);
+                //row.orderDurationConv = SectionData.decimalToTime(row.orderDuration);
+                row.shipCompanyName = shippingCompanyNameConvert(row.shipCompanyName);
+                row.shipUserName = driverConvert(row.shipUserName, row.shipUserId);
+                   
+            }
+
+
+            rep.DataSources.Add(new ReportDataSource("DataSet", Query));
+        }
+
+        public static string shippingCompanyNameConvert(string shippingCompanyName)
+        {
+            if (shippingCompanyName != null)
+            {
+                string s = shippingCompanyName.Trim();
+                if (s.Equals("Local"))
+                    return "-";
+                else
+                    return s;
+            }
+            else return "-";
+        }
+
+        public static string driverConvert(string shipUserName,int? shipUserId)
+        {
+            if (shipUserId != null)
+            {
+                    return shipUserName;
+            }
+            else return "-";
+        }
 
     }
 }

@@ -79,6 +79,15 @@ namespace POS {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delivery Report.
+        /// </summary>
+        internal static string deliveryReport {
+            get {
+                return ResourceManager.GetString("deliveryReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delivery time.
         /// </summary>
         internal static string deliveryTime {

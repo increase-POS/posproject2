@@ -3544,6 +3544,9 @@ Please add Email in setting</value>
   <data name="thereArenodata" xml:space="preserve">
     <value>Sorry! There are no data</value>
   </data>
+  <data name="deliveryReport" xml:space="preserve">
+    <value>Delivery Report</value>
+  </data>
   <data name="trShippingCompanynohint" xml:space="preserve">
     <value>Shipping Company</value>
   </data>

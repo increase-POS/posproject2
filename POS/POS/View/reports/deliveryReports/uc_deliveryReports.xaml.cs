@@ -561,7 +561,6 @@ namespace POS.View.reports.deliveryReports
         #endregion
 
         #region reports
-/*
         private void BuildReport()
         {
             List<ReportParameter> paramarr = new List<ReportParameter>();
@@ -587,9 +586,9 @@ namespace POS.View.reports.deliveryReports
 
             ReportCls.checkLang();
             //secondTitle = "";
-           // subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
+            // subTitle = clsReports.ReportTabTitle(firstTitle, secondTitle);
 
-            Title = MainWindow.resourcemanagerreport.GetString("deliveryReport") ;
+            Title = MainWindow.resourcemanagerreport.GetString("deliveryReport");
             paramarr.Add(new ReportParameter("trTitle", Title));
 
 
@@ -602,7 +601,6 @@ namespace POS.View.reports.deliveryReports
             rep.Refresh();
 
         }
-       */
         private void Btn_pdf_Click(object sender, RoutedEventArgs e)
         {//pdf
             try
@@ -611,9 +609,9 @@ namespace POS.View.reports.deliveryReports
                 SectionData.StartAwait(grid_main);
 
                 #region
-                /*
+
                 BuildReport();
-                */
+
                 saveFileDialog.Filter = "PDF|*.pdf;";
 
                 if (saveFileDialog.ShowDialog() == true)
@@ -644,9 +642,9 @@ namespace POS.View.reports.deliveryReports
                 SectionData.StartAwait(grid_main);
 
                 #region
-                /*
+
                 BuildReport();
-                */
+
                 LocalReportExtensions.PrintToPrinter(rep);
                 #endregion
 
@@ -672,9 +670,9 @@ namespace POS.View.reports.deliveryReports
                 #region
                 //Thread t1 = new Thread(() =>
                 //{
-                /*
+
                 BuildReport();
-                */
+
                 this.Dispatcher.Invoke(() =>
                 {
                     saveFileDialog.Filter = "EXCEL|*.xls;";
@@ -716,9 +714,9 @@ namespace POS.View.reports.deliveryReports
 
                 pdfpath = @"\Thumb\report\temp.pdf";
                 pdfpath = reportclass.PathUp(Directory.GetCurrentDirectory(), 2, pdfpath);
-                /*
+
                 BuildReport();
-                */
+
                 LocalReportExtensions.ExportToPDF(rep, pdfpath);
                 wd_previewPdf w = new wd_previewPdf();
                 w.pdfPath = pdfpath;
