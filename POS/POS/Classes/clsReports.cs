@@ -559,6 +559,8 @@ namespace POS.Classes
         }
         public static void shippingReport(IEnumerable<ShippingCompanies> shippingCompanies, LocalReport rep, string reppath, List<ReportParameter> paramarr)
         {
+
+
             rep.ReportPath = reppath;
             rep.EnableExternalImages = true;
             rep.DataSources.Clear();
@@ -572,8 +574,12 @@ namespace POS.Classes
             paramarr.Add(new ReportParameter("trRealDeliveryCost", MainWindow.resourcemanagerreport.GetString("trRealDeliveryCost")));
             paramarr.Add(new ReportParameter("trDeliveryCost", MainWindow.resourcemanagerreport.GetString("trDeliveryCost")));
             paramarr.Add(new ReportParameter("trDeliveryType", MainWindow.resourcemanagerreport.GetString("trDeliveryType")));
-            paramarr.Add(new ReportParameter("Title", MainWindow.resourcemanagerreport.GetString("trShippingCompanies")));
+            paramarr.Add(new ReportParameter("trTitle", MainWindow.resourcemanagerreport.GetString("trShippingCompanies")));
+
+            paramarr.Add(new ReportParameter("trNoData", MainWindow.resourcemanagerreport.GetString("thereArenodata")));
+
             rep.DataSources.Add(new ReportDataSource("DataSetShipping", shippingCompanies));
+
         }
         public static string deliveryTypeConvert(string deliveryType)
         {
@@ -1808,6 +1814,34 @@ Parameters!trValueDiscount.Value)
             paramarr.Add(new ReportParameter("trNoData", MainWindow.resourcemanagerreport.GetString("thereArenodata")));
 
         }
+
+        public static void ShippingCompanies(IEnumerable<ShippingCompanies> Query, LocalReport rep, string reppath, List<ReportParameter> paramarr)
+        {
+            rep.ReportPath = reppath;
+            rep.EnableExternalImages = true;
+            rep.DataSources.Clear();
+
+            //title
+            paramarr.Add(new ReportParameter("trTitle", MainWindow.resourcemanagerreport.GetString("trShippingCompanies")));
+            //table columns
+            paramarr.Add(new ReportParameter("trName", MainWindow.resourcemanagerreport.GetString("trName")));
+            paramarr.Add(new ReportParameter("trRealDeliveryCost", MainWindow.resourcemanagerreport.GetString("trRealDeliveryCost")));
+            paramarr.Add(new ReportParameter("trDeliveryCost", MainWindow.resourcemanagerreport.GetString("trDeliveryCost")));
+            paramarr.Add(new ReportParameter("trDeliveryType", MainWindow.resourcemanagerreport.GetString("trDeliveryType")));
+            paramarr.Add(new ReportParameter("trNoData", MainWindow.resourcemanagerreport.GetString("thereArenodata")));
+
+            foreach (var row in Query)
+            {
+
+                row.RealDeliveryCost = decimal.Parse(SectionData.DecTostring(row.RealDeliveryCost));
+                row.deliveryCost = decimal.Parse(SectionData.DecTostring(row.deliveryCost));
+                row.deliveryType = deliveryTypeConvert(row.deliveryType);
+                //deliveryTypeConverter
+            }
+            rep.DataSources.Add(new ReportDataSource("DataSet", Query));
+
+        }
+
 
     }
 }

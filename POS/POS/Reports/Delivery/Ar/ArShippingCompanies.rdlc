@@ -27,7 +27,7 @@
         </Field>
         <Field Name="balanceType">
           <DataField>balanceType</DataField>
-          <rd:TypeName>System.Byte</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Byte, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="canDelete">
           <DataField>canDelete</DataField>
@@ -43,7 +43,7 @@
         </Field>
         <Field Name="deliveryCost">
           <DataField>deliveryCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="deliveryType">
           <DataField>deliveryType</DataField>
@@ -59,7 +59,7 @@
         </Field>
         <Field Name="isActive">
           <DataField>isActive</DataField>
-          <rd:TypeName>System.Byte</rd:TypeName>
+          <rd:TypeName>System.Nullable`1[[System.Byte, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="mobile">
           <DataField>mobile</DataField>
@@ -77,9 +77,9 @@
           <DataField>phone</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="realDeliveryCost">
-          <DataField>realDeliveryCost</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+        <Field Name="RealDeliveryCost">
+          <DataField>RealDeliveryCost</DataField>
+          <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
         <Field Name="shippingCompanyId">
           <DataField>shippingCompanyId</DataField>
@@ -95,9 +95,9 @@
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>Restaurant.Classes</rd:DataSetName>
+        <rd:DataSetName>POS.Classes</rd:DataSetName>
         <rd:TableName>ShippingCompanies</rd:TableName>
-        <rd:ObjectDataSourceType>Restaurant.Classes.ShippingCompanies, Restaurant, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:ObjectDataSourceType>POS.Classes.ShippingCompanies, POS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
@@ -346,14 +346,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="realDeliveryCost">
+                        <Textbox Name="RealDeliveryCost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!realDeliveryCost.Value</Value>
+                                  <Value>=Fields!RealDeliveryCost.Value</Value>
                                   <Style>
                                     <FontFamily>Montserrat</FontFamily>
                                   </Style>
@@ -364,7 +364,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>realDeliveryCost</rd:DefaultName>
+                          <rd:DefaultName>RealDeliveryCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
