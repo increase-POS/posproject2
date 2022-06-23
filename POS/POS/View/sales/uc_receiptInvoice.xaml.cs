@@ -965,7 +965,7 @@ namespace POS.View
             string deliveryPermission = "salesOrders_delivery";
             users = await userModel.getBranchSalesMan(MainWindow.branchID.Value, deliveryPermission);
             cb_user.ItemsSource = users;
-            cb_user.DisplayMemberPath = "name";
+            cb_user.DisplayMemberPath = "fullName";
             cb_user.SelectedValuePath = "userId";
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
