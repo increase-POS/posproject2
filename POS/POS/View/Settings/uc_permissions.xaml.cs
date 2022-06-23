@@ -1205,6 +1205,7 @@ namespace POS.View.Settings
             btn_catalog.IsEnabled = true;
             btn_store.IsEnabled = true;
             btn_sale.IsEnabled = true;
+            btn_delivery.IsEnabled = true;
             btn_purchase.IsEnabled = true;
             btn_data.IsEnabled = true;
             btn_charts.IsEnabled = true;
@@ -1414,6 +1415,7 @@ namespace POS.View.Settings
             bdr_home.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_purchase.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_sale.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
+            bdr_delivery.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_settings.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_alerts.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
             bdr_store.Background = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
@@ -1423,6 +1425,7 @@ namespace POS.View.Settings
             path_storage.Fill = Brushes.White;
             path_purchases.Fill = Brushes.White;
             path_sales.Fill = Brushes.White;
+            path_delivery.Fill = Brushes.White;
             path_accounting.Fill = Brushes.White;
             path_reports.Fill = Brushes.White;
             path_sectionData.Fill = Brushes.White;
@@ -1435,6 +1438,7 @@ namespace POS.View.Settings
             grid_store.Visibility = Visibility.Hidden;
             grid_purchase.Visibility = Visibility.Hidden;
             grid_sales.Visibility = Visibility.Hidden;
+            grid_delivery.Visibility = Visibility.Hidden;
             grid_charts.Visibility = Visibility.Hidden;
             grid_data.Visibility = Visibility.Hidden;
             grid_settings.Visibility = Visibility.Hidden;
