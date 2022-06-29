@@ -842,7 +842,7 @@
             </Border>
             <GridSplitter Grid.Row="3" Background="Transparent" HorizontalAlignment="Stretch" Height="5" />
             <Border Grid.Row="4" Background="White" Margin="5,5,5,0" CornerRadius="7">
-                <lvc:CartesianChart Name="rowChart" Margin="0,0,0,10"  >
+                <lvc:CartesianChart Name="rowChart" Margin="0,0,0,10"  LegendLocation="Bottom">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis  x:Name="MyAxis">
                             <lvc:Axis.Separator>

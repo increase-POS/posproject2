@@ -545,11 +545,17 @@ namespace POS.View.reports
                 cash.Add(drawCash);
 
 
-                MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + 2021);
+                MyAxis.Labels.Add(CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month) + "/" + year);
             }
-            l.Values = cash.AsChartValues();
-            rowChartData.Add(l);
+            //l.Values = cash.AsChartValues();
+            //rowChartData.Add(l);
+            rowChartData.Add(
+           new LineSeries
+           {
+               Values = cash.AsChartValues(),
+               Title = MainWindow.resourcemanager.GetString("trCashTooltip")
 
+           });
             DataContext = this;
             rowChart.Series = rowChartData;
         }
