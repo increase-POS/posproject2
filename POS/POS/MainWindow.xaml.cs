@@ -247,6 +247,8 @@ namespace POS
         List<string> catchError = new List<string>();
         int catchErrorCount = 0;
         //loadingThread[] loadingList = new loadingThread[25];
+
+        int reloadingCount_getUserPath = 0;
         async void loading_getUserPath()
         {
             #region get user path
@@ -275,7 +277,9 @@ namespace POS
             {
                 //firstPath = "";
                 //secondPath = "";
+                if(reloadingCount_getUserPath < 2)
                 loading_getUserPath();
+                reloadingCount_getUserPath++;
                 catchError.Add("loading_getUserPath");
                 catchErrorCount++;
             }
@@ -289,6 +293,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getTax = 0;
         async void loading_getTax()
         {
             //get tax
@@ -307,7 +313,9 @@ namespace POS
                 //invoiceTax_decimal = 0;
                 //itemsTax_bool = false;
                 //itemsTax_decimal = 0;
+                if(reloadingCount_getTax < 2)
                 loading_getTax();
+                reloadingCount_getTax++;
                 catchError.Add("loading_getTax");
                 catchErrorCount++;
             }
@@ -320,6 +328,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getItemCost = 0;
         async void loading_getItemCost()
         {
             //get item cost
@@ -330,7 +340,9 @@ namespace POS
             catch
             {
                 //itemCost = 0;
+                if(reloadingCount_getItemCost < 2)
                 loading_getItemCost();
+                reloadingCount_getItemCost++;
                 catchError.Add("loading_getItemCost");
                 catchErrorCount++;
             }
@@ -343,6 +355,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getPrintCount = 0;
         async void loading_getPrintCount()
         {
             //get print count
@@ -353,7 +367,9 @@ namespace POS
             catch
             {
                 //Allow_print_inv_count = "1";
+                if(reloadingCount_getPrintCount < 2)
                 loading_getPrintCount();
+                reloadingCount_getPrintCount++;
                 catchError.Add("loading_getPrintCount");
                 catchErrorCount++;
             }
@@ -366,6 +382,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getBalance = 0;
         async void loading_getBalance()
         {
             //get print count
@@ -375,7 +393,9 @@ namespace POS
             }
             catch
             {
+                if(reloadingCount_getBalance < 2)
                 loading_getBalance();
+                reloadingCount_getBalance++;
                 catchError.Add("loading_getBalance");
                 catchErrorCount++;
             }
@@ -388,6 +408,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getDateForm = 0;
         async void loading_getDateForm()
         {
             //get dateform
@@ -398,7 +420,9 @@ namespace POS
             catch
             {
                 //dateFormat = "ShortDatePattern";
+                if(reloadingCount_getDateForm < 2)
                 loading_getDateForm();
+                reloadingCount_getDateForm++;
                 catchError.Add("loading_getDateForm");
                 catchErrorCount++;
             }
@@ -411,6 +435,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getRegionAndCurrency = 0;
         async void loading_getRegionAndCurrency()
         {
             //get region and currency
@@ -425,7 +451,9 @@ namespace POS
             }
             catch
             {
+                if(reloadingCount_getRegionAndCurrency < 2)
                 loading_getRegionAndCurrency();
+                reloadingCount_getRegionAndCurrency++;
                 catchError.Add("loading_getRegionAndCurrency");
                 catchErrorCount++;
             }
@@ -438,6 +466,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getStorageCost = 0;
         async void loading_getStorageCost()
         {
             //get storage cost
@@ -448,7 +478,9 @@ namespace POS
             catch
             {
                 //StorageCost = 0;
+                if(reloadingCount_getStorageCost < 2)
                 loading_getStorageCost();
+                reloadingCount_getStorageCost++;
                 catchError.Add("loading_getStorageCost");
                 catchErrorCount++;
             }
@@ -461,6 +493,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getAccurac = 0;
         async void loading_getAccurac()
         {
             //get accuracy
@@ -471,7 +505,9 @@ namespace POS
             catch
             {
                 //accuracy = "1";
+                if(reloadingCount_getAccurac < 2)
                 loading_getAccurac();
+                reloadingCount_getAccurac++;
                 catchError.Add("loading_getAccurac");
                 catchErrorCount++;
             }
@@ -484,6 +520,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getUserPersonalInfo = 0;
         async void loading_getUserPersonalInfo()
         {
             #region user personal info
@@ -515,7 +553,9 @@ namespace POS
             catch
             {
                 //clearImg();
+                if(reloadingCount_getUserPersonalInfo < 2)
                 loading_getUserPersonalInfo();
+                reloadingCount_getUserPersonalInfo++;
                 catchError.Add("loading_getUserPersonalInfo");
                 catchErrorCount++;
             }
@@ -529,6 +569,8 @@ namespace POS
             }
             #endregion
         }
+
+        int reloadingCount_getItemUnitsUsers = 0;
         async void loading_getItemUnitsUsers()
         {
             try
@@ -537,7 +579,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_getItemUnitsUsers < 2)
                 loading_getItemUnitsUsers();
+                reloadingCount_getItemUnitsUsers++;
                 catchError.Add("loading_getItemUnitsUsers");
                 catchErrorCount++;
             }
@@ -550,6 +594,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_getGroupObjects = 0;
         async void loading_getGroupObjects()
         {
             try
@@ -558,7 +604,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_getGroupObjects < 2)
                 loading_getGroupObjects();
+                reloadingCount_getGroupObjects++;
                 catchError.Add("loading_getGroupObjects");
                 catchErrorCount++;
             }
@@ -572,6 +620,7 @@ namespace POS
             }
         }
 
+        int reloadingCount_getTaxDetails = 0;
         async void loading_getTaxDetails()
         {
             try
@@ -635,7 +684,9 @@ namespace POS
                 //invoiceTax_decimal = 0;
                 //itemsTax_bool = false;
                 //itemsTax_decimal = 0;
+                if(reloadingCount_getTaxDetails < 2)
                 loading_getTaxDetails();
+                reloadingCount_getTaxDetails++;
                 catchError.Add("loading_getTaxDetails");
                 catchErrorCount++;
             }
@@ -649,6 +700,8 @@ namespace POS
             }
 
         }
+
+        int reloadingCount_getDefaultSystemInfo = 0;
         async void loading_getDefaultSystemInfo()
         {
             try
@@ -778,7 +831,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_getDefaultSystemInfo < 2)
                 loading_getDefaultSystemInfo();
+                reloadingCount_getDefaultSystemInfo++;
                 catchError.Add("loading_getDefaultSystemInfo");
                 catchErrorCount++;
             }
@@ -792,6 +847,8 @@ namespace POS
             }
 
         }
+
+        int reloadingCount_getprintSitting = 0;
         async void loading_getprintSitting()
         {
             try
@@ -800,7 +857,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_getprintSitting < 2)
                 loading_getprintSitting();
+                reloadingCount_getprintSitting++;
                 catchError.Add("loading_getprintSitting");
                 catchErrorCount++;
             }
@@ -813,6 +872,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_GlobalItemUnitsList = 0;
         async void loading_GlobalItemUnitsList()
         {
             try
@@ -821,7 +882,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_GlobalItemUnitsList < 2)
                 loading_GlobalItemUnitsList();
+                reloadingCount_GlobalItemUnitsList++;
                 catchError.Add("loading_GlobalItemUnitsList");
                 catchErrorCount++;
             }
@@ -834,6 +897,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_GlobalUnitsList = 0;
         async void loading_GlobalUnitsList()
         {
             try
@@ -842,7 +907,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_GlobalUnitsList < 2)
                 loading_GlobalUnitsList();
+                reloadingCount_GlobalUnitsList++;
                 catchError.Add("loading_GlobalUnitsList");
                 catchErrorCount++;
             }
@@ -855,6 +922,8 @@ namespace POS
                 }
             }
         }
+
+        int reloadingCount_POSList = 0;
         async void loading_POSList()
         {
             try
@@ -863,7 +932,9 @@ namespace POS
             }
             catch (Exception)
             {
+                if(reloadingCount_POSList < 2)
                 loading_POSList();
+                reloadingCount_POSList++;
                 catchError.Add("loading_POSList");
                 catchErrorCount++;
             }
@@ -876,7 +947,6 @@ namespace POS
                 }
             }
         }
-
         #endregion
         public async void Window_Loaded(object sender, RoutedEventArgs e)
         {//load
