@@ -309,6 +309,7 @@
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PaperSizeController.cs" />
     <Compile Include="Controllers\PointsController.cs" />
+    <Compile Include="Controllers\PosEcommerceController.cs" />
     <Compile Include="Controllers\PosSettingController.cs" />
     <Compile Include="Controllers\PrinterController.cs" />
     <Compile Include="Controllers\ProgramDetailsController.cs" />
@@ -447,6 +448,7 @@
     <Compile Include="Models\ObjectsModel.cs" />
     <Compile Include="Models\PackageModel.cs" />
     <Compile Include="Models\PointsModel.cs" />
+    <Compile Include="Models\PosEcommerceModel.cs" />
     <Compile Include="Models\PosSettingModel.cs" />
     <Compile Include="Models\ProgramDetailsModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
@@ -555,6 +557,9 @@
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="subscriptionFees.cs">
+      <DependentUpon>PosModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagrams.cs">
       <DependentUpon>PosModel.tt</DependentUpon>
     </Compile>
     <Compile Include="sysEmails.cs">

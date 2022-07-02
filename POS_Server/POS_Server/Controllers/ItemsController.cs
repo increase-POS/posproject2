@@ -2040,10 +2040,10 @@ var strP = TokenManager.GetPrincipal(token);
 
             return response;
         }
-        
+
 
         // get all items where defaultSale is 1 and set isNew=1 if new item  and set isOffer=1 if Has Active Offer 
-        int newdays = -15;
+        public int newdays = -15;
 
         #region
         [HttpPost]
