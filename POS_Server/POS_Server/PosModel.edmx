@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="PosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -891,6 +891,7 @@
           <Property Name="poId" Type="int" />
           <Property Name="upnum" Type="nvarchar" MaxLength="500" />
           <Property Name="notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="isDemo" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -1029,6 +1030,16 @@
           <Property Name="createUserId" Type="int" />
           <Property Name="updateUserId" Type="int" />
           <Property Name="isActive" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="sysEmails">
           <Key>
@@ -3507,7 +3518,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="incposdbModelStoreContainer">
+        <EntityContainer Name="PosModelStoreContainer">
           <EntitySet Name="agentMemberships" EntityType="Self.agentMemberships" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="agents" EntityType="Self.agents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="banks" EntityType="Self.banks" Schema="dbo" store:Type="Tables" />
@@ -3569,6 +3580,7 @@
           <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
@@ -4371,10 +4383,11 @@
             <End Role="usersLogs" EntitySet="usersLogs" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="PosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="agentMemberships">
           <Key>
             <PropertyRef Name="agentMembershipsId" />
@@ -4624,11 +4637,11 @@
           <Property Name="createUserId" Type="Int32" />
           <Property Name="updateUserId" Type="Int32" />
           <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="fixedTax" Type="Byte" />
           <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
           <NavigationProperty Name="categoryuser" Relationship="Self.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
           <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
-          <Property Name="fixedTax" Type="Byte" />
         </EntityType>
         <EntityType Name="categoryuser">
           <Key>
@@ -4905,6 +4918,9 @@
           <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="cashReturn" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
           <Property Name="printedcount" Type="Int32" Nullable="false" />
+          <Property Name="isOrginal" Type="Boolean" Nullable="false" />
+          <Property Name="shippingCost" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
+          <Property Name="realShippingCost" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
           <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
           <NavigationProperty Name="branches" Relationship="Self.FK_invoices_branches" FromRole="invoices" ToRole="branches" />
           <NavigationProperty Name="branches1" Relationship="Self.FK_invoices_branches1" FromRole="invoices" ToRole="branches" />
@@ -4925,9 +4941,6 @@
           <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
           <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
-          <Property Name="isOrginal" Type="Boolean" Nullable="false" />
-          <Property Name="shippingCost" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
-          <Property Name="realShippingCost" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="invoiceStatus">
           <Key>
@@ -5078,6 +5091,10 @@
           <Property Name="profit" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="cause" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="itemTax" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="itemUnitPrice" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="offerValue" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="offerType" Type="Decimal" Precision="20" Scale="3" />
           <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_itemsTransfer_inventoryItemLocation" FromRole="itemsTransfer" ToRole="inventoryItemLocation" />
           <NavigationProperty Name="invoiceOrder" Relationship="Self.FK_invoiceOrder_itemsTransfer" FromRole="itemsTransfer" ToRole="invoiceOrder" />
           <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
@@ -5086,10 +5103,6 @@
           <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
           <NavigationProperty Name="offers" Relationship="Self.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
           <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
-          <Property Name="itemUnitPrice" Type="Decimal" Precision="20" Scale="3" />
-          <Property Name="offerValue" Type="Decimal" Precision="20" Scale="3" />
-          <Property Name="offerType" Type="Decimal" Precision="20" Scale="3" />
-          <Property Name="itemTax" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemsUnits">
           <Key>
@@ -5111,6 +5124,7 @@
           <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="storageCostId" Type="Int32" />
           <Property Name="isActive" Type="Byte" />
+          <Property Name="cost" Type="Decimal" Precision="20" Scale="3" />
           <NavigationProperty Name="items" Relationship="Self.FK_itemsUnits_items" FromRole="itemsUnits" ToRole="items" />
           <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_itemsUnits" FromRole="itemsUnits" ToRole="itemsLocations" />
           <NavigationProperty Name="itemsOffers" Relationship="Self.FK_itemsOffers_itemsUnits" FromRole="itemsUnits" ToRole="itemsOffers" />
@@ -5122,7 +5136,6 @@
           <NavigationProperty Name="itemUnitUser" Relationship="Self.FK_itemUnitUser_itemsUnits" FromRole="itemsUnits" ToRole="itemUnitUser" />
           <NavigationProperty Name="packages" Relationship="Self.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
           <NavigationProperty Name="packages1" Relationship="Self.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
-          <Property Name="cost" Type="Decimal" Precision="20" Scale="3" />
         </EntityType>
         <EntityType Name="itemTransferOffer">
           <Key>
@@ -5393,6 +5406,8 @@
           <Property Name="isActive" Type="Byte" />
           <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="balanceAll" Type="Decimal" Precision="20" Scale="3" />
+          <Property Name="boxState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="isAdminClose" Type="Byte" Nullable="false" />
           <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
           <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_pos" FromRole="pos" ToRole="cashTransfer" />
           <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_pos1" FromRole="pos" ToRole="cashTransfer" />
@@ -5405,8 +5420,6 @@
           <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_pos" FromRole="pos" ToRole="posSetting" />
           <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
-          <Property Name="boxState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="isAdminClose" Type="Byte" Nullable="false" />
         </EntityType>
         <EntityType Name="posSerials">
           <Key>
@@ -5415,8 +5428,8 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="posSerial" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
           <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
         </EntityType>
         <EntityType Name="posSetting">
           <Key>
@@ -5516,6 +5529,7 @@
           <Property Name="poId" Type="Int32" />
           <Property Name="upnum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="isDemo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="properties">
           <Key>
@@ -5678,6 +5692,16 @@
           <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
           <NavigationProperty Name="memberships" Relationship="Self.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="sysEmails">
           <Key>
             <PropertyRef Name="emailId" />
@@ -5749,6 +5773,7 @@
           <Property Name="groupId" Type="Int32" />
           <Property Name="balance" Type="Decimal" Precision="20" Scale="3" />
           <Property Name="balanceType" Type="Byte" />
+          <Property Name="isAdmin" Type="Boolean" />
           <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_users1" FromRole="users" ToRole="agentMemberships" />
           <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_agentMemberships_users2" FromRole="users" ToRole="agentMemberships" />
           <NavigationProperty Name="agents" Relationship="Self.FK_agents_users" FromRole="users" ToRole="agents" />
@@ -5856,7 +5881,6 @@
           <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
           <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
-          <Property Name="isAdmin" Type="Boolean" />
         </EntityType>
         <EntityType Name="userSetValues">
           <Key>
@@ -8337,6 +8361,7 @@
           <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" />
           <EntitySet Name="storageCost" EntityType="Self.storageCost" />
           <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="sysEmails" EntityType="Self.sysEmails" />
           <EntitySet Name="units" EntityType="Self.units" />
           <EntitySet Name="users" EntityType="Self.users" />
@@ -9144,9 +9169,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="incposdbModelStoreContainer" CdmEntityContainer="incposdbEntities">
+        <EntityContainerMapping StorageEntityContainer="PosModelStoreContainer" CdmEntityContainer="incposdbEntities">
           <EntitySetMapping Name="agentMemberships">
-            <EntityTypeMapping TypeName="incposdbModel.agentMemberships">
+            <EntityTypeMapping TypeName="PosModel.agentMemberships">
               <MappingFragment StoreEntitySet="agentMemberships">
                 <ScalarProperty Name="agentMembershipsId" ColumnName="agentMembershipsId" />
                 <ScalarProperty Name="subscriptionFeesId" ColumnName="subscriptionFeesId" />
@@ -9165,7 +9190,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="agents">
-            <EntityTypeMapping TypeName="incposdbModel.agents">
+            <EntityTypeMapping TypeName="PosModel.agents">
               <MappingFragment StoreEntitySet="agents">
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
                 <ScalarProperty Name="pointId" ColumnName="pointId" />
@@ -9195,7 +9220,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="banks">
-            <EntityTypeMapping TypeName="incposdbModel.banks">
+            <EntityTypeMapping TypeName="PosModel.banks">
               <MappingFragment StoreEntitySet="banks">
                 <ScalarProperty Name="bankId" ColumnName="bankId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9213,7 +9238,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="bondes">
-            <EntityTypeMapping TypeName="incposdbModel.bondes">
+            <EntityTypeMapping TypeName="PosModel.bondes">
               <MappingFragment StoreEntitySet="bondes">
                 <ScalarProperty Name="bondId" ColumnName="bondId" />
                 <ScalarProperty Name="number" ColumnName="number" />
@@ -9232,7 +9257,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="branches">
-            <EntityTypeMapping TypeName="incposdbModel.branches">
+            <EntityTypeMapping TypeName="PosModel.branches">
               <MappingFragment StoreEntitySet="branches">
                 <ScalarProperty Name="branchId" ColumnName="branchId" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -9253,7 +9278,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="branchesUsers">
-            <EntityTypeMapping TypeName="incposdbModel.branchesUsers">
+            <EntityTypeMapping TypeName="PosModel.branchesUsers">
               <MappingFragment StoreEntitySet="branchesUsers">
                 <ScalarProperty Name="branchsUsersId" ColumnName="branchsUsersId" />
                 <ScalarProperty Name="branchId" ColumnName="branchId" />
@@ -9266,7 +9291,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="branchStore">
-            <EntityTypeMapping TypeName="incposdbModel.branchStore">
+            <EntityTypeMapping TypeName="PosModel.branchStore">
               <MappingFragment StoreEntitySet="branchStore">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="branchId" ColumnName="branchId" />
@@ -9281,7 +9306,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cards">
-            <EntityTypeMapping TypeName="incposdbModel.cards">
+            <EntityTypeMapping TypeName="PosModel.cards">
               <MappingFragment StoreEntitySet="cards">
                 <ScalarProperty Name="cardId" ColumnName="cardId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9297,7 +9322,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cashTransfer">
-            <EntityTypeMapping TypeName="incposdbModel.cashTransfer">
+            <EntityTypeMapping TypeName="PosModel.cashTransfer">
               <MappingFragment StoreEntitySet="cashTransfer">
                 <ScalarProperty Name="cashTransId" ColumnName="cashTransId" />
                 <ScalarProperty Name="agentMembershipsId" ColumnName="agentMembershipsId" />
@@ -9329,9 +9354,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="categories">
-            <EntityTypeMapping TypeName="incposdbModel.categories">
+            <EntityTypeMapping TypeName="PosModel.categories">
               <MappingFragment StoreEntitySet="categories">
-                <ScalarProperty Name="fixedTax" ColumnName="fixedTax" />
                 <ScalarProperty Name="categoryId" ColumnName="categoryId" />
                 <ScalarProperty Name="categoryCode" ColumnName="categoryCode" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9345,11 +9369,12 @@
                 <ScalarProperty Name="createUserId" ColumnName="createUserId" />
                 <ScalarProperty Name="updateUserId" ColumnName="updateUserId" />
                 <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="fixedTax" ColumnName="fixedTax" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="categoryuser">
-            <EntityTypeMapping TypeName="incposdbModel.categoryuser">
+            <EntityTypeMapping TypeName="PosModel.categoryuser">
               <MappingFragment StoreEntitySet="categoryuser">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="categoryId" ColumnName="categoryId" />
@@ -9363,7 +9388,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="cities">
-            <EntityTypeMapping TypeName="incposdbModel.cities">
+            <EntityTypeMapping TypeName="PosModel.cities">
               <MappingFragment StoreEntitySet="cities">
                 <ScalarProperty Name="cityId" ColumnName="cityId" />
                 <ScalarProperty Name="cityCode" ColumnName="cityCode" />
@@ -9372,7 +9397,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="countriesCodes">
-            <EntityTypeMapping TypeName="incposdbModel.countriesCodes">
+            <EntityTypeMapping TypeName="PosModel.countriesCodes">
               <MappingFragment StoreEntitySet="countriesCodes">
                 <ScalarProperty Name="countryId" ColumnName="countryId" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -9384,7 +9409,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="coupons">
-            <EntityTypeMapping TypeName="incposdbModel.coupons">
+            <EntityTypeMapping TypeName="PosModel.coupons">
               <MappingFragment StoreEntitySet="coupons">
                 <ScalarProperty Name="cId" ColumnName="cId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9408,7 +9433,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="couponsInvoices">
-            <EntityTypeMapping TypeName="incposdbModel.couponsInvoices">
+            <EntityTypeMapping TypeName="PosModel.couponsInvoices">
               <MappingFragment StoreEntitySet="couponsInvoices">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="couponId" ColumnName="couponId" />
@@ -9423,7 +9448,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="docImages">
-            <EntityTypeMapping TypeName="incposdbModel.docImages">
+            <EntityTypeMapping TypeName="PosModel.docImages">
               <MappingFragment StoreEntitySet="docImages">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="docName" ColumnName="docName" />
@@ -9440,7 +9465,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="error">
-            <EntityTypeMapping TypeName="incposdbModel.error">
+            <EntityTypeMapping TypeName="PosModel.error">
               <MappingFragment StoreEntitySet="error">
                 <ScalarProperty Name="errorId" ColumnName="errorId" />
                 <ScalarProperty Name="num" ColumnName="num" />
@@ -9455,7 +9480,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Expenses">
-            <EntityTypeMapping TypeName="incposdbModel.Expenses">
+            <EntityTypeMapping TypeName="PosModel.Expenses">
               <MappingFragment StoreEntitySet="Expenses">
                 <ScalarProperty Name="exId" ColumnName="exId" />
                 <ScalarProperty Name="expense" ColumnName="expense" />
@@ -9469,7 +9494,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="groupObject">
-            <EntityTypeMapping TypeName="incposdbModel.groupObject">
+            <EntityTypeMapping TypeName="PosModel.groupObject">
               <MappingFragment StoreEntitySet="groupObject">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="groupId" ColumnName="groupId" />
@@ -9490,7 +9515,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="groups">
-            <EntityTypeMapping TypeName="incposdbModel.groups">
+            <EntityTypeMapping TypeName="PosModel.groups">
               <MappingFragment StoreEntitySet="groups">
                 <ScalarProperty Name="groupId" ColumnName="groupId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9504,7 +9529,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Inventory">
-            <EntityTypeMapping TypeName="incposdbModel.Inventory">
+            <EntityTypeMapping TypeName="PosModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
                 <ScalarProperty Name="inventoryId" ColumnName="inventoryId" />
                 <ScalarProperty Name="num" ColumnName="num" />
@@ -9522,7 +9547,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="inventoryItemLocation">
-            <EntityTypeMapping TypeName="incposdbModel.inventoryItemLocation">
+            <EntityTypeMapping TypeName="PosModel.inventoryItemLocation">
               <MappingFragment StoreEntitySet="inventoryItemLocation">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="isDestroyed" ColumnName="isDestroyed" />
@@ -9544,7 +9569,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="invoiceOrder">
-            <EntityTypeMapping TypeName="incposdbModel.invoiceOrder">
+            <EntityTypeMapping TypeName="PosModel.invoiceOrder">
               <MappingFragment StoreEntitySet="invoiceOrder">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -9555,11 +9580,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="invoices">
-            <EntityTypeMapping TypeName="incposdbModel.invoices">
+            <EntityTypeMapping TypeName="PosModel.invoices">
               <MappingFragment StoreEntitySet="invoices">
-                <ScalarProperty Name="realShippingCost" ColumnName="realShippingCost" />
-                <ScalarProperty Name="shippingCost" ColumnName="shippingCost" />
-                <ScalarProperty Name="isOrginal" ColumnName="isOrginal" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
                 <ScalarProperty Name="invNumber" ColumnName="invNumber" />
                 <ScalarProperty Name="agentId" ColumnName="agentId" />
@@ -9598,11 +9620,14 @@
                 <ScalarProperty Name="invoiceProfit" ColumnName="invoiceProfit" />
                 <ScalarProperty Name="cashReturn" ColumnName="cashReturn" />
                 <ScalarProperty Name="printedcount" ColumnName="printedcount" />
+                <ScalarProperty Name="isOrginal" ColumnName="isOrginal" />
+                <ScalarProperty Name="shippingCost" ColumnName="shippingCost" />
+                <ScalarProperty Name="realShippingCost" ColumnName="realShippingCost" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="invoiceStatus">
-            <EntityTypeMapping TypeName="incposdbModel.invoiceStatus">
+            <EntityTypeMapping TypeName="PosModel.invoiceStatus">
               <MappingFragment StoreEntitySet="invoiceStatus">
                 <ScalarProperty Name="invStatusId" ColumnName="invStatusId" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -9617,7 +9642,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="items">
-            <EntityTypeMapping TypeName="incposdbModel.items">
+            <EntityTypeMapping TypeName="PosModel.items">
               <MappingFragment StoreEntitySet="items">
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="code" ColumnName="code" />
@@ -9642,7 +9667,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemsLocations">
-            <EntityTypeMapping TypeName="incposdbModel.itemsLocations">
+            <EntityTypeMapping TypeName="PosModel.itemsLocations">
               <MappingFragment StoreEntitySet="itemsLocations">
                 <ScalarProperty Name="itemsLocId" ColumnName="itemsLocId" />
                 <ScalarProperty Name="locationId" ColumnName="locationId" />
@@ -9660,7 +9685,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemsMaterials">
-            <EntityTypeMapping TypeName="incposdbModel.itemsMaterials">
+            <EntityTypeMapping TypeName="PosModel.itemsMaterials">
               <MappingFragment StoreEntitySet="itemsMaterials">
                 <ScalarProperty Name="itemMatId" ColumnName="itemMatId" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
@@ -9672,7 +9697,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemsOffers">
-            <EntityTypeMapping TypeName="incposdbModel.itemsOffers">
+            <EntityTypeMapping TypeName="PosModel.itemsOffers">
               <MappingFragment StoreEntitySet="itemsOffers">
                 <ScalarProperty Name="ioId" ColumnName="ioId" />
                 <ScalarProperty Name="iuId" ColumnName="iuId" />
@@ -9687,7 +9712,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemsProp">
-            <EntityTypeMapping TypeName="incposdbModel.itemsProp">
+            <EntityTypeMapping TypeName="PosModel.itemsProp">
               <MappingFragment StoreEntitySet="itemsProp">
                 <ScalarProperty Name="itemPropId" ColumnName="itemPropId" />
                 <ScalarProperty Name="propertyItemId" ColumnName="propertyItemId" />
@@ -9700,12 +9725,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemsTransfer">
-            <EntityTypeMapping TypeName="incposdbModel.itemsTransfer">
+            <EntityTypeMapping TypeName="PosModel.itemsTransfer">
               <MappingFragment StoreEntitySet="itemsTransfer">
-                <ScalarProperty Name="itemTax" ColumnName="itemTax" />
-                <ScalarProperty Name="offerType" ColumnName="offerType" />
-                <ScalarProperty Name="offerValue" ColumnName="offerValue" />
-                <ScalarProperty Name="itemUnitPrice" ColumnName="itemUnitPrice" />
                 <ScalarProperty Name="itemsTransId" ColumnName="itemsTransId" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
                 <ScalarProperty Name="invoiceId" ColumnName="invoiceId" />
@@ -9724,13 +9745,16 @@
                 <ScalarProperty Name="profit" ColumnName="profit" />
                 <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
                 <ScalarProperty Name="cause" ColumnName="cause" />
+                <ScalarProperty Name="itemTax" ColumnName="itemTax" />
+                <ScalarProperty Name="itemUnitPrice" ColumnName="itemUnitPrice" />
+                <ScalarProperty Name="offerValue" ColumnName="offerValue" />
+                <ScalarProperty Name="offerType" ColumnName="offerType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemsUnits">
-            <EntityTypeMapping TypeName="incposdbModel.itemsUnits">
+            <EntityTypeMapping TypeName="PosModel.itemsUnits">
               <MappingFragment StoreEntitySet="itemsUnits">
-                <ScalarProperty Name="cost" ColumnName="cost" />
                 <ScalarProperty Name="itemUnitId" ColumnName="itemUnitId" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
                 <ScalarProperty Name="unitId" ColumnName="unitId" />
@@ -9747,11 +9771,12 @@
                 <ScalarProperty Name="purchasePrice" ColumnName="purchasePrice" />
                 <ScalarProperty Name="storageCostId" ColumnName="storageCostId" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="cost" ColumnName="cost" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemTransferOffer">
-            <EntityTypeMapping TypeName="incposdbModel.itemTransferOffer">
+            <EntityTypeMapping TypeName="PosModel.itemTransferOffer">
               <MappingFragment StoreEntitySet="itemTransferOffer">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="itemTransId" ColumnName="itemTransId" />
@@ -9767,7 +9792,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="itemUnitUser">
-            <EntityTypeMapping TypeName="incposdbModel.itemUnitUser">
+            <EntityTypeMapping TypeName="PosModel.itemUnitUser">
               <MappingFragment StoreEntitySet="itemUnitUser">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="itemUnitId" ColumnName="itemUnitId" />
@@ -9782,7 +9807,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="locations">
-            <EntityTypeMapping TypeName="incposdbModel.locations">
+            <EntityTypeMapping TypeName="PosModel.locations">
               <MappingFragment StoreEntitySet="locations">
                 <ScalarProperty Name="locationId" ColumnName="locationId" />
                 <ScalarProperty Name="x" ColumnName="x" />
@@ -9801,7 +9826,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="medalAgent">
-            <EntityTypeMapping TypeName="incposdbModel.medalAgent">
+            <EntityTypeMapping TypeName="PosModel.medalAgent">
               <MappingFragment StoreEntitySet="medalAgent">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="medalId" ColumnName="medalId" />
@@ -9816,7 +9841,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="medals">
-            <EntityTypeMapping TypeName="incposdbModel.medals">
+            <EntityTypeMapping TypeName="PosModel.medals">
               <MappingFragment StoreEntitySet="medals">
                 <ScalarProperty Name="medalId" ColumnName="medalId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9833,7 +9858,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="memberships">
-            <EntityTypeMapping TypeName="incposdbModel.memberships">
+            <EntityTypeMapping TypeName="PosModel.memberships">
               <MappingFragment StoreEntitySet="memberships">
                 <ScalarProperty Name="membershipId" ColumnName="membershipId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9851,7 +9876,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="notification">
-            <EntityTypeMapping TypeName="incposdbModel.notification">
+            <EntityTypeMapping TypeName="PosModel.notification">
               <MappingFragment StoreEntitySet="notification">
                 <ScalarProperty Name="notId" ColumnName="notId" />
                 <ScalarProperty Name="title" ColumnName="title" />
@@ -9868,7 +9893,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="notificationUser">
-            <EntityTypeMapping TypeName="incposdbModel.notificationUser">
+            <EntityTypeMapping TypeName="PosModel.notificationUser">
               <MappingFragment StoreEntitySet="notificationUser">
                 <ScalarProperty Name="notUserId" ColumnName="notUserId" />
                 <ScalarProperty Name="notId" ColumnName="notId" />
@@ -9883,7 +9908,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="objects">
-            <EntityTypeMapping TypeName="incposdbModel.objects">
+            <EntityTypeMapping TypeName="PosModel.objects">
               <MappingFragment StoreEntitySet="objects">
                 <ScalarProperty Name="objectId" ColumnName="objectId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9899,7 +9924,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="offers">
-            <EntityTypeMapping TypeName="incposdbModel.offers">
+            <EntityTypeMapping TypeName="PosModel.offers">
               <MappingFragment StoreEntitySet="offers">
                 <ScalarProperty Name="offerId" ColumnName="offerId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9918,7 +9943,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="packages">
-            <EntityTypeMapping TypeName="incposdbModel.packages">
+            <EntityTypeMapping TypeName="PosModel.packages">
               <MappingFragment StoreEntitySet="packages">
                 <ScalarProperty Name="packageId" ColumnName="packageId" />
                 <ScalarProperty Name="parentIUId" ColumnName="parentIUId" />
@@ -9934,7 +9959,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="paperSize">
-            <EntityTypeMapping TypeName="incposdbModel.paperSize">
+            <EntityTypeMapping TypeName="PosModel.paperSize">
               <MappingFragment StoreEntitySet="paperSize">
                 <ScalarProperty Name="sizeId" ColumnName="sizeId" />
                 <ScalarProperty Name="paperSize1" ColumnName="paperSize" />
@@ -9944,7 +9969,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Points">
-            <EntityTypeMapping TypeName="incposdbModel.Points">
+            <EntityTypeMapping TypeName="PosModel.Points">
               <MappingFragment StoreEntitySet="Points">
                 <ScalarProperty Name="pointId" ColumnName="pointId" />
                 <ScalarProperty Name="Cash" ColumnName="Cash" />
@@ -9966,10 +9991,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="pos">
-            <EntityTypeMapping TypeName="incposdbModel.pos">
+            <EntityTypeMapping TypeName="PosModel.pos">
               <MappingFragment StoreEntitySet="pos">
-                <ScalarProperty Name="isAdminClose" ColumnName="isAdminClose" />
-                <ScalarProperty Name="boxState" ColumnName="boxState" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
                 <ScalarProperty Name="code" ColumnName="code" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -9982,21 +10005,23 @@
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="note" ColumnName="note" />
                 <ScalarProperty Name="balanceAll" ColumnName="balanceAll" />
+                <ScalarProperty Name="boxState" ColumnName="boxState" />
+                <ScalarProperty Name="isAdminClose" ColumnName="isAdminClose" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="posSerials">
-            <EntityTypeMapping TypeName="incposdbModel.posSerials">
+            <EntityTypeMapping TypeName="PosModel.posSerials">
               <MappingFragment StoreEntitySet="posSerials">
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="posSerial" ColumnName="posSerial" />
                 <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="posSetting">
-            <EntityTypeMapping TypeName="incposdbModel.posSetting">
+            <EntityTypeMapping TypeName="PosModel.posSetting">
               <MappingFragment StoreEntitySet="posSetting">
                 <ScalarProperty Name="posSettingId" ColumnName="posSettingId" />
                 <ScalarProperty Name="posId" ColumnName="posId" />
@@ -10015,7 +10040,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="posUsers">
-            <EntityTypeMapping TypeName="incposdbModel.posUsers">
+            <EntityTypeMapping TypeName="PosModel.posUsers">
               <MappingFragment StoreEntitySet="posUsers">
                 <ScalarProperty Name="posUserId" ColumnName="posUserId" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
@@ -10028,7 +10053,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="printers">
-            <EntityTypeMapping TypeName="incposdbModel.printers">
+            <EntityTypeMapping TypeName="PosModel.printers">
               <MappingFragment StoreEntitySet="printers">
                 <ScalarProperty Name="printerId" ColumnName="printerId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10041,26 +10066,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProgramDetails">
-            <EntityTypeMapping TypeName="incposdbModel.ProgramDetails">
+            <EntityTypeMapping TypeName="PosModel.ProgramDetails">
               <MappingFragment StoreEntitySet="ProgramDetails">
-                <ScalarProperty Name="notes" ColumnName="notes" />
-                <ScalarProperty Name="upnum" ColumnName="upnum" />
-                <ScalarProperty Name="poId" ColumnName="poId" />
-                <ScalarProperty Name="pocrDate" ColumnName="pocrDate" />
-                <ScalarProperty Name="activatedate" ColumnName="activatedate" />
-                <ScalarProperty Name="isServerActivated" ColumnName="isServerActivated" />
-                <ScalarProperty Name="agentAccountName" ColumnName="agentAccountName" />
-                <ScalarProperty Name="agentLastName" ColumnName="agentLastName" />
-                <ScalarProperty Name="agentName" ColumnName="agentName" />
-                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
-                <ScalarProperty Name="customerName" ColumnName="customerName" />
-                <ScalarProperty Name="pcdId" ColumnName="pcdId" />
-                <ScalarProperty Name="pId" ColumnName="pId" />
-                <ScalarProperty Name="bookDate" ColumnName="bookDate" />
-                <ScalarProperty Name="packageName" ColumnName="packageName" />
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="isLimitCount" ColumnName="isLimitCount" />
-                <ScalarProperty Name="isLimitDate" ColumnName="isLimitDate" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="programName" ColumnName="programName" />
                 <ScalarProperty Name="branchCount" ColumnName="branchCount" />
@@ -10080,11 +10087,30 @@
                 <ScalarProperty Name="isOnlineServer" ColumnName="isOnlineServer" />
                 <ScalarProperty Name="packageNumber" ColumnName="packageNumber" />
                 <ScalarProperty Name="updateDate" ColumnName="updateDate" />
+                <ScalarProperty Name="isLimitDate" ColumnName="isLimitDate" />
+                <ScalarProperty Name="isLimitCount" ColumnName="isLimitCount" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="packageName" ColumnName="packageName" />
+                <ScalarProperty Name="bookDate" ColumnName="bookDate" />
+                <ScalarProperty Name="pId" ColumnName="pId" />
+                <ScalarProperty Name="pcdId" ColumnName="pcdId" />
+                <ScalarProperty Name="customerName" ColumnName="customerName" />
+                <ScalarProperty Name="customerLastName" ColumnName="customerLastName" />
+                <ScalarProperty Name="agentName" ColumnName="agentName" />
+                <ScalarProperty Name="agentLastName" ColumnName="agentLastName" />
+                <ScalarProperty Name="agentAccountName" ColumnName="agentAccountName" />
+                <ScalarProperty Name="isServerActivated" ColumnName="isServerActivated" />
+                <ScalarProperty Name="activatedate" ColumnName="activatedate" />
+                <ScalarProperty Name="pocrDate" ColumnName="pocrDate" />
+                <ScalarProperty Name="poId" ColumnName="poId" />
+                <ScalarProperty Name="upnum" ColumnName="upnum" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="isDemo" ColumnName="isDemo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="properties">
-            <EntityTypeMapping TypeName="incposdbModel.properties">
+            <EntityTypeMapping TypeName="PosModel.properties">
               <MappingFragment StoreEntitySet="properties">
                 <ScalarProperty Name="propertyId" ColumnName="propertyId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10097,7 +10123,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="propertiesItems">
-            <EntityTypeMapping TypeName="incposdbModel.propertiesItems">
+            <EntityTypeMapping TypeName="PosModel.propertiesItems">
               <MappingFragment StoreEntitySet="propertiesItems">
                 <ScalarProperty Name="propertyItemId" ColumnName="propertyItemId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10112,7 +10138,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sections">
-            <EntityTypeMapping TypeName="incposdbModel.sections">
+            <EntityTypeMapping TypeName="PosModel.sections">
               <MappingFragment StoreEntitySet="sections">
                 <ScalarProperty Name="sectionId" ColumnName="sectionId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10128,7 +10154,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="serials">
-            <EntityTypeMapping TypeName="incposdbModel.serials">
+            <EntityTypeMapping TypeName="PosModel.serials">
               <MappingFragment StoreEntitySet="serials">
                 <ScalarProperty Name="serialId" ColumnName="serialId" />
                 <ScalarProperty Name="itemId" ColumnName="itemId" />
@@ -10142,7 +10168,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="servicesCosts">
-            <EntityTypeMapping TypeName="incposdbModel.servicesCosts">
+            <EntityTypeMapping TypeName="PosModel.servicesCosts">
               <MappingFragment StoreEntitySet="servicesCosts">
                 <ScalarProperty Name="costId" ColumnName="costId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10156,7 +10182,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="setting">
-            <EntityTypeMapping TypeName="incposdbModel.setting">
+            <EntityTypeMapping TypeName="PosModel.setting">
               <MappingFragment StoreEntitySet="setting">
                 <ScalarProperty Name="settingId" ColumnName="settingId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10165,7 +10191,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="setValues">
-            <EntityTypeMapping TypeName="incposdbModel.setValues">
+            <EntityTypeMapping TypeName="PosModel.setValues">
               <MappingFragment StoreEntitySet="setValues">
                 <ScalarProperty Name="valId" ColumnName="valId" />
                 <ScalarProperty Name="value" ColumnName="value" />
@@ -10177,7 +10203,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="shippingCompanies">
-            <EntityTypeMapping TypeName="incposdbModel.shippingCompanies">
+            <EntityTypeMapping TypeName="PosModel.shippingCompanies">
               <MappingFragment StoreEntitySet="shippingCompanies">
                 <ScalarProperty Name="shippingCompanyId" ColumnName="shippingCompanyId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10201,7 +10227,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="storageCost">
-            <EntityTypeMapping TypeName="incposdbModel.storageCost">
+            <EntityTypeMapping TypeName="PosModel.storageCost">
               <MappingFragment StoreEntitySet="storageCost">
                 <ScalarProperty Name="storageCostId" ColumnName="storageCostId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10216,7 +10242,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="subscriptionFees">
-            <EntityTypeMapping TypeName="incposdbModel.subscriptionFees">
+            <EntityTypeMapping TypeName="PosModel.subscriptionFees">
               <MappingFragment StoreEntitySet="subscriptionFees">
                 <ScalarProperty Name="subscriptionFeesId" ColumnName="subscriptionFeesId" />
                 <ScalarProperty Name="membershipId" ColumnName="membershipId" />
@@ -10231,8 +10257,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="PosModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="sysEmails">
-            <EntityTypeMapping TypeName="incposdbModel.sysEmails">
+            <EntityTypeMapping TypeName="PosModel.sysEmails">
               <MappingFragment StoreEntitySet="sysEmails">
                 <ScalarProperty Name="emailId" ColumnName="emailId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10254,7 +10291,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="units">
-            <EntityTypeMapping TypeName="incposdbModel.units">
+            <EntityTypeMapping TypeName="PosModel.units">
               <MappingFragment StoreEntitySet="units">
                 <ScalarProperty Name="unitId" ColumnName="unitId" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -10271,9 +10308,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="users">
-            <EntityTypeMapping TypeName="incposdbModel.users">
+            <EntityTypeMapping TypeName="PosModel.users">
               <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
@@ -10297,11 +10333,12 @@
                 <ScalarProperty Name="groupId" ColumnName="groupId" />
                 <ScalarProperty Name="balance" ColumnName="balance" />
                 <ScalarProperty Name="balanceType" ColumnName="balanceType" />
+                <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="userSetValues">
-            <EntityTypeMapping TypeName="incposdbModel.userSetValues">
+            <EntityTypeMapping TypeName="PosModel.userSetValues">
               <MappingFragment StoreEntitySet="userSetValues">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="userId" ColumnName="userId" />
@@ -10315,7 +10352,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="usersLogs">
-            <EntityTypeMapping TypeName="incposdbModel.usersLogs">
+            <EntityTypeMapping TypeName="PosModel.usersLogs">
               <MappingFragment StoreEntitySet="usersLogs">
                 <ScalarProperty Name="logId" ColumnName="logId" />
                 <ScalarProperty Name="sInDate" ColumnName="sInDate" />

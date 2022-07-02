@@ -1077,3 +1077,7 @@ D:\servers\ser\POS_Server\obj\Release\POS_Server.csproj.CoreCompileInputs.cache
 D:\servers\ser\POS_Server\obj\Release\POS_Server.csproj.CopyComplete
 D:\servers\ser\POS_Server\obj\Release\POS_Server.dll
 D:\servers\ser\POS_Server\obj\Release\POS_Server.pdb
+D:\myproj\posproject2\POS_Server\POS_Server\obj\Release\POS_Server.csprojAssemblyReference.cache
+D:\myproj\posproject2\POS_Server\POS_Server\obj\Release\POS_Server.csproj.CoreCompileInputs.cache
+D:\myproj\posproject2\POS_Server\POS_Server\obj\Release\POS_Server.dll
+D:\myproj\posproject2\POS_Server\POS_Server\obj\Release\POS_Server.pdb

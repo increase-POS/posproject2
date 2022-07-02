@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="incposdbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+<Schema Namespace="PosModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="agentMemberships">
     <Key>
       <PropertyRef Name="agentMembershipsId" />
@@ -886,6 +886,7 @@
     <Property Name="poId" Type="int" />
     <Property Name="upnum" Type="nvarchar" MaxLength="500" />
     <Property Name="notes" Type="nvarchar" MaxLength="500" />
+    <Property Name="isDemo" Type="nvarchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="properties">
     <Key>
@@ -1024,6 +1025,16 @@
     <Property Name="createUserId" Type="int" />
     <Property Name="updateUserId" Type="int" />
     <Property Name="isActive" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="sysEmails">
     <Key>
@@ -3502,7 +3513,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="incposdbModelStoreContainer">
+  <EntityContainer Name="PosModelStoreContainer">
     <EntitySet Name="agentMemberships" EntityType="Self.agentMemberships" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="agents" EntityType="Self.agents" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="banks" EntityType="Self.banks" Schema="dbo" store:Type="Tables" />
@@ -3564,6 +3575,7 @@
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="units" EntityType="Self.units" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />

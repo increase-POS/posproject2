@@ -51,5 +51,6 @@ namespace POS_Server
         public Nullable<int> poId { get; set; }
         public string upnum { get; set; }
         public string notes { get; set; }
+        public string isDemo { get; set; }
     }
 }

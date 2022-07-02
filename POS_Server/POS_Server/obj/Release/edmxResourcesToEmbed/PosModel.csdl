@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="incposdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="PosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="agentMemberships">
     <Key>
       <PropertyRef Name="agentMembershipsId" />
@@ -249,11 +249,11 @@
     <Property Name="createUserId" Type="Int32" />
     <Property Name="updateUserId" Type="Int32" />
     <Property Name="notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="fixedTax" Type="Byte" />
     <NavigationProperty Name="users" Relationship="Self.FK_categories_users" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="users1" Relationship="Self.FK_categories_users1" FromRole="categories" ToRole="users" />
     <NavigationProperty Name="categoryuser" Relationship="Self.FK_categoryuser_categories" FromRole="categories" ToRole="categoryuser" />
     <NavigationProperty Name="items" Relationship="Self.FK_items_categories" FromRole="categories" ToRole="items" />
-    <Property Name="fixedTax" Type="Byte" />
   </EntityType>
   <EntityType Name="categoryuser">
     <Key>
@@ -530,6 +530,9 @@
     <Property Name="invoiceProfit" Type="Decimal" Precision="20" Scale="3" />
     <Property Name="cashReturn" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
     <Property Name="printedcount" Type="Int32" Nullable="false" />
+    <Property Name="isOrginal" Type="Boolean" Nullable="false" />
+    <Property Name="shippingCost" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
+    <Property Name="realShippingCost" Type="Decimal" Precision="20" Scale="3" Nullable="false" />
     <NavigationProperty Name="agents" Relationship="Self.FK_invoices_agents" FromRole="invoices" ToRole="agents" />
     <NavigationProperty Name="branches" Relationship="Self.FK_invoices_branches" FromRole="invoices" ToRole="branches" />
     <NavigationProperty Name="branches1" Relationship="Self.FK_invoices_branches1" FromRole="invoices" ToRole="branches" />
@@ -550,9 +553,6 @@
     <NavigationProperty Name="invoiceStatus" Relationship="Self.FK_invoiceStatus_invoices" FromRole="invoices" ToRole="invoiceStatus" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_invoices" FromRole="invoices" ToRole="itemsLocations" />
     <NavigationProperty Name="itemsTransfer" Relationship="Self.FK_itemsTransfer_invoices" FromRole="invoices" ToRole="itemsTransfer" />
-    <Property Name="isOrginal" Type="Boolean" Nullable="false" />
-    <Property Name="shippingCost" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
-    <Property Name="realShippingCost" Type="Decimal" Nullable="false" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="invoiceStatus">
     <Key>
@@ -703,6 +703,10 @@
     <Property Name="profit" Type="Decimal" Precision="20" Scale="3" />
     <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
     <Property Name="cause" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="itemTax" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="itemUnitPrice" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="offerValue" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="offerType" Type="Decimal" Precision="20" Scale="3" />
     <NavigationProperty Name="inventoryItemLocation" Relationship="Self.FK_itemsTransfer_inventoryItemLocation" FromRole="itemsTransfer" ToRole="inventoryItemLocation" />
     <NavigationProperty Name="invoiceOrder" Relationship="Self.FK_invoiceOrder_itemsTransfer" FromRole="itemsTransfer" ToRole="invoiceOrder" />
     <NavigationProperty Name="invoices" Relationship="Self.FK_itemsTransfer_invoices" FromRole="itemsTransfer" ToRole="invoices" />
@@ -711,10 +715,6 @@
     <NavigationProperty Name="locations1" Relationship="Self.FK_itemsTransfer_locations1" FromRole="itemsTransfer" ToRole="locations" />
     <NavigationProperty Name="offers" Relationship="Self.FK_itemsTransfer_offers" FromRole="itemsTransfer" ToRole="offers" />
     <NavigationProperty Name="itemTransferOffer" Relationship="Self.FK_itemTransferOffer_itemsTransfer" FromRole="itemsTransfer" ToRole="itemTransferOffer" />
-    <Property Name="itemUnitPrice" Type="Decimal" Precision="20" Scale="3" />
-    <Property Name="offerValue" Type="Decimal" Precision="20" Scale="3" />
-    <Property Name="offerType" Type="Decimal" Precision="20" Scale="3" />
-    <Property Name="itemTax" Type="Decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemsUnits">
     <Key>
@@ -736,6 +736,7 @@
     <Property Name="purchasePrice" Type="Decimal" Precision="20" Scale="3" />
     <Property Name="storageCostId" Type="Int32" />
     <Property Name="isActive" Type="Byte" />
+    <Property Name="cost" Type="Decimal" Precision="20" Scale="3" />
     <NavigationProperty Name="items" Relationship="Self.FK_itemsUnits_items" FromRole="itemsUnits" ToRole="items" />
     <NavigationProperty Name="itemsLocations" Relationship="Self.FK_itemsLocations_itemsUnits" FromRole="itemsUnits" ToRole="itemsLocations" />
     <NavigationProperty Name="itemsOffers" Relationship="Self.FK_itemsOffers_itemsUnits" FromRole="itemsUnits" ToRole="itemsOffers" />
@@ -747,7 +748,6 @@
     <NavigationProperty Name="itemUnitUser" Relationship="Self.FK_itemUnitUser_itemsUnits" FromRole="itemsUnits" ToRole="itemUnitUser" />
     <NavigationProperty Name="packages" Relationship="Self.FK_packages_itemsUnits" FromRole="itemsUnits" ToRole="packages" />
     <NavigationProperty Name="packages1" Relationship="Self.FK_packages_itemsUnits1" FromRole="itemsUnits" ToRole="packages" />
-    <Property Name="cost" Type="Decimal" Precision="20" Scale="3" />
   </EntityType>
   <EntityType Name="itemTransferOffer">
     <Key>
@@ -1018,6 +1018,8 @@
     <Property Name="isActive" Type="Byte" />
     <Property Name="note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="balanceAll" Type="Decimal" Precision="20" Scale="3" />
+    <Property Name="boxState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="isAdminClose" Type="Byte" Nullable="false" />
     <NavigationProperty Name="branches" Relationship="Self.FK_pos_branches" FromRole="pos" ToRole="branches" />
     <NavigationProperty Name="cashTransfer" Relationship="Self.FK_cashTransfer_pos" FromRole="pos" ToRole="cashTransfer" />
     <NavigationProperty Name="cashTransfer1" Relationship="Self.FK_cashTransfer_pos1" FromRole="pos" ToRole="cashTransfer" />
@@ -1030,8 +1032,6 @@
     <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_pos" FromRole="pos" ToRole="posSetting" />
     <NavigationProperty Name="posUsers" Relationship="Self.FK_posUsers_pos" FromRole="pos" ToRole="posUsers" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_pos" FromRole="pos" ToRole="usersLogs" />
-    <Property Name="boxState" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-    <Property Name="isAdminClose" Type="Byte" Nullable="false" />
   </EntityType>
   <EntityType Name="posSerials">
     <Key>
@@ -1040,8 +1040,8 @@
     <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="posSerial" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
     <Property Name="notes" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
     <Property Name="isActive" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="posSetting" Relationship="Self.FK_posSetting_posSerials" FromRole="posSerials" ToRole="posSetting" />
   </EntityType>
   <EntityType Name="posSetting">
     <Key>
@@ -1141,6 +1141,7 @@
     <Property Name="poId" Type="Int32" />
     <Property Name="upnum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="isDemo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="properties">
     <Key>
@@ -1303,6 +1304,16 @@
     <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_subscriptionFees" FromRole="subscriptionFees" ToRole="agentMemberships" />
     <NavigationProperty Name="memberships" Relationship="Self.FK_subscriptionFees_memberships" FromRole="subscriptionFees" ToRole="memberships" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
   <EntityType Name="sysEmails">
     <Key>
       <PropertyRef Name="emailId" />
@@ -1374,6 +1385,7 @@
     <Property Name="groupId" Type="Int32" />
     <Property Name="balance" Type="Decimal" Precision="20" Scale="3" />
     <Property Name="balanceType" Type="Byte" />
+    <Property Name="isAdmin" Type="Boolean" />
     <NavigationProperty Name="agentMemberships" Relationship="Self.FK_agentMemberships_users1" FromRole="users" ToRole="agentMemberships" />
     <NavigationProperty Name="agentMemberships1" Relationship="Self.FK_agentMemberships_users2" FromRole="users" ToRole="agentMemberships" />
     <NavigationProperty Name="agents" Relationship="Self.FK_agents_users" FromRole="users" ToRole="agents" />
@@ -1481,7 +1493,6 @@
     <NavigationProperty Name="userSetValues1" Relationship="Self.FK_userSetValues_users1" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="userSetValues2" Relationship="Self.FK_userSetValues_users2" FromRole="users" ToRole="userSetValues" />
     <NavigationProperty Name="usersLogs" Relationship="Self.FK_usersLogs_users" FromRole="users" ToRole="usersLogs" />
-    <Property Name="isAdmin" Type="Boolean" />
   </EntityType>
   <EntityType Name="userSetValues">
     <Key>
@@ -3962,6 +3973,7 @@
     <EntitySet Name="shippingCompanies" EntityType="Self.shippingCompanies" />
     <EntitySet Name="storageCost" EntityType="Self.storageCost" />
     <EntitySet Name="subscriptionFees" EntityType="Self.subscriptionFees" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="sysEmails" EntityType="Self.sysEmails" />
     <EntitySet Name="units" EntityType="Self.units" />
     <EntitySet Name="users" EntityType="Self.users" />
