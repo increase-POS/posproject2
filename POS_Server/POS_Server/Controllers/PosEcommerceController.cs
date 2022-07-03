@@ -937,7 +937,7 @@ namespace POS_Server.Controllers
                                           //maxUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
                                           isOffer = ValidiuIds.Contains(I.itemsUnits.Where(X => X.defaultSale == 1 && X.itemId == I.itemId).Select(X => X.itemUnitId).FirstOrDefault()) == true ? 1 : 0,
                                           //avgPurchasePrice = I.avgPurchasePrice
-                                          ItemUnitList = I.itemsUnits.Where(X => X.isActive == 1 && X.itemId == I.itemId).Select(X => new ItemUnitEcommerceModel
+                                          ItemUnitList = I.itemsUnits.Where(X => X.isActive == 1 && X.itemId == I.itemId && X.defaultSale == 1).Select(X => new ItemUnitEcommerceModel
                                           {
                                               unitName = X.units.name,
                                               unitId = X.unitId,
@@ -959,11 +959,6 @@ namespace POS_Server.Controllers
 
                                               discountValue = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.discountValue,
 
-                                              //     offerName = activeitemsoffer.Where(io => X.itemUnitId.Equals(io.iuId)).ToList().Count() > 0 ? activeitemsoffer.Where(io => X.itemUnitId.Equals(io.iuId)).ToList().FirstOrDefault().offers.name : "",
-                                              //offerName = activeitemsoffer.ToList().Where(io => X.itemUnitId == io.iuId).FirstOrDefault().offerName,
-                                              //offerId = activeitemsoffer.Where(io => X.itemUnitId == io.iuId).Select(io => io.offerId).FirstOrDefault(),
-                                              //discountType = activeitemsoffer.Where(io => X.itemUnitId == io.iuId).Select(io => io.discountType).FirstOrDefault(),
-                                              //discountValue = activeitemsoffer.Where(io => X.itemUnitId == io.iuId).Select(io => io.discountValue).FirstOrDefault(),
                                           }).ToList(),
 
                                       })
