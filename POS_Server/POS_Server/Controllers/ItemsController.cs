@@ -2070,7 +2070,7 @@ var strP = TokenManager.GetPrincipal(token);
                 localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\item"), imageName);
 
                 byte[] b = System.IO.File.ReadAllBytes(localFilePath);
-                return TokenManager.GenerateToken("data:image;base64," + Convert.ToBase64String(b));
+                return TokenManager.GenerateToken( Convert.ToBase64String(b));
             }
         }
         // get all items where defaultSale is 1 and set isNew=1 if new item  and set isOffer=1 if Has Active Offer 

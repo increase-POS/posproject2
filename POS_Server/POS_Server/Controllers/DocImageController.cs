@@ -295,23 +295,56 @@ namespace POS_Server.Controllers
             }
         }
 
-        [HttpGet]
+        //[HttpGet]
+        //[Route("GetImage")]
+        //public HttpResponseMessage GetImage(string imageName)
+        //{
+        //    if (String.IsNullOrEmpty(imageName))
+        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+        //    string localFilePath;
+
+        //    localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\docImage"), imageName);
+
+        //    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+        //    response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+        //    response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+        //    response.Content.Headers.ContentDisposition.FileName = imageName;
+
+        //    return response;
+        //}
+
+        [HttpPost]
         [Route("GetImage")]
-        public HttpResponseMessage GetImage(string imageName)
+        public string GetImage(string token)
         {
-            if (String.IsNullOrEmpty(imageName))
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                string imageName = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "imageName")
+                    {
+                        imageName = c.Value;
+                    }
+                }
+                if (String.IsNullOrEmpty(imageName))
+                    return TokenManager.GenerateToken("0");
 
-            string localFilePath;
+                string localFilePath;
 
-            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\docImage"), imageName);
+                localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\docImage"), imageName);
 
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
-            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = imageName;
-
-            return response;
+                byte[] b = System.IO.File.ReadAllBytes(localFilePath);
+                return TokenManager.GenerateToken(Convert.ToBase64String(b));
+            }
         }
         [HttpPost]
         [Route("saveImageDoc")]

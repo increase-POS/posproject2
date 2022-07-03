@@ -831,29 +831,62 @@ var strP = TokenManager.GetPrincipal(token);
                 return Ok(res);
             }
         }
-        [HttpGet]
+        //[HttpGet]
+        //[Route("GetImage")]
+        //public HttpResponseMessage GetImage(string imageName)
+        //{
+        //    if (String.IsNullOrEmpty(imageName))
+        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
+
+        //    string localFilePath;
+
+        //    localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\category"), imageName);
+
+        //    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+        //    if (System.IO.File.Exists(localFilePath))
+        //    {
+        //        response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
+        //        response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+        //        response.Content.Headers.ContentDisposition.FileName = imageName;
+        //    }
+        //    else
+        //    {
+        //        response.Content = null;
+        //    }
+        //    return response;
+        //}
+
+        [HttpPost]
         [Route("GetImage")]
-        public HttpResponseMessage GetImage(string imageName)
+        public string GetImage(string token)
         {
-            if (String.IsNullOrEmpty(imageName))
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-
-            string localFilePath;
-
-            localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\category"), imageName);
-
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            if (System.IO.File.Exists(localFilePath))
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
             {
-                response.Content = new StreamContent(new FileStream(localFilePath, FileMode.Open, FileAccess.Read));
-                response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-                response.Content.Headers.ContentDisposition.FileName = imageName;
+                return TokenManager.GenerateToken(strP);
             }
             else
             {
-                response.Content = null;
+                string imageName = "";
+                IEnumerable<Claim> claims = TokenManager.getTokenClaims(token);
+                foreach (Claim c in claims)
+                {
+                    if (c.Type == "imageName")
+                    {
+                        imageName = c.Value;
+                    }
+                }
+                if (String.IsNullOrEmpty(imageName))
+                    return TokenManager.GenerateToken("0");
+
+                string localFilePath;
+
+                localFilePath = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~\\images\\category"), imageName);
+
+                byte[] b = System.IO.File.ReadAllBytes(localFilePath);
+                return TokenManager.GenerateToken(Convert.ToBase64String(b));
             }
-            return response;
         }
         [HttpPost]
         public IEnumerable<categories> Recursive(List<categories> categoriesList, int toplevelid)
