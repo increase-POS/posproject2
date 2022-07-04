@@ -2391,7 +2391,7 @@ namespace POS.View
         private async void getImg()
         {
 
-
+            try { 
             if (string.IsNullOrEmpty(item.image))
             {
                 SectionData.clearImg(img_item);
@@ -2429,7 +2429,11 @@ namespace POS.View
                 }
                 
             }
-
+            }
+            catch
+            {
+                SectionData.clearImg(img_item);
+            }
         }
         public async Task ChangeCategoryIdEvent(int categoryId)
         {
