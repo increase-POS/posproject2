@@ -2046,7 +2046,9 @@ namespace POS.View
             tb_processNum.Clear();
             cb_paymentProcessType.SelectedIndex = 0;
             cb_paymentProcessType.IsEnabled = true;
+            txt_theRest.Text = "0";
             tb_cashPaid.IsEnabled = true;
+            tb_cashPaid.Text = "";
             lst_coupons.Items.Clear();
             btn_items.IsEnabled = true;
             md_docImage.Badge = "";
