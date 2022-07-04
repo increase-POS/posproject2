@@ -51,7 +51,7 @@ namespace POS.controlTemplate
             titleText.VerticalAlignment = VerticalAlignment.Center;
             titleText.HorizontalAlignment = HorizontalAlignment.Center;
             titleText.FontWeight = FontWeights.Bold;
-            titleText.FontSize = 14;
+            titleText.FontSize = 12;
             titleText.FontFamily = App.Current.Resources["Font-cairo-bold"] as FontFamily;
             //titleText.TextWrapping = TextWrapping.Wrap;
             grid_main.Children.Add(titleText);
