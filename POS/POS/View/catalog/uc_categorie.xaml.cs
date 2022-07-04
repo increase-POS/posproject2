@@ -1345,7 +1345,10 @@ namespace POS.View
 
         private async void getImg()
         {
+            try
+            {
 
+          
             if (string.IsNullOrEmpty(category.image))
             {
                 SectionData.clearImg(img_category);
@@ -1369,6 +1372,11 @@ namespace POS.View
                 else
                     SectionData.clearImg(img_category);
 
+            }
+            }
+            catch
+            {
+                SectionData.clearImg(img_category);
             }
 
         }
