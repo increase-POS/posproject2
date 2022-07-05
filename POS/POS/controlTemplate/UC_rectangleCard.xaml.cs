@@ -97,17 +97,17 @@ namespace POS.controlTemplate
             subTitleText.Text = cardViewitem.item.details;
             subTitleText.Margin = new Thickness(5, 0, 5, 0);
             subTitleText.FontWeight = FontWeights.Regular;
-            subTitleText.VerticalAlignment = VerticalAlignment.Center;
             subTitleText.HorizontalAlignment = HorizontalAlignment.Left;
-            subTitleText.Height = 18;
             subTitleText.FontSize = 10;
             subTitleText.TextWrapping = TextWrapping.Wrap;
             subTitleText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+            if (cardViewitem.item.itemCount == null)
+                Grid.SetRowSpan(subTitleText, 2);
             Grid.SetRow(subTitleText, 2);
             /////////////////////////////////
 
             #endregion
-            #region  subTitle
+            #region  itemCount
             var countText = new TextBlock();
             if (cardViewitem.item.itemCount == null)
                 countText.Text = "";
@@ -122,7 +122,7 @@ namespace POS.controlTemplate
             countText.FontWeight = FontWeights.Regular;
             countText.VerticalAlignment = VerticalAlignment.Center;
             countText.HorizontalAlignment = HorizontalAlignment.Left;
-            subTitleText.Height = 18;
+            countText.Height = 18;
             countText.FontSize = 10;
             countText.TextWrapping = TextWrapping.Wrap;
             countText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
