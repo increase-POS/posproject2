@@ -877,10 +877,10 @@ namespace POS_Server.Controllers
             DateTime now = DateTime.Now;
             List<int> offerIds = new List<int>();
             List<int> iuIds = new List<int>();
-            List<itemsOffers> activeitemsoffer= new List<itemsOffers>();
+            List<itemsOffers> activeitemsoffer = new List<itemsOffers>();
             //List<ItemOfferModel> activeitemsoffer = new List<ItemOfferModel>();
             List<int> ValidiuIds = new List<int>();
-         
+
             List<itemsUnits> itemunitListList = new List<itemsUnits>();
             List<ItemEcommerceModel> categoriesList = new List<ItemEcommerceModel>();
 
@@ -891,7 +891,7 @@ namespace POS_Server.Controllers
                 List<offers> activeOffers = entity.offers.Where(X => X.isActive == 1 && X.startDate <= now && X.endDate > now).ToList();
 
                 // all active Offers
-              //  itemunitListList = entity.itemsUnits.Where(X => X.isActive == 1  ).ToList();
+                //  itemunitListList = entity.itemsUnits.Where(X => X.isActive == 1  ).ToList();
                 offerIds = activeOffers.Select(X => X.offerId).ToList();
                 // iu has quantity and his offer is valid in itemsOffers
                 //activeitemsoffer = itemsoffer.Where(X => (X.quantity - X.used) > 0 && offerIds.Contains((int)X.offerId)).AsEnumerable().Select(X => new ItemOfferModel {
@@ -907,70 +907,70 @@ namespace POS_Server.Controllers
                 activeitemsoffer = entity.itemsOffers.Where(X => (X.quantity - X.used) > 0 && offerIds.Contains((int)X.offerId)).ToList();
                 ValidiuIds = activeitemsoffer.Select(X => (int)X.iuId).ToList();
 
-               categoriesList = (from I in entity.items
-                                      where I.isActive == 1
-                                      select new ItemEcommerceModel()
+                categoriesList = (from I in entity.items
+                                  where I.isActive == 1
+                                  select new ItemEcommerceModel()
+                                  {
+                                      itemId = I.itemId,
+                                      name = I.name,
+                                      code = I.code,
+                                      categoryId = I.categoryId,
+
+                                      //  categoryName = x.name,
+                                      max = I.max,
+                                      maxUnitId = I.maxUnitId,
+                                      minUnitId = I.minUnitId,
+                                      min = I.min,
+
+                                      parentId = I.parentId,
+                                      isActive = I.isActive,
+                                      image = I.image,
+                                      type = I.type,
+                                      details = I.details,
+                                      taxes = I.taxes,
+                                      createDate = I.createDate,
+                                      updateDate = I.updateDate,
+
+                                      isNew = DateTime.Compare((DateTime)I.createDate, cmpdate) >= 0 ? 1 : 0,
+                                      //parentName = entity.items.Where(m => m.itemId == I.parentId).FirstOrDefault().name,
+                                      //minUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
+                                      //maxUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
+                                      isOffer = ValidiuIds.Contains(I.itemsUnits.Where(X => X.defaultSale == 1 && X.itemId == I.itemId).Select(X => X.itemUnitId).FirstOrDefault()) == true ? 1 : 0,
+                                      //avgPurchasePrice = I.avgPurchasePrice
+                                      ItemUnitList = I.itemsUnits.Where(X => X.isActive == 1 && X.itemId == I.itemId && X.defaultSale == 1).Select(X => new ItemUnitEcommerceModel
                                       {
-                                          itemId = I.itemId,
-                                          name = I.name,
-                                          code = I.code,
-                                          categoryId = I.categoryId,
+                                          unitName = X.units.name,
+                                          unitId = X.unitId,
+                                          unitValue = X.unitValue,
+                                          defaultSale = X.defaultSale,
+                                          price = X.price,
+                                          //basicPrice=X.basicPrice,
+                                          cost = X.cost,
+                                          barcode = X.barcode,
+                                          itemUnitId = X.itemUnitId,
+                                          subUnitId = X.subUnitId,
+                                          storageCostId = X.storageCostId,
+                                          isActive = X.isActive,
+                                          // offerName = activeitemsoffer.ToList().Where(io => X.itemUnitId.Equals(io.iuId)).ToList().Count()>0?  "-":"",
+                                          offerName = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.name,
+                                          offerId = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.offerId,
 
-                                          //  categoryName = x.name,
-                                          max = I.max,
-                                          maxUnitId = I.maxUnitId,
-                                          minUnitId = I.minUnitId,
-                                          min = I.min,
+                                          discountType = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.discountType,
 
-                                          parentId = I.parentId,
-                                          isActive = I.isActive,
-                                          image = I.image,
-                                          type = I.type,
-                                          details = I.details,
-                                          taxes = I.taxes,
-                                          createDate = I.createDate,
-                                          updateDate = I.updateDate,
+                                          discountValue = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.discountValue,
 
-                                          isNew = DateTime.Compare((DateTime)I.createDate, cmpdate) >= 0 ? 1 : 0,
-                                          //parentName = entity.items.Where(m => m.itemId == I.parentId).FirstOrDefault().name,
-                                          //minUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
-                                          //maxUnitName = entity.units.Where(m => m.unitId == I.minUnitId).FirstOrDefault().name,
-                                          isOffer = ValidiuIds.Contains(I.itemsUnits.Where(X => X.defaultSale == 1 && X.itemId == I.itemId).Select(X => X.itemUnitId).FirstOrDefault()) == true ? 1 : 0,
-                                          //avgPurchasePrice = I.avgPurchasePrice
-                                          ItemUnitList = I.itemsUnits.Where(X => X.isActive == 1 && X.itemId == I.itemId && X.defaultSale == 1).Select(X => new ItemUnitEcommerceModel
-                                          {
-                                              unitName = X.units.name,
-                                              unitId = X.unitId,
-                                              unitValue = X.unitValue,
-                                              defaultSale = X.defaultSale,
-                                              price = X.price,
-                                              //basicPrice=X.basicPrice,
-                                              cost = X.cost,
-                                              barcode = X.barcode,
-                                              itemUnitId = X.itemUnitId,
-                                              subUnitId = X.subUnitId,
-                                              storageCostId = X.storageCostId,
-                                              isActive = X.isActive,
-                                           // offerName = activeitemsoffer.ToList().Where(io => X.itemUnitId.Equals(io.iuId)).ToList().Count()>0?  "-":"",
-                                              offerName=X.itemsOffers.Where(io=> ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.name,
-                                              offerId = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.offerId,
+                                      }).ToList(),
 
-                                              discountType = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.discountType,
+                                  })
+                 .ToList().OrderBy(x => x.createDate).ToList();
 
-                                              discountValue = X.itemsOffers.Where(io => ValidiuIds.Contains((int)io.iuId)).FirstOrDefault().offers.discountValue,
 
-                                          }).ToList(),
-
-                                      })
-                .ToList().OrderBy(x => x.createDate).ToList();
-
-        
                 //  DateTime.Compare((DateTime)I.createDate, cmpdate) >= 0;
 
                 return categoriesList;
 
             }
-           
+
         }
 
         public ItemEcommerceModel GetItemById(int itemId)
@@ -1050,9 +1050,9 @@ namespace POS_Server.Controllers
                 {
 
 
-                //    List<ItemEcommerceModel> itemList = new List<ItemEcommerceModel>();
+                    //    List<ItemEcommerceModel> itemList = new List<ItemEcommerceModel>();
 
-                var    itemList = GetItems();
+                    var itemList = GetItems();
 
                     //foreach (CategoryEcommerceModel row in mainList)
                     //{
@@ -1126,5 +1126,67 @@ namespace POS_Server.Controllers
         }
 
         #endregion
+        [HttpPost]
+        [Route("GetSetting")]
+        public string GetSetting(string token)
+        {
+            token = TokenManager.readToken(HttpContext.Current.Request);
+            var strP = TokenManager.GetPrincipal(token);
+            if (strP != "0") //invalid authorization
+            {
+                return TokenManager.GenerateToken(strP);
+            }
+            else
+            {
+                #region parameters
+
+                #endregion
+                try
+                {
+
+                    using (incposdbEntities entity = new incposdbEntities())
+                    {
+
+                        var list = (from s in entity.setting
+                                    join v in entity.setValues on s.settingId equals v.settingId
+                                  //  where !s.notes.ToString().Equals("emailtemp")
+                                    select new SettingEcommerceModel()
+                                    {
+                                        valId = v.valId,
+                                        value = v.value,
+                                        isDefault = v.isDefault,
+                                        isSystem = v.isSystem,
+                                        notes = v.notes,
+                                        settingId = v.settingId,
+                                        settingName = s.name,
+                                        settingNotes = s.notes,
+
+                                    }).ToList().Where(x=>x.settingNotes!= "emailtemp").ToList();
+                        SettingEcommerceModel currency = new SettingEcommerceModel();
+                        var country = entity.countriesCodes.Where(x => x.isDefault == 1).FirstOrDefault();
+
+                        currency.value = country.currency;
+
+                        currency.settingName = "currency";
+                        currency.isDefault = 1;
+                        currency.isSystem = 1;
+                        list.Add(currency);
+                        return TokenManager.GenerateToken(list);
+
+
+                    }
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    return TokenManager.GenerateToken(ex.ToString());
+                }
+            }
+        }
+
+
+
     }
 }

@@ -72,7 +72,20 @@ namespace POS_Server.Models
         public decimal balance { get; set; }
         public int branchId { get; set; }
     }
+    public class SettingEcommerceModel
+    {
+        public int valId { get; set; }
+        public string value { get; set; }
+        public Nullable<int> isDefault { get; set; }
+        public Nullable<int> isSystem { get; set; }
+        public string notes { get; set; }
+        public Nullable<int> settingId { get; set; }
+        //setting
+        public string settingName { get; set; }
+        public string settingNotes { get; set; }
 
+
+    }
     public class ItemUnitEcommerceModel
     {
         #region parameters
