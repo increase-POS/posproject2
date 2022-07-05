@@ -115,7 +115,7 @@ namespace POS.Classes
             parameters.Add("itemId", itemId.ToString());
 
             //#################
-            IEnumerable<Claim> claims = await APIResult.getList("ItemsProp/Get");
+            IEnumerable<Claim> claims = await APIResult.getList("ItemsProp/Get",parameters);
 
             foreach (Claim c in claims)
             {
