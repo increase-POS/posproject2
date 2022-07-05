@@ -210,6 +210,9 @@ namespace POS.View.sales
                 path_invoice.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_invoice);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_invoice);
+                chk_invoice.IsChecked = true;
+                chk_return.IsChecked = false;
+                chk_drafs.IsChecked = false;
                 col_processType.Visibility = Visibility.Visible;
 
                 fillEvents();
@@ -243,6 +246,9 @@ namespace POS.View.sales
                 path_order.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_order);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_order);
+                chk_invoice.IsChecked = true;
+                chk_return.IsChecked = false;
+                chk_drafs.IsChecked = false;
                 col_processType.Visibility = Visibility.Hidden;
 
                 fillEvents();
@@ -276,6 +282,9 @@ namespace POS.View.sales
                 path_quotation.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                 ReportsHelp.showTabControlGrid(grid_father, grid_quotation);
                 ReportsHelp.isEnabledButtons(grid_tabControl, btn_quotation);
+                chk_invoice.IsChecked = true;
+                chk_return.IsChecked = false;
+                chk_drafs.IsChecked = false;
                 col_processType.Visibility = Visibility.Hidden;
 
                 fillEvents();

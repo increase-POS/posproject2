@@ -245,6 +245,9 @@ namespace POS.View.reports
                 
                 chk_invoice.Content = MainWindow.resourcemanager.GetString("tr_Invoice");
                 chk_return.Content = MainWindow.resourcemanager.GetString("trReturn");
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
 
                 col_processType.Visibility = Visibility.Visible;
 
@@ -281,7 +284,9 @@ namespace POS.View.reports
               
                 chk_invoice.Content = MainWindow.resourcemanager.GetString("trOrder");
                 chk_return.Content = MainWindow.resourcemanager.GetString("trSaved");
-
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
                 col_processType.Visibility = Visibility.Hidden;
 
                 path_invoice.Fill = Brushes.White;
@@ -319,7 +324,9 @@ namespace POS.View.reports
                 
                 chk_invoice.Content = MainWindow.resourcemanager.GetString("trQuotation");
                 chk_return.Content = MainWindow.resourcemanager.GetString("trSaved");
-
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
                 col_processType.Visibility = Visibility.Hidden;
 
                 path_invoice.Fill = Brushes.White;

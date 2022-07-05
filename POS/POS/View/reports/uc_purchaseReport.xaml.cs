@@ -751,6 +751,9 @@ namespace POS.View.purchases
                 path_branch.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 hideAllColumn();
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
                 col_totalNet.Visibility = Visibility.Visible;
@@ -790,6 +793,9 @@ namespace POS.View.purchases
                 path_pos.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
                
                 hideAllColumn();
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
                 col_branch.Visibility = Visibility.Visible;
                 col_count.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
@@ -830,6 +836,9 @@ namespace POS.View.purchases
                 path_vendors.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 hideAllColumn();
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
                 col_branch.Visibility = Visibility.Visible;
                 col_vendor.Visibility = Visibility.Visible;
                 col_agentCompany.Visibility = Visibility.Visible;
@@ -873,6 +882,9 @@ namespace POS.View.purchases
                 path_users.Fill = (SolidColorBrush)(new BrushConverter().ConvertFrom("#4E4E4E"));
 
                 hideAllColumn();
+                chk_invoice.IsChecked = true;
+                chk_drafs.IsChecked = false;
+                chk_return.IsChecked = false;
                 col_branch.Visibility = Visibility.Visible;
                 col_pos.Visibility = Visibility.Visible;
                 col_user.Visibility = Visibility.Visible;
