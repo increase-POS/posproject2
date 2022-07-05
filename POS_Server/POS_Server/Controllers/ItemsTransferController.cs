@@ -207,6 +207,12 @@ namespace POS_Server.Controllers
                             var invoice = entity.invoices.Find(invoiceId);
                             for (int i = 0; i < newObject.Count; i++)
                             {
+                                long itemUnitId = (long)newObject[i].itemUnitId;
+
+                                #region get avg price for item
+                                var avgPrice = entity.items.Where(m => m.itemId == entity.itemsUnits.Where(x => x.itemUnitId == itemUnitId).Select(x => x.itemId).FirstOrDefault()).Select(m => m.avgPurchasePrice).Single();
+                                #endregion
+
                                 itemsTransfer t;
                                 if (newObject[i].createUserId == 0 || newObject[i].createUserId == null)
                                 {
@@ -227,7 +233,8 @@ namespace POS_Server.Controllers
                                 newObject[i].createDate = DateTime.Now;
                                 newObject[i].updateDate = DateTime.Now;
                                 newObject[i].updateUserId = newObject[i].createUserId;
-                      
+                                newObject[i].purchasePrice = avgPrice;
+
                             t = entity.itemsTransfer.Add(newObject[i]);
                                 entity.SaveChanges();
                              
@@ -245,7 +252,6 @@ namespace POS_Server.Controllers
                                 if(newObject[i].offerId != null && invoice.invType =="s")
                                 {
                                     int offerId = (int)newObject[i].offerId;
-                                    int itemUnitId = (int)newObject[i].itemUnitId;
                                     var offer = entity.itemsOffers.Where(x => x.iuId == itemUnitId && x.offerId == offerId).FirstOrDefault();                         
 
                                     offer.used += (int)newObject[i].quantity;
