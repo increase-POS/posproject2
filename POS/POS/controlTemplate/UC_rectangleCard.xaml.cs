@@ -125,7 +125,9 @@ namespace POS.controlTemplate
             countText.Height = 18;
             countText.FontSize = 10;
             countText.TextWrapping = TextWrapping.Wrap;
-            countText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+            //countText.Foreground = (SolidColorBrush)(new BrushConverter().ConvertFrom("#6e6e6e"));
+            countText.Foreground = Application.Current.Resources["MainColor"] as SolidColorBrush;
+            countText.FontWeight = FontWeights.Bold;
             Grid.SetRow(countText, 3);
             /////////////////////////////////
 
