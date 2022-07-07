@@ -2049,7 +2049,6 @@ namespace POS.View
             txt_theRest.Text = "0";
             tb_cashPaid.IsEnabled = true;
             tb_cashPaid.Text = "";
-            txt_theRest.Text = "";
             lst_coupons.Items.Clear();
             btn_items.IsEnabled = true;
             md_docImage.Badge = "";
@@ -5940,7 +5939,7 @@ namespace POS.View
                     p_errorUser.Visibility = Visibility.Collapsed;
 
                 }
-                tb_deliveryCost.Text = _DeliveryCost.ToString();
+                tb_deliveryCost.Text = SectionData.PercentageDecTostring(_DeliveryCost);
                 if (sender != null)
                     SectionData.EndAwait(grid_main);
             }
