@@ -133,7 +133,7 @@
                   Content="Users"    BorderBrush="#67686D"  Tag="usersReports"
                 DataContext="M74,0A74,74,0,0,0,27.26,131.41l.08.06,2.75,2.13,0,0a74,74,0,0,0,87.82,0c1-.71,1.93-1.45,2.86-2.22A74,74,0,0,0,74,0Zm45.63,123.07A46.89,46.89,0,0,0,89,89.17a33.07,33.07,0,1,0-29.86,0,46.89,46.89,0,0,0-30.7,33.9,67,67,0,1,1,91.26,0Z"/>
                     </Border>-->
-                    <Border x:Name="bdr_deliveryReports"  Height="87" Grid.Row="3"  Tag="deliveryReports"
+                    <Border x:Name="bdr_deliveryReports"  Height="87" Grid.Row="4"  Tag="deliveryReports"
                              Visibility="Collapsed">
                         <Button x:Name="btn_deliveryReports" Click="btn_deliveryReports_Click" Style="{StaticResource SmallButton}"   Grid.Row="3" Grid.Column="0"
                 Height="75" Width="75" Background="White" FlowDirection="LeftToRight"
