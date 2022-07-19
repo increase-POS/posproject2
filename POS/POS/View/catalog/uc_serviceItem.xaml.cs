@@ -526,35 +526,41 @@ namespace POS.View.catalog
         }
         private async void getImg()
         {
-            if (string.IsNullOrEmpty(item.image))
+            try
+            {
+                if (string.IsNullOrEmpty(item.image))
+                {
+                    SectionData.clearImg(img_item);
+                }
+                else
+                {
+                    byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
+
+                    var bitmapImage = new BitmapImage();
+                    if (imageBuffer != null)
+                    {
+                        using (var memoryStream = new MemoryStream(imageBuffer))
+                        {
+                            bitmapImage.BeginInit();
+                            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmapImage.StreamSource = memoryStream;
+                            bitmapImage.EndInit();
+                        }
+
+                        img_item.Background = new ImageBrush(bitmapImage);
+                    }
+                    // configure trmporary path
+                    // string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+                    string dir = Directory.GetCurrentDirectory();
+                    string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
+                    tmpPath = System.IO.Path.Combine(tmpPath, item.image);
+                    openFileDialog.FileName = tmpPath;
+                }
+            }
+            catch
             {
                 SectionData.clearImg(img_item);
             }
-            else
-            {
-                byte[] imageBuffer = await itemModel.downloadImage(item.image); // read this as BLOB from your DB
-
-                var bitmapImage = new BitmapImage();
-                if (imageBuffer != null)
-                {
-                    using (var memoryStream = new MemoryStream(imageBuffer))
-                    {
-                        bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                    }
-
-                    img_item.Background = new ImageBrush(bitmapImage);
-                }
-                // configure trmporary path
-               // string dir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
-                string dir = Directory.GetCurrentDirectory();
-                string tmpPath = System.IO.Path.Combine(dir, Global.TMPItemsFolder);
-                tmpPath = System.IO.Path.Combine(tmpPath, item.image);
-                openFileDialog.FileName = tmpPath;
-            }
-
         }
         public async Task ChangeCategoryIdEvent(int categoryId)
         {
