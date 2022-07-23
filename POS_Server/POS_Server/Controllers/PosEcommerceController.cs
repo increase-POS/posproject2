@@ -1066,6 +1066,15 @@ namespace POS_Server.Controllers
 
                                  }).ToList(),
 
+                                 ItemsProps = I.itemsProp.Where(X => X.itemId == I.itemId && X.propertiesItems.isActive == 1)
+                                 .Select(X => new itemsPropModel
+                                 {
+                                     itemPropId = X.itemPropId,
+                                     propertyItemId = X.propertyItemId,
+                                     itemId = X.itemId,
+                                     propName = X.propertiesItems.properties.name,
+                                     propValue = X.propertiesItems.name,
+                                 }).ToList(),
                              })
                  .ToList().FirstOrDefault();
                 return itemModel;
