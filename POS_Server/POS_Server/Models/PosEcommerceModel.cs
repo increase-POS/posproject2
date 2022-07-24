@@ -60,7 +60,7 @@ namespace POS_Server.Models
         public string maxUnitName { get; set; }
 
         public List<ItemUnitEcommerceModel> ItemUnitList { get; set; }
-        public List<itemsPropModel> ItemsProps { get; set; }
+        public List<PropertyModel> Properties { get; set; }
 
 
     }

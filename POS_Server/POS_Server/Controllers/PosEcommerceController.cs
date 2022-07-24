@@ -1066,17 +1066,29 @@ namespace POS_Server.Controllers
 
                                  }).ToList(),
 
-                                 ItemsProps = I.itemsProp.Where(X => X.itemId == I.itemId && X.propertiesItems.isActive == 1)
-                                 .Select(X => new itemsPropModel
+                                 Properties =  I.itemsProp.Where(X => X.itemId == I.itemId && X.propertiesItems.isActive == 1)
+                                 .Select(X => new PropertyModel
                                  {
-                                     itemPropId = X.itemPropId,
-                                     propertyItemId = X.propertyItemId,
-                                     itemId = X.itemId,
-                                     propName = X.propertiesItems.properties.name,
-                                     propValue = X.propertiesItems.name,
-                                 }).ToList(),
+                                     propertyId = X.propertiesItems.properties.propertyId,
+                                     name = X.propertiesItems.properties.name,
+                                     
+                                 }).Distinct().ToList(),
                              })
                  .ToList().FirstOrDefault();
+
+                foreach(var prop in itemModel.Properties)
+                {
+                    prop.ItemPropValues = entity.itemsProp.Where(M => M.itemId == itemModel.itemId && M.propertiesItems.properties.propertyId == prop.propertyId && M.propertiesItems.isActive == 1)
+                                     .Select(M => new itemsPropModel
+                                     {
+                                         itemPropId = M.itemPropId,
+                                         propertyItemId = M.propertyItemId,
+                                         itemId = M.itemId,
+                                         isDefault = M.propertiesItems.isDefault,
+                                         propName = M.propertiesItems.properties.name,
+                                         propValue = M.propertiesItems.name,
+                                     }).Distinct().ToList();
+                }
                 return itemModel;
             }
 
